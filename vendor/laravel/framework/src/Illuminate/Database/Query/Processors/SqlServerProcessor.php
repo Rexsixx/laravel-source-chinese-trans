@@ -1,7 +1,4 @@
 <?php
-/**
- * 数据库，SqlServer进程
- */
 
 namespace Illuminate\Database\Query\Processors;
 
@@ -13,12 +10,11 @@ class SqlServerProcessor extends Processor
 {
     /**
      * Process an "insert get ID" query.
-	 * 处理"insert get ID"查询
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $sql
-     * @param  array  $values
-     * @param  string|null  $sequence
+     * @param  array   $values
+     * @param  string  $sequence
      * @return int
      */
     public function processInsertGetId(Builder $query, $sql, $values, $sequence = null)
@@ -38,11 +34,9 @@ class SqlServerProcessor extends Processor
 
     /**
      * Process an "insert get ID" query for ODBC.
-	 * 处理ODBC的"insert get ID"查询
      *
      * @param  \Illuminate\Database\Connection  $connection
      * @return int
-     *
      * @throws \Exception
      */
     protected function processInsertGetIdForOdbc(Connection $connection)
@@ -62,7 +56,6 @@ class SqlServerProcessor extends Processor
 
     /**
      * Process the results of a column listing query.
-	 * 处理列清单查询的结果
      *
      * @param  array  $results
      * @return array

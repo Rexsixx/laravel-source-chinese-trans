@@ -1,29 +1,22 @@
 <?php
-/**
- * 事件调度
- */
 
 namespace Illuminate\Events;
 
 use Exception;
-use Illuminate\Container\Container;
-use Illuminate\Contracts\Broadcasting\Factory as BroadcastFactory;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Contracts\Container\Container as ContainerContract;
-use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use ReflectionClass;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Support\Traits\Macroable;
-use ReflectionClass;
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
+use Illuminate\Contracts\Broadcasting\Factory as BroadcastFactory;
+use Illuminate\Contracts\Container\Container as ContainerContract;
 
 class Dispatcher implements DispatcherContract
 {
-    use Macroable;
-
     /**
      * The IoC container instance.
-	 * 控制反转容器实例
      *
      * @var \Illuminate\Contracts\Container\Container
      */
@@ -31,7 +24,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * The registered event listeners.
-	 * 注册事件监听者
      *
      * @var array
      */
@@ -39,23 +31,13 @@ class Dispatcher implements DispatcherContract
 
     /**
      * The wildcard listeners.
-	 * 通配符监听者
      *
      * @var array
      */
     protected $wildcards = [];
 
     /**
-     * The cached wildcard listeners.
-	 * 缓存的通配符侦听器
-     *
-     * @var array
-     */
-    protected $wildcardsCache = [];
-
-    /**
      * The queue resolver instance.
-	 * 队列解析器实例
      *
      * @var callable
      */
@@ -63,7 +45,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Create a new event dispatcher instance.
-	 * 创建新的事件分派实例
      *
      * @param  \Illuminate\Contracts\Container\Container|null  $container
      * @return void
@@ -75,10 +56,9 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Register an event listener with the dispatcher.
-	 * 注册一个事件监听者
      *
      * @param  string|array  $events
-     * @param  \Closure|string  $listener
+     * @param  mixed  $listener
      * @return void
      */
     public function listen($events, $listener)
@@ -94,54 +74,29 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Setup a wildcard listener callback.
-	 * 设置通配符侦听器回调
      *
      * @param  string  $event
-     * @param  \Closure|string  $listener
+     * @param  mixed  $listener
      * @return void
      */
     protected function setupWildcardListen($event, $listener)
     {
         $this->wildcards[$event][] = $this->makeListener($listener, true);
-
-        $this->wildcardsCache = [];
     }
 
     /**
      * Determine if a given event has listeners.
-	 * 确定给定事件是否有侦听器
      *
      * @param  string  $eventName
      * @return bool
      */
     public function hasListeners($eventName)
     {
-        return isset($this->listeners[$eventName]) ||
-               isset($this->wildcards[$eventName]) ||
-               $this->hasWildcardListeners($eventName);
-    }
-
-    /**
-     * Determine if the given event has any wildcard listeners.
-	 * 确定给定事件是否有任何通配符侦听器
-     *
-     * @param  string  $eventName
-     * @return bool
-     */
-    public function hasWildcardListeners($eventName)
-    {
-        foreach ($this->wildcards as $key => $listeners) {
-            if (Str::is($key, $eventName)) {
-                return true;
-            }
-        }
-
-        return false;
+        return isset($this->listeners[$eventName]) || isset($this->wildcards[$eventName]);
     }
 
     /**
      * Register an event and payload to be fired later.
-	 * 注册稍后要触发的事件和有效负载
      *
      * @param  string  $event
      * @param  array  $payload
@@ -156,7 +111,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Flush a set of pushed events.
-	 * 刷新一组推送的事件
      *
      * @param  string  $event
      * @return void
@@ -168,7 +122,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Register an event subscriber with the dispatcher.
-	 * 注册事件订阅者向调度程序
      *
      * @param  object|string  $subscriber
      * @return void
@@ -182,7 +135,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Resolve the subscriber instance.
-	 * 解析订户实例
      *
      * @param  object|string  $subscriber
      * @return mixed
@@ -198,7 +150,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Fire an event until the first non-null response is returned.
-	 * 触发一个事件，直到返回第一个非空响应。
      *
      * @param  string|object  $event
      * @param  mixed  $payload
@@ -211,7 +162,19 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Fire an event and call the listeners.
-	 * 触发一个事件并调用侦听器
+     *
+     * @param  string|object  $event
+     * @param  mixed  $payload
+     * @param  bool  $halt
+     * @return array|null
+     */
+    public function fire($event, $payload = [], $halt = false)
+    {
+        return $this->dispatch($event, $payload, $halt);
+    }
+
+    /**
+     * Fire an event and call the listeners.
      *
      * @param  string|object  $event
      * @param  mixed  $payload
@@ -223,9 +186,7 @@ class Dispatcher implements DispatcherContract
         // When the given "event" is actually an object we will assume it is an event
         // object and use the class as the event name and this event itself as the
         // payload to the handler, which makes object based events quite simple.
-		// 当给定的"事件"实际上是一个对象时，我们将假设它是一个事件对象，并将类用作事件名称，
-		// 将此事件本身用作处理程序的有效载荷，这使得基于对象的事件变得非常简单。
-        [$event, $payload] = $this->parseEventAndPayload(
+        list($event, $payload) = $this->parseEventAndPayload(
             $event, $payload
         );
 
@@ -241,8 +202,6 @@ class Dispatcher implements DispatcherContract
             // If a response is returned from the listener and event halting is enabled
             // we will just return this response, and not call the rest of the event
             // listeners. Otherwise we will add the response on the response list.
-			// 如果从侦听器返回响应并且启用了事件停止，我们将只返回此响应，而不调用其余的事件侦听器。
-			// 否则，我们将在响应列表中添加响应。
             if ($halt && ! is_null($response)) {
                 return $response;
             }
@@ -250,8 +209,6 @@ class Dispatcher implements DispatcherContract
             // If a boolean false is returned from a listener, we will stop propagating
             // the event to any further listeners down in the chain, else we keep on
             // looping through the listeners and firing every one in our sequence.
-			// 如果从侦听器返回布尔值false，我们将停止将事件传播到链中的任何其他侦听器，
-			// 否则我们将继续循环遍历侦听器并触发序列中的每个侦听器。
             if ($response === false) {
                 break;
             }
@@ -264,7 +221,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Parse the given event and payload and prepare them for dispatching.
-	 * 解析给定的事件和有效负载，并为分派做好准备。
      *
      * @param  mixed  $event
      * @param  mixed  $payload
@@ -273,7 +229,7 @@ class Dispatcher implements DispatcherContract
     protected function parseEventAndPayload($event, $payload)
     {
         if (is_object($event)) {
-            [$payload, $event] = [[$event], get_class($event)];
+            list($payload, $event) = [[$event], get_class($event)];
         }
 
         return [$event, Arr::wrap($payload)];
@@ -281,7 +237,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Determine if the payload has a broadcastable event.
-	 * 确定有效负载是否具有可广播的事件
      *
      * @param  array  $payload
      * @return bool
@@ -295,7 +250,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Check if event should be broadcasted by condition.
-	 * 检查是否应该按条件广播事件
      *
      * @param  mixed  $event
      * @return bool
@@ -308,7 +262,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Broadcast the given event class.
-	 * 广播给定的事件类
      *
      * @param  \Illuminate\Contracts\Broadcasting\ShouldBroadcast  $event
      * @return void
@@ -320,7 +273,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Get all of the listeners for a given event name.
-	 * 得到给定事件名称的所有侦听器
      *
      * @param  string  $eventName
      * @return array
@@ -330,8 +282,7 @@ class Dispatcher implements DispatcherContract
         $listeners = $this->listeners[$eventName] ?? [];
 
         $listeners = array_merge(
-            $listeners,
-            $this->wildcardsCache[$eventName] ?? $this->getWildcardListeners($eventName)
+            $listeners, $this->getWildcardListeners($eventName)
         );
 
         return class_exists($eventName, false)
@@ -341,7 +292,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Get the wildcard listeners for the event.
-	 * 得到事件的通配符侦听器
      *
      * @param  string  $eventName
      * @return array
@@ -356,12 +306,11 @@ class Dispatcher implements DispatcherContract
             }
         }
 
-        return $this->wildcardsCache[$eventName] = $wildcards;
+        return $wildcards;
     }
 
     /**
      * Add the listeners for the event's interfaces to the given array.
-	 * 添加事件接口的侦听器到给定数组中
      *
      * @param  string  $eventName
      * @param  array  $listeners
@@ -382,7 +331,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Register an event listener with the dispatcher.
-	 * 注册事件侦听器向调度程序
      *
      * @param  \Closure|string  $listener
      * @param  bool  $wildcard
@@ -405,7 +353,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Create a class based listener using the IoC container.
-	 * 创建基于类的侦听器使用IoC容器
      *
      * @param  string  $listener
      * @param  bool  $wildcard
@@ -418,22 +365,21 @@ class Dispatcher implements DispatcherContract
                 return call_user_func($this->createClassCallable($listener), $event, $payload);
             }
 
-            $callable = $this->createClassCallable($listener);
-
-            return $callable(...array_values($payload));
+            return call_user_func_array(
+                $this->createClassCallable($listener), $payload
+            );
         };
     }
 
     /**
      * Create the class based event callable.
-	 * 创建基于类的事件可调用对象
      *
      * @param  string  $listener
      * @return callable
      */
     protected function createClassCallable($listener)
     {
-        [$class, $method] = $this->parseClassCallable($listener);
+        list($class, $method) = $this->parseClassCallable($listener);
 
         if ($this->handlerShouldBeQueued($class)) {
             return $this->createQueuedHandlerCallable($class, $method);
@@ -444,7 +390,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Parse the class listener into class and method.
-	 * 解析类侦听器为类和方法
      *
      * @param  string  $listener
      * @return array
@@ -456,7 +401,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Determine if the event handler class should be queued.
-	 * 确定是否应该对事件处理程序类进行排队
      *
      * @param  string  $class
      * @return bool
@@ -474,7 +418,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Create a callable for putting an event handler on the queue.
-	 * 创建一个可调用对象，用于将事件处理程序放到队列中。
      *
      * @param  string  $class
      * @param  string  $method
@@ -495,7 +438,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Determine if the event handler wants to be queued.
-	 * 确定事件处理程序是否要排队
      *
      * @param  string  $class
      * @param  array  $arguments
@@ -503,10 +445,8 @@ class Dispatcher implements DispatcherContract
      */
     protected function handlerWantsToBeQueued($class, $arguments)
     {
-        $instance = $this->container->make($class);
-
-        if (method_exists($instance, 'shouldQueue')) {
-            return $instance->shouldQueue($arguments[0]);
+        if (method_exists($class, 'shouldQueue')) {
+            return $this->container->make($class)->shouldQueue($arguments[0]);
         }
 
         return true;
@@ -514,7 +454,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Queue the handler class.
-	 * 排队处理程序类
      *
      * @param  string  $class
      * @param  string  $method
@@ -523,7 +462,7 @@ class Dispatcher implements DispatcherContract
      */
     protected function queueHandler($class, $method, $arguments)
     {
-        [$listener, $job] = $this->createListenerAndJob($class, $method, $arguments);
+        list($listener, $job) = $this->createListenerAndJob($class, $method, $arguments);
 
         $connection = $this->resolveQueue()->connection(
             $listener->connection ?? null
@@ -538,7 +477,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Create the listener and job for a queued listener.
-	 * 创建侦听器和作业
      *
      * @param  string  $class
      * @param  string  $method
@@ -556,7 +494,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Propagate listener options to the job.
-	 * 传播侦听器选项到作业
      *
      * @param  mixed  $listener
      * @param  mixed  $job
@@ -566,7 +503,6 @@ class Dispatcher implements DispatcherContract
     {
         return tap($job, function ($job) use ($listener) {
             $job->tries = $listener->tries ?? null;
-            $job->retryAfter = $listener->retryAfter ?? null;
             $job->timeout = $listener->timeout ?? null;
             $job->timeoutAt = method_exists($listener, 'retryUntil')
                                 ? $listener->retryUntil() : null;
@@ -575,7 +511,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Remove a set of listeners from the dispatcher.
-	 * 删除一组侦听器从调度程序中
      *
      * @param  string  $event
      * @return void
@@ -587,17 +522,10 @@ class Dispatcher implements DispatcherContract
         } else {
             unset($this->listeners[$event]);
         }
-
-        foreach ($this->wildcardsCache as $key => $listeners) {
-            if (Str::is($event, $key)) {
-                unset($this->wildcardsCache[$key]);
-            }
-        }
     }
 
     /**
      * Forget all of the pushed listeners.
-	 * 忘记所有被强迫的监听器
      *
      * @return void
      */
@@ -612,9 +540,8 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Get the queue implementation from the resolver.
-	 * 得到队列实现从解析器
      *
-     * @return \Illuminate\Contracts\Queue\Factory
+     * @return \Illuminate\Contracts\Queue\Queue
      */
     protected function resolveQueue()
     {
@@ -623,7 +550,6 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Set the queue resolver implementation.
-	 * 设置队列解析器实现
      *
      * @param  callable  $resolver
      * @return $this

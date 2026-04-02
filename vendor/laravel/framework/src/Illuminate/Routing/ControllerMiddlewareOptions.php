@@ -1,7 +1,4 @@
 <?php
-/**
- * 路由控制器中间件选项
- */
 
 namespace Illuminate\Routing;
 
@@ -9,7 +6,6 @@ class ControllerMiddlewareOptions
 {
     /**
      * The middleware options.
-	 * 中间件选项
      *
      * @var array
      */
@@ -17,7 +13,6 @@ class ControllerMiddlewareOptions
 
     /**
      * Create a new middleware option instance.
-	 * 创建新的中间件选项实例
      *
      * @param  array  $options
      * @return void
@@ -29,7 +24,6 @@ class ControllerMiddlewareOptions
 
     /**
      * Set the controller methods the middleware should apply to.
-	 * 设置中间件应该应用的控制器方法
      *
      * @param  array|string|dynamic  $methods
      * @return $this
@@ -43,7 +37,6 @@ class ControllerMiddlewareOptions
 
     /**
      * Set the controller methods the middleware should exclude.
-	 * 设置中间件应该排除的控制器方法
      *
      * @param  array|string|dynamic  $methods
      * @return $this

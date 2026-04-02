@@ -1,15 +1,11 @@
 <?php
-/**
- * 数据库，连接器
- */
 
 namespace Illuminate\Database\Connectors;
 
-use Doctrine\DBAL\Driver\PDOConnection;
-use Exception;
-use Illuminate\Database\DetectsLostConnections;
 use PDO;
-use Throwable;
+use Exception;
+use Doctrine\DBAL\Driver\PDOConnection;
+use Illuminate\Database\DetectsLostConnections;
 
 class Connector
 {
@@ -17,7 +13,6 @@ class Connector
 
     /**
      * The default PDO connection options.
-	 * 默认PDO连接参数
      *
      * @var array
      */
@@ -31,18 +26,15 @@ class Connector
 
     /**
      * Create a new PDO connection.
-	 * 创建新的PDO连接
      *
      * @param  string  $dsn
-     * @param  array  $config
-     * @param  array  $options
+     * @param  array   $config
+     * @param  array   $options
      * @return \PDO
-     *
-     * @throws \Exception
      */
     public function createConnection($dsn, array $config, array $options)
     {
-        [$username, $password] = [
+        list($username, $password) = [
             $config['username'] ?? null, $config['password'] ?? null,
         ];
 
@@ -59,7 +51,6 @@ class Connector
 
     /**
      * Create a new PDO connection instance.
-	 * 创建新的PDO连接实例
      *
      * @param  string  $dsn
      * @param  string  $username
@@ -78,7 +69,6 @@ class Connector
 
     /**
      * Determine if the connection is persistent.
-	 * 确定连接是否持久
      *
      * @param  array  $options
      * @return bool
@@ -91,18 +81,17 @@ class Connector
 
     /**
      * Handle an exception that occurred during connect execution.
-	 * 处理连接执行期间发生的异常
      *
-     * @param  \Throwable  $e
+     * @param  \Exception  $e
      * @param  string  $dsn
      * @param  string  $username
      * @param  string  $password
-     * @param  array  $options
+     * @param  array   $options
      * @return \PDO
      *
      * @throws \Exception
      */
-    protected function tryAgainIfCausedByLostConnection(Throwable $e, $dsn, $username, $password, $options)
+    protected function tryAgainIfCausedByLostConnection(Exception $e, $dsn, $username, $password, $options)
     {
         if ($this->causedByLostConnection($e)) {
             return $this->createPdoConnection($dsn, $username, $password, $options);
@@ -113,7 +102,6 @@ class Connector
 
     /**
      * Get the PDO options based on the configuration.
-	 * 根据配置获取PDO选项
      *
      * @param  array  $config
      * @return array
@@ -127,7 +115,6 @@ class Connector
 
     /**
      * Get the default PDO connection options.
-	 * 得到默认的PDO连接选项
      *
      * @return array
      */
@@ -138,7 +125,6 @@ class Connector
 
     /**
      * Set the default PDO connection options.
-	 * 设置默认的PDO连接选项
      *
      * @param  array  $options
      * @return void

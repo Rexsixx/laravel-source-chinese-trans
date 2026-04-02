@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of PHPUnit.
  *
@@ -9,73 +9,80 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function get_class;
-use function sprintf;
 use PHPUnit\Util\Filter;
 use Throwable;
 
-final class Exception extends Constraint
+class Exception extends Constraint
 {
     /**
      * @var string
      */
-    private $className;
-
-    public function __construct(string $className)
-    {
-        $this->className = $className;
-    }
+    protected $className;
 
     /**
-     * Returns a string representation of the constraint.
+     * @param string $className
      */
-    public function toString(): string
+    public function __construct($className)
     {
-        return sprintf(
-            'exception of type "%s"',
-            $this->className
-        );
+        parent::__construct();
+        $this->className = $className;
     }
 
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param mixed $other value or object to evaluate
+     * @param mixed $other Value or object to evaluate.
+     *
+     * @return bool
      */
-    protected function matches($other): bool
+    protected function matches($other)
     {
         return $other instanceof $this->className;
     }
 
     /**
-     * Returns the description of the failure.
+     * Returns the description of the failure
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param mixed $other evaluated value or object
+     * @param mixed $other Evaluated value or object.
+     *
+     * @return string
      */
-    protected function failureDescription($other): string
+    protected function failureDescription($other)
     {
         if ($other !== null) {
             $message = '';
-
             if ($other instanceof Throwable) {
                 $message = '. Message was: "' . $other->getMessage() . '" at'
                     . "\n" . Filter::getFilteredStacktrace($other);
             }
 
-            return sprintf(
+            return \sprintf(
                 'exception of type "%s" matches expected exception "%s"%s',
-                get_class($other),
+                \get_class($other),
                 $this->className,
                 $message
             );
         }
 
-        return sprintf(
+        return \sprintf(
             'exception of type "%s" is thrown',
+            $this->className
+        );
+    }
+
+    /**
+     * Returns a string representation of the constraint.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        return \sprintf(
+            'exception of type "%s"',
             $this->className
         );
     }

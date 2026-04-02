@@ -1,6 +1,6 @@
 <?php
 /**
- * 身份，验证
+ * Illuminate，Auth，中间件，验证
  */
 
 namespace Illuminate\Auth\Middleware;
@@ -21,7 +21,7 @@ class Authenticate
 
     /**
      * Create a new middleware instance.
-	 * 创建中间件实例
+	 * 创建一个新的中间件实例
      *
      * @param  \Illuminate\Contracts\Auth\Factory  $auth
      * @return void
@@ -44,7 +44,7 @@ class Authenticate
      */
     public function handle($request, Closure $next, ...$guards)
     {
-        $this->authenticate($request, $guards);
+        $this->authenticate($guards);
 
         return $next($request);
     }
@@ -53,16 +53,15 @@ class Authenticate
      * Determine if the user is logged in to any of the given guards.
 	 * 确定用户是否登录到任何给定的警卫
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  array  $guards
      * @return void
      *
      * @throws \Illuminate\Auth\AuthenticationException
      */
-    protected function authenticate($request, array $guards)
+    protected function authenticate(array $guards)
     {
         if (empty($guards)) {
-            $guards = [null];
+            return $this->auth->authenticate();
         }
 
         foreach ($guards as $guard) {
@@ -71,35 +70,6 @@ class Authenticate
             }
         }
 
-        $this->unauthenticated($request, $guards);
-    }
-
-    /**
-     * Handle an unauthenticated user.
-	 * 处理未经身份验证的用户
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  array  $guards
-     * @return void
-     *
-     * @throws \Illuminate\Auth\AuthenticationException
-     */
-    protected function unauthenticated($request, array $guards)
-    {
-        throw new AuthenticationException(
-            'Unauthenticated.', $guards, $this->redirectTo($request)
-        );
-    }
-
-    /**
-     * Get the path the user should be redirected to when they are not authenticated.
-	 * 得到用户未经过身份验证时应重定向到的路径
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return string|null
-     */
-    protected function redirectTo($request)
-    {
-        //
+        throw new AuthenticationException('Unauthenticated.', $guards);
     }
 }

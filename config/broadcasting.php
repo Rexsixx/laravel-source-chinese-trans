@@ -1,10 +1,13 @@
 <?php
+/**
+ * 配置，广播
+ */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Broadcaster
+    | Default Broadcaster	默认广播员
     |--------------------------------------------------------------------------
     |
     | This option controls the default broadcaster that will be used by the
@@ -37,7 +40,7 @@ return [
             'app_id' => env('PUSHER_APP_ID'),
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
-                'useTLS' => true,
+                'encrypted' => true,
             ],
         ],
 

@@ -1,12 +1,9 @@
 <?php
-/**
- * 支持，门面认证
- */
 
 namespace Illuminate\Support\Facades;
 
 /**
- * @method static \Illuminate\Contracts\Auth\Guard|\Illuminate\Contracts\Auth\StatefulGuard guard(string|null $name = null)
+ * @method static mixed guard(string|null $name = null)
  * @method static void shouldUse(string $name);
  * @method static bool check()
  * @method static bool guest()
@@ -21,11 +18,6 @@ namespace Illuminate\Support\Facades;
  * @method static bool onceUsingId(mixed $id)
  * @method static bool viaRemember()
  * @method static void logout()
- * @method static \Symfony\Component\HttpFoundation\Response|null onceBasic(string $field = 'email',array $extraConditions = [])
- * @method static bool|null logoutOtherDevices(string $password, string $attribute = 'password')
- * @method static \Illuminate\Contracts\Auth\UserProvider|null createUserProvider(string $provider = null)
- * @method static \Illuminate\Auth\AuthManager extend(string $driver, \Closure $callback)
- * @method static \Illuminate\Auth\AuthManager provider(string $name, \Closure $callback)
  *
  * @see \Illuminate\Auth\AuthManager
  * @see \Illuminate\Contracts\Auth\Factory
@@ -36,7 +28,6 @@ class Auth extends Facade
 {
     /**
      * Get the registered name of the component.
-	 * 得到组件注册名
      *
      * @return string
      */
@@ -47,13 +38,11 @@ class Auth extends Facade
 
     /**
      * Register the typical authentication routes for an application.
-	 * 为应用程序注册典型的身份验证路由
      *
-     * @param  array  $options
      * @return void
      */
-    public static function routes(array $options = [])
+    public static function routes()
     {
-        static::$app->make('router')->auth($options);
+        static::$app->make('router')->auth();
     }
 }

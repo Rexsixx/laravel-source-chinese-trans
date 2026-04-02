@@ -1,23 +1,16 @@
 <?php
-/**
- * 邮件编辑器
- */
 
 namespace Illuminate\Mail;
 
-use Illuminate\Contracts\View\Factory as ViewFactory;
+use Parsedown;
 use Illuminate\Support\HtmlString;
-use Illuminate\Support\Str;
-use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\Environment;
-use League\CommonMark\Extension\Table\TableExtension;
+use Illuminate\Contracts\View\Factory as ViewFactory;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 class Markdown
 {
     /**
      * The view factory implementation.
-	 * 视图工厂实现
      *
      * @var \Illuminate\Contracts\View\Factory
      */
@@ -25,7 +18,6 @@ class Markdown
 
     /**
      * The current theme being used when generating emails.
-	 * 生成电子邮件时使用的当前主题
      *
      * @var string
      */
@@ -33,7 +25,6 @@ class Markdown
 
     /**
      * The registered component paths.
-	 * 已注册的组件路径
      *
      * @var array
      */
@@ -41,7 +32,6 @@ class Markdown
 
     /**
      * Create a new Markdown renderer instance.
-	 * 创建新的Markdown渲染器实例
      *
      * @param  \Illuminate\Contracts\View\Factory  $view
      * @param  array  $options
@@ -56,7 +46,6 @@ class Markdown
 
     /**
      * Render the Markdown template into HTML.
-	 * 呈现Markdown模板为HTML
      *
      * @param  string  $view
      * @param  array  $data
@@ -71,18 +60,13 @@ class Markdown
             'mail', $this->htmlComponentPaths()
         )->make($view, $data)->render();
 
-        $theme = Str::contains($this->theme, '::')
-            ? $this->theme
-            : 'mail::themes.'.$this->theme;
-
         return new HtmlString(($inliner ?: new CssToInlineStyles)->convert(
-            $contents, $this->view->make($theme, $data)->render()
+            $contents, $this->view->make('mail::themes.'.$this->theme)->render()
         ));
     }
 
     /**
-     * Render the Markdown template into text.
-	 * 呈现Markdown模板为文本
+     * Render the Markdown template into HTML.
      *
      * @param  string  $view
      * @param  array  $data
@@ -93,7 +77,7 @@ class Markdown
         $this->view->flushFinderCache();
 
         $contents = $this->view->replaceNamespace(
-            'mail', $this->textComponentPaths()
+            'mail', $this->markdownComponentPaths()
         )->make($view, $data)->render();
 
         return new HtmlString(
@@ -103,27 +87,19 @@ class Markdown
 
     /**
      * Parse the given Markdown text into HTML.
-	 * 将给定的Markdown文本解析为HTML
      *
      * @param  string  $text
      * @return \Illuminate\Support\HtmlString
      */
     public static function parse($text)
     {
-        $environment = Environment::createCommonMarkEnvironment();
+        $parsedown = new Parsedown;
 
-        $environment->addExtension(new TableExtension);
-
-        $converter = new CommonMarkConverter([
-            'allow_unsafe_links' => false,
-        ], $environment);
-
-        return new HtmlString($converter->convertToHtml($text));
+        return new HtmlString($parsedown->text($text));
     }
 
     /**
      * Get the HTML component paths.
-	 * 得到HTML组件路径
      *
      * @return array
      */
@@ -135,21 +111,19 @@ class Markdown
     }
 
     /**
-     * Get the text component paths.
-	 * 得到文本组件路径
+     * Get the Markdown component paths.
      *
      * @return array
      */
-    public function textComponentPaths()
+    public function markdownComponentPaths()
     {
         return array_map(function ($path) {
-            return $path.'/text';
+            return $path.'/markdown';
         }, $this->componentPaths());
     }
 
     /**
      * Get the component paths.
-	 * 得到组件路径
      *
      * @return array
      */
@@ -162,7 +136,6 @@ class Markdown
 
     /**
      * Register new mail component paths.
-	 * 注册新邮件组件路径
      *
      * @param  array  $paths
      * @return void
@@ -174,7 +147,6 @@ class Markdown
 
     /**
      * Set the default theme to be used.
-	 * 设置要使用的默认主题
      *
      * @param  string  $theme
      * @return $this

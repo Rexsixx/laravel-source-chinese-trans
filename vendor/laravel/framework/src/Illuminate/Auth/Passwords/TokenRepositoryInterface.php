@@ -1,7 +1,4 @@
 <?php
-/**
- * 身份，访问令牌库接口
- */
 
 namespace Illuminate\Auth\Passwords;
 
@@ -11,7 +8,6 @@ interface TokenRepositoryInterface
 {
     /**
      * Create a new token.
-	 * 创建新的令牌
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @return string
@@ -20,7 +16,6 @@ interface TokenRepositoryInterface
 
     /**
      * Determine if a token record exists and is valid.
-	 * 确定令牌记录是否存在并且有效
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @param  string  $token
@@ -30,7 +25,6 @@ interface TokenRepositoryInterface
 
     /**
      * Delete a token record.
-	 * 删除token记录
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @return void
@@ -39,7 +33,6 @@ interface TokenRepositoryInterface
 
     /**
      * Delete expired tokens.
-	 * 删除过期token
      *
      * @return void
      */

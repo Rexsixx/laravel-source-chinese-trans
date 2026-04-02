@@ -1,18 +1,14 @@
 <?php
-/**
- * 基于缓存的会话处理程序
- */
 
 namespace Illuminate\Session;
 
-use Illuminate\Contracts\Cache\Repository as CacheContract;
 use SessionHandlerInterface;
+use Illuminate\Contracts\Cache\Repository as CacheContract;
 
 class CacheBasedSessionHandler implements SessionHandlerInterface
 {
     /**
      * The cache repository instance.
-	 * 缓存仓库实例
      *
      * @var \Illuminate\Contracts\Cache\Repository
      */
@@ -20,7 +16,6 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
 
     /**
      * The number of minutes to store the data in the cache.
-	 * 将数据存储在缓存中的分钟数
      *
      * @var int
      */
@@ -28,7 +23,6 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
 
     /**
      * Create a new cache driven handler instance.
-	 * 创建新的缓存驱动处理实例
      *
      * @param  \Illuminate\Contracts\Cache\Repository  $cache
      * @param  int  $minutes
@@ -69,7 +63,7 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
      */
     public function write($sessionId, $data)
     {
-        return $this->cache->put($sessionId, $data, $this->minutes * 60);
+        return $this->cache->put($sessionId, $data, $this->minutes);
     }
 
     /**
@@ -90,7 +84,6 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
 
     /**
      * Get the underlying cache repository.
-	 * 得到底层缓存存储库
      *
      * @return \Illuminate\Contracts\Cache\Repository
      */

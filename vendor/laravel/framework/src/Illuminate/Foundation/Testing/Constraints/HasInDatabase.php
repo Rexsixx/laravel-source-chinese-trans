@@ -1,7 +1,4 @@
 <?php
-/**
- * 基础，在数据库中
- */
 
 namespace Illuminate\Foundation\Testing\Constraints;
 
@@ -12,7 +9,6 @@ class HasInDatabase extends Constraint
 {
     /**
      * Number of records that will be shown in the console in case of failure.
-	 * 在发生故障时将在控制台中显示的记录数
      *
      * @var int
      */
@@ -20,7 +16,6 @@ class HasInDatabase extends Constraint
 
     /**
      * The database connection.
-	 * 数据库连接
      *
      * @var \Illuminate\Database\Connection
      */
@@ -28,7 +23,6 @@ class HasInDatabase extends Constraint
 
     /**
      * The data that will be used to narrow the search in the database table.
-	 * 将用于缩小数据库表中搜索范围的数据
      *
      * @var array
      */
@@ -36,7 +30,6 @@ class HasInDatabase extends Constraint
 
     /**
      * Create a new constraint instance.
-	 * 创建新的约束实例
      *
      * @param  \Illuminate\Database\Connection  $database
      * @param  array  $data
@@ -51,24 +44,22 @@ class HasInDatabase extends Constraint
 
     /**
      * Check if the data is found in the given table.
-	 * 检查是否在给定的表中找到数据
      *
      * @param  string  $table
      * @return bool
      */
-    public function matches($table): bool
+    public function matches($table)
     {
         return $this->database->table($table)->where($this->data)->count() > 0;
     }
 
     /**
      * Get the description of the failure.
-	 * 得到失败描述
      *
      * @param  string  $table
      * @return string
      */
-    public function failureDescription($table): string
+    public function failureDescription($table)
     {
         return sprintf(
             "a row in the table [%s] matches the attributes %s.\n\n%s",
@@ -78,36 +69,22 @@ class HasInDatabase extends Constraint
 
     /**
      * Get additional info about the records found in the database table.
-	 * 得到关于在数据库表中找到的记录的其他信息
      *
      * @param  string  $table
      * @return string
      */
     protected function getAdditionalInfo($table)
     {
-        $query = $this->database->table($table);
+        $results = $this->database->table($table)->get();
 
-        $similarResults = $query->where(
-            array_key_first($this->data),
-            $this->data[array_key_first($this->data)]
-        )->limit($this->show)->get();
-
-        if ($similarResults->isNotEmpty()) {
-            $description = 'Found similar results: '.json_encode($similarResults, JSON_PRETTY_PRINT);
-        } else {
-            $query = $this->database->table($table);
-
-            $results = $query->limit($this->show)->get();
-
-            if ($results->isEmpty()) {
-                return 'The table is empty.';
-            }
-
-            $description = 'Found: '.json_encode($results, JSON_PRETTY_PRINT);
+        if ($results->isEmpty()) {
+            return 'The table is empty';
         }
 
-        if ($query->count() > $this->show) {
-            $description .= sprintf(' and %s others', $query->count() - $this->show);
+        $description = 'Found: '.json_encode($results->take($this->show), JSON_PRETTY_PRINT);
+
+        if ($results->count() > $this->show) {
+            $description .= sprintf(' and %s others', $results->count() - $this->show);
         }
 
         return $description;
@@ -115,12 +92,11 @@ class HasInDatabase extends Constraint
 
     /**
      * Get a string representation of the object.
-	 * 得到对象的字符串表示形式
      *
      * @param  int  $options
      * @return string
      */
-    public function toString($options = 0): string
+    public function toString($options = 0)
     {
         return json_encode($this->data, $options);
     }

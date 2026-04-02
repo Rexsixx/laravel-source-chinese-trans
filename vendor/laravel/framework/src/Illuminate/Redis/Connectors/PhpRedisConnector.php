@@ -1,25 +1,17 @@
 <?php
-/**
- * Redis，Redis连接
- */
 
 namespace Illuminate\Redis\Connectors;
 
-use Illuminate\Contracts\Redis\Connector;
-use Illuminate\Redis\Connections\PhpRedisClusterConnection;
-use Illuminate\Redis\Connections\PhpRedisConnection;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Redis as RedisFacade;
-use Illuminate\Support\Str;
-use LogicException;
 use Redis;
 use RedisCluster;
+use Illuminate\Support\Arr;
+use Illuminate\Redis\Connections\PhpRedisConnection;
+use Illuminate\Redis\Connections\PhpRedisClusterConnection;
 
-class PhpRedisConnector implements Connector
+class PhpRedisConnector
 {
     /**
      * Create a new clustered PhpRedis connection.
-	 * 创建新的集群PhpRedis连接
      *
      * @param  array  $config
      * @param  array  $options
@@ -27,18 +19,13 @@ class PhpRedisConnector implements Connector
      */
     public function connect(array $config, array $options)
     {
-        $connector = function () use ($config, $options) {
-            return $this->createClient(array_merge(
-                $config, $options, Arr::pull($config, 'options', [])
-            ));
-        };
-
-        return new PhpRedisConnection($connector(), $connector, $config);
+        return new PhpRedisConnection($this->createClient(array_merge(
+            $config, $options, Arr::pull($config, 'options', [])
+        )));
     }
 
     /**
      * Create a new clustered PhpRedis connection.
-	 * 创建新的集群PhpRedis连接
      *
      * @param  array  $config
      * @param  array  $clusterOptions
@@ -56,46 +43,34 @@ class PhpRedisConnector implements Connector
 
     /**
      * Build a single cluster seed string from array.
-	 * 构建单个集群种子字符串从数组
      *
      * @param  array  $server
      * @return string
      */
     protected function buildClusterConnectionString(array $server)
     {
-        return $this->formatHost($server).':'.$server['port'].'?'.Arr::query(Arr::only($server, [
+        return $server['host'].':'.$server['port'].'?'.http_build_query(Arr::only($server, [
             'database', 'password', 'prefix', 'read_timeout',
         ]));
     }
 
     /**
      * Create the Redis client instance.
-	 * 创建Redis客户端实例
      *
      * @param  array  $config
      * @return \Redis
-     *
-     * @throws \LogicException
      */
     protected function createClient(array $config)
     {
         return tap(new Redis, function ($client) use ($config) {
-            if ($client instanceof RedisFacade) {
-                throw new LogicException(
-                        extension_loaded('redis')
-                                ? 'Please remove or rename the Redis facade alias in your "app" configuration file in order to avoid collision with the PHP Redis extension.'
-                                : 'Please make sure the PHP Redis extension is installed and enabled.'
-                );
-            }
-
             $this->establishConnection($client, $config);
 
             if (! empty($config['password'])) {
                 $client->auth($config['password']);
             }
 
-            if (isset($config['database'])) {
-                $client->select((int) $config['database']);
+            if (! empty($config['database'])) {
+                $client->select($config['database']);
             }
 
             if (! empty($config['prefix'])) {
@@ -105,16 +80,11 @@ class PhpRedisConnector implements Connector
             if (! empty($config['read_timeout'])) {
                 $client->setOption(Redis::OPT_READ_TIMEOUT, $config['read_timeout']);
             }
-
-            if (! empty($config['scan'])) {
-                $client->setOption(Redis::OPT_SCAN, $config['scan']);
-            }
         });
     }
 
     /**
      * Establish a connection with the Redis host.
-	 * 建立连接与Redis主机
      *
      * @param  \Redis  $client
      * @param  array  $config
@@ -122,32 +92,13 @@ class PhpRedisConnector implements Connector
      */
     protected function establishConnection($client, array $config)
     {
-        $persistent = $config['persistent'] ?? false;
-
-        $parameters = [
-            $this->formatHost($config),
-            $config['port'],
-            Arr::get($config, 'timeout', 0.0),
-            $persistent ? Arr::get($config, 'persistent_id', null) : null,
-            Arr::get($config, 'retry_interval', 0),
-        ];
-
-        if (version_compare(phpversion('redis'), '3.1.3', '>=')) {
-            $parameters[] = Arr::get($config, 'read_timeout', 0.0);
-        }
-
-        if (version_compare(phpversion('redis'), '5.3.0', '>=')) {
-            if (! is_null($context = Arr::get($config, 'context'))) {
-                $parameters[] = $context;
-            }
-        }
-
-        $client->{($persistent ? 'pconnect' : 'connect')}(...$parameters);
+        $client->{($config['persistent'] ?? false) === true ? 'pconnect' : 'connect'}(
+            $config['host'], $config['port'], Arr::get($config, 'timeout', 0)
+        );
     }
 
     /**
      * Create a new redis cluster instance.
-	 * 创建新的redis集群实例
      *
      * @param  array  $servers
      * @param  array  $options
@@ -155,52 +106,12 @@ class PhpRedisConnector implements Connector
      */
     protected function createRedisClusterInstance(array $servers, array $options)
     {
-        $parameters = [
+        return new RedisCluster(
             null,
             array_values($servers),
             $options['timeout'] ?? 0,
             $options['read_timeout'] ?? 0,
-            isset($options['persistent']) && $options['persistent'],
-        ];
-
-        if (version_compare(phpversion('redis'), '4.3.0', '>=')) {
-            $parameters[] = $options['password'] ?? null;
-        }
-
-        if (version_compare(phpversion('redis'), '5.3.2', '>=')) {
-            if (! is_null($context = Arr::get($options, 'context'))) {
-                $parameters[] = $context;
-            }
-        }
-
-        return tap(new RedisCluster(...$parameters), function ($client) use ($options) {
-            if (! empty($options['prefix'])) {
-                $client->setOption(RedisCluster::OPT_PREFIX, $options['prefix']);
-            }
-
-            if (! empty($options['scan'])) {
-                $client->setOption(RedisCluster::OPT_SCAN, $options['scan']);
-            }
-
-            if (! empty($options['failover'])) {
-                $client->setOption(RedisCluster::OPT_SLAVE_FAILOVER, $options['failover']);
-            }
-        });
-    }
-
-    /**
-     * Format the host using the scheme if available.
-	 * 格式化主机使用该方案如果可用
-     *
-     * @param  array  $options
-     * @return string
-     */
-    protected function formatHost(array $options)
-    {
-        if (isset($options['scheme'])) {
-            return Str::start($options['host'], "{$options['scheme']}://");
-        }
-
-        return $options['host'];
+            isset($options['persistent']) && $options['persistent']
+        );
     }
 }

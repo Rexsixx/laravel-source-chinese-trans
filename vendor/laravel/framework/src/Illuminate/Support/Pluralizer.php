@@ -1,20 +1,13 @@
 <?php
-/**
- * 支持，复数器
- */
 
 namespace Illuminate\Support;
 
-use Doctrine\Inflector\CachedWordInflector;
-use Doctrine\Inflector\Inflector;
-use Doctrine\Inflector\Rules\English;
-use Doctrine\Inflector\RulesetInflector;
+use Doctrine\Common\Inflector\Inflector;
 
 class Pluralizer
 {
     /**
      * Uncountable word forms.
-	 * 不可数的单词形式
      *
      * @var array
      */
@@ -52,8 +45,6 @@ class Pluralizer
         'pokemon',
         'police',
         'rain',
-        'recommended',
-        'related',
         'rice',
         'series',
         'sheep',
@@ -66,40 +57,37 @@ class Pluralizer
 
     /**
      * Get the plural form of an English word.
-	 * 得到英语单词的复数形式
      *
      * @param  string  $value
-     * @param  int  $count
+     * @param  int     $count
      * @return string
      */
     public static function plural($value, $count = 2)
     {
-        if ((int) abs($count) === 1 || static::uncountable($value)) {
+        if ((int) $count === 1 || static::uncountable($value)) {
             return $value;
         }
 
-        $plural = static::inflector()->pluralize($value);
+        $plural = Inflector::pluralize($value);
 
         return static::matchCase($plural, $value);
     }
 
     /**
      * Get the singular form of an English word.
-	 * 得到英语单词的单数形式
      *
      * @param  string  $value
      * @return string
      */
     public static function singular($value)
     {
-        $singular = static::inflector()->singularize($value);
+        $singular = Inflector::singularize($value);
 
         return static::matchCase($singular, $value);
     }
 
     /**
      * Determine if the given value is uncountable.
-	 * 确定给定的值是否不可数
      *
      * @param  string  $value
      * @return bool
@@ -111,7 +99,6 @@ class Pluralizer
 
     /**
      * Attempt to match the case on two strings.
-	 * 尝试在两个字符串上匹配大小写
      *
      * @param  string  $value
      * @param  string  $comparison
@@ -122,35 +109,11 @@ class Pluralizer
         $functions = ['mb_strtolower', 'mb_strtoupper', 'ucfirst', 'ucwords'];
 
         foreach ($functions as $function) {
-            if ($function($comparison) === $comparison) {
-                return $function($value);
+            if (call_user_func($function, $comparison) === $comparison) {
+                return call_user_func($function, $value);
             }
         }
 
         return $value;
-    }
-
-    /**
-     * Get the inflector instance.
-	 * 得到影响因子实例
-     *
-     * @return \Doctrine\Inflector\Inflector
-     */
-    public static function inflector()
-    {
-        static $inflector;
-
-        if (is_null($inflector)) {
-            $inflector = new Inflector(
-                new CachedWordInflector(new RulesetInflector(
-                    English\Rules::getSingularRuleset()
-                )),
-                new CachedWordInflector(new RulesetInflector(
-                    English\Rules::getPluralRuleset()
-                ))
-            );
-        }
-
-        return $inflector;
     }
 }

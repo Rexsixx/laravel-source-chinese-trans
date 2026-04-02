@@ -1,7 +1,4 @@
 <?php
-/**
- * 数据库，Eloquent工厂
- */
 
 namespace Illuminate\Database\Eloquent;
 
@@ -13,7 +10,6 @@ class Factory implements ArrayAccess
 {
     /**
      * The model definitions in the container.
-	 * 容器中模型定义
      *
      * @var array
      */
@@ -21,31 +17,13 @@ class Factory implements ArrayAccess
 
     /**
      * The registered model states.
-	 * 已注册模型状态
      *
      * @var array
      */
     protected $states = [];
 
     /**
-     * The registered after making callbacks.
-	 * 回调后注册
-     *
-     * @var array
-     */
-    protected $afterMaking = [];
-
-    /**
-     * The registered after creating callbacks.
-	 * 创建回调后注册
-     *
-     * @var array
-     */
-    protected $afterCreating = [];
-
-    /**
      * The Faker instance for the builder.
-	 * 生成器的Faker实例
      *
      * @var \Faker\Generator
      */
@@ -53,7 +31,6 @@ class Factory implements ArrayAccess
 
     /**
      * Create a new factory instance.
-	 * 创建新的工厂实例
      *
      * @param  \Faker\Generator  $faker
      * @return void
@@ -65,7 +42,6 @@ class Factory implements ArrayAccess
 
     /**
      * Create a new factory container.
-	 * 创建新的工厂容器
      *
      * @param  \Faker\Generator  $faker
      * @param  string|null  $pathToFactories
@@ -80,7 +56,6 @@ class Factory implements ArrayAccess
 
     /**
      * Define a class with a given short-name.
-	 * 定义一个类用给定的短名称
      *
      * @param  string  $class
      * @param  string  $name
@@ -94,7 +69,6 @@ class Factory implements ArrayAccess
 
     /**
      * Define a class with a given set of attributes.
-	 * 定义一个类用一组给定的属性
      *
      * @param  string  $class
      * @param  callable  $attributes
@@ -110,7 +84,6 @@ class Factory implements ArrayAccess
 
     /**
      * Define a state with a given set of attributes.
-	 * 用一组给定的属性定义一个状态
      *
      * @param  string  $class
      * @param  string  $state
@@ -125,68 +98,7 @@ class Factory implements ArrayAccess
     }
 
     /**
-     * Define a callback to run after making a model.
-	 * 定义一个在创建模型后运行的回调函数
-     *
-     * @param  string  $class
-     * @param  callable  $callback
-     * @param  string  $name
-     * @return $this
-     */
-    public function afterMaking($class, callable $callback, $name = 'default')
-    {
-        $this->afterMaking[$class][$name][] = $callback;
-
-        return $this;
-    }
-
-    /**
-     * Define a callback to run after making a model with given state.
-	 * 定义一个回调函数，在生成具有给定状态的模型后运行。
-     *
-     * @param  string  $class
-     * @param  string  $state
-     * @param  callable  $callback
-     * @return $this
-     */
-    public function afterMakingState($class, $state, callable $callback)
-    {
-        return $this->afterMaking($class, $callback, $state);
-    }
-
-    /**
-     * Define a callback to run after creating a model.
-	 * 定义一个在创建模型后运行的回调函数
-     *
-     * @param  string  $class
-     * @param  callable  $callback
-     * @param  string  $name
-     * @return $this
-     */
-    public function afterCreating($class, callable $callback, $name = 'default')
-    {
-        $this->afterCreating[$class][$name][] = $callback;
-
-        return $this;
-    }
-
-    /**
-     * Define a callback to run after creating a model with given state.
-	 * 定义一个回调，以便在创建具有给定状态的模型后运行。
-     *
-     * @param  string  $class
-     * @param  string  $state
-     * @param  callable  $callback
-     * @return $this
-     */
-    public function afterCreatingState($class, $state, callable $callback)
-    {
-        return $this->afterCreating($class, $callback, $state);
-    }
-
-    /**
      * Create an instance of the given model and persist it to the database.
-	 * 创建给定模型的实例并将其持久化到数据库中
      *
      * @param  string  $class
      * @param  array  $attributes
@@ -199,7 +111,6 @@ class Factory implements ArrayAccess
 
     /**
      * Create an instance of the given model and type and persist it to the database.
-	 * 创建给定模型和类型的实例，并将其持久化到数据库中。
      *
      * @param  string  $class
      * @param  string  $name
@@ -213,7 +124,6 @@ class Factory implements ArrayAccess
 
     /**
      * Create an instance of the given model.
-	 * 创建给定模型的实例
      *
      * @param  string  $class
      * @param  array  $attributes
@@ -226,7 +136,6 @@ class Factory implements ArrayAccess
 
     /**
      * Create an instance of the given model and type.
-	 * 创建给定模型和类型的实例
      *
      * @param  string  $class
      * @param  string  $name
@@ -240,7 +149,6 @@ class Factory implements ArrayAccess
 
     /**
      * Get the raw attribute array for a given named model.
-	 * 得到给定命名模型的原始属性数组
      *
      * @param  string  $class
      * @param  string  $name
@@ -254,7 +162,6 @@ class Factory implements ArrayAccess
 
     /**
      * Get the raw attribute array for a given model.
-	 * 得到给定模型的原始属性数组
      *
      * @param  string  $class
      * @param  array  $attributes
@@ -270,7 +177,6 @@ class Factory implements ArrayAccess
 
     /**
      * Create a builder for the given model.
-	 * 创建一个构建器为给定的模型
      *
      * @param  string  $class
      * @param  string  $name
@@ -278,15 +184,11 @@ class Factory implements ArrayAccess
      */
     public function of($class, $name = 'default')
     {
-        return new FactoryBuilder(
-            $class, $name, $this->definitions, $this->states,
-            $this->afterMaking, $this->afterCreating, $this->faker
-        );
+        return new FactoryBuilder($class, $name, $this->definitions, $this->states, $this->faker);
     }
 
     /**
      * Load factories from path.
-	 * 加载工厂从路径
      *
      * @param  string  $path
      * @return $this
@@ -306,7 +208,6 @@ class Factory implements ArrayAccess
 
     /**
      * Determine if the given offset exists.
-	 * 确定给定的偏移量是否存在
      *
      * @param  string  $offset
      * @return bool
@@ -318,7 +219,6 @@ class Factory implements ArrayAccess
 
     /**
      * Get the value of the given offset.
-	 * 得到给定偏移量的值
      *
      * @param  string  $offset
      * @return mixed
@@ -330,7 +230,6 @@ class Factory implements ArrayAccess
 
     /**
      * Set the given offset to the given value.
-	 * 设置给定偏移量为给定值
      *
      * @param  string  $offset
      * @param  callable  $value
@@ -338,12 +237,11 @@ class Factory implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        $this->define($offset, $value);
+        return $this->define($offset, $value);
     }
 
     /**
      * Unset the value at the given offset.
-	 * 取消值的设置在给定的偏移量
      *
      * @param  string  $offset
      * @return void

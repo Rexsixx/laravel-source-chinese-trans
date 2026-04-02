@@ -1,18 +1,14 @@
 <?php
-/**
- * 数据库查询异常
- */
 
 namespace Illuminate\Database;
 
-use Illuminate\Support\Str;
 use PDOException;
+use Illuminate\Support\Str;
 
 class QueryException extends PDOException
 {
     /**
      * The SQL for the query.
-	 * 查询SQL
      *
      * @var string
      */
@@ -20,7 +16,6 @@ class QueryException extends PDOException
 
     /**
      * The bindings for the query.
-	 * 绑定查询
      *
      * @var array
      */
@@ -28,11 +23,10 @@ class QueryException extends PDOException
 
     /**
      * Create a new query exception instance.
-	 * 创建新查询异常实例
      *
      * @param  string  $sql
      * @param  array  $bindings
-     * @param  \Exception  $previous
+     * @param  \Exception $previous
      * @return void
      */
     public function __construct($sql, array $bindings, $previous)
@@ -51,11 +45,10 @@ class QueryException extends PDOException
 
     /**
      * Format the SQL error message.
-	 * 格式化SQL错误信息
      *
      * @param  string  $sql
      * @param  array  $bindings
-     * @param  \Exception  $previous
+     * @param  \Exception $previous
      * @return string
      */
     protected function formatMessage($sql, $bindings, $previous)
@@ -65,7 +58,6 @@ class QueryException extends PDOException
 
     /**
      * Get the SQL for the query.
-	 * 得到查询SQL
      *
      * @return string
      */
@@ -76,7 +68,6 @@ class QueryException extends PDOException
 
     /**
      * Get the bindings for the query.
-	 * 得到绑定查询
      *
      * @return array
      */

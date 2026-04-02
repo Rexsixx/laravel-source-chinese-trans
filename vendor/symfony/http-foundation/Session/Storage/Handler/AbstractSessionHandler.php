@@ -31,7 +31,6 @@ abstract class AbstractSessionHandler implements \SessionHandlerInterface, \Sess
     /**
      * @return bool
      */
-    #[\ReturnTypeWillChange]
     public function open($savePath, $sessionName)
     {
         $this->sessionName = $sessionName;
@@ -67,7 +66,6 @@ abstract class AbstractSessionHandler implements \SessionHandlerInterface, \Sess
     /**
      * @return bool
      */
-    #[\ReturnTypeWillChange]
     public function validateId($sessionId)
     {
         $this->prefetchData = $this->read($sessionId);
@@ -88,7 +86,6 @@ abstract class AbstractSessionHandler implements \SessionHandlerInterface, \Sess
     /**
      * @return string
      */
-    #[\ReturnTypeWillChange]
     public function read($sessionId)
     {
         if (null !== $this->prefetchId) {
@@ -105,6 +102,9 @@ abstract class AbstractSessionHandler implements \SessionHandlerInterface, \Sess
 
         $data = $this->doRead($sessionId);
         $this->newSessionId = '' === $data ? $sessionId : null;
+        if (\PHP_VERSION_ID < 70000) {
+            $this->prefetchData = $data;
+        }
 
         return $data;
     }
@@ -112,9 +112,16 @@ abstract class AbstractSessionHandler implements \SessionHandlerInterface, \Sess
     /**
      * @return bool
      */
-    #[\ReturnTypeWillChange]
     public function write($sessionId, $data)
     {
+        if (\PHP_VERSION_ID < 70000 && $this->prefetchData) {
+            $readData = $this->prefetchData;
+            $this->prefetchData = null;
+
+            if ($readData === $data) {
+                return $this->updateTimestamp($sessionId, $data);
+            }
+        }
         if (null === $this->igbinaryEmptyData) {
             // see https://github.com/igbinary/igbinary/issues/146
             $this->igbinaryEmptyData = \function_exists('igbinary_serialize') ? igbinary_serialize([]) : '';
@@ -130,9 +137,11 @@ abstract class AbstractSessionHandler implements \SessionHandlerInterface, \Sess
     /**
      * @return bool
      */
-    #[\ReturnTypeWillChange]
     public function destroy($sessionId)
     {
+        if (\PHP_VERSION_ID < 70000) {
+            $this->prefetchData = null;
+        }
         if (!headers_sent() && filter_var(ini_get('session.use_cookies'), \FILTER_VALIDATE_BOOLEAN)) {
             if (!$this->sessionName) {
                 throw new \LogicException(sprintf('Session name cannot be empty, did you forget to call "parent::open()" in "%s"?.', static::class));

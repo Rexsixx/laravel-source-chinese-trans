@@ -1,10 +1,13 @@
 <?php
+/**
+ * 配置，app
+ */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Name 应用名称
+    | Application Name	应用名称
     |--------------------------------------------------------------------------
     |
     | This value is the name of your application. This value is used when the
@@ -17,12 +20,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Environment 开发环境
+    | Application Environment
     |--------------------------------------------------------------------------
     |
     | This value determines the "environment" your application is currently
     | running in. This may determine how you prefer to configure various
-    | services the application utilizes. Set this in your ".env" file.
+    | services your application utilizes. Set this in your ".env" file.
     |
     */
 
@@ -30,7 +33,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Debug Mode Debug模式
+    | Application Debug Mode
     |--------------------------------------------------------------------------
     |
     | When your application is in debug mode, detailed error messages with
@@ -39,11 +42,11 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
-    | Application URL 应用URL
+    | Application URL
     |--------------------------------------------------------------------------
     |
     | This URL is used by the console to properly generate URLs when using
@@ -54,11 +57,9 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    'asset_url' => env('ASSET_URL', null),
-
     /*
     |--------------------------------------------------------------------------
-    | Application Timezone	时区，实际改为UTC+8
+    | Application Timezone
     |--------------------------------------------------------------------------
     |
     | Here you may specify the default timezone for your application, which
@@ -71,7 +72,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Locale Configuration	本地语言
+    | Application Locale Configuration
     |--------------------------------------------------------------------------
     |
     | The application locale determines the default locale that will be used
@@ -84,7 +85,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Fallback Locale	
+    | Application Fallback Locale
     |--------------------------------------------------------------------------
     |
     | The fallback locale determines the locale to use when the current one
@@ -97,20 +98,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Faker Locale
-    |--------------------------------------------------------------------------
-    |
-    | This locale will be used by the Faker PHP library when generating fake
-    | data for your database seeds. For example, this will be used to get
-    | localized telephone numbers, street address information and more.
-    |
-    */
-
-    'faker_locale' => 'en_US',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Encryption Key	加密KEY
+    | Encryption Key
     |--------------------------------------------------------------------------
     |
     | This key is used by the Illuminate encrypter service and should be set
@@ -125,7 +113,24 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Autoloaded Service Providers		自动加载服务提供者
+    | Logging Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure the log settings for your application. Out of
+    | the box, Laravel uses the Monolog PHP logging library. This gives
+    | you a variety of powerful log handlers / formatters to utilize.
+    |
+    | Available Settings: "single", "daily", "syslog", "errorlog"
+    |
+    */
+
+    'log' => env('APP_LOG', 'single'),
+
+    'log_level' => env('APP_LOG_LEVEL', 'debug'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Autoloaded Service Providers
     |--------------------------------------------------------------------------
     |
     | The service providers listed here will be automatically loaded on the
@@ -179,7 +184,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Class Aliases		类别名
+    | Class Aliases
     |--------------------------------------------------------------------------
     |
     | This array of class aliases will be registered when this application
@@ -191,7 +196,6 @@ return [
     'aliases' => [
 
         'App' => Illuminate\Support\Facades\App::class,
-        'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
         'Blade' => Illuminate\Support\Facades\Blade::class,
@@ -221,7 +225,6 @@ return [
         'Schema' => Illuminate\Support\Facades\Schema::class,
         'Session' => Illuminate\Support\Facades\Session::class,
         'Storage' => Illuminate\Support\Facades\Storage::class,
-        'Str' => Illuminate\Support\Str::class,
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,

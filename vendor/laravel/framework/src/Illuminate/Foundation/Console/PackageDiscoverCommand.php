@@ -1,7 +1,4 @@
 <?php
-/**
- * 基础，包发现命令
- */
 
 namespace Illuminate\Foundation\Console;
 
@@ -12,7 +9,6 @@ class PackageDiscoverCommand extends Command
 {
     /**
      * The console command signature.
-	 * 控制台命令签名
      *
      * @var string
      */
@@ -20,7 +16,6 @@ class PackageDiscoverCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
      *
      * @var string
      */
@@ -28,7 +23,6 @@ class PackageDiscoverCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
      *
      * @param  \Illuminate\Foundation\PackageManifest  $manifest
      * @return void
@@ -38,7 +32,7 @@ class PackageDiscoverCommand extends Command
         $manifest->build();
 
         foreach (array_keys($manifest->manifest) as $package) {
-            $this->line("Discovered Package: <info>{$package}</info>");
+            $this->line("<info>Discovered Package:</info> {$package}");
         }
 
         $this->info('Package manifest generated successfully.');

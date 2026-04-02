@@ -1,7 +1,4 @@
 <?php
-/**
- * Http，文件帮助
- */
 
 namespace Illuminate\Http;
 
@@ -11,7 +8,6 @@ trait FileHelpers
 {
     /**
      * The cache copy of the file's hash name.
-	 * 缓存文件哈希名
      *
      * @var string
      */
@@ -19,7 +15,6 @@ trait FileHelpers
 
     /**
      * Get the fully qualified path to the file.
-	 * 得到文件完全路径
      *
      * @return string
      */
@@ -30,7 +25,6 @@ trait FileHelpers
 
     /**
      * Get the file's extension.
-	 * 得到文件后缀
      *
      * @return string
      */
@@ -40,10 +34,19 @@ trait FileHelpers
     }
 
     /**
-     * Get a filename for the file.
-	 * 得到文件名
+     * Get the file's extension supplied by the client.
      *
-     * @param  string|null  $path
+     * @return string
+     */
+    public function clientExtension()
+    {
+        return $this->guessClientExtension();
+    }
+
+    /**
+     * Get a filename for the file.
+     *
+     * @param  string  $path
      * @return string
      */
     public function hashName($path = null)
@@ -54,10 +57,6 @@ trait FileHelpers
 
         $hash = $this->hashName ?: $this->hashName = Str::random(40);
 
-        if ($extension = $this->guessExtension()) {
-            $extension = '.'.$extension;
-        }
-
-        return $path.$hash.$extension;
+        return $path.$hash.'.'.$this->guessExtension();
     }
 }

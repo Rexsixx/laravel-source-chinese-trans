@@ -1,15 +1,12 @@
 <?php
-/**
- * Http，Json响应
- */
 
 namespace Illuminate\Http;
 
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Support\Traits\Macroable;
-use InvalidArgumentException;
 use JsonSerializable;
+use InvalidArgumentException;
+use Illuminate\Support\Traits\Macroable;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
 use Symfony\Component\HttpFoundation\JsonResponse as BaseJsonResponse;
 
 class JsonResponse extends BaseJsonResponse
@@ -20,12 +17,11 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Constructor.
-	 * 初始化
      *
      * @param  mixed  $data
-     * @param  int  $status
+     * @param  int    $status
      * @param  array  $headers
-     * @param  int  $options
+     * @param  int    $options
      * @return void
      */
     public function __construct($data = null, $status = 200, $headers = [], $options = 0)
@@ -37,7 +33,6 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Sets the JSONP callback.
-	 * 设置JSON回调
      *
      * @param  string|null  $callback
      * @return $this
@@ -49,7 +44,6 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Get the json_decoded data from the response.
-	 * 得到json编码数据
      *
      * @param  bool  $assoc
      * @param  int  $depth
@@ -86,23 +80,15 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Determine if an error occurred during JSON encoding.
-	 * 确定是否错误JSON编码
      *
      * @param  int  $jsonError
      * @return bool
      */
     protected function hasValidJson($jsonError)
     {
-        if ($jsonError === JSON_ERROR_NONE) {
-            return true;
-        }
-
-        return $this->hasEncodingOption(JSON_PARTIAL_OUTPUT_ON_ERROR) &&
-                    in_array($jsonError, [
-                        JSON_ERROR_RECURSION,
-                        JSON_ERROR_INF_OR_NAN,
-                        JSON_ERROR_UNSUPPORTED_TYPE,
-                    ]);
+        return $jsonError === JSON_ERROR_NONE ||
+                ($jsonError === JSON_ERROR_UNSUPPORTED_TYPE &&
+                $this->hasEncodingOption(JSON_PARTIAL_OUTPUT_ON_ERROR));
     }
 
     /**
@@ -117,7 +103,6 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Determine if a JSON encoding option is set.
-	 * 确定是否设置了JSON编码选项
      *
      * @param  int  $option
      * @return bool

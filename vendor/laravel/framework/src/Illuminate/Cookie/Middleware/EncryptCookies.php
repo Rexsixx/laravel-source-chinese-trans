@@ -1,23 +1,20 @@
 <?php
-/**
- * COOKIE，加密cookie
- */
 
 namespace Illuminate\Cookie\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Encryption\DecryptException;
-use Illuminate\Contracts\Encryption\Encrypter as EncrypterContract;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Cookie\CookieValuePrefix;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Contracts\Encryption\Encrypter as EncrypterContract;
 
 class EncryptCookies
 {
     /**
      * The encrypter instance.
-	 * 加密实例
      *
      * @var \Illuminate\Contracts\Encryption\Encrypter
      */
@@ -25,15 +22,13 @@ class EncryptCookies
 
     /**
      * The names of the cookies that should not be encrypted.
-	 * 不应加密的cookie的名称
      *
      * @var array
      */
     protected $except = [];
 
     /**
-     * Indicates if cookies should be serialized.
-	 * 指明是否应该序列化cookie
+     * Indicates if the cookies should be serialized.
      *
      * @var bool
      */
@@ -41,7 +36,6 @@ class EncryptCookies
 
     /**
      * Create a new CookieGuard instance.
-	 * 创建新的CookieGuard实例
      *
      * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
      * @return void
@@ -53,23 +47,21 @@ class EncryptCookies
 
     /**
      * Disable encryption for the given cookie name(s).
-	 * 禁用给定cookie名称的加密
      *
-     * @param  string|array  $name
+     * @param  string|array  $cookieName
      * @return void
      */
-    public function disableFor($name)
+    public function disableFor($cookieName)
     {
-        $this->except = array_merge($this->except, (array) $name);
+        $this->except = array_merge($this->except, (array) $cookieName);
     }
 
     /**
      * Handle an incoming request.
-	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return mixed
      */
     public function handle($request, Closure $next)
     {
@@ -78,7 +70,6 @@ class EncryptCookies
 
     /**
      * Decrypt the cookies on the request.
-	 * 解密请求中的cookie
      *
      * @param  \Symfony\Component\HttpFoundation\Request  $request
      * @return \Symfony\Component\HttpFoundation\Request
@@ -91,13 +82,15 @@ class EncryptCookies
             }
 
             try {
-                $value = $this->decryptCookie($key, $cookie);
+                $decryptedValue = $this->decryptCookie($key, $cookie);
 
-                $hasValidPrefix = strpos($value, CookieValuePrefix::create($key, $this->encrypter->getKey())) === 0;
+                $value = CookieValuePrefix::getVerifiedValue($key, $decryptedValue, $this->encrypter->getKey());
 
-                $request->cookies->set(
-                    $key, $hasValidPrefix ? CookieValuePrefix::remove($value) : null
-                );
+                if (empty($value) && $key === config('session.cookie') && Session::isValidId($decryptedValue)) {
+                    $value = $decryptedValue;
+                }
+
+                $request->cookies->set($key, $value);
             } catch (DecryptException $e) {
                 $request->cookies->set($key, null);
             }
@@ -108,7 +101,6 @@ class EncryptCookies
 
     /**
      * Decrypt the given cookie and return the value.
-	 * 解密给定的cookie并返回值
      *
      * @param  string  $name
      * @param  string|array  $cookie
@@ -123,7 +115,6 @@ class EncryptCookies
 
     /**
      * Decrypt an array based cookie.
-	 * 解密基于数组的cookie
      *
      * @param  array  $cookie
      * @return array
@@ -143,7 +134,6 @@ class EncryptCookies
 
     /**
      * Encrypt the cookies on an outgoing response.
-	 * 加密cookie对传出响应
      *
      * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @return \Symfony\Component\HttpFoundation\Response
@@ -155,12 +145,14 @@ class EncryptCookies
                 continue;
             }
 
+            $prefix = '';
+
+            if ($cookie->getName() !== 'XSRF-TOKEN') {
+                $prefix = CookieValuePrefix::create($cookie->getName(), $this->encrypter->getKey());
+            }
+
             $response->headers->setCookie($this->duplicate(
-                $cookie,
-                $this->encrypter->encrypt(
-                    CookieValuePrefix::create($cookie->getName(), $this->encrypter->getKey()).$cookie->getValue(),
-                    static::serialized($cookie->getName())
-                )
+                $cookie, $this->encrypter->encrypt($prefix.$cookie->getValue(), static::serialized($cookie->getName()))
             ));
         }
 
@@ -169,26 +161,24 @@ class EncryptCookies
 
     /**
      * Duplicate a cookie with a new value.
-	 * 复制一个cookie用新值
      *
-     * @param  \Symfony\Component\HttpFoundation\Cookie  $cookie
+     * @param  \Symfony\Component\HttpFoundation\Cookie  $c
      * @param  mixed  $value
      * @return \Symfony\Component\HttpFoundation\Cookie
      */
-    protected function duplicate(Cookie $cookie, $value)
+    protected function duplicate(Cookie $c, $value)
     {
         return new Cookie(
-            $cookie->getName(), $value, $cookie->getExpiresTime(),
-            $cookie->getPath(), $cookie->getDomain(), $cookie->isSecure(),
-            $cookie->isHttpOnly(), $cookie->isRaw(), $cookie->getSameSite()
+            $c->getName(), $value, $c->getExpiresTime(), $c->getPath(),
+            $c->getDomain(), $c->isSecure(), $c->isHttpOnly(), $c->isRaw(),
+            $c->getSameSite()
         );
     }
 
     /**
      * Determine whether encryption has been disabled for the given cookie.
-	 * 确定是否对给定的cookie禁用了加密
      *
-     * @param  string  $name
+     * @param  string $name
      * @return bool
      */
     public function isDisabled($name)
@@ -198,7 +188,6 @@ class EncryptCookies
 
     /**
      * Determine if the cookie contents should be serialized.
-	 * 确定是否应该序列化cookie内容
      *
      * @param  string  $name
      * @return bool

@@ -1,19 +1,14 @@
 <?php
-/**
- * Http，收集资源
- */
 
 namespace Illuminate\Http\Resources;
 
-use Illuminate\Pagination\AbstractPaginator;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Illuminate\Pagination\AbstractPaginator;
 
 trait CollectsResources
 {
     /**
      * Map the given collection resource into its individual resources.
-	 * 将给定的集合资源映射到它的各个资源
      *
      * @param  mixed  $resource
      * @return mixed
@@ -22,10 +17,6 @@ trait CollectsResources
     {
         if ($resource instanceof MissingValue) {
             return $resource;
-        }
-
-        if (is_array($resource)) {
-            $resource = new Collection($resource);
         }
 
         $collects = $this->collects();
@@ -41,7 +32,6 @@ trait CollectsResources
 
     /**
      * Get the resource that this resource collects.
-	 * 得到此资源收集的资源
      *
      * @return string|null
      */
@@ -59,7 +49,6 @@ trait CollectsResources
 
     /**
      * Get an iterator for the resource collection.
-	 * 得到资源集合的迭代器
      *
      * @return \ArrayIterator
      */

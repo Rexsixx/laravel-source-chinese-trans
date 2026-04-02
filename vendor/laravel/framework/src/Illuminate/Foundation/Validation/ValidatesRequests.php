@@ -1,25 +1,20 @@
 <?php
-/**
- * 基础，验证请求特性
- */
 
 namespace Illuminate\Foundation\Validation;
 
-use Illuminate\Contracts\Validation\Factory;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Validation\ValidationException;
 
 trait ValidatesRequests
 {
     /**
      * Run the validation routine against the given validator.
-	 * 运行验证程序对给定的验证器
      *
      * @param  \Illuminate\Contracts\Validation\Validator|array  $validator
      * @param  \Illuminate\Http\Request|null  $request
      * @return array
-     *
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function validateWith($validator, Request $request = null)
     {
@@ -29,32 +24,46 @@ trait ValidatesRequests
             $validator = $this->getValidationFactory()->make($request->all(), $validator);
         }
 
-        return $validator->validate();
+        $validator->validate();
+
+        return $this->extractInputFromRules($request, $validator->getRules());
     }
 
     /**
      * Validate the given request with the given rules.
-	 * 验证给定的请求用给定的规则
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  array  $rules
      * @param  array  $messages
      * @param  array  $customAttributes
      * @return array
-     *
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function validate(Request $request, array $rules,
                              array $messages = [], array $customAttributes = [])
     {
-        return $this->getValidationFactory()->make(
-            $request->all(), $rules, $messages, $customAttributes
-        )->validate();
+        $this->getValidationFactory()
+             ->make($request->all(), $rules, $messages, $customAttributes)
+             ->validate();
+
+        return $this->extractInputFromRules($request, $rules);
+    }
+
+    /**
+     * Get the request input based on the given validation rules.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  array  $rules
+     * @return array
+     */
+    protected function extractInputFromRules(Request $request, array $rules)
+    {
+        return $request->only(collect($rules)->keys()->map(function ($rule) {
+            return Str::contains($rule, '.') ? explode('.', $rule)[0] : $rule;
+        })->unique()->toArray());
     }
 
     /**
      * Validate the given request with the given rules.
-	 * 验证给定的请求用给定的规则
      *
      * @param  string  $errorBag
      * @param  \Illuminate\Http\Request  $request
@@ -79,7 +88,6 @@ trait ValidatesRequests
 
     /**
      * Get a validation factory instance.
-	 * 提到验证工厂实例
      *
      * @return \Illuminate\Contracts\Validation\Factory
      */

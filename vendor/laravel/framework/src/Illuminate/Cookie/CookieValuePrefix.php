@@ -1,15 +1,13 @@
 <?php
-/**
- * COOKIE值前缀
- */
 
 namespace Illuminate\Cookie;
+
+use Illuminate\Support\Str;
 
 class CookieValuePrefix
 {
     /**
      * Create a new cookie value prefix for the given cookie name.
-	 * 创建新的Cookie值前缀为给定的cookie名称
      *
      * @param  string  $cookieName
      * @param  string  $key
@@ -22,7 +20,6 @@ class CookieValuePrefix
 
     /**
      * Remove the cookie value prefix.
-	 * 移除cookie值前缀
      *
      * @param  string  $cookieValue
      * @return string
@@ -30,5 +27,24 @@ class CookieValuePrefix
     public static function remove($cookieValue)
     {
         return substr($cookieValue, 41);
+    }
+
+    /**
+     * Verify the provided cookie's value.
+     *
+     * @param  string  $name
+     * @param  string  $value
+     * @param  string  $key
+     * @return string|null
+     */
+    public static function getVerifiedValue($name, $value, $key)
+    {
+        $verifiedValue = null;
+
+        if (Str::startsWith($value, static::create($name, $key))) {
+            $verifiedValue = static::remove($value);
+        }
+
+        return $verifiedValue;
     }
 }

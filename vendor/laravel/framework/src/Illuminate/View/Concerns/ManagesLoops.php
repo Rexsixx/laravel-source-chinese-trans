@@ -1,7 +1,4 @@
 <?php
-/**
- * 视图，管理循环
- */
 
 namespace Illuminate\View\Concerns;
 
@@ -12,7 +9,6 @@ trait ManagesLoops
 {
     /**
      * The stack of in-progress loops.
-	 * 正在进行的循环的堆栈
      *
      * @var array
      */
@@ -20,7 +16,6 @@ trait ManagesLoops
 
     /**
      * Add new loop to the stack.
-	 * 添加新的循环至堆栈
      *
      * @param  \Countable|array  $data
      * @return void
@@ -38,8 +33,6 @@ trait ManagesLoops
             'count' => $length,
             'first' => true,
             'last' => isset($length) ? $length == 1 : null,
-            'odd' => false,
-            'even' => true,
             'depth' => count($this->loopsStack) + 1,
             'parent' => $parent ? (object) $parent : null,
         ];
@@ -47,7 +40,6 @@ trait ManagesLoops
 
     /**
      * Increment the top loop's indices.
-	 * 增加顶部循环的索引
      *
      * @return void
      */
@@ -59,8 +51,6 @@ trait ManagesLoops
             'iteration' => $loop['iteration'] + 1,
             'index' => $loop['iteration'],
             'first' => $loop['iteration'] == 0,
-            'odd' => ! $loop['odd'],
-            'even' => ! $loop['even'],
             'remaining' => isset($loop['count']) ? $loop['remaining'] - 1 : null,
             'last' => isset($loop['count']) ? $loop['iteration'] == $loop['count'] - 1 : null,
         ]);
@@ -68,7 +58,6 @@ trait ManagesLoops
 
     /**
      * Pop a loop from the top of the loop stack.
-	 * 弹出一个循环从循环堆栈的顶部
      *
      * @return void
      */
@@ -79,7 +68,6 @@ trait ManagesLoops
 
     /**
      * Get an instance of the last loop in the stack.
-	 * 得到堆栈中最后一个循环的实例
      *
      * @return \stdClass|null
      */
@@ -92,7 +80,6 @@ trait ManagesLoops
 
     /**
      * Get the entire loop stack.
-	 * 得到整个循环堆栈
      *
      * @return array
      */

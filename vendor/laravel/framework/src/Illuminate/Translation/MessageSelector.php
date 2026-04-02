@@ -1,7 +1,4 @@
 <?php
-/**
- * 翻译信息选择类
- */
 
 namespace Illuminate\Translation;
 
@@ -11,7 +8,6 @@ class MessageSelector
 {
     /**
      * Select a proper translation string based on the given number.
-	 * 根据给定的数字选择合适的翻译字符串
      *
      * @param  string  $line
      * @param  int  $number
@@ -30,7 +26,7 @@ class MessageSelector
 
         $pluralIndex = $this->getPluralIndex($locale, $number);
 
-        if (count($segments) === 1 || ! isset($segments[$pluralIndex])) {
+        if (count($segments) == 1 || ! isset($segments[$pluralIndex])) {
             return $segments[0];
         }
 
@@ -39,7 +35,6 @@ class MessageSelector
 
     /**
      * Extract a translation string using inline conditions.
-	 * 提取翻译字符串使用内联条件
      *
      * @param  array  $segments
      * @param  int  $number
@@ -56,7 +51,6 @@ class MessageSelector
 
     /**
      * Get the translation string if the condition matches.
-	 * 如果条件匹配，则获取翻译字符串。
      *
      * @param  string  $part
      * @param  int  $number
@@ -66,7 +60,7 @@ class MessageSelector
     {
         preg_match('/^[\{\[]([^\[\]\{\}]*)[\}\]](.*)/s', $part, $matches);
 
-        if (count($matches) !== 3) {
+        if (count($matches) != 3) {
             return;
         }
 
@@ -75,11 +69,11 @@ class MessageSelector
         $value = $matches[2];
 
         if (Str::contains($condition, ',')) {
-            [$from, $to] = explode(',', $condition, 2);
+            list($from, $to) = explode(',', $condition, 2);
 
-            if ($to === '*' && $number >= $from) {
+            if ($to == '*' && $number >= $from) {
                 return $value;
-            } elseif ($from === '*' && $number <= $to) {
+            } elseif ($from == '*' && $number <= $to) {
                 return $value;
             } elseif ($number >= $from && $number <= $to) {
                 return $value;
@@ -91,7 +85,6 @@ class MessageSelector
 
     /**
      * Strip the inline conditions from each segment, just leaving the text.
-	 * 从每个段中去掉内联条件，只留下文本。
      *
      * @param  array  $segments
      * @return array
@@ -105,10 +98,9 @@ class MessageSelector
 
     /**
      * Get the index to use for pluralization.
-	 * 得到用于复数形式的索引
      *
      * The plural rules are derived from code of the Zend Framework (2010-09-25), which
-     * is subject to the new BSD license (https://framework.zend.com/license)
+     * is subject to the new BSD license (http://framework.zend.com/license/new-bsd)
      * Copyright (c) 2005-2010 - Zend Technologies USA Inc. (http://www.zend.com)
      *
      * @param  string  $locale

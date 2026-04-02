@@ -1,41 +1,67 @@
 <?php
-/**
- * 路由管道
- */
 
 namespace Illuminate\Routing;
 
+use Closure;
 use Exception;
-use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Contracts\Support\Responsable;
+use Throwable;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Pipeline\Pipeline as BasePipeline;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 /**
  * This extended pipeline catches any exceptions that occur during each slice.
- * 这个扩展的管道捕获每个切片期间发生的任何异常
  *
  * The exceptions are converted to HTTP responses for proper middleware handling.
  */
 class Pipeline extends BasePipeline
 {
     /**
-     * Handles the value returned from each pipe before passing it to the next.
-	 * 处理从每个管道返回的值，然后将其传递给下一个管道
+     * Get the final piece of the Closure onion.
      *
-     * @param  mixed  $carry
-     * @return mixed
+     * @param  \Closure  $destination
+     * @return \Closure
      */
-    protected function handleCarry($carry)
+    protected function prepareDestination(Closure $destination)
     {
-        return $carry instanceof Responsable
-            ? $carry->toResponse($this->getContainer()->make(Request::class))
-            : $carry;
+        return function ($passable) use ($destination) {
+            try {
+                return $destination($passable);
+            } catch (Exception $e) {
+                return $this->handleException($passable, $e);
+            } catch (Throwable $e) {
+                return $this->handleException($passable, new FatalThrowableError($e));
+            }
+        };
+    }
+
+    /**
+     * Get a Closure that represents a slice of the application onion.
+     *
+     * @return \Closure
+     */
+    protected function carry()
+    {
+        return function ($stack, $pipe) {
+            return function ($passable) use ($stack, $pipe) {
+                try {
+                    $slice = parent::carry();
+
+                    $callable = $slice($stack, $pipe);
+
+                    return $callable($passable);
+                } catch (Exception $e) {
+                    return $this->handleException($passable, $e);
+                } catch (Throwable $e) {
+                    return $this->handleException($passable, new FatalThrowableError($e));
+                }
+            };
+        };
     }
 
     /**
      * Handle the given exception.
-	 * 处理给定的异常
      *
      * @param  mixed  $passable
      * @param  \Exception  $e
@@ -56,7 +82,7 @@ class Pipeline extends BasePipeline
 
         $response = $handler->render($passable, $e);
 
-        if (is_object($response) && method_exists($response, 'withException')) {
+        if (method_exists($response, 'withException')) {
             $response->withException($e);
         }
 

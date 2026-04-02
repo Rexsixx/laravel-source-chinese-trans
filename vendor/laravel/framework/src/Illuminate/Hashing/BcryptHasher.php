@@ -1,50 +1,24 @@
 <?php
-/**
- * 哈希加密
- */
 
 namespace Illuminate\Hashing;
 
-use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 use RuntimeException;
+use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 
-class BcryptHasher extends AbstractHasher implements HasherContract
+class BcryptHasher implements HasherContract
 {
     /**
-     * The default cost factor.
-	 * 默认成本因素
+     * Default crypt cost factor.
      *
      * @var int
      */
     protected $rounds = 10;
 
     /**
-     * Indicates whether to perform an algorithm check.
-	 * 是否进行算法检查
-     *
-     * @var bool
-     */
-    protected $verifyAlgorithm = false;
-
-    /**
-     * Create a new hasher instance.
-	 * 创建新的哈希实例
-     *
-     * @param  array  $options
-     * @return void
-     */
-    public function __construct(array $options = [])
-    {
-        $this->rounds = $options['rounds'] ?? $this->rounds;
-        $this->verifyAlgorithm = $options['verify'] ?? $this->verifyAlgorithm;
-    }
-
-    /**
      * Hash the given value.
-	 * 哈希值
      *
      * @param  string  $value
-     * @param  array  $options
+     * @param  array   $options
      * @return string
      *
      * @throws \RuntimeException
@@ -64,30 +38,26 @@ class BcryptHasher extends AbstractHasher implements HasherContract
 
     /**
      * Check the given plain value against a hash.
-	 * 检查给定的普通值根据散列
      *
      * @param  string  $value
      * @param  string  $hashedValue
-     * @param  array  $options
+     * @param  array   $options
      * @return bool
-     *
-     * @throws \RuntimeException
      */
     public function check($value, $hashedValue, array $options = [])
     {
-        if ($this->verifyAlgorithm && $this->info($hashedValue)['algoName'] !== 'bcrypt') {
-            throw new RuntimeException('This password does not use the Bcrypt algorithm.');
+        if (strlen($hashedValue) === 0) {
+            return false;
         }
 
-        return parent::check($value, $hashedValue, $options);
+        return password_verify($value, $hashedValue);
     }
 
     /**
      * Check if the given hash has been hashed using the given options.
-	 * 检查给定的散列是否已经使用给定的选项进行了散列
      *
      * @param  string  $hashedValue
-     * @param  array  $options
+     * @param  array   $options
      * @return bool
      */
     public function needsRehash($hashedValue, array $options = [])
@@ -99,7 +69,6 @@ class BcryptHasher extends AbstractHasher implements HasherContract
 
     /**
      * Set the default password work factor.
-	 * 设置默认密码工作系数
      *
      * @param  int  $rounds
      * @return $this
@@ -113,7 +82,6 @@ class BcryptHasher extends AbstractHasher implements HasherContract
 
     /**
      * Extract the cost value from the options array.
-	 * 提取成本值从选项数组中
      *
      * @param  array  $options
      * @return int

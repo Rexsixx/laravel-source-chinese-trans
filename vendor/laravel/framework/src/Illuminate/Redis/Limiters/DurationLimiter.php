@@ -1,7 +1,4 @@
 <?php
-/**
- * Redis，负载限制器
- */
 
 namespace Illuminate\Redis\Limiters;
 
@@ -11,7 +8,6 @@ class DurationLimiter
 {
     /**
      * The Redis factory implementation.
-	 * Redis工厂实例
      *
      * @var \Illuminate\Redis\Connections\Connection
      */
@@ -19,7 +15,6 @@ class DurationLimiter
 
     /**
      * The unique name of the lock.
-	 * 锁的唯一名称
      *
      * @var string
      */
@@ -27,7 +22,6 @@ class DurationLimiter
 
     /**
      * The allowed number of concurrent tasks.
-	 * 允许的并发任务数
      *
      * @var int
      */
@@ -35,7 +29,6 @@ class DurationLimiter
 
     /**
      * The number of seconds a slot should be maintained.
-	 * 应该维护一个槽位的秒数
      *
      * @var int
      */
@@ -43,7 +36,6 @@ class DurationLimiter
 
     /**
      * The timestamp of the end of the current duration.
-	 * 当前持续时间结束的时间戳
      *
      * @var int
      */
@@ -51,7 +43,6 @@ class DurationLimiter
 
     /**
      * The number of remaining slots.
-	 * 剩余槽位的数量
      *
      * @var int
      */
@@ -59,12 +50,11 @@ class DurationLimiter
 
     /**
      * Create a new duration limiter instance.
-	 * 创建新的持续时间限制器实例
      *
-     * @param  \Illuminate\Redis\Connections\Connection  $redis
-     * @param  string  $name
-     * @param  int  $maxLocks
-     * @param  int  $decay
+     * @param  \Illuminate\Redis\Connections\Connection $redis
+     * @param  string $name
+     * @param  int $maxLocks
+     * @param  int $decay
      * @return void
      */
     public function __construct($redis, $name, $maxLocks, $decay)
@@ -77,12 +67,10 @@ class DurationLimiter
 
     /**
      * Attempt to acquire the lock for the given number of seconds.
-	 * 尝试获取锁在给定的秒数内
      *
-     * @param  int  $timeout
-     * @param  callable|null  $callback
-     * @return mixed
-     *
+     * @param  int $timeout
+     * @param  callable|null $callback
+     * @return bool
      * @throws \Illuminate\Contracts\Redis\LimiterTimeoutException
      */
     public function block($timeout, $callback = null)
@@ -98,7 +86,7 @@ class DurationLimiter
         }
 
         if (is_callable($callback)) {
-            return $callback();
+            $callback();
         }
 
         return true;
@@ -106,14 +94,13 @@ class DurationLimiter
 
     /**
      * Attempt to acquire the lock.
-	 * 尝试获取锁
      *
      * @return bool
      */
     public function acquire()
     {
-        $results = $this->redis->eval(
-            $this->luaScript(), 1, $this->name, microtime(true), time(), $this->decay, $this->maxLocks
+        $results = $this->redis->eval($this->luaScript(), 1,
+            $this->name, microtime(true), time(), $this->decay, $this->maxLocks
         );
 
         $this->decaysAt = $results[1];
@@ -125,7 +112,6 @@ class DurationLimiter
 
     /**
      * Get the Lua script for acquiring a lock.
-	 * 得到用于获取锁的Lua脚本
      *
      * KEYS[1] - The limiter name
      * ARGV[1] - Current time in microseconds

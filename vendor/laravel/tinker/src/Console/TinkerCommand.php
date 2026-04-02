@@ -2,14 +2,11 @@
 
 namespace Laravel\Tinker\Console;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Env;
-use Laravel\Tinker\ClassAliasAutoloader;
-use Psy\Configuration;
 use Psy\Shell;
-use Psy\VersionUpdater\Checker;
+use Psy\Configuration;
+use Illuminate\Console\Command;
+use Laravel\Tinker\ClassAliasAutoloader;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 
 class TinkerCommand extends Command
 {
@@ -19,7 +16,7 @@ class TinkerCommand extends Command
      * @var array
      */
     protected $commandWhitelist = [
-        'clear-compiled', 'down', 'env', 'inspire', 'migrate', 'migrate:install', 'optimize', 'up',
+        'clear-compiled', 'down', 'env', 'inspire', 'migrate', 'optimize', 'up',
     ];
 
     /**
@@ -39,14 +36,15 @@ class TinkerCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return int
+     * @return void
      */
     public function handle()
     {
         $this->getApplication()->setCatchExceptions(false);
 
-        $config = Configuration::fromInput($this->input);
-        $config->setUpdateCheck(Checker::NEVER);
+        $config = new Configuration([
+            'updateCheck' => 'never',
+        ]);
 
         $config->getPresenter()->addCasters(
             $this->getCasters()
@@ -56,29 +54,18 @@ class TinkerCommand extends Command
         $shell->addCommands($this->getCommands());
         $shell->setIncludes($this->argument('include'));
 
-        $path = Env::get('COMPOSER_VENDOR_DIR', $this->getLaravel()->basePath().DIRECTORY_SEPARATOR.'vendor');
+        if (isset($_ENV['COMPOSER_VENDOR_DIR'])) {
+            $path = $_ENV['COMPOSER_VENDOR_DIR'];
+        } else {
+            $path = $this->getLaravel()->basePath().DIRECTORY_SEPARATOR.'vendor';
+        }
 
         $path .= '/composer/autoload_classmap.php';
 
-        $config = $this->getLaravel()->make('config');
-
-        $loader = ClassAliasAutoloader::register(
-            $shell, $path, $config->get('tinker.alias', []), $config->get('tinker.dont_alias', [])
-        );
-
-        if ($code = $this->option('execute')) {
-            try {
-                $shell->setOutput($this->output);
-                $shell->execute($code);
-            } finally {
-                $loader->unregister();
-            }
-
-            return 0;
-        }
+        $loader = ClassAliasAutoloader::register($shell, $path);
 
         try {
-            return $shell->run();
+            $shell->run();
         } finally {
             $loader->unregister();
         }
@@ -99,12 +86,8 @@ class TinkerCommand extends Command
             }
         }
 
-        $config = $this->getLaravel()->make('config');
-
-        foreach ($config->get('tinker.commands', []) as $command) {
-            $commands[] = $this->getApplication()->add(
-                $this->getLaravel()->make($command)
-            );
+        foreach (config('tinker.commands', []) as $command) {
+            $commands[] = $this->getApplication()->resolve($command);
         }
 
         return $commands;
@@ -119,8 +102,6 @@ class TinkerCommand extends Command
     {
         $casters = [
             'Illuminate\Support\Collection' => 'Laravel\Tinker\TinkerCaster::castCollection',
-            'Illuminate\Support\HtmlString' => 'Laravel\Tinker\TinkerCaster::castHtmlString',
-            'Illuminate\Support\Stringable' => 'Laravel\Tinker\TinkerCaster::castStringable',
         ];
 
         if (class_exists('Illuminate\Database\Eloquent\Model')) {
@@ -131,9 +112,7 @@ class TinkerCommand extends Command
             $casters['Illuminate\Foundation\Application'] = 'Laravel\Tinker\TinkerCaster::castApplication';
         }
 
-        $config = $this->getLaravel()->make('config');
-
-        return array_merge($casters, (array) $config->get('tinker.casters', []));
+        return $casters;
     }
 
     /**
@@ -145,18 +124,6 @@ class TinkerCommand extends Command
     {
         return [
             ['include', InputArgument::IS_ARRAY, 'Include file(s) before starting tinker'],
-        ];
-    }
-
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
-    protected function getOptions()
-    {
-        return [
-            ['execute', null, InputOption::VALUE_OPTIONAL, 'Execute the given code using Tinker'],
         ];
     }
 }

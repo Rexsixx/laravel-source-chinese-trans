@@ -1,20 +1,13 @@
 <?php
-/**
- * 基础，测试用例
- */
 
 namespace Illuminate\Foundation\Testing;
 
-use Carbon\Carbon;
-use Carbon\CarbonImmutable;
-use Illuminate\Console\Application as Artisan;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Facade;
-use Illuminate\Support\Str;
 use Mockery;
-use Mockery\Exception\InvalidCountException;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Facade;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Console\Application as Artisan;
 use PHPUnit\Framework\TestCase as BaseTestCase;
-use Throwable;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -29,15 +22,13 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * The Illuminate application instance.
-	 * 点亮应用实例
      *
-     * @var \Illuminate\Contracts\Foundation\Application
+     * @var \Illuminate\Foundation\Application
      */
     protected $app;
 
     /**
      * The callbacks that should be run after the application is created.
-	 * 创建应用程序后应该运行的回调函数
      *
      * @var array
      */
@@ -45,23 +36,13 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * The callbacks that should be run before the application is destroyed.
-	 * 在销毁应用程序之前应该运行的回调函数
      *
      * @var array
      */
     protected $beforeApplicationDestroyedCallbacks = [];
 
     /**
-     * The exception thrown while running an application destruction callback.
-	 * 运行应用程序销毁回调时抛出的异常
-     *
-     * @var \Throwable
-     */
-    protected $callbackException;
-
-    /**
      * Indicates if we have made it through the base setUp function.
-	 * 指明我们是否通过了基本setUp函数
      *
      * @var bool
      */
@@ -69,7 +50,6 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Creates the application.
-	 * 创建应用 
      *
      * Needs to be implemented by subclasses.
      *
@@ -79,14 +59,11 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Setup the test environment.
-	 * 设置测试环境
      *
      * @return void
      */
-    protected function setUp(): void
+    protected function setUp()
     {
-        Facade::clearResolvedInstances();
-
         if (! $this->app) {
             $this->refreshApplication();
         }
@@ -94,8 +71,10 @@ abstract class TestCase extends BaseTestCase
         $this->setUpTraits();
 
         foreach ($this->afterApplicationCreatedCallbacks as $callback) {
-            $callback();
+            call_user_func($callback);
         }
+
+        Facade::clearResolvedInstances();
 
         Model::setEventDispatcher($this->app['events']);
 
@@ -104,7 +83,6 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Refresh the application instance.
-	 * 刷新应用实例
      *
      * @return void
      */
@@ -115,7 +93,6 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Boot the testing helper traits.
-	 * 启动测试助手特征
      *
      * @return array
      */
@@ -152,14 +129,15 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Clean up the testing environment before the next test.
-	 * 清理测试环境在下次测试前
      *
      * @return void
      */
-    protected function tearDown(): void
+    protected function tearDown()
     {
         if ($this->app) {
-            $this->callBeforeApplicationDestroyedCallbacks();
+            foreach ($this->beforeApplicationDestroyedCallbacks as $callback) {
+                call_user_func($callback);
+            }
 
             $this->app->flush();
 
@@ -181,36 +159,21 @@ abstract class TestCase extends BaseTestCase
                 $this->addToAssertionCount($container->mockery_getExpectationCount());
             }
 
-            try {
-                Mockery::close();
-            } catch (InvalidCountException $e) {
-                if (! Str::contains($e->getMethodName(), ['doWrite', 'askQuestion'])) {
-                    throw $e;
-                }
-            }
+            Mockery::close();
         }
 
         if (class_exists(Carbon::class)) {
             Carbon::setTestNow();
         }
 
-        if (class_exists(CarbonImmutable::class)) {
-            CarbonImmutable::setTestNow();
-        }
-
         $this->afterApplicationCreatedCallbacks = [];
         $this->beforeApplicationDestroyedCallbacks = [];
 
         Artisan::forgetBootstrappers();
-
-        if ($this->callbackException) {
-            throw $this->callbackException;
-        }
     }
 
     /**
      * Register a callback to be run after the application is created.
-	 * 注册一个回调，以便在创建应用程序后运行。
      *
      * @param  callable  $callback
      * @return void
@@ -220,13 +183,12 @@ abstract class TestCase extends BaseTestCase
         $this->afterApplicationCreatedCallbacks[] = $callback;
 
         if ($this->setUpHasRun) {
-            $callback();
+            call_user_func($callback);
         }
     }
 
     /**
      * Register a callback to be run before the application is destroyed.
-	 * 注册一个回调，以便在销毁应用程序之前运行。
      *
      * @param  callable  $callback
      * @return void
@@ -234,24 +196,5 @@ abstract class TestCase extends BaseTestCase
     protected function beforeApplicationDestroyed(callable $callback)
     {
         $this->beforeApplicationDestroyedCallbacks[] = $callback;
-    }
-
-    /**
-     * Execute the application's pre-destruction callbacks.
-	 * 执行应用程序的预销毁回调
-     *
-     * @return void
-     */
-    protected function callBeforeApplicationDestroyedCallbacks()
-    {
-        foreach ($this->beforeApplicationDestroyedCallbacks as $callback) {
-            try {
-                $callback();
-            } catch (Throwable $e) {
-                if (! $this->callbackException) {
-                    $this->callbackException = $e;
-                }
-            }
-        }
     }
 }

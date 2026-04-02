@@ -1,7 +1,4 @@
 <?php
-/**
- * 队列，忘记失败命令
- */
 
 namespace Illuminate\Queue\Console;
 
@@ -11,15 +8,13 @@ class ForgetFailedCommand extends Command
 {
     /**
      * The console command signature.
-	 * 控制台命令签名
      *
      * @var string
      */
-    protected $signature = 'queue:forget {id : The ID of the failed job}';
+    protected $signature = 'queue:forget {id : The ID of the failed job.}';
 
     /**
      * The console command description.
-	 * 控制台命令描述
      *
      * @var string
      */
@@ -27,7 +22,6 @@ class ForgetFailedCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
      *
      * @return void
      */

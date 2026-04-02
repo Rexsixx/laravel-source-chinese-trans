@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of PHPUnit.
  *
@@ -9,11 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function mb_stripos;
-use function mb_strpos;
-use function mb_strtolower;
-use function sprintf;
-
 /**
  * Constraint that asserts that the string it is evaluated for contains
  * a given string.
@@ -23,57 +18,67 @@ use function sprintf;
  *
  * The sub-string is passed in the constructor.
  */
-final class StringContains extends Constraint
+class StringContains extends Constraint
 {
     /**
      * @var string
      */
-    private $string;
+    protected $string;
 
     /**
      * @var bool
      */
-    private $ignoreCase;
-
-    public function __construct(string $string, bool $ignoreCase = false)
-    {
-        $this->string     = $string;
-        $this->ignoreCase = $ignoreCase;
-    }
+    protected $ignoreCase;
 
     /**
-     * Returns a string representation of the constraint.
+     * @param string $string
+     * @param bool   $ignoreCase
      */
-    public function toString(): string
+    public function __construct($string, $ignoreCase = false)
     {
-        if ($this->ignoreCase) {
-            $string = mb_strtolower($this->string);
-        } else {
-            $string = $this->string;
-        }
+        parent::__construct();
 
-        return sprintf(
-            'contains "%s"',
-            $string
-        );
+        $this->string     = $string;
+        $this->ignoreCase = $ignoreCase;
     }
 
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param mixed $other value or object to evaluate
+     * @param mixed $other Value or object to evaluate.
+     *
+     * @return bool
      */
-    protected function matches($other): bool
+    protected function matches($other)
     {
         if ('' === $this->string) {
             return true;
         }
 
         if ($this->ignoreCase) {
-            return mb_stripos($other, $this->string) !== false;
+            return \mb_stripos($other, $this->string) !== false;
         }
 
-        return mb_strpos($other, $this->string) !== false;
+        return \mb_strpos($other, $this->string) !== false;
+    }
+
+    /**
+     * Returns a string representation of the constraint.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        if ($this->ignoreCase) {
+            $string = \mb_strtolower($this->string);
+        } else {
+            $string = $this->string;
+        }
+
+        return \sprintf(
+            'contains "%s"',
+            $string
+        );
     }
 }

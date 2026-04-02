@@ -1,18 +1,20 @@
 <?php
-/**
- * 身份，密码重置服务提供者
- */
 
 namespace Illuminate\Auth\Passwords;
 
-use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
-class PasswordResetServiceProvider extends ServiceProvider implements DeferrableProvider
+class PasswordResetServiceProvider extends ServiceProvider
 {
     /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = true;
+
+    /**
      * Register the service provider.
-	 * 注册服务提供者
      *
      * @return void
      */
@@ -23,7 +25,6 @@ class PasswordResetServiceProvider extends ServiceProvider implements Deferrable
 
     /**
      * Register the password broker instance.
-	 * 注册密码破解实例
      *
      * @return void
      */
@@ -40,7 +41,6 @@ class PasswordResetServiceProvider extends ServiceProvider implements Deferrable
 
     /**
      * Get the services provided by the provider.
-	 * 得到提供者提供的服务
      *
      * @return array
      */

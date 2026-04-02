@@ -1,88 +1,63 @@
 <?php
-/**
- * 广播，广播员
- */
 
 namespace Illuminate\Broadcasting\Broadcasters;
 
-use Exception;
-use Illuminate\Container\Container;
-use Illuminate\Contracts\Broadcasting\Broadcaster as BroadcasterContract;
-use Illuminate\Contracts\Routing\BindingRegistrar;
-use Illuminate\Contracts\Routing\UrlRoutable;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Reflector;
-use Illuminate\Support\Str;
-use ReflectionClass;
 use ReflectionFunction;
+use Illuminate\Support\Str;
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Routing\UrlRoutable;
+use Illuminate\Contracts\Routing\BindingRegistrar;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Illuminate\Contracts\Broadcasting\Broadcaster as BroadcasterContract;
 
 abstract class Broadcaster implements BroadcasterContract
 {
     /**
      * The registered channel authenticators.
-	 * 已注册的频道身份验证器
      *
      * @var array
      */
     protected $channels = [];
 
     /**
-     * The registered channel options.
-	 * 注册的频道选项
-     *
-     * @var array
-     */
-    protected $channelOptions = [];
-
-    /**
      * The binding registrar instance.
-	 * 绑定注册者实例
      *
-     * @var \Illuminate\Contracts\Routing\BindingRegistrar
+     * @var BindingRegistrar
      */
     protected $bindingRegistrar;
 
     /**
      * Register a channel authenticator.
-	 * 注册一个通道验证器
      *
      * @param  string  $channel
-     * @param  callable|string  $callback
-     * @param  array  $options
+     * @param  callable  $callback
      * @return $this
      */
-    public function channel($channel, $callback, $options = [])
+    public function channel($channel, callable $callback)
     {
         $this->channels[$channel] = $callback;
-
-        $this->channelOptions[$channel] = $options;
 
         return $this;
     }
 
     /**
      * Authenticate the incoming request for a given channel.
-	 * 验证传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $channel
      * @return mixed
-     *
      * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
      */
     protected function verifyUserCanAccessChannel($request, $channel)
     {
         foreach ($this->channels as $pattern => $callback) {
-            if (! $this->channelNameMatchesPattern($channel, $pattern)) {
+            if (! Str::is(preg_replace('/\{(.*?)\}/', '*', $pattern), $channel)) {
                 continue;
             }
 
             $parameters = $this->extractAuthParameters($pattern, $channel, $callback);
 
-            $handler = $this->normalizeChannelHandlerToCallable($callback);
-
-            if ($result = $handler($this->retrieveUser($request, $channel), ...$parameters)) {
+            if ($result = $callback($request->user(), ...$parameters)) {
                 return $this->validAuthenticationResponse($request, $result);
             }
         }
@@ -92,16 +67,15 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Extract the parameters from the given pattern and channel.
-	 * 提取参数从给定的模式和通道中
      *
      * @param  string  $pattern
      * @param  string  $channel
-     * @param  callable|string  $callback
+     * @param  callable  $callback
      * @return array
      */
     protected function extractAuthParameters($pattern, $channel, $callback)
     {
-        $callbackParameters = $this->extractParameters($callback);
+        $callbackParameters = (new ReflectionFunction($callback))->getParameters();
 
         return collect($this->extractChannelKeys($pattern, $channel))->reject(function ($value, $key) {
             return is_numeric($key);
@@ -111,48 +85,7 @@ abstract class Broadcaster implements BroadcasterContract
     }
 
     /**
-     * Extracts the parameters out of what the user passed to handle the channel authentication.
-	 * 从用户传递的参数中提取参数以处理通道身份验证
-     *
-     * @param  callable|string  $callback
-     * @return \ReflectionParameter[]
-     *
-     * @throws \Exception
-     */
-    protected function extractParameters($callback)
-    {
-        if (is_callable($callback)) {
-            return (new ReflectionFunction($callback))->getParameters();
-        } elseif (is_string($callback)) {
-            return $this->extractParametersFromClass($callback);
-        }
-
-        throw new Exception('Given channel handler is an unknown type.');
-    }
-
-    /**
-     * Extracts the parameters out of a class channel's "join" method.
-	 * 提取参数从类通道的"join"方法
-     *
-     * @param  string  $callback
-     * @return \ReflectionParameter[]
-     *
-     * @throws \Exception
-     */
-    protected function extractParametersFromClass($callback)
-    {
-        $reflection = new ReflectionClass($callback);
-
-        if (! $reflection->hasMethod('join')) {
-            throw new Exception('Class based channel must define a "join" method.');
-        }
-
-        return $reflection->getMethod('join')->getParameters();
-    }
-
-    /**
      * Extract the channel keys from the incoming channel name.
-	 * 提取通道密钥从传入通道名
      *
      * @param  string  $pattern
      * @param  string  $channel
@@ -167,7 +100,6 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Resolve the given parameter binding.
-	 * 解析给定的参数绑定
      *
      * @param  string  $key
      * @param  string  $value
@@ -185,7 +117,6 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Resolve an explicit parameter binding if applicable.
-	 * 解析显式参数绑定(如果适用)
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -204,13 +135,11 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Resolve an implicit parameter binding if applicable.
-	 * 解析隐式参数绑定(如果适用)
      *
      * @param  string  $key
      * @param  mixed  $value
      * @param  array  $callbackParameters
      * @return mixed
-     *
      * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
      */
     protected function resolveImplicitBindingIfPossible($key, $value, $callbackParameters)
@@ -220,9 +149,9 @@ abstract class Broadcaster implements BroadcasterContract
                 continue;
             }
 
-            $className = Reflector::getParameterClassName($parameter);
+            $instance = $parameter->getClass()->newInstance();
 
-            if (is_null($model = (new $className)->resolveRouteBinding($value))) {
+            if (! $model = $instance->resolveRouteBinding($value)) {
                 throw new AccessDeniedHttpException;
             }
 
@@ -234,7 +163,6 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Determine if a given key and parameter is implicitly bindable.
-	 * 确定给定的键和参数是否可隐式绑定
      *
      * @param  string  $key
      * @param  \ReflectionParameter  $parameter
@@ -242,13 +170,12 @@ abstract class Broadcaster implements BroadcasterContract
      */
     protected function isImplicitlyBindable($key, $parameter)
     {
-        return $parameter->getName() === $key &&
-                        Reflector::isParameterSubclassOf($parameter, UrlRoutable::class);
+        return $parameter->name === $key && $parameter->getClass() &&
+                        $parameter->getClass()->isSubclassOf(UrlRoutable::class);
     }
 
     /**
      * Format the channel array into an array of strings.
-	 * 格式化通道数组格为字符串数组
      *
      * @param  array  $channels
      * @return array
@@ -262,7 +189,6 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Get the model binding registrar instance.
-	 * 得到模型绑定注册实例
      *
      * @return \Illuminate\Contracts\Routing\BindingRegistrar
      */
@@ -274,79 +200,5 @@ abstract class Broadcaster implements BroadcasterContract
         }
 
         return $this->bindingRegistrar;
-    }
-
-    /**
-     * Normalize the given callback into a callable.
-	 * 规范化给定的回调函数为可调用对象
-     *
-     * @param  mixed  $callback
-     * @return \Closure|callable
-     */
-    protected function normalizeChannelHandlerToCallable($callback)
-    {
-        return is_callable($callback) ? $callback : function (...$args) use ($callback) {
-            return Container::getInstance()
-                ->make($callback)
-                ->join(...$args);
-        };
-    }
-
-    /**
-     * Retrieve the authenticated user using the configured guard (if any).
-	 * 使用配置的保护(如果有的话)检索经过身份验证的用户
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $channel
-     * @return mixed
-     */
-    protected function retrieveUser($request, $channel)
-    {
-        $options = $this->retrieveChannelOptions($channel);
-
-        $guards = $options['guards'] ?? null;
-
-        if (is_null($guards)) {
-            return $request->user();
-        }
-
-        foreach (Arr::wrap($guards) as $guard) {
-            if ($user = $request->user($guard)) {
-                return $user;
-            }
-        }
-    }
-
-    /**
-     * Retrieve options for a certain channel.
-	 * 检索某个通道的选项
-     *
-     * @param  string  $channel
-     * @return array
-     */
-    protected function retrieveChannelOptions($channel)
-    {
-        foreach ($this->channelOptions as $pattern => $options) {
-            if (! $this->channelNameMatchesPattern($channel, $pattern)) {
-                continue;
-            }
-
-            return $options;
-        }
-
-        return [];
-    }
-
-    /**
-     * Check if channel name from request match a pattern from registered channels.
-	 * 检查请求中的通道名是否与已注册通道中的模式匹配
-     *
-     * @param  string  $channel
-     * @param  string  $pattern
-     * @return bool
-     */
-    protected function channelNameMatchesPattern($channel, $pattern)
-    {
-        return Str::is(preg_replace('/\{(.*?)\}/', '*', $pattern), $channel);
     }
 }

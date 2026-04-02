@@ -1,16 +1,11 @@
 <?php
-/**
- * Http，上传文件类
- */
 
 namespace Illuminate\Http;
 
-use Illuminate\Container\Container;
-use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Http\Testing\FileFactory;
 use Illuminate\Support\Arr;
+use Illuminate\Container\Container;
 use Illuminate\Support\Traits\Macroable;
+use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
 use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
 
 class UploadedFile extends SymfonyUploadedFile
@@ -19,18 +14,16 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Begin creating a new file fake.
-	 * 开始创建新文件
      *
      * @return \Illuminate\Http\Testing\FileFactory
      */
     public static function fake()
     {
-        return new FileFactory;
+        return new Testing\FileFactory;
     }
 
     /**
      * Store the uploaded file on a filesystem disk.
-	 * 存储上传的文件至文件系统磁盘
      *
      * @param  string  $path
      * @param  array|string  $options
@@ -43,7 +36,6 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Store the uploaded file on a filesystem disk with public visibility.
-	 * 存储上传的文件在具有公共可见性的文件系统磁盘上
      *
      * @param  string  $path
      * @param  array|string  $options
@@ -60,7 +52,6 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Store the uploaded file on a filesystem disk with public visibility.
-	 * 存储上传的文件在具有公共可见性的文件系统磁盘上
      *
      * @param  string  $path
      * @param  string  $name
@@ -78,7 +69,6 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Store the uploaded file on a filesystem disk.
-	 * 存储上传的文件在文件系统磁盘上
      *
      * @param  string  $path
      * @param  string  $name
@@ -97,39 +87,10 @@ class UploadedFile extends SymfonyUploadedFile
     }
 
     /**
-     * Get the contents of the uploaded file.
-	 * 得到上传文件内容
-     *
-     * @return bool|string
-     *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    public function get()
-    {
-        if (! $this->isValid()) {
-            throw new FileNotFoundException("File does not exist at path {$this->getPathname()}");
-        }
-
-        return file_get_contents($this->getPathname());
-    }
-
-    /**
-     * Get the file's extension supplied by the client.
-	 * 得到文件扩展名
-     *
-     * @return string
-     */
-    public function clientExtension()
-    {
-        return $this->guessClientExtension();
-    }
-
-    /**
      * Create a new file instance from a base instance.
-	 * 创建新的文件实例
      *
      * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $file
-     * @param  bool  $test
+     * @param  bool $test
      * @return static
      */
     public static function createFromBase(SymfonyUploadedFile $file, $test = false)
@@ -138,6 +99,7 @@ class UploadedFile extends SymfonyUploadedFile
             $file->getPathname(),
             $file->getClientOriginalName(),
             $file->getClientMimeType(),
+            $file->getClientSize(),
             $file->getError(),
             $test
         );
@@ -145,7 +107,6 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Parse and format the given options.
-	 * 解析并格式化给定的选项
      *
      * @param  array|string  $options
      * @return array

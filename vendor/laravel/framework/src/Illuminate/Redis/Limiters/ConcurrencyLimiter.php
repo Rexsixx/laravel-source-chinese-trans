@@ -1,19 +1,13 @@
 <?php
-/**
- * Redis，并发限制器
- */
 
 namespace Illuminate\Redis\Limiters;
 
-use Exception;
 use Illuminate\Contracts\Redis\LimiterTimeoutException;
-use Illuminate\Support\Str;
 
 class ConcurrencyLimiter
 {
     /**
      * The Redis factory implementation.
-	 * Redis工厂实现
      *
      * @var \Illuminate\Redis\Connections\Connection
      */
@@ -21,7 +15,6 @@ class ConcurrencyLimiter
 
     /**
      * The name of the limiter.
-	 * 限制名称
      *
      * @var string
      */
@@ -29,7 +22,6 @@ class ConcurrencyLimiter
 
     /**
      * The allowed number of concurrent tasks.
-	 * 允许的并发任务数
      *
      * @var int
      */
@@ -37,7 +29,6 @@ class ConcurrencyLimiter
 
     /**
      * The number of seconds a slot should be maintained.
-	 * 应该维护一个槽位的秒数
      *
      * @var int
      */
@@ -45,7 +36,6 @@ class ConcurrencyLimiter
 
     /**
      * Create a new concurrency limiter instance.
-	 * 创建新的并发限制器实例
      *
      * @param  \Illuminate\Redis\Connections\Connection  $redis
      * @param  string  $name
@@ -63,22 +53,17 @@ class ConcurrencyLimiter
 
     /**
      * Attempt to acquire the lock for the given number of seconds.
-	 * 尝试在给定的秒数内获取锁
      *
      * @param  int  $timeout
      * @param  callable|null  $callback
      * @return bool
-     *
      * @throws \Illuminate\Contracts\Redis\LimiterTimeoutException
-     * @throws \Exception
      */
     public function block($timeout, $callback = null)
     {
         $starting = time();
 
-        $id = Str::random(20);
-
-        while (! $slot = $this->acquire($id)) {
+        while (! $slot = $this->acquire()) {
             if (time() - $timeout >= $starting) {
                 throw new LimiterTimeoutException;
             }
@@ -87,15 +72,9 @@ class ConcurrencyLimiter
         }
 
         if (is_callable($callback)) {
-            try {
-                return tap($callback(), function () use ($slot, $id) {
-                    $this->release($slot, $id);
-                });
-            } catch (Exception $exception) {
-                $this->release($slot, $id);
-
-                throw $exception;
-            }
+            return tap($callback(), function () use ($slot) {
+                $this->release($slot);
+            });
         }
 
         return true;
@@ -103,40 +82,35 @@ class ConcurrencyLimiter
 
     /**
      * Attempt to acquire the lock.
-	 * 尝试获取锁
      *
-     * @param  string  $id  A unique identifier for this lock
      * @return mixed
      */
-    protected function acquire($id)
+    protected function acquire()
     {
         $slots = array_map(function ($i) {
             return $this->name.$i;
         }, range(1, $this->maxLocks));
 
-        return $this->redis->eval(...array_merge(
-            [$this->lockScript(), count($slots)],
-            array_merge($slots, [$this->name, $this->releaseAfter, $id])
-        ));
+        return $this->redis->eval($this->luaScript(), count($slots),
+            ...array_merge($slots, [$this->name, $this->releaseAfter])
+        );
     }
 
     /**
      * Get the Lua script for acquiring a lock.
-	 * 得到用于获取锁的Lua脚本
      *
      * KEYS    - The keys that represent available slots
      * ARGV[1] - The limiter name
      * ARGV[2] - The number of seconds the slot should be reserved
-     * ARGV[3] - The unique identifier for this lock
      *
      * @return string
      */
-    protected function lockScript()
+    protected function luaScript()
     {
         return <<<'LUA'
 for index, value in pairs(redis.call('mget', unpack(KEYS))) do
     if not value then
-        redis.call('set', KEYS[index], ARGV[3], "EX", ARGV[2])
+        redis.call('set', ARGV[1]..index, "1", "EX", ARGV[2])
         return ARGV[1]..index
     end
 end
@@ -145,35 +119,12 @@ LUA;
 
     /**
      * Release the lock.
-	 * 释放锁
      *
      * @param  string  $key
-     * @param  string  $id
      * @return void
      */
-    protected function release($key, $id)
+    protected function release($key)
     {
-        $this->redis->eval($this->releaseScript(), 1, $key, $id);
-    }
-
-    /**
-     * Get the Lua script to atomically release a lock.
-	 * 让Lua脚本自动释放锁
-     *
-     * KEYS[1] - The name of the lock
-     * ARGV[1] - The unique identifier for this lock
-     *
-     * @return string
-     */
-    protected function releaseScript()
-    {
-        return <<<'LUA'
-if redis.call('get', KEYS[1]) == ARGV[1]
-then
-    return redis.call('del', KEYS[1])
-else
-    return 0
-end
-LUA;
+        $this->redis->del($key);
     }
 }

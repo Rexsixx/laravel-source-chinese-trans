@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2018 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,9 +16,6 @@ use Psy\Context;
 use Psy\ContextAware;
 use Psy\Exception\ErrorException;
 use Psy\Exception\RuntimeException;
-use Psy\Exception\UnexpectedTargetException;
-use Psy\Reflection\ReflectionClassConstant;
-use Psy\Reflection\ReflectionConstant_;
 use Psy\Util\Mirror;
 
 /**
@@ -26,9 +23,9 @@ use Psy\Util\Mirror;
  */
 abstract class ReflectingCommand extends Command implements ContextAware
 {
-    const CLASS_OR_FUNC = '/^[\\\\\w]+$/';
-    const CLASS_MEMBER = '/^([\\\\\w]+)::(\w+)$/';
-    const CLASS_STATIC = '/^([\\\\\w]+)::\$(\w+)$/';
+    const CLASS_OR_FUNC   = '/^[\\\\\w]+$/';
+    const CLASS_MEMBER    = '/^([\\\\\w]+)::(\w+)$/';
+    const CLASS_STATIC    = '/^([\\\\\w]+)::\$(\w+)$/';
     const INSTANCE_MEMBER = '/^(\$\w+)(::|->)(\w+)$/';
 
     /**
@@ -57,10 +54,10 @@ abstract class ReflectingCommand extends Command implements ContextAware
      *
      * @return array (class or instance name, member name, kind)
      */
-    protected function getTarget(string $valueName): array
+    protected function getTarget($valueName)
     {
         $valueName = \trim($valueName);
-        $matches = [];
+        $matches   = [];
         switch (true) {
             case \preg_match(self::CLASS_OR_FUNC, $valueName, $matches):
                 return [$this->resolveName($matches[0], true), null, 0];
@@ -95,7 +92,7 @@ abstract class ReflectingCommand extends Command implements ContextAware
      *
      * @return string
      */
-    protected function resolveName(string $name, bool $includeFunctions = false): string
+    protected function resolveName($name, $includeFunctions = false)
     {
         $shell = $this->getApplication();
 
@@ -110,24 +107,15 @@ abstract class ReflectingCommand extends Command implements ContextAware
             }
 
             $msg = \sprintf('Cannot use "%s" when no class scope is active', \strtolower($name));
-            throw new ErrorException($msg, 0, \E_USER_ERROR, "eval()'d code", 1);
+            throw new ErrorException($msg, 0, E_USER_ERROR, "eval()'d code", 1);
         }
 
         if (\substr($name, 0, 1) === '\\') {
             return $name;
         }
 
-        // Check $name against the current namespace and use statements.
-        if (self::couldBeClassName($name)) {
-            try {
-                $name = $this->resolveCode($name.'::class');
-            } catch (RuntimeException $e) {
-                // /shrug
-            }
-        }
-
         if ($namespace = $shell->getNamespace()) {
-            $fullName = $namespace.'\\'.$name;
+            $fullName = $namespace . '\\' . $name;
 
             if (\class_exists($fullName) || \interface_exists($fullName) || ($includeFunctions && \function_exists($fullName))) {
                 return $fullName;
@@ -138,22 +126,13 @@ abstract class ReflectingCommand extends Command implements ContextAware
     }
 
     /**
-     * Check whether a given name could be a class name.
-     */
-    protected function couldBeClassName(string $name): bool
-    {
-        // Regex based on https://www.php.net/manual/en/language.oop5.basic.php#language.oop5.basic.class
-        return \preg_match('/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*(\\\\[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)*$/', $name) === 1;
-    }
-
-    /**
      * Get a Reflector and documentation for a function, class or instance, constant, method or property.
      *
      * @param string $valueName Function, class, variable, constant, method or property name
      *
      * @return array (value, Reflector)
      */
-    protected function getTargetAndReflector(string $valueName): array
+    protected function getTargetAndReflector($valueName)
     {
         list($value, $member, $kind) = $this->getTarget($valueName);
 
@@ -169,16 +148,16 @@ abstract class ReflectingCommand extends Command implements ContextAware
      *
      * @return mixed Variable value
      */
-    protected function resolveCode(string $code)
+    protected function resolveCode($code)
     {
         try {
             $value = $this->getApplication()->execute($code, true);
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             // Swallow all exceptions?
         }
 
         if (!isset($value) || $value instanceof NoReturnValue) {
-            throw new RuntimeException('Unknown target: '.$code);
+            throw new RuntimeException('Unknown target: ' . $code);
         }
 
         return $value;
@@ -187,18 +166,18 @@ abstract class ReflectingCommand extends Command implements ContextAware
     /**
      * Resolve code to an object in the current scope.
      *
-     * @throws UnexpectedTargetException when the code resolves to a non-object value
+     * @throws RuntimeException when the code resolves to a non-object value
      *
      * @param string $code
      *
      * @return object Variable instance
      */
-    private function resolveObject(string $code)
+    private function resolveObject($code)
     {
         $value = $this->resolveCode($code);
 
         if (!\is_object($value)) {
-            throw new UnexpectedTargetException($value, 'Unable to inspect a non-object');
+            throw new RuntimeException('Unable to inspect a non-object');
         }
 
         return $value;
@@ -211,9 +190,9 @@ abstract class ReflectingCommand extends Command implements ContextAware
      *
      * @return mixed Variable instance
      */
-    protected function resolveInstance(string $name)
+    protected function resolveInstance($name)
     {
-        @\trigger_error('`resolveInstance` is deprecated; use `resolveCode` instead.', \E_USER_DEPRECATED);
+        @\trigger_error('`resolveInstance` is deprecated; use `resolveCode` instead.', E_USER_DEPRECATED);
 
         return $this->resolveCode($name);
     }
@@ -225,7 +204,7 @@ abstract class ReflectingCommand extends Command implements ContextAware
      *
      * @return mixed
      */
-    protected function getScopeVariable(string $name)
+    protected function getScopeVariable($name)
     {
         return $this->context->get($name);
     }
@@ -235,7 +214,7 @@ abstract class ReflectingCommand extends Command implements ContextAware
      *
      * @return array
      */
-    protected function getScopeVariables(): array
+    protected function getScopeVariables()
     {
         return $this->context->getAll();
     }
@@ -252,15 +231,15 @@ abstract class ReflectingCommand extends Command implements ContextAware
         $vars = [];
 
         switch (\get_class($reflector)) {
-            case \ReflectionClass::class:
-            case \ReflectionObject::class:
+            case 'ReflectionClass':
+            case 'ReflectionObject':
                 $vars['__class'] = $reflector->name;
                 if ($reflector->inNamespace()) {
                     $vars['__namespace'] = $reflector->getNamespaceName();
                 }
                 break;
 
-            case \ReflectionMethod::class:
+            case 'ReflectionMethod':
                 $vars['__method'] = \sprintf('%s::%s', $reflector->class, $reflector->name);
                 $vars['__class'] = $reflector->class;
                 $classReflector = $reflector->getDeclaringClass();
@@ -269,14 +248,14 @@ abstract class ReflectingCommand extends Command implements ContextAware
                 }
                 break;
 
-            case \ReflectionFunction::class:
+            case 'ReflectionFunction':
                 $vars['__function'] = $reflector->name;
                 if ($reflector->inNamespace()) {
                     $vars['__namespace'] = $reflector->getNamespaceName();
                 }
                 break;
 
-            case \ReflectionGenerator::class:
+            case 'ReflectionGenerator':
                 $funcReflector = $reflector->getFunction();
                 $vars['__function'] = $funcReflector->name;
                 if ($funcReflector->inNamespace()) {
@@ -285,13 +264,13 @@ abstract class ReflectingCommand extends Command implements ContextAware
                 if ($fileName = $reflector->getExecutingFile()) {
                     $vars['__file'] = $fileName;
                     $vars['__line'] = $reflector->getExecutingLine();
-                    $vars['__dir'] = \dirname($fileName);
+                    $vars['__dir']  = \dirname($fileName);
                 }
                 break;
 
-            case \ReflectionProperty::class:
-            case \ReflectionClassConstant::class:
-            case ReflectionClassConstant::class:
+            case 'ReflectionProperty':
+            case 'ReflectionClassConstant':
+            case 'Psy\Reflection\ReflectionClassConstant':
                 $classReflector = $reflector->getDeclaringClass();
                 $vars['__class'] = $classReflector->name;
                 if ($classReflector->inNamespace()) {
@@ -300,11 +279,11 @@ abstract class ReflectingCommand extends Command implements ContextAware
                 // no line for these, but this'll do
                 if ($fileName = $reflector->getDeclaringClass()->getFileName()) {
                     $vars['__file'] = $fileName;
-                    $vars['__dir'] = \dirname($fileName);
+                    $vars['__dir']  = \dirname($fileName);
                 }
                 break;
 
-            case ReflectionConstant_::class:
+            case 'Psy\Reflection\ReflectionConstant_':
                 if ($reflector->inNamespace()) {
                     $vars['__namespace'] = $reflector->getNamespaceName();
                 }
@@ -315,7 +294,7 @@ abstract class ReflectingCommand extends Command implements ContextAware
             if ($fileName = $reflector->getFileName()) {
                 $vars['__file'] = $fileName;
                 $vars['__line'] = $reflector->getStartLine();
-                $vars['__dir'] = \dirname($fileName);
+                $vars['__dir']  = \dirname($fileName);
             }
         }
 

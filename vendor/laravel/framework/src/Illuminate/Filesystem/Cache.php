@@ -1,7 +1,4 @@
 <?php
-/**
- * 文件系统Cache
- */
 
 namespace Illuminate\Filesystem;
 
@@ -12,7 +9,6 @@ class Cache extends AbstractCache
 {
     /**
      * The cache repository implementation.
-	 * 缓存资源库接口
      *
      * @var \Illuminate\Contracts\Cache\Repository
      */
@@ -20,39 +16,37 @@ class Cache extends AbstractCache
 
     /**
      * The cache key.
-	 * 缓存KEY
      *
      * @var string
      */
     protected $key;
 
     /**
-     * The cache expiration time in seconds.
-	 ×　缓存超时秒
+     * The cache expiration time in minutes.
      *
-     * @var int|null
+     * @var int
      */
     protected $expire;
 
     /**
      * Create a new cache instance.
-	 * 创建新的缓存实例
      *
-     * @param  \Illuminate\Contracts\Cache\Repository  $repository
-     * @param  string  $key
-     * @param  int|null  $expire
-     * @return void
+     * @param \Illuminate\Contracts\Cache\Repository  $repository
+     * @param string  $key
+     * @param int|null  $expire
      */
     public function __construct(Repository $repository, $key = 'flysystem', $expire = null)
     {
         $this->key = $key;
-        $this->expire = $expire;
         $this->repository = $repository;
+
+        if (! is_null($expire)) {
+            $this->expire = (int) ceil($expire / 60);
+        }
     }
 
     /**
      * Load the cache.
-	 * 加载缓存
      *
      * @return void
      */
@@ -67,7 +61,6 @@ class Cache extends AbstractCache
 
     /**
      * Persist the cache.
-	 * 持久化缓存
      *
      * @return void
      */
@@ -75,6 +68,10 @@ class Cache extends AbstractCache
     {
         $contents = $this->getForStorage();
 
-        $this->repository->put($this->key, $contents, $this->expire);
+        if (! is_null($this->expire)) {
+            $this->repository->put($this->key, $contents, $this->expire);
+        } else {
+            $this->repository->forever($this->key, $contents);
+        }
     }
 }

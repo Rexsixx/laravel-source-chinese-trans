@@ -1,7 +1,4 @@
 <?php
-/**
- * 视图，编译循环
- */
 
 namespace Illuminate\View\Compilers\Concerns;
 
@@ -9,7 +6,6 @@ trait CompilesLoops
 {
     /**
      * Counter to keep track of nested forelse statements.
-	 * 计数器来跟踪嵌套的前句语句
      *
      * @var int
      */
@@ -17,7 +13,6 @@ trait CompilesLoops
 
     /**
      * Compile the for-else statements into valid PHP.
-	 * 编译for-else语句成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -41,7 +36,6 @@ trait CompilesLoops
 
     /**
      * Compile the for-else-empty and empty statements into valid PHP.
-	 * 将for-else-empty和empty语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -59,7 +53,6 @@ trait CompilesLoops
 
     /**
      * Compile the end-for-else statements into valid PHP.
-	 * 编译end-for-else语句成有效的PHP
      *
      * @return string
      */
@@ -70,7 +63,6 @@ trait CompilesLoops
 
     /**
      * Compile the end-empty statements into valid PHP.
-	 * 编译end-empty语句成有效的PHP
      *
      * @return string
      */
@@ -81,7 +73,6 @@ trait CompilesLoops
 
     /**
      * Compile the for statements into valid PHP.
-	 * 将for语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -93,7 +84,6 @@ trait CompilesLoops
 
     /**
      * Compile the for-each statements into valid PHP.
-	 * 编译for-each语句成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -115,7 +105,6 @@ trait CompilesLoops
 
     /**
      * Compile the break statements into valid PHP.
-	 * 将break语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -133,7 +122,6 @@ trait CompilesLoops
 
     /**
      * Compile the continue statements into valid PHP.
-	 * 编译continue语句成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -151,7 +139,6 @@ trait CompilesLoops
 
     /**
      * Compile the end-for statements into valid PHP.
-	 * 将end-for语句编译成有效的PHP
      *
      * @return string
      */
@@ -162,7 +149,6 @@ trait CompilesLoops
 
     /**
      * Compile the end-for-each statements into valid PHP.
-	 * 编译end-for-each语句成有效的PHP
      *
      * @return string
      */
@@ -173,7 +159,6 @@ trait CompilesLoops
 
     /**
      * Compile the while statements into valid PHP.
-	 * 编译while语句成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -185,7 +170,6 @@ trait CompilesLoops
 
     /**
      * Compile the end-while statements into valid PHP.
-	 * 编译end-while语句成有效的PHP
      *
      * @return string
      */

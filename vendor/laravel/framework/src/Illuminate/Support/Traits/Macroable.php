@@ -1,20 +1,16 @@
 <?php
-/**
- * 支持，宏观的
- */
 
 namespace Illuminate\Support\Traits;
 
-use BadMethodCallException;
 use Closure;
 use ReflectionClass;
 use ReflectionMethod;
+use BadMethodCallException;
 
 trait Macroable
 {
     /**
      * The registered string macros.
-	 * 注册的字符串宏
      *
      * @var array
      */
@@ -22,10 +18,10 @@ trait Macroable
 
     /**
      * Register a custom macro.
-	 * 注册自定义宏
      *
-     * @param  string  $name
+     * @param  string $name
      * @param  object|callable  $macro
+     *
      * @return void
      */
     public static function macro($name, $macro)
@@ -35,31 +31,25 @@ trait Macroable
 
     /**
      * Mix another object into the class.
-	 * 混合另一个对象到类中
      *
      * @param  object  $mixin
-     * @param  bool  $replace
      * @return void
-     *
-     * @throws \ReflectionException
      */
-    public static function mixin($mixin, $replace = true)
+    public static function mixin($mixin)
     {
         $methods = (new ReflectionClass($mixin))->getMethods(
             ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED
         );
 
         foreach ($methods as $method) {
-            if ($replace || ! static::hasMacro($method->name)) {
-                $method->setAccessible(true);
-                static::macro($method->name, $method->invoke($mixin));
-            }
+            $method->setAccessible(true);
+
+            static::macro($method->name, $method->invoke($mixin));
         }
     }
 
     /**
      * Checks if macro is registered.
-	 * 检查是否注册了宏
      *
      * @param  string  $name
      * @return bool
@@ -71,10 +61,9 @@ trait Macroable
 
     /**
      * Dynamically handle calls to the class.
-	 * 动态处理对类的调用
      *
      * @param  string  $method
-     * @param  array  $parameters
+     * @param  array   $parameters
      * @return mixed
      *
      * @throws \BadMethodCallException
@@ -82,26 +71,21 @@ trait Macroable
     public static function __callStatic($method, $parameters)
     {
         if (! static::hasMacro($method)) {
-            throw new BadMethodCallException(sprintf(
-                'Method %s::%s does not exist.', static::class, $method
-            ));
+            throw new BadMethodCallException("Method {$method} does not exist.");
         }
 
-        $macro = static::$macros[$method];
-
-        if ($macro instanceof Closure) {
-            $macro = $macro->bindTo(null, static::class);
+        if (static::$macros[$method] instanceof Closure) {
+            return call_user_func_array(Closure::bind(static::$macros[$method], null, static::class), $parameters);
         }
 
-        return $macro(...$parameters);
+        return call_user_func_array(static::$macros[$method], $parameters);
     }
 
     /**
      * Dynamically handle calls to the class.
-	 * 动态处理对类的调用
      *
      * @param  string  $method
-     * @param  array  $parameters
+     * @param  array   $parameters
      * @return mixed
      *
      * @throws \BadMethodCallException
@@ -109,17 +93,15 @@ trait Macroable
     public function __call($method, $parameters)
     {
         if (! static::hasMacro($method)) {
-            throw new BadMethodCallException(sprintf(
-                'Method %s::%s does not exist.', static::class, $method
-            ));
+            throw new BadMethodCallException("Method {$method} does not exist.");
         }
 
         $macro = static::$macros[$method];
 
         if ($macro instanceof Closure) {
-            $macro = $macro->bindTo($this, static::class);
+            return call_user_func_array($macro->bindTo($this, static::class), $parameters);
         }
 
-        return $macro(...$parameters);
+        return call_user_func_array($macro, $parameters);
     }
 }

@@ -1,22 +1,18 @@
 <?php
-/**
- * 数据库MySql连接
- */
 
 namespace Illuminate\Database;
 
+use PDO;
+use Illuminate\Database\Schema\MySqlBuilder;
+use Illuminate\Database\Query\Processors\MySqlProcessor;
 use Doctrine\DBAL\Driver\PDOMySql\Driver as DoctrineDriver;
 use Illuminate\Database\Query\Grammars\MySqlGrammar as QueryGrammar;
-use Illuminate\Database\Query\Processors\MySqlProcessor;
 use Illuminate\Database\Schema\Grammars\MySqlGrammar as SchemaGrammar;
-use Illuminate\Database\Schema\MySqlBuilder;
-use LogicException;
 
 class MySqlConnection extends Connection
 {
     /**
      * Get the default query grammar instance.
-	 * 得到默认查询语法实例
      *
      * @return \Illuminate\Database\Query\Grammars\MySqlGrammar
      */
@@ -27,7 +23,6 @@ class MySqlConnection extends Connection
 
     /**
      * Get a schema builder instance for the connection.
-	 * 得到连接的架构构建器实例
      *
      * @return \Illuminate\Database\Schema\MySqlBuilder
      */
@@ -42,7 +37,6 @@ class MySqlConnection extends Connection
 
     /**
      * Get the default schema grammar instance.
-	 * 得到默认查询语法实例
      *
      * @return \Illuminate\Database\Schema\Grammars\MySqlGrammar
      */
@@ -53,7 +47,6 @@ class MySqlConnection extends Connection
 
     /**
      * Get the default post processor instance.
-	 * 得到默认处理实例
      *
      * @return \Illuminate\Database\Query\Processors\MySqlProcessor
      */
@@ -64,19 +57,28 @@ class MySqlConnection extends Connection
 
     /**
      * Get the Doctrine DBAL driver.
-	 * 得到Doctrine DBAL驱动程序
      *
      * @return \Doctrine\DBAL\Driver\PDOMySql\Driver
      */
     protected function getDoctrineDriver()
     {
-        if (! class_exists(DoctrineDriver::class)) {
-            throw new LogicException(
-                'Laravel v6 is only compatible with doctrine/dbal 2, in order to use this feature you must require the package "doctrine/dbal:^2.6".'
-            );
-			//Laravel v6仅与doctrin/dbal 2兼容，要使用此功能，您必须需要包"doctrin/dbal:^2.6".
-        }
-
         return new DoctrineDriver;
+    }
+
+    /**
+     * Bind values to their parameters in the given statement.
+     *
+     * @param  \PDOStatement $statement
+     * @param  array  $bindings
+     * @return void
+     */
+    public function bindValues($statement, $bindings)
+    {
+        foreach ($bindings as $key => $value) {
+            $statement->bindValue(
+                is_string($key) ? $key : $key + 1, $value,
+                is_int($value) || is_float($value) ? PDO::PARAM_INT : PDO::PARAM_STR
+            );
+        }
     }
 }

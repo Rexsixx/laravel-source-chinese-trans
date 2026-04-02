@@ -1,19 +1,15 @@
 <?php
-/**
- * 数据库，迁移状态命令
- */
 
 namespace Illuminate\Database\Console\Migrations;
 
-use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Migrations\Migrator;
 use Symfony\Component\Console\Input\InputOption;
 
 class StatusCommand extends BaseCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名
      *
      * @var string
      */
@@ -21,7 +17,6 @@ class StatusCommand extends BaseCommand
 
     /**
      * The console command description.
-	 * 控制台命令描述
      *
      * @var string
      */
@@ -29,7 +24,6 @@ class StatusCommand extends BaseCommand
 
     /**
      * The migrator instance.
-	 * 迁移实例
      *
      * @var \Illuminate\Database\Migrations\Migrator
      */
@@ -37,9 +31,8 @@ class StatusCommand extends BaseCommand
 
     /**
      * Create a new migration rollback command instance.
-	 * 创建新的迁移回滚命令实例
      *
-     * @param  \Illuminate\Database\Migrations\Migrator  $migrator
+     * @param  \Illuminate\Database\Migrations\Migrator $migrator
      * @return void
      */
     public function __construct(Migrator $migrator)
@@ -51,7 +44,6 @@ class StatusCommand extends BaseCommand
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
      *
      * @return void
      */
@@ -60,17 +52,13 @@ class StatusCommand extends BaseCommand
         $this->migrator->setConnection($this->option('database'));
 
         if (! $this->migrator->repositoryExists()) {
-            $this->error('Migration table not found.');
-
-            return 1;
+            return $this->error('No migrations found.');
         }
 
         $ran = $this->migrator->getRepository()->getRan();
 
-        $batches = $this->migrator->getRepository()->getMigrationBatches();
-
-        if (count($migrations = $this->getStatusFor($ran, $batches)) > 0) {
-            $this->table(['Ran?', 'Migration', 'Batch'], $migrations);
+        if (count($migrations = $this->getStatusFor($ran)) > 0) {
+            $this->table(['Ran?', 'Migration'], $migrations);
         } else {
             $this->error('No migrations found');
         }
@@ -78,27 +66,24 @@ class StatusCommand extends BaseCommand
 
     /**
      * Get the status for the given ran migrations.
-	 * 得到运行迁移的状态
      *
      * @param  array  $ran
-     * @param  array  $batches
      * @return \Illuminate\Support\Collection
      */
-    protected function getStatusFor(array $ran, array $batches)
+    protected function getStatusFor(array $ran)
     {
         return Collection::make($this->getAllMigrationFiles())
-                    ->map(function ($migration) use ($ran, $batches) {
+                    ->map(function ($migration) use ($ran) {
                         $migrationName = $this->migrator->getMigrationName($migration);
 
                         return in_array($migrationName, $ran)
-                                ? ['<info>Yes</info>', $migrationName, $batches[$migrationName]]
-                                : ['<fg=red>No</fg=red>', $migrationName];
+                                ? ['<info>Y</info>', $migrationName]
+                                : ['<fg=red>N</fg=red>', $migrationName];
                     });
     }
 
     /**
      * Get an array of all of the migration files.
-	 * 得到所有迁移文件的数组
      *
      * @return array
      */
@@ -109,18 +94,15 @@ class StatusCommand extends BaseCommand
 
     /**
      * Get the console command options.
-	 * 得到控制台命令选项
      *
      * @return array
      */
     protected function getOptions()
     {
         return [
-            ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use'],
+            ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use.'],
 
-            ['path', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'The path(s) to the migrations files to use'],
-
-            ['realpath', null, InputOption::VALUE_NONE, 'Indicate any provided migration file paths are pre-resolved absolute paths'],
+            ['path', null, InputOption::VALUE_OPTIONAL, 'The path of migrations files to use.'],
         ];
     }
 }

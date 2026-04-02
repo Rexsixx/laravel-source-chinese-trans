@@ -1,6 +1,6 @@
 <?php
 /**
- * web路由
+ * 路由，web
  */
 
 /*
@@ -17,6 +17,3 @@
 Route::get('/', function () {
     return view('welcome');
 });
-
-//自定义添加
-Route::get('/test', 'TestController@test');

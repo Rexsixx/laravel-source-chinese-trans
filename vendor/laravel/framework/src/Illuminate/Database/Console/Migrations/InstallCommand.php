@@ -1,19 +1,15 @@
 <?php
-/**
- * 数据库，迁移安装命令
- */
 
 namespace Illuminate\Database\Console\Migrations;
 
 use Illuminate\Console\Command;
-use Illuminate\Database\Migrations\MigrationRepositoryInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Illuminate\Database\Migrations\MigrationRepositoryInterface;
 
 class InstallCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
      *
      * @var string
      */
@@ -21,7 +17,6 @@ class InstallCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
      *
      * @var string
      */
@@ -29,7 +24,6 @@ class InstallCommand extends Command
 
     /**
      * The repository instance.
-	 * 存储库实例
      *
      * @var \Illuminate\Database\Migrations\MigrationRepositoryInterface
      */
@@ -37,7 +31,6 @@ class InstallCommand extends Command
 
     /**
      * Create a new migration install command instance.
-	 * 创建新的迁移安装命令实例
      *
      * @param  \Illuminate\Database\Migrations\MigrationRepositoryInterface  $repository
      * @return void
@@ -51,7 +44,6 @@ class InstallCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
      *
      * @return void
      */
@@ -66,14 +58,13 @@ class InstallCommand extends Command
 
     /**
      * Get the console command options.
-	 * 得到控制台命令选项
      *
      * @return array
      */
     protected function getOptions()
     {
         return [
-            ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use'],
+            ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use.'],
         ];
     }
 }

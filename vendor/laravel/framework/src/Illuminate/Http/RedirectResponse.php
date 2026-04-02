@@ -1,37 +1,32 @@
 <?php
-/**
- * Http，回调响应类
- */
 
 namespace Illuminate\Http;
 
-use Illuminate\Contracts\Support\MessageProvider;
-use Illuminate\Session\Store as SessionStore;
-use Illuminate\Support\MessageBag;
+use BadMethodCallException;
 use Illuminate\Support\Str;
-use Illuminate\Support\Traits\ForwardsCalls;
-use Illuminate\Support\Traits\Macroable;
+use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
+use Illuminate\Support\Traits\Macroable;
+use Illuminate\Session\Store as SessionStore;
+use Illuminate\Contracts\Support\MessageProvider;
 use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse as BaseRedirectResponse;
 
 class RedirectResponse extends BaseRedirectResponse
 {
-    use ForwardsCalls, ResponseTrait, Macroable {
+    use ResponseTrait, Macroable {
         Macroable::__call as macroCall;
     }
 
     /**
      * The request instance.
-	 * 请求实例
      *
      * @var \Illuminate\Http\Request
      */
     protected $request;
 
     /**
-     * The session store instance.
-	 * session存储实例
+     * The session store implementation.
      *
      * @var \Illuminate\Session\Store
      */
@@ -39,11 +34,10 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Flash a piece of data to the session.
-	 * 写入一段数据
      *
      * @param  string|array  $key
      * @param  mixed  $value
-     * @return $this
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function with($key, $value = null)
     {
@@ -58,7 +52,6 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Add multiple cookies to the response.
-	 * 添加多个cookie响应
      *
      * @param  array  $cookies
      * @return $this
@@ -74,9 +67,8 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Flash an array of input to the session.
-	 * 写入一个数组
      *
-     * @param  array|null  $input
+     * @param  array  $input
      * @return $this
      */
     public function withInput(array $input = null)
@@ -90,7 +82,6 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Remove all uploaded files form the given input array.
-	 * 删除所有上传的文件从给定的输入数组中
      *
      * @param  array  $input
      * @return array
@@ -112,7 +103,6 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Flash an array of input to the session.
-	 * 写入一个数组至会话
      *
      * @return $this
      */
@@ -123,9 +113,8 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Flash an array of input to the session.
-	 * 闪存一个数据至会话中
      *
-     * @return $this
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function exceptInput()
     {
@@ -134,7 +123,6 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Flash a container of errors to the session.
-	 * 闪现错误容器到会话中
      *
      * @param  \Illuminate\Contracts\Support\MessageProvider|array|string  $provider
      * @param  string  $key
@@ -159,7 +147,6 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Parse the given errors into an appropriate value.
-	 * 解析给定的错误为适当的值
      *
      * @param  \Illuminate\Contracts\Support\MessageProvider|array|string  $provider
      * @return \Illuminate\Support\MessageBag
@@ -175,7 +162,6 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Get the original response content.
-	 * 得到原始响应内容
      *
      * @return null
      */
@@ -186,7 +172,6 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Get the request instance.
-	 * 得到请求实例
      *
      * @return \Illuminate\Http\Request|null
      */
@@ -197,7 +182,6 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Set the request instance.
-	 * 设置请求实例
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void
@@ -208,8 +192,7 @@ class RedirectResponse extends BaseRedirectResponse
     }
 
     /**
-     * Get the session store instance.
-	 * 得到session存储实例
+     * Get the session store implementation.
      *
      * @return \Illuminate\Session\Store|null
      */
@@ -219,8 +202,7 @@ class RedirectResponse extends BaseRedirectResponse
     }
 
     /**
-     * Set the session store instance.
-	 * 设置session存储实例
+     * Set the session store implementation.
      *
      * @param  \Illuminate\Session\Store  $session
      * @return void
@@ -232,11 +214,10 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Dynamically bind flash data in the session.
-	 * 动态绑定session中闪存数据
      *
      * @param  string  $method
      * @param  array  $parameters
-     * @return mixed
+     * @return $this
      *
      * @throws \BadMethodCallException
      */
@@ -250,6 +231,8 @@ class RedirectResponse extends BaseRedirectResponse
             return $this->with(Str::snake(substr($method, 4)), $parameters[0]);
         }
 
-        static::throwBadMethodCallException($method);
+        throw new BadMethodCallException(
+            "Method [$method] does not exist on Redirect."
+        );
     }
 }

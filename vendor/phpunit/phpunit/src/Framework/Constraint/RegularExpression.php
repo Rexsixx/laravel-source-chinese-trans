@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of PHPUnit.
  *
@@ -8,9 +8,6 @@
  * file that was distributed with this source code.
  */
 namespace PHPUnit\Framework\Constraint;
-
-use function preg_match;
-use function sprintf;
 
 /**
  * Constraint that asserts that the string it is evaluated for matches
@@ -26,32 +23,40 @@ class RegularExpression extends Constraint
     /**
      * @var string
      */
-    private $pattern;
-
-    public function __construct(string $pattern)
-    {
-        $this->pattern = $pattern;
-    }
+    protected $pattern;
 
     /**
-     * Returns a string representation of the constraint.
+     * @param string $pattern
      */
-    public function toString(): string
+    public function __construct($pattern)
     {
-        return sprintf(
-            'matches PCRE pattern "%s"',
-            $this->pattern
-        );
+        parent::__construct();
+        $this->pattern = $pattern;
     }
 
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param mixed $other value or object to evaluate
+     * @param mixed $other Value or object to evaluate.
+     *
+     * @return bool
      */
-    protected function matches($other): bool
+    protected function matches($other)
     {
-        return preg_match($this->pattern, $other) > 0;
+        return \preg_match($this->pattern, $other) > 0;
+    }
+
+    /**
+     * Returns a string representation of the constraint.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        return \sprintf(
+            'matches PCRE pattern "%s"',
+            $this->pattern
+        );
     }
 }

@@ -1,20 +1,16 @@
 <?php
-/**
- * 文件Session处理
- */
 
 namespace Illuminate\Session;
 
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Carbon;
 use SessionHandlerInterface;
+use Illuminate\Support\Carbon;
 use Symfony\Component\Finder\Finder;
+use Illuminate\Filesystem\Filesystem;
 
 class FileSessionHandler implements SessionHandlerInterface
 {
     /**
      * The filesystem instance.
-	 * 文件系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -22,7 +18,6 @@ class FileSessionHandler implements SessionHandlerInterface
 
     /**
      * The path where sessions should be stored.
-	 * 应该存储会话的路径
      *
      * @var string
      */
@@ -30,7 +25,6 @@ class FileSessionHandler implements SessionHandlerInterface
 
     /**
      * The number of minutes the session should be valid.
-	 * 会话有效的分钟数
      *
      * @var int
      */
@@ -38,7 +32,6 @@ class FileSessionHandler implements SessionHandlerInterface
 
     /**
      * Create a new file driven handler instance.
-	 * 创建新的文件驱动处理程序实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string  $path
@@ -73,9 +66,9 @@ class FileSessionHandler implements SessionHandlerInterface
      */
     public function read($sessionId)
     {
-        if ($this->files->isFile($path = $this->path.'/'.$sessionId)) {
-            if ($this->files->lastModified($path) >= Carbon::now()->subMinutes($this->minutes)->getTimestamp()) {
-                return $this->files->sharedGet($path);
+        if ($this->files->exists($path = $this->path.'/'.$sessionId)) {
+            if (filemtime($path) >= Carbon::now()->subMinutes($this->minutes)->getTimestamp()) {
+                return $this->files->get($path, true);
             }
         }
 

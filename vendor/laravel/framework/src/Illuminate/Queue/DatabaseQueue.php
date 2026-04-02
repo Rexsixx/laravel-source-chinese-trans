@@ -1,22 +1,18 @@
 <?php
-/**
- * 数据库队列
- */
 
 namespace Illuminate\Queue;
 
-use Illuminate\Contracts\Queue\Queue as QueueContract;
+use Throwable;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Connection;
 use Illuminate\Queue\Jobs\DatabaseJob;
 use Illuminate\Queue\Jobs\DatabaseJobRecord;
-use Illuminate\Support\Carbon;
-use PDO;
+use Illuminate\Contracts\Queue\Queue as QueueContract;
 
 class DatabaseQueue extends Queue implements QueueContract
 {
     /**
      * The database connection instance.
-	 * 数据库连接实例
      *
      * @var \Illuminate\Database\Connection
      */
@@ -24,7 +20,6 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * The database table that holds the jobs.
-	 * 保存作业的数据库表
      *
      * @var string
      */
@@ -32,7 +27,6 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * The name of the default queue.
-	 * 默认队列名称
      *
      * @var string
      */
@@ -40,7 +34,6 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * The expiration time of a job.
-	 * 作业过期的时间
      *
      * @var int|null
      */
@@ -48,7 +41,6 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Create a new database queue instance.
-	 * 创建新的数据库队列实例
      *
      * @param  \Illuminate\Database\Connection  $database
      * @param  string  $table
@@ -66,9 +58,8 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Get the size of the queue.
-	 * 得到队列大小
      *
-     * @param  string|null  $queue
+     * @param  string  $queue
      * @return int
      */
     public function size($queue = null)
@@ -80,27 +71,23 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Push a new job onto the queue.
-	 * 推送新作业到队列中
      *
      * @param  string  $job
-     * @param  mixed  $data
-     * @param  string|null  $queue
+     * @param  mixed   $data
+     * @param  string  $queue
      * @return mixed
      */
     public function push($job, $data = '', $queue = null)
     {
-        return $this->pushToDatabase($queue, $this->createPayload(
-            $job, $this->getQueue($queue), $data
-        ));
+        return $this->pushToDatabase($queue, $this->createPayload($job, $data));
     }
 
     /**
      * Push a raw payload onto the queue.
-	 * 推入原始有效负载队列
      *
      * @param  string  $payload
-     * @param  string|null  $queue
-     * @param  array  $options
+     * @param  string  $queue
+     * @param  array   $options
      * @return mixed
      */
     public function pushRaw($payload, $queue = null, array $options = [])
@@ -110,28 +97,24 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Push a new job onto the queue after a delay.
-	 * 推入新作业队列在延迟后
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job
-     * @param  mixed  $data
-     * @param  string|null  $queue
+     * @param  mixed   $data
+     * @param  string  $queue
      * @return void
      */
     public function later($delay, $job, $data = '', $queue = null)
     {
-        return $this->pushToDatabase($queue, $this->createPayload(
-            $job, $this->getQueue($queue), $data
-        ), $delay);
+        return $this->pushToDatabase($queue, $this->createPayload($job, $data), $delay);
     }
 
     /**
      * Push an array of jobs onto the queue.
-	 * 推入一组作业至队列
      *
-     * @param  array  $jobs
-     * @param  mixed  $data
-     * @param  string|null  $queue
+     * @param  array   $jobs
+     * @param  mixed   $data
+     * @param  string  $queue
      * @return mixed
      */
     public function bulk($jobs, $data = '', $queue = null)
@@ -142,14 +125,13 @@ class DatabaseQueue extends Queue implements QueueContract
 
         return $this->database->table($this->table)->insert(collect((array) $jobs)->map(
             function ($job) use ($queue, $data, $availableAt) {
-                return $this->buildDatabaseRecord($queue, $this->createPayload($job, $this->getQueue($queue), $data), $availableAt);
+                return $this->buildDatabaseRecord($queue, $this->createPayload($job, $data), $availableAt);
             }
         )->all());
     }
 
     /**
      * Release a reserved job back onto the queue.
-	 * 释放预留的作业回队列
      *
      * @param  string  $queue
      * @param  \Illuminate\Queue\Jobs\DatabaseJobRecord  $job
@@ -163,7 +145,6 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Push a raw payload to the database with a given delay.
-	 * 推送原始有效负载到数据库以给定的延迟
      *
      * @param  string|null  $queue
      * @param  string  $payload
@@ -180,7 +161,6 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Create an array to insert for the given job.
-	 * 创建一个数组来插入给定的作业
      *
      * @param  string|null  $queue
      * @param  string  $payload
@@ -202,27 +182,32 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Pop the next job off of the queue.
-	 * 将下一个作业从队列中弹出
      *
-     * @param  string|null  $queue
+     * @param  string  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
-     *
      * @throws \Exception|\Throwable
      */
     public function pop($queue = null)
     {
         $queue = $this->getQueue($queue);
 
-        return $this->database->transaction(function () use ($queue) {
+        try {
+            $this->database->beginTransaction();
+
             if ($job = $this->getNextAvailableJob($queue)) {
                 return $this->marshalJob($queue, $job);
             }
-        });
+
+            $this->database->commit();
+        } catch (Throwable $e) {
+            $this->database->rollBack();
+
+            throw $e;
+        }
     }
 
     /**
      * Get the next available job for the queue.
-	 * 得到该队列的下一个可用作业
      *
      * @param  string|null  $queue
      * @return \Illuminate\Queue\Jobs\DatabaseJobRecord|null
@@ -230,7 +215,7 @@ class DatabaseQueue extends Queue implements QueueContract
     protected function getNextAvailableJob($queue)
     {
         $job = $this->database->table($this->table)
-                    ->lock($this->getLockForPopping())
+                    ->lockForUpdate()
                     ->where('queue', $this->getQueue($queue))
                     ->where(function ($query) {
                         $this->isAvailable($query);
@@ -243,27 +228,7 @@ class DatabaseQueue extends Queue implements QueueContract
     }
 
     /**
-     * Get the lock required for popping the next job.
-	 * 得到弹出下一个任务所需的锁
-     *
-     * @return string|bool
-     */
-    protected function getLockForPopping()
-    {
-        $databaseEngine = $this->database->getPdo()->getAttribute(PDO::ATTR_DRIVER_NAME);
-        $databaseVersion = $this->database->getPdo()->getAttribute(PDO::ATTR_SERVER_VERSION);
-
-        if ($databaseEngine == 'mysql' && ! strpos($databaseVersion, 'MariaDB') && version_compare($databaseVersion, '8.0.1', '>=') ||
-            $databaseEngine == 'pgsql' && version_compare($databaseVersion, '9.5', '>=')) {
-            return 'FOR UPDATE SKIP LOCKED';
-        }
-
-        return true;
-    }
-
-    /**
      * Modify the query to check for available jobs.
-	 * 修改查询以检查可用的作业
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return void
@@ -278,7 +243,6 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Modify the query to check for jobs that are reserved but have expired.
-	 * 修改查询以检查保留但已过期的作业
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return void
@@ -294,7 +258,6 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Marshal the reserved job into a DatabaseJob instance.
-	 * 将保留的作业封送到DatabaseJob实例中
      *
      * @param  string  $queue
      * @param  \Illuminate\Queue\Jobs\DatabaseJobRecord  $job
@@ -304,6 +267,8 @@ class DatabaseQueue extends Queue implements QueueContract
     {
         $job = $this->markJobAsReserved($job);
 
+        $this->database->commit();
+
         return new DatabaseJob(
             $this->container, $this, $job, $this->connectionName, $queue
         );
@@ -311,7 +276,6 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Mark the given job ID as reserved.
-	 * 将给定的作业ID标记为保留
      *
      * @param  \Illuminate\Queue\Jobs\DatabaseJobRecord  $job
      * @return \Illuminate\Queue\Jobs\DatabaseJobRecord
@@ -328,12 +292,10 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Delete a reserved job from the queue.
-	 * 删除保留的作业从队列
      *
      * @param  string  $queue
      * @param  string  $id
      * @return void
-     *
      * @throws \Exception|\Throwable
      */
     public function deleteReserved($queue, $id)
@@ -347,7 +309,6 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Get the queue or return the default.
-	 * 得到队列或返回默认值
      *
      * @param  string|null  $queue
      * @return string
@@ -359,7 +320,6 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Get the underlying database instance.
-	 * 得到底层数据库实例
      *
      * @return \Illuminate\Database\Connection
      */

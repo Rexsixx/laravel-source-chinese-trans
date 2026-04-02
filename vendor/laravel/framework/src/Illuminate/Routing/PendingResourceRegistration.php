@@ -1,19 +1,11 @@
 <?php
-/**
- * 路由待处理资源注册
- */
 
 namespace Illuminate\Routing;
 
-use Illuminate\Support\Traits\Macroable;
-
 class PendingResourceRegistration
 {
-    use Macroable;
-
     /**
      * The resource registrar.
-	 * 资源注册
      *
      * @var \Illuminate\Routing\ResourceRegistrar
      */
@@ -21,7 +13,6 @@ class PendingResourceRegistration
 
     /**
      * The resource name.
-	 * 资源名称
      *
      * @var string
      */
@@ -29,7 +20,6 @@ class PendingResourceRegistration
 
     /**
      * The resource controller.
-	 * 资源控制器
      *
      * @var string
      */
@@ -37,23 +27,13 @@ class PendingResourceRegistration
 
     /**
      * The resource options.
-	 * 资源操作
      *
      * @var array
      */
     protected $options = [];
 
     /**
-     * The resource's registration status.
-	 * 资源注册状态
-     *
-     * @var bool
-     */
-    protected $registered = false;
-
-    /**
      * Create a new pending resource registration instance.
-	 & 创建新的资源注册实例
      *
      * @param  \Illuminate\Routing\ResourceRegistrar  $registrar
      * @param  string  $name
@@ -71,7 +51,6 @@ class PendingResourceRegistration
 
     /**
      * Set the methods the controller should apply to.
-	 * 设置控制器应该接受的方法
      *
      * @param  array|string|dynamic  $methods
      * @return \Illuminate\Routing\PendingResourceRegistration
@@ -85,7 +64,6 @@ class PendingResourceRegistration
 
     /**
      * Set the methods the controller should exclude.
-	 * 设置控制器应该排除的方法
      *
      * @param  array|string|dynamic  $methods
      * @return \Illuminate\Routing\PendingResourceRegistration
@@ -99,7 +77,6 @@ class PendingResourceRegistration
 
     /**
      * Set the route names for controller actions.
-	 * 设置控制器动作的路由名
      *
      * @param  array|string  $names
      * @return \Illuminate\Routing\PendingResourceRegistration
@@ -113,7 +90,6 @@ class PendingResourceRegistration
 
     /**
      * Set the route name for a controller action.
-	 * 设置控制器动作的路由名
      *
      * @param  string  $method
      * @param  string  $name
@@ -128,7 +104,6 @@ class PendingResourceRegistration
 
     /**
      * Override the route parameter names.
-	 * 覆盖路由参数名
      *
      * @param  array|string  $parameters
      * @return \Illuminate\Routing\PendingResourceRegistration
@@ -142,7 +117,6 @@ class PendingResourceRegistration
 
     /**
      * Override a route parameter's name.
-	 * 覆盖路由参数名称
      *
      * @param  string  $previous
      * @param  string  $new
@@ -156,8 +130,7 @@ class PendingResourceRegistration
     }
 
     /**
-     * Add middleware to the resource routes.
-	 * 添加中间件
+     * Set a middleware to the resource.
      *
      * @param  mixed  $middleware
      * @return \Illuminate\Routing\PendingResourceRegistration
@@ -170,44 +143,12 @@ class PendingResourceRegistration
     }
 
     /**
-     * Indicate that the resource routes should have "shallow" nesting.
-	 * 指明资源路由应该有"浅"嵌套
-     *
-     * @param  bool  $shallow
-     * @return \Illuminate\Routing\PendingResourceRegistration
-     */
-    public function shallow($shallow = true)
-    {
-        $this->options['shallow'] = $shallow;
-
-        return $this;
-    }
-
-    /**
-     * Register the resource route.
-	 * 注册资源路由
-     *
-     * @return \Illuminate\Routing\RouteCollection
-     */
-    public function register()
-    {
-        $this->registered = true;
-
-        return $this->registrar->register(
-            $this->name, $this->controller, $this->options
-        );
-    }
-
-    /**
      * Handle the object's destruction.
-	 * 处理对象的销毁
      *
      * @return void
      */
     public function __destruct()
     {
-        if (! $this->registered) {
-            $this->register();
-        }
+        $this->registrar->register($this->name, $this->controller, $this->options);
     }
 }

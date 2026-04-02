@@ -1,17 +1,14 @@
 <?php
-/**
- * 路由，中间件节流阀请求
- */
 
 namespace Illuminate\Routing\Middleware;
 
 use Closure;
-use Illuminate\Cache\RateLimiter;
-use Illuminate\Http\Exceptions\ThrottleRequestsException;
-use Illuminate\Support\InteractsWithTime;
-use Illuminate\Support\Str;
 use RuntimeException;
+use Illuminate\Support\Str;
+use Illuminate\Cache\RateLimiter;
+use Illuminate\Support\InteractsWithTime;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ThrottleRequests
 {
@@ -19,7 +16,6 @@ class ThrottleRequests
 
     /**
      * The rate limiter instance.
-	 * 速率极限实例
      *
      * @var \Illuminate\Cache\RateLimiter
      */
@@ -27,7 +23,6 @@ class ThrottleRequests
 
     /**
      * Create a new request throttler.
-	 * 创建新的请求节流阀
      *
      * @param  \Illuminate\Cache\RateLimiter  $limiter
      * @return void
@@ -39,28 +34,25 @@ class ThrottleRequests
 
     /**
      * Handle an incoming request.
-	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @param  int|string  $maxAttempts
      * @param  float|int  $decayMinutes
-     * @param  string  $prefix
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Illuminate\Http\Exceptions\ThrottleRequestsException
+     * @return mixed
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      */
-    public function handle($request, Closure $next, $maxAttempts = 60, $decayMinutes = 1, $prefix = '')
+    public function handle($request, Closure $next, $maxAttempts = 60, $decayMinutes = 1)
     {
-        $key = $prefix.$this->resolveRequestSignature($request);
+        $key = $this->resolveRequestSignature($request);
 
         $maxAttempts = $this->resolveMaxAttempts($request, $maxAttempts);
 
-        if ($this->limiter->tooManyAttempts($key, $maxAttempts)) {
+        if ($this->limiter->tooManyAttempts($key, $maxAttempts, $decayMinutes)) {
             throw $this->buildException($key, $maxAttempts);
         }
 
-        $this->limiter->hit($key, $decayMinutes * 60);
+        $this->limiter->hit($key, $decayMinutes);
 
         $response = $next($request);
 
@@ -72,7 +64,6 @@ class ThrottleRequests
 
     /**
      * Resolve the number of attempts if the user is authenticated or not.
-	 * 解析用户是否通过身份验证的尝试次数
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int|string  $maxAttempts
@@ -84,20 +75,14 @@ class ThrottleRequests
             $maxAttempts = explode('|', $maxAttempts, 2)[$request->user() ? 1 : 0];
         }
 
-        if (! is_numeric($maxAttempts) && $request->user()) {
-            $maxAttempts = $request->user()->{$maxAttempts};
-        }
-
         return (int) $maxAttempts;
     }
 
     /**
      * Resolve request signature.
-	 * 解析请求签名
      *
      * @param  \Illuminate\Http\Request  $request
      * @return string
-     *
      * @throws \RuntimeException
      */
     protected function resolveRequestSignature($request)
@@ -110,16 +95,17 @@ class ThrottleRequests
             return sha1($route->getDomain().'|'.$request->ip());
         }
 
-        throw new RuntimeException('Unable to generate the request signature. Route unavailable.');
+        throw new RuntimeException(
+            'Unable to generate the request signature. Route unavailable.'
+        );
     }
 
     /**
      * Create a 'too many attempts' exception.
-	 * 创建多次迭代尝试异常
      *
      * @param  string  $key
      * @param  int  $maxAttempts
-     * @return \Illuminate\Http\Exceptions\ThrottleRequestsException
+     * @return \Symfony\Component\HttpKernel\Exception\HttpException
      */
     protected function buildException($key, $maxAttempts)
     {
@@ -131,14 +117,13 @@ class ThrottleRequests
             $retryAfter
         );
 
-        return new ThrottleRequestsException(
-            'Too Many Attempts.', null, $headers
+        return new HttpException(
+            429, 'Too Many Attempts.', null, $headers
         );
     }
 
     /**
      * Get the number of seconds until the next retry.
-	 * 得到到下一次重试的秒数
      *
      * @param  string  $key
      * @return int
@@ -150,7 +135,6 @@ class ThrottleRequests
 
     /**
      * Add the limit header information to the given response.
-	 * 添加限制头信息到给定的响应中
      *
      * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @param  int  $maxAttempts
@@ -169,7 +153,6 @@ class ThrottleRequests
 
     /**
      * Get the limit headers information.
-	 * 得到限制头信息
      *
      * @param  int  $maxAttempts
      * @param  int  $remainingAttempts
@@ -193,7 +176,6 @@ class ThrottleRequests
 
     /**
      * Calculate the number of remaining attempts.
-	 * 计算剩余尝试次数
      *
      * @param  string  $key
      * @param  int  $maxAttempts

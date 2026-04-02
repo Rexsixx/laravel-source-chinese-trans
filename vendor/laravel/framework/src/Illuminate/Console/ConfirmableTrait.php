@@ -1,15 +1,13 @@
 <?php
-/**
- * 控制台可确定特性
- */
 
 namespace Illuminate\Console;
+
+use Closure;
 
 trait ConfirmableTrait
 {
     /**
      * Confirm before proceeding with the action.
-	 * 进行确认在继续操作之前
      *
      * This method only asks for confirmation in production.
      *
@@ -21,10 +19,10 @@ trait ConfirmableTrait
     {
         $callback = is_null($callback) ? $this->getDefaultConfirmCallback() : $callback;
 
-        $shouldConfirm = value($callback);
+        $shouldConfirm = $callback instanceof Closure ? call_user_func($callback) : $callback;
 
         if ($shouldConfirm) {
-            if ($this->hasOption('force') && $this->option('force')) {
+            if ($this->option('force')) {
                 return true;
             }
 
@@ -33,7 +31,7 @@ trait ConfirmableTrait
             $confirmed = $this->confirm('Do you really wish to run this command?');
 
             if (! $confirmed) {
-                $this->comment('Command Canceled!');
+                $this->comment('Command Cancelled!');
 
                 return false;
             }
@@ -44,14 +42,13 @@ trait ConfirmableTrait
 
     /**
      * Get the default confirmation callback.
-	 * 得到默认的确认回调
      *
      * @return \Closure
      */
     protected function getDefaultConfirmCallback()
     {
         return function () {
-            return $this->getLaravel()->environment() === 'production';
+            return $this->getLaravel()->environment() == 'production';
         };
     }
 }

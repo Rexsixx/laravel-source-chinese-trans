@@ -1,18 +1,14 @@
 <?php
-/**
- * 路由服务提供者
- */
 
 namespace App\Providers;
 
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
     /**
      * This namespace is applied to your controller routes.
-	 * 命名空间
      *
      * In addition, it is set as the URL generator's root namespace.
      *
@@ -21,16 +17,7 @@ class RouteServiceProvider extends ServiceProvider
     protected $namespace = 'App\Http\Controllers';
 
     /**
-     * The path to the "home" route for your application.
-	 * 路由目录
-     *
-     * @var string
-     */
-    public const HOME = '/home';
-
-    /**
      * Define your route model bindings, pattern filters, etc.
-	 * 定义路由模型绑定
      *
      * @return void
      */
@@ -43,7 +30,6 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define the routes for the application.
-	 * 定义路由为应用程序
      *
      * @return void
      */
@@ -58,7 +44,6 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define the "web" routes for the application.
-	 * 为应用定义web路由
      *
      * These routes all receive session state, CSRF protection, etc.
      *
@@ -73,7 +58,6 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define the "api" routes for the application.
-	 * 为应用定义api路由
      *
      * These routes are typically stateless.
      *

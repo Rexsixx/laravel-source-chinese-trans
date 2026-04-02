@@ -1,7 +1,4 @@
 <?php
-/**
- * 视图，编译条件
- */
 
 namespace Illuminate\View\Compilers\Concerns;
 
@@ -9,15 +6,13 @@ trait CompilesConditionals
 {
     /**
      * Identifier for the first case in switch statement.
-	 * switch语句中第一个case的标识符
      *
      * @var bool
      */
     protected $firstCaseInSwitch = true;
 
-    /**
+    /*
      * Compile the if-auth statements into valid PHP.
-	 * 编译if-auth语句成有效的PHP
      *
      * @param  string|null  $guard
      * @return string
@@ -30,22 +25,7 @@ trait CompilesConditionals
     }
 
     /**
-     * Compile the else-auth statements into valid PHP.
-	 * 编译else-auth语句成有效的PHP
-     *
-     * @param  string|null  $guard
-     * @return string
-     */
-    protected function compileElseAuth($guard = null)
-    {
-        $guard = is_null($guard) ? '()' : $guard;
-
-        return "<?php elseif(auth()->guard{$guard}->check()): ?>";
-    }
-
-    /**
      * Compile the end-auth statements into valid PHP.
-	 * 编译end-auth语句成有效的PHP
      *
      * @return string
      */
@@ -56,7 +36,6 @@ trait CompilesConditionals
 
     /**
      * Compile the if-guest statements into valid PHP.
-	 * 编译if-guest语句成有效的PHP
      *
      * @param  string|null  $guard
      * @return string
@@ -69,22 +48,7 @@ trait CompilesConditionals
     }
 
     /**
-     * Compile the else-guest statements into valid PHP.
-	 * 编译end-guest语句成有效的PHP
-     *
-     * @param  string|null  $guard
-     * @return string
-     */
-    protected function compileElseGuest($guard = null)
-    {
-        $guard = is_null($guard) ? '()' : $guard;
-
-        return "<?php elseif(auth()->guard{$guard}->guest()): ?>";
-    }
-
-    /**
      * Compile the end-guest statements into valid PHP.
-	 * 编译end-guest语句成有效的PHP
      *
      * @return string
      */
@@ -95,7 +59,6 @@ trait CompilesConditionals
 
     /**
      * Compile the has-section statements into valid PHP.
-	 * 编译has-section语句成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -107,7 +70,6 @@ trait CompilesConditionals
 
     /**
      * Compile the if statements into valid PHP.
-	 * 编译if语句成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -119,7 +81,6 @@ trait CompilesConditionals
 
     /**
      * Compile the unless statements into valid PHP.
-	 * 编译unless语句成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -131,7 +92,6 @@ trait CompilesConditionals
 
     /**
      * Compile the else-if statements into valid PHP.
-	 * 编译else-if语句成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -143,7 +103,6 @@ trait CompilesConditionals
 
     /**
      * Compile the else statements into valid PHP.
-	 * 编译else语句成有效的PHP
      *
      * @return string
      */
@@ -154,7 +113,6 @@ trait CompilesConditionals
 
     /**
      * Compile the end-if statements into valid PHP.
-	 * 编译end-if语句成有效的PHP
      *
      * @return string
      */
@@ -165,7 +123,6 @@ trait CompilesConditionals
 
     /**
      * Compile the end-unless statements into valid PHP.
-	 * 编译end-unless语句成有效的PHP
      *
      * @return string
      */
@@ -176,7 +133,6 @@ trait CompilesConditionals
 
     /**
      * Compile the if-isset statements into valid PHP.
-	 * 编译if-isset语句成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -188,7 +144,6 @@ trait CompilesConditionals
 
     /**
      * Compile the end-isset statements into valid PHP.
-	 * 编译end-isset语句成有效的PHP
      *
      * @return string
      */
@@ -199,7 +154,6 @@ trait CompilesConditionals
 
     /**
      * Compile the switch statements into valid PHP.
-	 * 编译switch语句成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -213,7 +167,6 @@ trait CompilesConditionals
 
     /**
      * Compile the case statements into valid PHP.
-	 * 编译case语句成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -231,7 +184,6 @@ trait CompilesConditionals
 
     /**
      * Compile the default statements in switch case into valid PHP.
-	 * 编译switch case中的默认语句成有效的PHP
      *
      * @return string
      */
@@ -242,7 +194,6 @@ trait CompilesConditionals
 
     /**
      * Compile the end switch statements into valid PHP.
-	 * 编译end switch语句成有效的PH
      *
      * @return string
      */

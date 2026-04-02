@@ -1,6 +1,6 @@
 <?php
 /**
- * 身份，封锁出
+ * Illuminate，Auth，事件，封锁
  */
 
 namespace Illuminate\Auth\Events;
@@ -19,7 +19,7 @@ class Lockout
 
     /**
      * Create a new event instance.
-	 * 创建新的事件实例
+	 * 创建一个新的事件实例
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void

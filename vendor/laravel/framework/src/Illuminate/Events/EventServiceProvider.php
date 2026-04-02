@@ -1,18 +1,14 @@
 <?php
-/**
- * 事件服务提供者
- */
 
 namespace Illuminate\Events;
 
-use Illuminate\Contracts\Queue\Factory as QueueFactoryContract;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Queue\Factory as QueueFactoryContract;
 
 class EventServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
-	 * 注册服务提供者
      *
      * @return void
      */

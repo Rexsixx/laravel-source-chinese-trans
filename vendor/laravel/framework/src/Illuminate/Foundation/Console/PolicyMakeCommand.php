@@ -1,19 +1,15 @@
 <?php
-/**
- * 基础，政策生成命令
- */
 
 namespace Illuminate\Foundation\Console;
 
-use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
+use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
 class PolicyMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名
      *
      * @var string
      */
@@ -21,7 +17,6 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * The console command description.
-	 * 控制台命令描述
      *
      * @var string
      */
@@ -29,7 +24,6 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成类的类型
      *
      * @var string
      */
@@ -37,7 +31,6 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * Build the class with the given name.
-	 * 构建类使用给定名称
      *
      * @param  string  $name
      * @return string
@@ -55,29 +48,25 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * Replace the User model namespace.
-	 * 替换User模型命名空间
      *
      * @param  string  $stub
      * @return string
      */
     protected function replaceUserNamespace($stub)
     {
-        $model = $this->userProviderModel();
-
-        if (! $model) {
+        if (! config('auth.providers.users.model')) {
             return $stub;
         }
 
         return str_replace(
             $this->rootNamespace().'User',
-            $model,
+            config('auth.providers.users.model'),
             $stub
         );
     }
 
     /**
      * Replace the model for the given stub.
-	 * 替模型为给定存根
      *
      * @param  string  $stub
      * @param  string  $model
@@ -101,24 +90,21 @@ class PolicyMakeCommand extends GeneratorCommand
 
         $model = class_basename(trim($model, '\\'));
 
-        $dummyUser = class_basename($this->userProviderModel());
+        $dummyUser = class_basename(config('auth.providers.users.model'));
 
-        $dummyModel = Str::camel($model) === 'user' ? 'model' : $model;
-
-        $stub = str_replace('DocDummyModel', Str::snake($dummyModel, ' '), $stub);
+        $dummyModel = Str::camel($model) === 'user' ? 'model' : Str::camel($model);
 
         $stub = str_replace('DummyModel', $model, $stub);
 
-        $stub = str_replace('dummyModel', Str::camel($dummyModel), $stub);
+        $stub = str_replace('dummyModel', $dummyModel, $stub);
 
         $stub = str_replace('DummyUser', $dummyUser, $stub);
 
-        return str_replace('DocDummyPluralModel', Str::snake(Str::pluralStudly($dummyModel), ' '), $stub);
+        return str_replace('dummyPluralModel', Str::plural($dummyModel), $stub);
     }
 
     /**
      * Get the stub file for the generator.
-	 * 得到存根文件为生成器
      *
      * @return string
      */
@@ -131,7 +117,6 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 得到类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -143,14 +128,13 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * Get the console command arguments.
-	 * 得到控制台命令参数
      *
      * @return array
      */
     protected function getOptions()
     {
         return [
-            ['model', 'm', InputOption::VALUE_OPTIONAL, 'The model that the policy applies to'],
+            ['model', 'm', InputOption::VALUE_OPTIONAL, 'The model that the policy applies to.'],
         ];
     }
 }

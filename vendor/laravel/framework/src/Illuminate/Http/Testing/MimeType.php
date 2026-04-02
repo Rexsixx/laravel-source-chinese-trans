@@ -1,7 +1,4 @@
 <?php
-/**
- * Http，Mime类型
- */
 
 namespace Illuminate\Http\Testing;
 
@@ -9,7 +6,6 @@ class MimeType
 {
     /**
      * An array of extension to MIME types.
-	 * MIME类型扩展的数组
      *
      * @var array
      */
@@ -785,7 +781,6 @@ class MimeType
 
     /**
      * Get the MIME type for a file based on the file's extension.
-	 * 推荐刚才文件的MIME类型根据文件的扩展名
      *
      * @param  string  $filename
      * @return string
@@ -799,9 +794,8 @@ class MimeType
 
     /**
      * Get the MIME type for a given extension or return all mimes.
-	 * 得到给定扩展的MIME类型或返回所有MIME
      *
-     * @param  string|null  $extension
+     * @param  string  $extension
      * @return string|array
      */
     public static function get($extension = null)
@@ -811,7 +805,6 @@ class MimeType
 
     /**
      * Search for the extension of a given MIME type.
-	 * 搜索给定MIME类型的扩展名
      *
      * @param  string  $mimeType
      * @return string|null
@@ -823,7 +816,6 @@ class MimeType
 
     /**
      * Get the MIME type for a given extension.
-	 * 得到给定扩展的MIME类型
      *
      * @param  string  $extension
      * @return string

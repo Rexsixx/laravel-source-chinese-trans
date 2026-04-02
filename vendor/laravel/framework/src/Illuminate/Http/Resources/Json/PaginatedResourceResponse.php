@@ -1,7 +1,4 @@
 <?php
-/**
- * Http，分页资源响应
- */
 
 namespace Illuminate\Http\Resources\Json;
 
@@ -11,7 +8,6 @@ class PaginatedResourceResponse extends ResourceResponse
 {
     /**
      * Create an HTTP response that represents the object.
-	 * 创建表示对象的HTTP响应
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
@@ -29,17 +25,12 @@ class PaginatedResourceResponse extends ResourceResponse
             ),
             $this->calculateStatus()
         ), function ($response) use ($request) {
-            $response->original = $this->resource->resource->map(function ($item) {
-                return $item->resource;
-            });
-
             $this->resource->withResponse($request, $response);
         });
     }
 
     /**
      * Add the pagination information to the response.
-	 * 添加分页信息到响应中
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
@@ -56,7 +47,6 @@ class PaginatedResourceResponse extends ResourceResponse
 
     /**
      * Get the pagination links for the response.
-	 * 得到响应的分页链接
      *
      * @param  array  $paginated
      * @return array
@@ -73,7 +63,6 @@ class PaginatedResourceResponse extends ResourceResponse
 
     /**
      * Gather the meta data for the response.
-	 * 收集元数据为响应
      *
      * @param  array  $paginated
      * @return array

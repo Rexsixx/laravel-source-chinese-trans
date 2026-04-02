@@ -1,20 +1,16 @@
 <?php
-/**
- * 基础，注册门面
- */
 
 namespace Illuminate\Foundation\Bootstrap;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\AliasLoader;
-use Illuminate\Foundation\PackageManifest;
 use Illuminate\Support\Facades\Facade;
+use Illuminate\Foundation\PackageManifest;
+use Illuminate\Contracts\Foundation\Application;
 
 class RegisterFacades
 {
     /**
      * Bootstrap the given application.
-	 * 引导给定应用
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void

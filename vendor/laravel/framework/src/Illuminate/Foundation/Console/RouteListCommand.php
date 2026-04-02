@@ -1,23 +1,19 @@
 <?php
-/**
- * 基础，路由列表命令
- */
 
 namespace Illuminate\Foundation\Console;
 
 use Closure;
-use Illuminate\Console\Command;
-use Illuminate\Routing\Route;
-use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Routing\Route;
+use Illuminate\Routing\Router;
+use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 
 class RouteListCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
      *
      * @var string
      */
@@ -25,7 +21,6 @@ class RouteListCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
      *
      * @var string
      */
@@ -33,31 +28,27 @@ class RouteListCommand extends Command
 
     /**
      * The router instance.
-	 * 路由实例
      *
      * @var \Illuminate\Routing\Router
      */
     protected $router;
 
     /**
+     * An array of all the registered routes.
+     *
+     * @var \Illuminate\Routing\RouteCollection
+     */
+    protected $routes;
+
+    /**
      * The table headers for the command.
-	 * 命令表头
      *
      * @var array
      */
     protected $headers = ['Domain', 'Method', 'URI', 'Name', 'Action', 'Middleware'];
 
     /**
-     * The columns to display when using the "compact" flag.
-	 * 使用"compact"标志时要显示的列
-     *
-     * @var array
-     */
-    protected $compactColumns = ['method', 'uri', 'action'];
-
-    /**
      * Create a new route command instance.
-	 * 创建新的路由命令实例
      *
      * @param  \Illuminate\Routing\Router  $router
      * @return void
@@ -67,38 +58,33 @@ class RouteListCommand extends Command
         parent::__construct();
 
         $this->router = $router;
+        $this->routes = $router->getRoutes();
     }
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
      *
      * @return void
      */
     public function handle()
     {
-        if (empty($this->router->getRoutes())) {
+        if (count($this->routes) == 0) {
             return $this->error("Your application doesn't have any routes.");
         }
 
-        if (empty($routes = $this->getRoutes())) {
-            return $this->error("Your application doesn't have any routes matching the given criteria.");
-        }
-
-        $this->displayRoutes($routes);
+        $this->displayRoutes($this->getRoutes());
     }
 
     /**
      * Compile the routes into a displayable format.
-	 * 编译路由成可显示的格式
      *
      * @return array
      */
     protected function getRoutes()
     {
-        $routes = collect($this->router->getRoutes())->map(function ($route) {
+        $routes = collect($this->routes)->map(function ($route) {
             return $this->getRouteInformation($route);
-        })->filter()->all();
+        })->all();
 
         if ($sort = $this->option('sort')) {
             $routes = $this->sortRoutes($sort, $routes);
@@ -108,12 +94,11 @@ class RouteListCommand extends Command
             $routes = array_reverse($routes);
         }
 
-        return $this->pluckColumns($routes);
+        return array_filter($routes);
     }
 
     /**
      * Get the route information for a given route.
-	 * 得到给定路由的路由信息
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return array
@@ -121,24 +106,23 @@ class RouteListCommand extends Command
     protected function getRouteInformation(Route $route)
     {
         return $this->filterRoute([
-            'domain' => $route->domain(),
+            'host'   => $route->domain(),
             'method' => implode('|', $route->methods()),
             'uri'    => $route->uri(),
             'name'   => $route->getName(),
-            'action' => ltrim($route->getActionName(), '\\'),
+            'action' => $route->getActionName(),
             'middleware' => $this->getMiddleware($route),
         ]);
     }
 
     /**
      * Sort the routes by a given element.
-	 * 排序路由按给定元素
      *
      * @param  string  $sort
      * @param  array  $routes
      * @return array
      */
-    protected function sortRoutes($sort, array $routes)
+    protected function sortRoutes($sort, $routes)
     {
         return Arr::sort($routes, function ($route) use ($sort) {
             return $route[$sort];
@@ -146,40 +130,18 @@ class RouteListCommand extends Command
     }
 
     /**
-     * Remove unnecessary columns from the routes.
-	 * 删除不必要的列从路由中
-     *
-     * @param  array  $routes
-     * @return array
-     */
-    protected function pluckColumns(array $routes)
-    {
-        return array_map(function ($route) {
-            return Arr::only($route, $this->getColumns());
-        }, $routes);
-    }
-
-    /**
      * Display the route information on the console.
-	 * 显示路由信息在控制台中
      *
      * @param  array  $routes
      * @return void
      */
     protected function displayRoutes(array $routes)
     {
-        if ($this->option('json')) {
-            $this->line(json_encode(array_values($routes)));
-
-            return;
-        }
-
-        $this->table($this->getHeaders(), $routes);
+        $this->table($this->headers, $routes);
     }
 
     /**
      * Get before filters.
-	 * 得到过滤器前
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return string
@@ -193,7 +155,6 @@ class RouteListCommand extends Command
 
     /**
      * Filter the route by URI and / or name.
-	 * 通过URI和/或名称过滤路由
      *
      * @param  array  $route
      * @return array|null
@@ -210,76 +171,22 @@ class RouteListCommand extends Command
     }
 
     /**
-     * Get the table headers for the visible columns.
-	 * 得到可见列的表头
-     *
-     * @return array
-     */
-    protected function getHeaders()
-    {
-        return Arr::only($this->headers, array_keys($this->getColumns()));
-    }
-
-    /**
-     * Get the column names to show (lowercase table headers).
-	 * 得到要显示的列名(小写表头)
-     *
-     * @return array
-     */
-    protected function getColumns()
-    {
-        $availableColumns = array_map('strtolower', $this->headers);
-
-        if ($this->option('compact')) {
-            return array_intersect($availableColumns, $this->compactColumns);
-        }
-
-        if ($columns = $this->option('columns')) {
-            return array_intersect($availableColumns, $this->parseColumns($columns));
-        }
-
-        return $availableColumns;
-    }
-
-    /**
-     * Parse the column list.
-	 * 解析列列表
-     *
-     * @param  array  $columns
-     * @return array
-     */
-    protected function parseColumns(array $columns)
-    {
-        $results = [];
-
-        foreach ($columns as $i => $column) {
-            if (Str::contains($column, ',')) {
-                $results = array_merge($results, explode(',', $column));
-            } else {
-                $results[] = $column;
-            }
-        }
-
-        return $results;
-    }
-
-    /**
      * Get the console command options.
-	 * 得到控制台命令选项
      *
      * @return array
      */
     protected function getOptions()
     {
         return [
-            ['columns', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Columns to include in the route table'],
-            ['compact', 'c', InputOption::VALUE_NONE, 'Only show method, URI and action columns'],
-            ['json', null, InputOption::VALUE_NONE, 'Output the route list as JSON'],
-            ['method', null, InputOption::VALUE_OPTIONAL, 'Filter the routes by method'],
-            ['name', null, InputOption::VALUE_OPTIONAL, 'Filter the routes by name'],
-            ['path', null, InputOption::VALUE_OPTIONAL, 'Filter the routes by path'],
-            ['reverse', 'r', InputOption::VALUE_NONE, 'Reverse the ordering of the routes'],
-            ['sort', null, InputOption::VALUE_OPTIONAL, 'The column (domain, method, uri, name, action, middleware) to sort by', 'uri'],
+            ['method', null, InputOption::VALUE_OPTIONAL, 'Filter the routes by method.'],
+
+            ['name', null, InputOption::VALUE_OPTIONAL, 'Filter the routes by name.'],
+
+            ['path', null, InputOption::VALUE_OPTIONAL, 'Filter the routes by path.'],
+
+            ['reverse', 'r', InputOption::VALUE_NONE, 'Reverse the ordering of the routes.'],
+
+            ['sort', null, InputOption::VALUE_OPTIONAL, 'The column (host, method, uri, name, action, middleware) to sort by.', 'uri'],
         ];
     }
 }

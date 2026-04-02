@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of PHPUnit.
  *
@@ -9,45 +9,41 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function array_replace_recursive;
-use function is_array;
-use function iterator_to_array;
-use function var_export;
-use ArrayObject;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
-use Traversable;
 
 /**
  * Constraint that asserts that the array it is evaluated for has a specified subset.
  *
  * Uses array_replace_recursive() to check if a key value subset is part of the
  * subject array.
- *
- * @codeCoverageIgnore
- *
- * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3494
  */
-final class ArraySubset extends Constraint
+class ArraySubset extends Constraint
 {
     /**
-     * @var iterable
+     * @var array|\Traversable
      */
-    private $subset;
+    protected $subset;
 
     /**
      * @var bool
      */
-    private $strict;
+    protected $strict;
 
-    public function __construct(iterable $subset, bool $strict = false)
+    /**
+     * @param array|\Traversable $subset
+     * @param bool               $strict Check for object identity
+     */
+    public function __construct($subset, $strict = false)
     {
+        parent::__construct();
+
         $this->strict = $strict;
         $this->subset = $subset;
     }
 
     /**
-     * Evaluates the constraint for parameter $other.
+     * Evaluates the constraint for parameter $other
      *
      * If $returnResult is set to false (the default), an exception is thrown
      * in case of a failure. null is returned otherwise.
@@ -56,17 +52,22 @@ final class ArraySubset extends Constraint
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @param mixed  $other        Value or object to evaluate.
+     * @param string $description  Additional information about the test
+     * @param bool   $returnResult Whether to return a result or throw an exception
+     *
+     * @return mixed
+     *
      * @throws ExpectationFailedException
      */
-    public function evaluate($other, string $description = '', bool $returnResult = false)
+    public function evaluate($other, $description = '', $returnResult = false)
     {
         //type cast $other & $this->subset as an array to allow
         //support in standard array functions.
         $other        = $this->toArray($other);
         $this->subset = $this->toArray($this->subset);
 
-        $patched = array_replace_recursive($other, $this->subset);
+        $patched = \array_replace_recursive($other, $this->subset);
 
         if ($this->strict) {
             $result = $other === $patched;
@@ -82,8 +83,8 @@ final class ArraySubset extends Constraint
             $f = new ComparisonFailure(
                 $patched,
                 $other,
-                var_export($patched, true),
-                var_export($other, true)
+                \var_export($patched, true),
+                \var_export($other, true)
             );
 
             $this->fail($other, $description, $f);
@@ -93,40 +94,45 @@ final class ArraySubset extends Constraint
     /**
      * Returns a string representation of the constraint.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @return string
      */
-    public function toString(): string
+    public function toString()
     {
-        return 'has the subset ' . $this->exporter()->export($this->subset);
+        return 'has the subset ' . $this->exporter->export($this->subset);
     }
 
     /**
-     * Returns the description of the failure.
+     * Returns the description of the failure
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param mixed $other evaluated value or object
+     * @param mixed $other Evaluated value or object.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @return string
      */
-    protected function failureDescription($other): string
+    protected function failureDescription($other)
     {
         return 'an array ' . $this->toString();
     }
 
-    private function toArray(iterable $other): array
+    /**
+     * @param array|\Traversable $other
+     *
+     * @return array
+     */
+    private function toArray($other)
     {
-        if (is_array($other)) {
+        if (\is_array($other)) {
             return $other;
         }
 
-        if ($other instanceof ArrayObject) {
+        if ($other instanceof \ArrayObject) {
             return $other->getArrayCopy();
         }
 
-        if ($other instanceof Traversable) {
-            return iterator_to_array($other);
+        if ($other instanceof \Traversable) {
+            return \iterator_to_array($other);
         }
 
         // Keep BC even if we know that array would not be the expected one

@@ -1,20 +1,16 @@
 <?php
-/**
- * 控制台解析
- */
 
 namespace Illuminate\Console;
 
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
 
 class Parser
 {
     /**
      * Parse the given console command definition into an array.
-	 * 解析给定的控制台命令定义为数组
      *
      * @param  string  $expression
      * @return array
@@ -36,15 +32,16 @@ class Parser
 
     /**
      * Extract the name of the command from the expression.
-	 * 提取命令的名称从表达式中
      *
      * @param  string  $expression
      * @return string
-     *
-     * @throws \InvalidArgumentException
      */
     protected static function name($expression)
     {
+        if (trim($expression) === '') {
+            throw new InvalidArgumentException('Console command definition is empty.');
+        }
+
         if (! preg_match('/[^\s]+/', $expression, $matches)) {
             throw new InvalidArgumentException('Unable to determine command name from signature.');
         }
@@ -54,7 +51,6 @@ class Parser
 
     /**
      * Extract all of the parameters from the tokens.
-	 * 提取所有参数从令牌中
      *
      * @param  array  $tokens
      * @return array
@@ -78,14 +74,13 @@ class Parser
 
     /**
      * Parse an argument expression.
-	 * 解析参数表达式
      *
      * @param  string  $token
      * @return \Symfony\Component\Console\Input\InputArgument
      */
     protected static function parseArgument($token)
     {
-        [$token, $description] = static::extractDescription($token);
+        list($token, $description) = static::extractDescription($token);
 
         switch (true) {
             case Str::endsWith($token, '?*'):
@@ -105,14 +100,13 @@ class Parser
 
     /**
      * Parse an option expression.
-	 * 解析选项表达式
      *
      * @param  string  $token
      * @return \Symfony\Component\Console\Input\InputOption
      */
     protected static function parseOption($token)
     {
-        [$token, $description] = static::extractDescription($token);
+        list($token, $description) = static::extractDescription($token);
 
         $matches = preg_split('/\s*\|\s*/', $token, 2);
 
@@ -139,7 +133,6 @@ class Parser
 
     /**
      * Parse the token into its token and description segments.
-	 * 解析令牌为它的令牌和描述段
      *
      * @param  string  $token
      * @return array

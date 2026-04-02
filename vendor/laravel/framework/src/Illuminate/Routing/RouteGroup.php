@@ -1,7 +1,4 @@
 <?php
-/**
- * 路由组
- */
 
 namespace Illuminate\Routing;
 
@@ -11,7 +8,6 @@ class RouteGroup
 {
     /**
      * Merge route groups into a new array.
-	 * 合并路由组
      *
      * @param  array  $new
      * @param  array  $old
@@ -36,7 +32,6 @@ class RouteGroup
 
     /**
      * Format the namespace for the new group attributes.
-	 * 格式化命名空间为新组属性
      *
      * @param  array  $new
      * @param  array  $old
@@ -45,7 +40,7 @@ class RouteGroup
     protected static function formatNamespace($new, $old)
     {
         if (isset($new['namespace'])) {
-            return isset($old['namespace']) && strpos($new['namespace'], '\\') !== 0
+            return isset($old['namespace'])
                     ? trim($old['namespace'], '\\').'\\'.trim($new['namespace'], '\\')
                     : trim($new['namespace'], '\\');
         }
@@ -55,7 +50,6 @@ class RouteGroup
 
     /**
      * Format the prefix for the new group attributes.
-	 * 格式化前缀为新组属性
      *
      * @param  array  $new
      * @param  array  $old
@@ -70,7 +64,6 @@ class RouteGroup
 
     /**
      * Format the "wheres" for the new group attributes.
-	 * 格式化wheres为新组属性
      *
      * @param  array  $new
      * @param  array  $old
@@ -86,7 +79,6 @@ class RouteGroup
 
     /**
      * Format the "as" clause of the new group attributes.
-	 * 格式化新组属性的"as"子句
      *
      * @param  array  $new
      * @param  array  $old

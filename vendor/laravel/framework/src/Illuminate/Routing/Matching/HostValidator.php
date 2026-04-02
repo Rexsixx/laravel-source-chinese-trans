@@ -1,7 +1,4 @@
 <?php
-/**
- * 路由，匹配主机验证
- */
 
 namespace Illuminate\Routing\Matching;
 
@@ -12,7 +9,6 @@ class HostValidator implements ValidatorInterface
 {
     /**
      * Validate a given rule against a route and request.
-	 * 验证给定的规则
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  \Illuminate\Http\Request  $request
@@ -20,12 +16,10 @@ class HostValidator implements ValidatorInterface
      */
     public function matches(Route $route, Request $request)
     {
-        $hostRegex = $route->getCompiled()->getHostRegex();
-
-        if (is_null($hostRegex)) {
+        if (is_null($route->getCompiled()->getHostRegex())) {
             return true;
         }
 
-        return preg_match($hostRegex, $request->getHost());
+        return preg_match($route->getCompiled()->getHostRegex(), $request->getHost());
     }
 }

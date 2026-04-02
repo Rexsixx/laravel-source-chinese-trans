@@ -1,33 +1,23 @@
 <?php
-/**
- * 视图，核心类
- */
 
 namespace Illuminate\View;
 
+use Exception;
+use Throwable;
 use ArrayAccess;
 use BadMethodCallException;
-use Exception;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Contracts\Support\MessageProvider;
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Contracts\View\Engine;
-use Illuminate\Contracts\View\View as ViewContract;
-use Illuminate\Support\MessageBag;
 use Illuminate\Support\Str;
-use Illuminate\Support\Traits\Macroable;
-use Throwable;
+use Illuminate\Support\MessageBag;
+use Illuminate\Contracts\View\Engine;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Contracts\Support\MessageProvider;
+use Illuminate\Contracts\View\View as ViewContract;
 
-class View implements ArrayAccess, Htmlable, ViewContract
+class View implements ArrayAccess, ViewContract
 {
-    use Macroable {
-        __call as macroCall;
-    }
-
     /**
      * The view factory instance.
-	 * 视图工厂实例
      *
      * @var \Illuminate\View\Factory
      */
@@ -35,7 +25,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * The engine implementation.
-	 * 引擎实现
      *
      * @var \Illuminate\Contracts\View\Engine
      */
@@ -43,7 +32,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * The name of the view.
-	 * 视图名称
      *
      * @var string
      */
@@ -51,7 +39,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * The array of view data.
-	 * 数据
      *
      * @var array
      */
@@ -59,7 +46,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * The path to the view file.
-	 * 视图文件路径
      *
      * @var string
      */
@@ -67,7 +53,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Create a new view instance.
-	 * 创建新的视图实例
      *
      * @param  \Illuminate\View\Factory  $factory
      * @param  \Illuminate\Contracts\View\Engine  $engine
@@ -88,10 +73,9 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the string contents of the view.
-	 * 得到字符串内容
      *
      * @param  callable|null  $callback
-     * @return array|string
+     * @return string
      *
      * @throws \Throwable
      */
@@ -100,13 +84,11 @@ class View implements ArrayAccess, Htmlable, ViewContract
         try {
             $contents = $this->renderContents();
 
-            $response = isset($callback) ? $callback($this, $contents) : null;
+            $response = isset($callback) ? call_user_func($callback, $this, $contents) : null;
 
             // Once we have the contents of the view, we will flush the sections if we are
             // done rendering all views so that there is nothing left hanging over when
             // another view gets rendered in the future by the application developer.
-			// 一旦我们有了视图的内容，如果我们完成了所有视图的渲染，我们将刷新这些部分，
-			// 这样当应用程序开发人员将来渲染另一个视图时，就不会有任何东西悬而未决。
             $this->factory->flushStateIfDoneRendering();
 
             return ! is_null($response) ? $response : $contents;
@@ -123,7 +105,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the contents of the view instance.
-	 * 得到视图实例内容
      *
      * @return string
      */
@@ -132,8 +113,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
         // We will keep track of the amount of views being rendered so we can flush
         // the section after the complete rendering operation is done. This will
         // clear out the sections for any separate views that may be rendered.
-		// 我们将跟踪渲染的视图数量，以便在完成完整的渲染操作后刷新该部分。
-		// 这将清除可能呈现的任何单独视图的部分。
         $this->factory->incrementRender();
 
         $this->factory->callComposer($this);
@@ -143,8 +122,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
         // Once we've finished rendering the view, we'll decrement the render count
         // so that each sections get flushed out next time a view is created and
         // no old sections are staying around in the memory of an environment.
-		// 一旦我们完成了视图的渲染，我们将减少渲染计数，这样下次创建视图时，
-		// 每个部分都会被清空，并且没有旧的部分留在环境的内存中。
         $this->factory->decrementRender();
 
         return $contents;
@@ -152,7 +129,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the evaluated contents of the view.
-	 * 得到视图请求内容
      *
      * @return string
      */
@@ -163,11 +139,10 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the data bound to the view instance.
-	 * 得到绑定到视图实例的数据
      *
      * @return array
      */
-    public function gatherData()
+    protected function gatherData()
     {
         $data = array_merge($this->factory->getShared(), $this->data);
 
@@ -182,11 +157,8 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the sections of the rendered view.
-	 * 得到渲染视图的部分
      *
-     * @return array
-     *
-     * @throws \Throwable
+     * @return string
      */
     public function renderSections()
     {
@@ -197,10 +169,9 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Add a piece of data to the view.
-	 * 向视图添加一段数据
      *
      * @param  string|array  $key
-     * @param  mixed  $value
+     * @param  mixed   $value
      * @return $this
      */
     public function with($key, $value = null)
@@ -216,11 +187,10 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Add a view instance to the view data.
-	 * 添加一段实例至视图
      *
      * @param  string  $key
      * @param  string  $view
-     * @param  array  $data
+     * @param  array   $data
      * @return $this
      */
     public function nest($key, $view, array $data = [])
@@ -230,7 +200,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Add validation errors to the view.
-	 * 添加验证错误到视图中
      *
      * @param  \Illuminate\Contracts\Support\MessageProvider|array  $provider
      * @return $this
@@ -244,7 +213,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Format the given message provider into a MessageBag.
-	 * 格式化给定的消息提供程序为MessageBag
      *
      * @param  \Illuminate\Contracts\Support\MessageProvider|array  $provider
      * @return \Illuminate\Support\MessageBag
@@ -257,7 +225,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the name of the view.
-	 * 得到视图名称
      *
      * @return string
      */
@@ -268,7 +235,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the name of the view.
-	 * 得到视图名称
      *
      * @return string
      */
@@ -279,7 +245,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the array of view data.
-	 * 得到视图数据
      *
      * @return array
      */
@@ -290,7 +255,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the path to the view file.
-	 * 得到视图文件路径
      *
      * @return string
      */
@@ -301,7 +265,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Set the path to the view.
-	 * 设置视图路径
      *
      * @param  string  $path
      * @return void
@@ -313,7 +276,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the view factory instance.
-	 * 得到视图工作实例
      *
      * @return \Illuminate\View\Factory
      */
@@ -324,7 +286,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get the view's rendering engine.
-	 * 得到视图的渲染引擎
      *
      * @return \Illuminate\Contracts\View\Engine
      */
@@ -335,7 +296,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Determine if a piece of data is bound.
-	 * 确定是否绑定了一段数据
      *
      * @param  string  $key
      * @return bool
@@ -347,7 +307,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get a piece of bound data to the view.
-	 * 得到一段绑定到视图的数据
      *
      * @param  string  $key
      * @return mixed
@@ -359,10 +318,9 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Set a piece of data on the view.
-	 * 设置一段数据在视图上
      *
      * @param  string  $key
-     * @param  mixed  $value
+     * @param  mixed   $value
      * @return void
      */
     public function offsetSet($key, $value)
@@ -372,7 +330,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Unset a piece of data from the view.
-	 * 取消设置一段数据从视图中
      *
      * @param  string  $key
      * @return void
@@ -384,7 +341,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Get a piece of data from the view.
-	 * 得到一段数据从视图
      *
      * @param  string  $key
      * @return mixed
@@ -396,10 +352,9 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Set a piece of data on the view.
-	 * 设置一段数据在视图上
      *
      * @param  string  $key
-     * @param  mixed  $value
+     * @param  mixed   $value
      * @return void
      */
     public function __set($key, $value)
@@ -409,7 +364,6 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Check if a piece of data is bound to the view.
-	 * 检查是否有数据块绑定到视图
      *
      * @param  string  $key
      * @return bool
@@ -421,10 +375,9 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Remove a piece of bound data from the view.
-	 * 删除一段绑定数据从视图中
      *
      * @param  string  $key
-     * @return void
+     * @return bool
      */
     public function __unset($key)
     {
@@ -433,47 +386,26 @@ class View implements ArrayAccess, Htmlable, ViewContract
 
     /**
      * Dynamically bind parameters to the view.
-	 * 动态地将参数绑定到视图
      *
      * @param  string  $method
-     * @param  array  $parameters
+     * @param  array   $parameters
      * @return \Illuminate\View\View
      *
      * @throws \BadMethodCallException
      */
     public function __call($method, $parameters)
     {
-        if (static::hasMacro($method)) {
-            return $this->macroCall($method, $parameters);
-        }
-
         if (! Str::startsWith($method, 'with')) {
-            throw new BadMethodCallException(sprintf(
-                'Method %s::%s does not exist.', static::class, $method
-            ));
+            throw new BadMethodCallException("Method [$method] does not exist on view.");
         }
 
         return $this->with(Str::camel(substr($method, 4)), $parameters[0]);
     }
 
     /**
-     * Get content as a string of HTML.
-	 * 得到HTMl内容
-     *
-     * @return string
-     */
-    public function toHtml()
-    {
-        return $this->render();
-    }
-
-    /**
      * Get the string contents of the view.
-	 * 得到视图的字符串内容
      *
      * @return string
-     *
-     * @throws \Throwable
      */
     public function __toString()
     {

@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2018 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,30 +21,30 @@ class PropertyEnumerator extends Enumerator
     /**
      * {@inheritdoc}
      */
-    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null): array
+    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null)
     {
         // only list properties when a Reflector is present.
 
         if ($reflector === null) {
-            return [];
+            return;
         }
 
         // We can only list properties on actual class (or object) reflectors.
         if (!$reflector instanceof \ReflectionClass) {
-            return [];
+            return;
         }
 
         // only list properties if we are specifically asked
         if (!$input->getOption('properties')) {
-            return [];
+            return;
         }
 
-        $showAll = $input->getOption('all');
-        $noInherit = $input->getOption('no-inherit');
+        $showAll    = $input->getOption('all');
+        $noInherit  = $input->getOption('no-inherit');
         $properties = $this->prepareProperties($this->getProperties($showAll, $reflector, $noInherit), $target);
 
         if (empty($properties)) {
-            return [];
+            return;
         }
 
         $ret = [];
@@ -62,7 +62,7 @@ class PropertyEnumerator extends Enumerator
      *
      * @return array
      */
-    protected function getProperties(bool $showAll, \Reflector $reflector, bool $noInherit = false): array
+    protected function getProperties($showAll, \Reflector $reflector, $noInherit = false)
     {
         $className = $reflector->getName();
 
@@ -77,7 +77,7 @@ class PropertyEnumerator extends Enumerator
             }
         }
 
-        \ksort($properties, \SORT_NATURAL | \SORT_FLAG_CASE);
+        \ksort($properties, SORT_NATURAL | SORT_FLAG_CASE);
 
         return $properties;
     }
@@ -89,14 +89,14 @@ class PropertyEnumerator extends Enumerator
      *
      * @return array
      */
-    protected function prepareProperties(array $properties, $target = null): array
+    protected function prepareProperties(array $properties, $target = null)
     {
         // My kingdom for a generator.
         $ret = [];
 
         foreach ($properties as $name => $property) {
             if ($this->showItem($name)) {
-                $fname = '$'.$name;
+                $fname = '$' . $name;
                 $ret[$fname] = [
                     'name'  => $fname,
                     'style' => $this->getVisibilityStyle($property),
@@ -115,9 +115,11 @@ class PropertyEnumerator extends Enumerator
      *
      * @return string
      */
-    protected function getKindLabel(\ReflectionClass $reflector): string
+    protected function getKindLabel(\ReflectionClass $reflector)
     {
-        if (\method_exists($reflector, 'isTrait') && $reflector->isTrait()) {
+        if ($reflector->isInterface()) {
+            return 'Interface Properties';
+        } elseif (\method_exists($reflector, 'isTrait') && $reflector->isTrait()) {
             return 'Trait Properties';
         } else {
             return 'Class Properties';
@@ -131,7 +133,7 @@ class PropertyEnumerator extends Enumerator
      *
      * @return string
      */
-    private function getVisibilityStyle(\ReflectionProperty $property): string
+    private function getVisibilityStyle(\ReflectionProperty $property)
     {
         if ($property->isPublic()) {
             return self::IS_PUBLIC;
@@ -150,13 +152,9 @@ class PropertyEnumerator extends Enumerator
      *
      * @return string
      */
-    protected function presentValue(\ReflectionProperty $property, $target): string
+    protected function presentValue(\ReflectionProperty $property, $target)
     {
-        if (!$target) {
-            return '';
-        }
-
-        // If $target is a class or trait (try to) get the default
+        // If $target is a class, trait or interface (try to) get the default
         // value for the property.
         if (!\is_object($target)) {
             try {
@@ -165,9 +163,9 @@ class PropertyEnumerator extends Enumerator
                 if (\array_key_exists($property->name, $props)) {
                     $suffix = $property->isStatic() ? '' : ' <aside>(default)</aside>';
 
-                    return $this->presentRef($props[$property->name]).$suffix;
+                    return $this->presentRef($props[$property->name]) . $suffix;
                 }
-            } catch (\Throwable $e) {
+            } catch (\Exception $e) {
                 // Well, we gave it a shot.
             }
 

@@ -1,7 +1,4 @@
 <?php
-/**
- * 数据库，postgres进程
- */
 
 namespace Illuminate\Database\Query\Processors;
 
@@ -11,21 +8,16 @@ class PostgresProcessor extends Processor
 {
     /**
      * Process an "insert get ID" query.
-	 * 处理"insert get ID"查询
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $sql
-     * @param  array  $values
-     * @param  string|null  $sequence
+     * @param  array   $values
+     * @param  string  $sequence
      * @return int
      */
     public function processInsertGetId(Builder $query, $sql, $values, $sequence = null)
     {
-        $connection = $query->getConnection();
-
-        $connection->recordsHaveBeenModified();
-
-        $result = $connection->selectFromWriteConnection($sql, $values)[0];
+        $result = $query->getConnection()->selectFromWriteConnection($sql, $values)[0];
 
         $sequence = $sequence ?: 'id';
 
@@ -36,7 +28,6 @@ class PostgresProcessor extends Processor
 
     /**
      * Process the results of a column listing query.
-	 * 处理列清单查询的结果
      *
      * @param  array  $results
      * @return array

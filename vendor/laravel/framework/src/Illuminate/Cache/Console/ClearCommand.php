@@ -1,21 +1,17 @@
 <?php
-/**
- * 缓存，清除命令
- */
 
 namespace Illuminate\Cache\Console;
 
-use Illuminate\Cache\CacheManager;
 use Illuminate\Console\Command;
+use Illuminate\Cache\CacheManager;
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
 
 class ClearCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
      *
      * @var string
      */
@@ -23,7 +19,6 @@ class ClearCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
      *
      * @var string
      */
@@ -31,7 +26,6 @@ class ClearCommand extends Command
 
     /**
      * The cache manager instance.
-	 * 缓存管理实例
      *
      * @var \Illuminate\Cache\CacheManager
      */
@@ -39,7 +33,6 @@ class ClearCommand extends Command
 
     /**
      * The filesystem instance.
-	 * 文件系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -47,7 +40,6 @@ class ClearCommand extends Command
 
     /**
      * Create a new cache clear command instance.
-	 * 创建新的缓存清除命令实例
      *
      * @param  \Illuminate\Cache\CacheManager  $cache
      * @param  \Illuminate\Filesystem\Filesystem  $files
@@ -63,44 +55,34 @@ class ClearCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
      *
      * @return void
      */
     public function handle()
     {
-        $this->laravel['events']->dispatch(
+        $this->laravel['events']->fire(
             'cache:clearing', [$this->argument('store'), $this->tags()]
         );
 
-        $successful = $this->cache()->flush();
+        $this->cache()->flush();
 
         $this->flushFacades();
 
-        if (! $successful) {
-            return $this->error('Failed to clear cache. Make sure you have the appropriate permissions.');
-        }
-
-        $this->laravel['events']->dispatch(
+        $this->laravel['events']->fire(
             'cache:cleared', [$this->argument('store'), $this->tags()]
         );
 
-        $this->info('Application cache cleared!');
+        $this->info('Cache cleared successfully.');
     }
 
     /**
      * Flush the real-time facades stored in the cache directory.
-	 * 刷新存储在缓存目录中的实时facade
      *
      * @return void
      */
     public function flushFacades()
     {
-        if (! $this->files->exists($storagePath = storage_path('framework/cache'))) {
-            return;
-        }
-
-        foreach ($this->files->files($storagePath) as $file) {
+        foreach ($this->files->files(storage_path('framework/cache')) as $file) {
             if (preg_match('/facade-.*\.php$/', $file)) {
                 $this->files->delete($file);
             }
@@ -109,7 +91,6 @@ class ClearCommand extends Command
 
     /**
      * Get the cache instance for the command.
-	 * 得到命令的缓存实例
      *
      * @return \Illuminate\Cache\Repository
      */
@@ -122,7 +103,6 @@ class ClearCommand extends Command
 
     /**
      * Get the tags passed to the command.
-	 * 得到传递给命令的标记
      *
      * @return array
      */
@@ -133,27 +113,25 @@ class ClearCommand extends Command
 
     /**
      * Get the console command arguments.
-	 * 得到控制台命令参数
      *
      * @return array
      */
     protected function getArguments()
     {
         return [
-            ['store', InputArgument::OPTIONAL, 'The name of the store you would like to clear'],
+            ['store', InputArgument::OPTIONAL, 'The name of the store you would like to clear.'],
         ];
     }
 
     /**
      * Get the console command options.
-	 * 得到控制台命令选项
      *
      * @return array
      */
     protected function getOptions()
     {
         return [
-            ['tags', null, InputOption::VALUE_OPTIONAL, 'The cache tags you would like to clear', null],
+            ['tags', null, InputOption::VALUE_OPTIONAL, 'The cache tags you would like to clear.', null],
         ];
     }
 }

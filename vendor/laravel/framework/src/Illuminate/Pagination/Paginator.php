@@ -1,24 +1,21 @@
 <?php
-/**
- * 分页器
- */
 
 namespace Illuminate\Pagination;
 
-use ArrayAccess;
 use Countable;
-use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Support\Collection;
-use IteratorAggregate;
+use ArrayAccess;
 use JsonSerializable;
+use IteratorAggregate;
+use Illuminate\Support\Collection;
+use Illuminate\Support\HtmlString;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
 
-class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Countable, IteratorAggregate, Jsonable, JsonSerializable, PaginatorContract
+class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Countable, IteratorAggregate, JsonSerializable, Jsonable, PaginatorContract
 {
     /**
      * Determine if there are more items in the data source.
-	 * 确定数据源中是否有更多项
      *
      * @return bool
      */
@@ -26,18 +23,15 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
 
     /**
      * Create a new paginator instance.
-	 * 创建新的分页实例
      *
      * @param  mixed  $items
      * @param  int  $perPage
      * @param  int|null  $currentPage
-     * @param  array  $options  (path, query, fragment, pageName)
+     * @param  array  $options (path, query, fragment, pageName)
      * @return void
      */
     public function __construct($items, $perPage, $currentPage = null, array $options = [])
     {
-        $this->options = $options;
-
         foreach ($options as $key => $value) {
             $this->{$key} = $value;
         }
@@ -51,7 +45,6 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
 
     /**
      * Get the current page for the request.
-	 * 得到当前页从请求中
      *
      * @param  int  $currentPage
      * @return int
@@ -65,7 +58,6 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
 
     /**
      * Set the items for the paginator.
-	 * 设置分页器的项
      *
      * @param  mixed  $items
      * @return void
@@ -81,7 +73,6 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
 
     /**
      * Get the URL for the next page.
-	 * 得到下一页的URL
      *
      * @return string|null
      */
@@ -94,7 +85,6 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
 
     /**
      * Render the paginator using the given view.
-	 * 呈现分页器使用给定视图
      *
      * @param  string|null  $view
      * @param  array  $data
@@ -107,22 +97,22 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
 
     /**
      * Render the paginator using the given view.
-	 * 呈现分页器使用给定视图
      *
      * @param  string|null  $view
      * @param  array  $data
-     * @return \Illuminate\Contracts\Support\Htmlable
+     * @return string
      */
     public function render($view = null, $data = [])
     {
-        return static::viewFactory()->make($view ?: static::$defaultSimpleView, array_merge($data, [
-            'paginator' => $this,
-        ]));
+        return new HtmlString(
+            static::viewFactory()->make($view ?: static::$defaultSimpleView, array_merge($data, [
+                'paginator' => $this,
+            ]))->render()
+        );
     }
 
     /**
      * Manually indicate that the paginator does have more pages.
-	 * 手动指明分页器确实有更多的页面
      *
      * @param  bool  $hasMore
      * @return $this
@@ -136,7 +126,6 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
 
     /**
      * Determine if there are more items in the data source.
-	 * 确定数据源中是否有更多项
      *
      * @return bool
      */
@@ -147,7 +136,6 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
 
     /**
      * Get the instance as an array.
-	 * 得到实例以数组形式
      *
      * @return array
      */
@@ -159,7 +147,7 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
             'first_page_url' => $this->url(1),
             'from' => $this->firstItem(),
             'next_page_url' => $this->nextPageUrl(),
-            'path' => $this->path(),
+            'path' => $this->path,
             'per_page' => $this->perPage(),
             'prev_page_url' => $this->previousPageUrl(),
             'to' => $this->lastItem(),
@@ -168,7 +156,6 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
 
     /**
      * Convert the object into something JSON serializable.
-	 * 转换对象为JSON可序列化的对象
      *
      * @return array
      */
@@ -179,7 +166,6 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
 
     /**
      * Convert the object to its JSON representation.
-	 * 转换对象为JSON表示形式
      *
      * @param  int  $options
      * @return string

@@ -1,7 +1,4 @@
 <?php
-/**
- * Session空会话处理
- */
 
 namespace Illuminate\Session;
 

@@ -1,18 +1,14 @@
 <?php
-/**
- * 通知，简单通知
- */
 
 namespace Illuminate\Notifications\Messages;
 
-use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Notifications\Action;
+use Illuminate\Contracts\Support\Htmlable;
 
 class SimpleMessage
 {
     /**
      * The "level" of the notification (info, success, error).
-	 * 通知的"级别"(info, success, error)
      *
      * @var string
      */
@@ -20,7 +16,6 @@ class SimpleMessage
 
     /**
      * The subject of the notification.
-	 * 通知的主题
      *
      * @var string
      */
@@ -28,7 +23,6 @@ class SimpleMessage
 
     /**
      * The notification's greeting.
-	 * 通知的问候
      *
      * @var string
      */
@@ -36,7 +30,6 @@ class SimpleMessage
 
     /**
      * The notification's salutation.
-	 * 通知的称呼
      *
      * @var string
      */
@@ -44,7 +37,6 @@ class SimpleMessage
 
     /**
      * The "intro" lines of the notification.
-	 * 通知的"介绍"行
      *
      * @var array
      */
@@ -52,7 +44,6 @@ class SimpleMessage
 
     /**
      * The "outro" lines of the notification.
-	 * 通知的"outo"行
      *
      * @var array
      */
@@ -60,7 +51,6 @@ class SimpleMessage
 
     /**
      * The text / label for the action.
-	 * 操作的文本/标签
      *
      * @var string
      */
@@ -68,7 +58,6 @@ class SimpleMessage
 
     /**
      * The action URL.
-	 * 动作的URL
      *
      * @var string
      */
@@ -76,7 +65,6 @@ class SimpleMessage
 
     /**
      * Indicate that the notification gives information about a successful operation.
-	 * 指明通知提供有关成功操作的信息
      *
      * @return $this
      */
@@ -89,7 +77,6 @@ class SimpleMessage
 
     /**
      * Indicate that the notification gives information about an error.
-	 * 指明通知提供有关错误的信息
      *
      * @return $this
      */
@@ -102,7 +89,6 @@ class SimpleMessage
 
     /**
      * Set the "level" of the notification (success, error, etc.).
-	 * 设置通知的"级别"(成功、错误等)
      *
      * @param  string  $level
      * @return $this
@@ -116,7 +102,6 @@ class SimpleMessage
 
     /**
      * Set the subject of the notification.
-	 * 设置通知的主题
      *
      * @param  string  $subject
      * @return $this
@@ -130,7 +115,6 @@ class SimpleMessage
 
     /**
      * Set the greeting of the notification.
-	 * 设置通知的欢迎语
      *
      * @param  string  $greeting
      * @return $this
@@ -144,7 +128,6 @@ class SimpleMessage
 
     /**
      * Set the salutation of the notification.
-	 * 设置通知的称呼
      *
      * @param  string  $salutation
      * @return $this
@@ -158,7 +141,6 @@ class SimpleMessage
 
     /**
      * Add a line of text to the notification.
-	 * 添加一行文本向通知
      *
      * @param  mixed  $line
      * @return $this
@@ -170,7 +152,6 @@ class SimpleMessage
 
     /**
      * Add a line of text to the notification.
-	 * 添加一行文本向通知
      *
      * @param  mixed  $line
      * @return $this
@@ -190,7 +171,6 @@ class SimpleMessage
 
     /**
      * Format the given line of text.
-	 * 格式化给定的文本行
      *
      * @param  \Illuminate\Contracts\Support\Htmlable|string|array  $line
      * @return \Illuminate\Contracts\Support\Htmlable|string
@@ -210,7 +190,6 @@ class SimpleMessage
 
     /**
      * Configure the "call to action" button.
-	 * 配置"动作召唤"按钮
      *
      * @param  string  $text
      * @param  string  $url
@@ -226,7 +205,6 @@ class SimpleMessage
 
     /**
      * Get an array representation of the message.
-	 * 得到消息的数组表示形式
      *
      * @return array
      */
@@ -241,7 +219,6 @@ class SimpleMessage
             'outroLines' => $this->outroLines,
             'actionText' => $this->actionText,
             'actionUrl' => $this->actionUrl,
-            'displayableActionUrl' => str_replace(['mailto:', 'tel:'], '', $this->actionUrl),
         ];
     }
 }

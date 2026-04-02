@@ -1,17 +1,14 @@
 <?php
-/**
- * 基础，优化命令
- */
 
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Input\InputOption;
 
 class OptimizeCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
      *
      * @var string
      */
@@ -19,23 +16,32 @@ class OptimizeCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
      *
      * @var string
      */
-    protected $description = 'Cache the framework bootstrap files';
+    protected $description = 'Optimize the framework for better performance (deprecated)';
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
      *
      * @return void
      */
     public function handle()
     {
-        $this->call('config:cache');
-        $this->call('route:cache');
+        //
+    }
 
-        $this->info('Files cached successfully!');
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['force', null, InputOption::VALUE_NONE, 'Force the compiled class file to be written (deprecated).'],
+
+            ['psr', null, InputOption::VALUE_NONE, 'Do not optimize Composer dump-autoload.'],
+        ];
     }
 }

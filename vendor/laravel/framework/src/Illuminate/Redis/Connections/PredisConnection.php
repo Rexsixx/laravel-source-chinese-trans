@@ -1,31 +1,16 @@
 <?php
-/**
- * Redis，Predis连接
- */
 
 namespace Illuminate\Redis\Connections;
 
 use Closure;
-use Illuminate\Contracts\Redis\Connection as ConnectionContract;
-use Predis\Command\ServerFlushDatabase;
-use Predis\Connection\Aggregate\ClusterInterface;
 
 /**
  * @mixin \Predis\Client
  */
-class PredisConnection extends Connection implements ConnectionContract
+class PredisConnection extends Connection
 {
     /**
-     * The Predis client.
-	 * Predis客户端
-     *
-     * @var \Predis\Client
-     */
-    protected $client;
-
-    /**
      * Create a new Predis connection.
-	 * 创建新的Predis连接
      *
      * @param  \Predis\Client  $client
      * @return void
@@ -37,7 +22,6 @@ class PredisConnection extends Connection implements ConnectionContract
 
     /**
      * Subscribe to a set of given channels for messages.
-	 * 订阅一组给定的通道为消息
      *
      * @param  array|string  $channels
      * @param  \Closure  $callback
@@ -48,7 +32,7 @@ class PredisConnection extends Connection implements ConnectionContract
     {
         $loop = $this->pubSubLoop();
 
-        $loop->{$method}(...array_values((array) $channels));
+        call_user_func_array([$loop, $method], (array) $channels);
 
         foreach ($loop as $message) {
             if ($message->kind === 'message' || $message->kind === 'pmessage') {
@@ -57,22 +41,5 @@ class PredisConnection extends Connection implements ConnectionContract
         }
 
         unset($loop);
-    }
-
-    /**
-     * Flush the selected Redis database.
-	 * 清除已选择的Predis数据库
-     *
-     * @return void
-     */
-    public function flushdb()
-    {
-        if (! $this->client->getConnection() instanceof ClusterInterface) {
-            return $this->command('flushdb');
-        }
-
-        foreach ($this->getConnection() as $node) {
-            $node->executeCommand(new ServerFlushDatabase);
-        }
     }
 }

@@ -74,8 +74,6 @@ class TranslatorTest extends TestCase
     }
 
     /**
-     * @requires extension intl
-     *
      * @dataProvider getTransChoiceTests
      */
     public function testTransChoiceWithDefaultLocale($expected, $id, $number)
@@ -167,11 +165,11 @@ class TranslatorTest extends TestCase
     /**
      * @dataProvider getChooseTests
      */
-    public function testChoose($expected, $id, $number, $locale = null)
+    public function testChoose($expected, $id, $number)
     {
         $translator = $this->getTranslator();
 
-        $this->assertEquals($expected, $translator->trans($id, ['%count%' => $number], null, $locale));
+        $this->assertEquals($expected, $translator->trans($id, ['%count%' => $number]));
     }
 
     public function testReturnMessageIfExactlyOneStandardRuleIsGiven()
@@ -280,18 +278,6 @@ class TranslatorTest extends TestCase
             ['', '|', 1],
             // Empty plural set (3 plural forms) from a .PO file
             ['', '||', 1],
-
-            // Floating values
-            ['1.5 liters', '%count% liter|%count% liters', 1.5],
-            ['1.5 litre', '%count% litre|%count% litres', 1.5, 'fr'],
-
-            // Negative values
-            ['-1 degree', '%count% degree|%count% degrees', -1],
-            ['-1 degré', '%count% degré|%count% degrés', -1],
-            ['-1.5 degrees', '%count% degree|%count% degrees', -1.5],
-            ['-1.5 degré', '%count% degré|%count% degrés', -1.5, 'fr'],
-            ['-2 degrees', '%count% degree|%count% degrees', -2],
-            ['-2 degrés', '%count% degré|%count% degrés', -2],
         ];
     }
 
@@ -362,7 +348,7 @@ class TranslatorTest extends TestCase
         foreach ($matrix as $langCode => $data) {
             $indexes = array_flip($data);
             if ($expectSuccess) {
-                $this->assertEquals($nplural, \count($indexes), "Langcode '$langCode' has '$nplural' plural forms.");
+                $this->assertCount($nplural, $indexes, "Langcode '$langCode' has '$nplural' plural forms.");
             } else {
                 $this->assertNotEquals((int) $nplural, \count($indexes), "Langcode '$langCode' has '$nplural' plural forms.");
             }

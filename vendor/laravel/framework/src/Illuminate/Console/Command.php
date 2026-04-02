@@ -1,33 +1,46 @@
 <?php
-/**
- * 控制台命令
- */
 
 namespace Illuminate\Console;
 
 use Illuminate\Support\Traits\Macroable;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Illuminate\Contracts\Support\Arrayable;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 class Command extends SymfonyCommand
 {
-    use Concerns\CallsCommands,
-        Concerns\HasParameters,
-        Concerns\InteractsWithIO,
-        Macroable;
+    use Macroable;
 
     /**
      * The Laravel application instance.
-	 * laravel应用实例
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $laravel;
 
     /**
+     * The input interface implementation.
+     *
+     * @var \Symfony\Component\Console\Input\InputInterface
+     */
+    protected $input;
+
+    /**
+     * The output interface implementation.
+     *
+     * @var \Illuminate\Console\OutputStyle
+     */
+    protected $output;
+
+    /**
      * The name and signature of the console command.
-	 * 名称和签名控制台命令
      *
      * @var string
      */
@@ -35,7 +48,6 @@ class Command extends SymfonyCommand
 
     /**
      * The console command name.
-	 * 控制台命令名
      *
      * @var string
      */
@@ -43,31 +55,40 @@ class Command extends SymfonyCommand
 
     /**
      * The console command description.
-	 * 控制台命令描述
      *
-     * @var string|null
+     * @var string
      */
     protected $description;
 
     /**
-     * The console command help text.
-	 * 控制台命令帮助文本
-     *
-     * @var string|null
-     */
-    protected $help;
-
-    /**
      * Indicates whether the command should be shown in the Artisan command list.
-	 * 指明该命令是否应该显示在Artisan命令列表中
      *
      * @var bool
      */
     protected $hidden = false;
 
     /**
+     * The default verbosity of output commands.
+     *
+     * @var int
+     */
+    protected $verbosity = OutputInterface::VERBOSITY_NORMAL;
+
+    /**
+     * The mapping between human readable verbosity levels and Symfony's OutputInterface.
+     *
+     * @var array
+     */
+    protected $verbosityMap = [
+        'v' => OutputInterface::VERBOSITY_VERBOSE,
+        'vv' => OutputInterface::VERBOSITY_VERY_VERBOSE,
+        'vvv' => OutputInterface::VERBOSITY_DEBUG,
+        'quiet' => OutputInterface::VERBOSITY_QUIET,
+        'normal' => OutputInterface::VERBOSITY_NORMAL,
+    ];
+
+    /**
      * Create a new console command instance.
-	 * 创建新的控制台命令实例
      *
      * @return void
      */
@@ -76,8 +97,6 @@ class Command extends SymfonyCommand
         // We will go ahead and set the name, description, and parameters on console
         // commands just to make things a little easier on the developer. This is
         // so they don't have to all be manually specified in the constructors.
-		// 我们将继续在控制台命令上设置名称、描述和参数，只是为了让开发人员更容易一些。
-		// 这样它们就不必在构造函数中手动指定。
         if (isset($this->signature)) {
             $this->configureUsingFluentDefinition();
         } else {
@@ -87,13 +106,9 @@ class Command extends SymfonyCommand
         // Once we have constructed the command, we'll set the description and other
         // related properties of the command. If a signature wasn't used to build
         // the command we'll set the arguments and the options on this command.
-		// 构造完命令后，我们将设置命令的描述和其他相关属性。
-		// 如果没有使用签名来构建命令，我们将设置此命令的参数和选项。
-        $this->setDescription((string) $this->description);
+        $this->setDescription($this->description);
 
-        $this->setHelp((string) $this->help);
-
-        $this->setHidden($this->isHidden());
+        $this->setHidden($this->hidden);
 
         if (! isset($this->signature)) {
             $this->specifyParameters();
@@ -102,28 +117,48 @@ class Command extends SymfonyCommand
 
     /**
      * Configure the console command using a fluent definition.
-	 * 配置console命令使用连贯的定义
      *
      * @return void
      */
     protected function configureUsingFluentDefinition()
     {
-        [$name, $arguments, $options] = Parser::parse($this->signature);
+        list($name, $arguments, $options) = Parser::parse($this->signature);
 
         parent::__construct($this->name = $name);
 
         // After parsing the signature we will spin through the arguments and options
         // and set them on this command. These will already be changed into proper
         // instances of these "InputArgument" and "InputOption" Symfony classes.
-		// 解析签名后，我们将遍历参数和选项，并在此命令上设置它们。
-		// 这些已经被更改为这些“InputArgument”和“InputOption”Symfony类的适当实例。
-        $this->getDefinition()->addArguments($arguments);
-        $this->getDefinition()->addOptions($options);
+        foreach ($arguments as $argument) {
+            $this->getDefinition()->addArgument($argument);
+        }
+
+        foreach ($options as $option) {
+            $this->getDefinition()->addOption($option);
+        }
+    }
+
+    /**
+     * Specify the arguments and options on the command.
+     *
+     * @return void
+     */
+    protected function specifyParameters()
+    {
+        // We will loop through all of the arguments and options for the command and
+        // set them all on the base command instance. This specifies what can get
+        // passed into these commands as "parameters" to control the execution.
+        foreach ($this->getArguments() as $arguments) {
+            call_user_func_array([$this, 'addArgument'], $arguments);
+        }
+
+        foreach ($this->getOptions() as $options) {
+            call_user_func_array([$this, 'addOption'], $options);
+        }
     }
 
     /**
      * Run the console command.
-	 * 运行控制台命令
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
@@ -131,18 +166,13 @@ class Command extends SymfonyCommand
      */
     public function run(InputInterface $input, OutputInterface $output)
     {
-        $this->output = $this->laravel->make(
-            OutputStyle::class, ['input' => $input, 'output' => $output]
-        );
-
         return parent::run(
-            $this->input = $input, $this->output
+            $this->input = $input, $this->output = new OutputStyle($input, $output)
         );
     }
 
     /**
      * Execute the console command.
-	 * 运行控制台命令
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
@@ -154,52 +184,409 @@ class Command extends SymfonyCommand
     }
 
     /**
-     * Resolve the console command instance for the given command.
-	 * 解析给定命令的控制台命令实例
+     * Call another console command.
      *
-     * @param  \Symfony\Component\Console\Command\Command|string  $command
-     * @return \Symfony\Component\Console\Command\Command
+     * @param  string  $command
+     * @param  array   $arguments
+     * @return int
      */
-    protected function resolveCommand($command)
+    public function call($command, array $arguments = [])
     {
-        if (! class_exists($command)) {
-            return $this->getApplication()->find($command);
-        }
+        $arguments['command'] = $command;
 
-        $command = $this->laravel->make($command);
-
-        if ($command instanceof SymfonyCommand) {
-            $command->setApplication($this->getApplication());
-        }
-
-        if ($command instanceof self) {
-            $command->setLaravel($this->getLaravel());
-        }
-
-        return $command;
+        return $this->getApplication()->find($command)->run(
+            $this->createInputFromArguments($arguments), $this->output
+        );
     }
 
     /**
-     * {@inheritdoc}
+     * Call another console command silently.
+     *
+     * @param  string  $command
+     * @param  array   $arguments
+     * @return int
      */
-    public function isHidden()
+    public function callSilent($command, array $arguments = [])
     {
-        return $this->hidden;
+        $arguments['command'] = $command;
+
+        return $this->getApplication()->find($command)->run(
+            $this->createInputFromArguments($arguments), new NullOutput
+        );
     }
 
     /**
-     * {@inheritdoc}
+     * Create an input instance from the given arguments.
+     *
+     * @param  array  $arguments
+     * @return \Symfony\Component\Console\Input\ArrayInput
      */
-    public function setHidden($hidden)
+    protected function createInputFromArguments(array $arguments)
     {
-        parent::setHidden($this->hidden = $hidden);
+        return tap(new ArrayInput(array_merge($this->context(), $arguments)), function ($input) {
+            if ($input->hasParameterOption(['--no-interaction'], true)) {
+                $input->setInteractive(false);
+            }
+        });
+    }
 
-        return $this;
+    /**
+     * Get all of the context passed to the command.
+     *
+     * @return array
+     */
+    protected function context()
+    {
+        $options = array_only($this->option(), ['no-interaction', 'ansi', 'no-ansi', 'quiet', 'verbose']);
+
+        return collect($options)->mapWithKeys(function ($value, $key) {
+            return ["--{$key}" => $value];
+        })->filter()->all();
+    }
+
+    /**
+     * Determine if the given argument is present.
+     *
+     * @param  string|int  $name
+     * @return bool
+     */
+    public function hasArgument($name)
+    {
+        return $this->input->hasArgument($name);
+    }
+
+    /**
+     * Get the value of a command argument.
+     *
+     * @param  string|null  $key
+     * @return string|array
+     */
+    public function argument($key = null)
+    {
+        if (is_null($key)) {
+            return $this->input->getArguments();
+        }
+
+        return $this->input->getArgument($key);
+    }
+
+    /**
+     * Get all of the arguments passed to the command.
+     *
+     * @return array
+     */
+    public function arguments()
+    {
+        return $this->argument();
+    }
+
+    /**
+     * Determine if the given option is present.
+     *
+     * @param  string  $name
+     * @return bool
+     */
+    public function hasOption($name)
+    {
+        return $this->input->hasOption($name);
+    }
+
+    /**
+     * Get the value of a command option.
+     *
+     * @param  string  $key
+     * @return string|array
+     */
+    public function option($key = null)
+    {
+        if (is_null($key)) {
+            return $this->input->getOptions();
+        }
+
+        return $this->input->getOption($key);
+    }
+
+    /**
+     * Get all of the options passed to the command.
+     *
+     * @return array
+     */
+    public function options()
+    {
+        return $this->option();
+    }
+
+    /**
+     * Confirm a question with the user.
+     *
+     * @param  string  $question
+     * @param  bool    $default
+     * @return bool
+     */
+    public function confirm($question, $default = false)
+    {
+        return $this->output->confirm($question, $default);
+    }
+
+    /**
+     * Prompt the user for input.
+     *
+     * @param  string  $question
+     * @param  string  $default
+     * @return string
+     */
+    public function ask($question, $default = null)
+    {
+        return $this->output->ask($question, $default);
+    }
+
+    /**
+     * Prompt the user for input with auto completion.
+     *
+     * @param  string  $question
+     * @param  array   $choices
+     * @param  string  $default
+     * @return string
+     */
+    public function anticipate($question, array $choices, $default = null)
+    {
+        return $this->askWithCompletion($question, $choices, $default);
+    }
+
+    /**
+     * Prompt the user for input with auto completion.
+     *
+     * @param  string  $question
+     * @param  array   $choices
+     * @param  string  $default
+     * @return string
+     */
+    public function askWithCompletion($question, array $choices, $default = null)
+    {
+        $question = new Question($question, $default);
+
+        $question->setAutocompleterValues($choices);
+
+        return $this->output->askQuestion($question);
+    }
+
+    /**
+     * Prompt the user for input but hide the answer from the console.
+     *
+     * @param  string  $question
+     * @param  bool    $fallback
+     * @return string
+     */
+    public function secret($question, $fallback = true)
+    {
+        $question = new Question($question);
+
+        $question->setHidden(true)->setHiddenFallback($fallback);
+
+        return $this->output->askQuestion($question);
+    }
+
+    /**
+     * Give the user a single choice from an array of answers.
+     *
+     * @param  string  $question
+     * @param  array   $choices
+     * @param  string  $default
+     * @param  mixed   $attempts
+     * @param  bool    $multiple
+     * @return string
+     */
+    public function choice($question, array $choices, $default = null, $attempts = null, $multiple = null)
+    {
+        $question = new ChoiceQuestion($question, $choices, $default);
+
+        $question->setMaxAttempts($attempts)->setMultiselect($multiple);
+
+        return $this->output->askQuestion($question);
+    }
+
+    /**
+     * Format input to textual table.
+     *
+     * @param  array   $headers
+     * @param  \Illuminate\Contracts\Support\Arrayable|array  $rows
+     * @param  string  $tableStyle
+     * @param  array   $columnStyles
+     * @return void
+     */
+    public function table($headers, $rows, $tableStyle = 'default', array $columnStyles = [])
+    {
+        $table = new Table($this->output);
+
+        if ($rows instanceof Arrayable) {
+            $rows = $rows->toArray();
+        }
+
+        $table->setHeaders((array) $headers)->setRows($rows)->setStyle($tableStyle);
+
+        foreach ($columnStyles as $columnIndex => $columnStyle) {
+            $table->setColumnStyle($columnIndex, $columnStyle);
+        }
+
+        $table->render();
+    }
+
+    /**
+     * Write a string as information output.
+     *
+     * @param  string  $string
+     * @param  null|int|string  $verbosity
+     * @return void
+     */
+    public function info($string, $verbosity = null)
+    {
+        $this->line($string, 'info', $verbosity);
+    }
+
+    /**
+     * Write a string as standard output.
+     *
+     * @param  string  $string
+     * @param  string  $style
+     * @param  null|int|string  $verbosity
+     * @return void
+     */
+    public function line($string, $style = null, $verbosity = null)
+    {
+        $styled = $style ? "<$style>$string</$style>" : $string;
+
+        $this->output->writeln($styled, $this->parseVerbosity($verbosity));
+    }
+
+    /**
+     * Write a string as comment output.
+     *
+     * @param  string  $string
+     * @param  null|int|string  $verbosity
+     * @return void
+     */
+    public function comment($string, $verbosity = null)
+    {
+        $this->line($string, 'comment', $verbosity);
+    }
+
+    /**
+     * Write a string as question output.
+     *
+     * @param  string  $string
+     * @param  null|int|string  $verbosity
+     * @return void
+     */
+    public function question($string, $verbosity = null)
+    {
+        $this->line($string, 'question', $verbosity);
+    }
+
+    /**
+     * Write a string as error output.
+     *
+     * @param  string  $string
+     * @param  null|int|string  $verbosity
+     * @return void
+     */
+    public function error($string, $verbosity = null)
+    {
+        $this->line($string, 'error', $verbosity);
+    }
+
+    /**
+     * Write a string as warning output.
+     *
+     * @param  string  $string
+     * @param  null|int|string  $verbosity
+     * @return void
+     */
+    public function warn($string, $verbosity = null)
+    {
+        if (! $this->output->getFormatter()->hasStyle('warning')) {
+            $style = new OutputFormatterStyle('yellow');
+
+            $this->output->getFormatter()->setStyle('warning', $style);
+        }
+
+        $this->line($string, 'warning', $verbosity);
+    }
+
+    /**
+     * Write a string in an alert box.
+     *
+     * @param  string  $string
+     * @return void
+     */
+    public function alert($string)
+    {
+        $this->comment(str_repeat('*', strlen($string) + 12));
+        $this->comment('*     '.$string.'     *');
+        $this->comment(str_repeat('*', strlen($string) + 12));
+
+        $this->output->newLine();
+    }
+
+    /**
+     * Set the verbosity level.
+     *
+     * @param  string|int  $level
+     * @return void
+     */
+    protected function setVerbosity($level)
+    {
+        $this->verbosity = $this->parseVerbosity($level);
+    }
+
+    /**
+     * Get the verbosity level in terms of Symfony's OutputInterface level.
+     *
+     * @param  string|int  $level
+     * @return int
+     */
+    protected function parseVerbosity($level = null)
+    {
+        if (isset($this->verbosityMap[$level])) {
+            $level = $this->verbosityMap[$level];
+        } elseif (! is_int($level)) {
+            $level = $this->verbosity;
+        }
+
+        return $level;
+    }
+
+    /**
+     * Get the console command arguments.
+     *
+     * @return array
+     */
+    protected function getArguments()
+    {
+        return [];
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [];
+    }
+
+    /**
+     * Get the output implementation.
+     *
+     * @return \Symfony\Component\Console\Output\OutputInterface
+     */
+    public function getOutput()
+    {
+        return $this->output;
     }
 
     /**
      * Get the Laravel application instance.
-	 * 得到Laravel应用实例
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */
@@ -210,7 +597,6 @@ class Command extends SymfonyCommand
 
     /**
      * Set the Laravel application instance.
-	 * 设置Laravel应用实例
      *
      * @param  \Illuminate\Contracts\Container\Container  $laravel
      * @return void

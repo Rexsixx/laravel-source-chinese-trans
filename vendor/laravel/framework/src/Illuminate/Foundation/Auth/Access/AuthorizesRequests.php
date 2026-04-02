@@ -1,18 +1,14 @@
 <?php
-/**
- * 基础，授权请求
- */
 
 namespace Illuminate\Foundation\Auth\Access;
 
-use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Support\Str;
+use Illuminate\Contracts\Auth\Access\Gate;
 
 trait AuthorizesRequests
 {
     /**
      * Authorize a given action for the current user.
-	 * 为当前用户授权给定的操作
      *
      * @param  mixed  $ability
      * @param  mixed|array  $arguments
@@ -22,14 +18,13 @@ trait AuthorizesRequests
      */
     public function authorize($ability, $arguments = [])
     {
-        [$ability, $arguments] = $this->parseAbilityAndArguments($ability, $arguments);
+        list($ability, $arguments) = $this->parseAbilityAndArguments($ability, $arguments);
 
         return app(Gate::class)->authorize($ability, $arguments);
     }
 
     /**
      * Authorize a given action for a user.
-	 * 为用户授权给定的操作
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable|mixed  $user
      * @param  mixed  $ability
@@ -40,14 +35,13 @@ trait AuthorizesRequests
      */
     public function authorizeForUser($user, $ability, $arguments = [])
     {
-        [$ability, $arguments] = $this->parseAbilityAndArguments($ability, $arguments);
+        list($ability, $arguments) = $this->parseAbilityAndArguments($ability, $arguments);
 
         return app(Gate::class)->forUser($user)->authorize($ability, $arguments);
     }
 
     /**
      * Guesses the ability's name if it wasn't provided.
-	 * 猜测该能力的名称，如果没有提供。
      *
      * @param  mixed  $ability
      * @param  mixed|array  $arguments
@@ -66,7 +60,6 @@ trait AuthorizesRequests
 
     /**
      * Normalize the ability name that has been guessed from the method name.
-	 * 规范化从方法名中猜出的能力名称
      *
      * @param  string  $ability
      * @return string
@@ -80,7 +73,6 @@ trait AuthorizesRequests
 
     /**
      * Authorize a resource action based on the incoming request.
-	 * 根据传入请求授权资源操作
      *
      * @param  string  $model
      * @param  string|null  $parameter
@@ -107,14 +99,12 @@ trait AuthorizesRequests
 
     /**
      * Get the map of resource methods to ability names.
-	 * 得到资源方法到能力名称的映射
      *
      * @return array
      */
     protected function resourceAbilityMap()
     {
         return [
-            'index' => 'viewAny',
             'show' => 'view',
             'create' => 'create',
             'store' => 'create',
@@ -126,7 +116,6 @@ trait AuthorizesRequests
 
     /**
      * Get the list of resource methods which do not have model parameters.
-	 * 得到没有模型参数的资源方法列表
      *
      * @return array
      */

@@ -1,7 +1,4 @@
 <?php
-/**
- * 数据库，Eloquent有多个关系
- */
 
 namespace Illuminate\Database\Eloquent\Relations;
 
@@ -11,22 +8,18 @@ class HasMany extends HasOneOrMany
 {
     /**
      * Get the results of the relationship.
-	 * 得到关系的结果
      *
      * @return mixed
      */
     public function getResults()
     {
-        return ! is_null($this->getParentKey())
-                ? $this->query->get()
-                : $this->related->newCollection();
+        return $this->query->get();
     }
 
     /**
      * Initialize the relation on a set of models.
-	 * 初始化一组模型上的关系
      *
-     * @param  array  $models
+     * @param  array   $models
      * @param  string  $relation
      * @return array
      */
@@ -41,9 +34,8 @@ class HasMany extends HasOneOrMany
 
     /**
      * Match the eagerly loaded results to their parents.
-	 * 将急切加载的结果与他们的父类匹配
      *
-     * @param  array  $models
+     * @param  array   $models
      * @param  \Illuminate\Database\Eloquent\Collection  $results
      * @param  string  $relation
      * @return array

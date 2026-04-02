@@ -1,21 +1,23 @@
 <?php
-/**
- * 总线服务提供者
- */
 
 namespace Illuminate\Bus;
 
-use Illuminate\Contracts\Bus\Dispatcher as DispatcherContract;
-use Illuminate\Contracts\Bus\QueueingDispatcher as QueueingDispatcherContract;
-use Illuminate\Contracts\Queue\Factory as QueueFactoryContract;
-use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Bus\Dispatcher as DispatcherContract;
+use Illuminate\Contracts\Queue\Factory as QueueFactoryContract;
+use Illuminate\Contracts\Bus\QueueingDispatcher as QueueingDispatcherContract;
 
-class BusServiceProvider extends ServiceProvider implements DeferrableProvider
+class BusServiceProvider extends ServiceProvider
 {
     /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = true;
+
+    /**
      * Register the service provider.
-	 * 注册服务提供者
      *
      * @return void
      */
@@ -38,7 +40,6 @@ class BusServiceProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Get the services provided by the provider.
-	 * 得到提供的服务通过提供者
      *
      * @return array
      */

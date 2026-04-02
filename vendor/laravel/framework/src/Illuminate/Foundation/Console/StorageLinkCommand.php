@@ -1,7 +1,4 @@
 <?php
-/**
- * 基础，存储链路命令
- */
 
 namespace Illuminate\Foundation\Console;
 
@@ -11,7 +8,6 @@ class StorageLinkCommand extends Command
 {
     /**
      * The console command signature.
-	 * 控制台命令签名
      *
      * @var string
      */
@@ -19,7 +15,6 @@ class StorageLinkCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
      *
      * @var string
      */
@@ -27,7 +22,6 @@ class StorageLinkCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
      *
      * @return void
      */
@@ -35,10 +29,6 @@ class StorageLinkCommand extends Command
     {
         if (file_exists(public_path('storage'))) {
             return $this->error('The "public/storage" directory already exists.');
-        }
-
-        if (is_link(public_path('storage'))) {
-            $this->laravel->make('files')->delete(public_path('storage'));
         }
 
         $this->laravel->make('files')->link(

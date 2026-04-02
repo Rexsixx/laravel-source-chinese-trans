@@ -1,14 +1,11 @@
 <?php
-/**
- * 事件呼叫队列监听者
- */
 
 namespace Illuminate\Events;
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Queue\Job;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class CallQueuedListener implements ShouldQueue
 {
@@ -16,7 +13,6 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The listener class name.
-	 * 监听类名
      *
      * @var string
      */
@@ -24,7 +20,6 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The listener method.
-	 * 监听方法
      *
      * @var string
      */
@@ -32,7 +27,6 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The data to be passed to the listener.
-	 * 数据要传递给侦听器的
      *
      * @var array
      */
@@ -40,23 +34,13 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The number of times the job may be attempted.
-	 * 可能尝试该作业的次数
      *
      * @var int
      */
     public $tries;
 
     /**
-     * The number of seconds to wait before retrying the job.
-	 * 秒数重试作业之前等待的
-     *
-     * @var int
-     */
-    public $retryAfter;
-
-    /**
      * The timestamp indicating when the job should timeout.
-	 * 指明作业何时应该超时的时间戳
      *
      * @var int
      */
@@ -64,7 +48,6 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The number of seconds the job can run before timing out.
-	 * 可以运行的秒数作业在超时之前
      *
      * @var int
      */
@@ -72,7 +55,6 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Create a new job instance.
-	 * 创建新的任务实例
      *
      * @param  string  $class
      * @param  string  $method
@@ -88,7 +70,6 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Handle the queued job.
-	 * 处理排队任务
      *
      * @param  \Illuminate\Container\Container  $container
      * @return void
@@ -101,20 +82,21 @@ class CallQueuedListener implements ShouldQueue
             $this->job, $container->make($this->class)
         );
 
-        $handler->{$this->method}(...array_values($this->data));
+        call_user_func_array(
+            [$handler, $this->method], $this->data
+        );
     }
 
     /**
      * Set the job instance of the given class if necessary.
-	 * 设置给定类的作业实例如果需要。
      *
      * @param  \Illuminate\Contracts\Queue\Job  $job
-     * @param  object  $instance
-     * @return object
+     * @param  mixed  $instance
+     * @return mixed
      */
     protected function setJobInstanceIfNecessary(Job $job, $instance)
     {
-        if (in_array(InteractsWithQueue::class, class_uses_recursive($instance))) {
+        if (in_array(InteractsWithQueue::class, class_uses_recursive(get_class($instance)))) {
             $instance->setJob($job);
         }
 
@@ -123,7 +105,6 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Call the failed method on the job instance.
-	 * 调取失败方法在任务实例中
      *
      * The event instance and the exception will be passed.
      *
@@ -136,16 +117,15 @@ class CallQueuedListener implements ShouldQueue
 
         $handler = Container::getInstance()->make($this->class);
 
-        $parameters = array_merge(array_values($this->data), [$e]);
+        $parameters = array_merge($this->data, [$e]);
 
         if (method_exists($handler, 'failed')) {
-            $handler->failed(...$parameters);
+            call_user_func_array([$handler, 'failed'], $parameters);
         }
     }
 
     /**
      * Unserialize the data if needed.
-	 * 反序列化
      *
      * @return void
      */
@@ -158,7 +138,6 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Get the display name for the queued job.
-	 * 得到显示名称
      *
      * @return string
      */
@@ -169,7 +148,6 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Prepare the instance for cloning.
-	 * 准备克隆实例
      *
      * @return void
      */

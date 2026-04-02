@@ -1,7 +1,4 @@
 <?php
-/**
- * 基础，预置
- */
 
 namespace Illuminate\Foundation\Console\Presets;
 
@@ -11,7 +8,6 @@ class Preset
 {
     /**
      * Ensure the component directories we need exist.
-	 * 确保我们需要的组件目录存在
      *
      * @return void
      */
@@ -19,33 +15,29 @@ class Preset
     {
         $filesystem = new Filesystem;
 
-        if (! $filesystem->isDirectory($directory = resource_path('js/components'))) {
+        if (! $filesystem->isDirectory($directory = resource_path('assets/js/components'))) {
             $filesystem->makeDirectory($directory, 0755, true);
         }
     }
 
     /**
      * Update the "package.json" file.
-	 * 更新package.json文件
      *
-     * @param  bool  $dev
      * @return void
      */
-    protected static function updatePackages($dev = true)
+    protected static function updatePackages()
     {
         if (! file_exists(base_path('package.json'))) {
             return;
         }
 
-        $configurationKey = $dev ? 'devDependencies' : 'dependencies';
-
         $packages = json_decode(file_get_contents(base_path('package.json')), true);
 
-        $packages[$configurationKey] = static::updatePackageArray(
-            array_key_exists($configurationKey, $packages) ? $packages[$configurationKey] : []
+        $packages['devDependencies'] = static::updatePackageArray(
+            $packages['devDependencies']
         );
 
-        ksort($packages[$configurationKey]);
+        ksort($packages['devDependencies']);
 
         file_put_contents(
             base_path('package.json'),
@@ -55,7 +47,6 @@ class Preset
 
     /**
      * Remove the installed Node modules.
-	 * 移除已安装的Node模块
      *
      * @return void
      */

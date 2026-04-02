@@ -1,17 +1,13 @@
 <?php
-/**
- * 数据库，迁移存根文件
- */
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class DummyClass extends Migration
 {
     /**
      * Run the migrations.
-	 * 运行迁移
      *
      * @return void
      */
@@ -22,7 +18,6 @@ class DummyClass extends Migration
 
     /**
      * Reverse the migrations.
-	 * 逆转迁移
      *
      * @return void
      */

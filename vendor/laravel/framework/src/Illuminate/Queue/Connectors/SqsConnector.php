@@ -1,19 +1,15 @@
 <?php
-/**
- * 队列，Sqs连接器
- */
 
 namespace Illuminate\Queue\Connectors;
 
 use Aws\Sqs\SqsClient;
-use Illuminate\Queue\SqsQueue;
 use Illuminate\Support\Arr;
+use Illuminate\Queue\SqsQueue;
 
 class SqsConnector implements ConnectorInterface
 {
     /**
      * Establish a queue connection.
-	 * 建立队列连接
      *
      * @param  array  $config
      * @return \Illuminate\Contracts\Queue\Queue
@@ -22,8 +18,8 @@ class SqsConnector implements ConnectorInterface
     {
         $config = $this->getDefaultConfiguration($config);
 
-        if (! empty($config['key']) && ! empty($config['secret'])) {
-            $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+        if ($config['key'] && $config['secret']) {
+            $config['credentials'] = Arr::only($config, ['key', 'secret']);
         }
 
         return new SqsQueue(
@@ -33,7 +29,6 @@ class SqsConnector implements ConnectorInterface
 
     /**
      * Get the default configuration for SQS.
-	 * 得到默认配置
      *
      * @param  array  $config
      * @return array

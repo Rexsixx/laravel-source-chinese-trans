@@ -1,19 +1,15 @@
 <?php
-/**
- * 基础，资源生成命令
- */
 
 namespace Illuminate\Foundation\Console;
 
-use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
+use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
 class ResourceMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名
      *
      * @var string
      */
@@ -21,7 +17,6 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * The console command description.
-	 * 控制台命令描述
      *
      * @var string
      */
@@ -29,7 +24,6 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成类的类型
      *
      * @var string
      */
@@ -37,9 +31,8 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
      *
-     * @return void
+     * @return bool|null
      */
     public function handle()
     {
@@ -52,7 +45,6 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 得到生成器的存根文件
      *
      * @return string
      */
@@ -65,7 +57,6 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * Determine if the command is generating a resource collection.
-	 * 确定该命令是否正在生成资源集合
      *
      * @return bool
      */
@@ -77,7 +68,6 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 得到类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -89,14 +79,13 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * Get the console command options.
-	 * 得到控制台命令选项
      *
      * @return array
      */
     protected function getOptions()
     {
         return [
-            ['collection', 'c', InputOption::VALUE_NONE, 'Create a resource collection'],
+            ['collection', 'c', InputOption::VALUE_NONE, 'Create a resource collection.'],
         ];
     }
 }

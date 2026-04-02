@@ -1,20 +1,12 @@
 <?php
 /**
- * 身份，失败
+ * Illuminate，Auth，事件，失败的
  */
 
 namespace Illuminate\Auth\Events;
 
 class Failed
 {
-    /**
-     * The authentication guard name.
-	 * 认证守卫名称
-     *
-     * @var string
-     */
-    public $guard;
-
     /**
      * The user the attempter was trying to authenticate as.
 	 * 尝试器试图验证的用户
@@ -25,7 +17,6 @@ class Failed
 
     /**
      * The credentials provided by the attempter.
-	 * 由尝试器提供的凭证
      *
      * @var array
      */
@@ -33,17 +24,15 @@ class Failed
 
     /**
      * Create a new event instance.
-	 * 创建新的事件实例
+	 * 创建一个新的事件实例
      *
-     * @param  string  $guard
      * @param  \Illuminate\Contracts\Auth\Authenticatable|null  $user
      * @param  array  $credentials
      * @return void
      */
-    public function __construct($guard, $user, $credentials)
+    public function __construct($user, $credentials)
     {
         $this->user = $user;
-        $this->guard = $guard;
         $this->credentials = $credentials;
     }
 }
