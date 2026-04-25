@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，支持，门面，事件
+ */
 
 namespace Illuminate\Support\Facades;
 
@@ -12,6 +15,7 @@ class Event extends Facade
 {
     /**
      * Replace the bound instance with a fake.
+	 * 将绑定实例替换为伪实例
      *
      * @param  array|string  $eventsToFake
      * @return void
@@ -25,6 +29,7 @@ class Event extends Facade
 
     /**
      * Get the registered name of the component.
+	 * 获取组件的注册名称
      *
      * @return string
      */

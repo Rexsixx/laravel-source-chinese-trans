@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，加密，加密服务提供商
+ */
 
 namespace Illuminate\Encryption;
 
@@ -10,6 +13,7 @@ class EncryptionServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
+	 * 注册服务提供者
      *
      * @return void
      */
@@ -31,6 +35,7 @@ class EncryptionServiceProvider extends ServiceProvider
 
     /**
      * Extract the encryption key from the given configuration.
+	 * 从给定的配置中提取加密密钥
      *
      * @param  array  $config
      * @return string

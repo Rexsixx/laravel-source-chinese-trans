@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Http，Json 响应
+ */
 
 namespace Illuminate\Http;
 
@@ -17,6 +20,7 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * @param  mixed  $data
      * @param  int    $status
@@ -33,6 +37,7 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Sets the JSONP callback.
+	 * 设置JSONP回调
      *
      * @param  string|null  $callback
      * @return $this
@@ -44,6 +49,8 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Get the json_decoded data from the response.
+	 * 从响应中获取json_decoded数据
+	 * 
      *
      * @param  bool  $assoc
      * @param  int  $depth
@@ -80,6 +87,7 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Determine if an error occurred during JSON encoding.
+	 * 确定JSON编码期间是否发生错误
      *
      * @param  int  $jsonError
      * @return bool
@@ -103,6 +111,7 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Determine if a JSON encoding option is set.
+	 * 确定是否设置了JSON编码选项
      *
      * @param  int  $option
      * @return bool

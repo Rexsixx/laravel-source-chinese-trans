@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，队列，作业，Redis 作业
+ */
 
 namespace Illuminate\Queue\Jobs;
 
@@ -10,6 +13,7 @@ class RedisJob extends Job implements JobContract
 {
     /**
      * The Redis queue instance.
+	 * Redis队列实例
      *
      * @var \Illuminate\Queue\RedisQueue
      */
@@ -17,6 +21,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * The Redis raw job payload.
+	 * Redis的原始作业负载
      *
      * @var string
      */
@@ -24,6 +29,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * The JSON decoded version of "$job".
+	 * “$job”的JSON解码版本
      *
      * @var array
      */
@@ -31,6 +37,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * The Redis job payload inside the reserved queue.
+	 * 预留队列内的Redis作业负载
      *
      * @var string
      */
@@ -38,6 +45,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Create a new job instance.
+	 * 创建一个新的作业实例
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  \Illuminate\Queue\RedisQueue  $redis
@@ -64,6 +72,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the raw body string for the job.
+	 * 获取工作的原始主体字符串
      *
      * @return string
      */
@@ -74,6 +83,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Delete the job from the queue.
+	 * 从队列中删除作业
      *
      * @return void
      */
@@ -86,6 +96,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Release the job back into the queue.
+	 * 将作业释放回队列
      *
      * @param  int   $delay
      * @return void
@@ -99,6 +110,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the number of times the job has been attempted.
+	 * 获取该任务被尝试的次数
      *
      * @return int
      */
@@ -109,6 +121,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the job identifier.
+	 * 获取作业标识符
      *
      * @return string
      */
@@ -119,6 +132,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the underlying Redis factory implementation.
+	 * 获取底层Redis工厂实现
      *
      * @return \Illuminate\Contracts\Redis\Factory
      */
@@ -129,6 +143,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the underlying reserved Redis job.
+	 * 获取底层预留的Redis作业
      *
      * @return string
      */

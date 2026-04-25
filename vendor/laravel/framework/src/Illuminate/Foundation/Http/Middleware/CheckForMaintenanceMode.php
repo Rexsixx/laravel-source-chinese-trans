@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，Http，中间件，检查维护模式
+ */
 
 namespace Illuminate\Foundation\Http\Middleware;
 
@@ -10,6 +13,7 @@ class CheckForMaintenanceMode
 {
     /**
      * The application implementation.
+	 * 应用实现
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -17,6 +21,7 @@ class CheckForMaintenanceMode
 
     /**
      * Create a new middleware instance.
+	 * 创建新的中间件实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -28,6 +33,7 @@ class CheckForMaintenanceMode
 
     /**
      * Handle an incoming request.
+	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next

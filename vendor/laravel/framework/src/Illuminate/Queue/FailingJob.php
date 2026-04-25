@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，队列，失败作业
+ */
 
 namespace Illuminate\Queue;
 
@@ -10,6 +13,7 @@ class FailingJob
 {
     /**
      * Delete the job, call the "failed" method, and raise the failed job event.
+	 * 删除作业，调用“failed”方法，并引发失败的作业事件。
      *
      * @param  string  $connectionName
      * @param  \Illuminate\Queue\Jobs\Job  $job
@@ -40,6 +44,7 @@ class FailingJob
 
     /**
      * Get the event dispatcher instance.
+	 * 获取事件调度程序实例
      *
      * @return \Illuminate\Contracts\Events\Dispatcher
      */

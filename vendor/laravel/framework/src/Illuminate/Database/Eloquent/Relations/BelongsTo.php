@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，Eloquent，关系，属于
+ */
 
 namespace Illuminate\Database\Eloquent\Relations;
 
@@ -16,11 +19,13 @@ class BelongsTo extends Relation
 
     /**
      * The child model instance of the relation.
+	 * 关系的子模型实例
      */
     protected $child;
 
     /**
      * The foreign key of the parent model.
+	 * 父模型的外键
      *
      * @var string
      */
@@ -28,6 +33,7 @@ class BelongsTo extends Relation
 
     /**
      * The associated key on the parent model.
+	 * 父模型上的关联键
      *
      * @var string
      */
@@ -35,6 +41,7 @@ class BelongsTo extends Relation
 
     /**
      * The name of the relationship.
+	 * 关系的名称
      *
      * @var string
      */
@@ -42,6 +49,7 @@ class BelongsTo extends Relation
 
     /**
      * The count of self joins.
+	 * 自连接的计数
      *
      * @var int
      */
@@ -49,6 +57,7 @@ class BelongsTo extends Relation
 
     /**
      * Create a new belongs to relationship instance.
+	 * 创建一个新的归属关系实例
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Model  $child
@@ -73,6 +82,7 @@ class BelongsTo extends Relation
 
     /**
      * Get the results of the relationship.
+	 * 得到关系的结果
      *
      * @return mixed
      */
@@ -83,6 +93,7 @@ class BelongsTo extends Relation
 
     /**
      * Set the base constraints on the relation query.
+	 * 在关系查询上设置基本约束
      *
      * @return void
      */
@@ -100,6 +111,7 @@ class BelongsTo extends Relation
 
     /**
      * Set the constraints for an eager load of the relation.
+	 * 为关系的即时加载设置约束
      *
      * @param  array  $models
      * @return void
@@ -116,6 +128,7 @@ class BelongsTo extends Relation
 
     /**
      * Gather the keys from an array of related models.
+	 * 从相关模型的数组中收集键
      *
      * @param  array  $models
      * @return array
@@ -147,6 +160,7 @@ class BelongsTo extends Relation
 
     /**
      * Initialize the relation on a set of models.
+	 * 初始化一组模型上的关系
      *
      * @param  array   $models
      * @param  string  $relation
@@ -163,6 +177,7 @@ class BelongsTo extends Relation
 
     /**
      * Match the eagerly loaded results to their parents.
+	 * 将急切加载的结果与他们的父母匹配
      *
      * @param  array   $models
      * @param  \Illuminate\Database\Eloquent\Collection  $results
@@ -198,6 +213,7 @@ class BelongsTo extends Relation
 
     /**
      * Update the parent model on the relationship.
+	 * 更新关系上的父模型
      *
      * @param  array  $attributes
      * @return mixed
@@ -209,6 +225,7 @@ class BelongsTo extends Relation
 
     /**
      * Associate the model instance to the given parent.
+	 * 将模型实例关联到给定的父实例
      *
      * @param  \Illuminate\Database\Eloquent\Model|int|string  $model
      * @return \Illuminate\Database\Eloquent\Model
@@ -228,6 +245,7 @@ class BelongsTo extends Relation
 
     /**
      * Dissociate previously associated model from the given parent.
+	 * 将先前关联的模型与给定的父模型分离
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
@@ -240,6 +258,7 @@ class BelongsTo extends Relation
 
     /**
      * Add the constraints for a relationship query.
+	 * 为关系查询添加约束
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
@@ -259,6 +278,7 @@ class BelongsTo extends Relation
 
     /**
      * Add the constraints for a relationship query on the same table.
+	 * 为同一表上的关系查询添加约束
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
@@ -280,6 +300,7 @@ class BelongsTo extends Relation
 
     /**
      * Get a relationship join table hash.
+	 * 获取关系连接表散列
      *
      * @return string
      */
@@ -290,6 +311,7 @@ class BelongsTo extends Relation
 
     /**
      * Determine if the related model has an auto-incrementing ID.
+	 * 确定相关模型是否具有自动递增的ID
      *
      * @return bool
      */
@@ -301,6 +323,7 @@ class BelongsTo extends Relation
 
     /**
      * Make a new related instance for the given model.
+	 * 为给定模型创建一个新的相关实例
      *
      * @param  \Illuminate\Database\Eloquent\Model  $parent
      * @return \Illuminate\Database\Eloquent\Model
@@ -312,6 +335,7 @@ class BelongsTo extends Relation
 
     /**
      * Get the foreign key of the relationship.
+	 * 获取关系的外键
      *
      * @return string
      */
@@ -322,6 +346,7 @@ class BelongsTo extends Relation
 
     /**
      * Get the fully qualified foreign key of the relationship.
+	 * 获取关系的完全限定外键
      *
      * @return string
      */
@@ -332,6 +357,7 @@ class BelongsTo extends Relation
 
     /**
      * Get the associated key of the relationship.
+	 * 获取关系的关联键
      *
      * @return string
      */
@@ -342,6 +368,7 @@ class BelongsTo extends Relation
 
     /**
      * Get the fully qualified associated key of the relationship.
+	 * 获取关系的完全限定关联键
      *
      * @return string
      */
@@ -352,6 +379,7 @@ class BelongsTo extends Relation
 
     /**
      * Get the name of the relationship.
+	 * 获取关系的名称
      *
      * @return string
      */

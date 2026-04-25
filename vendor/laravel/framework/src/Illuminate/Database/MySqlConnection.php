@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，MySql 连接
+ */
 
 namespace Illuminate\Database;
 
@@ -13,6 +16,7 @@ class MySqlConnection extends Connection
 {
     /**
      * Get the default query grammar instance.
+	 * 获取默认查询语法实例
      *
      * @return \Illuminate\Database\Query\Grammars\MySqlGrammar
      */
@@ -23,6 +27,7 @@ class MySqlConnection extends Connection
 
     /**
      * Get a schema builder instance for the connection.
+	 * 获取连接的架构构建器实例
      *
      * @return \Illuminate\Database\Schema\MySqlBuilder
      */
@@ -37,6 +42,7 @@ class MySqlConnection extends Connection
 
     /**
      * Get the default schema grammar instance.
+	 * 获取默认模式语法实例
      *
      * @return \Illuminate\Database\Schema\Grammars\MySqlGrammar
      */
@@ -47,6 +53,7 @@ class MySqlConnection extends Connection
 
     /**
      * Get the default post processor instance.
+	 * 获取默认的后处理器实例
      *
      * @return \Illuminate\Database\Query\Processors\MySqlProcessor
      */
@@ -57,6 +64,7 @@ class MySqlConnection extends Connection
 
     /**
      * Get the Doctrine DBAL driver.
+	 * 获取Doctrine DBAL驱动程序
      *
      * @return \Doctrine\DBAL\Driver\PDOMySql\Driver
      */
@@ -67,6 +75,7 @@ class MySqlConnection extends Connection
 
     /**
      * Bind values to their parameters in the given statement.
+	 * 在给定语句中将值绑定到它们的参数
      *
      * @param  \PDOStatement $statement
      * @param  array  $bindings

@@ -14,8 +14,7 @@ class RegisterController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Register Controller
-	| 注册控制器
+    | Register Controller	注册控制器
     |--------------------------------------------------------------------------
     |
     | This controller handles the registration of new users as well as their

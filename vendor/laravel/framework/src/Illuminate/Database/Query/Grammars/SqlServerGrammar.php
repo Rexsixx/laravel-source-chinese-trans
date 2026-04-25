@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，查询，语法，Sql Server 语法
+ */
 
 namespace Illuminate\Database\Query\Grammars;
 
@@ -9,6 +12,7 @@ class SqlServerGrammar extends Grammar
 {
     /**
      * All of the available clause operators.
+	 * 所有可用的子句操作符
      *
      * @var array
      */
@@ -20,6 +24,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a select query into SQL.
+	 * 将一个选择查询编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
@@ -44,6 +49,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile the "select *" portion of the query.
+	 * 编译查询的“select *”部分
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $columns
@@ -69,6 +75,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile the "from" portion of the query.
+	 * 编译查询的“from”部分
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $table
@@ -91,6 +98,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a "where date" clause.
+	 * 编译一个“where date”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -105,6 +113,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Create a full ANSI offset clause for the query.
+	 * 为查询创建一个完整的ANSI偏移子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $components
@@ -136,6 +145,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile the over statement for a table expression.
+	 * 编译表表达式的over语句
      *
      * @param  string  $orderings
      * @return string
@@ -147,6 +157,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a common table expression for a query.
+	 * 为查询编译公共表表达式
      *
      * @param  string  $sql
      * @param  \Illuminate\Database\Query\Builder  $query
@@ -161,6 +172,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile the limit / offset row constraint for a query.
+	 * 为查询编译限制/偏移行约束
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
@@ -180,6 +192,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile the random statement into SQL.
+	 * 将随机语句编译成SQL
      *
      * @param  string  $seed
      * @return string
@@ -191,6 +204,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile the "limit" portions of the query.
+	 * 编译查询的“limit”部分
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  int  $limit
@@ -203,6 +217,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile the "offset" portions of the query.
+	 * 编译查询的“偏移”部分
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  int  $offset
@@ -215,6 +230,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile the lock into SQL.
+	 * 将锁编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  bool|string  $value
@@ -227,6 +243,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile an exists statement into SQL.
+	 * 将exists语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
@@ -242,6 +259,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a delete statement into SQL.
+	 * 将delete语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
@@ -259,6 +277,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a delete statement with joins into SQL.
+	 * 将带有连接的删除语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $table
@@ -277,6 +296,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a truncate table statement into SQL.
+	 * 将截断表语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return array
@@ -288,6 +308,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile an update statement into SQL.
+	 * 将update语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
@@ -327,6 +348,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Get the table and alias for the given table.
+	 * 获取给定表的表和别名
      *
      * @param  string  $table
      * @return array
@@ -344,6 +366,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Prepare the bindings for an update statement.
+	 * 为更新语句准备绑定
      *
      * @param  array  $bindings
      * @param  array  $values
@@ -363,6 +386,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Determine if the grammar supports savepoints.
+	 * 确定语法是否支持保存点
      *
      * @return bool
      */
@@ -373,6 +397,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile the SQL statement to define a savepoint.
+	 * 编译SQL语句以定义保存点
      *
      * @param  string  $name
      * @return string
@@ -384,6 +409,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile the SQL statement to execute a savepoint rollback.
+	 * 编译SQL语句以执行保存点回滚
      *
      * @param  string  $name
      * @return string
@@ -395,6 +421,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Get the format for database stored dates.
+	 * 获取数据库存储日期的格式
      *
      * @return string
      */
@@ -405,6 +432,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Wrap a single string in keyword identifiers.
+	 * 在关键字标识符中包装单个字符串
      *
      * @param  string  $value
      * @return string
@@ -416,6 +444,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Wrap a table in keyword identifiers.
+	 * 用关键字标识符包装表
      *
      * @param  \Illuminate\Database\Query\Expression|string  $table
      * @return string
@@ -427,6 +456,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Wrap a table in keyword identifiers.
+	 * 用关键字标识符包装表
      *
      * @param  string  $table
      * @return string

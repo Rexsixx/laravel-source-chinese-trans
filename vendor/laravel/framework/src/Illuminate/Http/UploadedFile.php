@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Http，已上传文件
+ */
 
 namespace Illuminate\Http;
 
@@ -14,6 +17,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Begin creating a new file fake.
+	 * 开始创建一个新的文件fake
      *
      * @return \Illuminate\Http\Testing\FileFactory
      */
@@ -24,6 +28,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Store the uploaded file on a filesystem disk.
+	 * 将上传的文件存储在文件系统磁盘上
      *
      * @param  string  $path
      * @param  array|string  $options
@@ -36,6 +41,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Store the uploaded file on a filesystem disk with public visibility.
+	 * 将上传的文件存储在具有公共可见性的文件系统磁盘上
      *
      * @param  string  $path
      * @param  array|string  $options
@@ -52,6 +58,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Store the uploaded file on a filesystem disk with public visibility.
+	 * 将上传的文件存储在具有公共可见性的文件系统磁盘上
      *
      * @param  string  $path
      * @param  string  $name
@@ -69,6 +76,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Store the uploaded file on a filesystem disk.
+	 * 将上传的文件存储在文件系统磁盘上
      *
      * @param  string  $path
      * @param  string  $name
@@ -88,6 +96,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Create a new file instance from a base instance.
+	 * 从基本实例创建新的文件实例
      *
      * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $file
      * @param  bool $test
@@ -107,6 +116,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Parse and format the given options.
+	 * 解析并格式化给定的选项
      *
      * @param  array|string  $options
      * @return array

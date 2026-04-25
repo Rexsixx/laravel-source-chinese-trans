@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，Eloquent，问题，有时间戳
+ */
 
 namespace Illuminate\Database\Eloquent\Concerns;
 
@@ -8,6 +11,7 @@ trait HasTimestamps
 {
     /**
      * Indicates if the model should be timestamped.
+	 * 指示是否应该对模型进行时间戳
      *
      * @var bool
      */
@@ -15,6 +19,7 @@ trait HasTimestamps
 
     /**
      * Update the model's update timestamp.
+	 * 更新模型的更新时间戳
      *
      * @return bool
      */
@@ -31,6 +36,7 @@ trait HasTimestamps
 
     /**
      * Update the creation and update timestamps.
+	 * 更新创建和更新时间戳
      *
      * @return void
      */
@@ -75,6 +81,7 @@ trait HasTimestamps
 
     /**
      * Get a fresh timestamp for the model.
+	 * 为模型获取一个新的时间戳
      *
      * @return \Illuminate\Support\Carbon
      */
@@ -85,6 +92,7 @@ trait HasTimestamps
 
     /**
      * Get a fresh timestamp for the model.
+	 * 为模型获取一个新的时间戳
      *
      * @return string
      */
@@ -95,6 +103,7 @@ trait HasTimestamps
 
     /**
      * Determine if the model uses timestamps.
+	 * 确定模型是否使用时间戳
      *
      * @return bool
      */
@@ -105,6 +114,7 @@ trait HasTimestamps
 
     /**
      * Get the name of the "created at" column.
+	 * 获取“创建位置”列的名称
      *
      * @return string
      */
@@ -115,6 +125,7 @@ trait HasTimestamps
 
     /**
      * Get the name of the "updated at" column.
+	 * 获取“更新时间”列的名称
      *
      * @return string
      */

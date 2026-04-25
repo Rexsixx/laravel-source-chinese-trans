@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，支持，门面，存储
+ */
 
 namespace Illuminate\Support\Facades;
 
@@ -11,6 +14,7 @@ class Storage extends Facade
 {
     /**
      * Replace the given disk with a local testing disk.
+	 * 将给定磁盘替换为本地测试磁盘
      *
      * @param  string|null  $disk
      *
@@ -29,6 +33,7 @@ class Storage extends Facade
 
     /**
      * Replace the given disk with a persistent local testing disk.
+	 * 将给定磁盘替换为持久的本地测试磁盘
      *
      * @param  string|null  $disk
      * @return void
@@ -44,6 +49,7 @@ class Storage extends Facade
 
     /**
      * Get the registered name of the component.
+	 * 获取组件的注册名称
      *
      * @return string
      */

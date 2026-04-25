@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，契约，Cookie，中间件，加密 cookie
+ */
 
 namespace Illuminate\Cookie\Middleware;
 
@@ -15,6 +18,7 @@ class EncryptCookies
 {
     /**
      * The encrypter instance.
+	 * 加密器实例
      *
      * @var \Illuminate\Contracts\Encryption\Encrypter
      */
@@ -22,6 +26,7 @@ class EncryptCookies
 
     /**
      * The names of the cookies that should not be encrypted.
+	 * 不应加密的cookie的名称
      *
      * @var array
      */
@@ -29,6 +34,7 @@ class EncryptCookies
 
     /**
      * Indicates if the cookies should be serialized.
+	 * 指示是否应该序列化cookie
      *
      * @var bool
      */
@@ -36,6 +42,7 @@ class EncryptCookies
 
     /**
      * Create a new CookieGuard instance.
+	 * 创建一个新的CookieGuard实例
      *
      * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
      * @return void
@@ -47,6 +54,7 @@ class EncryptCookies
 
     /**
      * Disable encryption for the given cookie name(s).
+	 * 禁用给定cookie名称的加密
      *
      * @param  string|array  $cookieName
      * @return void
@@ -58,6 +66,7 @@ class EncryptCookies
 
     /**
      * Handle an incoming request.
+	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -70,6 +79,7 @@ class EncryptCookies
 
     /**
      * Decrypt the cookies on the request.
+	 * 解密请求中的cookie
      *
      * @param  \Symfony\Component\HttpFoundation\Request  $request
      * @return \Symfony\Component\HttpFoundation\Request
@@ -101,6 +111,7 @@ class EncryptCookies
 
     /**
      * Decrypt the given cookie and return the value.
+	 * 解密给定的cookie并返回值
      *
      * @param  string  $name
      * @param  string|array  $cookie
@@ -115,6 +126,7 @@ class EncryptCookies
 
     /**
      * Decrypt an array based cookie.
+	 * 解密基于数组的cookie
      *
      * @param  array  $cookie
      * @return array
@@ -134,6 +146,7 @@ class EncryptCookies
 
     /**
      * Encrypt the cookies on an outgoing response.
+	 * 对传出响应的cookie进行加密
      *
      * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @return \Symfony\Component\HttpFoundation\Response
@@ -161,6 +174,7 @@ class EncryptCookies
 
     /**
      * Duplicate a cookie with a new value.
+	 * 用新值复制一个cookie
      *
      * @param  \Symfony\Component\HttpFoundation\Cookie  $c
      * @param  mixed  $value
@@ -177,6 +191,7 @@ class EncryptCookies
 
     /**
      * Determine whether encryption has been disabled for the given cookie.
+	 * 确定是否对给定的cookie禁用了加密
      *
      * @param  string $name
      * @return bool
@@ -188,6 +203,7 @@ class EncryptCookies
 
     /**
      * Determine if the cookie contents should be serialized.
+	 * 确定是否应该序列化cookie内容
      *
      * @param  string  $name
      * @return bool

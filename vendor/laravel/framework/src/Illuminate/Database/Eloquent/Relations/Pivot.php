@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，Eloquent，关系，支点
+ */
 
 namespace Illuminate\Database\Eloquent\Relations;
 
@@ -10,6 +13,7 @@ class Pivot extends Model
 {
     /**
      * The parent model of the relationship.
+	 * 关系的父模型
      *
      * @var \Illuminate\Database\Eloquent\Model
      */
@@ -17,6 +21,7 @@ class Pivot extends Model
 
     /**
      * The name of the foreign key column.
+	 * 外键列的名称
      *
      * @var string
      */
@@ -24,6 +29,7 @@ class Pivot extends Model
 
     /**
      * The name of the "other key" column.
+	 * “其他键”列的名称
      *
      * @var string
      */
@@ -31,6 +37,7 @@ class Pivot extends Model
 
     /**
      * The attributes that aren't mass assignable.
+	 * 不能大规模分配的属性
      *
      * @var array
      */
@@ -38,6 +45,7 @@ class Pivot extends Model
 
     /**
      * Create a new pivot model instance.
+	 * 创建一个新的pivot模型实例
      *
      * @param  \Illuminate\Database\Eloquent\Model  $parent
      * @param  array   $attributes
@@ -71,6 +79,7 @@ class Pivot extends Model
 
     /**
      * Create a new pivot model from raw values returned from a query.
+	 * 根据查询返回的原始值创建新的数据透视模型
      *
      * @param  \Illuminate\Database\Eloquent\Model  $parent
      * @param  array   $attributes
@@ -91,6 +100,7 @@ class Pivot extends Model
 
     /**
      * Set the keys for a save update query.
+	 * 为保存更新查询设置键
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
@@ -112,6 +122,7 @@ class Pivot extends Model
 
     /**
      * Delete the pivot model record from the database.
+	 * 从数据库中删除数据透视模型记录
      *
      * @return int
      */
@@ -126,6 +137,7 @@ class Pivot extends Model
 
     /**
      * Get the query builder for a delete operation on the pivot.
+	 * 获取对数据透视进行删除操作的查询构建器
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -139,6 +151,7 @@ class Pivot extends Model
 
     /**
      * Get the table associated with the model.
+	 * 获取与模型相关联的表
      *
      * @return string
      */
@@ -155,6 +168,7 @@ class Pivot extends Model
 
     /**
      * Get the foreign key column name.
+	 * 获取外键列名
      *
      * @return string
      */
@@ -165,6 +179,7 @@ class Pivot extends Model
 
     /**
      * Get the "related key" column name.
+	 * 获取“相关键”列名
      *
      * @return string
      */
@@ -175,6 +190,7 @@ class Pivot extends Model
 
     /**
      * Get the "related key" column name.
+	 * 获取“相关键”列名
      *
      * @return string
      */
@@ -185,6 +201,7 @@ class Pivot extends Model
 
     /**
      * Set the key names for the pivot model instance.
+	 * 设置pivot模型实例的键名
      *
      * @param  string  $foreignKey
      * @param  string  $relatedKey
@@ -201,6 +218,7 @@ class Pivot extends Model
 
     /**
      * Determine if the pivot model has timestamp attributes.
+	 * 确定数据透视模型是否具有时间戳属性
      *
      * @return bool
      */
@@ -211,6 +229,7 @@ class Pivot extends Model
 
     /**
      * Get the name of the "created at" column.
+	 * 获取“创建位置”列的名称
      *
      * @return string
      */
@@ -223,6 +242,7 @@ class Pivot extends Model
 
     /**
      * Get the name of the "updated at" column.
+	 * 获取“更新时间”列的名称
      *
      * @return string
      */

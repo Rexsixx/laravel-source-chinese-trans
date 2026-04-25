@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，视图，工厂
+ */
 
 namespace Illuminate\View;
 
@@ -22,6 +25,7 @@ class Factory implements FactoryContract
 
     /**
      * The engine implementation.
+	 * 引擎实现
      *
      * @var \Illuminate\View\Engines\EngineResolver
      */
@@ -29,6 +33,7 @@ class Factory implements FactoryContract
 
     /**
      * The view finder implementation.
+	 * 取景器实现
      *
      * @var \Illuminate\View\ViewFinderInterface
      */
@@ -36,6 +41,7 @@ class Factory implements FactoryContract
 
     /**
      * The event dispatcher instance.
+	 * 事件调度程序实例
      *
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
@@ -43,6 +49,7 @@ class Factory implements FactoryContract
 
     /**
      * The IoC container instance.
+	 * IoC容器实例
      *
      * @var \Illuminate\Contracts\Container\Container
      */
@@ -50,6 +57,7 @@ class Factory implements FactoryContract
 
     /**
      * Data that should be available to all templates.
+	 * 应该对所有模板可用的数据
      *
      * @var array
      */
@@ -57,6 +65,7 @@ class Factory implements FactoryContract
 
     /**
      * The extension to engine bindings.
+	 * 引擎绑定的扩展
      *
      * @var array
      */
@@ -68,6 +77,7 @@ class Factory implements FactoryContract
 
     /**
      * The view composer events.
+	 * 视图编写器事件
      *
      * @var array
      */
@@ -75,6 +85,7 @@ class Factory implements FactoryContract
 
     /**
      * The number of active rendering operations.
+	 * 活动呈现操作的数量
      *
      * @var int
      */
@@ -82,6 +93,7 @@ class Factory implements FactoryContract
 
     /**
      * Create a new view factory instance.
+	 * 创建一个新的视图工厂实例
      *
      * @param  \Illuminate\View\Engines\EngineResolver  $engines
      * @param  \Illuminate\View\ViewFinderInterface  $finder
@@ -99,6 +111,7 @@ class Factory implements FactoryContract
 
     /**
      * Get the evaluated view contents for the given view.
+	 * 获取给定视图的求值视图内容
      *
      * @param  string  $path
      * @param  array   $data
@@ -116,6 +129,7 @@ class Factory implements FactoryContract
 
     /**
      * Get the evaluated view contents for the given view.
+	 * 获取给定视图的求值视图内容
      *
      * @param  string  $view
      * @param  array   $data
@@ -140,6 +154,7 @@ class Factory implements FactoryContract
 
     /**
      * Get the first view that actually exists from the given list.
+	 * 从给定列表中获取实际存在的第一个视图
      *
      * @param  array  $views
      * @param  array   $data
@@ -161,6 +176,7 @@ class Factory implements FactoryContract
 
     /**
      * Get the rendered content of the view based on a given condition.
+	 * 根据给定条件获取视图的呈现内容
      *
      * @param  bool  $condition
      * @param  string  $view
@@ -179,6 +195,7 @@ class Factory implements FactoryContract
 
     /**
      * Get the rendered contents of a partial from a loop.
+	 * 从循环中获取部分的渲染内容
      *
      * @param  string  $view
      * @param  array   $data
@@ -215,6 +232,7 @@ class Factory implements FactoryContract
 
     /**
      * Normalize a view name.
+	 * 规范化视图名称
      *
      * @param  string $name
      * @return string
@@ -226,6 +244,7 @@ class Factory implements FactoryContract
 
     /**
      * Parse the given data into a raw array.
+	 * 将给定的数据解析为原始数组
      *
      * @param  mixed  $data
      * @return array
@@ -237,6 +256,7 @@ class Factory implements FactoryContract
 
     /**
      * Create a new view instance from the given arguments.
+	 * 根据给定的参数创建一个新的视图实例
      *
      * @param  string  $view
      * @param  string  $path
@@ -250,6 +270,7 @@ class Factory implements FactoryContract
 
     /**
      * Determine if a given view exists.
+	 * 确定给定视图是否存在
      *
      * @param  string  $view
      * @return bool
@@ -267,6 +288,7 @@ class Factory implements FactoryContract
 
     /**
      * Get the appropriate view engine for the given path.
+	 * 获取给定路径的适当视图引擎
      *
      * @param  string  $path
      * @return \Illuminate\Contracts\View\Engine
@@ -286,6 +308,7 @@ class Factory implements FactoryContract
 
     /**
      * Get the extension used by the view file.
+	 * 获取视图文件使用的扩展名
      *
      * @param  string  $path
      * @return string
@@ -301,6 +324,7 @@ class Factory implements FactoryContract
 
     /**
      * Add a piece of shared data to the environment.
+	 * 向环境中添加一段共享数据
      *
      * @param  array|string  $key
      * @param  mixed  $value
@@ -319,6 +343,7 @@ class Factory implements FactoryContract
 
     /**
      * Increment the rendering counter.
+	 * 增加呈现计数器
      *
      * @return void
      */
@@ -329,6 +354,7 @@ class Factory implements FactoryContract
 
     /**
      * Decrement the rendering counter.
+	 * 递减呈现计数器
      *
      * @return void
      */
@@ -339,6 +365,7 @@ class Factory implements FactoryContract
 
     /**
      * Check if there are no active render operations.
+	 * 检查是否没有活动的渲染操作
      *
      * @return bool
      */
@@ -349,6 +376,7 @@ class Factory implements FactoryContract
 
     /**
      * Add a location to the array of view locations.
+	 * 向视图位置数组添加一个位置
      *
      * @param  string  $location
      * @return void
@@ -360,6 +388,7 @@ class Factory implements FactoryContract
 
     /**
      * Add a new namespace to the loader.
+	 * 向加载器添加一个新的命名空间
      *
      * @param  string  $namespace
      * @param  string|array  $hints
@@ -374,6 +403,7 @@ class Factory implements FactoryContract
 
     /**
      * Prepend a new namespace to the loader.
+	 * 向加载器添加一个新的命名空间
      *
      * @param  string  $namespace
      * @param  string|array  $hints
@@ -388,6 +418,7 @@ class Factory implements FactoryContract
 
     /**
      * Replace the namespace hints for the given namespace.
+	 * 替换给定名称空间的名称空间提示
      *
      * @param  string  $namespace
      * @param  string|array  $hints
@@ -402,6 +433,7 @@ class Factory implements FactoryContract
 
     /**
      * Register a valid view extension and its engine.
+	 * 注册一个有效的视图扩展及其引擎
      *
      * @param  string    $extension
      * @param  string    $engine
@@ -423,6 +455,7 @@ class Factory implements FactoryContract
 
     /**
      * Flush all of the factory state like sections and stacks.
+	 * 刷新所有工厂状态，如节和堆栈。
      *
      * @return void
      */
@@ -436,6 +469,7 @@ class Factory implements FactoryContract
 
     /**
      * Flush all of the section contents if done rendering.
+	 * 如果完成呈现，则刷新所有节内容。
      *
      * @return void
      */
@@ -448,6 +482,7 @@ class Factory implements FactoryContract
 
     /**
      * Get the extension to engine bindings.
+	 * 获取引擎绑定的扩展
      *
      * @return array
      */
@@ -458,6 +493,7 @@ class Factory implements FactoryContract
 
     /**
      * Get the engine resolver instance.
+	 * 获取引擎解析器实例
      *
      * @return \Illuminate\View\Engines\EngineResolver
      */
@@ -468,6 +504,7 @@ class Factory implements FactoryContract
 
     /**
      * Get the view finder instance.
+	 * 获取取景器实例
      *
      * @return \Illuminate\View\ViewFinderInterface
      */
@@ -478,6 +515,7 @@ class Factory implements FactoryContract
 
     /**
      * Set the view finder instance.
+	 * 设置取景器实例
      *
      * @param  \Illuminate\View\ViewFinderInterface  $finder
      * @return void
@@ -489,6 +527,7 @@ class Factory implements FactoryContract
 
     /**
      * Flush the cache of views located by the finder.
+	 * 刷新查找器定位的视图的缓存
      *
      * @return void
      */
@@ -499,6 +538,7 @@ class Factory implements FactoryContract
 
     /**
      * Get the event dispatcher instance.
+	 * 获取事件调度程序实例
      *
      * @return \Illuminate\Contracts\Events\Dispatcher
      */
@@ -509,6 +549,7 @@ class Factory implements FactoryContract
 
     /**
      * Set the event dispatcher instance.
+	 * 设置事件调度程序实例
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
@@ -520,6 +561,7 @@ class Factory implements FactoryContract
 
     /**
      * Get the IoC container instance.
+	 * 获取IoC容器实例
      *
      * @return \Illuminate\Contracts\Container\Container
      */
@@ -530,6 +572,7 @@ class Factory implements FactoryContract
 
     /**
      * Set the IoC container instance.
+	 * 设置IoC容器实例
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
@@ -541,6 +584,7 @@ class Factory implements FactoryContract
 
     /**
      * Get an item from the shared data.
+	 * 从共享数据中获取项
      *
      * @param  string  $key
      * @param  mixed   $default
@@ -553,6 +597,7 @@ class Factory implements FactoryContract
 
     /**
      * Get all of the shared data for the environment.
+	 * 获取环境的所有共享数据
      *
      * @return array
      */

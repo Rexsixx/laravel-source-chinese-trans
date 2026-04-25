@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Auth，普通用户
+ */
 
 namespace Illuminate\Auth;
 
@@ -8,6 +11,7 @@ class GenericUser implements UserContract
 {
     /**
      * All of the user's attributes.
+	 * 用户的所有属性
      *
      * @var array
      */
@@ -15,6 +19,7 @@ class GenericUser implements UserContract
 
     /**
      * Create a new generic User object.
+	 * 创建一个新的通用User对象
      *
      * @param  array  $attributes
      * @return void
@@ -26,6 +31,7 @@ class GenericUser implements UserContract
 
     /**
      * Get the name of the unique identifier for the user.
+	 * 获取用户的唯一标识符的名称
      *
      * @return string
      */
@@ -36,6 +42,7 @@ class GenericUser implements UserContract
 
     /**
      * Get the unique identifier for the user.
+	 * 获取用户的唯一标识符
      *
      * @return mixed
      */
@@ -48,6 +55,7 @@ class GenericUser implements UserContract
 
     /**
      * Get the password for the user.
+	 * 获取用户的密码
      *
      * @return string
      */
@@ -58,6 +66,7 @@ class GenericUser implements UserContract
 
     /**
      * Get the "remember me" token value.
+	 * 获取“记住我”令牌值
      *
      * @return string
      */
@@ -68,6 +77,7 @@ class GenericUser implements UserContract
 
     /**
      * Set the "remember me" token value.
+	 * 设置“记住我”令牌值
      *
      * @param  string  $value
      * @return void
@@ -79,6 +89,7 @@ class GenericUser implements UserContract
 
     /**
      * Get the column name for the "remember me" token.
+	 * 获取“记住我”令牌的列名
      *
      * @return string
      */
@@ -89,6 +100,7 @@ class GenericUser implements UserContract
 
     /**
      * Dynamically access the user's attributes.
+	 * 动态访问用户的属性
      *
      * @param  string  $key
      * @return mixed
@@ -100,6 +112,7 @@ class GenericUser implements UserContract
 
     /**
      * Dynamically set an attribute on the user.
+	 * 动态设置用户的属性
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -112,6 +125,7 @@ class GenericUser implements UserContract
 
     /**
      * Dynamically check if a value is set on the user.
+	 * 动态检查是否在用户上设置了值
      *
      * @param  string  $key
      * @return bool
@@ -123,6 +137,7 @@ class GenericUser implements UserContract
 
     /**
      * Dynamically unset a value on the user.
+	 * 动态取消对用户的值设置
      *
      * @param  string  $key
      * @return void

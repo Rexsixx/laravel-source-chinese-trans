@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，查询，建立者
+ */
 
 namespace Illuminate\Database\Query;
 
@@ -26,6 +29,7 @@ class Builder
 
     /**
      * The database connection instance.
+	 * 数据库连接实例
      *
      * @var \Illuminate\Database\ConnectionInterface
      */
@@ -33,6 +37,7 @@ class Builder
 
     /**
      * The database query grammar instance.
+	 * 数据库查询语法实例
      *
      * @var \Illuminate\Database\Query\Grammars\Grammar
      */
@@ -40,6 +45,7 @@ class Builder
 
     /**
      * The database query post processor instance.
+	 * 数据库查询后处理器实例
      *
      * @var \Illuminate\Database\Query\Processors\Processor
      */
@@ -47,6 +53,7 @@ class Builder
 
     /**
      * The current query value bindings.
+	 * 当前查询值绑定
      *
      * @var array
      */
@@ -61,6 +68,7 @@ class Builder
 
     /**
      * An aggregate function and column to be run.
+	 * 要运行的聚合函数和列
      *
      * @var array
      */
@@ -68,6 +76,7 @@ class Builder
 
     /**
      * The columns that should be returned.
+	 * 应该返回的列
      *
      * @var array
      */
@@ -75,6 +84,7 @@ class Builder
 
     /**
      * Indicates if the query returns distinct results.
+	 * 指示查询是否返回不同的结果
      *
      * @var bool
      */
@@ -82,6 +92,7 @@ class Builder
 
     /**
      * The table which the query is targeting.
+	 * 查询所针对的表
      *
      * @var string
      */
@@ -89,6 +100,7 @@ class Builder
 
     /**
      * The table joins for the query.
+	 * 表连接用于查询
      *
      * @var array
      */
@@ -96,6 +108,7 @@ class Builder
 
     /**
      * The where constraints for the query.
+	 * 查询的where约束
      *
      * @var array
      */
@@ -103,6 +116,7 @@ class Builder
 
     /**
      * The groupings for the query.
+	 * 查询的分组
      *
      * @var array
      */
@@ -110,6 +124,7 @@ class Builder
 
     /**
      * The having constraints for the query.
+	 * 查询的约束条件
      *
      * @var array
      */
@@ -117,6 +132,7 @@ class Builder
 
     /**
      * The orderings for the query.
+	 * 查询的排序
      *
      * @var array
      */
@@ -124,6 +140,7 @@ class Builder
 
     /**
      * The maximum number of records to return.
+	 * 要返回的最大记录数
      *
      * @var int
      */
@@ -131,6 +148,7 @@ class Builder
 
     /**
      * The number of records to skip.
+	 * 要跳过的记录数
      *
      * @var int
      */
@@ -138,6 +156,7 @@ class Builder
 
     /**
      * The query union statements.
+	 * 查询联合语句
      *
      * @var array
      */
@@ -145,6 +164,7 @@ class Builder
 
     /**
      * The maximum number of union records to return.
+	 * 要返回的联合记录的最大数目
      *
      * @var int
      */
@@ -152,6 +172,7 @@ class Builder
 
     /**
      * The number of union records to skip.
+	 * 要跳过的联合记录的数量
      *
      * @var int
      */
@@ -159,6 +180,7 @@ class Builder
 
     /**
      * The orderings for the union query.
+	 * 联合查询的排序
      *
      * @var array
      */
@@ -166,6 +188,7 @@ class Builder
 
     /**
      * Indicates whether row locking is being used.
+	 * 指示是否正在使用行锁定
      *
      * @var string|bool
      */
@@ -173,6 +196,7 @@ class Builder
 
     /**
      * All of the available clause operators.
+	 * 所有可用的子句操作符
      *
      * @var array
      */
@@ -187,6 +211,7 @@ class Builder
 
     /**
      * Whether use write pdo for select.
+	 * 是否对select使用write pdo
      *
      * @var bool
      */
@@ -194,6 +219,7 @@ class Builder
 
     /**
      * Create a new query builder instance.
+	 * 创建一个新的查询生成器实例
      *
      * @param  \Illuminate\Database\ConnectionInterface  $connection
      * @param  \Illuminate\Database\Query\Grammars\Grammar  $grammar
@@ -211,6 +237,7 @@ class Builder
 
     /**
      * Set the columns to be selected.
+	 * 设置要选择的列
      *
      * @param  array|mixed  $columns
      * @return $this
@@ -224,6 +251,7 @@ class Builder
 
     /**
      * Add a new "raw" select expression to the query.
+	 * 向查询添加一个新的“原始”选择表达式
      *
      * @param  string  $expression
      * @param  array   $bindings
@@ -242,6 +270,7 @@ class Builder
 
     /**
      * Add a subselect expression to the query.
+	 * 向查询添加子选择表达式
      *
      * @param  \Closure|\Illuminate\Database\Query\Builder|string $query
      * @param  string  $as
@@ -272,6 +301,7 @@ class Builder
 
     /**
      * Parse the sub-select query into SQL and bindings.
+	 * 将子选择查询解析为SQL和绑定
      *
      * @param  mixed  $query
      * @return array
@@ -291,6 +321,7 @@ class Builder
 
     /**
      * Add a new select column to the query.
+	 * 向查询添加一个新的选择列
      *
      * @param  array|mixed  $column
      * @return $this
@@ -306,6 +337,7 @@ class Builder
 
     /**
      * Force the query to only return distinct results.
+	 * 强制查询只返回不同的结果
      *
      * @return $this
      */
@@ -318,6 +350,7 @@ class Builder
 
     /**
      * Set the table which the query is targeting.
+	 * 设置查询所针对的表
      *
      * @param  string  $table
      * @return $this
@@ -331,6 +364,7 @@ class Builder
 
     /**
      * Add a join clause to the query.
+	 * 向查询添加连接子句
      *
      * @param  string  $table
      * @param  string  $first
@@ -371,6 +405,7 @@ class Builder
 
     /**
      * Add a "join where" clause to the query.
+	 * 向查询添加“join where”子句
      *
      * @param  string  $table
      * @param  string  $first
@@ -386,6 +421,7 @@ class Builder
 
     /**
      * Add a left join to the query.
+	 * 向查询添加左连接
      *
      * @param  string  $table
      * @param  string  $first
@@ -400,6 +436,7 @@ class Builder
 
     /**
      * Add a "join where" clause to the query.
+	 * 向查询添加“join where”子句
      *
      * @param  string  $table
      * @param  string  $first
@@ -414,6 +451,7 @@ class Builder
 
     /**
      * Add a right join to the query.
+	 * 向查询添加右连接
      *
      * @param  string  $table
      * @param  string  $first
@@ -428,6 +466,7 @@ class Builder
 
     /**
      * Add a "right join where" clause to the query.
+	 * 向查询添加“right join where”子句
      *
      * @param  string  $table
      * @param  string  $first
@@ -462,6 +501,7 @@ class Builder
 
     /**
      * Merge an array of where clauses and bindings.
+	 * 合并where子句和绑定的数组
      *
      * @param  array  $wheres
      * @param  array  $bindings
@@ -478,6 +518,7 @@ class Builder
 
     /**
      * Add a basic where clause to the query.
+	 * 向查询添加一个基本的where子句
      *
      * @param  string|array|\Closure  $column
      * @param  mixed   $operator
@@ -554,6 +595,7 @@ class Builder
 
     /**
      * Add an array of where clauses to the query.
+	 * 向查询添加where子句数组
      *
      * @param  array  $column
      * @param  string  $boolean
@@ -575,6 +617,7 @@ class Builder
 
     /**
      * Prepare the value and operator for a where clause.
+	 * 为where子句准备值和操作符
      *
      * @param  string  $value
      * @param  string  $operator
@@ -596,6 +639,7 @@ class Builder
 
     /**
      * Determine if the given operator and value combination is legal.
+	 * 确定给定的操作符和值组合是否合法。
      *
      * Prevents using Null values with invalid operators.
      *
@@ -611,6 +655,7 @@ class Builder
 
     /**
      * Determine if the given operator is supported.
+	 * 确定是否支持给定的操作符
      *
      * @param  string  $operator
      * @return bool
@@ -690,6 +735,7 @@ class Builder
 
     /**
      * Add a raw where clause to the query.
+	 * 向查询添加一个原始的where子句
      *
      * @param  string  $sql
      * @param  mixed   $bindings
@@ -707,6 +753,7 @@ class Builder
 
     /**
      * Add a raw or where clause to the query.
+	 * 向查询添加raw或where子句
      *
      * @param  string  $sql
      * @param  mixed   $bindings
@@ -810,6 +857,7 @@ class Builder
 
     /**
      * Add a where in with a sub-select to the query.
+	 * 向查询添加带有子选择的where in
      *
      * @param  string   $column
      * @param  \Closure $callback
@@ -835,6 +883,7 @@ class Builder
 
     /**
      * Add an external sub-select to the query.
+	 * 向查询添加外部子选择
      *
      * @param  string   $column
      * @param  \Illuminate\Database\Query\Builder|static  $query
@@ -855,6 +904,7 @@ class Builder
 
     /**
      * Add a "where null" clause to the query.
+	 * 向查询添加“where null”子句
      *
      * @param  string  $column
      * @param  string  $boolean
@@ -872,6 +922,7 @@ class Builder
 
     /**
      * Add an "or where null" clause to the query.
+	 * 向查询添加“or where null”子句
      *
      * @param  string  $column
      * @return \Illuminate\Database\Query\Builder|static
@@ -895,6 +946,7 @@ class Builder
 
     /**
      * Add a where between statement to the query.
+	 * 向查询添加where between语句
      *
      * @param  string  $column
      * @param  array   $values
@@ -915,6 +967,7 @@ class Builder
 
     /**
      * Add an or where between statement to the query.
+	 * 在查询中添加or where between语句
      *
      * @param  string  $column
      * @param  array   $values
@@ -927,6 +980,7 @@ class Builder
 
     /**
      * Add a where not between statement to the query.
+	 * 向查询添加where not between语句
      *
      * @param  string  $column
      * @param  array   $values
@@ -940,6 +994,7 @@ class Builder
 
     /**
      * Add an or where not between statement to the query.
+	 * 在查询中添加or where not between语句
      *
      * @param  string  $column
      * @param  array   $values
@@ -952,6 +1007,7 @@ class Builder
 
     /**
      * Add an "or where not null" clause to the query.
+	 * 在查询中添加一个“or where not null”子句
      *
      * @param  string  $column
      * @return \Illuminate\Database\Query\Builder|static
@@ -963,6 +1019,7 @@ class Builder
 
     /**
      * Add a "where date" statement to the query.
+	 * 向查询添加“where date”语句
      *
      * @param  string  $column
      * @param  string  $operator
@@ -981,6 +1038,7 @@ class Builder
 
     /**
      * Add an "or where date" statement to the query.
+	 * 向查询添加“or where date”语句
      *
      * @param  string  $column
      * @param  string  $operator
@@ -998,6 +1056,7 @@ class Builder
 
     /**
      * Add a "where time" statement to the query.
+	 * 向查询添加“where time”语句
      *
      * @param  string  $column
      * @param  string   $operator
@@ -1012,6 +1071,7 @@ class Builder
 
     /**
      * Add an "or where time" statement to the query.
+	 * 在查询中添加“or where time”语句
      *
      * @param  string  $column
      * @param  string   $operator
@@ -1083,6 +1143,7 @@ class Builder
 
     /**
      * Add a date based (year, month, day, time) statement to the query.
+	 * 向查询添加基于日期（年、月、日、时间）的语句
      *
      * @param  string  $type
      * @param  string  $column
@@ -1104,6 +1165,7 @@ class Builder
 
     /**
      * Add a nested where statement to the query.
+	 * 向查询添加嵌套的where语句
      *
      * @param  \Closure $callback
      * @param  string   $boolean
@@ -1118,6 +1180,7 @@ class Builder
 
     /**
      * Create a new query instance for nested where condition.
+	 * 为嵌套where条件创建一个新的查询实例
      *
      * @return \Illuminate\Database\Query\Builder
      */
@@ -1128,6 +1191,7 @@ class Builder
 
     /**
      * Add another query builder as a nested where to the query builder.
+	 * 将另一个查询构建器添加为查询构建器的嵌套位置
      *
      * @param  \Illuminate\Database\Query\Builder|static $query
      * @param  string  $boolean
@@ -1148,6 +1212,7 @@ class Builder
 
     /**
      * Add a full sub-select to the query.
+	 * 向查询添加一个完整的子选择
      *
      * @param  string   $column
      * @param  string   $operator
@@ -1175,6 +1240,7 @@ class Builder
 
     /**
      * Add an exists clause to the query.
+	 * 向查询添加exists子句
      *
      * @param  \Closure $callback
      * @param  string   $boolean
@@ -1195,6 +1261,7 @@ class Builder
 
     /**
      * Add an or exists clause to the query.
+	 * 向查询添加or exists子句
      *
      * @param  \Closure $callback
      * @param  bool     $not
@@ -1207,6 +1274,7 @@ class Builder
 
     /**
      * Add a where not exists clause to the query.
+	 * 向查询添加where not exists子句
      *
      * @param  \Closure $callback
      * @param  string   $boolean
@@ -1292,6 +1360,7 @@ class Builder
 
     /**
      * Add a single dynamic where clause statement to the query.
+	 * 向查询添加一个动态where子句语句
      *
      * @param  string  $segment
      * @param  string  $connector
@@ -1378,6 +1447,7 @@ class Builder
 
     /**
      * Add a raw having clause to the query.
+	 * 向查询添加一个原始的having子句
      *
      * @param  string  $sql
      * @param  array   $bindings
@@ -1397,6 +1467,7 @@ class Builder
 
     /**
      * Add a raw or having clause to the query.
+	 * 向查询添加raw或having子句
      *
      * @param  string  $sql
      * @param  array   $bindings
@@ -1459,6 +1530,7 @@ class Builder
 
     /**
      * Put the query's results in random order.
+	 * 将查询的结果按随机顺序排列
      *
      * @param  string  $seed
      * @return $this
@@ -1542,6 +1614,7 @@ class Builder
 
     /**
      * Set the limit and offset for a given page.
+	 * 设置给定页面的限制和偏移量
      *
      * @param  int  $page
      * @param  int  $perPage
@@ -1571,6 +1644,7 @@ class Builder
 
     /**
      * Get an array with all orders with a given column removed.
+	 * 获取一个数组，其中包含删除给定列的所有订单。
      *
      * @param  string  $column
      * @return array
@@ -1586,6 +1660,7 @@ class Builder
 
     /**
      * Add a union statement to the query.
+	 * 向查询添加一个联合语句
      *
      * @param  \Illuminate\Database\Query\Builder|\Closure  $query
      * @param  bool  $all
@@ -1606,6 +1681,7 @@ class Builder
 
     /**
      * Add a union all statement to the query.
+	 * 向查询添加一个联合all语句
      *
      * @param  \Illuminate\Database\Query\Builder|\Closure  $query
      * @return \Illuminate\Database\Query\Builder|static
@@ -1617,6 +1693,7 @@ class Builder
 
     /**
      * Lock the selected rows in the table.
+	 * 锁定表中选定的行
      *
      * @param  string|bool  $value
      * @return $this
@@ -1634,6 +1711,7 @@ class Builder
 
     /**
      * Lock the selected rows in the table for updating.
+	 * 锁定表中所选的行以进行更新
      *
      * @return \Illuminate\Database\Query\Builder
      */
@@ -1644,6 +1722,7 @@ class Builder
 
     /**
      * Share lock the selected rows in the table.
+	 * 共享锁表中选定的行
      *
      * @return \Illuminate\Database\Query\Builder
      */
@@ -1722,6 +1801,7 @@ class Builder
 
     /**
      * Paginate the given query into a simple paginator.
+	 * 将给定查询分页到一个简单的分页器中
      *
      * @param  int  $perPage
      * @param  array  $columns
@@ -1745,6 +1825,7 @@ class Builder
 
     /**
      * Get a paginator only supporting simple next and previous links.
+	 * 获取只支持简单的下一个和上一个链接的分页器。
      *
      * This is more efficient on larger data-sets, etc.
      *
@@ -1768,6 +1849,7 @@ class Builder
 
     /**
      * Get the count of the total records for the paginator.
+	 * 获取分页器的总记录计数
      *
      * @param  array  $columns
      * @return int
@@ -1806,6 +1888,7 @@ class Builder
 
     /**
      * Remove the column aliases since they will break count queries.
+	 * 删除列别名，因为它们会中断计数查询。
      *
      * @param  array  $columns
      * @return array
@@ -1820,6 +1903,7 @@ class Builder
 
     /**
      * Get a generator for the given query.
+	 * 获取给定查询的生成器
      *
      * @return \Generator
      */
@@ -1836,6 +1920,7 @@ class Builder
 
     /**
      * Chunk the results of a query by comparing numeric IDs.
+	 * 通过比较数字id对查询结果进行分组
      *
      * @param  int  $count
      * @param  callable  $callback
@@ -1880,6 +1965,7 @@ class Builder
 
     /**
      * Throw an exception if the query doesn't have an orderBy clause.
+	 * 如果查询没有orderBy子句，则抛出异常。
      *
      * @return void
      *
@@ -1894,6 +1980,7 @@ class Builder
 
     /**
      * Get an array with the values of a given column.
+	 * 获取包含给定列值的数组
      *
      * @param  string  $column
      * @param  string|null  $key
@@ -1914,6 +2001,7 @@ class Builder
 
     /**
      * Strip off the table name or alias from a column identifier.
+	 * 从列标识符中去掉表名或别名
      *
      * @param  string  $column
      * @return string|null
@@ -2176,6 +2264,7 @@ class Builder
 
     /**
      * Insert or update a record matching the attributes, and fill it with values.
+	 * 插入或更新与属性匹配的记录，并用值填充它。
      *
      * @param  array  $attributes
      * @param  array  $values
@@ -2192,6 +2281,7 @@ class Builder
 
     /**
      * Increment a column's value by a given amount.
+	 * 将列的值增加给定的量
      *
      * @param  string  $column
      * @param  int     $amount
@@ -2213,6 +2303,7 @@ class Builder
 
     /**
      * Decrement a column's value by a given amount.
+	 * 将列的值递减给定的量
      *
      * @param  string  $column
      * @param  int     $amount
@@ -2234,6 +2325,7 @@ class Builder
 
     /**
      * Delete a record from the database.
+	 * 从数据库中删除一条记录
      *
      * @param  mixed  $id
      * @return int
@@ -2256,6 +2348,7 @@ class Builder
 
     /**
      * Run a truncate statement on the table.
+	 * 在表上运行truncate语句
      *
      * @return void
      */
@@ -2268,6 +2361,7 @@ class Builder
 
     /**
      * Get a new instance of the query builder.
+	 * 获取查询生成器的新实例
      *
      * @return \Illuminate\Database\Query\Builder
      */
@@ -2278,6 +2372,7 @@ class Builder
 
     /**
      * Create a new query instance for a sub-query.
+	 * 为子查询创建一个新的查询实例
      *
      * @return \Illuminate\Database\Query\Builder
      */
@@ -2288,6 +2383,7 @@ class Builder
 
     /**
      * Create a raw database expression.
+	 * 创建原始数据库表达式
      *
      * @param  mixed  $value
      * @return \Illuminate\Database\Query\Expression
@@ -2299,6 +2395,7 @@ class Builder
 
     /**
      * Get the current query value bindings in a flattened array.
+	 * 在扁平数组中获取当前查询值绑定
      *
      * @return array
      */
@@ -2309,6 +2406,7 @@ class Builder
 
     /**
      * Get the raw array of bindings.
+	 * 获取绑定的原始数组
      *
      * @return array
      */
@@ -2319,6 +2417,7 @@ class Builder
 
     /**
      * Set the bindings on the query builder.
+	 * 在查询生成器上设置绑定
      *
      * @param  array   $bindings
      * @param  string  $type
@@ -2339,6 +2438,7 @@ class Builder
 
     /**
      * Add a binding to the query.
+	 * 向查询添加绑定
      *
      * @param  mixed   $value
      * @param  string  $type
@@ -2363,6 +2463,7 @@ class Builder
 
     /**
      * Merge an array of bindings into our bindings.
+	 * 将绑定数组合并到我们的绑定中
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return $this
@@ -2376,6 +2477,7 @@ class Builder
 
     /**
      * Remove all of the expressions from a list of bindings.
+	 * 从绑定列表中删除所有表达式
      *
      * @param  array  $bindings
      * @return array
@@ -2461,6 +2563,7 @@ class Builder
 
     /**
      * Handle dynamic method calls into the method.
+	 * 处理对方法的动态方法调用
      *
      * @param  string  $method
      * @param  array   $parameters

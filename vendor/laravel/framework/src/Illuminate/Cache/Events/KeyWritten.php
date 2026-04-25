@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，缓存，事件，主键写入
+ */
 
 namespace Illuminate\Cache\Events;
 
@@ -6,6 +9,7 @@ class KeyWritten extends CacheEvent
 {
     /**
      * The value that was written.
+	 * 写入的值
      *
      * @var mixed
      */
@@ -13,6 +17,7 @@ class KeyWritten extends CacheEvent
 
     /**
      * The number of minutes the key should be valid.
+	 * 密钥应该有效的分钟数
      *
      * @var int
      */
@@ -20,6 +25,7 @@ class KeyWritten extends CacheEvent
 
     /**
      * Create a new event instance.
+	 * 创建一个新的事件实例
      *
      * @param  string  $key
      * @param  mixed  $value

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，Eloquent，关系，转变为
+ */
 
 namespace Illuminate\Database\Eloquent\Relations;
 
@@ -14,6 +17,7 @@ class MorphTo extends BelongsTo
 {
     /**
      * The type of the polymorphic relation.
+	 * 多态关系的类型
      *
      * @var string
      */
@@ -21,6 +25,7 @@ class MorphTo extends BelongsTo
 
     /**
      * The models whose relations are being eager loaded.
+	 * 其关系被热切加载的模型
      *
      * @var \Illuminate\Database\Eloquent\Collection
      */
@@ -28,6 +33,7 @@ class MorphTo extends BelongsTo
 
     /**
      * All of the models keyed by ID.
+	 * 所有以ID为键的模型
      *
      * @var array
      */
@@ -35,6 +41,7 @@ class MorphTo extends BelongsTo
 
     /**
      * A buffer of dynamic calls to query macros.
+	 * 用于动态调用查询宏的缓冲区
      *
      * @var array
      */
@@ -42,6 +49,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Create a new morph to relationship instance.
+	 * 创建关系实例的新变形
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Model  $parent
@@ -60,6 +68,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Set the constraints for an eager load of the relation.
+	 * 为关系的即时加载设置约束
      *
      * @param  array  $models
      * @return void
@@ -71,6 +80,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Build a dictionary with the models.
+	 * 用这些模型构建一个字典
      *
      * @param  \Illuminate\Database\Eloquent\Collection  $models
      * @return void
@@ -86,6 +96,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Get the results of the relationship.
+	 * 得到关系的结果
      *
      * @return mixed
      */
@@ -96,8 +107,10 @@ class MorphTo extends BelongsTo
 
     /**
      * Get the results of the relationship.
+	 * 得到关系的结果。
      *
      * Called via eager load method of Eloquent query builder.
+	 * 通过Eloquent查询生成器的急切加载方法调用。
      *
      * @return mixed
      */
@@ -112,6 +125,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Get all of the relation results for a type.
+	 * 获取一个类型的所有关系结果
      *
      * @param  string  $type
      * @return \Illuminate\Database\Eloquent\Collection
@@ -131,6 +145,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Gather all of the foreign keys for a given type.
+	 * 收集给定类型的所有外键
      *
      * @param  string  $type
      * @return array
@@ -144,6 +159,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Create a new model instance by type.
+	 * 按类型创建一个新的模型实例
      *
      * @param  string  $type
      * @return \Illuminate\Database\Eloquent\Model
@@ -157,6 +173,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Match the eagerly loaded results to their parents.
+	 * 将急切加载的结果与他们的父母匹配
      *
      * @param  array   $models
      * @param  \Illuminate\Database\Eloquent\Collection  $results
@@ -170,6 +187,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Match the results for a given type to their parents.
+	 * 将给定类型的结果与其父类型进行匹配
      *
      * @param  string  $type
      * @param  \Illuminate\Database\Eloquent\Collection  $results
@@ -188,6 +206,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Associate the model instance to the given parent.
+	 * 将模型实例关联到给定的父实例
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return \Illuminate\Database\Eloquent\Model
@@ -207,6 +226,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Dissociate previously associated model from the given parent.
+	 * 将先前关联的模型与给定的父模型分离
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
@@ -221,6 +241,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Get the foreign key "type" name.
+	 * 获取外键“类型”名称
      *
      * @return string
      */
@@ -231,6 +252,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Get the dictionary used by the relationship.
+	 * 获取关系使用的字典
      *
      * @return array
      */
@@ -241,6 +263,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Replay stored macro calls on the actual related instance.
+	 * 在实际相关实例上重播存储的宏调用
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
@@ -256,6 +279,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Handle dynamic method calls to the relationship.
+	 * 处理对关系的动态方法调用
      *
      * @param  string  $method
      * @param  array   $parameters

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，视图，视图服务提供商
+ */
 
 namespace Illuminate\View;
 
@@ -13,6 +16,7 @@ class ViewServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
+	 * 注册服务提供者
      *
      * @return void
      */
@@ -27,6 +31,7 @@ class ViewServiceProvider extends ServiceProvider
 
     /**
      * Register the view environment.
+	 * 注册视图环境
      *
      * @return void
      */
@@ -55,6 +60,7 @@ class ViewServiceProvider extends ServiceProvider
 
     /**
      * Create a new Factory Instance.
+	 * 创建一个新的工厂实例
      *
      * @param  \Illuminate\View\Engines\EngineResolver  $resolver
      * @param  \Illuminate\View\ViewFinderInterface  $finder
@@ -68,6 +74,7 @@ class ViewServiceProvider extends ServiceProvider
 
     /**
      * Register the view finder implementation.
+	 * 注册取景器实现
      *
      * @return void
      */
@@ -80,6 +87,7 @@ class ViewServiceProvider extends ServiceProvider
 
     /**
      * Register the engine resolver instance.
+	 * 注册引擎解析程序实例
      *
      * @return void
      */
@@ -101,6 +109,7 @@ class ViewServiceProvider extends ServiceProvider
 
     /**
      * Register the file engine implementation.
+	 * 注册文件引擎实现
      *
      * @param  \Illuminate\View\Engines\EngineResolver  $resolver
      * @return void
@@ -114,6 +123,7 @@ class ViewServiceProvider extends ServiceProvider
 
     /**
      * Register the PHP engine implementation.
+	 * 注册PHP引擎实现
      *
      * @param  \Illuminate\View\Engines\EngineResolver  $resolver
      * @return void
@@ -127,6 +137,7 @@ class ViewServiceProvider extends ServiceProvider
 
     /**
      * Register the Blade engine implementation.
+	 * 注册Blade引擎实现
      *
      * @param  \Illuminate\View\Engines\EngineResolver  $resolver
      * @return void

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，队列，队列
+ */
 
 namespace Illuminate\Queue;
 
@@ -12,6 +15,7 @@ abstract class Queue
 
     /**
      * The IoC container instance.
+	 * IoC容器实例
      *
      * @var \Illuminate\Container\Container
      */
@@ -19,6 +23,7 @@ abstract class Queue
 
     /**
      * The encrypter implementation.
+	 * 加密器实现
      *
      * @var \Illuminate\Contracts\Encryption\Encrypter
      */
@@ -26,6 +31,7 @@ abstract class Queue
 
     /**
      * The connection name for the queue.
+	 * 队列的连接名称
      *
      * @var string
      */
@@ -33,6 +39,7 @@ abstract class Queue
 
     /**
      * Push a new job onto the queue.
+	 * 将新作业推送到队列中
      *
      * @param  string  $queue
      * @param  string  $job
@@ -46,6 +53,7 @@ abstract class Queue
 
     /**
      * Push a new job onto the queue after a delay.
+	 * 在延迟后将新作业推入队列
      *
      * @param  string  $queue
      * @param  \DateTimeInterface|\DateInterval|int  $delay
@@ -60,6 +68,7 @@ abstract class Queue
 
     /**
      * Push an array of jobs onto the queue.
+	 * 将一组作业推入队列
      *
      * @param  array   $jobs
      * @param  mixed   $data
@@ -75,6 +84,7 @@ abstract class Queue
 
     /**
      * Create a payload string from the given job and data.
+	 * 根据给定的作业和数据创建有效负载字符串
      *
      * @param  string  $job
      * @param  mixed   $data
@@ -97,6 +107,7 @@ abstract class Queue
 
     /**
      * Create a payload array from the given job and data.
+	 * 根据给定的作业和数据创建有效负载数组
      *
      * @param  string  $job
      * @param  mixed   $data
@@ -111,6 +122,7 @@ abstract class Queue
 
     /**
      * Create a payload for an object-based queue handler.
+	 * 为基于对象的队列处理程序创建有效负载
      *
      * @param  mixed  $job
      * @return array
@@ -132,6 +144,7 @@ abstract class Queue
 
     /**
      * Get the display name for the given job.
+	 * 获取给定作业的显示名称
      *
      * @param  mixed  $job
      * @return string
@@ -144,6 +157,7 @@ abstract class Queue
 
     /**
      * Get the expiration timestamp for an object-based queue handler.
+	 * 获取基于对象的队列处理程序的过期时间戳
      *
      * @param  mixed  $job
      * @return mixed
@@ -162,6 +176,7 @@ abstract class Queue
 
     /**
      * Create a typical, string based queue payload array.
+	 * 创建一个典型的、基于字符串的队列有效负载数组。
      *
      * @param  string  $job
      * @param  mixed  $data
@@ -178,6 +193,7 @@ abstract class Queue
 
     /**
      * Get the connection name for the queue.
+	 * 获取队列的连接名称
      *
      * @return string
      */
@@ -188,6 +204,7 @@ abstract class Queue
 
     /**
      * Set the connection name for the queue.
+	 * 设置队列的连接名称
      *
      * @param  string  $name
      * @return $this
@@ -201,6 +218,7 @@ abstract class Queue
 
     /**
      * Set the IoC container instance.
+	 * 设置IoC容器实例
      *
      * @param  \Illuminate\Container\Container  $container
      * @return void

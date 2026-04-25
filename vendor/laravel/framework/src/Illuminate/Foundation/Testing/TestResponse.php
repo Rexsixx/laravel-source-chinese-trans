@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，测试，测试响应
+ */
 
 namespace Illuminate\Foundation\Testing;
 
@@ -21,6 +24,7 @@ class TestResponse
 
     /**
      * The response to delegate to.
+	 * 委托的响应
      *
      * @var \Illuminate\Http\Response
      */
@@ -28,6 +32,7 @@ class TestResponse
 
     /**
      * Create a new test response instance.
+	 * 创建一个新的测试响应实例
      *
      * @param  \Illuminate\Http\Response  $response
      * @return void
@@ -39,6 +44,7 @@ class TestResponse
 
     /**
      * Create a new TestResponse from another response.
+	 * 从另一个响应创建一个新的TestResponse
      *
      * @param  \Illuminate\Http\Response  $response
      * @return static
@@ -50,6 +56,7 @@ class TestResponse
 
     /**
      * Assert that the response has a successful status code.
+	 * 断言响应具有成功状态码
      *
      * @return $this
      */
@@ -65,6 +72,7 @@ class TestResponse
 
     /**
      * Assert that the response has the given status code.
+	 * 断言响应具有给定的状态码
      *
      * @param  int  $status
      * @return $this
@@ -83,6 +91,7 @@ class TestResponse
 
     /**
      * Assert whether the response is redirecting to a given URI.
+	 * 断言响应是否重定向到给定的URI
      *
      * @param  string  $uri
      * @return $this
@@ -102,6 +111,7 @@ class TestResponse
 
     /**
      * Asserts that the response contains the given header and equals the optional value.
+	 * 断言响应包含给定的标头并等于可选值
      *
      * @param  string  $headerName
      * @param  mixed  $value
@@ -127,6 +137,7 @@ class TestResponse
 
     /**
      * Asserts that the response does not contains the given header.
+	 * 断言响应不包含给定的标头
      *
      * @param  string  $headerName
      * @return $this
@@ -142,6 +153,7 @@ class TestResponse
 
     /**
      * Asserts that the response contains the given cookie and equals the optional value.
+	 * 断言响应包含给定的cookie并等于可选值
      *
      * @param  string  $cookieName
      * @param  mixed  $value
@@ -157,6 +169,7 @@ class TestResponse
 
     /**
      * Asserts that the response contains the given cookie and equals the optional value.
+	 * 断言响应包含给定的cookie并等于可选值
      *
      * @param  string  $cookieName
      * @param  mixed  $value
@@ -190,6 +203,7 @@ class TestResponse
 
     /**
      * Asserts that the response contains the given cookie and is expired.
+	 * 断言响应包含给定的cookie并且已经过期
      *
      * @param  string  $cookieName
      * @return $this
@@ -213,6 +227,7 @@ class TestResponse
 
     /**
      * Asserts that the response does not contains the given cookie.
+	 * 断言响应不包含给定的cookie
      *
      * @param  string  $cookieName
      * @return $this
@@ -229,6 +244,7 @@ class TestResponse
 
     /**
      * Get the given cookie from the response.
+	 * 从响应中获取给定的cookie
      *
      * @param  string  $cookieName
      * @return \Symfony\Component\HttpFoundation\Cookie|null
@@ -244,6 +260,7 @@ class TestResponse
 
     /**
      * Assert that the given string is contained within the response.
+	 * 断言给定的字符串包含在响应中
      *
      * @param  string  $value
      * @return $this
@@ -257,6 +274,7 @@ class TestResponse
 
     /**
      * Assert that the given string is contained within the response text.
+	 * 断言给定的字符串包含在响应文本中
      *
      * @param  string  $value
      * @return $this
@@ -270,6 +288,7 @@ class TestResponse
 
     /**
      * Assert that the given string is not contained within the response.
+	 * 断言给定的字符串不包含在响应中
      *
      * @param  string  $value
      * @return $this
@@ -283,6 +302,7 @@ class TestResponse
 
     /**
      * Assert that the given string is not contained within the response text.
+	 * 断言给定的字符串不包含在响应文本中
      *
      * @param  string  $value
      * @return $this
@@ -296,6 +316,7 @@ class TestResponse
 
     /**
      * Assert that the response is a superset of the given JSON.
+	 * 断言响应是给定JSON的超集
      *
      * @param  array  $data
      * @param  bool  $strict
@@ -312,6 +333,7 @@ class TestResponse
 
     /**
      * Get the assertion message for assertJson.
+	 * 获取assertJson的断言消息
      *
      * @param  array  $data
      * @return string
@@ -330,6 +352,7 @@ class TestResponse
 
     /**
      * Assert that the response has the exact given JSON.
+	 * 断言响应具有确切给定的JSON
      *
      * @param  array  $data
      * @return $this
@@ -347,6 +370,7 @@ class TestResponse
 
     /**
      * Assert that the response contains the given JSON fragment.
+	 * 断言响应包含给定的JSON片段
      *
      * @param  array  $data
      * @return $this
@@ -374,6 +398,7 @@ class TestResponse
 
     /**
      * Assert that the response does not contain the given JSON fragment.
+	 * 断言响应不包含给定的JSON片段
      *
      * @param  array  $data
      * @param  bool   $exact
@@ -406,6 +431,7 @@ class TestResponse
 
     /**
      * Assert that the response does not contain the exact JSON fragment.
+	 * 断言响应不包含确切的JSON片段
      *
      * @param  array  $data
      * @return $this
@@ -434,6 +460,7 @@ class TestResponse
 
     /**
      * Assert that the response has a given JSON structure.
+	 * 断言响应具有给定的JSON结构
      *
      * @param  array|null  $structure
      * @param  array|null  $responseData
@@ -470,6 +497,7 @@ class TestResponse
 
     /**
      * Assert that the response JSON has the expected count of items at the given key.
+	 * 断言响应JSON具有给定键处的预期项计数
      *
      * @param  int  $count
      * @param  string|null  $key
@@ -496,6 +524,7 @@ class TestResponse
 
     /**
      * Assert that the response has the given JSON validation errors for the given keys.
+	 * 断言响应对于给定的键具有给定的JSON验证错误
      *
      * @param  string|array  $keys
      * @return $this
@@ -516,6 +545,7 @@ class TestResponse
 
     /**
      * Validate and return the decoded response JSON.
+	 * 验证并返回解码后的响应JSON
      *
      * @return array
      */
@@ -536,6 +566,7 @@ class TestResponse
 
     /**
      * Validate and return the decoded response JSON.
+	 * 验证并返回解码后的响应JSON
      *
      * @return array
      */
@@ -546,6 +577,7 @@ class TestResponse
 
     /**
      * Assert that the response view equals the given value.
+	 * 断言响应视图等于给定的值
      *
      * @param  string $value
      * @return $this
@@ -561,6 +593,7 @@ class TestResponse
 
     /**
      * Assert that the response view has a given piece of bound data.
+	 * 断言响应视图具有给定的绑定数据片段
      *
      * @param  string|array  $key
      * @param  mixed  $value
@@ -587,6 +620,7 @@ class TestResponse
 
     /**
      * Assert that the response view has a given list of bound data.
+	 * 断言响应视图具有给定的绑定数据列表
      *
      * @param  array  $bindings
      * @return $this
@@ -606,6 +640,7 @@ class TestResponse
 
     /**
      * Assert that the response view is missing a piece of bound data.
+	 * 断言响应视图缺少一段绑定数据
      *
      * @param  string  $key
      * @return $this
@@ -621,6 +656,7 @@ class TestResponse
 
     /**
      * Ensure that the response has a view as its original content.
+	 * 确保响应有一个视图作为其原始内容
      *
      * @return $this
      */
@@ -635,6 +671,7 @@ class TestResponse
 
     /**
      * Assert that the session has a given value.
+	 * 断言会话具有给定值
      *
      * @param  string|array  $key
      * @param  mixed  $value
@@ -660,6 +697,7 @@ class TestResponse
 
     /**
      * Assert that the session has a given list of values.
+	 * 断言会话具有给定的值列表
      *
      * @param  array  $bindings
      * @return $this
@@ -679,6 +717,7 @@ class TestResponse
 
     /**
      * Assert that the session has the given errors.
+	 * 断言会话有给定的错误
      *
      * @param  string|array  $keys
      * @param  mixed  $format
@@ -706,6 +745,7 @@ class TestResponse
 
     /**
      * Assert that the session has the given errors.
+	 * 断言会话有给定的错误
      *
      * @param  string  $errorBag
      * @param  string|array  $keys
@@ -719,6 +759,7 @@ class TestResponse
 
     /**
      * Assert that the session does not have a given key.
+	 * 断言会话没有给定的键
      *
      * @param  string|array  $key
      * @return $this
@@ -741,6 +782,7 @@ class TestResponse
 
     /**
      * Get the current session store.
+	 * 获取当前会话存储
      *
      * @return \Illuminate\Session\Store
      */
@@ -751,6 +793,7 @@ class TestResponse
 
     /**
      * Dump the content from the response.
+	 * 从响应中转储内容
      *
      * @return void
      */
@@ -769,6 +812,7 @@ class TestResponse
 
     /**
      * Dynamically access base response parameters.
+	 * 动态访问基本响应参数
      *
      * @param  string  $key
      * @return mixed
@@ -780,6 +824,7 @@ class TestResponse
 
     /**
      * Proxy isset() checks to the underlying base response.
+	 * 代理isset（）检查底层基本响应
      *
      * @param  string  $key
      * @return mixed
@@ -791,6 +836,7 @@ class TestResponse
 
     /**
      * Handle dynamic calls into macros or pass missing methods to the base response.
+	 * 将动态调用处理为宏或将缺少的方法传递给基本响应
      *
      * @param  string  $method
      * @param  array  $args

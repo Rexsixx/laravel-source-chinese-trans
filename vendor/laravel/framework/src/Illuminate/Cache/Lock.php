@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，缓存，锁
+ */
 
 namespace Illuminate\Cache;
 
@@ -11,6 +14,7 @@ abstract class Lock
 
     /**
      * The name of the lock.
+	 * 锁的名称
      *
      * @var string
      */
@@ -18,6 +22,7 @@ abstract class Lock
 
     /**
      * The number of seconds the lock should be maintained.
+	 * 应该维护锁的秒数
      *
      * @var int
      */
@@ -25,6 +30,7 @@ abstract class Lock
 
     /**
      * Create a new lock instance.
+	 * 创建一个新的锁实例
      *
      * @param  string  $name
      * @param  int  $seconds
@@ -38,6 +44,7 @@ abstract class Lock
 
     /**
      * Attempt to acquire the lock.
+	 * 尝试获取锁
      *
      * @return bool
      */
@@ -45,6 +52,7 @@ abstract class Lock
 
     /**
      * Attempt to acquire the lock.
+	 * 尝试获取锁
      *
      * @param  callable|null  $callback
      * @return bool
@@ -64,6 +72,7 @@ abstract class Lock
 
     /**
      * Attempt to acquire the lock for the given number of seconds.
+	 * 尝试在给定的秒数内获取锁
      *
      * @param  int  $seconds
      * @param  callable|null  $callback

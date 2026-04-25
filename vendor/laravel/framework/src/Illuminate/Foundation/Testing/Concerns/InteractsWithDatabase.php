@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，测试，问题，与身份验证交互
+ */
 
 namespace Illuminate\Foundation\Testing\Concerns;
 
@@ -10,6 +13,7 @@ trait InteractsWithDatabase
 {
     /**
      * Assert that a given where condition exists in the database.
+	 * 断言给定的where条件存在于数据库中
      *
      * @param  string  $table
      * @param  array  $data
@@ -27,6 +31,7 @@ trait InteractsWithDatabase
 
     /**
      * Assert that a given where condition does not exist in the database.
+	 * 断言给定的where条件在数据库中不存在
      *
      * @param  string  $table
      * @param  array  $data
@@ -46,6 +51,7 @@ trait InteractsWithDatabase
 
     /**
      * Assert the given record has been deleted.
+	 * 断言给定的记录已被删除
      *
      * @param  string  $table
      * @param  array  $data
@@ -63,6 +69,7 @@ trait InteractsWithDatabase
 
     /**
      * Get the database connection.
+	 * 获取数据库连接
      *
      * @param  string|null  $connection
      * @return \Illuminate\Database\Connection
@@ -78,6 +85,7 @@ trait InteractsWithDatabase
 
     /**
      * Seed a given database connection.
+	 * 为给定的数据库连接播种
      *
      * @param  string  $class
      * @return $this

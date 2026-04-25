@@ -1,4 +1,7 @@
 <?php
+/**
+ * UpdateHelper，更新助手
+ */
 
 namespace UpdateHelper;
 

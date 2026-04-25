@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，缓存，资源库
+ */
 
 namespace Illuminate\Cache;
 
@@ -29,6 +32,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * The cache store implementation.
+	 * 缓存存储实现
      *
      * @var \Illuminate\Contracts\Cache\Store
      */
@@ -36,6 +40,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * The event dispatcher implementation.
+	 * 事件分派器实现
      *
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
@@ -43,6 +48,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * The default number of minutes to store items.
+	 * 存储项的默认分钟数
      *
      * @var float|int
      */
@@ -50,6 +56,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Create a new cache repository instance.
+	 * 创建一个新的缓存存储库实例
      *
      * @param  \Illuminate\Contracts\Cache\Store  $store
      * @return void
@@ -61,6 +68,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Determine if an item exists in the cache.
+	 * 确定缓存中是否存在项
      *
      * @param  string  $key
      * @return bool
@@ -72,6 +80,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Retrieve an item from the cache by key.
+	 * 按键从缓存中获取项
      *
      * @param  string  $key
      * @param  mixed   $default
@@ -101,8 +110,10 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Retrieve multiple items from the cache by key.
+	 * 按键从缓存中检索多个项。
      *
      * Items not found in the cache will have a null value.
+	 * 在缓存中找不到的项将具有空值。
      *
      * @param  array  $keys
      * @return array
@@ -134,6 +145,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Handle a result for the "many" method.
+	 * 处理“many”方法的结果。
      *
      * @param  array  $keys
      * @param  string  $key
@@ -161,6 +173,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Retrieve an item from the cache and delete it.
+	 * 从缓存中检索项并删除它
      *
      * @param  string  $key
      * @param  mixed   $default
@@ -175,6 +188,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Store an item in the cache.
+	 * 在缓存中存储项
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -204,6 +218,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Store multiple items in the cache for a given number of minutes.
+	 * 在给定的分钟数内将多个项存储在缓存中
      *
      * @param  array  $values
      * @param  \DateTimeInterface|\DateInterval|float|int  $minutes
@@ -230,6 +245,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Store an item in the cache if the key does not exist.
+	 * 如果键不存在，则将项存储在缓存中。
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -265,6 +281,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Increment the value of an item in the cache.
+	 * 增加缓存中项的值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -277,6 +294,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Decrement the value of an item in the cache.
+	 * 递减缓存中项的值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -289,6 +307,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Store an item in the cache indefinitely.
+	 * 将项无限期地存储在缓存中
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -303,6 +322,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Get an item from the cache, or store the default value.
+	 * 从缓存中获取项，或存储默认值。
      *
      * @param  string  $key
      * @param  \DateTimeInterface|\DateInterval|float|int  $minutes
@@ -327,6 +347,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Get an item from the cache, or store the default value forever.
+	 * 从缓存中获取项，或永久存储默认值。
      *
      * @param  string   $key
      * @param  \Closure  $callback
@@ -339,6 +360,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Get an item from the cache, or store the default value forever.
+	 * 从缓存中获取项，或永久存储默认值。
      *
      * @param  string   $key
      * @param  \Closure  $callback
@@ -362,6 +384,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Remove an item from the cache.
+	 * 从缓存中删除项
      *
      * @param  string  $key
      * @return bool
@@ -403,6 +426,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Begin executing a new tags operation if the store supports it.
+	 * 如果存储支持，开始执行新的标记操作。
      *
      * @param  array|mixed  $names
      * @return \Illuminate\Cache\TaggedCache
@@ -426,6 +450,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Format the key for a cache item.
+	 * 格式化缓存项的键
      *
      * @param  string  $key
      * @return string
@@ -437,6 +462,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Get the default cache time.
+	 * 获取默认缓存时间
      *
      * @return float|int
      */
@@ -447,6 +473,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Set the default cache time in minutes.
+	 * 设置默认缓存时间（以分钟为单位）
      *
      * @param  float|int  $minutes
      * @return $this
@@ -460,6 +487,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Get the cache store implementation.
+	 * 获取缓存存储实现
      *
      * @return \Illuminate\Contracts\Cache\Store
      */
@@ -470,6 +498,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Fire an event for this cache instance.
+	 * 触发此缓存实例的事件
      *
      * @param  string  $event
      * @return void
@@ -483,6 +512,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Set the event dispatcher instance.
+	 * 设置事件调度程序实例
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
@@ -494,6 +524,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Determine if a cached value exists.
+	 * 确定是否存在缓存值
      *
      * @param  string  $key
      * @return bool
@@ -505,6 +536,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Retrieve an item from the cache by key.
+	 * 按键从缓存中检索项
      *
      * @param  string  $key
      * @return mixed
@@ -516,6 +548,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Store an item in the cache for the default time.
+	 * 在默认时间的缓存中存储项
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -528,6 +561,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Remove an item from the cache.
+	 * 从缓存中删除项
      *
      * @param  string  $key
      * @return void
@@ -539,6 +573,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Calculate the number of minutes with the given duration.
+	 * 计算给定持续时间的分钟数
      *
      * @param  \DateTimeInterface|\DateInterval|float|int  $duration
      * @return float|int|null
@@ -556,6 +591,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Handle dynamic calls into macros or pass missing methods to the store.
+	 * 处理对宏的动态调用或将缺少的方法传递给存储库
      *
      * @param  string  $method
      * @param  array   $parameters
@@ -572,6 +608,7 @@ class Repository implements CacheContract, ArrayAccess
 
     /**
      * Clone cache repository instance.
+	 * 克隆缓存存储库实例
      *
      * @return void
      */

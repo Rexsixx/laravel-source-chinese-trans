@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，电子邮件，运送，Mandrill 运送
+ */
 
 namespace Illuminate\Mail\Transport;
 
@@ -9,6 +12,7 @@ class MandrillTransport extends Transport
 {
     /**
      * Guzzle client instance.
+	 * Guzzle客户端实例
      *
      * @var \GuzzleHttp\ClientInterface
      */
@@ -16,6 +20,7 @@ class MandrillTransport extends Transport
 
     /**
      * The Mandrill API key.
+	 * Mandrill API密钥
      *
      * @var string
      */
@@ -23,6 +28,7 @@ class MandrillTransport extends Transport
 
     /**
      * Create a new Mandrill transport instance.
+	 * 创建一个新的Mandrill传输实例
      *
      * @param  \GuzzleHttp\ClientInterface  $client
      * @param  string  $key
@@ -57,6 +63,7 @@ class MandrillTransport extends Transport
 
     /**
      * Get all the addresses this message should be sent to.
+	 * 获取此消息应发送到的所有地址。
      *
      * Note that Mandrill still respects CC, BCC headers in raw message itself.
      *
@@ -84,6 +91,7 @@ class MandrillTransport extends Transport
 
     /**
      * Get the API key being used by the transport.
+	 * 获取传输所使用的API密钥
      *
      * @return string
      */
@@ -94,6 +102,7 @@ class MandrillTransport extends Transport
 
     /**
      * Set the API key being used by the transport.
+	 * 设置传输所使用的API密钥
      *
      * @param  string  $key
      * @return string

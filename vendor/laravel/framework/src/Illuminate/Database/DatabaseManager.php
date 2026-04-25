@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，数据库管理器
+ */
 
 namespace Illuminate\Database;
 
@@ -15,6 +18,7 @@ class DatabaseManager implements ConnectionResolverInterface
 {
     /**
      * The application instance.
+	 * 应用实例
      *
      * @var \Illuminate\Foundation\Application
      */
@@ -22,6 +26,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * The database connection factory instance.
+	 * 数据库连接工厂实例
      *
      * @var \Illuminate\Database\Connectors\ConnectionFactory
      */
@@ -29,6 +34,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * The active connection instances.
+	 * 活动连接实例
      *
      * @var array
      */
@@ -36,6 +42,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * The custom connection resolvers.
+	 * 自定义连接解析器
      *
      * @var array
      */
@@ -43,6 +50,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Create a new database manager instance.
+	 * 创建一个新的数据库管理器实例
      *
      * @param  \Illuminate\Foundation\Application  $app
      * @param  \Illuminate\Database\Connectors\ConnectionFactory  $factory
@@ -56,6 +64,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Get a database connection instance.
+	 * 获取数据库连接实例
      *
      * @param  string  $name
      * @return \Illuminate\Database\Connection
@@ -80,6 +89,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Parse the connection into an array of the name and read / write type.
+	 * 将连接解析为名称和读/写类型的数组
      *
      * @param  string  $name
      * @return array
@@ -94,6 +104,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Make the database connection instance.
+	 * 创建数据库连接实例
      *
      * @param  string  $name
      * @return \Illuminate\Database\Connection
@@ -121,6 +132,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Get the configuration for a connection.
+	 * 获取连接的配置
      *
      * @param  string  $name
      * @return array
@@ -145,6 +157,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Prepare the database connection instance.
+	 * 准备数据库连接实例
      *
      * @param  \Illuminate\Database\Connection  $connection
      * @param  string  $type
@@ -173,6 +186,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Prepare the read / write mode for database connection instance.
+	 * 为数据库连接实例准备读写模式
      *
      * @param  \Illuminate\Database\Connection  $connection
      * @param  string  $type
@@ -191,6 +205,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Disconnect from the given database and remove from local cache.
+	 * 断开与给定数据库的连接，并从本地缓存中删除。
      *
      * @param  string  $name
      * @return void
@@ -206,6 +221,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Disconnect from the given database.
+	 * 断开与给定数据库的连接
      *
      * @param  string  $name
      * @return void
@@ -219,6 +235,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Reconnect to the given database.
+	 * 重新连接到给定的数据库
      *
      * @param  string  $name
      * @return \Illuminate\Database\Connection
@@ -236,6 +253,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Refresh the PDO connections on a given connection.
+	 * 刷新给定连接上的PDO连接
      *
      * @param  string  $name
      * @return \Illuminate\Database\Connection
@@ -251,6 +269,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Get the default connection name.
+	 * 获取默认连接名称
      *
      * @return string
      */
@@ -261,6 +280,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Set the default connection name.
+	 * 设置默认连接名称
      *
      * @param  string  $name
      * @return void
@@ -272,6 +292,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Get all of the support drivers.
+	 * 找所有的支持司机
      *
      * @return array
      */
@@ -282,6 +303,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Get all of the drivers that are actually available.
+	 * 获取所有可用的驱动程序
      *
      * @return array
      */
@@ -295,6 +317,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Register an extension connection resolver.
+	 * 注册扩展连接解析器
      *
      * @param  string    $name
      * @param  callable  $resolver
@@ -307,6 +330,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Return all of the created connections.
+	 * 返回所有创建的连接
      *
      * @return array
      */
@@ -317,6 +341,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Dynamically pass methods to the default connection.
+	 * 动态地将方法传递给默认连接
      *
      * @param  string  $method
      * @param  array   $parameters

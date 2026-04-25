@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Http，响应
+ */
 
 namespace Illuminate\Http;
 
@@ -18,6 +21,7 @@ class Response extends BaseResponse
 
     /**
      * Set the content on the response.
+	 * 设置响应的内容
      *
      * @param  mixed  $content
      * @return $this
@@ -49,6 +53,7 @@ class Response extends BaseResponse
 
     /**
      * Determine if the given content should be turned into JSON.
+	 * 确定是否应该将给定的内容转换为JSON
      *
      * @param  mixed  $content
      * @return bool
@@ -64,6 +69,7 @@ class Response extends BaseResponse
 
     /**
      * Morph the given content into JSON.
+	 * 将给定的内容转换为JSON
      *
      * @param  mixed   $content
      * @return string

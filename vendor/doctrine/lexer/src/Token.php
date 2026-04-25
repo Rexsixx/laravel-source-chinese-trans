@@ -1,4 +1,7 @@
 <?php
+/**
+ * Doctrine，公共，Lexer，令牌
+ */
 
 declare(strict_types=1);
 
@@ -20,6 +23,7 @@ final class Token implements ArrayAccess
 {
     /**
      * The string value of the token in the input string
+	 * 输入字符串中记号的字符串值
      *
      * @readonly
      * @var V

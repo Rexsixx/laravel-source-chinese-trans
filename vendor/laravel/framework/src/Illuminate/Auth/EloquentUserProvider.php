@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Auth，Eloquent 用户提供者
+ */
 
 namespace Illuminate\Auth;
 
@@ -11,6 +14,7 @@ class EloquentUserProvider implements UserProvider
 {
     /**
      * The hasher implementation.
+	 * hasher的实现
      *
      * @var \Illuminate\Contracts\Hashing\Hasher
      */
@@ -18,6 +22,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * The Eloquent user model.
+	 * Eloquent用户模型
      *
      * @var string
      */
@@ -25,6 +30,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Create a new database user provider.
+	 * 创建新的数据库用户提供程序
      *
      * @param  \Illuminate\Contracts\Hashing\Hasher  $hasher
      * @param  string  $model
@@ -38,6 +44,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Retrieve a user by their unique identifier.
+	 * 根据用户的唯一标识符检索用户
      *
      * @param  mixed  $identifier
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
@@ -53,6 +60,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Retrieve a user by their unique identifier and "remember me" token.
+	 * 根据用户的唯一标识符和“记住我”令牌检索用户
      *
      * @param  mixed  $identifier
      * @param  string  $token
@@ -75,6 +83,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Update the "remember me" token for the given user in storage.
+	 * 更新存储中给定用户的“记住我”令牌
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string  $token
@@ -95,6 +104,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Retrieve a user by the given credentials.
+	 * 根据给定的凭据检索用户
      *
      * @param  array  $credentials
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
@@ -123,6 +133,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Validate a user against the given credentials.
+	 * 根据给定的凭据验证用户
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  array  $credentials
@@ -137,6 +148,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Create a new instance of the model.
+	 * 创建模型的新实例
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
@@ -149,6 +161,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Gets the hasher implementation.
+	 * 获取更哈希的实现
      *
      * @return \Illuminate\Contracts\Hashing\Hasher
      */
@@ -159,6 +172,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Sets the hasher implementation.
+	 * 设置散列实现
      *
      * @param  \Illuminate\Contracts\Hashing\Hasher  $hasher
      * @return $this
@@ -172,6 +186,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Gets the name of the Eloquent user model.
+	 * 获取Eloquent用户模型的名称
      *
      * @return string
      */
@@ -182,6 +197,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Sets the name of the Eloquent user model.
+	 * 设置Eloquent用户模型的名称
      *
      * @param  string  $model
      * @return $this

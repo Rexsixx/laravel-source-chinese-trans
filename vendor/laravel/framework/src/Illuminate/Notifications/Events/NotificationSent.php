@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，通知，事件，通知已发送
+ */
 
 namespace Illuminate\Notifications\Events;
 
@@ -6,6 +9,7 @@ class NotificationSent
 {
     /**
      * The notifiable entity who received the notification.
+	 * 收到通知的应通知实体
      *
      * @var mixed
      */
@@ -13,6 +17,7 @@ class NotificationSent
 
     /**
      * The notification instance.
+	 * 通知实例
      *
      * @var \Illuminate\Notifications\Notification
      */
@@ -20,6 +25,7 @@ class NotificationSent
 
     /**
      * The channel name.
+	 * 渠道名称
      *
      * @var string
      */
@@ -27,6 +33,7 @@ class NotificationSent
 
     /**
      * The channel's response.
+	 * 频道的响应
      *
      * @var mixed
      */
@@ -34,6 +41,7 @@ class NotificationSent
 
     /**
      * Create a new event instance.
+	 * 创建一个新的事件实例
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification

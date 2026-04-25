@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，查询，语法，Postgres 语法
+ */
 
 namespace Illuminate\Database\Query\Grammars;
 
@@ -10,6 +13,7 @@ class PostgresGrammar extends Grammar
 {
     /**
      * All of the available clause operators.
+	 * 所有可用的子句操作符
      *
      * @var array
      */
@@ -22,6 +26,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a "where date" clause.
+	 * 编译一个“where date”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -36,6 +41,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a "where time" clause.
+	 * 编写一个“where time”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -50,6 +56,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a date based where clause.
+	 * 编译一个基于日期的where子句
      *
      * @param  string  $type
      * @param  \Illuminate\Database\Query\Builder  $query
@@ -65,6 +72,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile the lock into SQL.
+	 * 将锁编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  bool|string  $value
@@ -93,6 +101,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile an insert and get ID statement into SQL.
+	 * 将插入和获取ID语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array   $values
@@ -110,6 +119,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile an update statement into SQL.
+	 * 将update语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
@@ -133,6 +143,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile the columns for the update statement.
+	 * 编译update语句的列
      *
      * @param  array   $values
      * @return string
@@ -149,6 +160,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile the "from" clause for an update with a join.
+	 * 编译带有连接的更新的“from”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string|null
@@ -173,6 +185,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile the additional where clauses for updates with joins.
+	 * 编译用于连接更新的附加where子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
@@ -199,6 +212,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile the "join" clause where clauses for an update.
+	 * 编译“join”子句，其中的子句用于更新。
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
@@ -223,6 +237,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Prepare the bindings for an update statement.
+	 * 为更新语句准备绑定
      *
      * @param  array  $bindings
      * @param  array  $values
@@ -242,6 +257,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a delete statement into SQL.
+	 * 将delete语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
@@ -257,6 +273,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a delete query that uses joins.
+	 * 编译一个使用连接的删除查询
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $table
@@ -276,6 +293,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a truncate table statement into SQL.
+	 * 将截断表语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return array
@@ -287,6 +305,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Wrap a single string in keyword identifiers.
+	 * 在关键字标识符中包装单个字符串
      *
      * @param  string  $value
      * @return string
@@ -309,6 +328,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Wrap the given JSON selector.
+	 * 包装给定的JSON选择器
      *
      * @param  string  $value
      * @return string
@@ -332,6 +352,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Wrap the attributes of the give JSON path.
+	 * 包装给定JSON路径的属性
      *
      * @param  array  $path
      * @return array

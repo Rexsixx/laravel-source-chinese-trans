@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，查询，语法，MySql 语法
+ */
 
 namespace Illuminate\Database\Query\Grammars;
 
@@ -11,6 +14,7 @@ class MySqlGrammar extends Grammar
 {
     /**
      * The components that make up a select clause.
+	 * 组成select子句的组件
      *
      * @var array
      */
@@ -30,6 +34,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile a select query into SQL.
+	 * 将一个选择查询编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
@@ -47,6 +52,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile a single union statement.
+	 * 编译单个联合语句
      *
      * @param  array  $union
      * @return string
@@ -60,6 +66,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile the random statement into SQL.
+	 * 将随机语句编译成SQL
      *
      * @param  string  $seed
      * @return string
@@ -71,6 +78,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile the lock into SQL.
+	 * 将锁编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  bool|string  $value
@@ -87,6 +95,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile an update statement into SQL.
+	 * 将update语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
@@ -136,6 +145,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile all of the columns for an update statement.
+	 * 编译update语句的所有列
      *
      * @param  array  $values
      * @return string
@@ -153,6 +163,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Prepares a JSON column being updated using the JSON_SET function.
+	 * 使用JSON_SET函数准备要更新的JSON列
      *
      * @param  string  $key
      * @param  \Illuminate\Database\Query\JsonExpression  $value
@@ -171,6 +182,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Prepare the bindings for an update statement.
+	 * 为更新语句准备绑定。
      *
      * Booleans, integers, and doubles are inserted into JSON updates as raw values.
      *
@@ -190,6 +202,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile a delete statement into SQL.
+	 * 将delete语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
@@ -207,6 +220,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Prepare the bindings for a delete statement.
+	 * 为delete语句准备绑定
      *
      * @param  array  $bindings
      * @return array
@@ -222,6 +236,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile a delete query that does not use joins.
+	 * 编译一个不使用连接的删除查询
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $table
@@ -248,6 +263,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile a delete query that uses joins.
+	 * 编译一个使用连接的删除查询
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $table
@@ -266,6 +282,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Wrap a single string in keyword identifiers.
+	 * 在关键字标识符中包装单个字符串
      *
      * @param  string  $value
      * @return string
@@ -288,6 +305,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Wrap the given JSON selector.
+	 * 包装给定的JSON选择器
      *
      * @param  string  $value
      * @return string
@@ -305,6 +323,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Determine if the given string is a JSON selector.
+	 * 确定给定字符串是否是JSON选择器
      *
      * @param  string  $value
      * @return bool

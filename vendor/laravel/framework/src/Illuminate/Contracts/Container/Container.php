@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，契约，容器，容器
+ */
 
 namespace Illuminate\Contracts\Container;
 
@@ -9,6 +12,7 @@ interface Container extends ContainerInterface
 {
     /**
      * Determine if the given abstract type has been bound.
+	 * 确定给定的抽象类型是否已被绑定
      *
      * @param  string  $abstract
      * @return bool
@@ -17,6 +21,7 @@ interface Container extends ContainerInterface
 
     /**
      * Alias a type to a different name.
+	 * 将类型别名为不同的名称
      *
      * @param  string  $abstract
      * @param  string  $alias
@@ -26,6 +31,7 @@ interface Container extends ContainerInterface
 
     /**
      * Assign a set of tags to a given binding.
+	 * 为给定的绑定分配一组标记
      *
      * @param  array|string  $abstracts
      * @param  array|mixed   ...$tags
@@ -35,6 +41,7 @@ interface Container extends ContainerInterface
 
     /**
      * Resolve all of the bindings for a given tag.
+	 * 解析给定标记的所有绑定
      *
      * @param  string  $tag
      * @return array
@@ -43,6 +50,7 @@ interface Container extends ContainerInterface
 
     /**
      * Register a binding with the container.
+	 * 向容器注册绑定
      *
      * @param  string  $abstract
      * @param  \Closure|string|null  $concrete
@@ -53,6 +61,7 @@ interface Container extends ContainerInterface
 
     /**
      * Register a binding if it hasn't already been registered.
+	 * 如果绑定尚未注册，请注册它。
      *
      * @param  string  $abstract
      * @param  \Closure|string|null  $concrete
@@ -63,6 +72,7 @@ interface Container extends ContainerInterface
 
     /**
      * Register a shared binding in the container.
+	 * 在容器中注册一个共享绑定
      *
      * @param  string  $abstract
      * @param  \Closure|string|null  $concrete
@@ -72,6 +82,7 @@ interface Container extends ContainerInterface
 
     /**
      * "Extend" an abstract type in the container.
+	 * “扩展”容器中的抽象类型
      *
      * @param  string    $abstract
      * @param  \Closure  $closure
@@ -83,6 +94,7 @@ interface Container extends ContainerInterface
 
     /**
      * Register an existing instance as shared in the container.
+	 * 将现有实例注册为容器中的共享实例
      *
      * @param  string  $abstract
      * @param  mixed   $instance
@@ -92,6 +104,7 @@ interface Container extends ContainerInterface
 
     /**
      * Define a contextual binding.
+	 * 定义上下文绑定
      *
      * @param  string  $concrete
      * @return \Illuminate\Contracts\Container\ContextualBindingBuilder
@@ -100,6 +113,7 @@ interface Container extends ContainerInterface
 
     /**
      * Get a closure to resolve the given type from the container.
+	 * 获取闭包以从容器中解析给定类型
      *
      * @param  string  $abstract
      * @return \Closure
@@ -108,6 +122,7 @@ interface Container extends ContainerInterface
 
     /**
      * Resolve the given type from the container.
+	 * 从容器中解析给定的类型
      *
      * @param  string  $abstract
      * @param  array  $parameters
@@ -117,6 +132,7 @@ interface Container extends ContainerInterface
 
     /**
      * Call the given Closure / class@method and inject its dependencies.
+	 * 调用给定的Closure / class@method并注入它的依赖项
      *
      * @param  callable|string  $callback
      * @param  array  $parameters
@@ -127,6 +143,7 @@ interface Container extends ContainerInterface
 
     /**
      * Determine if the given abstract type has been resolved.
+	 * 确定给定的抽象类型是否已解析
      *
      * @param  string $abstract
      * @return bool
@@ -135,6 +152,7 @@ interface Container extends ContainerInterface
 
     /**
      * Register a new resolving callback.
+	 * 注册一个新的解析回调
      *
      * @param  \Closure|string  $abstract
      * @param  \Closure|null  $callback
@@ -144,6 +162,7 @@ interface Container extends ContainerInterface
 
     /**
      * Register a new after resolving callback.
+	 * 在解析回调后注册一个new
      *
      * @param  \Closure|string  $abstract
      * @param  \Closure|null  $callback

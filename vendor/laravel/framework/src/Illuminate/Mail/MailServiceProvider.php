@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，电子邮件，邮件服务提供者
+ */
 
 namespace Illuminate\Mail;
 
@@ -11,6 +14,7 @@ class MailServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
+	 * 指示是否延迟加载提供程序
      *
      * @var bool
      */
@@ -18,6 +22,7 @@ class MailServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
+	 * 注册服务提供者
      *
      * @return void
      */
@@ -32,6 +37,7 @@ class MailServiceProvider extends ServiceProvider
 
     /**
      * Register the Illuminate mailer instance.
+	 * 注册Illuminate邮件实例
      *
      * @return void
      */
@@ -64,6 +70,7 @@ class MailServiceProvider extends ServiceProvider
 
     /**
      * Set a global address on the mailer by type.
+	 * 按类型在邮件上设置全局地址
      *
      * @param  \Illuminate\Mail\Mailer  $mailer
      * @param  array  $config
@@ -81,6 +88,7 @@ class MailServiceProvider extends ServiceProvider
 
     /**
      * Register the Swift Mailer instance.
+	 * 注册Swift Mailer实例
      *
      * @return void
      */
@@ -98,6 +106,7 @@ class MailServiceProvider extends ServiceProvider
 
     /**
      * Register the Swift Transport instance.
+	 * 注册Swift Transport实例
      *
      * @return void
      */
@@ -110,6 +119,7 @@ class MailServiceProvider extends ServiceProvider
 
     /**
      * Register the Markdown renderer instance.
+	 * 注册Markdown渲染器实例
      *
      * @return void
      */
@@ -133,6 +143,7 @@ class MailServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
+	 * 获取提供者提供的服务
      *
      * @return array
      */

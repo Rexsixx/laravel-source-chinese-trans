@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，契约，路由，响应工厂
+ */
 
 namespace Illuminate\Contracts\Routing;
 
@@ -6,6 +9,7 @@ interface ResponseFactory
 {
     /**
      * Return a new response from the application.
+	 * 从应用程序返回一个新的响应
      *
      * @param  string  $content
      * @param  int  $status
@@ -16,6 +20,7 @@ interface ResponseFactory
 
     /**
      * Return a new view response from the application.
+	 * 从应用程序返回一个新的视图响应
      *
      * @param  string  $view
      * @param  array  $data
@@ -27,6 +32,7 @@ interface ResponseFactory
 
     /**
      * Return a new JSON response from the application.
+	 * 从应用程序返回一个新的JSON响应
      *
      * @param  string|array  $data
      * @param  int  $status
@@ -38,6 +44,7 @@ interface ResponseFactory
 
     /**
      * Return a new JSONP response from the application.
+	 * 从应用程序返回一个新的JSONP响应
      *
      * @param  string  $callback
      * @param  string|array  $data
@@ -50,6 +57,7 @@ interface ResponseFactory
 
     /**
      * Return a new streamed response from the application.
+	 * 从应用程序返回一个新的流响应
      *
      * @param  \Closure  $callback
      * @param  int  $status
@@ -60,6 +68,7 @@ interface ResponseFactory
 
     /**
      * Create a new file download response.
+	 * 创建一个新的文件下载响应
      *
      * @param  \SplFileInfo|string  $file
      * @param  string  $name
@@ -71,6 +80,7 @@ interface ResponseFactory
 
     /**
      * Create a new redirect response to the given path.
+	 * 创建对给定路径的新重定向响应
      *
      * @param  string  $path
      * @param  int  $status
@@ -82,6 +92,7 @@ interface ResponseFactory
 
     /**
      * Create a new redirect response to a named route.
+	 * 为命名路由创建一个新的重定向响应
      *
      * @param  string  $route
      * @param  array  $parameters
@@ -93,6 +104,7 @@ interface ResponseFactory
 
     /**
      * Create a new redirect response to a controller action.
+	 * 为控制器动作创建一个新的重定向响应
      *
      * @param  string  $action
      * @param  array  $parameters
@@ -104,6 +116,7 @@ interface ResponseFactory
 
     /**
      * Create a new redirect response, while putting the current URL in the session.
+	 * 创建一个新的重定向响应，同时将当前URL放在会话中。
      *
      * @param  string  $path
      * @param  int  $status
@@ -115,6 +128,7 @@ interface ResponseFactory
 
     /**
      * Create a new redirect response to the previously intended location.
+	 * 创建到先前预期位置的新重定向响应
      *
      * @param  string  $default
      * @param  int  $status

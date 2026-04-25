@@ -1,4 +1,7 @@
 <?php
+/**
+ * XdgBaseDir，Xdg
+ */
 
 namespace XdgBaseDir;
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，翻译，翻译程序
+ */
 
 namespace Illuminate\Translation;
 
@@ -17,6 +20,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * The loader implementation.
+	 * 加载器实现
      *
      * @var \Illuminate\Contracts\Translation\Loader
      */
@@ -24,6 +28,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * The default locale being used by the translator.
+	 * 翻译程序使用的默认语言环境
      *
      * @var string
      */
@@ -31,6 +36,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * The fallback locale used by the translator.
+	 * 翻译程序使用的回退语言环境
      *
      * @var string
      */
@@ -38,6 +44,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * The array of loaded translation groups.
+	 * 加载的翻译组数组
      *
      * @var array
      */
@@ -45,6 +52,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * The message selector.
+	 * 消息选择器
      *
      * @var \Illuminate\Translation\MessageSelector
      */
@@ -52,6 +60,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Create a new translator instance.
+	 * 创建一个新的翻译器实例
      *
      * @param  \Illuminate\Contracts\Translation\Loader  $loader
      * @param  string  $locale
@@ -65,6 +74,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Determine if a translation exists for a given locale.
+	 * 确定给定语言环境是否存在翻译
      *
      * @param  string  $key
      * @param  string|null  $locale
@@ -77,6 +87,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Determine if a translation exists.
+	 * 确定是否存在翻译
      *
      * @param  string  $key
      * @param  string|null  $locale
@@ -90,6 +101,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the translation for a given key.
+	 * 获取给定键的翻译
      *
      * @param  string  $key
      * @param  array   $replace
@@ -103,6 +115,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the translation for the given key.
+	 * 获取给定键的翻译
      *
      * @param  string  $key
      * @param  array   $replace
@@ -140,6 +153,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the translation for a given key from the JSON translation files.
+	 * 从JSON翻译文件中获取给定键的翻译
      *
      * @param  string  $key
      * @param  array  $replace
@@ -173,6 +187,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get a translation according to an integer value.
+	 * 根据整数值获取翻译
      *
      * @param  string  $key
      * @param  int|array|\Countable  $number
@@ -187,6 +202,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get a translation according to an integer value.
+	 * 根据整数值获取翻译
      *
      * @param  string  $key
      * @param  int|array|\Countable  $number
@@ -216,6 +232,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the proper locale for a choice operation.
+	 * 为选择操作获取适当的区域设置
      *
      * @param  string|null  $locale
      * @return string
@@ -227,6 +244,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Retrieve a language line out the loaded array.
+	 * 从加载的数组中检索语言行
      *
      * @param  string  $namespace
      * @param  string  $group
@@ -250,6 +268,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Make the place-holder replacements on a line.
+	 * 在一行上替换占位符
      *
      * @param  string  $line
      * @param  array   $replace
@@ -276,6 +295,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Sort the replacements array.
+	 * 对替换数组进行排序
      *
      * @param  array  $replace
      * @return array
@@ -289,6 +309,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Add translation lines to the given locale.
+	 * 向给定的语言环境添加翻译行
      *
      * @param  array  $lines
      * @param  string  $locale
@@ -306,6 +327,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Load the specified language group.
+	 * 加载指定的语言组
      *
      * @param  string  $namespace
      * @param  string  $group
@@ -328,6 +350,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Determine if the given group has been loaded.
+	 * 确定是否已加载给定的组
      *
      * @param  string  $namespace
      * @param  string  $group
@@ -341,6 +364,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Add a new namespace to the loader.
+	 * 向加载器添加一个新的命名空间
      *
      * @param  string  $namespace
      * @param  string  $hint
@@ -353,6 +377,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Add a new JSON path to the loader.
+	 * 向加载器添加一个新的JSON路径
      *
      * @param  string  $path
      * @return void
@@ -364,6 +389,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Parse a key into namespace, group, and item.
+	 * 将键解析为名称空间、组和项。
      *
      * @param  string  $key
      * @return array
@@ -381,6 +407,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the array of locales to be checked.
+	 * 获取要检查的区域设置数组
      *
      * @param  string|null  $locale
      * @return array
@@ -392,6 +419,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the message selector instance.
+	 * 获取消息选择器实例
      *
      * @return \Illuminate\Translation\MessageSelector
      */
@@ -406,6 +434,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Set the message selector instance.
+	 * 设置消息选择器实例
      *
      * @param  \Illuminate\Translation\MessageSelector  $selector
      * @return void
@@ -417,6 +446,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the language line loader implementation.
+	 * 获取语言行加载器实现
      *
      * @return \Illuminate\Contracts\Translation\Loader
      */
@@ -427,6 +457,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the default locale being used.
+	 * 获取正在使用的默认区域设置
      *
      * @return string
      */
@@ -437,6 +468,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the default locale being used.
+	 * 获取正在使用的默认区域设置
      *
      * @return string
      */
@@ -447,6 +479,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Set the default locale.
+	 * 设置默认语言环境
      *
      * @param  string  $locale
      * @return void
@@ -458,6 +491,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the fallback locale being used.
+	 * 获取正在使用的回退区域设置
      *
      * @return string
      */
@@ -468,6 +502,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Set the fallback locale being used.
+	 * 设置正在使用的回退区域设置
      *
      * @param  string  $fallback
      * @return void

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，支持，管理程序
+ */
 
 namespace Illuminate\Support;
 
@@ -9,6 +12,7 @@ abstract class Manager
 {
     /**
      * The application instance.
+	 * 应用实例
      *
      * @var \Illuminate\Foundation\Application
      */
@@ -16,6 +20,7 @@ abstract class Manager
 
     /**
      * The registered custom driver creators.
+	 * 注册的自定义驱动程序创建者
      *
      * @var array
      */
@@ -23,6 +28,7 @@ abstract class Manager
 
     /**
      * The array of created "drivers".
+	 * 已创建的“驱动程序”数组
      *
      * @var array
      */
@@ -30,6 +36,7 @@ abstract class Manager
 
     /**
      * Create a new manager instance.
+	 * 创建一个新的管理器实例
      *
      * @param  \Illuminate\Foundation\Application  $app
      * @return void
@@ -41,6 +48,7 @@ abstract class Manager
 
     /**
      * Get the default driver name.
+	 * 获取默认驱动程序名称
      *
      * @return string
      */
@@ -48,6 +56,7 @@ abstract class Manager
 
     /**
      * Get a driver instance.
+	 * 获取驱动程序实例
      *
      * @param  string  $driver
      * @return mixed
@@ -68,6 +77,7 @@ abstract class Manager
 
     /**
      * Create a new driver instance.
+	 * 创建一个新的驱动程序实例
      *
      * @param  string  $driver
      * @return mixed
@@ -93,6 +103,7 @@ abstract class Manager
 
     /**
      * Call a custom driver creator.
+	 * 调用自定义驱动程序创建者
      *
      * @param  string  $driver
      * @return mixed
@@ -104,6 +115,7 @@ abstract class Manager
 
     /**
      * Register a custom driver creator Closure.
+	 * 注册自定义驱动程序创建器Closure
      *
      * @param  string    $driver
      * @param  \Closure  $callback
@@ -118,6 +130,7 @@ abstract class Manager
 
     /**
      * Get all of the created "drivers".
+	 * 获取所有创建的“驱动程序”
      *
      * @return array
      */
@@ -128,6 +141,7 @@ abstract class Manager
 
     /**
      * Dynamically call the default driver instance.
+	 * 动态调用默认驱动程序实例
      *
      * @param  string  $method
      * @param  array   $parameters

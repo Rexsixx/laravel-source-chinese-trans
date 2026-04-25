@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，视图，编译器，编译器
+ */
 
 namespace Illuminate\View\Compilers;
 
@@ -9,6 +12,7 @@ abstract class Compiler
 {
     /**
      * The Filesystem instance.
+	 * 文件系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -16,6 +20,7 @@ abstract class Compiler
 
     /**
      * Get the cache path for the compiled views.
+	 * 获取编译视图的缓存路径
      *
      * @var string
      */
@@ -23,6 +28,7 @@ abstract class Compiler
 
     /**
      * Create a new compiler instance.
+	 * 创建一个新的编译器实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string  $cachePath
@@ -42,6 +48,7 @@ abstract class Compiler
 
     /**
      * Get the path to the compiled version of a view.
+	 * 获取视图的编译版本的路径
      *
      * @param  string  $path
      * @return string
@@ -53,6 +60,7 @@ abstract class Compiler
 
     /**
      * Determine if the view at the given path is expired.
+	 * 确定给定路径上的视图是否已过期
      *
      * @param  string  $path
      * @return bool

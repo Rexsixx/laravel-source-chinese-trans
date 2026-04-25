@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，认证，重置密码
+ */
 
 namespace Illuminate\Foundation\Auth;
 
@@ -15,6 +18,7 @@ trait ResetsPasswords
 
     /**
      * Display the password reset view for the given token.
+	 * 显示给定令牌的密码重置视图
      *
      * If no token is present, display the link request form.
      *
@@ -31,6 +35,7 @@ trait ResetsPasswords
 
     /**
      * Reset the given user's password.
+	 * 重置给定用户的密码
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
@@ -58,6 +63,7 @@ trait ResetsPasswords
 
     /**
      * Get the password reset validation rules.
+	 * 获取密码重置验证规则
      *
      * @return array
      */
@@ -72,6 +78,7 @@ trait ResetsPasswords
 
     /**
      * Get the password reset validation error messages.
+	 * 获取密码重置验证错误消息
      *
      * @return array
      */
@@ -82,6 +89,7 @@ trait ResetsPasswords
 
     /**
      * Get the password reset credentials from the request.
+	 * 从请求中获取密码重置凭据
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
@@ -95,6 +103,7 @@ trait ResetsPasswords
 
     /**
      * Reset the given user's password.
+	 * 重置给定用户的密码
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @param  string  $password
@@ -115,6 +124,7 @@ trait ResetsPasswords
 
     /**
      * Get the response for a successful password reset.
+	 * 获取成功重置密码的响应
      *
      * @param  string  $response
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
@@ -127,6 +137,7 @@ trait ResetsPasswords
 
     /**
      * Get the response for a failed password reset.
+	 * 获取密码重置失败的响应
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $response
@@ -141,6 +152,7 @@ trait ResetsPasswords
 
     /**
      * Get the broker to be used during password reset.
+	 * 获取要在密码重置期间使用的代理
      *
      * @return \Illuminate\Contracts\Auth\PasswordBroker
      */
@@ -151,6 +163,7 @@ trait ResetsPasswords
 
     /**
      * Get the guard to be used during password reset.
+	 * 获得在密码重置期间使用的保护
      *
      * @return \Illuminate\Contracts\Auth\StatefulGuard
      */

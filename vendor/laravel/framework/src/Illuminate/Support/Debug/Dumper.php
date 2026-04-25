@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，支持，调试，转储
+ */
 
 namespace Illuminate\Support\Debug;
 
@@ -9,6 +12,7 @@ class Dumper
 {
     /**
      * Dump a value with elegance.
+	 * 优雅地转储一个值
      *
      * @param  mixed  $value
      * @return void

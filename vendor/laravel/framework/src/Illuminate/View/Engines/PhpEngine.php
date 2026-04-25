@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，视图，引擎，Php 引擎
+ */
 
 namespace Illuminate\View\Engines;
 
@@ -11,6 +14,7 @@ class PhpEngine implements Engine
 {
     /**
      * Get the evaluated contents of the view.
+	 * 获取视图的求值内容
      *
      * @param  string  $path
      * @param  array   $data
@@ -23,6 +27,7 @@ class PhpEngine implements Engine
 
     /**
      * Get the evaluated contents of the view at the given path.
+	 * 获取给定路径上的视图的求值内容
      *
      * @param  string  $__path
      * @param  array   $__data
@@ -52,6 +57,7 @@ class PhpEngine implements Engine
 
     /**
      * Handle a view exception.
+	 * 处理视图异常
      *
      * @param  \Exception  $e
      * @param  int  $obLevel

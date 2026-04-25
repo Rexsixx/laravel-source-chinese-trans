@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，控制台，应用名称命令
+ */
 
 namespace Illuminate\Foundation\Console;
 
@@ -12,6 +15,7 @@ class AppNameCommand extends Command
 {
     /**
      * The console command name.
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -19,6 +23,7 @@ class AppNameCommand extends Command
 
     /**
      * The console command description.
+	 * console命令说明
      *
      * @var string
      */
@@ -26,6 +31,7 @@ class AppNameCommand extends Command
 
     /**
      * The Composer class instance.
+	 * Composer类实例
      *
      * @var \Illuminate\Support\Composer
      */
@@ -33,6 +39,7 @@ class AppNameCommand extends Command
 
     /**
      * The filesystem instance.
+	 * 文件系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -40,6 +47,7 @@ class AppNameCommand extends Command
 
     /**
      * Current root application namespace.
+	 * 当前根应用程序名称空间
      *
      * @var string
      */
@@ -47,6 +55,7 @@ class AppNameCommand extends Command
 
     /**
      * Create a new key generator command.
+	 * 创建一个新的密钥生成器命令
      *
      * @param  \Illuminate\Support\Composer  $composer
      * @param  \Illuminate\Filesystem\Filesystem  $files
@@ -62,6 +71,7 @@ class AppNameCommand extends Command
 
     /**
      * Execute the console command.
+	 * 执行console命令
      *
      * @return void
      */
@@ -84,6 +94,7 @@ class AppNameCommand extends Command
 
     /**
      * Set the namespace on the files in the app directory.
+	 * 设置app目录下文件的命名空间
      *
      * @return void
      */
@@ -101,6 +112,7 @@ class AppNameCommand extends Command
 
     /**
      * Replace the App namespace at the given path.
+	 * 在给定的路径上替换App命名空间
      *
      * @param  string  $path
      * @return void
@@ -263,6 +275,7 @@ class AppNameCommand extends Command
 
     /**
      * Get the path to the Composer.json file.
+	 * 获取到Composer的路径。json文件。
      *
      * @return string
      */
@@ -273,6 +286,7 @@ class AppNameCommand extends Command
 
     /**
      * Get the path to the given configuration file.
+	 * 获取给定配置文件的路径
      *
      * @param  string  $name
      * @return string
@@ -284,6 +298,7 @@ class AppNameCommand extends Command
 
     /**
      * Get the console command arguments.
+	 * 获取控制台命令参数
      *
      * @return array
      */

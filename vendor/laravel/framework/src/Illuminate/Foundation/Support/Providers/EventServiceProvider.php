@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，支持，供应商，事件服务提供商
+ */
 
 namespace Illuminate\Foundation\Support\Providers;
 
@@ -9,6 +12,7 @@ class EventServiceProvider extends ServiceProvider
 {
     /**
      * The event handler mappings for the application.
+	 * 应用程序的事件处理程序映射
      *
      * @var array
      */
@@ -16,6 +20,7 @@ class EventServiceProvider extends ServiceProvider
 
     /**
      * The subscriber classes to register.
+	 * 要注册的订阅者类
      *
      * @var array
      */
@@ -23,6 +28,7 @@ class EventServiceProvider extends ServiceProvider
 
     /**
      * Register the application's event listeners.
+	 * 注册应用程序的事件侦听器
      *
      * @return void
      */
@@ -49,6 +55,7 @@ class EventServiceProvider extends ServiceProvider
 
     /**
      * Get the events and handlers.
+	 * 获取事件和处理程序
      *
      * @return array
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，架构，蓝图
+ */
 
 namespace Illuminate\Database\Schema;
 
@@ -14,6 +17,7 @@ class Blueprint
 
     /**
      * The table the blueprint describes.
+	 * 蓝图描述的表格
      *
      * @var string
      */
@@ -21,6 +25,7 @@ class Blueprint
 
     /**
      * The columns that should be added to the table.
+	 * 应该添加到表中的列
      *
      * @var \Illuminate\Support\Fluent[]
      */
@@ -28,6 +33,7 @@ class Blueprint
 
     /**
      * The commands that should be run for the table.
+	 * 应该为表运行的命令
      *
      * @var \Illuminate\Support\Fluent[]
      */
@@ -35,6 +41,7 @@ class Blueprint
 
     /**
      * The storage engine that should be used for the table.
+	 * 应该用于表的存储引擎
      *
      * @var string
      */
@@ -42,16 +49,19 @@ class Blueprint
 
     /**
      * The default character set that should be used for the table.
+	 * 应用于表的默认字符集
      */
     public $charset;
 
     /**
      * The collation that should be used for the table.
+	 * 应用于表的排序规则
      */
     public $collation;
 
     /**
      * Whether to make the table temporary.
+	 * 是否将表临时化
      *
      * @var bool
      */
@@ -59,6 +69,7 @@ class Blueprint
 
     /**
      * Create a new schema blueprint.
+	 * 创建一个新的模式蓝图
      *
      * @param  string  $table
      * @param  \Closure|null  $callback
@@ -75,6 +86,7 @@ class Blueprint
 
     /**
      * Execute the blueprint against the database.
+	 * 针对数据库执行蓝图
      *
      * @param  \Illuminate\Database\Connection  $connection
      * @param  \Illuminate\Database\Schema\Grammars\Grammar  $grammar
@@ -89,6 +101,7 @@ class Blueprint
 
     /**
      * Get the raw SQL statements for the blueprint.
+	 * 获取蓝图的原始SQL语句
      *
      * @param  \Illuminate\Database\Connection  $connection
      * @param  \Illuminate\Database\Schema\Grammars\Grammar  $grammar
@@ -118,6 +131,7 @@ class Blueprint
 
     /**
      * Add the commands that are implied by the blueprint's state.
+	 * 添加蓝图状态所暗示的命令
      *
      * @return void
      */
@@ -136,6 +150,7 @@ class Blueprint
 
     /**
      * Add the index commands fluently specified on columns.
+	 * 添加列上指定的索引命令
      *
      * @return void
      */
@@ -166,6 +181,7 @@ class Blueprint
 
     /**
      * Determine if the blueprint has a create command.
+	 * 确定蓝图是否有create命令
      *
      * @return bool
      */
@@ -178,6 +194,7 @@ class Blueprint
 
     /**
      * Indicate that the table needs to be created.
+	 * 指示需要创建表
      *
      * @return \Illuminate\Support\Fluent
      */
@@ -188,6 +205,7 @@ class Blueprint
 
     /**
      * Indicate that the table needs to be temporary.
+	 * 表明该表需要是临时的
      *
      * @return void
      */
@@ -198,6 +216,7 @@ class Blueprint
 
     /**
      * Indicate that the table should be dropped.
+	 * 指示应该删除表
      *
      * @return \Illuminate\Support\Fluent
      */
@@ -208,6 +227,7 @@ class Blueprint
 
     /**
      * Indicate that the table should be dropped if it exists.
+	 * 如果表存在，则指示应该删除它。
      *
      * @return \Illuminate\Support\Fluent
      */
@@ -218,6 +238,7 @@ class Blueprint
 
     /**
      * Indicate that the given columns should be dropped.
+	 * 指示应该删除给定的列
      *
      * @param  array|mixed  $columns
      * @return \Illuminate\Support\Fluent
@@ -231,6 +252,7 @@ class Blueprint
 
     /**
      * Indicate that the given columns should be renamed.
+	 * 指示应该重命名给定的列
      *
      * @param  string  $from
      * @param  string  $to
@@ -243,6 +265,7 @@ class Blueprint
 
     /**
      * Indicate that the given primary key should be dropped.
+	 * 指示应该删除给定的主键
      *
      * @param  string|array  $index
      * @return \Illuminate\Support\Fluent
@@ -254,6 +277,7 @@ class Blueprint
 
     /**
      * Indicate that the given unique key should be dropped.
+	 * 指示应该删除给定的唯一键
      *
      * @param  string|array  $index
      * @return \Illuminate\Support\Fluent
@@ -265,6 +289,7 @@ class Blueprint
 
     /**
      * Indicate that the given index should be dropped.
+	 * 指示应该删除给定的索引
      *
      * @param  string|array  $index
      * @return \Illuminate\Support\Fluent
@@ -276,6 +301,7 @@ class Blueprint
 
     /**
      * Indicate that the given spatial index should be dropped.
+	 * 指示应该删除给定的空间索引
      *
      * @param  string|array  $index
      * @return \Illuminate\Support\Fluent
@@ -287,6 +313,7 @@ class Blueprint
 
     /**
      * Indicate that the given foreign key should be dropped.
+	 * 指示应该删除给定的外键
      *
      * @param  string|array  $index
      * @return \Illuminate\Support\Fluent
@@ -298,6 +325,7 @@ class Blueprint
 
     /**
      * Indicate that the timestamp columns should be dropped.
+	 * 指示应该删除时间戳列
      *
      * @return void
      */
@@ -308,6 +336,7 @@ class Blueprint
 
     /**
      * Indicate that the timestamp columns should be dropped.
+	 * 指示应该删除时间戳列
      *
      * @return void
      */
@@ -318,6 +347,7 @@ class Blueprint
 
     /**
      * Indicate that the soft delete column should be dropped.
+	 * 指示应删除软删除列
      *
      * @return void
      */
@@ -328,6 +358,7 @@ class Blueprint
 
     /**
      * Indicate that the soft delete column should be dropped.
+	 * 指示应删除软删除列
      *
      * @return void
      */
@@ -338,6 +369,7 @@ class Blueprint
 
     /**
      * Indicate that the remember token column should be dropped.
+	 * 指示应该删除记忆令牌列
      *
      * @return void
      */
@@ -348,6 +380,7 @@ class Blueprint
 
     /**
      * Rename the table to a given name.
+	 * 将表重命名为给定的名称
      *
      * @param  string  $to
      * @return \Illuminate\Support\Fluent
@@ -359,6 +392,7 @@ class Blueprint
 
     /**
      * Specify the primary key(s) for the table.
+	 * 指定表的主键
      *
      * @param  string|array  $columns
      * @param  string  $name
@@ -372,6 +406,7 @@ class Blueprint
 
     /**
      * Specify a unique index for the table.
+	 * 为表指定唯一索引
      *
      * @param  string|array  $columns
      * @param  string  $name
@@ -385,6 +420,7 @@ class Blueprint
 
     /**
      * Specify an index for the table.
+	 * 为表指定索引
      *
      * @param  string|array  $columns
      * @param  string  $name
@@ -398,6 +434,7 @@ class Blueprint
 
     /**
      * Specify a spatial index for the table.
+	 * 为表指定空间索引
      *
      * @param  string|array  $columns
      * @param  string  $name
@@ -410,6 +447,7 @@ class Blueprint
 
     /**
      * Specify a foreign key for the table.
+	 * 为表指定一个外键
      *
      * @param  string|array  $columns
      * @param  string  $name
@@ -422,6 +460,7 @@ class Blueprint
 
     /**
      * Create a new auto-incrementing integer (4-byte) column on the table.
+	 * 在表上创建一个新的自动递增的整数（4字节）列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -433,6 +472,7 @@ class Blueprint
 
     /**
      * Create a new auto-incrementing tiny integer (1-byte) column on the table.
+	 * 在表上创建一个新的自动递增的小整数（1字节）列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -444,6 +484,7 @@ class Blueprint
 
     /**
      * Create a new auto-incrementing small integer (2-byte) column on the table.
+	 * 在表上创建一个新的自动递增的小整数（2字节）列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -455,6 +496,7 @@ class Blueprint
 
     /**
      * Create a new auto-incrementing medium integer (3-byte) column on the table.
+	 * 在表上创建一个新的自动递增的中等整数（3字节）列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -466,6 +508,7 @@ class Blueprint
 
     /**
      * Create a new auto-incrementing big integer (8-byte) column on the table.
+	 * 在表上创建一个新的自动递增的大整数（8字节）列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -477,6 +520,7 @@ class Blueprint
 
     /**
      * Create a new char column on the table.
+	 * 在表上创建一个新的字符列
      *
      * @param  string  $column
      * @param  int  $length
@@ -491,6 +535,7 @@ class Blueprint
 
     /**
      * Create a new string column on the table.
+	 * 在表上创建一个新的字符串列
      *
      * @param  string  $column
      * @param  int  $length
@@ -505,6 +550,7 @@ class Blueprint
 
     /**
      * Create a new text column on the table.
+	 * 在表上创建一个新的文本列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -516,6 +562,7 @@ class Blueprint
 
     /**
      * Create a new medium text column on the table.
+	 * 在表上创建一个新的中等文本列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -527,6 +574,7 @@ class Blueprint
 
     /**
      * Create a new long text column on the table.
+	 * 在表上创建一个新的长文本列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -538,6 +586,7 @@ class Blueprint
 
     /**
      * Create a new integer (4-byte) column on the table.
+	 * 在表上创建一个新的整数（4字节）列
      *
      * @param  string  $column
      * @param  bool  $autoIncrement
@@ -551,6 +600,7 @@ class Blueprint
 
     /**
      * Create a new tiny integer (1-byte) column on the table.
+	 * 在表上创建一个新的小整数（1字节）列
      *
      * @param  string  $column
      * @param  bool  $autoIncrement
@@ -564,6 +614,7 @@ class Blueprint
 
     /**
      * Create a new small integer (2-byte) column on the table.
+	 * 在表上创建一个新的小整数（2字节）列
      *
      * @param  string  $column
      * @param  bool  $autoIncrement
@@ -577,6 +628,7 @@ class Blueprint
 
     /**
      * Create a new medium integer (3-byte) column on the table.
+	 * 在表上创建一个新的中等整数（3字节）列
      *
      * @param  string  $column
      * @param  bool  $autoIncrement
@@ -590,6 +642,7 @@ class Blueprint
 
     /**
      * Create a new big integer (8-byte) column on the table.
+	 * 在表上创建一个新的大整数（8字节）列
      *
      * @param  string  $column
      * @param  bool  $autoIncrement
@@ -603,6 +656,7 @@ class Blueprint
 
     /**
      * Create a new unsigned integer (4-byte) column on the table.
+	 * 在表上创建一个新的无符号整数（4字节）列
      *
      * @param  string  $column
      * @param  bool  $autoIncrement
@@ -615,6 +669,7 @@ class Blueprint
 
     /**
      * Create a new unsigned tiny integer (1-byte) column on the table.
+	 * 在表上创建一个新的无符号小整数（1字节）列
      *
      * @param  string  $column
      * @param  bool  $autoIncrement
@@ -627,6 +682,7 @@ class Blueprint
 
     /**
      * Create a new unsigned small integer (2-byte) column on the table.
+	 * 在表上创建一个新的无符号小整数（2字节）列
      *
      * @param  string  $column
      * @param  bool  $autoIncrement
@@ -639,6 +695,7 @@ class Blueprint
 
     /**
      * Create a new unsigned medium integer (3-byte) column on the table.
+	 * 在表上创建一个新的无符号中整数（3字节）列
      *
      * @param  string  $column
      * @param  bool  $autoIncrement
@@ -651,6 +708,7 @@ class Blueprint
 
     /**
      * Create a new unsigned big integer (8-byte) column on the table.
+	 * 在表上创建一个新的无符号大整数（8字节）列
      *
      * @param  string  $column
      * @param  bool  $autoIncrement
@@ -663,6 +721,7 @@ class Blueprint
 
     /**
      * Create a new float column on the table.
+	 * 在表上创建一个新的浮动列
      *
      * @param  string  $column
      * @param  int  $total
@@ -676,6 +735,7 @@ class Blueprint
 
     /**
      * Create a new double column on the table.
+	 * 在表上创建一个新的双列
      *
      * @param  string  $column
      * @param  int|null  $total
@@ -689,6 +749,7 @@ class Blueprint
 
     /**
      * Create a new decimal column on the table.
+	 * 在表上创建一个新的十进制列
      *
      * @param  string  $column
      * @param  int  $total
@@ -702,6 +763,7 @@ class Blueprint
 
     /**
      * Create a new unsigned decimal column on the table.
+	 * 在表上创建一个新的无符号十进制列
      *
      * @param  string  $column
      * @param  int  $total
@@ -717,6 +779,7 @@ class Blueprint
 
     /**
      * Create a new boolean column on the table.
+	 * 在表上创建一个新的布尔列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -728,6 +791,7 @@ class Blueprint
 
     /**
      * Create a new enum column on the table.
+	 * 在表上创建一个新的枚举列
      *
      * @param  string  $column
      * @param  array  $allowed
@@ -740,6 +804,7 @@ class Blueprint
 
     /**
      * Create a new json column on the table.
+	 * 在表上创建一个新的json列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -751,6 +816,7 @@ class Blueprint
 
     /**
      * Create a new jsonb column on the table.
+	 * 在表上创建一个新的jsonb列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -762,6 +828,7 @@ class Blueprint
 
     /**
      * Create a new date column on the table.
+	 * 在表上创建一个新的日期列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -773,6 +840,7 @@ class Blueprint
 
     /**
      * Create a new date-time column on the table.
+	 * 在表上创建一个新的日期-时间列
      *
      * @param  string  $column
      * @param  int  $precision
@@ -785,6 +853,7 @@ class Blueprint
 
     /**
      * Create a new date-time column (with time zone) on the table.
+	 * 在表上创建一个新的日期-时间列（带时区）
      *
      * @param  string  $column
      * @param  int  $precision
@@ -797,6 +866,7 @@ class Blueprint
 
     /**
      * Create a new time column on the table.
+	 * 在表上创建一个新的时间列。
      *
      * @param  string  $column
      * @param  int  $precision
@@ -809,6 +879,7 @@ class Blueprint
 
     /**
      * Create a new time column (with time zone) on the table.
+	 * 在表上创建一个新的时间列（带时区）
      *
      * @param  string  $column
      * @param  int  $precision
@@ -821,6 +892,7 @@ class Blueprint
 
     /**
      * Create a new timestamp column on the table.
+	 * 在表上创建一个新的时间戳列
      *
      * @param  string  $column
      * @param  int  $precision
@@ -833,6 +905,7 @@ class Blueprint
 
     /**
      * Create a new timestamp (with time zone) column on the table.
+	 * 在表上创建一个新的时间戳（带时区）列
      *
      * @param  string  $column
      * @param  int  $precision
@@ -845,6 +918,7 @@ class Blueprint
 
     /**
      * Add nullable creation and update timestamps to the table.
+	 * 向表中添加可空的创建和更新时间戳
      *
      * @param  int  $precision
      * @return void
@@ -858,6 +932,7 @@ class Blueprint
 
     /**
      * Add nullable creation and update timestamps to the table.
+	 * 向表中添加可空的创建和更新时间戳
      *
      * Alias for self::timestamps().
      *
@@ -871,6 +946,7 @@ class Blueprint
 
     /**
      * Add creation and update timestampTz columns to the table.
+	 * 向表中添加创建和更新timestampTz列
      *
      * @param  int  $precision
      * @return void
@@ -884,6 +960,7 @@ class Blueprint
 
     /**
      * Add a "deleted at" timestamp for the table.
+	 * 为表添加一个“deleted at”时间戳
      *
      * @param  string  $column
      * @param  int  $precision
@@ -896,6 +973,7 @@ class Blueprint
 
     /**
      * Add a "deleted at" timestampTz for the table.
+	 * 为表添加一个“deleted at”时间戳tz
      *
      * @param  int  $precision
      * @return \Illuminate\Support\Fluent
@@ -907,6 +985,7 @@ class Blueprint
 
     /**
      * Create a new year column on the table.
+	 * 在表上创建一个新的year列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -918,6 +997,7 @@ class Blueprint
 
     /**
      * Create a new binary column on the table.
+	 * 在表上创建一个新的二进制列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -929,6 +1009,7 @@ class Blueprint
 
     /**
      * Create a new uuid column on the table.
+	 * 在表上创建一个新的uuid列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -940,6 +1021,7 @@ class Blueprint
 
     /**
      * Create a new IP address column on the table.
+	 * 在表上创建一个新的IP地址列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -951,6 +1033,7 @@ class Blueprint
 
     /**
      * Create a new MAC address column on the table.
+	 * 在表中创建一个新的MAC地址列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -962,6 +1045,7 @@ class Blueprint
 
     /**
      * Create a new geometry column on the table.
+	 * 在表上创建一个新的几何列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -973,6 +1057,7 @@ class Blueprint
 
     /**
      * Create a new point column on the table.
+	 * 在表上创建一个新的点列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -984,6 +1069,7 @@ class Blueprint
 
     /**
      * Create a new linestring column on the table.
+	 * 在表上创建一个新的linestring列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -995,6 +1081,7 @@ class Blueprint
 
     /**
      * Create a new polygon column on the table.
+	 * 在表上创建一个新的多边形列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -1006,6 +1093,7 @@ class Blueprint
 
     /**
      * Create a new geometrycollection column on the table.
+	 * 在表上创建一个新的geometrycollection列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -1017,6 +1105,7 @@ class Blueprint
 
     /**
      * Create a new multipoint column on the table.
+	 * 在表上创建一个新的多点列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -1028,6 +1117,7 @@ class Blueprint
 
     /**
      * Create a new multilinestring column on the table.
+	 * 在表上创建一个新的multilinestring列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -1039,6 +1129,7 @@ class Blueprint
 
     /**
      * Create a new multipolygon column on the table.
+	 * 在表上创建一个新的多多边形列
      *
      * @param  string  $column
      * @return \Illuminate\Support\Fluent
@@ -1050,6 +1141,7 @@ class Blueprint
 
     /**
      * Add the proper columns for a polymorphic table.
+	 * 为多态表添加适当的列
      *
      * @param  string  $name
      * @param  string|null  $indexName
@@ -1066,6 +1158,7 @@ class Blueprint
 
     /**
      * Add nullable columns for a polymorphic table.
+	 * 为多态表添加可空列
      *
      * @param  string  $name
      * @param  string|null  $indexName
@@ -1115,6 +1208,7 @@ class Blueprint
 
     /**
      * Create a new drop index command on the blueprint.
+	 * 在蓝图上创建一个新的删除索引命令
      *
      * @param  string  $command
      * @param  string  $type
@@ -1137,6 +1231,7 @@ class Blueprint
 
     /**
      * Create a default index name for the table.
+	 * 为表创建默认索引名
      *
      * @param  string  $type
      * @param  array  $columns
@@ -1151,6 +1246,7 @@ class Blueprint
 
     /**
      * Add a new column to the blueprint.
+	 * 向蓝图添加一个新列
      *
      * @param  string  $type
      * @param  string  $name
@@ -1168,6 +1264,7 @@ class Blueprint
 
     /**
      * Remove a column from the schema blueprint.
+	 * 从架构蓝图中删除列
      *
      * @param  string  $name
      * @return $this
@@ -1183,6 +1280,7 @@ class Blueprint
 
     /**
      * Add a new command to the blueprint.
+	 * 向蓝图添加一个新命令
      *
      * @param  string  $name
      * @param  array  $parameters
@@ -1197,6 +1295,7 @@ class Blueprint
 
     /**
      * Create a new Fluent command.
+	 * 创建一个新的Fluent命令
      *
      * @param  string  $name
      * @param  array  $parameters
@@ -1239,6 +1338,7 @@ class Blueprint
 
     /**
      * Get the columns on the blueprint that should be added.
+	 * 获取蓝图上应该添加的列
      *
      * @return \Illuminate\Support\Fluent[]
      */
@@ -1251,6 +1351,7 @@ class Blueprint
 
     /**
      * Get the columns on the blueprint that should be changed.
+	 * 获取蓝图上应该更改的列
      *
      * @return \Illuminate\Support\Fluent[]
      */

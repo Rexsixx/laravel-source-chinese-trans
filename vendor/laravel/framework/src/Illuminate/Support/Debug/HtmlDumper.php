@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，支持，调试，Html 转储
+ */
 
 namespace Illuminate\Support\Debug;
 
@@ -8,6 +11,7 @@ class HtmlDumper extends SymfonyHtmlDumper
 {
     /**
      * Colour definitions for output.
+	 * 输出的颜色定义
      *
      * @var array
      */

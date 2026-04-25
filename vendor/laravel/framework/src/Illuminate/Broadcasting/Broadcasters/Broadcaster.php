@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，广播，广播装置，广播员
+ */
 
 namespace Illuminate\Broadcasting\Broadcasters;
 
@@ -14,6 +17,7 @@ abstract class Broadcaster implements BroadcasterContract
 {
     /**
      * The registered channel authenticators.
+	 * 已注册的通道身份验证器
      *
      * @var array
      */
@@ -21,6 +25,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * The binding registrar instance.
+	 * 绑定注册商实例
      *
      * @var BindingRegistrar
      */
@@ -28,6 +33,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Register a channel authenticator.
+	 * 注册一个通道验证器
      *
      * @param  string  $channel
      * @param  callable  $callback
@@ -42,6 +48,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Authenticate the incoming request for a given channel.
+	 * 验证给定通道的传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $channel
@@ -67,6 +74,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Extract the parameters from the given pattern and channel.
+	 * 从给定的模式和通道中提取参数
      *
      * @param  string  $pattern
      * @param  string  $channel
@@ -86,6 +94,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Extract the channel keys from the incoming channel name.
+	 * 从传入通道名中提取通道密钥
      *
      * @param  string  $pattern
      * @param  string  $channel
@@ -100,6 +109,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Resolve the given parameter binding.
+	 * 解析给定的参数绑定
      *
      * @param  string  $key
      * @param  string  $value
@@ -117,6 +127,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Resolve an explicit parameter binding if applicable.
+	 * 解析显式参数绑定（如果适用）
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -135,6 +146,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Resolve an implicit parameter binding if applicable.
+	 * 解析隐式参数绑定（如果适用）
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -163,6 +175,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Determine if a given key and parameter is implicitly bindable.
+	 * 确定给定的键和参数是否可隐式绑定
      *
      * @param  string  $key
      * @param  \ReflectionParameter  $parameter
@@ -176,6 +189,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Format the channel array into an array of strings.
+	 * 将通道数组格式化为字符串数组
      *
      * @param  array  $channels
      * @return array
@@ -189,6 +203,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Get the model binding registrar instance.
+	 * 获取模型绑定注册器实例
      *
      * @return \Illuminate\Contracts\Routing\BindingRegistrar
      */

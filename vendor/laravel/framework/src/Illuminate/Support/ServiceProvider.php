@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，支持，服务提供商
+ */
 
 namespace Illuminate\Support;
 
@@ -8,6 +11,7 @@ abstract class ServiceProvider
 {
     /**
      * The application instance.
+	 * 应用实例
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -15,6 +19,7 @@ abstract class ServiceProvider
 
     /**
      * Indicates if loading of the provider is deferred.
+	 * 指示是否延迟加载提供程序
      *
      * @var bool
      */
@@ -22,6 +27,7 @@ abstract class ServiceProvider
 
     /**
      * The paths that should be published.
+	 * 应该发布的路径
      *
      * @var array
      */
@@ -29,6 +35,7 @@ abstract class ServiceProvider
 
     /**
      * The paths that should be published by group.
+	 * 应按组发布的路径
      *
      * @var array
      */
@@ -36,6 +43,7 @@ abstract class ServiceProvider
 
     /**
      * Create a new service provider instance.
+	 * 创建一个新的服务提供者实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -47,6 +55,7 @@ abstract class ServiceProvider
 
     /**
      * Merge the given configuration with the existing configuration.
+	 * 将给定的配置与现有配置合并
      *
      * @param  string  $path
      * @param  string  $key
@@ -61,6 +70,7 @@ abstract class ServiceProvider
 
     /**
      * Load the given routes file if routes are not already cached.
+	 * 如果路由尚未缓存，则加载给定的路由文件。
      *
      * @param  string  $path
      * @return void
@@ -74,6 +84,7 @@ abstract class ServiceProvider
 
     /**
      * Register a view file namespace.
+	 * 注册一个视图文件命名空间
      *
      * @param  string|array  $path
      * @param  string  $namespace
@@ -94,6 +105,7 @@ abstract class ServiceProvider
 
     /**
      * Register a translation file namespace.
+	 * 注册一个翻译文件命名空间
      *
      * @param  string  $path
      * @param  string  $namespace
@@ -106,6 +118,7 @@ abstract class ServiceProvider
 
     /**
      * Register a JSON translation file path.
+	 * 注册一个JSON翻译文件路径
      *
      * @param  string  $path
      * @return void
@@ -117,6 +130,7 @@ abstract class ServiceProvider
 
     /**
      * Register a database migration path.
+	 * 注册数据库迁移路径
      *
      * @param  array|string  $paths
      * @return void
@@ -132,6 +146,7 @@ abstract class ServiceProvider
 
     /**
      * Register paths to be published by the publish command.
+	 * 使用publish命令注册要发布的路径
      *
      * @param  array  $paths
      * @param  string  $group
@@ -150,6 +165,7 @@ abstract class ServiceProvider
 
     /**
      * Ensure the publish array for the service provider is initialized.
+	 * 确保初始化了服务提供者的发布数组
      *
      * @param  string  $class
      * @return void
@@ -163,6 +179,7 @@ abstract class ServiceProvider
 
     /**
      * Add a publish group / tag to the service provider.
+	 * 向服务提供者添加发布组/标记
      *
      * @param  string  $group
      * @param  array  $paths
@@ -181,6 +198,7 @@ abstract class ServiceProvider
 
     /**
      * Get the paths to publish.
+	 * 获取发布路径
      *
      * @param  string  $provider
      * @param  string  $group
@@ -199,6 +217,7 @@ abstract class ServiceProvider
 
     /**
      * Get the paths for the provider or group (or both).
+	 * 获取提供程序或组（或两者）的路径
      *
      * @param  string|null  $provider
      * @param  string|null  $group
@@ -219,6 +238,7 @@ abstract class ServiceProvider
 
     /**
      * Get the paths for the provider and group.
+	 * 获取提供程序和组的路径
      *
      * @param  string  $provider
      * @param  string  $group
@@ -235,6 +255,7 @@ abstract class ServiceProvider
 
     /**
      * Get the service providers available for publishing.
+	 * 获取可用于发布的服务提供者
      *
      * @return array
      */
@@ -245,6 +266,7 @@ abstract class ServiceProvider
 
     /**
      * Get the groups available for publishing.
+	 * 获取可用于发布的组
      *
      * @return array
      */
@@ -255,6 +277,7 @@ abstract class ServiceProvider
 
     /**
      * Register the package's custom Artisan commands.
+	 * 注册包的自定义Artisan命令
      *
      * @param  array|mixed  $commands
      * @return void
@@ -270,6 +293,7 @@ abstract class ServiceProvider
 
     /**
      * Get the services provided by the provider.
+	 * 获取提供者提供的服务
      *
      * @return array
      */
@@ -280,6 +304,7 @@ abstract class ServiceProvider
 
     /**
      * Get the events that trigger this service provider to register.
+	 * 获取触发此服务提供者注册的事件
      *
      * @return array
      */
@@ -290,6 +315,7 @@ abstract class ServiceProvider
 
     /**
      * Determine if the provider is deferred.
+	 * 确定是否延迟提供程序
      *
      * @return bool
      */

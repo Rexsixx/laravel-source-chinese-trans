@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Redis，连接，Php Redis 连接
+ */
 
 namespace Illuminate\Redis\Connections;
 
@@ -12,6 +15,7 @@ class PhpRedisConnection extends Connection
 {
     /**
      * Create a new PhpRedis connection.
+	 * 创建一个新的PhpRedis连接
      *
      * @param  \Redis  $client
      * @return void
@@ -23,6 +27,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Returns the value of the given key.
+	 * 返回给定键的值
      *
      * @param  string  $key
      * @return string|null
@@ -36,6 +41,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Get the values of all the given keys.
+	 * 获取所有给定键的值
      *
      * @param  array  $keys
      * @return array
@@ -49,6 +55,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Determine if the given keys exist.
+	 * 确定给定的键是否存在
      *
      * @param  dynamic  $keys
      * @return int
@@ -64,6 +71,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Set the string value in argument as value of the key.
+	 * 将参数中的字符串值设置为键的值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -83,6 +91,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Set the given key if it doesn't exist.
+	 * 如果给定的键不存在，则设置它。
      *
      * @param  string  $key
      * @param  string  $value
@@ -95,6 +104,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Get the value of the given hash fields.
+	 * 获取给定哈希字段的值
      *
      * @param  string  $key
      * @param  dynamic  $dictionary
@@ -111,6 +121,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Set the given hash fields to their respective values.
+	 * 将给定的散列字段设置为各自的值
      *
      * @param  string  $key
      * @param  dynamic  $dictionary
@@ -131,6 +142,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Set the given hash field if it doesn't exist.
+	 * 如果给定的散列字段不存在，则设置该字段。
      *
      * @param  string  $hash
      * @param  string  $key
@@ -144,6 +156,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Removes the first count occurrences of the value element from the list.
+	 * 从列表中移除value元素的第一个计数出现次数
      *
      * @param  string  $key
      * @param  int  $count
@@ -157,6 +170,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Removes and returns a random element from the set value at key.
+	 * 从键处的设置值中移除并返回一个随机元素
      *
      * @param  string  $key
      * @param  int|null  $count
@@ -169,6 +183,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Add one or more members to a sorted set or update its score if it already exists.
+	 * 向排序集添加一个或多个成员，如果排序集已经存在，则更新其分数。
      *
      * @param  string  $key
      * @param  dynamic  $dictionary
@@ -190,6 +205,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Return elements with score between $min and $max.
+	 * 返回得分在$min和$max之间的元素
      *
      * @param  string  $key
      * @param  mixed  $min
@@ -211,6 +227,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Return elements with score between $min and $max.
+	 * 返回得分在$min和$max之间的元素
      *
      * @param  string  $key
      * @param  mixed  $min
@@ -232,6 +249,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Find the intersection between sets and store in a new set.
+	 * 找到集合之间的交集并存储在一个新集合中
      *
      * @param  string  $output
      * @param  array  $keys
@@ -248,6 +266,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Find the union between sets and store in a new set.
+	 * 找到集合之间的并集并存储在一个新集合中
      *
      * @param  string  $output
      * @param  array  $keys
@@ -264,6 +283,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Execute commands in a pipeline.
+	 * 在管道中执行命令
      *
      * @param  callable  $callback
      * @return \Redis|array
@@ -279,6 +299,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Execute commands in a transaction.
+	 * 在事务中执行命令
      *
      * @param  callable  $callback
      * @return \Redis|array
@@ -294,6 +315,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Evaluate a LUA script serverside, from the SHA1 hash of the script instead of the script itself.
+	 * 从脚本的SHA1哈希值（而不是脚本本身）计算LUA脚本服务器端
      *
      * @param  string  $script
      * @param  int  $numkeys
@@ -309,6 +331,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Evaluate a script and return its result.
+	 * 对脚本求值并返回结果
      *
      * @param  string  $script
      * @param  int  $numberOfKeys
@@ -322,6 +345,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Subscribe to a set of given channels for messages.
+	 * 为消息订阅一组给定的通道
      *
      * @param  array|string  $channels
      * @param  \Closure  $callback
@@ -336,6 +360,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Subscribe to a set of given channels with wildcards.
+	 * 使用通配符订阅一组给定的通道
      *
      * @param  array|string  $channels
      * @param  \Closure  $callback
@@ -350,6 +375,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Subscribe to a set of given channels for messages.
+	 * 为消息订阅一组给定的通道
      *
      * @param  array|string  $channels
      * @param  \Closure  $callback
@@ -363,6 +389,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Execute a raw command.
+	 * 执行原始命令
      *
      * @param  array  $parameters
      * @return mixed
@@ -374,6 +401,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Disconnects from the Redis instance.
+	 * 断开与Redis实例的连接
      *
      * @return void
      */
@@ -384,6 +412,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Apply prefix to the given key if necessary.
+	 * 必要时对给定的键应用prefix
      *
      * @param  string  $key
      * @return string
@@ -397,6 +426,7 @@ class PhpRedisConnection extends Connection
 
     /**
      * Pass other method calls down to the underlying client.
+	 * 将其他方法调用传递给底层客户端
      *
      * @param  string  $method
      * @param  array  $parameters

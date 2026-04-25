@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，事件，调度单元
+ */
 
 namespace Illuminate\Foundation\Events;
 
@@ -6,6 +9,7 @@ trait Dispatchable
 {
     /**
      * Dispatch the event with the given arguments.
+	 * 使用给定的参数调度事件
      *
      * @return void
      */
@@ -16,6 +20,7 @@ trait Dispatchable
 
     /**
      * Broadcast the event with the given arguments.
+	 * 使用给定参数广播事件
      *
      * @return \Illuminate\Broadcasting\PendingBroadcast
      */

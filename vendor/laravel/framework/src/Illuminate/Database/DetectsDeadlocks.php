@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，检测到死锁
+ */
 
 namespace Illuminate\Database;
 
@@ -9,6 +12,7 @@ trait DetectsDeadlocks
 {
     /**
      * Determine if the given exception was caused by a deadlock.
+	 * 确定给定的异常是否由死锁引起
      *
      * @param  \Exception  $e
      * @return bool

@@ -5,7 +5,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Web Routes	Web路由
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These

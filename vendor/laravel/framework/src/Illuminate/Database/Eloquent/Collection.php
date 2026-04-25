@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，Eloquent，收集
+ */
 
 namespace Illuminate\Database\Eloquent;
 
@@ -12,6 +15,7 @@ class Collection extends BaseCollection implements QueueableCollection
 {
     /**
      * Find a model in the collection by key.
+	 * 按键在集合中查找模型
      *
      * @param  mixed  $key
      * @param  mixed  $default
@@ -42,6 +46,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Load a set of relationships onto the collection.
+	 * 将一组关系加载到集合中
      *
      * @param  mixed  $relations
      * @return $this
@@ -63,6 +68,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Add an item to the collection.
+	 * 向集合中添加项
      *
      * @param  mixed  $item
      * @return $this
@@ -76,6 +82,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Determine if a key exists in the collection.
+	 * 确定一个键是否存在于集合中
      *
      * @param  mixed  $key
      * @param  mixed  $operator
@@ -101,6 +108,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Get the array of primary keys.
+	 * 获取主键数组
      *
      * @return array
      */
@@ -113,6 +121,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Merge the collection with the given items.
+	 * 将集合与给定的项合并
      *
      * @param  \ArrayAccess|array  $items
      * @return static
@@ -130,6 +139,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Run a map over each of the items.
+	 * 在每个项目上运行一张地图
      *
      * @param  callable  $callback
      * @return \Illuminate\Support\Collection|static
@@ -145,6 +155,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Reload a fresh model instance from the database for all the entities.
+	 * 为所有实体从数据库中重新加载一个新的模型实例
      *
      * @param  array|string  $with
      * @return static
@@ -171,6 +182,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Diff the collection with the given items.
+	 * 将集合与给定的项进行比较
      *
      * @param  \ArrayAccess|array  $items
      * @return static
@@ -192,6 +204,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Intersect the collection with the given items.
+	 * 将集合与给定的项目相交
      *
      * @param  \ArrayAccess|array  $items
      * @return static
@@ -213,6 +226,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Return only unique items from the collection.
+	 * 只返回集合中唯一的项
      *
      * @param  string|callable|null  $key
      * @param  bool  $strict
@@ -229,6 +243,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Returns only the models from the collection with the specified keys.
+	 * 仅返回集合中具有指定键的模型
      *
      * @param  mixed  $keys
      * @return static
@@ -246,6 +261,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Returns all models in the collection except the models with specified keys.
+	 * 返回集合中除具有指定键的模型外的所有模型。
      *
      * @param  mixed  $keys
      * @return static
@@ -259,6 +275,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Make the given, typically visible, attributes hidden across the entire collection.
+	 * 将给定的（通常是可见的）属性隐藏在整个集合中
      *
      * @param  array|string  $attributes
      * @return $this
@@ -272,6 +289,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Make the given, typically hidden, attributes visible across the entire collection.
+	 * 使给定的（通常是隐藏的）属性在整个集合中可见
      *
      * @param  array|string  $attributes
      * @return $this
@@ -285,6 +303,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Get a dictionary keyed by primary keys.
+	 * 获取以主键为键的字典
      *
      * @param  \ArrayAccess|array|null  $items
      * @return array
@@ -304,10 +323,12 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * The following methods are intercepted to always return base collections.
+	 * 截取以下方法以始终返回基集合
      */
 
     /**
      * Get an array with the values of a given key.
+	 * 获取具有给定键值的数组
      *
      * @param  string  $value
      * @param  string|null  $key
@@ -320,6 +341,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Get the keys of the collection items.
+	 * 获得收集项目的密钥
      *
      * @return \Illuminate\Support\Collection
      */
@@ -330,6 +352,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Zip the collection together with one or more arrays.
+	 * 将集合与一个或多个数组压缩在一起
      *
      * @param  mixed ...$items
      * @return \Illuminate\Support\Collection
@@ -341,6 +364,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Collapse the collection of items into a single array.
+	 * 将项目集合折叠成单个数组
      *
      * @return \Illuminate\Support\Collection
      */
@@ -351,6 +375,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Get a flattened array of the items in the collection.
+	 * 获取集合中项的扁平数组
      *
      * @param  int  $depth
      * @return \Illuminate\Support\Collection
@@ -362,6 +387,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Flip the items in the collection.
+	 * 翻转集合中的项目
      *
      * @return \Illuminate\Support\Collection
      */
@@ -372,6 +398,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Pad collection to the specified length with a value.
+	 * 使用值将集合垫到指定的长度
      *
      * @param  int  $size
      * @param  mixed $value
@@ -384,6 +411,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Get the type of the entities being queued.
+	 * 获取正在排队的实体的类型
      *
      * @return string|null
      * @throws \LogicException
@@ -407,6 +435,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Get the identifiers for all of the entities.
+	 * 获取所有实体的标识符
      *
      * @return array
      */
@@ -417,6 +446,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Get the connection of the entities being queued.
+	 * 获取正在排队的实体的连接
      *
      * @return string|null
      * @throws \LogicException

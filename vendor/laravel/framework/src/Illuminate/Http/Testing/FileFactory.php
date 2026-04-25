@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Http，测试，文件工厂
+ */
 
 namespace Illuminate\Http\Testing;
 
@@ -6,6 +9,7 @@ class FileFactory
 {
     /**
      * Create a new fake file.
+	 * 创建一个新的假文件
      *
      * @param  string  $name
      * @param  int  $kilobytes
@@ -20,6 +24,7 @@ class FileFactory
 
     /**
      * Create a new fake image.
+	 * 创建一个新的假图像
      *
      * @param  string  $name
      * @param  int  $width
@@ -33,6 +38,7 @@ class FileFactory
 
     /**
      * Generate a dummy image of the given width and height.
+	 * 生成给定宽度和高度的虚拟图像
      *
      * @param  int  $width
      * @param  int  $height

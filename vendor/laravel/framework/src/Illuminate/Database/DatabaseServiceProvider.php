@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，数据库服务提供商
+ */
 
 namespace Illuminate\Database;
 
@@ -15,6 +18,7 @@ class DatabaseServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application events.
+	 * 引导应用程序事件
      *
      * @return void
      */
@@ -27,6 +31,7 @@ class DatabaseServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
+	 * 注册服务提供者
      *
      * @return void
      */
@@ -43,6 +48,7 @@ class DatabaseServiceProvider extends ServiceProvider
 
     /**
      * Register the primary database bindings.
+	 * 注册主数据库绑定
      *
      * @return void
      */
@@ -69,6 +75,7 @@ class DatabaseServiceProvider extends ServiceProvider
 
     /**
      * Register the Eloquent factory instance in the container.
+	 * 在容器中注册Eloquent工厂实例
      *
      * @return void
      */
@@ -87,6 +94,7 @@ class DatabaseServiceProvider extends ServiceProvider
 
     /**
      * Register the queueable entity resolver implementation.
+	 * 注册可排队实体解析器实现
      *
      * @return void
      */

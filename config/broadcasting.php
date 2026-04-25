@@ -22,7 +22,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Broadcast Connections
+    | Broadcast Connections		广播连接
     |--------------------------------------------------------------------------
     |
     | Here you may define all of the broadcast connections that will be used

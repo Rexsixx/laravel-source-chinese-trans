@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，通知，发送排队通知
+ */
 
 namespace Illuminate\Notifications;
 
@@ -12,6 +15,7 @@ class SendQueuedNotifications implements ShouldQueue
 
     /**
      * The notifiable entities that should receive the notification.
+	 * 应接收通知的应通知实体
      *
      * @var \Illuminate\Support\Collection
      */
@@ -19,6 +23,7 @@ class SendQueuedNotifications implements ShouldQueue
 
     /**
      * The notification to be sent.
+	 * 要发送的通知
      *
      * @var \Illuminate\Notifications\Notification
      */
@@ -26,6 +31,7 @@ class SendQueuedNotifications implements ShouldQueue
 
     /**
      * All of the channels to send the notification too.
+	 * 所有发送通知的通道
      *
      * @var array
      */
@@ -33,6 +39,7 @@ class SendQueuedNotifications implements ShouldQueue
 
     /**
      * Create a new job instance.
+	 * 创建一个新的作业实例
      *
      * @param  \Illuminate\Support\Collection  $notifiables
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -48,6 +55,7 @@ class SendQueuedNotifications implements ShouldQueue
 
     /**
      * Send the notifications.
+	 * 发送通知
      *
      * @param  \Illuminate\Notifications\ChannelManager  $manager
      * @return void
@@ -59,6 +67,7 @@ class SendQueuedNotifications implements ShouldQueue
 
     /**
      * Get the display name for the queued job.
+	 * 获取排队作业的显示名称
      *
      * @return string
      */
@@ -69,6 +78,7 @@ class SendQueuedNotifications implements ShouldQueue
 
     /**
      * Call the failed method on the notification instance.
+	 * 在通知实例上调用失败的方法
      *
      * @param  \Exception  $e
      * @return void
@@ -82,6 +92,7 @@ class SendQueuedNotifications implements ShouldQueue
 
     /**
      * Prepare the instance for cloning.
+	 * 为克隆准备实例
      *
      * @return void
      */

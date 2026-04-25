@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，控制台，指令发生器
+ */
 
 namespace Illuminate\Console;
 
@@ -10,6 +13,7 @@ abstract class GeneratorCommand extends Command
 {
     /**
      * The filesystem instance.
+	 * 文件系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -17,6 +21,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * The type of class being generated.
+	 * 生成的类的类型
      *
      * @var string
      */
@@ -24,6 +29,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Create a new controller creator command instance.
+	 * 创建新的控制器创建器命令实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void
@@ -37,6 +43,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Get the stub file for the generator.
+	 * 获取生成器的存根文件
      *
      * @return string
      */
@@ -44,6 +51,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Execute the console command.
+	 * 执行控制台命令
      *
      * @return bool|null
      */
@@ -74,6 +82,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Parse the class name and format according to the root namespace.
+	 * 根据根命名空间解析类名和格式
      *
      * @param  string  $name
      * @return string
@@ -97,6 +106,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Get the default namespace for the class.
+	 * 获取类的默认名称空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -108,6 +118,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Determine if the class already exists.
+	 * 确定类是否已经存在
      *
      * @param  string  $rawName
      * @return bool
@@ -119,6 +130,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Get the destination class path.
+	 * 获取目标类路径
      *
      * @param  string  $name
      * @return string
@@ -132,6 +144,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Build the directory for the class if necessary.
+	 * 如有必要，为类构建目录。
      *
      * @param  string  $path
      * @return string
@@ -147,6 +160,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Build the class with the given name.
+	 * 用给定的名称构建类
      *
      * @param  string  $name
      * @return string
@@ -160,6 +174,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Replace the namespace for the given stub.
+	 * 替换给定存根的命名空间
      *
      * @param  string  $stub
      * @param  string  $name
@@ -178,6 +193,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Get the full namespace for a given class, without the class name.
+	 * 获取给定类的完整名称空间，不包含类名。
      *
      * @param  string  $name
      * @return string
@@ -189,6 +205,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Replace the class name for the given stub.
+	 * 替换给定存根的类名。
      *
      * @param  string  $stub
      * @param  string  $name
@@ -203,6 +220,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Get the desired class name from the input.
+	 * 从输入中获取所需的类名
      *
      * @return string
      */
@@ -213,6 +231,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Get the root namespace for the class.
+	 * 获取类的根命名空间
      *
      * @return string
      */
@@ -223,6 +242,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Get the console command arguments.
+	 * 获取控制台命令参数
      *
      * @return array
      */

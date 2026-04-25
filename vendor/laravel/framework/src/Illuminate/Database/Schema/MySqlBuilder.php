@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，架构，MySql 生成器
+ */
 
 namespace Illuminate\Database\Schema;
 
@@ -6,6 +9,7 @@ class MySqlBuilder extends Builder
 {
     /**
      * Determine if the given table exists.
+	 * 确定给定的表是否存在
      *
      * @param  string  $table
      * @return bool
@@ -21,6 +25,7 @@ class MySqlBuilder extends Builder
 
     /**
      * Get the column listing for a given table.
+	 * 获取给定表的列清单
      *
      * @param  string  $table
      * @return array
@@ -38,6 +43,7 @@ class MySqlBuilder extends Builder
 
     /**
      * Drop all tables from the database.
+	 * 从数据库中删除所有表
      *
      * @return void
      */
@@ -66,6 +72,7 @@ class MySqlBuilder extends Builder
 
     /**
      * Get all of the table names for the database.
+	 * 获取数据库的所有表名
      *
      * @return array
      */

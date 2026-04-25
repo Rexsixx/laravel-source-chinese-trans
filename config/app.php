@@ -20,7 +20,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Environment
+    | Application Environment	应用环境
     |--------------------------------------------------------------------------
     |
     | This value determines the "environment" your application is currently
@@ -33,7 +33,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Debug Mode
+    | Application Debug Mode	应用环境
     |--------------------------------------------------------------------------
     |
     | When your application is in debug mode, detailed error messages with
@@ -46,7 +46,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application URL
+    | Application URL	应用URL
     |--------------------------------------------------------------------------
     |
     | This URL is used by the console to properly generate URLs when using
@@ -59,7 +59,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Timezone
+    | Application Timezone		应用时区
     |--------------------------------------------------------------------------
     |
     | Here you may specify the default timezone for your application, which
@@ -72,7 +72,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Locale Configuration
+    | Application Locale Configuration		应用程序区域设置配置
     |--------------------------------------------------------------------------
     |
     | The application locale determines the default locale that will be used
@@ -85,7 +85,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Fallback Locale
+    | Application Fallback Locale	应用程序回退区域设置
     |--------------------------------------------------------------------------
     |
     | The fallback locale determines the locale to use when the current one
@@ -98,7 +98,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Encryption Key
+    | Encryption Key	加密密钥
     |--------------------------------------------------------------------------
     |
     | This key is used by the Illuminate encrypter service and should be set

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，支持，门面，Cookie
+ */
 
 namespace Illuminate\Support\Facades;
 
@@ -9,6 +12,7 @@ class Cookie extends Facade
 {
     /**
      * Determine if a cookie exists on the request.
+	 * 确定请求中是否存在cookie
      *
      * @param  string  $key
      * @return bool
@@ -20,6 +24,7 @@ class Cookie extends Facade
 
     /**
      * Retrieve a cookie from the request.
+	 * 从请求中检索cookie
      *
      * @param  string  $key
      * @param  mixed   $default
@@ -32,6 +37,7 @@ class Cookie extends Facade
 
     /**
      * Get the registered name of the component.
+	 * 获取组件的注册名称
      *
      * @return string
      */

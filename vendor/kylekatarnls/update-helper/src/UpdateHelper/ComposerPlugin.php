@@ -1,4 +1,7 @@
 <?php
+/**
+ * UpdateHelper，Composer 插件
+ */
 
 namespace UpdateHelper;
 

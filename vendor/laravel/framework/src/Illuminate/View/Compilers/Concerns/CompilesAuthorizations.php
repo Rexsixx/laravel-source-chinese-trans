@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，视图，编译器，问题，编译授权
+ */
 
 namespace Illuminate\View\Compilers\Concerns;
 
@@ -6,6 +9,7 @@ trait CompilesAuthorizations
 {
     /**
      * Compile the can statements into valid PHP.
+	 * 将can语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -17,6 +21,7 @@ trait CompilesAuthorizations
 
     /**
      * Compile the cannot statements into valid PHP.
+	 * 将cannot语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -28,6 +33,7 @@ trait CompilesAuthorizations
 
     /**
      * Compile the else-can statements into valid PHP.
+	 * 将else-can语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -39,6 +45,7 @@ trait CompilesAuthorizations
 
     /**
      * Compile the else-cannot statements into valid PHP.
+	 * 将else-cannot语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -50,6 +57,7 @@ trait CompilesAuthorizations
 
     /**
      * Compile the end-can statements into valid PHP.
+	 * 将end-can语句编译成有效的PHP
      *
      * @return string
      */
@@ -60,6 +68,7 @@ trait CompilesAuthorizations
 
     /**
      * Compile the end-cannot statements into valid PHP.
+	 * 将end-cannot语句编译成有效的PHP
      *
      * @return string
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Http，资源，收集资源
+ */
 
 namespace Illuminate\Http\Resources;
 
@@ -9,6 +12,7 @@ trait CollectsResources
 {
     /**
      * Map the given collection resource into its individual resources.
+	 * 将给定的集合资源映射到它的各个资源
      *
      * @param  mixed  $resource
      * @return mixed
@@ -32,6 +36,7 @@ trait CollectsResources
 
     /**
      * Get the resource that this resource collects.
+	 * 获取此资源收集的资源
      *
      * @return string|null
      */
@@ -49,6 +54,7 @@ trait CollectsResources
 
     /**
      * Get an iterator for the resource collection.
+	 * 获取资源集合的迭代器
      *
      * @return \ArrayIterator
      */

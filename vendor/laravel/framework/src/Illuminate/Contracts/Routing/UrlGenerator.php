@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，契约，路由，Url 生成器
+ */
 
 namespace Illuminate\Contracts\Routing;
 
@@ -6,6 +9,7 @@ interface UrlGenerator
 {
     /**
      * Get the current URL for the request.
+	 * 获取请求的当前URL
      *
      * @return string
      */
@@ -13,6 +17,7 @@ interface UrlGenerator
 
     /**
      * Generate an absolute URL to the given path.
+	 * 生成给定路径的绝对URL
      *
      * @param  string  $path
      * @param  mixed  $extra
@@ -23,6 +28,7 @@ interface UrlGenerator
 
     /**
      * Generate a secure, absolute URL to the given path.
+	 * 生成给定路径的安全的绝对URL
      *
      * @param  string  $path
      * @param  array   $parameters
@@ -32,6 +38,7 @@ interface UrlGenerator
 
     /**
      * Generate the URL to an application asset.
+	 * 生成应用程序资产的URL
      *
      * @param  string  $path
      * @param  bool    $secure
@@ -41,6 +48,7 @@ interface UrlGenerator
 
     /**
      * Get the URL to a named route.
+	 * 获取一个命名路由的URL
      *
      * @param  string  $name
      * @param  mixed   $parameters
@@ -53,6 +61,7 @@ interface UrlGenerator
 
     /**
      * Get the URL to a controller action.
+	 * 获取一个控制器动作的URL
      *
      * @param  string  $action
      * @param  mixed $parameters
@@ -63,6 +72,7 @@ interface UrlGenerator
 
     /**
      * Set the root controller namespace.
+	 * 设置根控制器命名空间
      *
      * @param  string  $rootNamespace
      * @return $this

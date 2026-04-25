@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，检测丢失的连接
+ */
 
 namespace Illuminate\Database;
 
@@ -9,6 +12,7 @@ trait DetectsLostConnections
 {
     /**
      * Determine if the given exception was caused by a lost connection.
+	 * 确定给定的异常是否由丢失的连接引起
      *
      * @param  \Exception  $e
      * @return bool

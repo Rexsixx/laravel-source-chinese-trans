@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，支持，测试，佯装，队列 Fake
+ */
 
 namespace Illuminate\Support\Testing\Fakes;
 
@@ -10,6 +13,7 @@ class QueueFake extends QueueManager implements Queue
 {
     /**
      * All of the jobs that have been pushed.
+	 * 所有的工作都被推迟了
      *
      * @var array
      */
@@ -17,6 +21,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Assert if a job was pushed based on a truth-test callback.
+	 * 断言作业是否基于真值测试回调被推送
      *
      * @param  string  $job
      * @param  callable|int|null  $callback
@@ -36,6 +41,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Assert if a job was pushed a number of times.
+	 * 判断一个作业是否被推送了多次
      *
      * @param  string  $job
      * @param  int  $times
@@ -51,6 +57,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Assert if a job was pushed based on a truth-test callback.
+	 * 断言作业是否基于真值测试回调被推送
      *
      * @param  string  $queue
      * @param  string  $job
@@ -70,6 +77,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Determine if a job was pushed based on a truth-test callback.
+	 * 根据true -test回调确定作业是否被推送
      *
      * @param  string  $job
      * @param  callable|null  $callback
@@ -85,6 +93,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Assert that no jobs were pushed.
+	 * 断言没有工作被推送
      *
      * @return void
      */
@@ -95,6 +104,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Get all of the jobs matching a truth-test callback.
+	 * 获取所有符合真实测试回调的工作
      *
      * @param  string  $job
      * @param  callable|null  $callback
@@ -117,6 +127,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Determine if there are any stored jobs for a given class.
+	 * 确定给定类是否有任何存储的作业
      *
      * @param  string  $job
      * @return bool
@@ -128,6 +139,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Resolve a queue connection instance.
+	 * 解析队列连接实例
      *
      * @param  mixed  $value
      * @return \Illuminate\Contracts\Queue\Queue
@@ -139,6 +151,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Get the size of the queue.
+	 * 获取队列的大小
      *
      * @param  string  $queue
      * @return int
@@ -150,6 +163,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Push a new job onto the queue.
+	 * 将新作业推送到队列中
      *
      * @param  string  $job
      * @param  mixed   $data
@@ -166,6 +180,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Push a raw payload onto the queue.
+	 * 将原始有效负载推入队列
      *
      * @param  string  $payload
      * @param  string  $queue
@@ -179,6 +194,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Push a new job onto the queue after a delay.
+	 * 在延迟后将新作业推入队列
      *
      * @param  \DateTime|int  $delay
      * @param  string  $job
@@ -193,6 +209,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Push a new job onto the queue.
+	 * 将新作业推送到队列中
      *
      * @param  string  $queue
      * @param  string  $job
@@ -206,6 +223,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Push a new job onto the queue after a delay.
+	 * 在延迟后将新作业推入队列
      *
      * @param  string  $queue
      * @param  \DateTime|int  $delay
@@ -220,6 +238,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Pop the next job off of the queue.
+	 * 将下一个作业从队列中弹出
      *
      * @param  string  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
@@ -231,6 +250,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Push an array of jobs onto the queue.
+	 * 将一组作业推入队列
      *
      * @param  array $jobs
      * @param  mixed $data
@@ -246,6 +266,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Get the connection name for the queue.
+	 * 获取队列的连接名称
      *
      * @return string
      */
@@ -256,6 +277,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Set the connection name for the queue.
+	 * 设置队列的连接名称
      *
      * @param  string $name
      * @return $this

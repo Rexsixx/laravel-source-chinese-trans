@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，事件，封锁
+ * Illuminate，Auth，事件，闭厂
  */
 
 namespace Illuminate\Auth\Events;

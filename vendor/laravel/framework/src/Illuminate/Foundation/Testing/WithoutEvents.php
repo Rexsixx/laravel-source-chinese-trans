@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，测试，即使事件
+ */
 
 namespace Illuminate\Foundation\Testing;
 
@@ -8,6 +11,7 @@ trait WithoutEvents
 {
     /**
      * Prevent all event handles from being executed.
+	 * 防止执行所有事件句柄
      *
      * @throws \Exception
      */

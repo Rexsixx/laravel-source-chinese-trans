@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，Sql Server 连接
+ */
 
 namespace Illuminate\Database;
 
@@ -15,6 +18,7 @@ class SqlServerConnection extends Connection
 {
     /**
      * Execute a Closure within a transaction.
+	 * 在事务中执行闭包
      *
      * @param  \Closure  $callback
      * @param  int  $attempts
@@ -59,6 +63,7 @@ class SqlServerConnection extends Connection
 
     /**
      * Get the default query grammar instance.
+	 * 获取默认查询语法实例
      *
      * @return \Illuminate\Database\Query\Grammars\SqlServerGrammar
      */
@@ -69,6 +74,7 @@ class SqlServerConnection extends Connection
 
     /**
      * Get a schema builder instance for the connection.
+	 * 获取连接的架构构建器实例
      *
      * @return \Illuminate\Database\Schema\SqlServerBuilder
      */
@@ -83,6 +89,7 @@ class SqlServerConnection extends Connection
 
     /**
      * Get the default schema grammar instance.
+	 * 获取默认模式语法实例
      *
      * @return \Illuminate\Database\Schema\Grammars\SqlServerGrammar
      */
@@ -93,6 +100,7 @@ class SqlServerConnection extends Connection
 
     /**
      * Get the default post processor instance.
+	 * 获取默认的后处理器实例
      *
      * @return \Illuminate\Database\Query\Processors\SqlServerProcessor
      */
@@ -103,6 +111,7 @@ class SqlServerConnection extends Connection
 
     /**
      * Get the Doctrine DBAL driver.
+	 * 获取Doctrine DBAL驱动程序
      *
      * @return \Doctrine\DBAL\Driver\PDOSqlsrv\Driver
      */

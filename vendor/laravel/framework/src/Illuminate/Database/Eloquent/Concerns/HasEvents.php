@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，Eloquent，问题，有事件
+ */
 
 namespace Illuminate\Database\Eloquent\Concerns;
 
@@ -8,6 +11,7 @@ trait HasEvents
 {
     /**
      * The event map for the model.
+	 * 模型的事件映射
      *
      * Allows for object-based events for native Eloquent events.
      *
@@ -17,6 +21,7 @@ trait HasEvents
 
     /**
      * User exposed observable events.
+	 * 用户公开的可观察事件。
      *
      * These are extra user-defined events observers may subscribe to.
      *
@@ -26,6 +31,7 @@ trait HasEvents
 
     /**
      * Register an observer with the Model.
+	 * 向模型注册一个观察者
      *
      * @param  object|string  $class
      * @return void
@@ -48,6 +54,7 @@ trait HasEvents
 
     /**
      * Get the observable event names.
+	 * 获取可观察事件名
      *
      * @return array
      */
@@ -65,6 +72,7 @@ trait HasEvents
 
     /**
      * Set the observable event names.
+	 * 设置可观察事件的名称
      *
      * @param  array  $observables
      * @return $this
@@ -78,6 +86,7 @@ trait HasEvents
 
     /**
      * Add an observable event name.
+	 * 添加一个可观察事件名称
      *
      * @param  array|mixed  $observables
      * @return void
@@ -91,6 +100,7 @@ trait HasEvents
 
     /**
      * Remove an observable event name.
+	 * 移除一个可观察事件名
      *
      * @param  array|mixed  $observables
      * @return void
@@ -104,6 +114,7 @@ trait HasEvents
 
     /**
      * Register a model event with the dispatcher.
+	 * 向调度程序注册一个模型事件
      *
      * @param  string  $event
      * @param  \Closure|string  $callback
@@ -120,6 +131,7 @@ trait HasEvents
 
     /**
      * Fire the given event for the model.
+	 * 为模型触发给定的事件
      *
      * @param  string  $event
      * @param  bool  $halt
@@ -151,6 +163,7 @@ trait HasEvents
 
     /**
      * Fire a custom model event for the given event.
+	 * 为给定事件触发一个自定义模型事件
      *
      * @param  string  $event
      * @param  string  $method
@@ -171,6 +184,7 @@ trait HasEvents
 
     /**
      * Filter the model event results.
+	 * 筛选模型事件结果
      *
      * @param  mixed  $result
      * @return mixed
@@ -188,6 +202,7 @@ trait HasEvents
 
     /**
      * Register a retrieved model event with the dispatcher.
+	 * 向调度程序注册检索到的模型事件
      *
      * @param  \Closure|string  $callback
      * @return void
@@ -199,6 +214,7 @@ trait HasEvents
 
     /**
      * Register a saving model event with the dispatcher.
+	 * 向调度程序注册一个保存模型事件
      *
      * @param  \Closure|string  $callback
      * @return void
@@ -210,6 +226,7 @@ trait HasEvents
 
     /**
      * Register a saved model event with the dispatcher.
+	 * 向调度程序注册已保存的模型事件
      *
      * @param  \Closure|string  $callback
      * @return void
@@ -221,6 +238,7 @@ trait HasEvents
 
     /**
      * Register an updating model event with the dispatcher.
+	 * 向调度程序注册更新模型事件
      *
      * @param  \Closure|string  $callback
      * @return void
@@ -254,6 +272,7 @@ trait HasEvents
 
     /**
      * Register a created model event with the dispatcher.
+	 * 向调度程序注册已创建的模型事件
      *
      * @param  \Closure|string  $callback
      * @return void
@@ -265,6 +284,7 @@ trait HasEvents
 
     /**
      * Register a deleting model event with the dispatcher.
+	 * 向调度程序注册一个删除模型事件
      *
      * @param  \Closure|string  $callback
      * @return void
@@ -276,6 +296,7 @@ trait HasEvents
 
     /**
      * Register a deleted model event with the dispatcher.
+	 * 向调度程序注册已删除的模型事件
      *
      * @param  \Closure|string  $callback
      * @return void
@@ -287,6 +308,7 @@ trait HasEvents
 
     /**
      * Remove all of the event listeners for the model.
+	 * 删除模型的所有事件侦听器
      *
      * @return void
      */
@@ -309,6 +331,7 @@ trait HasEvents
 
     /**
      * Get the event dispatcher instance.
+	 * 获取事件调度程序实例
      *
      * @return \Illuminate\Contracts\Events\Dispatcher
      */
@@ -319,6 +342,7 @@ trait HasEvents
 
     /**
      * Set the event dispatcher instance.
+	 * 设置事件调度程序实例
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $dispatcher
      * @return void
@@ -330,6 +354,7 @@ trait HasEvents
 
     /**
      * Unset the event dispatcher for models.
+	 * 取消设置模型的事件调度程序
      *
      * @return void
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，缓存，缓存服务提供商
+ */
 
 namespace Illuminate\Cache;
 
@@ -8,6 +11,7 @@ class CacheServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
+	 * 指示是否延迟加载提供程序
      *
      * @var bool
      */
@@ -15,6 +19,7 @@ class CacheServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
+	 * 注册服务提供商
      *
      * @return void
      */
@@ -35,6 +40,7 @@ class CacheServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
+	 * 获取提供商提供的服务
      *
      * @return array
      */

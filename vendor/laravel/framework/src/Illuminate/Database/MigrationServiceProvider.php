@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，迁移服务提供商
+ */
 
 namespace Illuminate\Database;
 
@@ -11,6 +14,7 @@ class MigrationServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
+	 * 指示是否延迟加载提供程序
      *
      * @var bool
      */
@@ -18,6 +22,7 @@ class MigrationServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
+	 * 注册服务提供者
      *
      * @return void
      */
@@ -32,6 +37,7 @@ class MigrationServiceProvider extends ServiceProvider
 
     /**
      * Register the migration repository service.
+	 * 注册迁移存储库服务
      *
      * @return void
      */
@@ -46,6 +52,7 @@ class MigrationServiceProvider extends ServiceProvider
 
     /**
      * Register the migrator service.
+	 * 注册迁移器服务
      *
      * @return void
      */
@@ -63,6 +70,7 @@ class MigrationServiceProvider extends ServiceProvider
 
     /**
      * Register the migration creator.
+	 * 注册迁移创建者
      *
      * @return void
      */
@@ -75,6 +83,7 @@ class MigrationServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
+	 * 获取提供者提供的服务
      *
      * @return array
      */

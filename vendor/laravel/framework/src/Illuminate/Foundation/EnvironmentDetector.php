@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，环境检测器
+ */
 
 namespace Illuminate\Foundation;
 
@@ -10,6 +13,7 @@ class EnvironmentDetector
 {
     /**
      * Detect the application's current environment.
+	 * 检测应用程序的当前环境
      *
      * @param  \Closure  $callback
      * @param  array|null  $consoleArgs
@@ -26,6 +30,7 @@ class EnvironmentDetector
 
     /**
      * Set the application environment for a web request.
+	 * 设置web请求的应用环境
      *
      * @param  \Closure  $callback
      * @return string
@@ -37,6 +42,7 @@ class EnvironmentDetector
 
     /**
      * Set the application environment from command-line arguments.
+	 * 通过命令行参数设置应用程序环境
      *
      * @param  \Closure  $callback
      * @param  array  $args
@@ -56,6 +62,7 @@ class EnvironmentDetector
 
     /**
      * Get the environment argument from the console.
+	 * 从控制台中获取环境参数
      *
      * @param  array  $args
      * @return string|null

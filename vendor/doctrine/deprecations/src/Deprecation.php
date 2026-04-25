@@ -1,4 +1,7 @@
 <?php
+/**
+ * Doctrine，Deprecations，反对
+ */
 
 declare(strict_types=1);
 
@@ -23,6 +26,7 @@ use const E_USER_DEPRECATED;
 
 /**
  * Manages Deprecation logging in different ways.
+ * 以不同的方式管理弃用日志。
  *
  * By default triggered exceptions are not logged.
  *
@@ -68,6 +72,7 @@ class Deprecation
 
     /**
      * Trigger a deprecation for the given package and identfier.
+	 * 触发对给定包和标识符的弃用。
      *
      * The link should point to a Github issue or Wiki entry detailing the
      * deprecation. It is additionally used to de-duplicate the trigger of the

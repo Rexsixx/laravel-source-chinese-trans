@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，架构，语法，重命名字段
+ */
 
 namespace Illuminate\Database\Schema\Grammars;
 
@@ -13,6 +16,7 @@ class RenameColumn
 {
     /**
      * Compile a rename column command.
+	 * 编译重命名列命令
      *
      * @param  \Illuminate\Database\Schema\Grammars\Grammar  $grammar
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
@@ -35,6 +39,7 @@ class RenameColumn
 
     /**
      * Get a new column instance with the new column name.
+	 * 获取具有新列名的新列实例
      *
      * @param  \Illuminate\Database\Schema\Grammars\Grammar  $grammar
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
@@ -52,6 +57,7 @@ class RenameColumn
 
     /**
      * Set the renamed columns on the table diff.
+	 * 在表diff上设置重命名的列
      *
      * @param  \Doctrine\DBAL\Schema\TableDiff  $tableDiff
      * @param  \Illuminate\Support\Fluent  $command

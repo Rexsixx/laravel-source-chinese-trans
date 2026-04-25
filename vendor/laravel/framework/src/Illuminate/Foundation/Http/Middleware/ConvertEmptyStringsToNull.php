@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，Http，中间件，将空字符串转换为空
+ */
 
 namespace Illuminate\Foundation\Http\Middleware;
 
@@ -6,6 +9,7 @@ class ConvertEmptyStringsToNull extends TransformsRequest
 {
     /**
      * Transform the given value.
+	 * 变换给定的值
      *
      * @param  string  $key
      * @param  mixed  $value

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Auth，重调
+ */
 
 namespace Illuminate\Auth;
 
@@ -8,6 +11,7 @@ class Recaller
 {
     /**
      * The "recaller" / "remember me" cookie string.
+	 * “回忆者”/“记住我”cookie字符串
      *
      * @var string
      */
@@ -15,6 +19,7 @@ class Recaller
 
     /**
      * Create a new recaller instance.
+	 * 创建一个新的调用器实例
      *
      * @param  string  $recaller
      * @return void
@@ -26,6 +31,7 @@ class Recaller
 
     /**
      * Get the user ID from the recaller.
+	 * 从调用器中获取用户ID
      *
      * @return string
      */
@@ -36,6 +42,7 @@ class Recaller
 
     /**
      * Get the "remember token" token from the recaller.
+	 * 从调用器获得“记住令牌”令牌
      *
      * @return string
      */
@@ -46,6 +53,7 @@ class Recaller
 
     /**
      * Get the password from the recaller.
+	 * 从召回器中获取密码
      *
      * @return string
      */
@@ -56,6 +64,7 @@ class Recaller
 
     /**
      * Determine if the recaller is valid.
+	 * 确定调用器是否有效
      *
      * @return bool
      */
@@ -66,6 +75,7 @@ class Recaller
 
     /**
      * Determine if the recaller is an invalid string.
+	 * 确定调用器是否是无效字符串
      *
      * @return bool
      */
@@ -76,6 +86,7 @@ class Recaller
 
     /**
      * Determine if the recaller has all segments.
+	 * 确定召回器是否具有所有段
      *
      * @return bool
      */

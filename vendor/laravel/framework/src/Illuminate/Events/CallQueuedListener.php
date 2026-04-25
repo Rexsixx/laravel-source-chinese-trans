@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，事件，呼叫队列侦听器
+ */
 
 namespace Illuminate\Events;
 
@@ -13,6 +16,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The listener class name.
+	 * 侦听器类名
      *
      * @var string
      */
@@ -20,6 +24,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The listener method.
+	 * 监听器方法
      *
      * @var string
      */
@@ -27,6 +32,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The data to be passed to the listener.
+	 * 要传递给侦听器的数据
      *
      * @var array
      */
@@ -34,6 +40,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The number of times the job may be attempted.
+	 * 工作的次数可能会被尝试
      *
      * @var int
      */
@@ -41,6 +48,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The timestamp indicating when the job should timeout.
+	 * 指示作业何时应该超时的时间戳
      *
      * @var int
      */
@@ -48,6 +56,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The number of seconds the job can run before timing out.
+	 * 作业在超时之前可以运行的秒数
      *
      * @var int
      */
@@ -55,6 +64,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Create a new job instance.
+	 * 创建一个新的作业实例
      *
      * @param  string  $class
      * @param  string  $method
@@ -70,6 +80,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Handle the queued job.
+	 * 处理排队作业
      *
      * @param  \Illuminate\Container\Container  $container
      * @return void
@@ -89,6 +100,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Set the job instance of the given class if necessary.
+	 * 如果需要，设置给定类的作业实例。
      *
      * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  mixed  $instance
@@ -105,6 +117,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Call the failed method on the job instance.
+	 * 在作业实例上调用失败的方法
      *
      * The event instance and the exception will be passed.
      *
@@ -126,6 +139,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Unserialize the data if needed.
+	 * 如果需要，将数据反序列化。
      *
      * @return void
      */
@@ -138,6 +152,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Get the display name for the queued job.
+	 * 获取排队作业的显示名称
      *
      * @return string
      */
@@ -148,6 +163,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Prepare the instance for cloning.
+	 * 为克隆准备实例
      *
      * @return void
      */

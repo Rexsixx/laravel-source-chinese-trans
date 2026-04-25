@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，队列，控制台，存根，创建表，根据实际修改
+ */
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -8,6 +11,7 @@ class Create{{tableClassName}}Table extends Migration
 {
     /**
      * Run the migrations.
+	 * 运行迁移
      *
      * @return void
      */
@@ -26,6 +30,7 @@ class Create{{tableClassName}}Table extends Migration
 
     /**
      * Reverse the migrations.
+	 * 逆转迁移
      *
      * @return void
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，通知，信息，Nexmo 消息
+ */
 
 namespace Illuminate\Notifications\Messages;
 
@@ -6,6 +9,7 @@ class NexmoMessage
 {
     /**
      * The message content.
+	 * 消息内容
      *
      * @var string
      */
@@ -13,6 +17,7 @@ class NexmoMessage
 
     /**
      * The phone number the message should be sent from.
+	 * 应该发送信息的电话号码
      *
      * @var string
      */
@@ -20,6 +25,7 @@ class NexmoMessage
 
     /**
      * The message type.
+	 * 消息类型
      *
      * @var string
      */
@@ -27,6 +33,7 @@ class NexmoMessage
 
     /**
      * Create a new message instance.
+	 * 创建一个新的消息实例
      *
      * @param  string  $content
      * @return void
@@ -38,6 +45,7 @@ class NexmoMessage
 
     /**
      * Set the message content.
+	 * 设置消息内容
      *
      * @param  string  $content
      * @return $this
@@ -51,6 +59,7 @@ class NexmoMessage
 
     /**
      * Set the phone number the message should be sent from.
+	 * 设置发送信息的电话号码
      *
      * @param  string  $from
      * @return $this
@@ -64,6 +73,7 @@ class NexmoMessage
 
     /**
      * Set the message type.
+	 * 设置消息类型
      *
      * @return $this
      */

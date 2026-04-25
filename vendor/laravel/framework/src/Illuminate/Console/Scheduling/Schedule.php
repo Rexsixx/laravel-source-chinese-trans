@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，控制台，线程调度，调度
+ */
 
 namespace Illuminate\Console\Scheduling;
 
@@ -11,6 +14,7 @@ class Schedule
 {
     /**
      * All of the events on the schedule.
+	 * 日程表上的所有活动
      *
      * @var \Illuminate\Console\Scheduling\Event[]
      */
@@ -18,6 +22,7 @@ class Schedule
 
     /**
      * The mutex implementation.
+	 * 互斥锁的实现
      *
      * @var \Illuminate\Console\Scheduling\Mutex
      */
@@ -25,6 +30,7 @@ class Schedule
 
     /**
      * Create a new schedule instance.
+	 * 创建一个新的调度实例
      *
      * @return void
      */
@@ -39,6 +45,7 @@ class Schedule
 
     /**
      * Add a new callback event to the schedule.
+	 * 向计划添加一个新的回调事件
      *
      * @param  string|callable  $callback
      * @param  array   $parameters
@@ -55,6 +62,7 @@ class Schedule
 
     /**
      * Add a new Artisan command event to the schedule.
+	 * 向计划中添加一个新的Artisan命令事件
      *
      * @param  string  $command
      * @param  array  $parameters
@@ -73,6 +81,7 @@ class Schedule
 
     /**
      * Add a new job callback event to the schedule.
+	 * 向计划添加一个新的作业回调事件
      *
      * @param  object|string  $job
      * @param  string|null  $queue
@@ -93,6 +102,7 @@ class Schedule
 
     /**
      * Add a new command event to the schedule.
+	 * 向计划添加一个新的命令事件
      *
      * @param  string  $command
      * @param  array  $parameters
@@ -111,6 +121,7 @@ class Schedule
 
     /**
      * Compile parameters for a command.
+	 * 编译命令的参数
      *
      * @param  array  $parameters
      * @return string
@@ -132,6 +143,7 @@ class Schedule
 
     /**
      * Get all of the events on the schedule that are due.
+	 * 把所有要做的事情都写在日程表上
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return \Illuminate\Support\Collection
@@ -143,6 +155,7 @@ class Schedule
 
     /**
      * Get all of the events on the schedule.
+	 * 把所有的活动都列在日程表上
      *
      * @return \Illuminate\Console\Scheduling\Event[]
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，问题，构建查询
+ */
 
 namespace Illuminate\Database\Concerns;
 
@@ -10,6 +13,7 @@ trait BuildsQueries
 {
     /**
      * Chunk the results of the query.
+	 * 将查询的结果分块
      *
      * @param  int  $count
      * @param  callable  $callback
@@ -50,6 +54,7 @@ trait BuildsQueries
 
     /**
      * Execute a callback over each item while chunking.
+	 * 在分块时对每个项执行回调
      *
      * @param  callable  $callback
      * @param  int  $count
@@ -68,6 +73,7 @@ trait BuildsQueries
 
     /**
      * Execute the query and get the first result.
+	 * 执行查询并获得第一个结果
      *
      * @param  array  $columns
      * @return \Illuminate\Database\Eloquent\Model|object|static|null
@@ -79,6 +85,7 @@ trait BuildsQueries
 
     /**
      * Apply the callback's query changes if the given "value" is true.
+	 * 如果给定的“value”为真，则应用回调的查询更改。
      *
      * @param  mixed  $value
      * @param  callable  $callback
@@ -98,6 +105,7 @@ trait BuildsQueries
 
     /**
      * Pass the query to a given callback.
+	 * 将查询传递给给定的回调
      *
      * @param  \Closure  $callback
      * @return \Illuminate\Database\Query\Builder
@@ -109,6 +117,7 @@ trait BuildsQueries
 
     /**
      * Apply the callback's query changes if the given "value" is false.
+	 * 如果给定的“value”为false，则应用回调的查询更改。
      *
      * @param  mixed  $value
      * @param  callable  $callback
@@ -128,6 +137,7 @@ trait BuildsQueries
 
     /**
      * Create a new length-aware paginator instance.
+	 * 创建一个新的长度感知分页器实例
      *
      * @param  \Illuminate\Support\Collection  $items
      * @param  int  $total
@@ -145,6 +155,7 @@ trait BuildsQueries
 
     /**
      * Create a new simple paginator instance.
+	 * 创建一个新的简单分页器实例
      *
      * @param  \Illuminate\Support\Collection  $items
      * @param  int $perPage

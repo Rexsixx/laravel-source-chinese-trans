@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，支持，门面，认证
+ */
 
 namespace Illuminate\Support\Facades;
 
@@ -28,6 +31,7 @@ class Auth extends Facade
 {
     /**
      * Get the registered name of the component.
+	 * 获取组件的注册名称
      *
      * @return string
      */
@@ -38,6 +42,7 @@ class Auth extends Facade
 
     /**
      * Register the typical authentication routes for an application.
+	 * 为应用程序注册典型的身份验证路由
      *
      * @return void
      */

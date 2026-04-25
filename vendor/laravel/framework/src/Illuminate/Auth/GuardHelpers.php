@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Auth，警卫队助手
+ */
 
 namespace Illuminate\Auth;
 
@@ -7,11 +10,13 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
 /**
  * These methods are typically the same across all guards.
+ * 这些方法通常在所有警卫中都是一样的。
  */
 trait GuardHelpers
 {
     /**
      * The currently authenticated user.
+	 * 当前认证的用户
      *
      * @var \Illuminate\Contracts\Auth\Authenticatable
      */
@@ -19,6 +24,7 @@ trait GuardHelpers
 
     /**
      * The user provider implementation.
+	 * 用户提供程序实现
      *
      * @var \Illuminate\Contracts\Auth\UserProvider
      */
@@ -26,6 +32,7 @@ trait GuardHelpers
 
     /**
      * Determine if the current user is authenticated.
+	 * 确定当前用户是否经过身份验证
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable
      *
@@ -42,6 +49,7 @@ trait GuardHelpers
 
     /**
      * Determine if the current user is authenticated.
+	 * 确定当前用户是否经过身份验证
      *
      * @return bool
      */
@@ -52,6 +60,7 @@ trait GuardHelpers
 
     /**
      * Determine if the current user is a guest.
+	 * 确定当前用户是否是来宾
      *
      * @return bool
      */
@@ -62,6 +71,7 @@ trait GuardHelpers
 
     /**
      * Get the ID for the currently authenticated user.
+	 * 获取当前经过身份验证的用户的ID
      *
      * @return int|null
      */
@@ -74,6 +84,7 @@ trait GuardHelpers
 
     /**
      * Set the current user.
+	 * 设置当前用户
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @return $this
@@ -87,6 +98,7 @@ trait GuardHelpers
 
     /**
      * Get the user provider used by the guard.
+	 * 获取守卫使用的用户提供者
      *
      * @return \Illuminate\Contracts\Auth\UserProvider
      */
@@ -97,6 +109,7 @@ trait GuardHelpers
 
     /**
      * Set the user provider used by the guard.
+	 * 设置守卫使用的用户提供程序
      *
      * @param  \Illuminate\Contracts\Auth\UserProvider  $provider
      * @return void

@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，适配器接口
+ */
 
 namespace League\Flysystem;
 
@@ -16,6 +19,7 @@ interface AdapterInterface extends ReadInterface
 
     /**
      * Write a new file.
+	 * 写一个新文件
      *
      * @param string $path
      * @param string $contents

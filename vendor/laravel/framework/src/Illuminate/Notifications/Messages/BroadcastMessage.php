@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，通知，信息，广播消息
+ */
 
 namespace Illuminate\Notifications\Messages;
 
@@ -10,6 +13,7 @@ class BroadcastMessage
 
     /**
      * The data for the notification.
+	 * 通知的数据
      *
      * @var array
      */
@@ -17,6 +21,7 @@ class BroadcastMessage
 
     /**
      * Create a new message instance.
+	 * 创建一个新的消息实例
      *
      * @param  array  $data
      * @return void
@@ -28,6 +33,7 @@ class BroadcastMessage
 
     /**
      * Set the message data.
+	 * 设置消息数据
      *
      * @param  array  $data
      * @return $this

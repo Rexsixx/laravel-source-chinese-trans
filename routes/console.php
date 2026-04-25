@@ -7,7 +7,7 @@ use Illuminate\Foundation\Inspiring;
 
 /*
 |--------------------------------------------------------------------------
-| Console Routes
+| Console Routes	控制台路由
 |--------------------------------------------------------------------------
 |
 | This file is where you may define all of your Closure based console

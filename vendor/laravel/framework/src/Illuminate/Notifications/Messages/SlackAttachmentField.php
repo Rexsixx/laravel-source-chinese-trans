@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，通知，信息，Slack 附件字段
+ */
 
 namespace Illuminate\Notifications\Messages;
 
@@ -6,6 +9,7 @@ class SlackAttachmentField
 {
     /**
      * The title field of the attachment field.
+	 * 附件字段的标题字段
      *
      * @var string
      */
@@ -13,6 +17,7 @@ class SlackAttachmentField
 
     /**
      * The content of the attachment field.
+	 * 附件字段的内容
      *
      * @var string
      */
@@ -20,6 +25,7 @@ class SlackAttachmentField
 
     /**
      * Whether the content is short.
+	 * 内容是否简短
      *
      * @var bool
      */
@@ -27,6 +33,7 @@ class SlackAttachmentField
 
     /**
      * Set the title of the field.
+	 * 设置字段的标题
      *
      * @param  string $title
      * @return $this
@@ -40,6 +47,7 @@ class SlackAttachmentField
 
     /**
      * Set the content of the field.
+	 * 设置字段的内容
      *
      * @param  string $content
      * @return $this
@@ -53,6 +61,7 @@ class SlackAttachmentField
 
     /**
      * Indicates that the content should not be displayed side-by-side with other fields.
+	 * 指示内容不应与其他字段并排显示
      *
      * @return $this
      */
@@ -65,6 +74,7 @@ class SlackAttachmentField
 
     /**
      * Get the array representation of the attachment field.
+	 * 获取附件字段的数组表示形式
      *
      * @return array
      */

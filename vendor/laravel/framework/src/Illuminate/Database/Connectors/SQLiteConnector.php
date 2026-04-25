@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，连接器，SQLite 连接器
+ */
 
 namespace Illuminate\Database\Connectors;
 
@@ -8,6 +11,7 @@ class SQLiteConnector extends Connector implements ConnectorInterface
 {
     /**
      * Establish a database connection.
+	 * 建立数据库连接
      *
      * @param  array  $config
      * @return \PDO

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，问题，管理事务
+ */
 
 namespace Illuminate\Database\Concerns;
 
@@ -10,6 +13,7 @@ trait ManagesTransactions
 {
     /**
      * Execute a Closure within a transaction.
+	 * 在事务中执行闭包
      *
      * @param  \Closure  $callback
      * @param  int  $attempts
@@ -48,6 +52,7 @@ trait ManagesTransactions
 
     /**
      * Handle an exception encountered when running a transacted statement.
+	 * 处理运行事务语句时遇到的异常
      *
      * @param  \Exception  $e
      * @param  int  $currentAttempt
@@ -83,6 +88,7 @@ trait ManagesTransactions
 
     /**
      * Start a new database transaction.
+	 * 启动一个新的数据库事务
      *
      * @return void
      * @throws \Exception
@@ -98,6 +104,7 @@ trait ManagesTransactions
 
     /**
      * Create a transaction within the database.
+	 * 在数据库中创建一个事务
      *
      * @return void
      */
@@ -116,6 +123,7 @@ trait ManagesTransactions
 
     /**
      * Create a save point within the database.
+	 * 在数据库中创建一个保存点
      *
      * @return void
      */
@@ -128,6 +136,7 @@ trait ManagesTransactions
 
     /**
      * Handle an exception from a transaction beginning.
+	 * 从事务开始处理异常
      *
      * @param  \Exception  $e
      * @return void
@@ -147,6 +156,7 @@ trait ManagesTransactions
 
     /**
      * Commit the active database transaction.
+	 * 提交活动数据库事务
      *
      * @return void
      */
@@ -163,6 +173,7 @@ trait ManagesTransactions
 
     /**
      * Rollback the active database transaction.
+	 * 回滚活动数据库事务
      *
      * @param  int|null  $toLevel
      * @return void
@@ -192,6 +203,7 @@ trait ManagesTransactions
 
     /**
      * Perform a rollback within the database.
+	 * 在数据库中执行回滚
      *
      * @param  int  $toLevel
      * @return void
@@ -209,6 +221,7 @@ trait ManagesTransactions
 
     /**
      * Get the number of active transactions.
+	 * 获取活动事务的数量
      *
      * @return int
      */

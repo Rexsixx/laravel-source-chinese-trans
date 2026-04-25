@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Http，问题，与输入交互
+ */
 
 namespace Illuminate\Http\Concerns;
 
@@ -12,6 +15,7 @@ trait InteractsWithInput
 {
     /**
      * Retrieve a server variable from the request.
+	 * 从请求中检索服务器变量
      *
      * @param  string  $key
      * @param  string|array|null  $default
@@ -24,6 +28,7 @@ trait InteractsWithInput
 
     /**
      * Determine if a header is set on the request.
+	 * 确定是否在请求上设置了标头
      *
      * @param  string  $key
      * @return bool
@@ -35,6 +40,7 @@ trait InteractsWithInput
 
     /**
      * Retrieve a header from the request.
+	 * 从请求中检索报头
      *
      * @param  string  $key
      * @param  string|array|null  $default
@@ -47,6 +53,7 @@ trait InteractsWithInput
 
     /**
      * Get the bearer token from the request headers.
+	 * 从请求头中获取承载令牌
      *
      * @return string|null
      */
@@ -61,6 +68,7 @@ trait InteractsWithInput
 
     /**
      * Determine if the request contains a given input item key.
+	 * 确定请求是否包含给定的输入项键
      *
      * @param  string|array  $key
      * @return bool
@@ -72,6 +80,7 @@ trait InteractsWithInput
 
     /**
      * Determine if the request contains a given input item key.
+	 * 确定请求是否包含给定的输入项键
      *
      * @param  string|array  $key
      * @return bool
@@ -93,6 +102,7 @@ trait InteractsWithInput
 
     /**
      * Determine if the request contains any of the given inputs.
+	 * 确定请求是否包含任何给定的输入
      *
      * @param  dynamic  $key
      * @return bool
@@ -112,6 +122,7 @@ trait InteractsWithInput
 
     /**
      * Determine if the request contains a non-empty value for an input item.
+	 * 确定请求是否包含输入项的非空值
      *
      * @param  string|array  $key
      * @return bool
@@ -131,6 +142,7 @@ trait InteractsWithInput
 
     /**
      * Determine if the given input key is an empty string for "has".
+	 * 确定给定的输入键是否为“has”的空字符串
      *
      * @param  string  $key
      * @return bool
@@ -144,6 +156,7 @@ trait InteractsWithInput
 
     /**
      * Get the keys for all of the input and files.
+	 * 获取所有输入和文件的密钥
      *
      * @return array
      */
@@ -154,6 +167,7 @@ trait InteractsWithInput
 
     /**
      * Get all of the input and files for the request.
+	 * 获取请求的所有输入和文件
      *
      * @param  array|mixed  $keys
      * @return array
@@ -177,6 +191,7 @@ trait InteractsWithInput
 
     /**
      * Retrieve an input item from the request.
+	 * 从请求中检索输入项
      *
      * @param  string  $key
      * @param  string|array|null  $default
@@ -191,6 +206,7 @@ trait InteractsWithInput
 
     /**
      * Get a subset containing the provided keys with values from the input data.
+	 * 从输入数据中获取包含所提供键值的子集
      *
      * @param  array|mixed  $keys
      * @return array
@@ -216,6 +232,7 @@ trait InteractsWithInput
 
     /**
      * Get all of the input except for a specified array of items.
+	 * 获取除指定项数组外的所有输入
      *
      * @param  array|mixed  $keys
      * @return array
@@ -233,6 +250,7 @@ trait InteractsWithInput
 
     /**
      * Retrieve a query string item from the request.
+	 * 从请求中检索查询字符串项
      *
      * @param  string  $key
      * @param  string|array|null  $default
@@ -245,6 +263,7 @@ trait InteractsWithInput
 
     /**
      * Retrieve a request payload item from the request.
+	 * 从请求中检索请求有效负载项
      *
      * @param  string  $key
      * @param  string|array|null  $default
@@ -258,6 +277,7 @@ trait InteractsWithInput
 
     /**
      * Determine if a cookie is set on the request.
+	 * 确定是否在请求上设置了cookie
      *
      * @param  string  $key
      * @return bool
@@ -269,6 +289,7 @@ trait InteractsWithInput
 
     /**
      * Retrieve a cookie from the request.
+	 * 从请求中检索cookie
      *
      * @param  string  $key
      * @param  string|array|null  $default
@@ -281,6 +302,7 @@ trait InteractsWithInput
 
     /**
      * Get an array of all of the files on the request.
+	 * 获取请求上所有文件的数组
      *
      * @return array
      */
@@ -295,6 +317,7 @@ trait InteractsWithInput
 
     /**
      * Convert the given array of Symfony UploadedFiles to custom Laravel UploadedFiles.
+	 * 将给定的Symfony UploadedFiles数组转换为自定义的Laravel UploadedFiles
      *
      * @param  array  $files
      * @return array
@@ -314,6 +337,7 @@ trait InteractsWithInput
 
     /**
      * Determine if the uploaded data contains a file.
+	 * 确定上传的数据是否包含文件
      *
      * @param  string  $key
      * @return bool
@@ -335,6 +359,7 @@ trait InteractsWithInput
 
     /**
      * Check that the given file is a valid file instance.
+	 * 检查给定的文件是否是有效的文件实例
      *
      * @param  mixed  $file
      * @return bool
@@ -346,6 +371,7 @@ trait InteractsWithInput
 
     /**
      * Retrieve a file from the request.
+	 * 从请求中检索文件
      *
      * @param  string  $key
      * @param  mixed  $default
@@ -358,6 +384,7 @@ trait InteractsWithInput
 
     /**
      * Retrieve a parameter item from a given source.
+	 * 从给定源检索参数项
      *
      * @param  string  $source
      * @param  string  $key

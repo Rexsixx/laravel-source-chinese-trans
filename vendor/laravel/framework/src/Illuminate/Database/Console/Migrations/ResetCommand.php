@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，控制台，迁移，重置命令 migrate:reset
+ */
 
 namespace Illuminate\Database\Console\Migrations;
 
@@ -12,6 +15,7 @@ class ResetCommand extends BaseCommand
 
     /**
      * The console command name.
+	 * 控制台命令名
      *
      * @var string
      */
@@ -19,6 +23,7 @@ class ResetCommand extends BaseCommand
 
     /**
      * The console command description.
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -26,6 +31,7 @@ class ResetCommand extends BaseCommand
 
     /**
      * The migrator instance.
+	 * 迁移器实例
      *
      * @var \Illuminate\Database\Migrations\Migrator
      */
@@ -33,6 +39,7 @@ class ResetCommand extends BaseCommand
 
     /**
      * Create a new migration rollback command instance.
+	 * 创建新的迁移回滚命令实例
      *
      * @param  \Illuminate\Database\Migrations\Migrator  $migrator
      * @return void
@@ -46,6 +53,7 @@ class ResetCommand extends BaseCommand
 
     /**
      * Execute the console command.
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -78,6 +86,7 @@ class ResetCommand extends BaseCommand
 
     /**
      * Get the console command options.
+	 * 获取控制台命令选项
      *
      * @return array
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，日志，记录器
+ */
 
 namespace Illuminate\Log;
 
@@ -22,6 +25,7 @@ class Writer implements LogContract, PsrLoggerInterface
 {
     /**
      * The Monolog logger instance.
+	 * Monolog记录器实例
      *
      * @var \Monolog\Logger
      */
@@ -29,6 +33,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * The event dispatcher instance.
+	 * 事件调度程序实例
      *
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
@@ -36,6 +41,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * The Log levels.
+	 * 日志级别
      *
      * @var array
      */
@@ -52,6 +58,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Create a new log writer instance.
+	 * 创建一个新的日志写入器实例
      *
      * @param  \Monolog\Logger  $monolog
      * @param  \Illuminate\Contracts\Events\Dispatcher|null  $dispatcher
@@ -68,6 +75,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Log an emergency message to the logs.
+	 * 将紧急消息记录到日志中
      *
      * @param  string  $message
      * @param  array  $context
@@ -80,6 +88,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Log an alert message to the logs.
+	 * 将警报消息记录到日志中
      *
      * @param  string  $message
      * @param  array  $context
@@ -92,6 +101,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Log a critical message to the logs.
+	 * 将关键消息记录到日志中
      *
      * @param  string  $message
      * @param  array  $context
@@ -104,6 +114,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Log an error message to the logs.
+	 * 将错误消息记录到日志中
      *
      * @param  string  $message
      * @param  array  $context
@@ -116,6 +127,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Log a warning message to the logs.
+	 * 将警告消息记录到日志中
      *
      * @param  string  $message
      * @param  array  $context
@@ -128,6 +140,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Log a notice to the logs.
+	 * 将通知记录到日志中
      *
      * @param  string  $message
      * @param  array  $context
@@ -140,6 +153,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Log an informational message to the logs.
+	 * 将信息消息记录到日志中
      *
      * @param  string  $message
      * @param  array  $context
@@ -152,6 +166,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Log a debug message to the logs.
+	 * 将调试消息记录到日志中
      *
      * @param  string  $message
      * @param  array  $context
@@ -164,6 +179,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Log a message to the logs.
+	 * 将消息记录到日志中
      *
      * @param  string  $level
      * @param  string  $message
@@ -177,6 +193,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Dynamically pass log calls into the writer.
+	 * 动态地将日志调用传递给写入器
      *
      * @param  string  $level
      * @param  string  $message
@@ -190,6 +207,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Write a message to Monolog.
+	 * 给Monolog写个留言
      *
      * @param  string  $level
      * @param  string  $message
@@ -205,6 +223,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Register a file log handler.
+	 * 注册一个文件日志处理程序
      *
      * @param  string  $path
      * @param  string  $level
@@ -219,6 +238,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Register a daily file log handler.
+	 * 注册一个每日文件日志处理程序
      *
      * @param  string  $path
      * @param  int     $days
@@ -236,6 +256,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Register a Syslog handler.
+	 * 注册一个Syslog处理程序
      *
      * @param  string  $name
      * @param  string  $level
@@ -249,6 +270,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Register an error_log handler.
+	 * 注册一个error_log处理程序
      *
      * @param  string  $level
      * @param  int  $messageType
@@ -263,6 +285,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Register a new callback handler for when a log event is triggered.
+	 * 为日志事件触发时注册一个新的回调处理程序
      *
      * @param  \Closure  $callback
      * @return void
@@ -280,6 +303,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Fires a log event.
+	 * 触发一个日志事件
      *
      * @param  string  $level
      * @param  string  $message
@@ -298,6 +322,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Format the parameters for the logger.
+	 * 格式化日志记录器的参数
      *
      * @param  mixed  $message
      * @return mixed
@@ -317,6 +342,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Parse the string level into a Monolog constant.
+	 * 将字符串level解析为一个Monolog常量
      *
      * @param  string  $level
      * @return int
@@ -334,6 +360,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Get the underlying Monolog instance.
+	 * 获取Monolog的独白实例
      *
      * @return \Monolog\Logger
      */
@@ -344,6 +371,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Get a default Monolog formatter instance.
+	 * 获取默认的独白格式化程序实例
      *
      * @return \Monolog\Formatter\LineFormatter
      */
@@ -356,6 +384,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Get the event dispatcher instance.
+	 * 获取事件调度程序实例
      *
      * @return \Illuminate\Contracts\Events\Dispatcher
      */
@@ -366,6 +395,7 @@ class Writer implements LogContract, PsrLoggerInterface
 
     /**
      * Set the event dispatcher instance.
+	 * 设置事件调度程序实例
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $dispatcher
      * @return void

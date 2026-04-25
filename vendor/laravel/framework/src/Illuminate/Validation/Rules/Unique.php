@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，验证，规则，唯一
+ */
 
 namespace Illuminate\Validation\Rules;
 
@@ -8,6 +11,7 @@ class Unique
 
     /**
      * The ID that should be ignored.
+	 * 应该被忽略的ID
      *
      * @var mixed
      */
@@ -15,6 +19,7 @@ class Unique
 
     /**
      * The name of the ID column.
+	 * ID列的名称
      *
      * @var string
      */
@@ -22,6 +27,7 @@ class Unique
 
     /**
      * Ignore the given ID during the unique check.
+	 * 在唯一性检查期间忽略给定的ID
      *
      * @param  mixed  $id
      * @param  string  $idColumn
@@ -37,6 +43,7 @@ class Unique
 
     /**
      * Convert the rule to a validation string.
+	 * 将规则转换为验证字符串
      *
      * @return string
      */

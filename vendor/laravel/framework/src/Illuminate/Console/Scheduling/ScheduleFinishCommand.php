@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，控制台，线程调度，Schedule完成命令 schedule:finish
+ */
 
 namespace Illuminate\Console\Scheduling;
 
@@ -8,6 +11,7 @@ class ScheduleFinishCommand extends Command
 {
     /**
      * The console command name.
+	 * 控制台命令名
      *
      * @var string
      */
@@ -15,6 +19,7 @@ class ScheduleFinishCommand extends Command
 
     /**
      * The console command description.
+	 * console命令说明
      *
      * @var string
      */
@@ -22,6 +27,7 @@ class ScheduleFinishCommand extends Command
 
     /**
      * Indicates whether the command should be shown in the Artisan command list.
+	 * 指示该命令是否应该显示在Artisan命令列表中
      *
      * @var bool
      */
@@ -29,6 +35,7 @@ class ScheduleFinishCommand extends Command
 
     /**
      * The schedule instance.
+	 * 调度实例
      *
      * @var \Illuminate\Console\Scheduling\Schedule
      */
@@ -36,6 +43,7 @@ class ScheduleFinishCommand extends Command
 
     /**
      * Create a new command instance.
+	 * 创建一个新的命令实例
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
@@ -49,6 +57,7 @@ class ScheduleFinishCommand extends Command
 
     /**
      * Execute the console command.
+	 * 执行console命令
      *
      * @return void
      */

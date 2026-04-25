@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，缓存，数据库存储
+ */
 
 namespace Illuminate\Cache;
 
@@ -16,6 +19,7 @@ class DatabaseStore implements Store
 
     /**
      * The database connection instance.
+	 * 数据库连接实例
      *
      * @var \Illuminate\Database\ConnectionInterface
      */
@@ -23,6 +27,7 @@ class DatabaseStore implements Store
 
     /**
      * The name of the cache table.
+	 * 缓存表的名称
      *
      * @var string
      */
@@ -30,6 +35,7 @@ class DatabaseStore implements Store
 
     /**
      * A string that should be prepended to keys.
+	 * 应添加到键前的字符串
      *
      * @var string
      */
@@ -37,6 +43,7 @@ class DatabaseStore implements Store
 
     /**
      * Create a new database store.
+	 * 创建新的数据库存储。
      *
      * @param  \Illuminate\Database\ConnectionInterface  $connection
      * @param  string  $table
@@ -52,6 +59,8 @@ class DatabaseStore implements Store
 
     /**
      * Retrieve an item from the cache by key.
+	 * 创建新的数据库存储
+	 * 
      *
      * @param  string|array  $key
      * @return mixed
@@ -85,6 +94,7 @@ class DatabaseStore implements Store
 
     /**
      * Store an item in the cache for a given number of minutes.
+	 * 将项目在缓存中存储给定的分钟数
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -108,6 +118,7 @@ class DatabaseStore implements Store
 
     /**
      * Increment the value of an item in the cache.
+	 * 增加缓存中项的值
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -122,6 +133,7 @@ class DatabaseStore implements Store
 
     /**
      * Decrement the value of an item in the cache.
+	 * 递减缓存中项的值
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -136,6 +148,7 @@ class DatabaseStore implements Store
 
     /**
      * Increment or decrement an item in the cache.
+	 * 增加或减少缓存中的项
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -183,6 +196,7 @@ class DatabaseStore implements Store
 
     /**
      * Get the current system time.
+	 * 获取当前系统时间
      *
      * @return int
      */
@@ -193,6 +207,7 @@ class DatabaseStore implements Store
 
     /**
      * Store an item in the cache indefinitely.
+	 * 将项无限期地存储在缓存中
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -205,6 +220,7 @@ class DatabaseStore implements Store
 
     /**
      * Remove an item from the cache.
+	 * 从缓存中删除项
      *
      * @param  string  $key
      * @return bool
@@ -218,6 +234,7 @@ class DatabaseStore implements Store
 
     /**
      * Remove all items from the cache.
+	 * 从缓存中删除所有项
      *
      * @return bool
      */
@@ -228,6 +245,7 @@ class DatabaseStore implements Store
 
     /**
      * Get a query builder for the cache table.
+	 * 获取缓存表的查询生成器
      *
      * @return \Illuminate\Database\Query\Builder
      */
@@ -238,6 +256,7 @@ class DatabaseStore implements Store
 
     /**
      * Get the underlying database connection.
+	 * 获取底层数据库连接
      *
      * @return \Illuminate\Database\ConnectionInterface
      */
@@ -248,6 +267,7 @@ class DatabaseStore implements Store
 
     /**
      * Get the cache key prefix.
+	 * 获取缓存键前缀
      *
      * @return string
      */
@@ -258,6 +278,7 @@ class DatabaseStore implements Store
 
     /**
      * Serialize the given value.
+	 * 序列化给定的值
      *
      * @param  mixed  $value
      * @return string
@@ -275,6 +296,7 @@ class DatabaseStore implements Store
 
     /**
      * Unserialize the given value.
+	 * 反序列化给定的值
      *
      * @param  string  $value
      * @return mixed

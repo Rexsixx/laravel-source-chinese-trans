@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，控制台，迁移，刷新命令 migrate:refresh
+ */
 
 namespace Illuminate\Database\Console\Migrations;
 
@@ -12,6 +15,7 @@ class RefreshCommand extends Command
 
     /**
      * The console command name.
+	 * 控制台命令名
      *
      * @var string
      */
@@ -19,6 +23,7 @@ class RefreshCommand extends Command
 
     /**
      * The console command description.
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -26,6 +31,7 @@ class RefreshCommand extends Command
 
     /**
      * Execute the console command.
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -71,6 +77,7 @@ class RefreshCommand extends Command
 
     /**
      * Run the rollback command.
+	 * 执行回滚命令
      *
      * @param  string  $database
      * @param  string  $path
@@ -90,6 +97,7 @@ class RefreshCommand extends Command
 
     /**
      * Run the reset command.
+	 * 执行reset命令
      *
      * @param  string  $database
      * @param  string  $path
@@ -107,6 +115,7 @@ class RefreshCommand extends Command
 
     /**
      * Determine if the developer has requested database seeding.
+	 * 确定开发人员是否请求了数据库播种
      *
      * @return bool
      */
@@ -117,6 +126,7 @@ class RefreshCommand extends Command
 
     /**
      * Run the database seeder command.
+	 * 执行database seeder命令
      *
      * @param  string  $database
      * @return void
@@ -132,6 +142,7 @@ class RefreshCommand extends Command
 
     /**
      * Get the console command options.
+	 * 获取控制台命令选项
      *
      * @return array
      */

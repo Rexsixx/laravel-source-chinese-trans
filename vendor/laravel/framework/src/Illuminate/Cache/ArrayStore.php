@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，缓存，数组存储
+ */
 
 namespace Illuminate\Cache;
 
@@ -10,6 +13,7 @@ class ArrayStore extends TaggableStore implements Store
 
     /**
      * The array of stored values.
+	 * 存储值的数组
      *
      * @var array
      */
@@ -17,6 +21,7 @@ class ArrayStore extends TaggableStore implements Store
 
     /**
      * Retrieve an item from the cache by key.
+	 * 按键从缓存中检索项
      *
      * @param  string|array  $key
      * @return mixed
@@ -30,6 +35,7 @@ class ArrayStore extends TaggableStore implements Store
 
     /**
      * Store an item in the cache for a given number of minutes.
+	 * 将项存储在缓存中给定的分钟数
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -43,6 +49,7 @@ class ArrayStore extends TaggableStore implements Store
 
     /**
      * Increment the value of an item in the cache.
+	 * 增加缓存中项的值
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -58,6 +65,7 @@ class ArrayStore extends TaggableStore implements Store
 
     /**
      * Decrement the value of an item in the cache.
+	 * 递减缓存中项的值
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -70,6 +78,7 @@ class ArrayStore extends TaggableStore implements Store
 
     /**
      * Store an item in the cache indefinitely.
+	 * 将项无限期地存储在缓存中
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -82,6 +91,7 @@ class ArrayStore extends TaggableStore implements Store
 
     /**
      * Remove an item from the cache.
+	 * 从缓存中删除项
      *
      * @param  string  $key
      * @return bool
@@ -95,6 +105,7 @@ class ArrayStore extends TaggableStore implements Store
 
     /**
      * Remove all items from the cache.
+	 * 从缓存中删除所有项
      *
      * @return bool
      */
@@ -107,6 +118,7 @@ class ArrayStore extends TaggableStore implements Store
 
     /**
      * Get the cache key prefix.
+	 * 获取缓存键前缀
      *
      * @return string
      */

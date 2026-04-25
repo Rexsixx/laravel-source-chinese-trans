@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Cookie，Cookie 值前缀
+ */
 
 namespace Illuminate\Cookie;
 
@@ -8,6 +11,7 @@ class CookieValuePrefix
 {
     /**
      * Create a new cookie value prefix for the given cookie name.
+	 * 为给定的cookie名称创建一个新的cookie值前缀
      *
      * @param  string  $cookieName
      * @param  string  $key
@@ -20,6 +24,7 @@ class CookieValuePrefix
 
     /**
      * Remove the cookie value prefix.
+	 * 删除cookie值前缀
      *
      * @param  string  $cookieValue
      * @return string
@@ -31,6 +36,7 @@ class CookieValuePrefix
 
     /**
      * Verify the provided cookie's value.
+	 * 验证提供的cookie的值
      *
      * @param  string  $name
      * @param  string  $value

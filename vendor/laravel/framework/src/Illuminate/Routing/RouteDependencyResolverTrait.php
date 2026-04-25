@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，路由，路由依赖解析器特性
+ */
 
 namespace Illuminate\Routing;
 
@@ -11,6 +14,7 @@ trait RouteDependencyResolverTrait
 {
     /**
      * Resolve the object method's type-hinted dependencies.
+	 * 解析对象方法的类型暗示依赖项
      *
      * @param  array  $parameters
      * @param  object  $instance
@@ -30,6 +34,7 @@ trait RouteDependencyResolverTrait
 
     /**
      * Resolve the given method's type-hinted dependencies.
+	 * 解析给定方法的类型提示依赖项
      *
      * @param  array  $parameters
      * @param  \ReflectionFunctionAbstract  $reflector
@@ -61,6 +66,7 @@ trait RouteDependencyResolverTrait
 
     /**
      * Attempt to transform the given parameter into a class instance.
+	 * 尝试将给定的参数转换为类实例
      *
      * @param  \ReflectionParameter  $parameter
      * @param  array  $parameters
@@ -82,6 +88,7 @@ trait RouteDependencyResolverTrait
 
     /**
      * Determine if an object of the given class is in a list of parameters.
+	 * 确定给定类的对象是否在参数列表中
      *
      * @param  string  $class
      * @param  array  $parameters
@@ -96,6 +103,7 @@ trait RouteDependencyResolverTrait
 
     /**
      * Splice the given value into the parameter list.
+	 * 将给定的值拼接到参数列表中
      *
      * @param  array  $parameters
      * @param  string  $offset

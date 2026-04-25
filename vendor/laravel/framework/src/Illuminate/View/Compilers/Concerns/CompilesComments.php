@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，视图，编译器，问题，编译的评论
+ */
 
 namespace Illuminate\View\Compilers\Concerns;
 
@@ -6,6 +9,7 @@ trait CompilesComments
 {
     /**
      * Compile Blade comments into an empty string.
+	 * 将Blade注释编译成一个空字符串
      *
      * @param  string  $value
      * @return string

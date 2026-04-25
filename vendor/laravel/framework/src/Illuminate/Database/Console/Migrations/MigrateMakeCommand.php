@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，控制台，迁移，迁移Make命令 make:migration
+ */
 
 namespace Illuminate\Database\Console\Migrations;
 
@@ -10,6 +13,7 @@ class MigrateMakeCommand extends BaseCommand
 {
     /**
      * The console command signature.
+	 * 控制台命令签名
      *
      * @var string
      */
@@ -20,6 +24,7 @@ class MigrateMakeCommand extends BaseCommand
 
     /**
      * The console command description.
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -27,6 +32,7 @@ class MigrateMakeCommand extends BaseCommand
 
     /**
      * The migration creator instance.
+	 * 迁移创建器实例
      *
      * @var \Illuminate\Database\Migrations\MigrationCreator
      */
@@ -34,6 +40,7 @@ class MigrateMakeCommand extends BaseCommand
 
     /**
      * The Composer instance.
+	 * Composer实例
      *
      * @var \Illuminate\Support\Composer
      */
@@ -41,6 +48,7 @@ class MigrateMakeCommand extends BaseCommand
 
     /**
      * Create a new migration install command instance.
+	 * 创建一个新的迁移安装命令实例
      *
      * @param  \Illuminate\Database\Migrations\MigrationCreator  $creator
      * @param  \Illuminate\Support\Composer  $composer
@@ -56,6 +64,7 @@ class MigrateMakeCommand extends BaseCommand
 
     /**
      * Execute the console command.
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -100,6 +109,7 @@ class MigrateMakeCommand extends BaseCommand
 
     /**
      * Write the migration file to disk.
+	 * 将迁移文件写入磁盘
      *
      * @param  string  $name
      * @param  string  $table
@@ -117,6 +127,7 @@ class MigrateMakeCommand extends BaseCommand
 
     /**
      * Get migration path (either specified by '--path' option or default location).
+	 * 获取迁移路径（由‘——path’选项指定或默认位置）
      *
      * @return string
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，电子邮件，渠道管理器
+ */
 
 namespace Illuminate\Notifications;
 
@@ -16,6 +19,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 {
     /**
      * The default channel used to deliver messages.
+	 * 用于传递消息的默认通道
      *
      * @var string
      */
@@ -23,6 +27,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Send the given notification to the given notifiable entities.
+	 * 将给定的通知发送到给定的可通知实体
      *
      * @param  \Illuminate\Support\Collection|array|mixed  $notifiables
      * @param  mixed  $notification
@@ -37,6 +42,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Send the given notification immediately.
+	 * 立即发送给定的通知
      *
      * @param  \Illuminate\Support\Collection|array|mixed  $notifiables
      * @param  mixed  $notification
@@ -52,6 +58,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Get a channel instance.
+	 * 获取通道实例
      *
      * @param  string|null  $name
      * @return mixed
@@ -63,6 +70,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Create an instance of the database driver.
+	 * 创建数据库驱动程序的实例
      *
      * @return \Illuminate\Notifications\Channels\DatabaseChannel
      */
@@ -73,6 +81,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Create an instance of the broadcast driver.
+	 * 创建广播驱动程序的实例
      *
      * @return \Illuminate\Notifications\Channels\BroadcastChannel
      */
@@ -83,6 +92,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Create an instance of the mail driver.
+	 * 创建邮件驱动程序的实例
      *
      * @return \Illuminate\Notifications\Channels\MailChannel
      */
@@ -93,6 +103,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Create an instance of the Nexmo driver.
+	 * 创建Nexmo驱动程序的实例
      *
      * @return \Illuminate\Notifications\Channels\NexmoSmsChannel
      */
@@ -109,6 +120,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Create an instance of the Slack driver.
+	 * 创建Slack驱动程序的实例
      *
      * @return \Illuminate\Notifications\Channels\SlackWebhookChannel
      */
@@ -119,6 +131,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Create a new driver instance.
+	 * 创建一个新的驱动程序实例
      *
      * @param  string  $driver
      * @return mixed
@@ -140,6 +153,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Get the default channel driver name.
+	 * 获取默认通道驱动程序名称
      *
      * @return string
      */
@@ -150,6 +164,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Get the default channel driver name.
+	 * 获取默认通道驱动程序名称
      *
      * @return string
      */
@@ -160,6 +175,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Set the default channel driver name.
+	 * 设置默认通道驱动程序名称
      *
      * @param  string  $channel
      * @return void

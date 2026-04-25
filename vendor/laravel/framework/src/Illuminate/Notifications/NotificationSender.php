@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，通知，通知发送方
+ */
 
 namespace Illuminate\Notifications;
 
@@ -12,6 +15,7 @@ class NotificationSender
 {
     /**
      * The notification manager instance.
+	 * 通知管理器实例
      *
      * @var \Illuminate\Notifications\ChannelManager
      */
@@ -19,6 +23,7 @@ class NotificationSender
 
     /**
      * The Bus dispatcher instance.
+	 * 总线调度程序实例
      *
      * @var \Illuminate\Contracts\Bus\Dispatcher
      */
@@ -26,6 +31,7 @@ class NotificationSender
 
     /**
      * The event dispatcher.
+	 * 事件调度程序
      *
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
@@ -33,6 +39,7 @@ class NotificationSender
 
     /**
      * Create a new notification sender instance.
+	 * 创建一个新的通知发送方实例
      *
      * @param  \Illuminate\Notifications\ChannelManager  $manager
      * @param  \Illuminate\Contracts\Bus\Dispatcher  $bus
@@ -48,6 +55,7 @@ class NotificationSender
 
     /**
      * Send the given notification to the given notifiable entities.
+	 * 将给定的通知发送到给定的可通知实体
      *
      * @param  \Illuminate\Support\Collection|array|mixed  $notifiables
      * @param  mixed  $notification
@@ -66,6 +74,7 @@ class NotificationSender
 
     /**
      * Send the given notification immediately.
+	 * 立即发送给定的通知
      *
      * @param  \Illuminate\Support\Collection|array|mixed  $notifiables
      * @param  mixed  $notification
@@ -93,6 +102,7 @@ class NotificationSender
 
     /**
      * Send the given notification to the given notifiable via a channel.
+	 * 通过通道将给定的通知发送给给定的通知对象
      *
      * @param  mixed  $notifiable
      * @param  string  $id
@@ -119,6 +129,7 @@ class NotificationSender
 
     /**
      * Determines if the notification can be sent.
+	 * 确定是否可以发送通知
      *
      * @param  mixed  $notifiable
      * @param  mixed  $notification
@@ -134,6 +145,7 @@ class NotificationSender
 
     /**
      * Queue the given notification instances.
+	 * 将给定的通知实例排队
      *
      * @param  mixed  $notifiables
      * @param  array[\Illuminate\Notifications\Channels\Notification]  $notification
@@ -165,6 +177,7 @@ class NotificationSender
 
     /**
      * Format the notifiables into a Collection / array if necessary.
+	 * 如有必要，将可通知对象格式化为集合/数组。
      *
      * @param  mixed  $notifiables
      * @return \Illuminate\Database\Eloquent\Collection|array

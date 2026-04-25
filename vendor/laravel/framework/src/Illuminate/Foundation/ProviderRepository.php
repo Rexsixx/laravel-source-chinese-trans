@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，供应商库
+ */
 
 namespace Illuminate\Foundation;
 
@@ -10,6 +13,7 @@ class ProviderRepository
 {
     /**
      * The application implementation.
+	 * 应用实现
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -17,6 +21,7 @@ class ProviderRepository
 
     /**
      * The filesystem instance.
+	 * 文件系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -24,6 +29,7 @@ class ProviderRepository
 
     /**
      * The path to the manifest file.
+	 * 清单文件的路径
      *
      * @var string
      */
@@ -31,6 +37,7 @@ class ProviderRepository
 
     /**
      * Create a new service repository instance.
+	 * 创建一个新的服务存储库实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  \Illuminate\Filesystem\Filesystem  $files
@@ -46,6 +53,7 @@ class ProviderRepository
 
     /**
      * Register the application service providers.
+	 * 注册应用程序服务提供者
      *
      * @param  array  $providers
      * @return void
@@ -80,6 +88,7 @@ class ProviderRepository
 
     /**
      * Load the service provider manifest JSON file.
+	 * 加载服务提供者清单JSON文件
      *
      * @return array|null
      */
@@ -99,6 +108,7 @@ class ProviderRepository
 
     /**
      * Determine if the manifest should be compiled.
+	 * 确定是否应该编译清单
      *
      * @param  array  $manifest
      * @param  array  $providers
@@ -111,6 +121,7 @@ class ProviderRepository
 
     /**
      * Register the load events for the given provider.
+	 * 注册给定提供程序的加载事件
      *
      * @param  string  $provider
      * @param  array  $events
@@ -129,6 +140,7 @@ class ProviderRepository
 
     /**
      * Compile the application service manifest file.
+	 * 编译应用程序服务清单文件
      *
      * @param  array  $providers
      * @return array
@@ -167,6 +179,7 @@ class ProviderRepository
 
     /**
      * Create a fresh service manifest data structure.
+	 * 创建一个新的服务清单数据结构
      *
      * @param  array  $providers
      * @return array
@@ -178,6 +191,7 @@ class ProviderRepository
 
     /**
      * Write the service manifest file to disk.
+	 * 将服务清单文件写入磁盘
      *
      * @param  array  $manifest
      * @return array
@@ -199,6 +213,7 @@ class ProviderRepository
 
     /**
      * Create a new provider instance.
+	 * 创建一个新的提供者实例
      *
      * @param  string  $provider
      * @return \Illuminate\Support\ServiceProvider

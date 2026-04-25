@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，认证，访问，可被授权的
+ */
 
 namespace Illuminate\Foundation\Auth\Access;
 
@@ -8,6 +11,7 @@ trait Authorizable
 {
     /**
      * Determine if the entity has a given ability.
+	 * 确定实体是否具有给定的能力
      *
      * @param  string  $ability
      * @param  array|mixed  $arguments
@@ -20,6 +24,7 @@ trait Authorizable
 
     /**
      * Determine if the entity does not have a given ability.
+	 * 确定实体是否没有给定的能力
      *
      * @param  string  $ability
      * @param  array|mixed  $arguments
@@ -32,6 +37,7 @@ trait Authorizable
 
     /**
      * Determine if the entity does not have a given ability.
+	 * 确定实体是否没有给定的能力
      *
      * @param  string  $ability
      * @param  array|mixed  $arguments

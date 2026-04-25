@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，电子邮件，运送，Mailgun 运送
+ */
 
 namespace Illuminate\Mail\Transport;
 
@@ -9,6 +12,7 @@ class MailgunTransport extends Transport
 {
     /**
      * Guzzle client instance.
+	 * Guzzle客户端实例
      *
      * @var \GuzzleHttp\ClientInterface
      */
@@ -16,6 +20,7 @@ class MailgunTransport extends Transport
 
     /**
      * The Mailgun API key.
+	 * Mailgun API密钥
      *
      * @var string
      */
@@ -23,6 +28,7 @@ class MailgunTransport extends Transport
 
     /**
      * The Mailgun domain.
+	 * Mailgun域
      *
      * @var string
      */
@@ -30,6 +36,7 @@ class MailgunTransport extends Transport
 
     /**
      * The Mailgun API end-point.
+	 * Mailgun API端点
      *
      * @var string
      */
@@ -37,6 +44,7 @@ class MailgunTransport extends Transport
 
     /**
      * Create a new Mailgun transport instance.
+	 * 创建一个新的Mailgun传输实例
      *
      * @param  \GuzzleHttp\ClientInterface  $client
      * @param  string  $key
@@ -77,6 +85,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the HTTP payload for sending the Mailgun message.
+	 * 获取用于发送Mailgun消息的HTTP有效负载
      *
      * @param  \Swift_Mime_SimpleMessage  $message
      * @param  string  $to
@@ -118,6 +127,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get all of the contacts for the message.
+	 * 获取该消息的所有联系人
      *
      * @param  \Swift_Mime_SimpleMessage  $message
      * @return array
@@ -131,6 +141,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the API key being used by the transport.
+	 * 获取传输所使用的API密钥
      *
      * @return string
      */
@@ -141,6 +152,7 @@ class MailgunTransport extends Transport
 
     /**
      * Set the API key being used by the transport.
+	 * 设置传输所使用的API密钥
      *
      * @param  string  $key
      * @return string
@@ -152,6 +164,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the domain being used by the transport.
+	 * 获取传输所使用的域
      *
      * @return string
      */
@@ -162,6 +175,7 @@ class MailgunTransport extends Transport
 
     /**
      * Set the domain being used by the transport.
+	 * 设置传输所使用的域
      *
      * @param  string  $domain
      * @return string

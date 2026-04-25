@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，辅助
+ */
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
@@ -21,6 +24,7 @@ use Illuminate\Contracts\Broadcasting\Factory as BroadcastFactory;
 if (! function_exists('abort')) {
     /**
      * Throw an HttpException with the given data.
+	 * 用给定的数据抛出一个HttpException
      *
      * @param  int     $code
      * @param  string  $message
@@ -39,6 +43,7 @@ if (! function_exists('abort')) {
 if (! function_exists('abort_if')) {
     /**
      * Throw an HttpException with the given data if the given condition is true.
+	 * 如果给定条件为真，则抛出带有给定数据的HttpException。
      *
      * @param  bool    $boolean
      * @param  int     $code
@@ -60,6 +65,7 @@ if (! function_exists('abort_if')) {
 if (! function_exists('abort_unless')) {
     /**
      * Throw an HttpException with the given data unless the given condition is true.
+	 * 对给定的数据抛出HttpException，除非给定的条件为真。
      *
      * @param  bool    $boolean
      * @param  int     $code
@@ -81,6 +87,7 @@ if (! function_exists('abort_unless')) {
 if (! function_exists('action')) {
     /**
      * Generate the URL to a controller action.
+	 * 生成一个控制器动作的URL
      *
      * @param  string  $name
      * @param  array   $parameters
@@ -96,6 +103,7 @@ if (! function_exists('action')) {
 if (! function_exists('app')) {
     /**
      * Get the available container instance.
+	 * 获取可用的容器实例
      *
      * @param  string  $abstract
      * @param  array   $parameters
@@ -114,6 +122,7 @@ if (! function_exists('app')) {
 if (! function_exists('app_path')) {
     /**
      * Get the path to the application folder.
+	 * 获取应用程序文件夹的路径
      *
      * @param  string  $path
      * @return string
@@ -127,6 +136,7 @@ if (! function_exists('app_path')) {
 if (! function_exists('asset')) {
     /**
      * Generate an asset path for the application.
+	 * 为应用程序生成一个资产路径
      *
      * @param  string  $path
      * @param  bool    $secure
@@ -141,6 +151,7 @@ if (! function_exists('asset')) {
 if (! function_exists('auth')) {
     /**
      * Get the available auth instance.
+	 * 获取可用的验证实例
      *
      * @param  string|null  $guard
      * @return \Illuminate\Contracts\Auth\Factory|\Illuminate\Contracts\Auth\Guard|\Illuminate\Contracts\Auth\StatefulGuard
@@ -158,6 +169,7 @@ if (! function_exists('auth')) {
 if (! function_exists('back')) {
     /**
      * Create a new redirect response to the previous location.
+	 * 创建到前一个位置的新重定向响应
      *
      * @param  int    $status
      * @param  array  $headers
@@ -173,6 +185,7 @@ if (! function_exists('back')) {
 if (! function_exists('base_path')) {
     /**
      * Get the path to the base of the install.
+	 * 获取到安装基础的路径
      *
      * @param  string  $path
      * @return string
@@ -186,6 +199,7 @@ if (! function_exists('base_path')) {
 if (! function_exists('bcrypt')) {
     /**
      * Hash the given value.
+	 * 对给定值进行散列
      *
      * @param  string  $value
      * @param  array   $options
@@ -200,6 +214,7 @@ if (! function_exists('bcrypt')) {
 if (! function_exists('broadcast')) {
     /**
      * Begin broadcasting an event.
+	 * 开始广播事件
      *
      * @param  mixed|null  $event
      * @return \Illuminate\Broadcasting\PendingBroadcast

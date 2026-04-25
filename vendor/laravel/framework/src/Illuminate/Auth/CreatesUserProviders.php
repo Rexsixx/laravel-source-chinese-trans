@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Auth，创建用户提供者
+ */
 
 namespace Illuminate\Auth;
 
@@ -8,6 +11,7 @@ trait CreatesUserProviders
 {
     /**
      * The registered custom provider creators.
+	 * 注册的自定义提供程序创建者
      *
      * @var array
      */
@@ -15,6 +19,7 @@ trait CreatesUserProviders
 
     /**
      * Create the user provider implementation for the driver.
+	 * 为驱动程序创建用户提供程序实现
      *
      * @param  string|null  $provider
      * @return \Illuminate\Contracts\Auth\UserProvider|null
@@ -47,6 +52,7 @@ trait CreatesUserProviders
 
     /**
      * Get the user provider configuration.
+	 * 获取用户提供程序配置
      *
      * @param  string|null  $provider
      * @return array|null
@@ -60,6 +66,7 @@ trait CreatesUserProviders
 
     /**
      * Create an instance of the database user provider.
+	 * 创建数据库用户提供程序的实例
      *
      * @param  array  $config
      * @return \Illuminate\Auth\DatabaseUserProvider
@@ -73,6 +80,7 @@ trait CreatesUserProviders
 
     /**
      * Create an instance of the Eloquent user provider.
+	 * 创建Eloquent用户提供程序的实例
      *
      * @param  array  $config
      * @return \Illuminate\Auth\EloquentUserProvider
@@ -84,6 +92,7 @@ trait CreatesUserProviders
 
     /**
      * Get the default user provider name.
+	 * 获取默认用户提供程序名称
      *
      * @return string
      */

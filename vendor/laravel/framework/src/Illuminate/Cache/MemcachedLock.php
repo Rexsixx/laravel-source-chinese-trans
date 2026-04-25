@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，缓存，Memcached 锁
+ */
 
 namespace Illuminate\Cache;
 
@@ -8,6 +11,7 @@ class MemcachedLock extends Lock implements LockContract
 {
     /**
      * The Memcached instance.
+	 * Memcached 实例
      *
      * @var \Memcached
      */
@@ -15,6 +19,7 @@ class MemcachedLock extends Lock implements LockContract
 
     /**
      * Create a new lock instance.
+	 * 创建一个新的锁实例
      *
      * @param  \Memcached  $memcached
      * @param  string  $name
@@ -30,6 +35,7 @@ class MemcachedLock extends Lock implements LockContract
 
     /**
      * Attempt to acquire the lock.
+	 * 尝试获取锁
      *
      * @return bool
      */
@@ -42,6 +48,7 @@ class MemcachedLock extends Lock implements LockContract
 
     /**
      * Release the lock.
+	 * 释放锁
      *
      * @return void
      */

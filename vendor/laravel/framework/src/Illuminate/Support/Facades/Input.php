@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，支持，门面，输入
+ */
 
 namespace Illuminate\Support\Facades;
 
@@ -9,6 +12,7 @@ class Input extends Facade
 {
     /**
      * Get an item from the input data.
+	 * 从输入数据中获取一个项。
      *
      * This method is used for all request verbs (GET, POST, PUT, and DELETE)
      *
@@ -23,6 +27,7 @@ class Input extends Facade
 
     /**
      * Get the registered name of the component.
+	 * 获取组件的注册名称
      *
      * @return string
      */

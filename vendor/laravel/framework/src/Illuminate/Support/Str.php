@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，支持，字符串
+ */
 
 namespace Illuminate\Support;
 
@@ -10,6 +13,7 @@ class Str
 
     /**
      * The cache of snake-cased words.
+	 * 蛇形大小写单词的缓存
      *
      * @var array
      */
@@ -17,6 +21,7 @@ class Str
 
     /**
      * The cache of camel-cased words.
+	 * 驼峰式大小写单词的缓存
      *
      * @var array
      */
@@ -24,6 +29,7 @@ class Str
 
     /**
      * The cache of studly-cased words.
+	 * 隐藏的刻意区分大小写的单词
      *
      * @var array
      */
@@ -31,6 +37,7 @@ class Str
 
     /**
      * Return the remainder of a string after a given value.
+	 * 返回给定值后字符串的剩余部分
      *
      * @param  string  $subject
      * @param  string  $search
@@ -43,6 +50,7 @@ class Str
 
     /**
      * Transliterate a UTF-8 value to ASCII.
+	 * 将UTF-8值音译为ASCII
      *
      * @param  string  $value
      * @param  string  $language
@@ -65,6 +73,7 @@ class Str
 
     /**
      * Get the portion of a string before a given value.
+	 * 获取给定值之前的字符串部分
      *
      * @param  string  $subject
      * @param  string  $search
@@ -77,6 +86,7 @@ class Str
 
     /**
      * Convert a value to camel case.
+	 * 将值转换为驼峰形式
      *
      * @param  string  $value
      * @return string
@@ -92,6 +102,7 @@ class Str
 
     /**
      * Determine if a given string contains a given substring.
+	 * 确定给定字符串是否包含给定子字符串
      *
      * @param  string  $haystack
      * @param  string|array  $needles
@@ -110,6 +121,7 @@ class Str
 
     /**
      * Determine if a given string ends with a given substring.
+	 * 确定给定字符串是否以给定子字符串结束
      *
      * @param  string  $haystack
      * @param  string|array  $needles
@@ -128,6 +140,7 @@ class Str
 
     /**
      * Cap a string with a single instance of a given value.
+	 * 用给定值的单个实例给字符串盖上盖子
      *
      * @param  string  $value
      * @param  string  $cap
@@ -142,6 +155,7 @@ class Str
 
     /**
      * Determine if a given string matches a given pattern.
+	 * 确定给定字符串是否与给定模式匹配
      *
      * @param  string|array  $pattern
      * @param  string  $value
@@ -180,6 +194,7 @@ class Str
 
     /**
      * Convert a string to kebab case.
+	 * 将字符串转换为kebab case
      *
      * @param  string  $value
      * @return string
@@ -191,6 +206,7 @@ class Str
 
     /**
      * Return the length of the given string.
+	 * 返回给定字符串的长度
      *
      * @param  string  $value
      * @param  string  $encoding
@@ -207,6 +223,7 @@ class Str
 
     /**
      * Limit the number of characters in a string.
+	 * 限制字符串中的字符数
      *
      * @param  string  $value
      * @param  int     $limit
@@ -224,6 +241,7 @@ class Str
 
     /**
      * Convert the given string to lower-case.
+	 * 将给定的字符串转换为小写
      *
      * @param  string  $value
      * @return string
@@ -235,6 +253,7 @@ class Str
 
     /**
      * Limit the number of words in a string.
+	 * 限制字符串中的单词数
      *
      * @param  string  $value
      * @param  int     $words
@@ -254,6 +273,7 @@ class Str
 
     /**
      * Parse a Class@method style callback into class and method.
+	 * 将Class@method样式的回调解析为类和方法
      *
      * @param  string  $callback
      * @param  string|null  $default
@@ -266,6 +286,7 @@ class Str
 
     /**
      * Get the plural form of an English word.
+	 * 了解英语单词的复数形式
      *
      * @param  string  $value
      * @param  int     $count
@@ -278,6 +299,7 @@ class Str
 
     /**
      * Generate a more truly "random" alpha-numeric string.
+	 * 生成一个更真正“随机”的字母数字字符串
      *
      * @param  int  $length
      * @return string
@@ -299,6 +321,7 @@ class Str
 
     /**
      * Replace a given value in the string sequentially with an array.
+	 * 将字符串中的给定值依次替换为数组
      *
      * @param  string  $search
      * @param  array   $replace
@@ -316,6 +339,7 @@ class Str
 
     /**
      * Replace the first occurrence of a given value in the string.
+	 * 替换字符串中第一次出现的给定值
      *
      * @param  string  $search
      * @param  string  $replace
@@ -339,6 +363,7 @@ class Str
 
     /**
      * Replace the last occurrence of a given value in the string.
+	 * 替换字符串中最后出现的给定值
      *
      * @param  string  $search
      * @param  string  $replace
@@ -358,6 +383,7 @@ class Str
 
     /**
      * Begin a string with a single instance of a given value.
+	 * 以给定值的单个实例开始字符串
      *
      * @param  string  $value
      * @param  string  $prefix
@@ -372,6 +398,7 @@ class Str
 
     /**
      * Convert the given string to upper-case.
+	 * 将给定的字符串转换为大写
      *
      * @param  string  $value
      * @return string
@@ -383,6 +410,7 @@ class Str
 
     /**
      * Convert the given string to title case.
+	 * 将给定的字符串转换为标题大小写
      *
      * @param  string  $value
      * @return string
@@ -394,6 +422,7 @@ class Str
 
     /**
      * Get the singular form of an English word.
+	 * 获取英语单词的单数形式
      *
      * @param  string  $value
      * @return string
@@ -405,6 +434,7 @@ class Str
 
     /**
      * Generate a URL friendly "slug" from a given string.
+	 * 从给定的字符串生成一个URL友好的“slug”
      *
      * @param  string  $title
      * @param  string  $separator
@@ -434,6 +464,7 @@ class Str
 
     /**
      * Convert a string to snake case.
+	 * 将字符串转换为蛇形
      *
      * @param  string  $value
      * @param  string  $delimiter
@@ -458,6 +489,7 @@ class Str
 
     /**
      * Determine if a given string starts with a given substring.
+	 * 确定给定字符串是否以给定子字符串开头
      *
      * @param  string  $haystack
      * @param  string|array  $needles
@@ -476,6 +508,7 @@ class Str
 
     /**
      * Convert a value to studly caps case.
+	 * 将值转换为大写大小写
      *
      * @param  string  $value
      * @return string
@@ -495,6 +528,7 @@ class Str
 
     /**
      * Returns the portion of string specified by the start and length parameters.
+	 * 返回由start和length参数指定的字符串部分
      *
      * @param  string  $string
      * @param  int  $start
@@ -508,6 +542,7 @@ class Str
 
     /**
      * Make a string's first character uppercase.
+	 * 使字符串的第一个字符大写
      *
      * @param  string  $string
      * @return string
@@ -519,6 +554,7 @@ class Str
 
     /**
      * Returns the replacements for the ascii method.
+	 * 返回ascii方法的替换项。
      *
      * Note: Adapted from Stringy\Stringy.
      *
@@ -653,6 +689,7 @@ class Str
 
     /**
      * Returns the language specific replacements for the ascii method.
+	 * 返回ascii方法的特定于语言的替换。
      *
      * Note: Adapted from Stringy\Stringy.
      *

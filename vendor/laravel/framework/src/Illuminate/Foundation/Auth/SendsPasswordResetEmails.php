@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，认证，发送密码重置邮件
+ */
 
 namespace Illuminate\Foundation\Auth;
 
@@ -9,6 +12,7 @@ trait SendsPasswordResetEmails
 {
     /**
      * Display the form to request a password reset link.
+	 * 显示表单以请求密码重置链接
      *
      * @return \Illuminate\Http\Response
      */
@@ -19,6 +23,7 @@ trait SendsPasswordResetEmails
 
     /**
      * Send a reset link to the given user.
+	 * 向给定用户发送重置链接
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
@@ -41,6 +46,7 @@ trait SendsPasswordResetEmails
 
     /**
      * Validate the email for the given request.
+	 * 验证给定请求的电子邮件
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void
@@ -52,6 +58,7 @@ trait SendsPasswordResetEmails
 
     /**
      * Get the response for a successful password reset link.
+	 * 获取成功的密码重置链接的响应
      *
      * @param  string  $response
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
@@ -63,6 +70,7 @@ trait SendsPasswordResetEmails
 
     /**
      * Get the response for a failed password reset link.
+	 * 获取失败的密码重置链接的响应
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $response
@@ -77,6 +85,7 @@ trait SendsPasswordResetEmails
 
     /**
      * Get the broker to be used during password reset.
+	 * 获取要在密码重置期间使用的代理
      *
      * @return \Illuminate\Contracts\Auth\PasswordBroker
      */

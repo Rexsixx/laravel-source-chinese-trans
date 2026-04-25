@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，缓存，缓存管理器
+ */
 
 namespace Illuminate\Cache;
 
@@ -15,6 +18,7 @@ class CacheManager implements FactoryContract
 {
     /**
      * The application instance.
+	 * 应用实例
      *
      * @var \Illuminate\Foundation\Application
      */
@@ -22,6 +26,7 @@ class CacheManager implements FactoryContract
 
     /**
      * The array of resolved cache stores.
+	 * 已解析缓存存储的数组
      *
      * @var array
      */
@@ -29,6 +34,7 @@ class CacheManager implements FactoryContract
 
     /**
      * The registered custom driver creators.
+	 * 注册的自定义驱动程序创建者
      *
      * @var array
      */
@@ -36,6 +42,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Create a new Cache manager instance.
+	 * 创建一个新的缓存管理器实例
      *
      * @param  \Illuminate\Foundation\Application  $app
      * @return void
@@ -47,6 +54,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Get a cache store instance by name.
+	 * 按名称获取缓存存储实例
      *
      * @param  string|null  $name
      * @return \Illuminate\Contracts\Cache\Repository
@@ -60,6 +68,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Get a cache driver instance.
+	 * 获取缓存驱动程序实例
      *
      * @param  string  $driver
      * @return mixed
@@ -71,6 +80,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Attempt to get the store from the local cache.
+	 * 尝试从本地缓存获取存储
      *
      * @param  string  $name
      * @return \Illuminate\Contracts\Cache\Repository
@@ -82,6 +92,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Resolve the given store.
+	 * 解析给定的存储
      *
      * @param  string  $name
      * @return \Illuminate\Contracts\Cache\Repository
@@ -111,6 +122,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Call a custom driver creator.
+	 * 调用自定义驱动程序创建者
      *
      * @param  array  $config
      * @return mixed
@@ -122,6 +134,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Create an instance of the APC cache driver.
+	 * 创建APC缓存驱动程序的实例
      *
      * @param  array  $config
      * @return \Illuminate\Cache\ApcStore
@@ -135,6 +148,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Create an instance of the array cache driver.
+	 * 创建数组缓存驱动程序的实例
      *
      * @return \Illuminate\Cache\ArrayStore
      */
@@ -145,6 +159,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Create an instance of the file cache driver.
+	 * 创建文件缓存驱动程序的实例
      *
      * @param  array  $config
      * @return \Illuminate\Cache\FileStore
@@ -156,6 +171,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Create an instance of the Memcached cache driver.
+	 * 创建Memcached缓存驱动程序的实例
      *
      * @param  array  $config
      * @return \Illuminate\Cache\MemcachedStore
@@ -176,6 +192,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Create an instance of the Null cache driver.
+	 * 创建Null缓存驱动程序的实例
      *
      * @return \Illuminate\Cache\NullStore
      */
@@ -186,6 +203,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Create an instance of the Redis cache driver.
+	 * 创建一个Redis缓存驱动程序实例
      *
      * @param  array  $config
      * @return \Illuminate\Cache\RedisStore
@@ -201,6 +219,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Create an instance of the database cache driver.
+	 * 创建数据库缓存驱动程序的实例。
      *
      * @param  array  $config
      * @return \Illuminate\Cache\DatabaseStore
@@ -218,6 +237,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Create a new cache repository with the given implementation.
+	 * 使用给定的实现创建一个新的缓存存储库
      *
      * @param  \Illuminate\Contracts\Cache\Store  $store
      * @return \Illuminate\Cache\Repository
@@ -237,6 +257,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Get the cache prefix.
+	 * 获取缓存前缀
      *
      * @param  array  $config
      * @return string
@@ -248,6 +269,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Get the cache connection configuration.
+	 * 获取缓存连接配置
      *
      * @param  string  $name
      * @return array
@@ -259,6 +281,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Get the default cache driver name.
+	 * 获取默认的缓存驱动程序名称
      *
      * @return string
      */
@@ -269,6 +292,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Set the default cache driver name.
+	 * 设置默认的缓存驱动程序名称
      *
      * @param  string  $name
      * @return void
@@ -280,6 +304,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Register a custom driver creator Closure.
+	 * 注册自定义驱动程序创建器Closure
      *
      * @param  string    $driver
      * @param  \Closure  $callback
@@ -294,6 +319,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Dynamically call the default driver instance.
+	 * 动态调用默认驱动程序实例
      *
      * @param  string  $method
      * @param  array   $parameters

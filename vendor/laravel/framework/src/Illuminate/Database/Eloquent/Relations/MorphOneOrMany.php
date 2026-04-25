@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，Eloquent，关系，变形一个或多个
+ */
 
 namespace Illuminate\Database\Eloquent\Relations;
 
@@ -9,6 +12,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 {
     /**
      * The foreign key type for the relationship.
+	 * 关系的外键类型
      *
      * @var string
      */
@@ -16,6 +20,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * The class name of the parent model.
+	 * 父模型的类名
      *
      * @var string
      */
@@ -23,6 +28,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * Create a new morph one or many relationship instance.
+	 * 创建一个或多个关系实例的新变形
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Model  $parent
@@ -42,6 +48,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * Set the base constraints on the relation query.
+	 * 在关系查询上设置基本约束
      *
      * @return void
      */
@@ -56,6 +63,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * Set the constraints for an eager load of the relation.
+	 * 为关系的即时加载设置约束
      *
      * @param  array  $models
      * @return void
@@ -69,6 +77,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * Attach a model instance to the parent model.
+	 * 将模型实例附加到父模型上
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return \Illuminate\Database\Eloquent\Model
@@ -82,6 +91,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * Set the foreign ID and type for creating a related model.
+	 * 为创建相关模型设置外部ID和类型
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return void
@@ -95,6 +105,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * Get the relationship query.
+	 * 获取关系查询
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
@@ -110,6 +121,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * Get the foreign key "type" name.
+	 * 获取外键“类型”名称
      *
      * @return string
      */
@@ -120,6 +132,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * Get the plain morph type name without the table.
+	 * 获取不含表的普通变形类型名称
      *
      * @return string
      */
@@ -130,6 +143,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * Get the class name of the parent model.
+	 * 获取父模型的类名
      *
      * @return string
      */

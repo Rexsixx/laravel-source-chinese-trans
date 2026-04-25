@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，视图，编译器，问题，编译包含
+ */
 
 namespace Illuminate\View\Compilers\Concerns;
 
@@ -6,6 +9,7 @@ trait CompilesIncludes
 {
     /**
      * Compile the each statements into valid PHP.
+	 * 将每个语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -17,6 +21,7 @@ trait CompilesIncludes
 
     /**
      * Compile the include statements into valid PHP.
+	 * 将include语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -30,6 +35,7 @@ trait CompilesIncludes
 
     /**
      * Compile the include-if statements into valid PHP.
+	 * 将include-if语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -43,6 +49,7 @@ trait CompilesIncludes
 
     /**
      * Compile the include-when statements into valid PHP.
+	 * 将include-when语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -56,6 +63,7 @@ trait CompilesIncludes
 
     /**
      * Compile the include-first statements into valid PHP.
+	 * 将include-first语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，测试，约束，在数据库中
+ */
 
 namespace Illuminate\Foundation\Testing\Constraints;
 
@@ -9,6 +12,7 @@ class HasInDatabase extends Constraint
 {
     /**
      * Number of records that will be shown in the console in case of failure.
+	 * 在发生故障时将在控制台中显示的记录数
      *
      * @var int
      */
@@ -16,6 +20,7 @@ class HasInDatabase extends Constraint
 
     /**
      * The database connection.
+	 * 数据库连接
      *
      * @var \Illuminate\Database\Connection
      */
@@ -23,6 +28,7 @@ class HasInDatabase extends Constraint
 
     /**
      * The data that will be used to narrow the search in the database table.
+	 * 将用于缩小数据库表中搜索范围的数据
      *
      * @var array
      */
@@ -30,6 +36,7 @@ class HasInDatabase extends Constraint
 
     /**
      * Create a new constraint instance.
+	 * 创建一个新的约束实例
      *
      * @param  \Illuminate\Database\Connection  $database
      * @param  array  $data
@@ -44,6 +51,7 @@ class HasInDatabase extends Constraint
 
     /**
      * Check if the data is found in the given table.
+	 * 检查是否在给定的表中找到数据
      *
      * @param  string  $table
      * @return bool
@@ -55,6 +63,7 @@ class HasInDatabase extends Constraint
 
     /**
      * Get the description of the failure.
+	 * 获取故障的描述
      *
      * @param  string  $table
      * @return string
@@ -69,6 +78,7 @@ class HasInDatabase extends Constraint
 
     /**
      * Get additional info about the records found in the database table.
+	 * 获取关于在数据库表中找到的记录的其他信息
      *
      * @param  string  $table
      * @return string
@@ -92,6 +102,7 @@ class HasInDatabase extends Constraint
 
     /**
      * Get a string representation of the object.
+	 * 获取对象的字符串表示形式
      *
      * @param  int  $options
      * @return string

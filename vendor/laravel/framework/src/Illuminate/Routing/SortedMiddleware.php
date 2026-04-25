@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，路由，排序的中间件
+ */
 
 namespace Illuminate\Routing;
 
@@ -8,6 +11,7 @@ class SortedMiddleware extends Collection
 {
     /**
      * Create a new Sorted Middleware container.
+	 * 创建一个新的Sorted Middleware容器
      *
      * @param  array  $priorityMap
      * @param  array|Collection  $middlewares
@@ -24,6 +28,7 @@ class SortedMiddleware extends Collection
 
     /**
      * Sort the middlewares by the given priority map.
+	 * 根据给定的优先级映射对中间件进行排序。
      *
      * Each call to this method makes one discrete middleware movement if necessary.
      *
@@ -67,6 +72,7 @@ class SortedMiddleware extends Collection
 
     /**
      * Splice a middleware into a new position and remove the old entry.
+	 * 将中间件拼接到新位置并删除旧条目
      *
      * @param  array  $middlewares
      * @param  int  $from

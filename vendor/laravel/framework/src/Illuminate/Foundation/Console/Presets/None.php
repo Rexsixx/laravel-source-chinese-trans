@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，控制台，预先设置，无
+ */
 
 namespace Illuminate\Foundation\Console\Presets;
 
@@ -8,6 +11,7 @@ class None extends Preset
 {
     /**
      * Install the preset.
+	 * 安装预设
      *
      * @return void
      */
@@ -27,6 +31,7 @@ class None extends Preset
 
     /**
      * Update the given package array.
+	 * 更新给定的包数组
      *
      * @param  array  $packages
      * @return array
@@ -47,6 +52,7 @@ class None extends Preset
 
     /**
      * Write the stubs for the Sass and JavaScript files.
+	 * 编写Sass和JavaScript文件的存根
      *
      * @return void
      */

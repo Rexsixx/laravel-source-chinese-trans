@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，视图，引擎，编译器引擎
+ */
 
 namespace Illuminate\View\Engines;
 
@@ -10,6 +13,7 @@ class CompilerEngine extends PhpEngine
 {
     /**
      * The Blade compiler instance.
+	 * Blade编译器实例
      *
      * @var \Illuminate\View\Compilers\CompilerInterface
      */
@@ -17,6 +21,7 @@ class CompilerEngine extends PhpEngine
 
     /**
      * A stack of the last compiled templates.
+	 * 最后编译的模板的堆栈
      *
      * @var array
      */
@@ -24,6 +29,7 @@ class CompilerEngine extends PhpEngine
 
     /**
      * Create a new Blade view engine instance.
+	 * 创建一个新的Blade视图引擎实例
      *
      * @param  \Illuminate\View\Compilers\CompilerInterface  $compiler
      * @return void
@@ -35,6 +41,7 @@ class CompilerEngine extends PhpEngine
 
     /**
      * Get the evaluated contents of the view.
+	 * 获取视图的求值内容
      *
      * @param  string  $path
      * @param  array   $data
@@ -65,6 +72,7 @@ class CompilerEngine extends PhpEngine
 
     /**
      * Handle a view exception.
+	 * 处理视图异常
      *
      * @param  \Exception  $e
      * @param  int  $obLevel
@@ -81,6 +89,7 @@ class CompilerEngine extends PhpEngine
 
     /**
      * Get the exception message for an exception.
+	 * 获取异常的异常消息
      *
      * @param  \Exception  $e
      * @return string
@@ -92,6 +101,7 @@ class CompilerEngine extends PhpEngine
 
     /**
      * Get the compiler implementation.
+	 * 获取编译器实现
      *
      * @return \Illuminate\View\Compilers\CompilerInterface
      */

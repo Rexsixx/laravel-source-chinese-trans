@@ -1,10 +1,13 @@
 <?php
+/**
+ * 配置，会话
+ */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Session Driver
+    | Default Session Driver	默认会话驱动程序
     |--------------------------------------------------------------------------
     |
     | This option controls the default session "driver" that will be used on
@@ -20,7 +23,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Lifetime
+    | Session Lifetime	会话生命周期
     |--------------------------------------------------------------------------
     |
     | Here you may specify the number of minutes that you wish the session
@@ -35,7 +38,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Encryption
+    | Session Encryption	会话加密
     |--------------------------------------------------------------------------
     |
     | This option allows you to easily specify that all of your session data
@@ -48,7 +51,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session File Location
+    | Session File Location		会话文件位置
     |--------------------------------------------------------------------------
     |
     | When using the native session driver, we need a location where session

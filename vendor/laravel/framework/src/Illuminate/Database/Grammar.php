@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，语法
+ */
 
 namespace Illuminate\Database;
 
@@ -8,6 +11,7 @@ abstract class Grammar
 {
     /**
      * The grammar table prefix.
+	 * 语法表前缀
      *
      * @var string
      */
@@ -15,6 +19,7 @@ abstract class Grammar
 
     /**
      * Wrap an array of values.
+	 * 包装一个值数组
      *
      * @param  array  $values
      * @return array
@@ -26,6 +31,7 @@ abstract class Grammar
 
     /**
      * Wrap a table in keyword identifiers.
+	 * 用关键字标识符包装表
      *
      * @param  \Illuminate\Database\Query\Expression|string  $table
      * @return string
@@ -41,6 +47,7 @@ abstract class Grammar
 
     /**
      * Wrap a value in keyword identifiers.
+	 * 将值包装在关键字标识符中
      *
      * @param  \Illuminate\Database\Query\Expression|string  $value
      * @param  bool    $prefixAlias
@@ -64,6 +71,7 @@ abstract class Grammar
 
     /**
      * Wrap a value that has an alias.
+	 * 包装具有别名的值
      *
      * @param  string  $value
      * @param  bool  $prefixAlias
@@ -87,6 +95,7 @@ abstract class Grammar
 
     /**
      * Wrap the given value segments.
+	 * 包装给定的值段
      *
      * @param  array  $segments
      * @return string
@@ -102,6 +111,7 @@ abstract class Grammar
 
     /**
      * Wrap a single string in keyword identifiers.
+	 * 在关键字标识符中包装单个字符串
      *
      * @param  string  $value
      * @return string
@@ -117,6 +127,7 @@ abstract class Grammar
 
     /**
      * Convert an array of column names into a delimited string.
+	 * 将列名数组转换为带分隔符的字符串
      *
      * @param  array   $columns
      * @return string
@@ -128,6 +139,7 @@ abstract class Grammar
 
     /**
      * Create query parameter place-holders for an array.
+	 * 为数组创建查询参数占位符
      *
      * @param  array   $values
      * @return string
@@ -139,6 +151,7 @@ abstract class Grammar
 
     /**
      * Get the appropriate query parameter place-holder for a value.
+	 * 获取值的适当查询参数占位符
      *
      * @param  mixed   $value
      * @return string
@@ -150,6 +163,7 @@ abstract class Grammar
 
     /**
      * Determine if the given value is a raw expression.
+	 * 确定给定的值是否是一个原始表达式
      *
      * @param  mixed  $value
      * @return bool
@@ -161,6 +175,7 @@ abstract class Grammar
 
     /**
      * Get the value of a raw expression.
+	 * 获取原始表达式的值
      *
      * @param  \Illuminate\Database\Query\Expression  $expression
      * @return string
@@ -172,6 +187,7 @@ abstract class Grammar
 
     /**
      * Get the format for database stored dates.
+	 * 获取数据库存储日期的格式
      *
      * @return string
      */
@@ -182,6 +198,7 @@ abstract class Grammar
 
     /**
      * Get the grammar's table prefix.
+	 * 获取语法表前缀
      *
      * @return string
      */
@@ -192,6 +209,7 @@ abstract class Grammar
 
     /**
      * Set the grammar's table prefix.
+	 * 设置语法的表前缀
      *
      * @param  string  $prefix
      * @return $this

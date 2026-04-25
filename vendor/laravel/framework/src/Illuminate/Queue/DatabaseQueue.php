@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，队列，数据库队列
+ */
 
 namespace Illuminate\Queue;
 
@@ -13,6 +16,7 @@ class DatabaseQueue extends Queue implements QueueContract
 {
     /**
      * The database connection instance.
+	 * 数据库连接实例
      *
      * @var \Illuminate\Database\Connection
      */
@@ -20,6 +24,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * The database table that holds the jobs.
+	 * 保存作业的数据库表
      *
      * @var string
      */
@@ -27,6 +32,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * The name of the default queue.
+	 * 默认队列的名称
      *
      * @var string
      */
@@ -34,6 +40,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * The expiration time of a job.
+	 * 作业的过期时间
      *
      * @var int|null
      */
@@ -41,6 +48,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Create a new database queue instance.
+	 * 创建一个新的数据库队列实例
      *
      * @param  \Illuminate\Database\Connection  $database
      * @param  string  $table
@@ -58,6 +66,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Get the size of the queue.
+	 * 获取队列的大小
      *
      * @param  string  $queue
      * @return int
@@ -71,6 +80,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Push a new job onto the queue.
+	 * 将新作业推送到队列中
      *
      * @param  string  $job
      * @param  mixed   $data
@@ -84,6 +94,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Push a raw payload onto the queue.
+	 * 将原始有效负载推入队列
      *
      * @param  string  $payload
      * @param  string  $queue
@@ -97,6 +108,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Push a new job onto the queue after a delay.
+	 * 在延迟后将新作业推入队列
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job
@@ -111,6 +123,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Push an array of jobs onto the queue.
+	 * 将一组作业推入队列
      *
      * @param  array   $jobs
      * @param  mixed   $data
@@ -132,6 +145,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Release a reserved job back onto the queue.
+	 * 将预留的作业释放回队列
      *
      * @param  string  $queue
      * @param  \Illuminate\Queue\Jobs\DatabaseJobRecord  $job
@@ -145,6 +159,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Push a raw payload to the database with a given delay.
+	 * 以给定的延迟将原始有效负载推送到数据库
      *
      * @param  string|null  $queue
      * @param  string  $payload
@@ -161,6 +176,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Create an array to insert for the given job.
+	 * 创建一个数组来插入给定的作业
      *
      * @param  string|null  $queue
      * @param  string  $payload
@@ -182,6 +198,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Pop the next job off of the queue.
+	 * 将下一个作业从队列中弹出
      *
      * @param  string  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
@@ -208,6 +225,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Get the next available job for the queue.
+	 * 获取该队列的下一个可用作业
      *
      * @param  string|null  $queue
      * @return \Illuminate\Queue\Jobs\DatabaseJobRecord|null
@@ -229,6 +247,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Modify the query to check for available jobs.
+	 * 修改查询以检查可用的作业
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return void
@@ -243,6 +262,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Modify the query to check for jobs that are reserved but have expired.
+	 * 修改查询以检查保留但已过期的作业
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return void
@@ -258,6 +278,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Marshal the reserved job into a DatabaseJob instance.
+	 * 将保留的作业封送到DatabaseJob实例中
      *
      * @param  string  $queue
      * @param  \Illuminate\Queue\Jobs\DatabaseJobRecord  $job
@@ -276,6 +297,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Mark the given job ID as reserved.
+	 * 将给定的作业ID标记为保留
      *
      * @param  \Illuminate\Queue\Jobs\DatabaseJobRecord  $job
      * @return \Illuminate\Queue\Jobs\DatabaseJobRecord
@@ -292,6 +314,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Delete a reserved job from the queue.
+	 * 从队列中删除保留的作业
      *
      * @param  string  $queue
      * @param  string  $id
@@ -309,6 +332,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Get the queue or return the default.
+	 * 获取队列或返回默认值
      *
      * @param  string|null  $queue
      * @return string
@@ -320,6 +344,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
     /**
      * Get the underlying database instance.
+	 * 获取底层数据库实例
      *
      * @return \Illuminate\Database\Connection
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，控制台，预先设置，预设
+ */
 
 namespace Illuminate\Foundation\Console\Presets;
 
@@ -8,6 +11,7 @@ class Preset
 {
     /**
      * Ensure the component directories we need exist.
+	 * 确保我们需要的组件目录存在
      *
      * @return void
      */
@@ -47,6 +51,7 @@ class Preset
 
     /**
      * Remove the installed Node modules.
+	 * 拆卸已安装的Node模块
      *
      * @return void
      */

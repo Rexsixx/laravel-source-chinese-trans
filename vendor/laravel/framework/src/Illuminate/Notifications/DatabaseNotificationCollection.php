@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，电子邮件，数据库通知收集
+ */
 
 namespace Illuminate\Notifications;
 
@@ -8,6 +11,7 @@ class DatabaseNotificationCollection extends Collection
 {
     /**
      * Mark all notifications as read.
+	 * 将所有通知标记为已读
      *
      * @return void
      */
@@ -20,6 +24,7 @@ class DatabaseNotificationCollection extends Collection
 
     /**
      * Mark all notifications as unread.
+	 * 将所有通知标记为未读
      *
      * @return void
      */

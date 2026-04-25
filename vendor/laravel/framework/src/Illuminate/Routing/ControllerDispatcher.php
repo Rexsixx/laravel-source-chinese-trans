@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，路由，控制器调度台
+ */
 
 namespace Illuminate\Routing;
 
@@ -11,6 +14,7 @@ class ControllerDispatcher implements ControllerDispatcherContract
 
     /**
      * The container instance.
+	 * 容器实例
      *
      * @var \Illuminate\Container\Container
      */
@@ -18,6 +22,7 @@ class ControllerDispatcher implements ControllerDispatcherContract
 
     /**
      * Create a new controller dispatcher instance.
+	 * 创建一个新的控制器调度程序实例
      *
      * @param  \Illuminate\Container\Container  $container
      * @return void
@@ -29,6 +34,7 @@ class ControllerDispatcher implements ControllerDispatcherContract
 
     /**
      * Dispatch a request to a given controller and method.
+	 * 将请求分派给给定的控制器和方法
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  mixed  $controller
@@ -50,6 +56,7 @@ class ControllerDispatcher implements ControllerDispatcherContract
 
     /**
      * Get the middleware for the controller instance.
+	 * 获取控制器实例的中间件
      *
      * @param  \Illuminate\Routing\Controller  $controller
      * @param  string  $method
@@ -68,6 +75,7 @@ class ControllerDispatcher implements ControllerDispatcherContract
 
     /**
      * Determine if the given options exclude a particular method.
+	 * 确定给定选项是否排除特定方法
      *
      * @param  string  $method
      * @param  array  $options

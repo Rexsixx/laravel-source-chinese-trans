@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，分页，Url 窗口
+ */
 
 namespace Illuminate\Pagination;
 
@@ -8,6 +11,7 @@ class UrlWindow
 {
     /**
      * The paginator implementation.
+	 * 分页器实现
      *
      * @var \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
@@ -15,6 +19,7 @@ class UrlWindow
 
     /**
      * Create a new URL window instance.
+	 * 创建一个新的URL窗口实例
      *
      * @param  \Illuminate\Contracts\Pagination\LengthAwarePaginator  $paginator
      * @return void
@@ -26,6 +31,7 @@ class UrlWindow
 
     /**
      * Create a new URL window instance.
+	 * 创建一个新的URL窗口实例
      *
      * @param  \Illuminate\Contracts\Pagination\LengthAwarePaginator  $paginator
      * @param  int  $onEachSide
@@ -38,6 +44,7 @@ class UrlWindow
 
     /**
      * Get the window of URLs to be shown.
+	 * 获取要显示的url窗口
      *
      * @param  int  $onEachSide
      * @return array
@@ -53,6 +60,7 @@ class UrlWindow
 
     /**
      * Get the slider of URLs there are not enough pages to slide.
+	 * 获取url的滑块，因为没有足够的页面可以滑动。
      *
      * @return array
      */
@@ -67,6 +75,7 @@ class UrlWindow
 
     /**
      * Create a URL slider links.
+	 * 创建一个URL滑块链接
      *
      * @param  int  $onEachSide
      * @return array
@@ -101,6 +110,7 @@ class UrlWindow
 
     /**
      * Get the slider of URLs when too close to beginning of window.
+	 * 当太接近窗口开始时，获取url的滑动条。
      *
      * @param  int  $window
      * @return array
@@ -116,6 +126,7 @@ class UrlWindow
 
     /**
      * Get the slider of URLs when too close to ending of window.
+	 * 当太接近窗口结束时获取url的滑动条
      *
      * @param  int  $window
      * @return array
@@ -136,6 +147,7 @@ class UrlWindow
 
     /**
      * Get the slider of URLs when a full slider can be made.
+	 * 当一个完整的滑块可以制作时，获取url的滑块。
      *
      * @param  int  $onEachSide
      * @return array
@@ -151,6 +163,7 @@ class UrlWindow
 
     /**
      * Get the page range for the current page window.
+	 * 获取当前页窗口的页范围
      *
      * @param  int  $onEachSide
      * @return array
@@ -165,6 +178,7 @@ class UrlWindow
 
     /**
      * Get the starting URLs of a pagination slider.
+	 * 获取分页滑块的起始url
      *
      * @return array
      */
@@ -175,6 +189,7 @@ class UrlWindow
 
     /**
      * Get the ending URLs of a pagination slider.
+	 * 获取分页滑块的结束url
      *
      * @return array
      */
@@ -188,6 +203,7 @@ class UrlWindow
 
     /**
      * Determine if the underlying paginator being presented has pages to show.
+	 * 确定所显示的底层分页器是否有要显示的页面
      *
      * @return bool
      */
@@ -198,6 +214,7 @@ class UrlWindow
 
     /**
      * Get the current page from the paginator.
+	 * 从分页器获取当前页
      *
      * @return int
      */
@@ -208,6 +225,7 @@ class UrlWindow
 
     /**
      * Get the last page from the paginator.
+	 * 从分页器获取最后一页
      *
      * @return int
      */

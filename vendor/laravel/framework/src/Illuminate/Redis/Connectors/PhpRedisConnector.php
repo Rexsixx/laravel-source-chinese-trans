@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Redis，连接器，Php Redis 连接器
+ */
 
 namespace Illuminate\Redis\Connectors;
 
@@ -12,6 +15,7 @@ class PhpRedisConnector
 {
     /**
      * Create a new clustered PhpRedis connection.
+	 * 创建一个新的集群PhpRedis连接
      *
      * @param  array  $config
      * @param  array  $options
@@ -26,6 +30,7 @@ class PhpRedisConnector
 
     /**
      * Create a new clustered PhpRedis connection.
+	 * 创建一个新的集群PhpRedis连接
      *
      * @param  array  $config
      * @param  array  $clusterOptions
@@ -43,6 +48,7 @@ class PhpRedisConnector
 
     /**
      * Build a single cluster seed string from array.
+	 * 从数组构建单个集群种子字符串
      *
      * @param  array  $server
      * @return string
@@ -56,6 +62,7 @@ class PhpRedisConnector
 
     /**
      * Create the Redis client instance.
+	 * 创建Redis客户端实例
      *
      * @param  array  $config
      * @return \Redis
@@ -85,6 +92,7 @@ class PhpRedisConnector
 
     /**
      * Establish a connection with the Redis host.
+	 * 与Redis主机建立连接
      *
      * @param  \Redis  $client
      * @param  array  $config
@@ -99,6 +107,7 @@ class PhpRedisConnector
 
     /**
      * Create a new redis cluster instance.
+	 * 创建一个新的redis集群实例
      *
      * @param  array  $servers
      * @param  array  $options

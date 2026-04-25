@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，通知，频道，Nexmo 短信频道
+ */
 
 namespace Illuminate\Notifications\Channels;
 
@@ -10,6 +13,7 @@ class NexmoSmsChannel
 {
     /**
      * The Nexmo client instance.
+	 * Nexmo客户端实例
      *
      * @var \Nexmo\Client
      */
@@ -17,6 +21,7 @@ class NexmoSmsChannel
 
     /**
      * The phone number notifications should be sent from.
+	 * 发送通知的电话号码
      *
      * @var string
      */
@@ -24,6 +29,7 @@ class NexmoSmsChannel
 
     /**
      * Create a new Nexmo channel instance.
+	 * 创建一个新的Nexmo通道实例
      *
      * @param  \Nexmo\Client  $nexmo
      * @param  string  $from
@@ -37,6 +43,7 @@ class NexmoSmsChannel
 
     /**
      * Send the given notification.
+	 * 发送给定的通知
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification

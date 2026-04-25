@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，队列，无效负载异常
+ */
 
 namespace Illuminate\Queue;
 
@@ -8,6 +11,7 @@ class InvalidPayloadException extends InvalidArgumentException
 {
     /**
      * Create a new exception instance.
+	 * 创建一个新的异常实例
      *
      * @param  string|null  $message
      * @return void

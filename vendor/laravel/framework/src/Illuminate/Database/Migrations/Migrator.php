@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，迁移，迁移
+ */
 
 namespace Illuminate\Database\Migrations;
 
@@ -12,6 +15,7 @@ class Migrator
 {
     /**
      * The migration repository implementation.
+	 * 迁移存储库实现
      *
      * @var \Illuminate\Database\Migrations\MigrationRepositoryInterface
      */
@@ -19,6 +23,7 @@ class Migrator
 
     /**
      * The filesystem instance.
+	 * 文件系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -26,6 +31,7 @@ class Migrator
 
     /**
      * The connection resolver instance.
+	 * 连接解析器实例
      *
      * @var \Illuminate\Database\ConnectionResolverInterface
      */
@@ -33,6 +39,7 @@ class Migrator
 
     /**
      * The name of the default connection.
+	 * 默认连接的名称
      *
      * @var string
      */
@@ -40,6 +47,7 @@ class Migrator
 
     /**
      * The notes for the current operation.
+	 * 当前操作的注释
      *
      * @var array
      */
@@ -47,6 +55,7 @@ class Migrator
 
     /**
      * The paths to all of the migration files.
+	 * 所有迁移文件的路径
      *
      * @var array
      */
@@ -54,6 +63,7 @@ class Migrator
 
     /**
      * Create a new migrator instance.
+	 * 创建一个新的迁移器实例
      *
      * @param  \Illuminate\Database\Migrations\MigrationRepositoryInterface  $repository
      * @param  \Illuminate\Database\ConnectionResolverInterface  $resolver
@@ -71,6 +81,7 @@ class Migrator
 
     /**
      * Run the pending migrations at a given path.
+	 * 在给定路径上运行挂起的迁移
      *
      * @param  array|string  $paths
      * @param  array  $options
@@ -99,6 +110,7 @@ class Migrator
 
     /**
      * Get the migration files that have not yet run.
+	 * 获取尚未运行的迁移文件
      *
      * @param  array  $files
      * @param  array  $ran
@@ -114,6 +126,7 @@ class Migrator
 
     /**
      * Run an array of migrations.
+	 * 运行一系列迁移
      *
      * @param  array  $migrations
      * @param  array  $options
@@ -153,6 +166,7 @@ class Migrator
 
     /**
      * Run "up" a migration instance.
+	 * 运行“up”迁移实例
      *
      * @param  string  $file
      * @param  int     $batch
@@ -186,6 +200,7 @@ class Migrator
 
     /**
      * Rollback the last migration operation.
+	 * 回滚上一次迁移操作
      *
      * @param  array|string $paths
      * @param  array  $options
@@ -211,6 +226,7 @@ class Migrator
 
     /**
      * Get the migrations for a rollback operation.
+	 * 获取回滚操作的迁移
      *
      * @param  array  $options
      * @return array
@@ -226,6 +242,7 @@ class Migrator
 
     /**
      * Rollback the given migrations.
+	 * 回滚给定的迁移
      *
      * @param  array  $migrations
      * @param  array|string  $paths
@@ -263,6 +280,7 @@ class Migrator
 
     /**
      * Rolls all of the currently applied migrations back.
+	 * 回滚所有当前应用的迁移
      *
      * @param  array|string $paths
      * @param  bool  $pretend
@@ -288,6 +306,7 @@ class Migrator
 
     /**
      * Reset the given migrations.
+	 * 重置给定的迁移
      *
      * @param  array  $migrations
      * @param  array  $paths
@@ -310,6 +329,7 @@ class Migrator
 
     /**
      * Run "down" a migration instance.
+	 * 运行“down”迁移实例
      *
      * @param  string  $file
      * @param  object  $migration
@@ -343,6 +363,7 @@ class Migrator
 
     /**
      * Run a migration inside a transaction if the database supports it.
+	 * 如果数据库支持，则在事务中运行迁移。
      *
      * @param  object  $migration
      * @param  string  $method
@@ -368,6 +389,7 @@ class Migrator
 
     /**
      * Pretend to run the migrations.
+	 * 假装运行迁移
      *
      * @param  object  $migration
      * @param  string  $method
@@ -384,6 +406,7 @@ class Migrator
 
     /**
      * Get all of the queries that would be run for a migration.
+	 * 获取将为迁移运行的所有查询
      *
      * @param  object  $migration
      * @param  string  $method
@@ -407,6 +430,7 @@ class Migrator
 
     /**
      * Resolve a migration instance from a file.
+	 * 从文件解析迁移实例
      *
      * @param  string  $file
      * @return object
@@ -420,6 +444,7 @@ class Migrator
 
     /**
      * Get all of the migration files in a given path.
+	 * 获取给定路径中的所有迁移文件
      *
      * @param  string|array  $paths
      * @return array
@@ -437,6 +462,7 @@ class Migrator
 
     /**
      * Require in all the migration files in a given path.
+	 * 在给定路径中的所有迁移文件中要求
      *
      * @param  array   $files
      * @return void
@@ -450,6 +476,7 @@ class Migrator
 
     /**
      * Get the name of the migration.
+	 * 获取迁移的名称
      *
      * @param  string  $path
      * @return string
@@ -461,6 +488,7 @@ class Migrator
 
     /**
      * Register a custom migration path.
+	 * 注册自定义迁移路径
      *
      * @param  string  $path
      * @return void
@@ -472,6 +500,7 @@ class Migrator
 
     /**
      * Get all of the custom migration paths.
+	 * 获取所有自定义迁移路径
      *
      * @return array
      */
@@ -482,6 +511,7 @@ class Migrator
 
     /**
      * Set the default connection name.
+	 * 设置默认连接名称
      *
      * @param  string  $name
      * @return void
@@ -499,6 +529,7 @@ class Migrator
 
     /**
      * Resolve the database connection instance.
+	 * 解析数据库连接实例
      *
      * @param  string  $connection
      * @return \Illuminate\Database\Connection
@@ -510,6 +541,7 @@ class Migrator
 
     /**
      * Get the schema grammar out of a migration connection.
+	 * 从迁移连接中获取模式语法
      *
      * @param  \Illuminate\Database\Connection  $connection
      * @return \Illuminate\Database\Schema\Grammars\Grammar
@@ -527,6 +559,7 @@ class Migrator
 
     /**
      * Get the migration repository instance.
+	 * 获取迁移存储库实例
      *
      * @return \Illuminate\Database\Migrations\MigrationRepositoryInterface
      */
@@ -537,6 +570,7 @@ class Migrator
 
     /**
      * Determine if the migration repository exists.
+	 * 确定迁移存储库是否存在
      *
      * @return bool
      */
@@ -547,6 +581,7 @@ class Migrator
 
     /**
      * Get the file system instance.
+	 * 获取文件系统实例
      *
      * @return \Illuminate\Filesystem\Filesystem
      */
@@ -557,6 +592,7 @@ class Migrator
 
     /**
      * Raise a note event for the migrator.
+	 * 引发迁移器的注释事件
      *
      * @param  string  $message
      * @return void
@@ -568,6 +604,7 @@ class Migrator
 
     /**
      * Get the notes for the last operation.
+	 * 得到上次操作的记录
      *
      * @return array
      */

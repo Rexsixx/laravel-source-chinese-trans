@@ -12,6 +12,7 @@ class ResetPassword extends Notification
 {
     /**
      * The password reset token.
+	 * 密码重置令牌
      *
      * @var string
      */
@@ -19,6 +20,7 @@ class ResetPassword extends Notification
 
     /**
      * Create a notification instance.
+	 * 创建通知实例
      *
      * @param  string  $token
      * @return void
@@ -30,6 +32,7 @@ class ResetPassword extends Notification
 
     /**
      * Get the notification's channels.
+	 * 获取通知的通道
      *
      * @param  mixed  $notifiable
      * @return array|string
@@ -41,6 +44,7 @@ class ResetPassword extends Notification
 
     /**
      * Build the mail representation of the notification.
+	 * 构建通知的邮件表示形式
      *
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage

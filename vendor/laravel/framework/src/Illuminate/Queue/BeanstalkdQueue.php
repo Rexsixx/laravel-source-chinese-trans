@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，队列，Beanstalkd 队列
+ */
 
 namespace Illuminate\Queue;
 
@@ -11,6 +14,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 {
     /**
      * The Pheanstalk instance.
+	 * Pheanstalk实例
      *
      * @var \Pheanstalk\Pheanstalk
      */
@@ -18,6 +22,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * The name of the default tube.
+	 * 默认管道的名称
      *
      * @var string
      */
@@ -25,6 +30,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * The "time to run" for all pushed jobs.
+	 * 所有被推的工作的“时间到了”
      *
      * @var int
      */
@@ -32,6 +38,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Create a new Beanstalkd queue instance.
+	 * 创建一个新的beanstald队列实例
      *
      * @param  \Pheanstalk\Pheanstalk  $pheanstalk
      * @param  string  $default
@@ -47,6 +54,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Get the size of the queue.
+	 * 获取队列的大小
      *
      * @param  string  $queue
      * @return int
@@ -60,6 +68,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Push a new job onto the queue.
+	 * 将新作业推送到队列中
      *
      * @param  string  $job
      * @param  mixed   $data
@@ -73,6 +82,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Push a raw payload onto the queue.
+	 * 将原始有效负载推入队列
      *
      * @param  string  $payload
      * @param  string  $queue
@@ -88,6 +98,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Push a new job onto the queue after a delay.
+	 * 在延迟后将新作业推入队列
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job
@@ -109,6 +120,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Pop the next job off of the queue.
+	 * 将下一个作业从队列中弹出
      *
      * @param  string  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
@@ -128,6 +140,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Delete a message from the Beanstalk queue.
+	 * 从Beanstalk队列中删除消息
      *
      * @param  string  $queue
      * @param  string  $id
@@ -142,6 +155,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Get the queue or return the default.
+	 * 获取队列或返回默认值
      *
      * @param  string|null  $queue
      * @return string
@@ -153,6 +167,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Get the underlying Pheanstalk instance.
+	 * 获取底层Pheanstalk实例
      *
      * @return \Pheanstalk\Pheanstalk
      */

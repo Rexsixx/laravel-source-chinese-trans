@@ -1,4 +1,7 @@
 <?php
+/**
+ * Doctrine，Deprecations，PHP单元测试，验证的用法
+ */
 
 declare(strict_types=1);
 

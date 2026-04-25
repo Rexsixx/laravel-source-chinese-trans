@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，提供者，控制台支持服务提供商
+ */
 
 namespace Illuminate\Foundation\Providers;
 
@@ -9,6 +12,7 @@ class ConsoleSupportServiceProvider extends AggregateServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
+	 * 指示是否延迟加载提供程序
      *
      * @var bool
      */
@@ -16,6 +20,7 @@ class ConsoleSupportServiceProvider extends AggregateServiceProvider
 
     /**
      * The provider class names.
+	 * 提供程序类名
      *
      * @var array
      */

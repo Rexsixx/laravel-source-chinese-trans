@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，通知，频道，数据库频道
+ */
 
 namespace Illuminate\Notifications\Channels;
 
@@ -9,6 +12,7 @@ class DatabaseChannel
 {
     /**
      * Send the given notification.
+	 * 发送给定的通知
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -26,6 +30,7 @@ class DatabaseChannel
 
     /**
      * Get the data for the notification.
+	 * 获取通知的数据
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification

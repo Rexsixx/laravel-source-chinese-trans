@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Auth，令牌警卫
+ */
 
 namespace Illuminate\Auth;
 
@@ -12,6 +15,7 @@ class TokenGuard implements Guard
 
     /**
      * The request instance.
+	 * 请求实例
      *
      * @var \Illuminate\Http\Request
      */
@@ -19,6 +23,7 @@ class TokenGuard implements Guard
 
     /**
      * The name of the query string item from the request containing the API token.
+	 * 来自包含API令牌的请求的查询字符串项的名称
      *
      * @var string
      */
@@ -26,6 +31,7 @@ class TokenGuard implements Guard
 
     /**
      * The name of the token "column" in persistent storage.
+	 * 持久存储中令牌“column”的名称
      *
      * @var string
      */
@@ -33,6 +39,7 @@ class TokenGuard implements Guard
 
     /**
      * Create a new authentication guard.
+	 * 创建一个新的身份验证保护
      *
      * @param  \Illuminate\Contracts\Auth\UserProvider  $provider
      * @param  \Illuminate\Http\Request  $request
@@ -48,6 +55,7 @@ class TokenGuard implements Guard
 
     /**
      * Get the currently authenticated user.
+	 * 获取当前经过身份验证的用户
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
@@ -75,6 +83,7 @@ class TokenGuard implements Guard
 
     /**
      * Get the token for the current request.
+	 * 获取当前请求的令牌
      *
      * @return string
      */
@@ -99,6 +108,7 @@ class TokenGuard implements Guard
 
     /**
      * Validate a user's credentials.
+	 * 验证用户的凭据
      *
      * @param  array  $credentials
      * @return bool
@@ -120,6 +130,7 @@ class TokenGuard implements Guard
 
     /**
      * Set the current request instance.
+	 * 设置当前请求实例
      *
      * @param  \Illuminate\Http\Request  $request
      * @return $this

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，引导，加载环境变量
+ */
 
 namespace Illuminate\Foundation\Bootstrap;
 
@@ -11,6 +14,7 @@ class LoadEnvironmentVariables
 {
     /**
      * Bootstrap the given application.
+	 * 引导给定的应用程序
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -32,6 +36,7 @@ class LoadEnvironmentVariables
 
     /**
      * Detect if a custom environment file matching the APP_ENV exists.
+	 * 检测是否存在与APP_ENV匹配的自定义环境文件
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -57,6 +62,7 @@ class LoadEnvironmentVariables
 
     /**
      * Load a custom environment file.
+	 * 加载自定义环境文件
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  string  $file

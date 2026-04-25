@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，视图，编译器，问题，编译反射
+ */
 
 namespace Illuminate\View\Compilers\Concerns;
 
@@ -6,6 +9,7 @@ trait CompilesInjections
 {
     /**
      * Compile the inject statements into valid PHP.
+	 * 将注入语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string

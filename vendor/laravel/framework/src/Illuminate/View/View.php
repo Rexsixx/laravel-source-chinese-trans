@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，视图，视图
+ */
 
 namespace Illuminate\View;
 
@@ -18,6 +21,7 @@ class View implements ArrayAccess, ViewContract
 {
     /**
      * The view factory instance.
+	 * 视图工厂实例
      *
      * @var \Illuminate\View\Factory
      */
@@ -25,6 +29,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * The engine implementation.
+	 * 引擎实现
      *
      * @var \Illuminate\Contracts\View\Engine
      */
@@ -32,6 +37,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * The name of the view.
+	 * 视图的名称
      *
      * @var string
      */
@@ -39,6 +45,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * The array of view data.
+	 * 视图数据的数组
      *
      * @var array
      */
@@ -46,6 +53,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * The path to the view file.
+	 * 视图文件的路径
      *
      * @var string
      */
@@ -53,6 +61,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Create a new view instance.
+	 * 创建一个新的视图实例
      *
      * @param  \Illuminate\View\Factory  $factory
      * @param  \Illuminate\Contracts\View\Engine  $engine
@@ -73,6 +82,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Get the string contents of the view.
+	 * 获取视图的字符串内容
      *
      * @param  callable|null  $callback
      * @return string
@@ -105,6 +115,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Get the contents of the view instance.
+	 * 获取视图实例的内容
      *
      * @return string
      */
@@ -129,6 +140,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Get the evaluated contents of the view.
+	 * 获取视图的求值内容
      *
      * @return string
      */
@@ -139,6 +151,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Get the data bound to the view instance.
+	 * 获取绑定到视图实例的数据
      *
      * @return array
      */
@@ -157,6 +170,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Get the sections of the rendered view.
+	 * 获取渲染视图的部分
      *
      * @return string
      */
@@ -169,6 +183,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Add a piece of data to the view.
+	 * 向视图添加一段数据
      *
      * @param  string|array  $key
      * @param  mixed   $value
@@ -187,6 +202,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Add a view instance to the view data.
+	 * 向视图数据添加视图实例
      *
      * @param  string  $key
      * @param  string  $view
@@ -200,6 +216,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Add validation errors to the view.
+	 * 将验证错误添加到视图中
      *
      * @param  \Illuminate\Contracts\Support\MessageProvider|array  $provider
      * @return $this
@@ -213,6 +230,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Format the given message provider into a MessageBag.
+	 * 将给定的消息提供程序格式化为MessageBag
      *
      * @param  \Illuminate\Contracts\Support\MessageProvider|array  $provider
      * @return \Illuminate\Support\MessageBag
@@ -225,6 +243,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Get the name of the view.
+	 * 获取视图的名称
      *
      * @return string
      */
@@ -235,6 +254,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Get the name of the view.
+	 * 获取视图的名称
      *
      * @return string
      */
@@ -245,6 +265,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Get the array of view data.
+	 * 获取视图数据数组
      *
      * @return array
      */
@@ -255,6 +276,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Get the path to the view file.
+	 * 获取视图文件的路径
      *
      * @return string
      */
@@ -265,6 +287,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Set the path to the view.
+	 * 设置视图的路径
      *
      * @param  string  $path
      * @return void
@@ -276,6 +299,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Get the view factory instance.
+	 * 获取视图工厂实例
      *
      * @return \Illuminate\View\Factory
      */
@@ -286,6 +310,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Get the view's rendering engine.
+	 * 获取视图的渲染引擎
      *
      * @return \Illuminate\Contracts\View\Engine
      */
@@ -296,6 +321,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Determine if a piece of data is bound.
+	 * 确定是否绑定了一段数据
      *
      * @param  string  $key
      * @return bool
@@ -307,6 +333,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Get a piece of bound data to the view.
+	 * 获取一段绑定到视图的数据
      *
      * @param  string  $key
      * @return mixed
@@ -318,6 +345,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Set a piece of data on the view.
+	 * 在视图上设置一段数据
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -330,6 +358,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Unset a piece of data from the view.
+	 * 从视图中取消设置一段数据
      *
      * @param  string  $key
      * @return void
@@ -341,6 +370,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Get a piece of data from the view.
+	 * 从视图获取一段数据
      *
      * @param  string  $key
      * @return mixed
@@ -352,6 +382,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Set a piece of data on the view.
+	 * 在视图上设置一段数据
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -364,6 +395,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Check if a piece of data is bound to the view.
+	 * 检查是否有数据块绑定到视图
      *
      * @param  string  $key
      * @return bool
@@ -375,6 +407,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Remove a piece of bound data from the view.
+	 * 从视图中删除一段绑定数据
      *
      * @param  string  $key
      * @return bool
@@ -386,6 +419,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Dynamically bind parameters to the view.
+	 * 动态地将参数绑定到视图
      *
      * @param  string  $method
      * @param  array   $parameters
@@ -404,6 +438,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Get the string contents of the view.
+	 * 获取视图的字符串内容
      *
      * @return string
      */

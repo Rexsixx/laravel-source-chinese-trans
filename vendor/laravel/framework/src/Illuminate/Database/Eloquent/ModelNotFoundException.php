@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，Eloquent，模型未发现异常
+ */
 
 namespace Illuminate\Database\Eloquent;
 
@@ -9,6 +12,7 @@ class ModelNotFoundException extends RuntimeException
 {
     /**
      * Name of the affected Eloquent model.
+	 * 受影响的Eloquent模型的名称
      *
      * @var string
      */
@@ -16,6 +20,7 @@ class ModelNotFoundException extends RuntimeException
 
     /**
      * The affected model IDs.
+	 * 受影响的型号id
      *
      * @var int|array
      */
@@ -23,6 +28,7 @@ class ModelNotFoundException extends RuntimeException
 
     /**
      * Set the affected Eloquent model and instance ids.
+	 * 设置受影响的Eloquent模型和实例id
      *
      * @param  string  $model
      * @param  int|array  $ids
@@ -46,6 +52,7 @@ class ModelNotFoundException extends RuntimeException
 
     /**
      * Get the affected Eloquent model.
+	 * 获取受影响的Eloquent模型
      *
      * @return string
      */
@@ -56,6 +63,7 @@ class ModelNotFoundException extends RuntimeException
 
     /**
      * Get the affected Eloquent model IDs.
+	 * 获取受影响的Eloquent模型id
      *
      * @return int|array
      */

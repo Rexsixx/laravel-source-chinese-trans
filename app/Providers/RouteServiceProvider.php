@@ -1,4 +1,7 @@
 <?php
+/**
+ * App，供应商，路由服务提供商
+ */
 
 namespace App\Providers;
 
@@ -9,6 +12,7 @@ class RouteServiceProvider extends ServiceProvider
 {
     /**
      * This namespace is applied to your controller routes.
+	 * 此命名空间应用于控制器路由。
      *
      * In addition, it is set as the URL generator's root namespace.
      *
@@ -18,6 +22,7 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define your route model bindings, pattern filters, etc.
+	 * 定义你的路由模型绑定、模式过滤器等。
      *
      * @return void
      */
@@ -30,6 +35,7 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define the routes for the application.
+	 * 为应用程序定义路由
      *
      * @return void
      */
@@ -44,6 +50,7 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define the "web" routes for the application.
+	 * 为应用程序定义“web”路由。
      *
      * These routes all receive session state, CSRF protection, etc.
      *
@@ -58,8 +65,10 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define the "api" routes for the application.
+	 * 定义应用程序的“api”路由。
      *
      * These routes are typically stateless.
+	 * 这些路由通常是无状态的
      *
      * @return void
      */

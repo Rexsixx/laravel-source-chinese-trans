@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，路由，路由动作
+ */
 
 namespace Illuminate\Routing;
 
@@ -11,6 +14,7 @@ class RouteAction
 {
     /**
      * Parse the given action into an array.
+	 * 将给定的动作解析为数组
      *
      * @param  string  $uri
      * @param  mixed  $action
@@ -48,6 +52,7 @@ class RouteAction
 
     /**
      * Get an action for a route that has no action.
+	 * 为没有动作的路由获取一个动作
      *
      * @param  string  $uri
      * @return array
@@ -61,6 +66,7 @@ class RouteAction
 
     /**
      * Find the callable in an action array.
+	 * 在动作数组中查找可调用对象
      *
      * @param  array  $action
      * @return callable
@@ -74,6 +80,7 @@ class RouteAction
 
     /**
      * Make an action for an invokable controller.
+	 * 为可调用控制器创建一个操作
      *
      * @param  string $action
      * @return string

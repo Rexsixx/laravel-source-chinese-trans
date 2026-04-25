@@ -14,6 +14,7 @@ class AuthMakeCommand extends Command
 
     /**
      * The name and signature of the console command.
+	 * 控制台命令的名称和签名
      *
      * @var string
      */
@@ -23,6 +24,7 @@ class AuthMakeCommand extends Command
 
     /**
      * The console command description.
+	 * console命令说明
      *
      * @var string
      */
@@ -30,6 +32,7 @@ class AuthMakeCommand extends Command
 
     /**
      * The views that need to be exported.
+	 * 需要导出的视图
      *
      * @var array
      */
@@ -44,6 +47,7 @@ class AuthMakeCommand extends Command
 
     /**
      * Execute the console command.
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -71,6 +75,7 @@ class AuthMakeCommand extends Command
 
     /**
      * Create the directories for the files.
+	 * 为文件创建目录
      *
      * @return void
      */
@@ -87,6 +92,7 @@ class AuthMakeCommand extends Command
 
     /**
      * Export the authentication views.
+	 * 导出认证视图
      *
      * @return void
      */
@@ -108,6 +114,7 @@ class AuthMakeCommand extends Command
 
     /**
      * Compiles the HomeController stub.
+	 * 编译HomeController存根
      *
      * @return string
      */

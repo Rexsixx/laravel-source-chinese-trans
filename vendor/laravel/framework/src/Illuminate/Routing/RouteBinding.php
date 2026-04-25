@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，路由，路由绑定
+ */
 
 namespace Illuminate\Routing;
 
@@ -10,6 +13,7 @@ class RouteBinding
 {
     /**
      * Create a Route model binding for a given callback.
+	 * 为给定的回调创建一个Route模型绑定
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  \Closure|string  $binder
@@ -26,6 +30,7 @@ class RouteBinding
 
     /**
      * Create a class based binding using the IoC container.
+	 * 使用IoC容器创建基于类的绑定
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  string  $binding
@@ -47,6 +52,7 @@ class RouteBinding
 
     /**
      * Create a Route model binding for a model.
+	 * 为模型创建一个Route模型绑定
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  string  $class

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Auth，密码，密码重置服务提供商
+ */
 
 namespace Illuminate\Auth\Passwords;
 
@@ -8,6 +11,7 @@ class PasswordResetServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
+	 * 指示是否延迟加载提供程序
      *
      * @var bool
      */
@@ -15,6 +19,7 @@ class PasswordResetServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
+	 * 注册服务提供者
      *
      * @return void
      */
@@ -25,6 +30,7 @@ class PasswordResetServiceProvider extends ServiceProvider
 
     /**
      * Register the password broker instance.
+	 * 注册密码代理实例
      *
      * @return void
      */
@@ -41,6 +47,7 @@ class PasswordResetServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
+	 * 获取提供者提供的服务
      *
      * @return array
      */

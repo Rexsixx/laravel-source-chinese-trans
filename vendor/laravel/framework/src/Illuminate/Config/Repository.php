@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，配置，存储库
+ */
 
 namespace Illuminate\Config;
 
@@ -10,6 +13,7 @@ class Repository implements ArrayAccess, ConfigContract
 {
     /**
      * All of the configuration items.
+	 * 所有的配置项
      *
      * @var array
      */
@@ -17,6 +21,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Create a new configuration repository.
+	 * 创建新的配置存储库
      *
      * @param  array  $items
      * @return void
@@ -28,6 +33,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Determine if the given configuration value exists.
+	 * 确定给定的配置值是否存在
      *
      * @param  string  $key
      * @return bool
@@ -39,6 +45,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Get the specified configuration value.
+	 * 获取指定的配置值
      *
      * @param  array|string  $key
      * @param  mixed   $default
@@ -55,6 +62,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Get many configuration values.
+	 * 获取许多配置值
      *
      * @param  array  $keys
      * @return array
@@ -76,6 +84,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Set a given configuration value.
+	 * 设置给定的配置值
      *
      * @param  array|string  $key
      * @param  mixed   $value
@@ -92,6 +101,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Prepend a value onto an array configuration value.
+	 * 将值Prepend用于数组配置值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -108,6 +118,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Push a value onto an array configuration value.
+	 * 将值推到数组配置值上
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -124,6 +135,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Get all of the configuration items for the application.
+	 * 获取应用程序的所有配置项
      *
      * @return array
      */
@@ -134,6 +146,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Determine if the given configuration option exists.
+	 * 确定给定的配置选项是否存在
      *
      * @param  string  $key
      * @return bool
@@ -145,6 +158,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Get a configuration option.
+	 * 获取一个配置选项
      *
      * @param  string  $key
      * @return mixed
@@ -156,6 +170,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Set a configuration option.
+	 * 设置配置选项
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -168,6 +183,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Unset a configuration option.
+	 * 取消配置选项
      *
      * @param  string  $key
      * @return void

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，电子邮件，运送，Ses 运送
+ */
 
 namespace Illuminate\Mail\Transport;
 
@@ -9,6 +12,7 @@ class SesTransport extends Transport
 {
     /**
      * The Amazon SES instance.
+	 * Amazon SES实例
      *
      * @var \Aws\Ses\SesClient
      */
@@ -16,6 +20,7 @@ class SesTransport extends Transport
 
     /**
      * Create a new SES transport instance.
+	 * 创建一个新的SES传输实例
      *
      * @param  \Aws\Ses\SesClient  $ses
      * @return void

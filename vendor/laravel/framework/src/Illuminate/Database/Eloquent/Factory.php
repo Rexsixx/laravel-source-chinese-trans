@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，Eloquent，工厂
+ */
 
 namespace Illuminate\Database\Eloquent;
 
@@ -10,6 +13,7 @@ class Factory implements ArrayAccess
 {
     /**
      * The model definitions in the container.
+	 * 容器中的模型定义
      *
      * @var array
      */
@@ -17,6 +21,7 @@ class Factory implements ArrayAccess
 
     /**
      * The registered model states.
+	 * 注册的模型状态
      *
      * @var array
      */
@@ -24,6 +29,7 @@ class Factory implements ArrayAccess
 
     /**
      * The Faker instance for the builder.
+	 * 生成器的Faker实例
      *
      * @var \Faker\Generator
      */
@@ -31,6 +37,7 @@ class Factory implements ArrayAccess
 
     /**
      * Create a new factory instance.
+	 * 创建一个新的工厂实例
      *
      * @param  \Faker\Generator  $faker
      * @return void
@@ -42,6 +49,7 @@ class Factory implements ArrayAccess
 
     /**
      * Create a new factory container.
+	 * 创建一个新的工厂容器
      *
      * @param  \Faker\Generator  $faker
      * @param  string|null  $pathToFactories
@@ -56,6 +64,7 @@ class Factory implements ArrayAccess
 
     /**
      * Define a class with a given short-name.
+	 * 用给定的短名称定义一个类
      *
      * @param  string  $class
      * @param  string  $name
@@ -69,6 +78,7 @@ class Factory implements ArrayAccess
 
     /**
      * Define a class with a given set of attributes.
+	 * 用一组给定的属性定义一个类
      *
      * @param  string  $class
      * @param  callable  $attributes
@@ -84,6 +94,7 @@ class Factory implements ArrayAccess
 
     /**
      * Define a state with a given set of attributes.
+	 * 用一组给定的属性定义一个状态
      *
      * @param  string  $class
      * @param  string  $state
@@ -99,6 +110,7 @@ class Factory implements ArrayAccess
 
     /**
      * Create an instance of the given model and persist it to the database.
+	 * 创建给定模型的实例并将其持久化到数据库中
      *
      * @param  string  $class
      * @param  array  $attributes
@@ -111,6 +123,7 @@ class Factory implements ArrayAccess
 
     /**
      * Create an instance of the given model and type and persist it to the database.
+	 * 创建给定模型和类型的实例，并将其持久化到数据库中。
      *
      * @param  string  $class
      * @param  string  $name
@@ -124,6 +137,7 @@ class Factory implements ArrayAccess
 
     /**
      * Create an instance of the given model.
+	 * 创建给定模型的实例
      *
      * @param  string  $class
      * @param  array  $attributes
@@ -136,6 +150,7 @@ class Factory implements ArrayAccess
 
     /**
      * Create an instance of the given model and type.
+	 * 创建给定模型和类型的实例
      *
      * @param  string  $class
      * @param  string  $name
@@ -149,6 +164,7 @@ class Factory implements ArrayAccess
 
     /**
      * Get the raw attribute array for a given named model.
+	 * 获取给定命名模型的原始属性数组
      *
      * @param  string  $class
      * @param  string  $name
@@ -162,6 +178,7 @@ class Factory implements ArrayAccess
 
     /**
      * Get the raw attribute array for a given model.
+	 * 获取给定模型的原始属性数组
      *
      * @param  string  $class
      * @param  array  $attributes
@@ -177,6 +194,7 @@ class Factory implements ArrayAccess
 
     /**
      * Create a builder for the given model.
+	 * 为给定的模型创建一个构建器
      *
      * @param  string  $class
      * @param  string  $name
@@ -189,6 +207,7 @@ class Factory implements ArrayAccess
 
     /**
      * Load factories from path.
+	 * 从路径加载工厂
      *
      * @param  string  $path
      * @return $this
@@ -208,6 +227,7 @@ class Factory implements ArrayAccess
 
     /**
      * Determine if the given offset exists.
+	 * 确定给定的偏移量是否存在
      *
      * @param  string  $offset
      * @return bool
@@ -219,6 +239,7 @@ class Factory implements ArrayAccess
 
     /**
      * Get the value of the given offset.
+	 * 获取给定偏移量的值
      *
      * @param  string  $offset
      * @return mixed
@@ -230,6 +251,7 @@ class Factory implements ArrayAccess
 
     /**
      * Set the given offset to the given value.
+	 * 将给定偏移量设置为给定值
      *
      * @param  string  $offset
      * @param  callable  $value
@@ -242,6 +264,7 @@ class Factory implements ArrayAccess
 
     /**
      * Unset the value at the given offset.
+	 * 在给定偏移量处取消值的设置
      *
      * @param  string  $offset
      * @return void

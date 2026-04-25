@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，路由，控制台，控制器设置命令
+ */
 
 namespace Illuminate\Routing\Console;
 
@@ -11,6 +14,7 @@ class ControllerMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -18,6 +22,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * The console command description.
+	 * console命令说明
      *
      * @var string
      */
@@ -25,6 +30,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
+	 * 生成的类的类型
      *
      * @var string
      */
@@ -32,6 +38,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
+	 * 获取生成器的存根文件
      *
      * @return string
      */
@@ -50,6 +57,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
+	 * 获取类的默认名称空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -61,6 +69,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * Build the class with the given name.
+	 * 用给定的名称构建类。
      *
      * Remove the base controller import if we are already in base namespace.
      *
@@ -90,6 +99,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * Build the replacements for a parent controller.
+	 * 构建父控制器的替代品
      *
      * @return array
      */
@@ -112,6 +122,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * Build the model replacement values.
+	 * 构建模型替换值
      *
      * @param  array  $replace
      * @return array
@@ -135,6 +146,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * Get the fully-qualified model class name.
+	 * 获取完全限定的模型类名
      *
      * @param  string  $model
      * @return string
@@ -156,6 +168,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * Get the console command options.
+	 * 获取控制台命令选项
      *
      * @return array
      */

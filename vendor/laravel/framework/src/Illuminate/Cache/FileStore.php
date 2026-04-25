@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，缓存，文件存储
+ */
 
 namespace Illuminate\Cache;
 
@@ -13,6 +16,7 @@ class FileStore implements Store
 
     /**
      * The Illuminate Filesystem instance.
+	 * Illuminate文件系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -20,6 +24,7 @@ class FileStore implements Store
 
     /**
      * The file cache directory.
+	 * 文件缓存目录
      *
      * @var string
      */
@@ -27,6 +32,7 @@ class FileStore implements Store
 
     /**
      * Create a new file cache store instance.
+	 * 创建一个新的文件缓存存储实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string  $directory
@@ -40,6 +46,7 @@ class FileStore implements Store
 
     /**
      * Retrieve an item from the cache by key.
+	 * 按键从缓存中检索项
      *
      * @param  string|array  $key
      * @return mixed
@@ -51,6 +58,7 @@ class FileStore implements Store
 
     /**
      * Store an item in the cache for a given number of minutes.
+	 * 将项存储在缓存中给定的分钟数
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -68,6 +76,7 @@ class FileStore implements Store
 
     /**
      * Create the file cache directory if necessary.
+	 * 如果需要，创建文件缓存目录。
      *
      * @param  string  $path
      * @return void
@@ -81,6 +90,7 @@ class FileStore implements Store
 
     /**
      * Increment the value of an item in the cache.
+	 * 增加缓存中项的值
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -97,6 +107,7 @@ class FileStore implements Store
 
     /**
      * Decrement the value of an item in the cache.
+	 * 递减缓存中项的值
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -109,6 +120,7 @@ class FileStore implements Store
 
     /**
      * Store an item in the cache indefinitely.
+	 * 将项无限期地存储在缓存中
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -121,6 +133,7 @@ class FileStore implements Store
 
     /**
      * Remove an item from the cache.
+	 * 从缓存中删除项
      *
      * @param  string  $key
      * @return bool
@@ -136,6 +149,7 @@ class FileStore implements Store
 
     /**
      * Remove all items from the cache.
+	 * 从缓存中删除所有项
      *
      * @return bool
      */
@@ -156,6 +170,7 @@ class FileStore implements Store
 
     /**
      * Retrieve an item and expiry time from the cache by key.
+	 * 按键从缓存中检索项和过期时间
      *
      * @param  string  $key
      * @return array
@@ -196,6 +211,7 @@ class FileStore implements Store
 
     /**
      * Get a default empty payload for the cache.
+	 * 获取缓存的默认空有效负载
      *
      * @return array
      */
@@ -206,6 +222,7 @@ class FileStore implements Store
 
     /**
      * Get the full path for the given cache key.
+	 * 获取给定缓存键的完整路径
      *
      * @param  string  $key
      * @return string
@@ -219,6 +236,7 @@ class FileStore implements Store
 
     /**
      * Get the expiration time based on the given minutes.
+	 * 获取基于给定分钟的过期时间
      *
      * @param  float|int  $minutes
      * @return int
@@ -232,6 +250,7 @@ class FileStore implements Store
 
     /**
      * Get the Filesystem instance.
+	 * 获取Filesystem实例
      *
      * @return \Illuminate\Filesystem\Filesystem
      */
@@ -242,6 +261,7 @@ class FileStore implements Store
 
     /**
      * Get the working directory of the cache.
+	 * 获取缓存的工作目录
      *
      * @return string
      */
@@ -252,6 +272,7 @@ class FileStore implements Store
 
     /**
      * Get the cache key prefix.
+	 * 获取缓存键前缀
      *
      * @return string
      */

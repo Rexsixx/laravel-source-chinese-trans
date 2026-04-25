@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Auth，请求警卫
+ */
 
 namespace Illuminate\Auth;
 
@@ -13,6 +16,7 @@ class RequestGuard implements Guard
 
     /**
      * The guard callback.
+	 * 卫兵回调
      *
      * @var callable
      */
@@ -20,6 +24,7 @@ class RequestGuard implements Guard
 
     /**
      * The request instance.
+	 * 请求实例
      *
      * @var \Illuminate\Http\Request
      */
@@ -27,6 +32,7 @@ class RequestGuard implements Guard
 
     /**
      * Create a new authentication guard.
+	 * 创建一个新的身份验证保护
      *
      * @param  callable  $callback
      * @param  \Illuminate\Http\Request  $request
@@ -42,6 +48,7 @@ class RequestGuard implements Guard
 
     /**
      * Get the currently authenticated user.
+	 * 获取当前经过身份验证的用户
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
@@ -61,6 +68,7 @@ class RequestGuard implements Guard
 
     /**
      * Validate a user's credentials.
+	 * 验证用户的凭据
      *
      * @param  array  $credentials
      * @return bool
@@ -74,6 +82,7 @@ class RequestGuard implements Guard
 
     /**
      * Set the current request instance.
+	 * 设置当前请求实例
      *
      * @param  \Illuminate\Http\Request  $request
      * @return $this

@@ -17,6 +17,7 @@ class Failed
 
     /**
      * The credentials provided by the attempter.
+	 * 由尝试器提供的凭证
      *
      * @var array
      */

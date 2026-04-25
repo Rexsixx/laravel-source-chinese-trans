@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，电子邮件，编辑器
+ */
 
 namespace Illuminate\Mail;
 
@@ -11,6 +14,7 @@ class Markdown
 {
     /**
      * The view factory implementation.
+	 * 视图工厂实现
      *
      * @var \Illuminate\Contracts\View\Factory
      */
@@ -18,6 +22,7 @@ class Markdown
 
     /**
      * The current theme being used when generating emails.
+	 * 生成电子邮件时使用的当前主题
      *
      * @var string
      */
@@ -25,6 +30,7 @@ class Markdown
 
     /**
      * The registered component paths.
+	 * 已注册的组件路径
      *
      * @var array
      */
@@ -32,6 +38,7 @@ class Markdown
 
     /**
      * Create a new Markdown renderer instance.
+	 * 创建一个新的Markdown渲染器实例
      *
      * @param  \Illuminate\Contracts\View\Factory  $view
      * @param  array  $options
@@ -46,6 +53,7 @@ class Markdown
 
     /**
      * Render the Markdown template into HTML.
+	 * 将Markdown模板呈现为HTML
      *
      * @param  string  $view
      * @param  array  $data
@@ -67,6 +75,7 @@ class Markdown
 
     /**
      * Render the Markdown template into HTML.
+	 * 将Markdown模板呈现为HTML
      *
      * @param  string  $view
      * @param  array  $data
@@ -87,6 +96,7 @@ class Markdown
 
     /**
      * Parse the given Markdown text into HTML.
+	 * 将给定的Markdown文本解析为HTML
      *
      * @param  string  $text
      * @return \Illuminate\Support\HtmlString
@@ -100,6 +110,7 @@ class Markdown
 
     /**
      * Get the HTML component paths.
+	 * 获取HTML组件路径
      *
      * @return array
      */
@@ -112,6 +123,7 @@ class Markdown
 
     /**
      * Get the Markdown component paths.
+	 * 获取Markdown组件路径
      *
      * @return array
      */
@@ -124,6 +136,7 @@ class Markdown
 
     /**
      * Get the component paths.
+	 * 获取组件路径
      *
      * @return array
      */
@@ -136,6 +149,7 @@ class Markdown
 
     /**
      * Register new mail component paths.
+	 * 注册新的邮件组件路径
      *
      * @param  array  $paths
      * @return void
@@ -147,6 +161,7 @@ class Markdown
 
     /**
      * Set the default theme to be used.
+	 * 设置要使用的默认主题
      *
      * @param  string  $theme
      * @return $this

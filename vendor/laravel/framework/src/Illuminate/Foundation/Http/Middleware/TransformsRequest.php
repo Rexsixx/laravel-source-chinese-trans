@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，Http，中间件，转换请求
+ */
 
 namespace Illuminate\Foundation\Http\Middleware;
 
@@ -9,6 +12,7 @@ class TransformsRequest
 {
     /**
      * The additional attributes passed to the middleware.
+	 * 传递给中间件的附加属性
      *
      * @var array
      */
@@ -16,6 +20,7 @@ class TransformsRequest
 
     /**
      * Handle an incoming request.
+	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -32,6 +37,7 @@ class TransformsRequest
 
     /**
      * Clean the request's data.
+	 * 清理请求的数据
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void
@@ -49,6 +55,7 @@ class TransformsRequest
 
     /**
      * Clean the data in the parameter bag.
+	 * 清理参数袋中的数据。
      *
      * @param  \Symfony\Component\HttpFoundation\ParameterBag  $bag
      * @return void
@@ -60,6 +67,7 @@ class TransformsRequest
 
     /**
      * Clean the data in the given array.
+	 * 清除给定数组中的数据
      *
      * @param  array  $data
      * @return array
@@ -73,6 +81,7 @@ class TransformsRequest
 
     /**
      * Clean the given value.
+	 * 清除给定的值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -89,6 +98,7 @@ class TransformsRequest
 
     /**
      * Transform the given value.
+	 * 变换给定的值
      *
      * @param  string  $key
      * @param  mixed  $value

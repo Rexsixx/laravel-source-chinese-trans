@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，通知，频道，Slack Webhook 通道
+ */
 
 namespace Illuminate\Notifications\Channels;
 
@@ -12,6 +15,7 @@ class SlackWebhookChannel
 {
     /**
      * The HTTP client instance.
+	 * HTTP客户端实例
      *
      * @var \GuzzleHttp\Client
      */
@@ -19,6 +23,7 @@ class SlackWebhookChannel
 
     /**
      * Create a new Slack channel instance.
+	 * 创建一个新的Slack通道实例
      *
      * @param  \GuzzleHttp\Client  $http
      * @return void
@@ -30,6 +35,7 @@ class SlackWebhookChannel
 
     /**
      * Send the given notification.
+	 * 发送给定的通知
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -48,6 +54,7 @@ class SlackWebhookChannel
 
     /**
      * Build up a JSON payload for the Slack webhook.
+	 * 为Slack webhook构建一个JSON有效负载
      *
      * @param  \Illuminate\Notifications\Messages\SlackMessage  $message
      * @return array
@@ -74,6 +81,7 @@ class SlackWebhookChannel
 
     /**
      * Format the message's attachments.
+	 * 格式化消息的附件
      *
      * @param  \Illuminate\Notifications\Messages\SlackMessage  $message
      * @return array
@@ -103,6 +111,7 @@ class SlackWebhookChannel
 
     /**
      * Format the attachment's fields.
+	 * 设置附件字段的格式
      *
      * @param  \Illuminate\Notifications\Messages\SlackAttachment  $attachment
      * @return array

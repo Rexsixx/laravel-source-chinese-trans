@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，通知，信息，Slack 的附件
+ */
 
 namespace Illuminate\Notifications\Messages;
 
@@ -10,6 +13,7 @@ class SlackAttachment
 
     /**
      * The attachment's title.
+	 * 附件的标题
      *
      * @var string
      */
@@ -17,6 +21,7 @@ class SlackAttachment
 
     /**
      * The attachment's URL.
+	 * 附件的URL
      *
      * @var string
      */
@@ -24,6 +29,7 @@ class SlackAttachment
 
     /**
      * The attachment's text content.
+	 * 附件的文本内容
      *
      * @var string
      */
@@ -31,6 +37,7 @@ class SlackAttachment
 
     /**
      * A plain-text summary of the attachment.
+	 * 附件的纯文本摘要
      *
      * @var string
      */
@@ -38,6 +45,7 @@ class SlackAttachment
 
     /**
      * The attachment's color.
+	 * 附件的颜色
      *
      * @var string
      */
@@ -45,6 +53,7 @@ class SlackAttachment
 
     /**
      * The attachment's fields.
+	 * 附件的字段
      *
      * @var array
      */
@@ -52,6 +61,7 @@ class SlackAttachment
 
     /**
      * The fields containing markdown.
+	 * 包含降价的字段
      *
      * @var array
      */
@@ -59,6 +69,7 @@ class SlackAttachment
 
     /**
      * The attachment's image url.
+	 * 附件的图像url
      *
      * @var string
      */
@@ -66,6 +77,7 @@ class SlackAttachment
 
     /**
      * The attachment's thumb url.
+	 * 附件的thum burl
      *
      * @var string
      */
@@ -73,6 +85,7 @@ class SlackAttachment
 
     /**
      * The attachment author's name.
+	 * 附件作者姓名
      *
      * @var string
      */
@@ -80,6 +93,7 @@ class SlackAttachment
 
     /**
      * The attachment author's link.
+	 * 附件作者的链接
      *
      * @var string
      */
@@ -87,6 +101,7 @@ class SlackAttachment
 
     /**
      * The attachment author's icon.
+	 * 附件作者的图标
      *
      * @var string
      */
@@ -94,6 +109,7 @@ class SlackAttachment
 
     /**
      * The attachment's footer.
+	 * 附件的页脚
      *
      * @var string
      */
@@ -101,6 +117,7 @@ class SlackAttachment
 
     /**
      * The attachment's footer icon.
+	 * 附件的页脚图标
      *
      * @var string
      */
@@ -108,6 +125,7 @@ class SlackAttachment
 
     /**
      * The attachment's timestamp.
+	 * 附件的时间戳
      *
      * @var int
      */
@@ -115,6 +133,7 @@ class SlackAttachment
 
     /**
      * Set the title of the attachment.
+	 * 设置附件的标题
      *
      * @param  string  $title
      * @param  string|null  $url
@@ -130,6 +149,7 @@ class SlackAttachment
 
     /**
      * Set the content (text) of the attachment.
+	 * 设置附件的内容（文本）
      *
      * @param  string  $content
      * @return $this
@@ -143,6 +163,7 @@ class SlackAttachment
 
     /**
      * A plain-text summary of the attachment.
+	 * 附件的纯文本摘要
      *
      * @param  string  $fallback
      * @return $this
@@ -156,6 +177,7 @@ class SlackAttachment
 
     /**
      * Set the color of the attachment.
+	 * 设置附件的颜色
      *
      * @param  string  $color
      * @return $this
@@ -169,6 +191,7 @@ class SlackAttachment
 
     /**
      * Add a field to the attachment.
+	 * 向附件添加一个字段
      *
      * @param  \Closure|string $title
      * @param  string $content
@@ -193,6 +216,7 @@ class SlackAttachment
 
     /**
      * Set the fields of the attachment.
+	 * 设置附件的字段
      *
      * @param  array  $fields
      * @return $this
@@ -206,6 +230,7 @@ class SlackAttachment
 
     /**
      * Set the fields containing markdown.
+	 * 设置包含降价的字段
      *
      * @param  array  $fields
      * @return $this
@@ -219,6 +244,7 @@ class SlackAttachment
 
     /**
      * Set the image URL.
+	 * 设置图像URL
      *
      * @param  string  $url
      * @return $this
@@ -232,6 +258,7 @@ class SlackAttachment
 
     /**
      * Set the URL to the attachment thumbnail.
+	 * 将URL设置为附件缩略图
      *
      * @param  string  $url
      * @return $this
@@ -245,6 +272,7 @@ class SlackAttachment
 
     /**
      * Set the author of the attachment.
+	 * 设置附件的作者
      *
      * @param  string  $name
      * @param  string|null  $link
@@ -262,6 +290,7 @@ class SlackAttachment
 
     /**
      * Set the footer content.
+	 * 设置页脚内容
      *
      * @param  string  $footer
      * @return $this
@@ -275,6 +304,7 @@ class SlackAttachment
 
     /**
      * Set the footer icon.
+	 * 设置页脚图标
      *
      * @param  string $icon
      * @return $this
@@ -288,6 +318,7 @@ class SlackAttachment
 
     /**
      * Set the timestamp.
+	 * 设置时间戳
      *
      * @param  \DateTimeInterface|\DateInterval|int  $timestamp
      * @return $this

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，引导，处理异常
+ */
 
 namespace Illuminate\Foundation\Bootstrap;
 
@@ -14,6 +17,7 @@ class HandleExceptions
 {
     /**
      * The application instance.
+	 * 应用实例
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -21,6 +25,7 @@ class HandleExceptions
 
     /**
      * Bootstrap the given application.
+	 * 引导给定的应用程序
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -44,6 +49,7 @@ class HandleExceptions
 
     /**
      * Convert PHP errors to ErrorException instances.
+	 * 将PHP错误转换为ErrorException实例
      *
      * @param  int  $level
      * @param  string  $message
@@ -63,6 +69,7 @@ class HandleExceptions
 
     /**
      * Handle an uncaught exception from the application.
+	 * 处理应用程序中未捕获的异常
      *
      * Note: Most exceptions can be handled via the try / catch block in
      * the HTTP and Console kernels. But, fatal error exceptions must
@@ -92,6 +99,7 @@ class HandleExceptions
 
     /**
      * Render an exception to the console.
+	 * 向控制台呈现一个异常
      *
      * @param  \Exception  $e
      * @return void
@@ -103,6 +111,7 @@ class HandleExceptions
 
     /**
      * Render an exception as an HTTP response and send it.
+	 * 将异常呈现为HTTP响应并发送
      *
      * @param  \Exception  $e
      * @return void
@@ -114,6 +123,7 @@ class HandleExceptions
 
     /**
      * Handle the PHP shutdown event.
+	 * 处理PHP关闭事件
      *
      * @return void
      */
@@ -126,6 +136,7 @@ class HandleExceptions
 
     /**
      * Create a new fatal exception instance from an error array.
+	 * 从错误数组创建一个新的致命异常实例
      *
      * @param  array  $error
      * @param  int|null  $traceOffset
@@ -140,6 +151,7 @@ class HandleExceptions
 
     /**
      * Determine if the error type is fatal.
+	 * 确定错误类型是否致命
      *
      * @param  int  $type
      * @return bool
@@ -151,6 +163,7 @@ class HandleExceptions
 
     /**
      * Get an instance of the exception handler.
+	 * 获取异常处理程序的实例
      *
      * @return \Illuminate\Contracts\Debug\ExceptionHandler
      */

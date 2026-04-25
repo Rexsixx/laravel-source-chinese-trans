@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，缓存，标记缓存
+ */
 
 namespace Illuminate\Cache;
 
@@ -10,6 +13,7 @@ class TaggedCache extends Repository
 
     /**
      * The tag set instance.
+	 * 标记集实例
      *
      * @var \Illuminate\Cache\TagSet
      */
@@ -17,6 +21,7 @@ class TaggedCache extends Repository
 
     /**
      * Create a new tagged cache instance.
+	 * 创建一个新的带标签的缓存实例
      *
      * @param  \Illuminate\Contracts\Cache\Store  $store
      * @param  \Illuminate\Cache\TagSet  $tags
@@ -31,6 +36,7 @@ class TaggedCache extends Repository
 
     /**
      * Increment the value of an item in the cache.
+	 * 在缓存中增加一个项目的值
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -43,6 +49,7 @@ class TaggedCache extends Repository
 
     /**
      * Increment the value of an item in the cache.
+	 * 增加缓存中项的值
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -55,6 +62,7 @@ class TaggedCache extends Repository
 
     /**
      * Remove all items from the cache.
+	 * 从缓存中删除所有项
      *
      * @return void
      */
@@ -73,6 +81,7 @@ class TaggedCache extends Repository
 
     /**
      * Get a fully qualified key for a tagged item.
+	 * 在缓存中增加一个项目的值
      *
      * @param  string  $key
      * @return string
@@ -84,6 +93,7 @@ class TaggedCache extends Repository
 
     /**
      * Fire an event for this cache instance.
+	 * 触发此缓存实例的事件
      *
      * @param  string  $event
      * @return void

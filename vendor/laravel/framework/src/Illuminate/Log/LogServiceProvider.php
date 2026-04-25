@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，日志，日志服务提供商
+ */
 
 namespace Illuminate\Log;
 
@@ -9,6 +12,7 @@ class LogServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
+	 * 注册服务提供者
      *
      * @return void
      */
@@ -21,6 +25,7 @@ class LogServiceProvider extends ServiceProvider
 
     /**
      * Create the logger.
+	 * 创建日志记录器
      *
      * @return \Illuminate\Log\Writer
      */
@@ -41,6 +46,7 @@ class LogServiceProvider extends ServiceProvider
 
     /**
      * Get the name of the log "channel".
+	 * 获取日志“通道”的名称
      *
      * @return string
      */
@@ -56,6 +62,7 @@ class LogServiceProvider extends ServiceProvider
 
     /**
      * Configure the Monolog handlers for the application.
+	 * 为应用程序配置独白处理程序
      *
      * @param  \Illuminate\Log\Writer  $log
      * @return void
@@ -67,6 +74,7 @@ class LogServiceProvider extends ServiceProvider
 
     /**
      * Configure the Monolog handlers for the application.
+	 * 为应用程序配置独白处理程序
      *
      * @param  \Illuminate\Log\Writer  $log
      * @return void
@@ -81,6 +89,7 @@ class LogServiceProvider extends ServiceProvider
 
     /**
      * Configure the Monolog handlers for the application.
+	 * 为应用程序配置独白处理程序
      *
      * @param  \Illuminate\Log\Writer  $log
      * @return void
@@ -95,6 +104,7 @@ class LogServiceProvider extends ServiceProvider
 
     /**
      * Configure the Monolog handlers for the application.
+	 * 为应用程序配置独白处理程序
      *
      * @param  \Illuminate\Log\Writer  $log
      * @return void
@@ -106,6 +116,7 @@ class LogServiceProvider extends ServiceProvider
 
     /**
      * Configure the Monolog handlers for the application.
+	 * 为应用程序配置独白处理程序
      *
      * @param  \Illuminate\Log\Writer  $log
      * @return void
@@ -117,6 +128,7 @@ class LogServiceProvider extends ServiceProvider
 
     /**
      * Get the default log handler.
+	 * 获取默认日志处理程序
      *
      * @return string
      */
@@ -131,6 +143,7 @@ class LogServiceProvider extends ServiceProvider
 
     /**
      * Get the log level for the application.
+	 * 获取应用程序的日志级别
      *
      * @return string
      */
@@ -145,6 +158,7 @@ class LogServiceProvider extends ServiceProvider
 
     /**
      * Get the maximum number of log files for the application.
+	 * 获取应用程序的最大日志文件数
      *
      * @return int
      */

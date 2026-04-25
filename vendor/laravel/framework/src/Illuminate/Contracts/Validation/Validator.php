@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，契约，验证，验证器
+ */
 
 namespace Illuminate\Contracts\Validation;
 
@@ -8,6 +11,7 @@ interface Validator extends MessageProvider
 {
     /**
      * Determine if the data fails the validation rules.
+	 * 确定数据是否不符合验证规则
      *
      * @return bool
      */
@@ -15,6 +19,7 @@ interface Validator extends MessageProvider
 
     /**
      * Get the failed validation rules.
+	 * 获取失败的验证规则
      *
      * @return array
      */
@@ -22,6 +27,7 @@ interface Validator extends MessageProvider
 
     /**
      * Add conditions to a given field based on a Closure.
+	 * 根据Closure向给定字段添加条件
      *
      * @param  string  $attribute
      * @param  string|array  $rules
@@ -32,6 +38,7 @@ interface Validator extends MessageProvider
 
     /**
      * After an after validation callback.
+	 * 在验证后回调之后
      *
      * @param  callable|string  $callback
      * @return $this
@@ -40,6 +47,7 @@ interface Validator extends MessageProvider
 
     /**
      * Get all of the validation error messages.
+	 * 获取所有验证错误消息
      *
      * @return \Illuminate\Support\MessageBag
      */

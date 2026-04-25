@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，支持，供应商，认证服务提供商
+ */
 
 namespace Illuminate\Foundation\Support\Providers;
 
@@ -9,6 +12,7 @@ class AuthServiceProvider extends ServiceProvider
 {
     /**
      * The policy mappings for the application.
+	 * 应用程序的策略映射
      *
      * @var array
      */
@@ -16,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Register the application's policies.
+	 * 注册应用程序的策略
      *
      * @return void
      */

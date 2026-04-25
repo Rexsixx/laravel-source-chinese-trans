@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，架构，语法，SQLite 语法
+ */
 
 namespace Illuminate\Database\Schema\Grammars;
 
@@ -11,6 +14,7 @@ class SQLiteGrammar extends Grammar
 {
     /**
      * The possible column modifiers.
+	 * 可能的列修饰符
      *
      * @var array
      */
@@ -18,6 +22,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * The columns available as serials.
+	 * 作为序列可用的列
      *
      * @var array
      */
@@ -25,6 +30,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile the query to determine if a table exists.
+	 * 编译查询以确定表是否存在
      *
      * @return string
      */
@@ -35,6 +41,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile the query to determine the list of columns.
+	 * 编译查询以确定列列表
      *
      * @param  string  $table
      * @return string
@@ -46,6 +53,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a create table command.
+	 * 编译一个create table命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -748,6 +756,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial MultiPolygon type.
+	 * 为空间MultiPolygon类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -759,6 +768,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Get the SQL for a nullable column modifier.
+	 * 获取可空列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -771,6 +781,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Get the SQL for a default column modifier.
+	 * 获取默认列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -785,6 +796,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Get the SQL for an auto-increment column modifier.
+	 * 获取用于自动增量列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column

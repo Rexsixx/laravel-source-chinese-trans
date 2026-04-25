@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，事件，调度程序
+ */
 
 namespace Illuminate\Events;
 
@@ -17,6 +20,7 @@ class Dispatcher implements DispatcherContract
 {
     /**
      * The IoC container instance.
+	 * IoC容器实例
      *
      * @var \Illuminate\Contracts\Container\Container
      */
@@ -24,6 +28,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * The registered event listeners.
+	 * 已注册的事件侦听器
      *
      * @var array
      */
@@ -31,6 +36,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * The wildcard listeners.
+	 * 通配符侦听器
      *
      * @var array
      */
@@ -38,6 +44,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * The queue resolver instance.
+	 * 队列解析器实例
      *
      * @var callable
      */
@@ -45,6 +52,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Create a new event dispatcher instance.
+	 * 创建一个新的事件调度程序实例
      *
      * @param  \Illuminate\Contracts\Container\Container|null  $container
      * @return void
@@ -56,6 +64,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Register an event listener with the dispatcher.
+	 * 向调度程序注册事件侦听器
      *
      * @param  string|array  $events
      * @param  mixed  $listener
@@ -74,6 +83,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Setup a wildcard listener callback.
+	 * 设置一个通配符侦听器回调
      *
      * @param  string  $event
      * @param  mixed  $listener
@@ -86,6 +96,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Determine if a given event has listeners.
+	 * 确定给定事件是否有侦听器
      *
      * @param  string  $eventName
      * @return bool
@@ -97,6 +108,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Register an event and payload to be fired later.
+	 * 注册稍后要触发的事件和有效负载
      *
      * @param  string  $event
      * @param  array  $payload
@@ -111,6 +123,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Flush a set of pushed events.
+	 * 刷新一组推送的事件
      *
      * @param  string  $event
      * @return void
@@ -122,6 +135,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Register an event subscriber with the dispatcher.
+	 * 向调度程序注册事件订阅者
      *
      * @param  object|string  $subscriber
      * @return void
@@ -135,6 +149,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Resolve the subscriber instance.
+	 * 解析订户实例
      *
      * @param  object|string  $subscriber
      * @return mixed
@@ -150,6 +165,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Fire an event until the first non-null response is returned.
+	 * 触发一个事件，直到返回第一个非空响应。
      *
      * @param  string|object  $event
      * @param  mixed  $payload
@@ -162,6 +178,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Fire an event and call the listeners.
+	 * 触发一个事件并调用侦听器
      *
      * @param  string|object  $event
      * @param  mixed  $payload
@@ -175,6 +192,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Fire an event and call the listeners.
+	 * 触发一个事件并调用侦听器
      *
      * @param  string|object  $event
      * @param  mixed  $payload
@@ -221,6 +239,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Parse the given event and payload and prepare them for dispatching.
+	 * 解析给定的事件和有效负载，并为分派做好准备。
      *
      * @param  mixed  $event
      * @param  mixed  $payload
@@ -237,6 +256,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Determine if the payload has a broadcastable event.
+	 * 确定有效负载是否具有可广播的事件
      *
      * @param  array  $payload
      * @return bool
@@ -250,6 +270,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Check if event should be broadcasted by condition.
+	 * 检查是否应该按条件广播事件
      *
      * @param  mixed  $event
      * @return bool
@@ -262,6 +283,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Broadcast the given event class.
+	 * 广播给定的事件类
      *
      * @param  \Illuminate\Contracts\Broadcasting\ShouldBroadcast  $event
      * @return void
@@ -273,6 +295,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Get all of the listeners for a given event name.
+	 * 获取给定事件名称的所有侦听器
      *
      * @param  string  $eventName
      * @return array
@@ -292,6 +315,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Get the wildcard listeners for the event.
+	 * 获取事件的通配符侦听器
      *
      * @param  string  $eventName
      * @return array
@@ -311,6 +335,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Add the listeners for the event's interfaces to the given array.
+	 * 将事件接口的侦听器添加到给定数组中
      *
      * @param  string  $eventName
      * @param  array  $listeners
@@ -331,6 +356,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Register an event listener with the dispatcher.
+	 * 向调度程序注册事件侦听器
      *
      * @param  \Closure|string  $listener
      * @param  bool  $wildcard
@@ -353,6 +379,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Create a class based listener using the IoC container.
+	 * 使用IoC容器创建基于类的侦听器
      *
      * @param  string  $listener
      * @param  bool  $wildcard
@@ -373,6 +400,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Create the class based event callable.
+	 * 创建基于类的事件可调用对象
      *
      * @param  string  $listener
      * @return callable
@@ -390,6 +418,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Parse the class listener into class and method.
+	 * 将类侦听器解析为类和方法
      *
      * @param  string  $listener
      * @return array
@@ -401,6 +430,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Determine if the event handler class should be queued.
+	 * 确定是否应该对事件处理程序类进行排队
      *
      * @param  string  $class
      * @return bool
@@ -418,6 +448,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Create a callable for putting an event handler on the queue.
+	 * 创建一个可调用对象，用于将事件处理程序放到队列中。
      *
      * @param  string  $class
      * @param  string  $method
@@ -438,6 +469,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Determine if the event handler wants to be queued.
+	 * 确定事件处理程序是否要排队
      *
      * @param  string  $class
      * @param  array  $arguments
@@ -454,6 +486,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Queue the handler class.
+	 * 将处理程序类排队
      *
      * @param  string  $class
      * @param  string  $method
@@ -477,6 +510,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Create the listener and job for a queued listener.
+	 * 为队列侦听器创建侦听器和作业
      *
      * @param  string  $class
      * @param  string  $method
@@ -494,6 +528,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Propagate listener options to the job.
+	 * 将侦听器选项传播到作业
      *
      * @param  mixed  $listener
      * @param  mixed  $job
@@ -511,6 +546,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Remove a set of listeners from the dispatcher.
+	 * 从调度程序中删除一组侦听器
      *
      * @param  string  $event
      * @return void
@@ -526,6 +562,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Forget all of the pushed listeners.
+	 * 忘记所有被强迫的听众
      *
      * @return void
      */
@@ -540,6 +577,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Get the queue implementation from the resolver.
+	 * 从解析器获取队列实现
      *
      * @return \Illuminate\Contracts\Queue\Queue
      */
@@ -550,6 +588,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Set the queue resolver implementation.
+	 * 设置队列解析器实现
      *
      * @param  callable  $resolver
      * @return $this

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，连接器，连接器
+ */
 
 namespace Illuminate\Database\Connectors;
 
@@ -13,6 +16,7 @@ class Connector
 
     /**
      * The default PDO connection options.
+	 * 默认的PDO连接选项
      *
      * @var array
      */
@@ -26,6 +30,7 @@ class Connector
 
     /**
      * Create a new PDO connection.
+	 * 创建一个新的PDO连接
      *
      * @param  string  $dsn
      * @param  array   $config
@@ -51,6 +56,7 @@ class Connector
 
     /**
      * Create a new PDO connection instance.
+	 * 创建一个新的PDO连接实例
      *
      * @param  string  $dsn
      * @param  string  $username
@@ -69,6 +75,7 @@ class Connector
 
     /**
      * Determine if the connection is persistent.
+	 * 确定连接是否持久
      *
      * @param  array  $options
      * @return bool
@@ -81,6 +88,7 @@ class Connector
 
     /**
      * Handle an exception that occurred during connect execution.
+	 * 处理连接执行期间发生的异常
      *
      * @param  \Exception  $e
      * @param  string  $dsn
@@ -102,6 +110,7 @@ class Connector
 
     /**
      * Get the PDO options based on the configuration.
+	 * 根据配置获取PDO选项
      *
      * @param  array  $config
      * @return array
@@ -115,6 +124,7 @@ class Connector
 
     /**
      * Get the default PDO connection options.
+	 * 获取默认的PDO连接选项
      *
      * @return array
      */
@@ -125,6 +135,7 @@ class Connector
 
     /**
      * Set the default PDO connection options.
+	 * 设置默认的PDO连接选项
      *
      * @param  array  $options
      * @return void

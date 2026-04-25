@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，契约，加密，加密器
+ */
 
 namespace Illuminate\Contracts\Encryption;
 
@@ -6,6 +9,7 @@ interface Encrypter
 {
     /**
      * Encrypt the given value.
+	 * 加密给定的值
      *
      * @param  string  $value
      * @param  bool  $serialize
@@ -15,6 +19,7 @@ interface Encrypter
 
     /**
      * Decrypt the given value.
+	 * 解密给定的值
      *
      * @param  string  $payload
      * @param  bool  $unserialize

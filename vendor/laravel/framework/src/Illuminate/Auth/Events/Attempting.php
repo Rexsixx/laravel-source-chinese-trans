@@ -17,6 +17,7 @@ class Attempting
 
     /**
      * Indicates if the user should be "remembered".
+	 * 指示是否需要“记住”用户
      *
      * @var bool
      */
@@ -24,6 +25,7 @@ class Attempting
 
     /**
      * Create a new event instance.
+	 * 创建一个新的事件实例
      *
      * @param  array  $credentials
      * @param  bool  $remember

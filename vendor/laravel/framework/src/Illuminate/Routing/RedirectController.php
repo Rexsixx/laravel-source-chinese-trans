@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，路由，重定向控制器
+ */
 
 namespace Illuminate\Routing;
 
@@ -8,6 +11,7 @@ class RedirectController extends Controller
 {
     /**
      * Invoke the controller method.
+	 * 调用控制器方法
      *
      * @param  array  $args
      * @return \Illuminate\Http\RedirectResponse

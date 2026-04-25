@@ -32,6 +32,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * The custom password validator callback.
+	 * 自定义密码验证器回调
      *
      * @var \Closure
      */
@@ -39,6 +40,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Create a new password broker instance.
+	 * 创建一个新的密码代理实例
      *
      * @param  \Illuminate\Auth\Passwords\TokenRepositoryInterface  $tokens
      * @param  \Illuminate\Contracts\Auth\UserProvider  $users
@@ -53,6 +55,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Send a password reset link to a user.
+	 * 向用户发送密码重置链接
      *
      * @param  array  $credentials
      * @return string
@@ -80,6 +83,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Reset the password for the given token.
+	 * 重置给定令牌的密码
      *
      * @param  array  $credentials
      * @param  \Closure  $callback
@@ -110,6 +114,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Validate a password reset for the given credentials.
+	 * 验证给定凭据的密码重置
      *
      * @param  array  $credentials
      * @return \Illuminate\Contracts\Auth\CanResetPassword|string
@@ -133,6 +138,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Set a custom password validator.
+	 * 设置自定义密码验证器
      *
      * @param  \Closure  $callback
      * @return void
@@ -144,6 +150,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Determine if the passwords match for the request.
+	 * 确定密码是否与请求匹配
      *
      * @param  array  $credentials
      * @return bool
@@ -166,6 +173,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Determine if the passwords are valid for the request.
+	 * 确定密码对请求是否有效
      *
      * @param  array  $credentials
      * @return bool
@@ -182,6 +190,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Get the user for the given credentials.
+	 * 获取给定凭据的用户
      *
      * @param  array  $credentials
      * @return \Illuminate\Contracts\Auth\CanResetPassword|null
@@ -203,6 +212,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Create a new password reset token for the given user.
+	 * 为给定用户创建一个新的密码重置令牌
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword $user
      * @return string
@@ -214,6 +224,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Delete password reset tokens of the given user.
+	 * 删除给定用户的密码重置令牌
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword $user
      * @return void
@@ -225,6 +236,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Validate the given password reset token.
+	 * 验证给定的密码重置令牌
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword $user
      * @param  string $token
@@ -237,6 +249,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Get the password reset token repository implementation.
+	 * 获取密码重置令牌存储库实现
      *
      * @return \Illuminate\Auth\Passwords\TokenRepositoryInterface
      */

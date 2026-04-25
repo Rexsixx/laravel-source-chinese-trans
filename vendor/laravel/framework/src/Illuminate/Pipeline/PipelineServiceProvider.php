@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，管道，管道服务提供商
+ */
 
 namespace Illuminate\Pipeline;
 
@@ -9,6 +12,7 @@ class PipelineServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
+	 * 指示是否延迟加载提供程序
      *
      * @var bool
      */
@@ -16,6 +20,7 @@ class PipelineServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
+	 * 注册服务提供者
      *
      * @return void
      */
@@ -28,6 +33,7 @@ class PipelineServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
+	 * 获取提供者提供的服务
      *
      * @return array
      */

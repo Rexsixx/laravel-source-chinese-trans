@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，缓存，Redis 锁
+ */
 
 namespace Illuminate\Cache;
 
@@ -8,6 +11,7 @@ class RedisLock extends Lock implements LockContract
 {
     /**
      * The Redis factory implementation.
+	 * Redis工厂实现
      *
      * @var \Illuminate\Redis\Connections\Connection
      */
@@ -15,6 +19,7 @@ class RedisLock extends Lock implements LockContract
 
     /**
      * Create a new lock instance.
+	 * 创建一个新的锁实例
      *
      * @param  \Illuminate\Redis\Connections\Connection  $redis
      * @param  string  $name
@@ -30,6 +35,7 @@ class RedisLock extends Lock implements LockContract
 
     /**
      * Attempt to acquire the lock.
+	 * 尝试获取锁
      *
      * @return bool
      */
@@ -46,6 +52,7 @@ class RedisLock extends Lock implements LockContract
 
     /**
      * Release the lock.
+	 * 释放锁
      *
      * @return void
      */

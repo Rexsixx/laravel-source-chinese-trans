@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，电子邮件，传输管理者
+ */
 
 namespace Illuminate\Mail;
 
@@ -21,6 +24,7 @@ class TransportManager extends Manager
 {
     /**
      * Create an instance of the SMTP Swift Transport driver.
+	 * 创建SMTP Swift传输驱动程序的实例
      *
      * @return \Swift_SmtpTransport
      */
@@ -58,6 +62,7 @@ class TransportManager extends Manager
 
     /**
      * Create an instance of the Sendmail Swift Transport driver.
+	 * 创建Sendmail Swift Transport驱动程序的实例
      *
      * @return \Swift_SendmailTransport
      */
@@ -68,6 +73,7 @@ class TransportManager extends Manager
 
     /**
      * Create an instance of the Amazon SES Swift Transport driver.
+	 * 创建一个Amazon SES Swift Transport驱动程序的实例
      *
      * @return \Swift_SendmailTransport
      */
@@ -84,6 +90,7 @@ class TransportManager extends Manager
 
     /**
      * Add the SES credentials to the configuration array.
+	 * 将SES凭据添加到配置阵列
      *
      * @param  array  $config
      * @return array
@@ -99,6 +106,7 @@ class TransportManager extends Manager
 
     /**
      * Create an instance of the Mail Swift Transport driver.
+	 * 创建邮件Swift传输驱动程序的实例
      *
      * @return \Swift_SendmailTransport
      */
@@ -109,6 +117,7 @@ class TransportManager extends Manager
 
     /**
      * Create an instance of the Mailgun Swift Transport driver.
+	 * 创建Mailgun Swift Transport驱动程序的实例
      *
      * @return \Illuminate\Mail\Transport\MailgunTransport
      */
@@ -126,6 +135,7 @@ class TransportManager extends Manager
 
     /**
      * Create an instance of the Mandrill Swift Transport driver.
+	 * 创建一个Mandrill Swift Transport驱动程序的实例
      *
      * @return \Illuminate\Mail\Transport\MandrillTransport
      */
@@ -140,6 +150,7 @@ class TransportManager extends Manager
 
     /**
      * Create an instance of the SparkPost Swift Transport driver.
+	 * 创建一个SparkPost Swift Transport驱动程序的实例
      *
      * @return \Illuminate\Mail\Transport\SparkPostTransport
      */
@@ -154,6 +165,7 @@ class TransportManager extends Manager
 
     /**
      * Create an instance of the Log Swift Transport driver.
+	 * 创建Log Swift Transport驱动程序的实例
      *
      * @return \Illuminate\Mail\Transport\LogTransport
      */
@@ -164,6 +176,7 @@ class TransportManager extends Manager
 
     /**
      * Create an instance of the Array Swift Transport Driver.
+	 * 创建Array Swift Transport Driver的实例
      *
      * @return \Illuminate\Mail\Transport\ArrayTransport
      */
@@ -174,6 +187,7 @@ class TransportManager extends Manager
 
     /**
      * Get a fresh Guzzle HTTP client instance.
+	 * 获取一个新的Guzzle HTTP客户端实例
      *
      * @param  array  $config
      * @return \GuzzleHttp\Client
@@ -187,6 +201,7 @@ class TransportManager extends Manager
 
     /**
      * Get the default mail driver name.
+	 * 获取默认的邮件驱动程序名称
      *
      * @return string
      */
@@ -197,6 +212,7 @@ class TransportManager extends Manager
 
     /**
      * Set the default mail driver name.
+	 * 设置默认的邮件驱动程序名称
      *
      * @param  string  $name
      * @return void

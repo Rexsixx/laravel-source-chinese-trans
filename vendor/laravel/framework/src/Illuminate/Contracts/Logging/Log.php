@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，契约，日志，日志
+ */
 
 namespace Illuminate\Contracts\Logging;
 
@@ -6,6 +9,7 @@ interface Log
 {
     /**
      * Log an alert message to the logs.
+	 * 将警报消息记录到日志中
      *
      * @param  string  $message
      * @param  array  $context
@@ -15,6 +19,7 @@ interface Log
 
     /**
      * Log a critical message to the logs.
+	 * 将关键消息记录到日志中
      *
      * @param  string  $message
      * @param  array  $context
@@ -24,6 +29,7 @@ interface Log
 
     /**
      * Log an error message to the logs.
+	 * 将错误消息记录到日志中
      *
      * @param  string  $message
      * @param  array  $context
@@ -33,6 +39,7 @@ interface Log
 
     /**
      * Log a warning message to the logs.
+	 * 将警告消息记录到日志中
      *
      * @param  string  $message
      * @param  array  $context
@@ -42,6 +49,7 @@ interface Log
 
     /**
      * Log a notice to the logs.
+	 * 将通知记录到日志中
      *
      * @param  string  $message
      * @param  array  $context
@@ -51,6 +59,7 @@ interface Log
 
     /**
      * Log an informational message to the logs.
+	 * 将信息消息记录到日志中
      *
      * @param  string  $message
      * @param  array  $context
@@ -60,6 +69,7 @@ interface Log
 
     /**
      * Log a debug message to the logs.
+	 * 将调试消息记录到日志中
      *
      * @param  string  $message
      * @param  array  $context
@@ -69,6 +79,7 @@ interface Log
 
     /**
      * Log a message to the logs.
+	 * 将消息记录到日志中
      *
      * @param  string  $level
      * @param  string  $message
@@ -79,6 +90,7 @@ interface Log
 
     /**
      * Register a file log handler.
+	 * 注册一个文件日志处理程序
      *
      * @param  string  $path
      * @param  string  $level
@@ -88,6 +100,7 @@ interface Log
 
     /**
      * Register a daily file log handler.
+	 * 注册一个每日文件日志处理程序
      *
      * @param  string  $path
      * @param  int     $days

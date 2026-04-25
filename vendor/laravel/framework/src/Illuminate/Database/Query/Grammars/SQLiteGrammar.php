@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，查询，语法，SQLite 语法
+ */
 
 namespace Illuminate\Database\Query\Grammars;
 
@@ -8,6 +11,7 @@ class SQLiteGrammar extends Grammar
 {
     /**
      * The components that make up a select clause.
+	 * 组成select子句的组件
      *
      * @var array
      */
@@ -27,6 +31,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * All of the available clause operators.
+	 * 所有可用的子句操作符
      *
      * @var array
      */
@@ -38,6 +43,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a select query into SQL.
+	 * 将一个选择查询编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
@@ -55,6 +61,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a single union statement.
+	 * 编译单个联合语句
      *
      * @param  array  $union
      * @return string
@@ -68,6 +75,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where date" clause.
+	 * 编译一个“where date”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -80,6 +88,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where day" clause.
+	 * 编写一个“where day”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -92,6 +101,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where month" clause.
+	 * 编写“where month”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -104,6 +114,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where year" clause.
+	 * 编写一个“where year”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -116,6 +127,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where time" clause.
+	 * 编写一个“where time”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -128,6 +140,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a date based where clause.
+	 * 编译一个基于日期的where子句
      *
      * @param  string  $type
      * @param  \Illuminate\Database\Query\Builder  $query
@@ -145,6 +158,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile an insert statement into SQL.
+	 * 将插入语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
@@ -188,6 +202,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a truncate table statement into SQL.
+	 * 将截断表语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return array

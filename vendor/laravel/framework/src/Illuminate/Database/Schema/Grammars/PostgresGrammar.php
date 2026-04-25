@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，架构，语法，Postgres 语法
+ */
 
 namespace Illuminate\Database\Schema\Grammars;
 
@@ -10,6 +13,7 @@ class PostgresGrammar extends Grammar
 {
     /**
      * If this Grammar supports schema changes wrapped in a transaction.
+	 * 如果此语法支持封装在事务中的模式更改
      *
      * @var bool
      */
@@ -17,6 +21,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * The possible column modifiers.
+	 * 可能的列修饰符
      *
      * @var array
      */
@@ -24,6 +29,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * The columns available as serials.
+	 * 作为序列可用的列
      *
      * @var array
      */
@@ -31,6 +37,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile the query to determine if a table exists.
+	 * 编译查询以确定表是否存在
      *
      * @return string
      */
@@ -41,6 +48,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile the query to determine the list of columns.
+	 * 编译查询以确定列列表
      *
      * @return string
      */
@@ -51,6 +59,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a create table command.
+	 * 编译一个create table命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -67,6 +76,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a column addition command.
+	 * 编译列添加命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -82,6 +92,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a primary key command.
+	 * 编译主键命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -788,6 +799,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Get the SQL for an auto-increment column modifier.
+	 * 获取用于自动增量列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column

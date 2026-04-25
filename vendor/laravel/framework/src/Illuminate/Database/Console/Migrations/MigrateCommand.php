@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，控制台，迁移，迁移命令 migrate
+ */
 
 namespace Illuminate\Database\Console\Migrations;
 
@@ -11,6 +14,7 @@ class MigrateCommand extends BaseCommand
 
     /**
      * The name and signature of the console command.
+	 * console命令的名称和签名
      *
      * @var string
      */
@@ -23,6 +27,7 @@ class MigrateCommand extends BaseCommand
 
     /**
      * The console command description.
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -30,6 +35,7 @@ class MigrateCommand extends BaseCommand
 
     /**
      * The migrator instance.
+	 * 迁移器实例
      *
      * @var \Illuminate\Database\Migrations\Migrator
      */
@@ -37,6 +43,7 @@ class MigrateCommand extends BaseCommand
 
     /**
      * Create a new migration command instance.
+	 * 创建一个新的迁移命令实例
      *
      * @param  \Illuminate\Database\Migrations\Migrator  $migrator
      * @return void
@@ -50,6 +57,7 @@ class MigrateCommand extends BaseCommand
 
     /**
      * Execute the console command.
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -86,6 +94,7 @@ class MigrateCommand extends BaseCommand
 
     /**
      * Prepare the migration database for running.
+	 * 准备运行迁移数据库
      *
      * @return void
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，支持，命名空间项解析器
+ */
 
 namespace Illuminate\Support;
 
@@ -6,6 +9,7 @@ class NamespacedItemResolver
 {
     /**
      * A cache of the parsed items.
+	 * 已解析项的缓存
      *
      * @var array
      */
@@ -13,6 +17,7 @@ class NamespacedItemResolver
 
     /**
      * Parse a key into namespace, group, and item.
+	 * 将键解析为名称空间、组和项。
      *
      * @param  string  $key
      * @return array
@@ -45,6 +50,7 @@ class NamespacedItemResolver
 
     /**
      * Parse an array of basic segments.
+	 * 解析基本段数组
      *
      * @param  array  $segments
      * @return array
@@ -68,6 +74,7 @@ class NamespacedItemResolver
 
     /**
      * Parse an array of namespaced segments.
+	 * 解析一个命名空间段数组
      *
      * @param  string  $key
      * @return array
@@ -90,6 +97,7 @@ class NamespacedItemResolver
 
     /**
      * Set the parsed value of a key.
+	 * 设置键的解析值
      *
      * @param  string  $key
      * @param  array   $parsed

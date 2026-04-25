@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，队列，队列服务提供程序
+ */
 
 namespace Illuminate\Queue;
 
@@ -17,6 +20,7 @@ class QueueServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
+	 * 指示是否延迟加载提供程序
      *
      * @var bool
      */
@@ -24,6 +28,7 @@ class QueueServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
+	 * 注册服务提供者
      *
      * @return void
      */
@@ -42,6 +47,7 @@ class QueueServiceProvider extends ServiceProvider
 
     /**
      * Register the queue manager.
+	 * 注册队列管理器
      *
      * @return void
      */
@@ -59,6 +65,7 @@ class QueueServiceProvider extends ServiceProvider
 
     /**
      * Register the default queue connection binding.
+	 * 注册默认队列连接绑定
      *
      * @return void
      */
@@ -71,6 +78,7 @@ class QueueServiceProvider extends ServiceProvider
 
     /**
      * Register the connectors on the queue manager.
+	 * 在队列管理器上注册连接器
      *
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
@@ -84,6 +92,7 @@ class QueueServiceProvider extends ServiceProvider
 
     /**
      * Register the Null queue connector.
+	 * 注册空队列连接器
      *
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
@@ -97,6 +106,7 @@ class QueueServiceProvider extends ServiceProvider
 
     /**
      * Register the Sync queue connector.
+	 * 注册同步队列连接器
      *
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
@@ -110,6 +120,7 @@ class QueueServiceProvider extends ServiceProvider
 
     /**
      * Register the database queue connector.
+	 * 注册数据库队列连接器
      *
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
@@ -123,6 +134,7 @@ class QueueServiceProvider extends ServiceProvider
 
     /**
      * Register the Redis queue connector.
+	 * 注册Redis队列连接器
      *
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
@@ -136,6 +148,7 @@ class QueueServiceProvider extends ServiceProvider
 
     /**
      * Register the Beanstalkd queue connector.
+	 * 注册beanstald队列连接器
      *
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
@@ -149,6 +162,7 @@ class QueueServiceProvider extends ServiceProvider
 
     /**
      * Register the Amazon SQS queue connector.
+	 * 注册Amazon SQS队列连接器
      *
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
@@ -162,6 +176,7 @@ class QueueServiceProvider extends ServiceProvider
 
     /**
      * Register the queue worker.
+	 * 注册队列工作器
      *
      * @return void
      */
@@ -176,6 +191,7 @@ class QueueServiceProvider extends ServiceProvider
 
     /**
      * Register the queue listener.
+	 * 注册队列侦听器
      *
      * @return void
      */
@@ -188,6 +204,7 @@ class QueueServiceProvider extends ServiceProvider
 
     /**
      * Register the failed job services.
+	 * 注册失败的作业服务
      *
      * @return void
      */
@@ -204,6 +221,7 @@ class QueueServiceProvider extends ServiceProvider
 
     /**
      * Create a new database failed job provider.
+	 * 创建新的数据库失败作业提供程序
      *
      * @param  array  $config
      * @return \Illuminate\Queue\Failed\DatabaseFailedJobProvider
@@ -217,6 +235,7 @@ class QueueServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
+	 * 获取提供者提供的服务
      *
      * @return array
      */

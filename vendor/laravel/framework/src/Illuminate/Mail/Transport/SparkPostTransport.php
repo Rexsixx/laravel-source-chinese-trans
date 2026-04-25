@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，电子邮件，运送，SparkPost 运输
+ */
 
 namespace Illuminate\Mail\Transport;
 
@@ -9,6 +12,7 @@ class SparkPostTransport extends Transport
 {
     /**
      * Guzzle client instance.
+	 * Guzzle客户端实例
      *
      * @var \GuzzleHttp\ClientInterface
      */
@@ -16,6 +20,7 @@ class SparkPostTransport extends Transport
 
     /**
      * The SparkPost API key.
+	 * SparkPost API密钥
      *
      * @var string
      */
@@ -23,6 +28,7 @@ class SparkPostTransport extends Transport
 
     /**
      * Transmission options.
+	 * 传输选项
      *
      * @var array
      */
@@ -30,6 +36,7 @@ class SparkPostTransport extends Transport
 
     /**
      * Create a new SparkPost transport instance.
+	 * 创建一个新的SparkPost传输实例
      *
      * @param  \GuzzleHttp\ClientInterface  $client
      * @param  string  $key
@@ -77,6 +84,7 @@ class SparkPostTransport extends Transport
 
     /**
      * Get all the addresses this message should be sent to.
+	 * 获取此消息应发送到的所有地址。
      *
      * Note that SparkPost still respects CC, BCC headers in raw message itself.
      *
@@ -104,6 +112,7 @@ class SparkPostTransport extends Transport
 
     /**
      * Get the transmission ID from the response.
+	 * 从响应中获取传输ID
      *
      * @param  \GuzzleHttp\Psr7\Response  $response
      * @return string
@@ -117,6 +126,7 @@ class SparkPostTransport extends Transport
 
     /**
      * Get the API key being used by the transport.
+	 * 获取传输所使用的API密钥
      *
      * @return string
      */
@@ -127,6 +137,7 @@ class SparkPostTransport extends Transport
 
     /**
      * Set the API key being used by the transport.
+	 * 设置传输所使用的API密钥
      *
      * @param  string  $key
      * @return string
@@ -138,6 +149,7 @@ class SparkPostTransport extends Transport
 
     /**
      * Get the transmission options being used by the transport.
+	 * 获取传输所使用的传输选项
      *
      * @return array
      */
@@ -148,6 +160,7 @@ class SparkPostTransport extends Transport
 
     /**
      * Set the transmission options being used by the transport.
+	 * 设置传输所使用的传输选项
      *
      * @param  array  $options
      * @return array

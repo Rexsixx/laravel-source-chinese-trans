@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，支持，门面，模式
+ */
 
 namespace Illuminate\Support\Facades;
 
@@ -14,6 +17,7 @@ class Schema extends Facade
 {
     /**
      * Get a schema builder instance for a connection.
+	 * 获取连接的架构构建器实例
      *
      * @param  string  $name
      * @return \Illuminate\Database\Schema\Builder
@@ -25,6 +29,7 @@ class Schema extends Facade
 
     /**
      * Get a schema builder instance for the default connection.
+	 * 获取默认连接的架构构建器实例
      *
      * @return \Illuminate\Database\Schema\Builder
      */

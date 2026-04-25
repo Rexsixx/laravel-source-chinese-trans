@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，Eloquent，关系，问题，与数据透视表交互
+ */
 
 namespace Illuminate\Database\Eloquent\Relations\Concerns;
 
@@ -10,6 +13,7 @@ trait InteractsWithPivotTable
 {
     /**
      * Toggles a model (or models) from the parent.
+	 * 从父模型切换一个（或多个）模型。
      *
      * Each existing model is detached, and non existing ones are attached.
      *
@@ -63,6 +67,7 @@ trait InteractsWithPivotTable
 
     /**
      * Sync the intermediate tables with a list of IDs without detaching.
+	 * 同步中间表与id列表，而不分离。
      *
      * @param  \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|array  $ids
      * @return array
@@ -74,6 +79,7 @@ trait InteractsWithPivotTable
 
     /**
      * Sync the intermediate tables with a list of IDs or collection of models.
+	 * 将中间表与id列表或模型集合同步
      *
      * @param  \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|array  $ids
      * @param  bool   $detaching
@@ -125,6 +131,7 @@ trait InteractsWithPivotTable
 
     /**
      * Format the sync / toggle record list so that it is keyed by ID.
+	 * 格式化同步/切换记录列表，使其按ID键。
      *
      * @param  array  $records
      * @return array
@@ -142,6 +149,7 @@ trait InteractsWithPivotTable
 
     /**
      * Attach all of the records that aren't in the given current records.
+	 * 附加所有不在给定当前记录中的记录
      *
      * @param  array  $records
      * @param  array  $current
@@ -176,6 +184,7 @@ trait InteractsWithPivotTable
 
     /**
      * Update an existing pivot record on the table.
+	 * 更新表上现有的数据透视记录
      *
      * @param  mixed  $id
      * @param  array  $attributes
@@ -201,6 +210,7 @@ trait InteractsWithPivotTable
 
     /**
      * Attach a model to the parent.
+	 * 将一个模型附加到父模型上
      *
      * @param  mixed  $id
      * @param  array  $attributes
@@ -223,6 +233,7 @@ trait InteractsWithPivotTable
 
     /**
      * Create an array of records to insert into the pivot table.
+	 * 创建要插入数据透视表的记录数组
      *
      * @param  array  $ids
      * @param  array  $attributes
@@ -249,6 +260,7 @@ trait InteractsWithPivotTable
 
     /**
      * Create a full attachment record payload.
+	 * 创建一个完整的附件记录有效负载
      *
      * @param  int    $key
      * @param  mixed  $value
@@ -267,6 +279,7 @@ trait InteractsWithPivotTable
 
     /**
      * Get the attach record ID and extra attributes.
+	 * 获取附加记录ID和额外属性
      *
      * @param  mixed  $key
      * @param  mixed  $value
@@ -282,6 +295,7 @@ trait InteractsWithPivotTable
 
     /**
      * Create a new pivot attachment record.
+	 * 创建一个新的枢轴附件记录
      *
      * @param  int   $id
      * @param  bool  $timed
@@ -305,6 +319,7 @@ trait InteractsWithPivotTable
 
     /**
      * Set the creation and update timestamps on an attach record.
+	 * 设置附加记录上的创建和更新时间戳
      *
      * @param  array  $record
      * @param  bool   $exists
@@ -327,6 +342,7 @@ trait InteractsWithPivotTable
 
     /**
      * Determine whether the given column is defined as a pivot column.
+	 * 确定给定列是否定义为主列
      *
      * @param  string  $column
      * @return bool
@@ -338,6 +354,7 @@ trait InteractsWithPivotTable
 
     /**
      * Detach models from the relationship.
+	 * 从关系中分离模型
      *
      * @param  mixed  $ids
      * @param  bool  $touch
@@ -374,6 +391,7 @@ trait InteractsWithPivotTable
 
     /**
      * Create a new pivot model instance.
+	 * 创建一个新的pivot模型实例
      *
      * @param  array  $attributes
      * @param  bool   $exists
@@ -390,6 +408,7 @@ trait InteractsWithPivotTable
 
     /**
      * Create a new existing pivot model instance.
+	 * 创建一个新的现有pivot模型实例
      *
      * @param  array  $attributes
      * @return \Illuminate\Database\Eloquent\Relations\Pivot
@@ -401,6 +420,7 @@ trait InteractsWithPivotTable
 
     /**
      * Get a new plain query builder for the pivot table.
+	 * 为数据透视表获取一个新的普通查询生成器
      *
      * @return \Illuminate\Database\Query\Builder
      */
@@ -422,6 +442,7 @@ trait InteractsWithPivotTable
 
     /**
      * Create a new query builder for the pivot table.
+	 * 为数据透视表创建一个新的查询生成器
      *
      * @return \Illuminate\Database\Query\Builder
      */
@@ -442,6 +463,7 @@ trait InteractsWithPivotTable
 
     /**
      * Set the columns on the pivot table to retrieve.
+	 * 设置数据透视表上要检索的列
      *
      * @param  array|mixed  $columns
      * @return $this
@@ -457,6 +479,7 @@ trait InteractsWithPivotTable
 
     /**
      * Get all of the IDs from the given mixed value.
+	 * 从给定的混合值中获取所有id
      *
      * @param  mixed  $value
      * @return array
@@ -480,6 +503,7 @@ trait InteractsWithPivotTable
 
     /**
      * Cast the given keys to integers if they are numeric and string otherwise.
+	 * 如果给定的键是数字，则将其转换为整数，否则将其转换为字符串。
      *
      * @param  array  $keys
      * @return array
@@ -493,6 +517,7 @@ trait InteractsWithPivotTable
 
     /**
      * Cast the given key to an integer if it is numeric.
+	 * 如果给定的键是数字，则将其转换为整数。
      *
      * @param  mixed  $key
      * @return mixed
@@ -504,6 +529,7 @@ trait InteractsWithPivotTable
 
     /**
      * Cast the given pivot attributes.
+	 * 转换给定的枢轴属性
      *
      * @param  array $attributes
      * @return array

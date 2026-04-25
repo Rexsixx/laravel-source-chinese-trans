@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，路由，路由集合
+ */
 
 namespace Illuminate\Routing;
 
@@ -15,6 +18,7 @@ class RouteCollection implements Countable, IteratorAggregate
 {
     /**
      * An array of the routes keyed by method.
+	 * 方法键值的路由数组
      *
      * @var array
      */
@@ -22,6 +26,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * An flattened array of all of the routes.
+	 * 所有路线的平面化排列
      *
      * @var array
      */
@@ -29,6 +34,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * A look-up table of routes by their names.
+	 * 按名称查找路由的表
      *
      * @var array
      */
@@ -36,6 +42,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * A look-up table of routes by controller action.
+	 * 根据控制器动作的路由查找表
      *
      * @var array
      */
@@ -43,6 +50,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Add a Route instance to the collection.
+	 * 向集合添加一个Route实例
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return \Illuminate\Routing\Route
@@ -58,6 +66,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Add the given route to the arrays of routes.
+	 * 将给定的路由添加到路由数组中
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return void
@@ -75,6 +84,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Add the route to any look-up tables if necessary.
+	 * 如有必要，将该路由添加到任何查找表中。
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return void
@@ -100,6 +110,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Add a route to the controller action dictionary.
+	 * 添加到控制器动作字典的路由
      *
      * @param  array  $action
      * @param  \Illuminate\Routing\Route  $route
@@ -112,8 +123,10 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Refresh the name look-up table.
+	 * 刷新名称查找表。
      *
      * This is done in case any names are fluently defined or if routes are overwritten.
+	 * 这样做是为了防止任何名称被流利地定义或路由被覆盖。
      *
      * @return void
      */
@@ -130,6 +143,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Refresh the action look-up table.
+	 * 刷新操作查找表。
      *
      * This is done in case any actions are overwritten with new controllers.
      *
@@ -148,6 +162,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Find the first route matching a given request.
+	 * 找到与给定请求匹配的第一条路由
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Routing\Route
@@ -181,6 +196,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Determine if a route in the array matches the request.
+	 * 确定数组中的路由是否与请求匹配
      *
      * @param  array  $routes
      * @param  \Illuminate\http\Request  $request
@@ -200,6 +216,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Determine if any routes match on another HTTP verb.
+	 * 确定是否有任何路由与另一个HTTP谓词匹配
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
@@ -224,6 +241,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Get a route (if necessary) that responds when other available methods are present.
+	 * 获取一个路由（如果有必要），当存在其他可用方法时，它会做出响应。
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  array  $methods
@@ -244,6 +262,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Throw a method not allowed HTTP exception.
+	 * 抛出一个方法不允许HTTP异常
      *
      * @param  array  $others
      * @return void
@@ -257,6 +276,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Get routes from the collection by method.
+	 * 通过方法从集合中获取路由
      *
      * @param  string|null  $method
      * @return array
@@ -268,6 +288,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Determine if the route collection contains a given named route.
+	 * 确定路由集合是否包含给定的命名路由
      *
      * @param  string  $name
      * @return bool
@@ -279,6 +300,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Get a route instance by its name.
+	 * 通过名称获取路由实例
      *
      * @param  string  $name
      * @return \Illuminate\Routing\Route|null
@@ -290,6 +312,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Get a route instance by its controller action.
+	 * 通过它的控制器动作获取一个路由实例
      *
      * @param  string  $action
      * @return \Illuminate\Routing\Route|null
@@ -301,6 +324,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Get all of the routes in the collection.
+	 * 获取集合中的所有路由
      *
      * @return array
      */
@@ -311,6 +335,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Get all of the routes keyed by their HTTP verb / method.
+	 * 获取所有由HTTP动词/方法指定的路由
      *
      * @return array
      */
@@ -321,6 +346,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Get all of the routes keyed by their name.
+	 * 把所有的路线按名字标记
      *
      * @return array
      */
@@ -331,6 +357,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Get an iterator for the items.
+	 * 获取项的迭代器
      *
      * @return \ArrayIterator
      */
@@ -341,6 +368,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Count the number of items in the collection.
+	 * 计算集合中的项数
      *
      * @return int
      */

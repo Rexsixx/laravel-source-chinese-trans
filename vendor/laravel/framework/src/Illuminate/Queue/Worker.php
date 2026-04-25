@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，队列，工作线程
+ */
 
 namespace Illuminate\Queue;
 
@@ -17,6 +20,7 @@ class Worker
 
     /**
      * The queue manager instance.
+	 * 队列管理器实例
      *
      * @var \Illuminate\Queue\QueueManager
      */
@@ -24,6 +28,7 @@ class Worker
 
     /**
      * The event dispatcher instance.
+	 * 事件调度程序实例
      *
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
@@ -31,6 +36,7 @@ class Worker
 
     /**
      * The cache repository implementation.
+	 * 缓存存储库实现
      *
      * @var \Illuminate\Contracts\Cache\Repository
      */
@@ -38,6 +44,7 @@ class Worker
 
     /**
      * The exception handler instance.
+	 * 异常处理程序实例
      *
      * @var \Illuminate\Contracts\Debug\ExceptionHandler
      */
@@ -45,6 +52,7 @@ class Worker
 
     /**
      * Indicates if the worker should exit.
+	 * 指示工作线程是否应该退出
      *
      * @var bool
      */
@@ -52,6 +60,7 @@ class Worker
 
     /**
      * Indicates if the worker is paused.
+	 * 指示工作线程是否暂停
      *
      * @var bool
      */
@@ -59,6 +68,7 @@ class Worker
 
     /**
      * Create a new queue worker.
+	 * 创建一个新的队列工作者
      *
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
@@ -76,6 +86,7 @@ class Worker
 
     /**
      * Listen to the given queue in a loop.
+	 * 在循环中监听给定队列
      *
      * @param  string  $connectionName
      * @param  string  $queue
@@ -125,6 +136,7 @@ class Worker
 
     /**
      * Register the worker timeout handler (PHP 7.1+).
+	 * 注册工作者超时处理程序（PHP 7.1+）
      *
      * @param  \Illuminate\Contracts\Queue\Job|null  $job
      * @param  \Illuminate\Queue\WorkerOptions  $options
@@ -148,6 +160,7 @@ class Worker
 
     /**
      * Get the appropriate timeout for the given job.
+	 * 获取给定作业的适当超时
      *
      * @param  \Illuminate\Contracts\Queue\Job|null  $job
      * @param  \Illuminate\Queue\WorkerOptions  $options
@@ -160,6 +173,7 @@ class Worker
 
     /**
      * Determine if the daemon should process on this iteration.
+	 * 确定守护进程是否应该在此迭代中进行处理
      *
      * @param  \Illuminate\Queue\WorkerOptions  $options
      * @param  string  $connectionName
@@ -175,6 +189,7 @@ class Worker
 
     /**
      * Pause the worker for the current loop.
+	 * 为当前循环暂停工作线程
      *
      * @param  \Illuminate\Queue\WorkerOptions  $options
      * @param  int  $lastRestart
@@ -189,6 +204,7 @@ class Worker
 
     /**
      * Stop the process if necessary.
+	 * 如有必要，请停止该进程。
      *
      * @param  \Illuminate\Queue\WorkerOptions  $options
      * @param  int  $lastRestart
@@ -208,6 +224,7 @@ class Worker
 
     /**
      * Process the next job on the queue.
+	 * 处理队列上的下一个作业
      *
      * @param  string  $connectionName
      * @param  string  $queue
@@ -232,6 +249,7 @@ class Worker
 
     /**
      * Get the next job from the queue connection.
+	 * 从队列连接中获取下一个作业
      *
      * @param  \Illuminate\Contracts\Queue\Queue  $connection
      * @param  string  $queue
@@ -258,6 +276,7 @@ class Worker
 
     /**
      * Process the given job.
+	 * 处理给定的作业
      *
      * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  string  $connectionName
@@ -281,6 +300,7 @@ class Worker
 
     /**
      * Stop the worker if we have lost connection to a database.
+	 * 如果我们失去了与数据库的连接，则停止worker。
      *
      * @param  \Exception  $e
      * @return void
@@ -294,6 +314,7 @@ class Worker
 
     /**
      * Process the given job from the queue.
+	 * 从队列中处理给定的作业
      *
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job
@@ -331,6 +352,7 @@ class Worker
 
     /**
      * Handle an exception that occurred while the job was running.
+	 * 处理作业运行时发生的异常
      *
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job
@@ -369,6 +391,7 @@ class Worker
 
     /**
      * Mark the given job as failed if it has exceeded the maximum allowed attempts.
+	 * 如果给定的作业超过了允许的最大尝试次数，则将其标记为失败。
      *
      * This will likely be because the job previously exceeded a timeout.
      *
@@ -400,6 +423,7 @@ class Worker
 
     /**
      * Mark the given job as failed if it has exceeded the maximum allowed attempts.
+	 * 如果给定的作业超过了允许的最大尝试次数，则将其标记为失败。
      *
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job
@@ -422,6 +446,7 @@ class Worker
 
     /**
      * Mark the given job as failed and raise the relevant event.
+	 * 将给定的作业标记为失败，并引发相关事件。
      *
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job
@@ -435,6 +460,7 @@ class Worker
 
     /**
      * Raise the before queue job event.
+	 * 引发before队列作业事件
      *
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job
@@ -449,6 +475,7 @@ class Worker
 
     /**
      * Raise the after queue job event.
+	 * 引发队列后作业事件
      *
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job
@@ -463,6 +490,7 @@ class Worker
 
     /**
      * Raise the exception occurred queue job event.
+	 * 引发异常发生的队列作业事件
      *
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job
@@ -478,6 +506,7 @@ class Worker
 
     /**
      * Raise the failed queue job event.
+	 * 引发失败的队列作业事件
      *
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job
@@ -493,6 +522,7 @@ class Worker
 
     /**
      * Determine if the queue worker should restart.
+	 * 确定队列工作线程是否应该重新启动
      *
      * @param  int|null  $lastRestart
      * @return bool
@@ -504,6 +534,7 @@ class Worker
 
     /**
      * Get the last queue restart timestamp, or null.
+	 * 获取最后一次队列重启时间戳，或null。
      *
      * @return int|null
      */
@@ -516,6 +547,7 @@ class Worker
 
     /**
      * Enable async signals for the process.
+	 * 为进程启用异步信号
      *
      * @return void
      */
@@ -540,6 +572,7 @@ class Worker
 
     /**
      * Determine if "async" signals are supported.
+	 * 确定是否支持“async”信号
      *
      * @return bool
      */
@@ -551,6 +584,7 @@ class Worker
 
     /**
      * Determine if the memory limit has been exceeded.
+	 * 确定是否已超过内存限制
      *
      * @param  int   $memoryLimit
      * @return bool
@@ -562,6 +596,7 @@ class Worker
 
     /**
      * Stop listening and bail out of the script.
+	 * 别再听了，跳出剧本。
      *
      * @param  int  $status
      * @return void
@@ -575,6 +610,7 @@ class Worker
 
     /**
      * Kill the process.
+	 * 结束进程
      *
      * @param  int  $status
      * @return void
@@ -592,6 +628,7 @@ class Worker
 
     /**
      * Sleep the script for a given number of seconds.
+	 * 让脚本休眠给定的秒数
      *
      * @param  int|float   $seconds
      * @return void
@@ -607,6 +644,7 @@ class Worker
 
     /**
      * Set the cache repository implementation.
+	 * 设置缓存存储库实现
      *
      * @param  \Illuminate\Contracts\Cache\Repository  $cache
      * @return void
@@ -618,6 +656,7 @@ class Worker
 
     /**
      * Get the queue manager instance.
+	 * 获取队列管理器实例
      *
      * @return \Illuminate\Queue\QueueManager
      */
@@ -628,6 +667,7 @@ class Worker
 
     /**
      * Set the queue manager instance.
+	 * 设置队列管理器实例
      *
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void

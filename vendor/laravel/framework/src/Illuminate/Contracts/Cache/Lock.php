@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，契约，缓存，锁
+ */
 
 namespace Illuminate\Contracts\Cache;
 
@@ -6,6 +9,7 @@ interface Lock
 {
     /**
      * Attempt to acquire the lock.
+	 * 尝试获取锁
      *
      * @param  callable|null  $callback
      * @return bool
@@ -14,6 +18,7 @@ interface Lock
 
     /**
      * Attempt to acquire the lock for the given number of seconds.
+	 * 尝试在给定的秒数内获取锁
      *
      * @param  int  $seconds
      * @param  callable|null  $callback
@@ -23,6 +28,7 @@ interface Lock
 
     /**
      * Release the lock.
+	 * 释放锁
      *
      * @return void
      */

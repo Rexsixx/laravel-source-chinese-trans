@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，验证，问题，消息格式
+ */
 
 namespace Illuminate\Validation\Concerns;
 
@@ -13,6 +16,7 @@ trait FormatsMessages
 
     /**
      * Get the validation message for an attribute and rule.
+	 * 获取属性和规则的验证消息
      *
      * @param  string  $attribute
      * @param  string  $rule
@@ -65,6 +69,7 @@ trait FormatsMessages
 
     /**
      * Get the proper inline error message for standard and size rules.
+	 * 获取标准和大小规则的适当内联错误消息
      *
      * @param  string  $attribute
      * @param  string  $rule
@@ -81,6 +86,7 @@ trait FormatsMessages
 
     /**
      * Get the inline message for a rule if it exists.
+	 * 获取规则的内联消息（如果存在）
      *
      * @param  string  $attribute
      * @param  string  $lowerRule
@@ -107,6 +113,7 @@ trait FormatsMessages
 
     /**
      * Get the custom error message from translator.
+	 * 从翻译器获取自定义错误消息
      *
      * @param  string  $key
      * @return string
@@ -131,6 +138,7 @@ trait FormatsMessages
 
     /**
      * Check the given messages for a wildcard key.
+	 * 检查给定的消息是否有通配符键
      *
      * @param  array  $messages
      * @param  string  $search
@@ -150,6 +158,7 @@ trait FormatsMessages
 
     /**
      * Get the proper error message for an attribute and size rule.
+	 * 获取属性和大小规则的正确错误消息
      *
      * @param  string  $attribute
      * @param  string  $rule
@@ -171,6 +180,7 @@ trait FormatsMessages
 
     /**
      * Get the data type of the given attribute.
+	 * 获取给定属性的数据类型
      *
      * @param  string  $attribute
      * @return string
@@ -193,6 +203,7 @@ trait FormatsMessages
 
     /**
      * Replace all error message place-holders with actual values.
+	 * 用实际值替换所有错误消息占位符
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -219,6 +230,7 @@ trait FormatsMessages
 
     /**
      * Get the displayable name of the attribute.
+	 * 获取属性的可显示名称
      *
      * @param  string  $attribute
      * @return string
@@ -258,6 +270,7 @@ trait FormatsMessages
 
     /**
      * Get the given attribute from the attribute translations.
+	 * 从属性转换中获取给定的属性
      *
      * @param  string  $name
      * @return string
@@ -269,6 +282,7 @@ trait FormatsMessages
 
     /**
      * Replace the :attribute placeholder in the given message.
+	 * 替换给定消息中的：属性占位符。
      *
      * @param  string  $message
      * @param  string  $value
@@ -285,6 +299,7 @@ trait FormatsMessages
 
     /**
      * Replace the :input placeholder in the given message.
+	 * 替换给定消息中的：input占位符
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -303,6 +318,7 @@ trait FormatsMessages
 
     /**
      * Get the displayable name of the value.
+	 * 获取值的可显示名称
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -325,6 +341,7 @@ trait FormatsMessages
 
     /**
      * Transform an array of attributes to their displayable form.
+	 * 将属性数组转换为可显示的形式
      *
      * @param  array  $values
      * @return array
@@ -345,6 +362,7 @@ trait FormatsMessages
 
     /**
      * Call a custom validator message replacer.
+	 * 调用自定义验证器消息替换程序
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -366,6 +384,7 @@ trait FormatsMessages
 
     /**
      * Call a class based validator message replacer.
+	 * 调用基于类的验证器消息替换器
      *
      * @param  string  $callback
      * @param  string  $message

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，引导，加载配置
+ */
 
 namespace Illuminate\Foundation\Bootstrap;
 
@@ -13,6 +16,7 @@ class LoadConfiguration
 {
     /**
      * Bootstrap the given application.
+	 * 引导给定的应用程序
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -53,6 +57,7 @@ class LoadConfiguration
 
     /**
      * Load the configuration items from all of the files.
+	 * 从所有文件中加载配置项
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  \Illuminate\Contracts\Config\Repository  $repository
@@ -74,6 +79,7 @@ class LoadConfiguration
 
     /**
      * Get all of the configuration files for the application.
+	 * 获取应用程序的所有配置文件
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return array
@@ -97,6 +103,7 @@ class LoadConfiguration
 
     /**
      * Get the configuration file nesting path.
+	 * 获取配置文件嵌套路径
      *
      * @param  \SplFileInfo  $file
      * @param  string  $configPath

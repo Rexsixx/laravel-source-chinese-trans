@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，分页，长度感知分页器
+ */
 
 namespace Illuminate\Pagination;
 
@@ -16,6 +19,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 {
     /**
      * The total number of items before slicing.
+	 * 切片前的项目总数
      *
      * @var int
      */
@@ -23,6 +27,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * The last available page.
+	 * 最后可用的页面
      *
      * @var int
      */
@@ -30,6 +35,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Create a new paginator instance.
+	 * 创建一个新的分页器实例
      *
      * @param  mixed  $items
      * @param  int  $total
@@ -54,6 +60,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Get the current page for the request.
+	 * 获取请求的当前页面
      *
      * @param  int  $currentPage
      * @param  string  $pageName
@@ -68,6 +75,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Render the paginator using the given view.
+	 * 使用给定视图呈现分页器
      *
      * @param  string|null  $view
      * @param  array  $data
@@ -80,6 +88,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Render the paginator using the given view.
+	 * 使用给定视图呈现分页器
      *
      * @param  string|null  $view
      * @param  array  $data
@@ -95,6 +104,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Get the array of elements to pass to the view.
+	 * 获取要传递给视图的元素数组
      *
      * @return array
      */
@@ -113,6 +123,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Get the total number of items being paginated.
+	 * 获取正在分页的项目总数
      *
      * @return int
      */
@@ -123,6 +134,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Determine if there are more items in the data source.
+	 * 确定数据源中是否有更多项
      *
      * @return bool
      */
@@ -133,6 +145,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Get the URL for the next page.
+	 * 获取下一页的URL
      *
      * @return string|null
      */
@@ -145,6 +158,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Get the last page.
+	 * 找到最后一页
      *
      * @return int
      */
@@ -155,6 +169,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Get the instance as an array.
+	 * 以数组的形式获取实例
      *
      * @return array
      */
@@ -178,6 +193,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Convert the object into something JSON serializable.
+	 * 将对象转换为JSON可序列化的对象
      *
      * @return array
      */
@@ -188,6 +204,7 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
 
     /**
      * Convert the object to its JSON representation.
+	 * 将对象转换为其JSON表示形式
      *
      * @param  int  $options
      * @return string

@@ -1,4 +1,8 @@
 <?php
+/**
+ * Doctrine，公共，偏转器，偏转器
+ */
+ 
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -72,6 +76,7 @@ class Inflector
 
     /**
      * Converts a word into the format for a Doctrine table name. Converts 'ModelName' to 'model_name'.
+	 * 将单词转换为Doctrine表名的格式。将‘ModelName’转换为‘model_name’。
      *
      * @deprecated
      */
@@ -94,6 +99,7 @@ class Inflector
 
     /**
      * Camelizes a word. This uses the classify() method and turns the first character to lowercase.
+	 * 骆驼化一个词。这将使用classifier（）方法并将第一个字符变为小写。
      *
      * @deprecated
      */
@@ -252,6 +258,7 @@ class Inflector
 
     /**
      * Returns a word in plural form.
+	 * 返回复数形式的单词
      *
      * @param string $word The word in singular form.
      *
@@ -268,6 +275,7 @@ class Inflector
 
     /**
      * Returns a word in singular form.
+	 * 以单数形式返回一个单词
      *
      * @param string $word The word in plural form.
      *

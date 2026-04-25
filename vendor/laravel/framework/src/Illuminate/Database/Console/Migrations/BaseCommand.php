@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，控制台，迁移，基本命令
+ */
 
 namespace Illuminate\Database\Console\Migrations;
 
@@ -8,6 +11,7 @@ class BaseCommand extends Command
 {
     /**
      * Get all of the migration paths.
+	 * 获取所有迁移路径
      *
      * @return array
      */
@@ -29,6 +33,7 @@ class BaseCommand extends Command
 
     /**
      * Get the path to the migration directory.
+	 * 获取迁移目录的路径
      *
      * @return string
      */

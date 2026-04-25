@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，架构，语法，SqlServer 语法
+ */
 
 namespace Illuminate\Database\Schema\Grammars;
 
@@ -9,6 +12,7 @@ class SqlServerGrammar extends Grammar
 {
     /**
      * If this Grammar supports schema changes wrapped in a transaction.
+	 * 如果此语法支持封装在事务中的模式更改
      *
      * @var bool
      */
@@ -16,6 +20,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * The possible column modifiers.
+	 * 可能的列修饰符
      *
      * @var array
      */
@@ -23,6 +28,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * The columns available as serials.
+	 * 作为序列可用的列
      *
      * @var array
      */
@@ -30,6 +36,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile the query to determine if a table exists.
+	 * 编译查询以确定表是否存在
      *
      * @return string
      */
@@ -40,6 +47,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile the query to determine the list of columns.
+	 * 编译查询以确定列列表
      *
      * @param  string  $table
      * @return string
@@ -53,6 +61,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a create table command.
+	 * 编译一个create table命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -67,6 +76,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a column addition table command.
+	 * 编译列添加表命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -82,6 +92,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a primary key command.
+	 * 编译主键命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -98,6 +109,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a unique key command.
+	 * 编译唯一的密钥命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -114,6 +126,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a plain index key command.
+	 * 编译一个普通索引键命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -130,6 +143,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a spatial index key command.
+	 * 编译一个空间索引键命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -146,6 +160,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a drop table command.
+	 * 编译一个删除表命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -239,6 +254,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Compile a drop spatial index command.
+	 * 编译一个删除空间索引命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -756,6 +772,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Get the SQL for an auto-increment column modifier.
+	 * 获取用于自动增量列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -770,6 +787,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Wrap a table in keyword identifiers.
+	 * 用关键字标识符包装表
      *
      * @param  \Illuminate\Database\Query\Expression|string  $table
      * @return string

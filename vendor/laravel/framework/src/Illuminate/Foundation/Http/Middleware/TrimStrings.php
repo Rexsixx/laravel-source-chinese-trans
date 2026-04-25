@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，Http，中间件，裁剪字符串
+ */
 
 namespace Illuminate\Foundation\Http\Middleware;
 
@@ -6,6 +9,7 @@ class TrimStrings extends TransformsRequest
 {
     /**
      * The attributes that should not be trimmed.
+	 * 不应该修剪的属性
      *
      * @var array
      */
@@ -15,6 +19,7 @@ class TrimStrings extends TransformsRequest
 
     /**
      * Transform the given value.
+	 * 变换给定的值
      *
      * @param  string  $key
      * @param  mixed  $value

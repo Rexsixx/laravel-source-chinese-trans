@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，支持，Carbon
+ */
 
 namespace Illuminate\Support;
 
@@ -12,6 +15,7 @@ class Carbon extends BaseCarbon implements JsonSerializable
 
     /**
      * The custom Carbon JSON serializer.
+	 * 自定义Carbon JSON序列化器
      *
      * @var callable|null
      */
@@ -19,6 +23,7 @@ class Carbon extends BaseCarbon implements JsonSerializable
 
     /**
      * Prepare the object for JSON serialization.
+	 * 为JSON序列化准备对象
      *
      * @return array|string
      */
@@ -37,6 +42,7 @@ class Carbon extends BaseCarbon implements JsonSerializable
 
     /**
      * JSON serialize all Carbon instances using the given callback.
+	 * JSON使用给定的回调序列化所有Carbon实例
      *
      * @param  callable  $callback
      * @return void

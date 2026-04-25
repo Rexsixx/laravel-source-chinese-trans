@@ -50,6 +50,7 @@ trait Authenticatable
 
     /**
      * Get the token value for the "remember me" session.
+	 * 获取“记住我”会话的令牌值
      *
      * @return string|null
      */
@@ -62,6 +63,7 @@ trait Authenticatable
 
     /**
      * Set the token value for the "remember me" session.
+	 * 设置“记住我”会话的令牌值
      *
      * @param  string  $value
      * @return void

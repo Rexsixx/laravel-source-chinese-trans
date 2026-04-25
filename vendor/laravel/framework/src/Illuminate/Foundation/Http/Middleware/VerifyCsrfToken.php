@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，Http，中间件，验证Csrf令牌
+ */
 
 namespace Illuminate\Foundation\Http\Middleware;
 
@@ -16,6 +19,7 @@ class VerifyCsrfToken
 
     /**
      * The application instance.
+	 * 应用实例
      *
      * @var \Illuminate\Foundation\Application
      */
@@ -23,6 +27,7 @@ class VerifyCsrfToken
 
     /**
      * The encrypter implementation.
+	 * 加密器实现
      *
      * @var \Illuminate\Contracts\Encryption\Encrypter
      */
@@ -30,6 +35,7 @@ class VerifyCsrfToken
 
     /**
      * The URIs that should be excluded from CSRF verification.
+	 * 应该从CSRF验证中排除的uri
      *
      * @var array
      */
@@ -37,6 +43,7 @@ class VerifyCsrfToken
 
     /**
      * Create a new middleware instance.
+	 * 创建新的中间件实例
      *
      * @param  \Illuminate\Foundation\Application  $app
      * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
@@ -50,6 +57,7 @@ class VerifyCsrfToken
 
     /**
      * Handle an incoming request.
+	 * 处理传入的请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -73,6 +81,7 @@ class VerifyCsrfToken
 
     /**
      * Determine if the HTTP request uses a ‘read’ verb.
+	 * 确定HTTP请求是否使用“read”谓词
      *
      * @param  \Illuminate\Http\Request  $request
      * @return bool
@@ -84,6 +93,7 @@ class VerifyCsrfToken
 
     /**
      * Determine if the application is running unit tests.
+	 * 确定应用程序是否正在运行单元测试
      *
      * @return bool
      */
@@ -94,6 +104,7 @@ class VerifyCsrfToken
 
     /**
      * Determine if the request has a URI that should pass through CSRF verification.
+	 * 确定请求是否具有应该通过CSRF验证的URI
      *
      * @param  \Illuminate\Http\Request  $request
      * @return bool
@@ -115,6 +126,7 @@ class VerifyCsrfToken
 
     /**
      * Determine if the session and input CSRF tokens match.
+	 * 确定会话和输入CSRF令牌是否匹配
      *
      * @param  \Illuminate\Http\Request  $request
      * @return bool
@@ -130,6 +142,7 @@ class VerifyCsrfToken
 
     /**
      * Get the CSRF token from the request.
+	 * 从请求中获取CSRF令牌
      *
      * @param  \Illuminate\Http\Request  $request
      * @return string
@@ -147,6 +160,7 @@ class VerifyCsrfToken
 
     /**
      * Add the CSRF token to the response cookies.
+	 * 将CSRF令牌添加到响应cookie中
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Symfony\Component\HttpFoundation\Response  $response
@@ -168,6 +182,7 @@ class VerifyCsrfToken
 
     /**
      * Determine if the cookie contents should be serialized.
+	 * 确定是否应该序列化cookie内容
      *
      * @return bool
      */

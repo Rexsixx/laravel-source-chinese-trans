@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，Eloquent，软删除
+ */
 
 namespace Illuminate\Database\Eloquent;
 
@@ -6,6 +9,7 @@ trait SoftDeletes
 {
     /**
      * Indicates if the model is currently force deleting.
+	 * 指示模型当前是否正在强制删除
      *
      * @var bool
      */
@@ -13,6 +17,7 @@ trait SoftDeletes
 
     /**
      * Boot the soft deleting trait for a model.
+	 * 启动模型的软删除特性
      *
      * @return void
      */
@@ -23,6 +28,7 @@ trait SoftDeletes
 
     /**
      * Force a hard delete on a soft deleted model.
+	 * 对已软删除的模型强制执行硬删除
      *
      * @return bool|null
      */
@@ -39,6 +45,7 @@ trait SoftDeletes
 
     /**
      * Perform the actual delete query on this model instance.
+	 * 对这个模型实例执行实际的删除查询
      *
      * @return mixed
      */
@@ -55,6 +62,7 @@ trait SoftDeletes
 
     /**
      * Perform the actual delete query on this model instance.
+	 * 对这个模型实例执行实际的删除查询
      *
      * @return void
      */
@@ -79,6 +87,7 @@ trait SoftDeletes
 
     /**
      * Restore a soft-deleted model instance.
+	 * 恢复软删除的模型实例
      *
      * @return bool|null
      */
@@ -107,6 +116,7 @@ trait SoftDeletes
 
     /**
      * Determine if the model instance has been soft-deleted.
+	 * 确定模型实例是否已被软删除
      *
      * @return bool
      */
@@ -117,6 +127,7 @@ trait SoftDeletes
 
     /**
      * Register a restoring model event with the dispatcher.
+	 * 向调度程序注册一个恢复模型事件
      *
      * @param  \Closure|string  $callback
      * @return void
@@ -128,6 +139,7 @@ trait SoftDeletes
 
     /**
      * Register a restored model event with the dispatcher.
+	 * 向调度程序注册已恢复的模型事件
      *
      * @param  \Closure|string  $callback
      * @return void
@@ -139,6 +151,7 @@ trait SoftDeletes
 
     /**
      * Determine if the model is currently force deleting.
+	 * 确定模型当前是否正在强制删除
      *
      * @return bool
      */
@@ -149,6 +162,7 @@ trait SoftDeletes
 
     /**
      * Get the name of the "deleted at" column.
+	 * 获取“删除位置”列的名称
      *
      * @return string
      */
@@ -159,6 +173,7 @@ trait SoftDeletes
 
     /**
      * Get the fully qualified "deleted at" column.
+	 * 获取完全限定的“deleted at”列
      *
      * @return string
      */

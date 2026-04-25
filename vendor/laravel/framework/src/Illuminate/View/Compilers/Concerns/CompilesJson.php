@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，视图，编译器，问题，编译 Json
+ */
 
 namespace Illuminate\View\Compilers\Concerns;
 
@@ -6,6 +9,7 @@ trait CompilesJson
 {
     /**
      * The default JSON encoding options.
+	 * 默认的JSON编码选项
      *
      * @var int
      */
@@ -13,6 +17,7 @@ trait CompilesJson
 
     /**
      * Compile the JSON statement into valid PHP.
+	 * 将JSON语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，路由，路由服务提供商
+ */
 
 namespace Illuminate\Routing;
 
@@ -15,6 +18,7 @@ class RoutingServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
+	 * 注册服务提供者
      *
      * @return void
      */
@@ -37,6 +41,7 @@ class RoutingServiceProvider extends ServiceProvider
 
     /**
      * Register the router instance.
+	 * 注册路由器实例
      *
      * @return void
      */
@@ -49,6 +54,7 @@ class RoutingServiceProvider extends ServiceProvider
 
     /**
      * Register the URL generator service.
+	 * 注册URL生成器服务
      *
      * @return void
      */
@@ -85,6 +91,7 @@ class RoutingServiceProvider extends ServiceProvider
 
     /**
      * Get the URL generator request rebinder.
+	 * 获取URL生成器请求重新绑定器
      *
      * @return \Closure
      */
@@ -97,6 +104,7 @@ class RoutingServiceProvider extends ServiceProvider
 
     /**
      * Register the Redirector service.
+	 * 注册Redirector服务
      *
      * @return void
      */
@@ -118,6 +126,7 @@ class RoutingServiceProvider extends ServiceProvider
 
     /**
      * Register a binding for the PSR-7 request implementation.
+	 * 为PSR-7请求实现注册绑定
      *
      * @return void
      */
@@ -130,6 +139,7 @@ class RoutingServiceProvider extends ServiceProvider
 
     /**
      * Register a binding for the PSR-7 response implementation.
+	 * 为PSR-7响应实现注册绑定
      *
      * @return void
      */
@@ -142,6 +152,7 @@ class RoutingServiceProvider extends ServiceProvider
 
     /**
      * Register the response factory implementation.
+	 * 注册响应工厂实现
      *
      * @return void
      */
@@ -154,6 +165,7 @@ class RoutingServiceProvider extends ServiceProvider
 
     /**
      * Register the controller dispatcher.
+	 * 注册控制器调度程序
      *
      * @return void
      */

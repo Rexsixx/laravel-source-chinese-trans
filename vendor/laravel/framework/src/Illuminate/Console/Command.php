@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，控制台，命令
+ */
 
 namespace Illuminate\Console;
 
@@ -20,6 +23,7 @@ class Command extends SymfonyCommand
 
     /**
      * The Laravel application instance.
+	 * Laravel应用实例
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -27,6 +31,7 @@ class Command extends SymfonyCommand
 
     /**
      * The input interface implementation.
+	 * 输入接口实现
      *
      * @var \Symfony\Component\Console\Input\InputInterface
      */
@@ -34,6 +39,7 @@ class Command extends SymfonyCommand
 
     /**
      * The output interface implementation.
+	 * 输出接口实现
      *
      * @var \Illuminate\Console\OutputStyle
      */
@@ -41,6 +47,7 @@ class Command extends SymfonyCommand
 
     /**
      * The name and signature of the console command.
+	 * console命令的名称和签名
      *
      * @var string
      */
@@ -48,6 +55,7 @@ class Command extends SymfonyCommand
 
     /**
      * The console command name.
+	 * 控制台命令名
      *
      * @var string
      */
@@ -55,6 +63,7 @@ class Command extends SymfonyCommand
 
     /**
      * The console command description.
+	 * console命令说明
      *
      * @var string
      */
@@ -62,6 +71,7 @@ class Command extends SymfonyCommand
 
     /**
      * Indicates whether the command should be shown in the Artisan command list.
+	 * 指示该命令是否应该显示在Artisan命令列表中
      *
      * @var bool
      */
@@ -69,6 +79,7 @@ class Command extends SymfonyCommand
 
     /**
      * The default verbosity of output commands.
+	 * 输出命令的默认长度
      *
      * @var int
      */
@@ -76,6 +87,7 @@ class Command extends SymfonyCommand
 
     /**
      * The mapping between human readable verbosity levels and Symfony's OutputInterface.
+	 * 人类可读的冗长级别和Symfony的OutputInterface之间的映射
      *
      * @var array
      */
@@ -89,6 +101,7 @@ class Command extends SymfonyCommand
 
     /**
      * Create a new console command instance.
+	 * 创建一个新的控制台命令实例
      *
      * @return void
      */
@@ -117,6 +130,7 @@ class Command extends SymfonyCommand
 
     /**
      * Configure the console command using a fluent definition.
+	 * 使用连贯的定义配置console命令
      *
      * @return void
      */
@@ -140,6 +154,7 @@ class Command extends SymfonyCommand
 
     /**
      * Specify the arguments and options on the command.
+	 * 指定命令上的参数和选项
      *
      * @return void
      */
@@ -159,6 +174,7 @@ class Command extends SymfonyCommand
 
     /**
      * Run the console command.
+	 * 执行console命令
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
@@ -173,6 +189,7 @@ class Command extends SymfonyCommand
 
     /**
      * Execute the console command.
+	 * 执行console命令
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
@@ -185,6 +202,7 @@ class Command extends SymfonyCommand
 
     /**
      * Call another console command.
+	 * 调用另一个控制台命令
      *
      * @param  string  $command
      * @param  array   $arguments
@@ -201,6 +219,7 @@ class Command extends SymfonyCommand
 
     /**
      * Call another console command silently.
+	 * 以静默方式调用另一个控制台命令
      *
      * @param  string  $command
      * @param  array   $arguments
@@ -217,6 +236,7 @@ class Command extends SymfonyCommand
 
     /**
      * Create an input instance from the given arguments.
+	 * 根据给定的参数创建输入实例
      *
      * @param  array  $arguments
      * @return \Symfony\Component\Console\Input\ArrayInput
@@ -232,6 +252,7 @@ class Command extends SymfonyCommand
 
     /**
      * Get all of the context passed to the command.
+	 * 获取传递给命令的所有上下文
      *
      * @return array
      */
@@ -246,6 +267,7 @@ class Command extends SymfonyCommand
 
     /**
      * Determine if the given argument is present.
+	 * 确定给定参数是否存在
      *
      * @param  string|int  $name
      * @return bool
@@ -257,6 +279,7 @@ class Command extends SymfonyCommand
 
     /**
      * Get the value of a command argument.
+	 * 获取命令参数的值
      *
      * @param  string|null  $key
      * @return string|array
@@ -272,6 +295,7 @@ class Command extends SymfonyCommand
 
     /**
      * Get all of the arguments passed to the command.
+	 * 获取传递给命令的所有参数
      *
      * @return array
      */
@@ -282,6 +306,7 @@ class Command extends SymfonyCommand
 
     /**
      * Determine if the given option is present.
+	 * 确定给定选项是否存在
      *
      * @param  string  $name
      * @return bool
@@ -293,6 +318,7 @@ class Command extends SymfonyCommand
 
     /**
      * Get the value of a command option.
+	 * 获取命令选项的值
      *
      * @param  string  $key
      * @return string|array
@@ -308,6 +334,7 @@ class Command extends SymfonyCommand
 
     /**
      * Get all of the options passed to the command.
+	 * 获取传递给命令的所有选项
      *
      * @return array
      */
@@ -318,6 +345,7 @@ class Command extends SymfonyCommand
 
     /**
      * Confirm a question with the user.
+	 * 与用户确认问题
      *
      * @param  string  $question
      * @param  bool    $default
@@ -330,6 +358,7 @@ class Command extends SymfonyCommand
 
     /**
      * Prompt the user for input.
+	 * 提示用户输入
      *
      * @param  string  $question
      * @param  string  $default
@@ -342,6 +371,7 @@ class Command extends SymfonyCommand
 
     /**
      * Prompt the user for input with auto completion.
+	 * 提示用户输入并自动完成
      *
      * @param  string  $question
      * @param  array   $choices
@@ -355,6 +385,7 @@ class Command extends SymfonyCommand
 
     /**
      * Prompt the user for input with auto completion.
+	 * 提示用户输入并自动完成
      *
      * @param  string  $question
      * @param  array   $choices
@@ -372,6 +403,7 @@ class Command extends SymfonyCommand
 
     /**
      * Prompt the user for input but hide the answer from the console.
+	 * 提示用户输入，但在控制台中隐藏答案。
      *
      * @param  string  $question
      * @param  bool    $fallback
@@ -388,6 +420,7 @@ class Command extends SymfonyCommand
 
     /**
      * Give the user a single choice from an array of answers.
+	 * 从一组答案中给用户一个选择
      *
      * @param  string  $question
      * @param  array   $choices
@@ -407,6 +440,7 @@ class Command extends SymfonyCommand
 
     /**
      * Format input to textual table.
+	 * 将输入格式化为文本表
      *
      * @param  array   $headers
      * @param  \Illuminate\Contracts\Support\Arrayable|array  $rows
@@ -433,6 +467,7 @@ class Command extends SymfonyCommand
 
     /**
      * Write a string as information output.
+	 * 写一个字符串作为信息输出
      *
      * @param  string  $string
      * @param  null|int|string  $verbosity
@@ -445,6 +480,7 @@ class Command extends SymfonyCommand
 
     /**
      * Write a string as standard output.
+	 * 写一个字符串作为标准输出
      *
      * @param  string  $string
      * @param  string  $style
@@ -460,6 +496,7 @@ class Command extends SymfonyCommand
 
     /**
      * Write a string as comment output.
+	 * 写一个字符串作为注释输出
      *
      * @param  string  $string
      * @param  null|int|string  $verbosity
@@ -472,6 +509,7 @@ class Command extends SymfonyCommand
 
     /**
      * Write a string as question output.
+	 * 写一个字符串作为问题输出
      *
      * @param  string  $string
      * @param  null|int|string  $verbosity
@@ -484,6 +522,7 @@ class Command extends SymfonyCommand
 
     /**
      * Write a string as error output.
+	 * 写一个字符串作为错误输出
      *
      * @param  string  $string
      * @param  null|int|string  $verbosity
@@ -496,6 +535,7 @@ class Command extends SymfonyCommand
 
     /**
      * Write a string as warning output.
+	 * 写一个字符串作为警告输出
      *
      * @param  string  $string
      * @param  null|int|string  $verbosity
@@ -514,6 +554,7 @@ class Command extends SymfonyCommand
 
     /**
      * Write a string in an alert box.
+	 * 在警告框中写一个字符串
      *
      * @param  string  $string
      * @return void
@@ -529,6 +570,7 @@ class Command extends SymfonyCommand
 
     /**
      * Set the verbosity level.
+	 * 设置冗长级别
      *
      * @param  string|int  $level
      * @return void
@@ -540,6 +582,7 @@ class Command extends SymfonyCommand
 
     /**
      * Get the verbosity level in terms of Symfony's OutputInterface level.
+	 * 根据Symfony的OutputInterface级别获取冗长级别
      *
      * @param  string|int  $level
      * @return int
@@ -557,6 +600,7 @@ class Command extends SymfonyCommand
 
     /**
      * Get the console command arguments.
+	 * 获取控制台命令参数
      *
      * @return array
      */
@@ -567,6 +611,7 @@ class Command extends SymfonyCommand
 
     /**
      * Get the console command options.
+	 * 获取控制台命令选项
      *
      * @return array
      */
@@ -577,6 +622,7 @@ class Command extends SymfonyCommand
 
     /**
      * Get the output implementation.
+	 * 获取输出实现
      *
      * @return \Symfony\Component\Console\Output\OutputInterface
      */
@@ -587,6 +633,7 @@ class Command extends SymfonyCommand
 
     /**
      * Get the Laravel application instance.
+	 * 获取Laravel应用程序实例
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */
@@ -597,6 +644,7 @@ class Command extends SymfonyCommand
 
     /**
      * Set the Laravel application instance.
+	 * 设置Laravel应用实例
      *
      * @param  \Illuminate\Contracts\Container\Container  $laravel
      * @return void

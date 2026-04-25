@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，密码，可以重置密码
+ * Illuminate，Auth，密码，数据库令牌存储库
  */
 
 namespace Illuminate\Auth\Passwords;
@@ -15,6 +15,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 {
     /**
      * The database connection instance.
+	 * 数据库连接实例
      *
      * @var \Illuminate\Database\ConnectionInterface
      */
@@ -22,6 +23,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * The Hasher implementation.
+	 * 哈希实现
      *
      * @var \Illuminate\Contracts\Hashing\Hasher
      */
@@ -29,6 +31,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * The token database table.
+	 * 令牌数据库表
      *
      * @var string
      */
@@ -36,6 +39,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * The hashing key.
+	 * 哈希键
      *
      * @var string
      */
@@ -43,6 +47,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * The number of seconds a token should last.
+	 * 令牌应该持续的秒数
      *
      * @var int
      */

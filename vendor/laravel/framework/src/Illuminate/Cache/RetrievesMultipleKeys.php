@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，缓存，检索多个键
+ */
 
 namespace Illuminate\Cache;
 
@@ -6,6 +9,7 @@ trait RetrievesMultipleKeys
 {
     /**
      * Retrieve multiple items from the cache by key.
+	 * 按键从缓存中检索多个项。
      *
      * Items not found in the cache will have a null value.
      *
@@ -25,6 +29,7 @@ trait RetrievesMultipleKeys
 
     /**
      * Store multiple items in the cache for a given number of minutes.
+	 * 在给定的分钟数内将多个项存储在缓存中
      *
      * @param  array  $values
      * @param  float|int  $minutes

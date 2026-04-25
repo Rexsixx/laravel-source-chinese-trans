@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Http，测试，文件
+ */
 
 namespace Illuminate\Http\Testing;
 
@@ -8,6 +11,7 @@ class File extends UploadedFile
 {
     /**
      * The name of the file.
+	 * 文件名称
      *
      * @var string
      */
@@ -15,6 +19,7 @@ class File extends UploadedFile
 
     /**
      * The temporary file resource.
+	 * 临时文件资源
      *
      * @var resource
      */
@@ -29,6 +34,7 @@ class File extends UploadedFile
 
     /**
      * Create a new file instance.
+	 * 创建一个新的文件实例
      *
      * @param  string  $name
      * @param  resource  $tempFile
@@ -47,6 +53,7 @@ class File extends UploadedFile
 
     /**
      * Create a new fake file.
+	 * 创建一个新的假文件
      *
      * @param  string  $name
      * @param  int  $kilobytes
@@ -59,6 +66,7 @@ class File extends UploadedFile
 
     /**
      * Create a new fake image.
+	 * 创建一个新的假图像
      *
      * @param  string  $name
      * @param  int  $width
@@ -85,6 +93,7 @@ class File extends UploadedFile
 
     /**
      * Get the size of the file.
+	 * 获取文件的大小
      *
      * @return int
      */
@@ -95,6 +104,7 @@ class File extends UploadedFile
 
     /**
      * Get the MIME type for the file.
+	 * 获取文件的MIME类型
      *
      * @return string
      */
@@ -105,6 +115,7 @@ class File extends UploadedFile
 
     /**
      * Get the path to the temporary file.
+	 * 获取临时文件的路径
      *
      * @return string
      */

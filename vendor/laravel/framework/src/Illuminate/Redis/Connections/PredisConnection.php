@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Redis，连接，Predis 连接
+ */
 
 namespace Illuminate\Redis\Connections;
 
@@ -11,6 +14,7 @@ class PredisConnection extends Connection
 {
     /**
      * Create a new Predis connection.
+	 * 创建一个新的Predis连接
      *
      * @param  \Predis\Client  $client
      * @return void
@@ -22,6 +26,7 @@ class PredisConnection extends Connection
 
     /**
      * Subscribe to a set of given channels for messages.
+	 * 为消息订阅一组给定的通道
      *
      * @param  array|string  $channels
      * @param  \Closure  $callback

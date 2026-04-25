@@ -1,10 +1,13 @@
 <?php
+/**
+ * 配置，队列
+ */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Queue Driver
+    | Default Queue Driver		默认队列驱动程序
     |--------------------------------------------------------------------------
     |
     | Laravel's queue API supports an assortment of back-ends via a single
@@ -19,7 +22,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Queue Connections
+    | Queue Connections		队列连接
     |--------------------------------------------------------------------------
     |
     | Here you may configure the connection information for each server that
@@ -68,7 +71,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Failed Queue Jobs
+    | Failed Queue Jobs		失败的队列作业
     |--------------------------------------------------------------------------
     |
     | These options configure the behavior of failed queue job logging so you

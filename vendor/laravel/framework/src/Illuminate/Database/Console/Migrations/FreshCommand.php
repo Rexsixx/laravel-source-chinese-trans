@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，控制台，迁移，刷新命令 migrate:fresh
+ */
 
 namespace Illuminate\Database\Console\Migrations;
 
@@ -12,6 +15,7 @@ class FreshCommand extends Command
 
     /**
      * The console command name.
+	 * 控制台命令名
      *
      * @var string
      */
@@ -19,6 +23,7 @@ class FreshCommand extends Command
 
     /**
      * The console command description.
+	 * console命令说明
      *
      * @var string
      */
@@ -26,6 +31,7 @@ class FreshCommand extends Command
 
     /**
      * Execute the console command.
+	 * 执行console命令
      *
      * @return void
      */
@@ -54,6 +60,7 @@ class FreshCommand extends Command
 
     /**
      * Drop all of the database tables.
+	 * 删除所有数据库表
      *
      * @param  string  $database
      * @return void
@@ -67,6 +74,7 @@ class FreshCommand extends Command
 
     /**
      * Determine if the developer has requested database seeding.
+	 * 确定开发人员是否请求了数据库播种
      *
      * @return bool
      */
@@ -77,6 +85,7 @@ class FreshCommand extends Command
 
     /**
      * Run the database seeder command.
+	 * 执行database seeder命令
      *
      * @param  string  $database
      * @return void
@@ -92,6 +101,7 @@ class FreshCommand extends Command
 
     /**
      * Get the console command options.
+	 * 获取控制台命令选项
      *
      * @return array
      */

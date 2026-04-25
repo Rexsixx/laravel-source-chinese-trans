@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，提供者，基础服务提供商
+ */
 
 namespace Illuminate\Foundation\Providers;
 
@@ -9,6 +12,7 @@ class FoundationServiceProvider extends AggregateServiceProvider
 {
     /**
      * The provider class names.
+	 * 提供程序类名
      *
      * @var array
      */
@@ -18,6 +22,7 @@ class FoundationServiceProvider extends AggregateServiceProvider
 
     /**
      * Register the service provider.
+	 * 注册服务提供者
      *
      * @return void
      */
@@ -30,6 +35,7 @@ class FoundationServiceProvider extends AggregateServiceProvider
 
     /**
      * Register the "validate" macro on the request.
+	 * 在请求上注册“validate”宏
      *
      * @return void
      */

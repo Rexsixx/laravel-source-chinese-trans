@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，通知，信息，Slack 消息
+ */
 
 namespace Illuminate\Notifications\Messages;
 
@@ -8,6 +11,7 @@ class SlackMessage
 {
     /**
      * The "level" of the notification (info, success, warning, error).
+	 * 通知的“级别”（提示、成功、警告、错误）
      *
      * @var string
      */
@@ -15,6 +19,7 @@ class SlackMessage
 
     /**
      * The username to send the message from.
+	 * 发送消息的用户名
      *
      * @var string|null
      */
@@ -22,6 +27,7 @@ class SlackMessage
 
     /**
      * The user emoji icon for the message.
+	 * 消息的用户表情符号
      *
      * @var string|null
      */
@@ -29,6 +35,7 @@ class SlackMessage
 
     /**
      * The user image icon for the message.
+	 * 消息的用户图像图标
      *
      * @var string|null
      */
@@ -36,6 +43,7 @@ class SlackMessage
 
     /**
      * The channel to send the message on.
+	 * 发送消息的通道
      *
      * @var string|null
      */
@@ -43,6 +51,7 @@ class SlackMessage
 
     /**
      * The text content of the message.
+	 * 消息的文本内容
      *
      * @var string
      */
@@ -50,6 +59,7 @@ class SlackMessage
 
     /**
      * Indicates if channel names and usernames should be linked.
+	 * 指示通道名和用户名是否应该链接
      *
      * @var bool
      */
@@ -57,6 +67,7 @@ class SlackMessage
 
     /**
      * Indicates if you want a preview of links inlined in the message.
+	 * 指示是否要预览邮件中内联的链接
      *
      * @var bool
      */
@@ -64,6 +75,7 @@ class SlackMessage
 
     /**
      * Indicates if you want a preview of links to media inlined in the message.
+	 * 指示是否要预览邮件中内联的媒体链接
      *
      * @var bool
      */
@@ -71,6 +83,7 @@ class SlackMessage
 
     /**
      * The message's attachments.
+	 * 消息的附件
      *
      * @var array
      */
@@ -78,6 +91,7 @@ class SlackMessage
 
     /**
      * Additional request options for the Guzzle HTTP client.
+	 * Guzzle HTTP客户端的附加请求选项
      *
      * @var array
      */
@@ -85,6 +99,7 @@ class SlackMessage
 
     /**
      * Indicate that the notification gives information about a successful operation.
+	 * 指示通知提供有关成功操作的信息
      *
      * @return $this
      */
@@ -97,6 +112,7 @@ class SlackMessage
 
     /**
      * Indicate that the notification gives information about a warning.
+	 * 指示通知提供有关警告的信息
      *
      * @return $this
      */
@@ -109,6 +125,7 @@ class SlackMessage
 
     /**
      * Indicate that the notification gives information about an error.
+	 * 指示通知提供有关错误的信息
      *
      * @return $this
      */
@@ -121,6 +138,7 @@ class SlackMessage
 
     /**
      * Set a custom username and optional emoji icon for the Slack message.
+	 * 为Slack消息设置自定义用户名和可选的表情符号图标
      *
      * @param  string  $username
      * @param  string|null  $icon
@@ -139,6 +157,7 @@ class SlackMessage
 
     /**
      * Set a custom image icon the message should use.
+	 * 设置消息应该使用的自定义图像图标
      *
      * @param  string  $image
      * @return $this
@@ -152,6 +171,7 @@ class SlackMessage
 
     /**
      * Set the Slack channel the message should be sent to.
+	 * 设置消息应该发送到的Slack频道
      *
      * @param  string $channel
      * @return $this
@@ -165,6 +185,7 @@ class SlackMessage
 
     /**
      * Set the content of the Slack message.
+	 * 设置Slack消息的内容
      *
      * @param  string  $content
      * @return $this
@@ -178,6 +199,7 @@ class SlackMessage
 
     /**
      * Define an attachment for the message.
+	 * 为消息定义一个附件
      *
      * @param  \Closure  $callback
      * @return $this
@@ -193,6 +215,7 @@ class SlackMessage
 
     /**
      * Get the color for the message.
+	 * 获取消息的颜色
      *
      * @return string
      */
@@ -210,6 +233,7 @@ class SlackMessage
 
     /**
      * Find and link channel names and usernames.
+	 * 查找并链接频道名和用户名
      *
      * @return $this
      */
@@ -222,6 +246,7 @@ class SlackMessage
 
     /**
      * Find and link channel names and usernames.
+	 * 查找并链接频道名和用户名
      *
      * @param  string  $unfurl
      * @return $this
@@ -235,6 +260,7 @@ class SlackMessage
 
     /**
      * Find and link channel names and usernames.
+	 * 查找并链接频道名和用户名
      *
      * @param  string  $unfurl
      * @return $this
@@ -248,6 +274,7 @@ class SlackMessage
 
     /**
      * Set additional request options for the Guzzle HTTP client.
+	 * 为Guzzle HTTP客户端设置其他请求选项
      *
      * @param  array  $options
      * @return $this

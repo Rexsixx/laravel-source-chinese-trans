@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，路由，路由Url生成器
+ */
 
 namespace Illuminate\Routing;
 
@@ -10,6 +13,7 @@ class RouteUrlGenerator
 {
     /**
      * The URL generator instance.
+	 * URL生成器实例
      *
      * @var \Illuminate\Routing\UrlGenerator
      */
@@ -17,6 +21,7 @@ class RouteUrlGenerator
 
     /**
      * The request instance.
+	 * 请求实例
      *
      * @var \Illuminate\Http\Request
      */
@@ -24,6 +29,7 @@ class RouteUrlGenerator
 
     /**
      * The named parameter defaults.
+	 * 命名参数默认值
      *
      * @var array
      */
@@ -31,6 +37,7 @@ class RouteUrlGenerator
 
     /**
      * Characters that should not be URL encoded.
+	 * 不应该被URL编码的字符
      *
      * @var array
      */
@@ -53,6 +60,7 @@ class RouteUrlGenerator
 
     /**
      * Create a new Route URL generator.
+	 * 创建一个新的路由URL生成器
      *
      * @param  \Illuminate\Routing\UrlGenerator  $url
      * @param  \Illuminate\Http\Request  $request
@@ -66,6 +74,7 @@ class RouteUrlGenerator
 
     /**
      * Generate a URL for the given route.
+	 * 为给定的路由生成URL
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  array  $parameters
@@ -104,6 +113,7 @@ class RouteUrlGenerator
 
     /**
      * Get the formatted domain for a given route.
+	 * 获取给定路由的格式化域
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  array  $parameters
@@ -116,6 +126,7 @@ class RouteUrlGenerator
 
     /**
      * Format the domain and port for the route and request.
+	 * 格式化路由和请求的域和端口
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  array  $parameters
@@ -130,6 +141,7 @@ class RouteUrlGenerator
 
     /**
      * Get the scheme for the given route.
+	 * 获取给定路线的方案
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return string
@@ -147,6 +159,7 @@ class RouteUrlGenerator
 
     /**
      * Add the port to the domain if necessary.
+	 * 根据需要将端口加入域
      *
      * @param  string  $domain
      * @return string
@@ -163,6 +176,7 @@ class RouteUrlGenerator
 
     /**
      * Replace the parameters on the root path.
+	 * 替换根路径上的参数
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  string  $domain
@@ -180,6 +194,7 @@ class RouteUrlGenerator
 
     /**
      * Replace all of the wildcard parameters for a route path.
+	 * 替换路由路径的所有通配符参数
      *
      * @param  string  $path
      * @param  array  $parameters
@@ -200,6 +215,7 @@ class RouteUrlGenerator
 
     /**
      * Replace all of the named parameters in the path.
+	 * 替换路径中的所有命名参数
      *
      * @param  string  $path
      * @param  array  $parameters
@@ -220,6 +236,7 @@ class RouteUrlGenerator
 
     /**
      * Add a query string to the URI.
+	 * 向URI添加查询字符串
      *
      * @param  string  $uri
      * @param  array  $parameters
@@ -241,6 +258,7 @@ class RouteUrlGenerator
 
     /**
      * Get the query string for a given route.
+	 * 获取给定路由的查询字符串
      *
      * @param  array  $parameters
      * @return string
@@ -272,6 +290,7 @@ class RouteUrlGenerator
 
     /**
      * Get the string parameters from a given list.
+	 * 从给定列表中获取字符串参数
      *
      * @param  array  $parameters
      * @return array
@@ -283,6 +302,7 @@ class RouteUrlGenerator
 
     /**
      * Get the numeric parameters from a given list.
+	 * 从给定列表中获取数值参数
      *
      * @param  array  $parameters
      * @return array
@@ -294,6 +314,7 @@ class RouteUrlGenerator
 
     /**
      * Set the default named parameters used by the URL generator.
+	 * 设置URL生成器使用的默认命名参数
      *
      * @param  array  $defaults
      * @return void

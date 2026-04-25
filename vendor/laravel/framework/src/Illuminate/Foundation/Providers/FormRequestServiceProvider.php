@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，提供者，表单请求服务提供商
+ */
 
 namespace Illuminate\Foundation\Providers;
 
@@ -12,6 +15,7 @@ class FormRequestServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
+	 * 注册服务提供商
      *
      * @return void
      */
@@ -22,6 +26,7 @@ class FormRequestServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap the application services.
+	 * 引导应用程序服务
      *
      * @return void
      */
@@ -40,6 +45,7 @@ class FormRequestServiceProvider extends ServiceProvider
 
     /**
      * Initialize the form request with data from the given request.
+	 * 用给定请求中的数据初始化表单请求
      *
      * @param  \Illuminate\Foundation\Http\FormRequest  $form
      * @param  \Symfony\Component\HttpFoundation\Request  $current

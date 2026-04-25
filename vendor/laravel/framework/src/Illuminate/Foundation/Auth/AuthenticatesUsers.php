@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，认证，对用户进行身份验证
+ */
 
 namespace Illuminate\Foundation\Auth;
 
@@ -12,6 +15,7 @@ trait AuthenticatesUsers
 
     /**
      * Show the application's login form.
+	 * 显示应用程序的登录表单
      *
      * @return \Illuminate\Http\Response
      */
@@ -22,6 +26,7 @@ trait AuthenticatesUsers
 
     /**
      * Handle a login request to the application.
+	 * 处理对应用程序的登录请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
@@ -53,6 +58,7 @@ trait AuthenticatesUsers
 
     /**
      * Validate the user login request.
+	 * 验证用户登录请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void
@@ -67,6 +73,7 @@ trait AuthenticatesUsers
 
     /**
      * Attempt to log the user into the application.
+	 * 尝试将用户登录到应用程序
      *
      * @param  \Illuminate\Http\Request  $request
      * @return bool
@@ -80,6 +87,7 @@ trait AuthenticatesUsers
 
     /**
      * Get the needed authorization credentials from the request.
+	 * 从请求中获取所需的授权凭据
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
@@ -91,6 +99,7 @@ trait AuthenticatesUsers
 
     /**
      * Send the response after the user was authenticated.
+	 * 用户通过身份验证后发送响应
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -107,6 +116,7 @@ trait AuthenticatesUsers
 
     /**
      * The user has been authenticated.
+	 * 用户已通过认证
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $user
@@ -119,6 +129,7 @@ trait AuthenticatesUsers
 
     /**
      * Get the failed login response instance.
+	 * 获取失败的登录响应实例
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -134,6 +145,7 @@ trait AuthenticatesUsers
 
     /**
      * Get the login username to be used by the controller.
+	 * 获取控制器使用的登录用户名
      *
      * @return string
      */
@@ -144,6 +156,7 @@ trait AuthenticatesUsers
 
     /**
      * Log the user out of the application.
+	 * 将用户从应用程序中注销
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -159,6 +172,7 @@ trait AuthenticatesUsers
 
     /**
      * Get the guard to be used during authentication.
+	 * 获取要在身份验证期间使用的保护
      *
      * @return \Illuminate\Contracts\Auth\StatefulGuard
      */

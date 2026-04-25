@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，认证，注册用户
+ */
 
 namespace Illuminate\Foundation\Auth;
 
@@ -12,6 +15,7 @@ trait RegistersUsers
 
     /**
      * Show the application registration form.
+	 * 出示报名表格
      *
      * @return \Illuminate\Http\Response
      */
@@ -22,6 +26,7 @@ trait RegistersUsers
 
     /**
      * Handle a registration request for the application.
+	 * 处理应用程序的注册请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -40,6 +45,7 @@ trait RegistersUsers
 
     /**
      * Get the guard to be used during registration.
+	 * 在注册时使用警卫
      *
      * @return \Illuminate\Contracts\Auth\StatefulGuard
      */
@@ -50,6 +56,7 @@ trait RegistersUsers
 
     /**
      * The user has been registered.
+	 * 已注册用户
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $user

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，总线，总线服务提供商
+ */
 
 namespace Illuminate\Bus;
 
@@ -11,6 +14,7 @@ class BusServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
+	 * 指示是否延迟加载提供程序
      *
      * @var bool
      */
@@ -18,6 +22,7 @@ class BusServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
+	 * 注册服务提供者
      *
      * @return void
      */
@@ -40,6 +45,7 @@ class BusServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
+	 * 获取提供者提供的服务
      *
      * @return array
      */

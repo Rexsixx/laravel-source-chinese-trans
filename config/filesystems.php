@@ -20,7 +20,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Cloud Filesystem Disk
+    | Default Cloud Filesystem Disk		默认云文件系统磁盘
     |--------------------------------------------------------------------------
     |
     | Many applications store files both locally and in the cloud. For this
@@ -33,7 +33,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Filesystem Disks
+    | Filesystem Disks		文件系统磁盘
     |--------------------------------------------------------------------------
     |
     | Here you may configure as many filesystem "disks" as you wish, and you

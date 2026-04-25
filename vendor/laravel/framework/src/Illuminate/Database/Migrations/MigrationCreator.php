@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，迁移，迁移的创造者
+ */
 
 namespace Illuminate\Database\Migrations;
 
@@ -11,6 +14,7 @@ class MigrationCreator
 {
     /**
      * The filesystem instance.
+	 * 文件系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -18,6 +22,7 @@ class MigrationCreator
 
     /**
      * The registered post create hooks.
+	 * 注册的帖子创建钩子
      *
      * @var array
      */
@@ -25,6 +30,7 @@ class MigrationCreator
 
     /**
      * Create a new migration creator instance.
+	 * 创建一个新的迁移创建器实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void
@@ -36,6 +42,7 @@ class MigrationCreator
 
     /**
      * Create a new migration at the given path.
+	 * 在给定的路径上创建一个新的迁移
      *
      * @param  string  $name
      * @param  string  $path
@@ -68,6 +75,7 @@ class MigrationCreator
 
     /**
      * Ensure that a migration with the given name doesn't already exist.
+	 * 确保具有给定名称的迁移不存在
      *
      * @param  string  $name
      * @return void
@@ -83,6 +91,7 @@ class MigrationCreator
 
     /**
      * Get the migration stub file.
+	 * 获取迁移存根文件
      *
      * @param  string  $table
      * @param  bool    $create
@@ -104,6 +113,7 @@ class MigrationCreator
 
     /**
      * Populate the place-holders in the migration stub.
+	 * 在迁移存根中填充占位符
      *
      * @param  string  $name
      * @param  string  $stub
@@ -126,6 +136,7 @@ class MigrationCreator
 
     /**
      * Get the class name of a migration name.
+	 * 获取迁移名的类名
      *
      * @param  string  $name
      * @return string
@@ -137,6 +148,7 @@ class MigrationCreator
 
     /**
      * Get the full path to the migration.
+	 * 获取迁移的完整路径
      *
      * @param  string  $name
      * @param  string  $path
@@ -149,6 +161,7 @@ class MigrationCreator
 
     /**
      * Fire the registered post create hooks.
+	 * 触发注册的帖子创建钩子
      *
      * @return void
      */
@@ -161,6 +174,7 @@ class MigrationCreator
 
     /**
      * Register a post migration create hook.
+	 * 注册一个迁移后创建钩子
      *
      * @param  \Closure  $callback
      * @return void
@@ -172,6 +186,7 @@ class MigrationCreator
 
     /**
      * Get the date prefix for the migration.
+	 * 获取迁移的日期前缀
      *
      * @return string
      */
@@ -182,6 +197,7 @@ class MigrationCreator
 
     /**
      * Get the path to the stubs.
+	 * 找到存根的路径
      *
      * @return string
      */
@@ -192,6 +208,7 @@ class MigrationCreator
 
     /**
      * Get the filesystem instance.
+	 * 获取文件系统实例
      *
      * @return \Illuminate\Filesystem\Filesystem
      */

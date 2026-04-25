@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，提供者，Artisan 服务提供商
+ */
 
 namespace Illuminate\Foundation\Providers;
 
@@ -72,6 +75,7 @@ class ArtisanServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
+	 * 指示是否延迟加载提供程序
      *
      * @var bool
      */
@@ -79,6 +83,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * The commands to be registered.
+	 * 需要注册的命令
      *
      * @var array
      */
@@ -122,6 +127,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * The commands to be registered.
+	 * 需要注册的命令
      *
      * @var array
      */
@@ -159,6 +165,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
+	 * 注册服务提供者
      *
      * @return void
      */
@@ -171,6 +178,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the given commands.
+	 * 注册给定的命令
      *
      * @param  array  $commands
      * @return void
@@ -186,6 +194,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the command.
+	 * 注册命令
      *
      * @return void
      */
@@ -198,6 +207,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the command.
+	 * 注册命令
      *
      * @return void
      */
@@ -210,6 +220,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the command.
+	 * 注册命令
      *
      * @return void
      */
@@ -222,6 +233,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the command.
+	 * 注册命令
      *
      * @return void
      */
@@ -945,6 +957,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the command.
+	 * 注册命令
      *
      * @return void
      */
@@ -957,6 +970,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
+	 * 获取提供者提供的服务
      *
      * @return array
      */

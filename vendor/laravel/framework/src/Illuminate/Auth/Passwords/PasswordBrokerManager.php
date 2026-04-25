@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Auth，密码，密码代理管理器
+ */
 
 namespace Illuminate\Auth\Passwords;
 
@@ -13,6 +16,7 @@ class PasswordBrokerManager implements FactoryContract
 {
     /**
      * The application instance.
+	 * 程序实例
      *
      * @var \Illuminate\Foundation\Application
      */
@@ -20,6 +24,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * The array of created "drivers".
+	 * 已创建的“驱动程序”数组
      *
      * @var array
      */
@@ -27,6 +32,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Create a new PasswordBroker manager instance.
+	 * 创建一个新的PasswordBroker管理器实例
      *
      * @param  \Illuminate\Foundation\Application  $app
      * @return void
@@ -38,6 +44,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Attempt to get the broker from the local cache.
+	 * 尝试从本地缓存获取代理
      *
      * @param  string  $name
      * @return \Illuminate\Contracts\Auth\PasswordBroker
@@ -53,6 +60,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Resolve the given broker.
+	 * 解析给定的代理
      *
      * @param  string  $name
      * @return \Illuminate\Contracts\Auth\PasswordBroker

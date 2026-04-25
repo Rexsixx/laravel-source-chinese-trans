@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，队列，作业，作业
+ */
 
 namespace Illuminate\Queue\Jobs;
 
@@ -10,6 +13,7 @@ abstract class Job
 
     /**
      * The job handler instance.
+	 * 作业处理程序实例
      *
      * @var mixed
      */
@@ -17,6 +21,7 @@ abstract class Job
 
     /**
      * The IoC container instance.
+	 * IoC容器实例
      *
      * @var \Illuminate\Container\Container
      */
@@ -24,6 +29,7 @@ abstract class Job
 
     /**
      * Indicates if the job has been deleted.
+	 * 指示作业是否已删除
      *
      * @var bool
      */
@@ -31,6 +37,7 @@ abstract class Job
 
     /**
      * Indicates if the job has been released.
+	 * 指示作业是否已释放
      *
      * @var bool
      */
@@ -38,6 +45,7 @@ abstract class Job
 
     /**
      * Indicates if the job has failed.
+	 * 指示作业是否失败
      *
      * @var bool
      */
@@ -45,11 +53,13 @@ abstract class Job
 
     /**
      * The name of the connection the job belongs to.
+	 * 作业所属的连接的名称
      */
     protected $connectionName;
 
     /**
      * The name of the queue the job belongs to.
+	 * 作业所属队列的名称
      *
      * @var string
      */
@@ -57,6 +67,7 @@ abstract class Job
 
     /**
      * Get the raw body of the job.
+	 * 得到工作的原始主体
      *
      * @return string
      */
@@ -64,6 +75,7 @@ abstract class Job
 
     /**
      * Fire the job.
+	 * 启动这个作业
      *
      * @return void
      */
@@ -78,6 +90,7 @@ abstract class Job
 
     /**
      * Delete the job from the queue.
+	 * 从队列中删除作业
      *
      * @return void
      */
@@ -88,6 +101,7 @@ abstract class Job
 
     /**
      * Determine if the job has been deleted.
+	 * 确定作业是否已删除
      *
      * @return bool
      */
@@ -98,6 +112,7 @@ abstract class Job
 
     /**
      * Release the job back into the queue.
+	 * 将作业释放回队列
      *
      * @param  int   $delay
      * @return void
@@ -109,6 +124,7 @@ abstract class Job
 
     /**
      * Determine if the job was released back into the queue.
+	 * 确定作业是否被释放回队列
      *
      * @return bool
      */
@@ -119,6 +135,7 @@ abstract class Job
 
     /**
      * Determine if the job has been deleted or released.
+	 * 确定作业是否已被删除或释放
      *
      * @return bool
      */
@@ -129,6 +146,7 @@ abstract class Job
 
     /**
      * Determine if the job has been marked as a failure.
+	 * 确定作业是否已被标记为失败
      *
      * @return bool
      */
@@ -139,6 +157,7 @@ abstract class Job
 
     /**
      * Mark the job as "failed".
+	 * 把这项作业标记为“失败”
      *
      * @return void
      */
@@ -149,6 +168,7 @@ abstract class Job
 
     /**
      * Process an exception that caused the job to fail.
+	 * 处理导致作业失败的异常
      *
      * @param  \Exception  $e
      * @return void
@@ -168,6 +188,7 @@ abstract class Job
 
     /**
      * Resolve the given class.
+	 * 解析给定的类
      *
      * @param  string  $class
      * @return mixed
@@ -179,6 +200,7 @@ abstract class Job
 
     /**
      * Get the decoded body of the job.
+	 * 拿到解码后的主体
      *
      * @return array
      */
@@ -189,6 +211,7 @@ abstract class Job
 
     /**
      * Get the number of times to attempt a job.
+	 * 获取尝试某项工作的次数
      *
      * @return int|null
      */
@@ -199,6 +222,7 @@ abstract class Job
 
     /**
      * Get the number of seconds the job can run.
+	 * 获取作业可以运行的秒数
      *
      * @return int|null
      */
@@ -209,6 +233,7 @@ abstract class Job
 
     /**
      * Get the timestamp indicating when the job should timeout.
+	 * 获取指示作业何时应该超时的时间戳
      *
      * @return int|null
      */
@@ -219,6 +244,7 @@ abstract class Job
 
     /**
      * Get the name of the queued job class.
+	 * 获取排队作业类的名称
      *
      * @return string
      */
@@ -229,6 +255,7 @@ abstract class Job
 
     /**
      * Get the resolved name of the queued job class.
+	 * 获取排队作业类的解析名称。
      *
      * Resolves the name of "wrapped" jobs such as class-based handlers.
      *
@@ -241,6 +268,7 @@ abstract class Job
 
     /**
      * Get the name of the connection the job belongs to.
+	 * 获取作业所属的连接的名称
      *
      * @return string
      */
@@ -251,6 +279,7 @@ abstract class Job
 
     /**
      * Get the name of the queue the job belongs to.
+	 * 获取作业所属队列的名称
      *
      * @return string
      */
@@ -261,6 +290,7 @@ abstract class Job
 
     /**
      * Get the service container instance.
+	 * 获取服务容器实例
      *
      * @return \Illuminate\Container\Container
      */

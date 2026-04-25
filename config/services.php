@@ -1,10 +1,13 @@
 <?php
+/**
+ * 配置，服务
+ */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Third Party Services
+    | Third Party Services		第三方服务
     |--------------------------------------------------------------------------
     |
     | This file is for storing the credentials for third party services such

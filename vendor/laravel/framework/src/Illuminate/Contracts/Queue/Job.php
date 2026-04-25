@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，契约，队列，作业
+ */
 
 namespace Illuminate\Contracts\Queue;
 
@@ -6,6 +9,7 @@ interface Job
 {
     /**
      * Fire the job.
+	 * 点火作业
      *
      * @return void
      */
@@ -13,6 +17,7 @@ interface Job
 
     /**
      * Release the job back into the queue.
+	 * 将作业释放回队列
      *
      * @param  int   $delay
      * @return mixed
@@ -21,6 +26,7 @@ interface Job
 
     /**
      * Delete the job from the queue.
+	 * 从队列中删除作业
      *
      * @return void
      */
@@ -28,6 +34,7 @@ interface Job
 
     /**
      * Determine if the job has been deleted.
+	 * 确定作业是否已删除
      *
      * @return bool
      */
@@ -35,6 +42,7 @@ interface Job
 
     /**
      * Determine if the job has been deleted or released.
+	 * 确定作业是否已被删除或释放
      *
      * @return bool
      */
@@ -42,6 +50,7 @@ interface Job
 
     /**
      * Get the number of times the job has been attempted.
+	 * 获取该任务被尝试的次数
      *
      * @return int
      */
@@ -49,6 +58,7 @@ interface Job
 
     /**
      * Process an exception that caused the job to fail.
+	 * 处理导致作业失败的异常
      *
      * @param  \Throwable  $e
      * @return void
@@ -57,6 +67,7 @@ interface Job
 
     /**
      * Get the number of times to attempt a job.
+	 * 获取尝试某项工作的次数
      *
      * @return int|null
      */
@@ -64,6 +75,7 @@ interface Job
 
     /**
      * Get the number of seconds the job can run.
+	 * 获取作业可以运行的秒数
      *
      * @return int|null
      */
@@ -71,6 +83,7 @@ interface Job
 
     /**
      * Get the timestamp indicating when the job should timeout.
+	 * 获取指示作业何时应该超时的时间戳。
      *
      * @return int|null
      */
@@ -78,6 +91,7 @@ interface Job
 
     /**
      * Get the name of the queued job class.
+	 * 获取排队作业类的名称
      *
      * @return string
      */
@@ -85,8 +99,10 @@ interface Job
 
     /**
      * Get the resolved name of the queued job class.
+	 * 获取排队作业类的解析名称。
      *
      * Resolves the name of "wrapped" jobs such as class-based handlers.
+	 * 解析“包装”作业（如基于类的处理程序）的名称。
      *
      * @return string
      */
@@ -94,6 +110,7 @@ interface Job
 
     /**
      * Get the name of the connection the job belongs to.
+	 * 获取作业所属的连接的名称
      *
      * @return string
      */
@@ -101,6 +118,7 @@ interface Job
 
     /**
      * Get the name of the queue the job belongs to.
+	 * 获取作业所属队列的名称
      *
      * @return string
      */
@@ -108,6 +126,7 @@ interface Job
 
     /**
      * Get the raw body string for the job.
+	 * 获取工作的原始主体字符串
      *
      * @return string
      */

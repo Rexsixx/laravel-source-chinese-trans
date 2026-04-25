@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，视图，问题，管理事件
+ */
 
 namespace Illuminate\View\Concerns;
 
@@ -10,6 +13,7 @@ trait ManagesEvents
 {
     /**
      * Register a view creator event.
+	 * 注册一个视图创建者事件
      *
      * @param  array|string     $views
      * @param  \Closure|string  $callback
@@ -28,6 +32,7 @@ trait ManagesEvents
 
     /**
      * Register multiple view composers via an array.
+	 * 通过一个数组注册多个视图作曲家
      *
      * @param  array  $composers
      * @return array
@@ -45,6 +50,7 @@ trait ManagesEvents
 
     /**
      * Register a view composer event.
+	 * 注册一个视图编写器事件
      *
      * @param  array|string  $views
      * @param  \Closure|string  $callback
@@ -63,6 +69,7 @@ trait ManagesEvents
 
     /**
      * Add an event for a given view.
+	 * 为给定视图添加事件
      *
      * @param  string  $view
      * @param  \Closure|string  $callback
@@ -84,6 +91,7 @@ trait ManagesEvents
 
     /**
      * Register a class based view composer.
+	 * 注册一个基于类的视图编写器
      *
      * @param  string    $view
      * @param  string    $class
@@ -108,6 +116,7 @@ trait ManagesEvents
 
     /**
      * Build a class based container callback Closure.
+	 * 构建一个基于类的容器回调闭包
      *
      * @param  string  $class
      * @param  string  $prefix
@@ -129,6 +138,7 @@ trait ManagesEvents
 
     /**
      * Parse a class based composer name.
+	 * 解析基于编写器名称的类
      *
      * @param  string  $class
      * @param  string  $prefix
@@ -141,6 +151,7 @@ trait ManagesEvents
 
     /**
      * Determine the class event method based on the given prefix.
+	 * 根据给定的前缀确定类事件方法
      *
      * @param  string  $prefix
      * @return string
@@ -152,6 +163,7 @@ trait ManagesEvents
 
     /**
      * Add a listener to the event dispatcher.
+	 * 向事件调度程序添加侦听器
      *
      * @param  string    $name
      * @param  \Closure  $callback
@@ -170,6 +182,7 @@ trait ManagesEvents
 
     /**
      * Call the composer for a given view.
+	 * 调用给定视图的编写器
      *
      * @param  \Illuminate\Contracts\View\View  $view
      * @return void
@@ -181,6 +194,7 @@ trait ManagesEvents
 
     /**
      * Call the creator for a given view.
+	 * 调用给定视图的创建者
      *
      * @param  \Illuminate\Contracts\View\View  $view
      * @return void

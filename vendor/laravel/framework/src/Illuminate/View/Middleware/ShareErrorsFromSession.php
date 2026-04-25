@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，视图，中间件，来自会话的共享错误
+ */
 
 namespace Illuminate\View\Middleware;
 
@@ -10,6 +13,7 @@ class ShareErrorsFromSession
 {
     /**
      * The view factory implementation.
+	 * 视图工厂实现
      *
      * @var \Illuminate\Contracts\View\Factory
      */
@@ -17,6 +21,7 @@ class ShareErrorsFromSession
 
     /**
      * Create a new error binder instance.
+	 * 创建一个新的错误绑定实例
      *
      * @param  \Illuminate\Contracts\View\Factory  $view
      * @return void
@@ -28,6 +33,7 @@ class ShareErrorsFromSession
 
     /**
      * Handle an incoming request.
+	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next

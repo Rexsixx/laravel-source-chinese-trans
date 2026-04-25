@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，Eloquent，问题，有属性
+ */
 
 namespace Illuminate\Database\Eloquent\Concerns;
 
@@ -16,6 +19,7 @@ trait HasAttributes
 {
     /**
      * The model's attributes.
+	 * 模型的属性
      *
      * @var array
      */
@@ -23,6 +27,7 @@ trait HasAttributes
 
     /**
      * The model attribute's original state.
+	 * 模型属性的原始状态
      *
      * @var array
      */
@@ -30,6 +35,7 @@ trait HasAttributes
 
     /**
      * The changed model attributes.
+	 * 更改的模型属性
      *
      * @var array
      */
@@ -37,6 +43,7 @@ trait HasAttributes
 
     /**
      * The attributes that should be cast to native types.
+	 * 应该转换为本机类型的属性
      *
      * @var array
      */
@@ -44,6 +51,7 @@ trait HasAttributes
 
     /**
      * The attributes that should be mutated to dates.
+	 * 应该被更改为日期的属性
      *
      * @var array
      */
@@ -51,6 +59,7 @@ trait HasAttributes
 
     /**
      * The storage format of the model's date columns.
+	 * 模型日期列的存储格式
      *
      * @var string
      */
@@ -58,6 +67,7 @@ trait HasAttributes
 
     /**
      * The accessors to append to the model's array form.
+	 * 附加到模型数组形式的访问器
      *
      * @var array
      */
@@ -65,6 +75,7 @@ trait HasAttributes
 
     /**
      * Indicates whether attributes are snake cased on arrays.
+	 * 指示属性是否在数组上使用蛇形大小写
      *
      * @var bool
      */
@@ -72,6 +83,7 @@ trait HasAttributes
 
     /**
      * The cache of the mutated attributes for each class.
+	 * 每个类的突变属性的缓存
      *
      * @var array
      */
@@ -79,6 +91,7 @@ trait HasAttributes
 
     /**
      * Convert the model's attributes to an array.
+	 * 将模型的属性转换为数组
      *
      * @return array
      */
@@ -114,6 +127,7 @@ trait HasAttributes
 
     /**
      * Add the date attributes to the attributes array.
+	 * 将日期属性添加到属性数组中
      *
      * @param  array  $attributes
      * @return array
@@ -135,6 +149,7 @@ trait HasAttributes
 
     /**
      * Add the mutated attributes to the attributes array.
+	 * 将突变的属性添加到属性数组中
      *
      * @param  array  $attributes
      * @param  array  $mutatedAttributes
@@ -163,6 +178,7 @@ trait HasAttributes
 
     /**
      * Add the casted attributes to the attributes array.
+	 * 将转换属性添加到属性数组中
      *
      * @param  array  $attributes
      * @param  array  $mutatedAttributes
@@ -196,6 +212,7 @@ trait HasAttributes
 
     /**
      * Get an attribute array of all arrayable attributes.
+	 * 获取包含所有可数组属性的属性数组
      *
      * @return array
      */
@@ -206,6 +223,7 @@ trait HasAttributes
 
     /**
      * Get all of the appendable values that are arrayable.
+	 * 获取所有可数组的可追加值
      *
      * @return array
      */
@@ -222,6 +240,7 @@ trait HasAttributes
 
     /**
      * Get the model's relationships in array form.
+	 * 以数组形式获取模型的关系
      *
      * @return array
      */
@@ -266,6 +285,7 @@ trait HasAttributes
 
     /**
      * Get an attribute array of all arrayable relations.
+	 * 获取所有可数组关系的属性数组
      *
      * @return array
      */
@@ -276,6 +296,7 @@ trait HasAttributes
 
     /**
      * Get an attribute array of all arrayable values.
+	 * 获取所有可数组值的属性数组
      *
      * @param  array  $values
      * @return array
@@ -295,6 +316,7 @@ trait HasAttributes
 
     /**
      * Get an attribute from the model.
+	 * 从模型中获取一个属性
      *
      * @param  string  $key
      * @return mixed
@@ -325,6 +347,7 @@ trait HasAttributes
 
     /**
      * Get a plain attribute (not a relationship).
+	 * 获取普通属性（而不是关系）
      *
      * @param  string  $key
      * @return mixed
@@ -360,6 +383,7 @@ trait HasAttributes
 
     /**
      * Get an attribute from the $attributes array.
+	 * 从$attributes数组中获取一个属性
      *
      * @param  string  $key
      * @return mixed
@@ -373,6 +397,7 @@ trait HasAttributes
 
     /**
      * Get a relationship.
+	 * 建立一段关系
      *
      * @param  string  $key
      * @return mixed
@@ -396,6 +421,7 @@ trait HasAttributes
 
     /**
      * Get a relationship value from a method.
+	 * 从方法获取关系值
      *
      * @param  string  $method
      * @return mixed
@@ -417,6 +443,7 @@ trait HasAttributes
 
     /**
      * Determine if a get mutator exists for an attribute.
+	 * 确定属性是否存在get mutator
      *
      * @param  string  $key
      * @return bool
@@ -428,6 +455,7 @@ trait HasAttributes
 
     /**
      * Get the value of an attribute using its mutator.
+	 * 使用属性的赋值器获取属性的值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -440,6 +468,7 @@ trait HasAttributes
 
     /**
      * Get the value of an attribute using its mutator for array conversion.
+	 * 使用属性的赋值器获取属性的值，以便进行数组转换。
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -454,6 +483,7 @@ trait HasAttributes
 
     /**
      * Cast an attribute to a native PHP type.
+	 * 将属性强制转换为本机PHP类型
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -498,6 +528,7 @@ trait HasAttributes
 
     /**
      * Get the type of cast for a model attribute.
+	 * 获取模型属性的强制转换类型
      *
      * @param  string  $key
      * @return string
@@ -509,6 +540,7 @@ trait HasAttributes
 
     /**
      * Set a given attribute on the model.
+	 * 在模型上设置给定的属性
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -550,6 +582,7 @@ trait HasAttributes
 
     /**
      * Determine if a set mutator exists for an attribute.
+	 * 确定是否存在属性的集合赋值器
      *
      * @param  string  $key
      * @return bool
@@ -561,6 +594,7 @@ trait HasAttributes
 
     /**
      * Determine if the given attribute is a date or date castable.
+	 * 确定给定的属性是日期还是日期浇注表
      *
      * @param  string  $key
      * @return bool
@@ -573,6 +607,7 @@ trait HasAttributes
 
     /**
      * Set a given JSON attribute on the model.
+	 * 在模型上设置一个给定的JSON属性
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -591,6 +626,7 @@ trait HasAttributes
 
     /**
      * Get an array attribute with the given key and value set.
+	 * 获取具有给定键和值集的数组属性
      *
      * @param  string  $path
      * @param  string  $key
@@ -606,6 +642,7 @@ trait HasAttributes
 
     /**
      * Get an array attribute or return an empty array if it is not set.
+	 * 获取数组属性，如果未设置则返回空数组。
      *
      * @param  string  $key
      * @return array
@@ -618,6 +655,7 @@ trait HasAttributes
 
     /**
      * Cast the given attribute to JSON.
+	 * 将给定的属性转换为JSON
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -638,6 +676,7 @@ trait HasAttributes
 
     /**
      * Encode the given value as JSON.
+	 * 将给定的值编码为JSON
      *
      * @param  mixed  $value
      * @return string
@@ -729,6 +768,7 @@ trait HasAttributes
 
     /**
      * Convert a DateTime to a storable string.
+	 * 将DateTime转换为可存储字符串
      *
      * @param  \DateTime|int  $value
      * @return string
@@ -742,6 +782,7 @@ trait HasAttributes
 
     /**
      * Return a timestamp as unix timestamp.
+	 * 返回unix时间戳
      *
      * @param  mixed  $value
      * @return int
@@ -753,6 +794,7 @@ trait HasAttributes
 
     /**
      * Prepare a date for array / JSON serialization.
+	 * 为数组/ JSON序列化准备一个日期
      *
      * @param  \DateTimeInterface  $date
      * @return string
@@ -764,6 +806,7 @@ trait HasAttributes
 
     /**
      * Get the attributes that should be converted to dates.
+	 * 获取应转换为日期的属性
      *
      * @return array
      */
@@ -778,6 +821,7 @@ trait HasAttributes
 
     /**
      * Get the format for database stored dates.
+	 * 获取数据库存储日期的格式
      *
      * @return string
      */
@@ -788,6 +832,7 @@ trait HasAttributes
 
     /**
      * Set the date format used by the model.
+	 * 设置模型使用的日期格式
      *
      * @param  string  $format
      * @return $this
@@ -801,6 +846,7 @@ trait HasAttributes
 
     /**
      * Determine whether an attribute should be cast to a native type.
+	 * 确定是否应将属性强制转换为本机类型
      *
      * @param  string  $key
      * @param  array|string|null  $types
@@ -817,6 +863,7 @@ trait HasAttributes
 
     /**
      * Get the casts array.
+	 * 获取强制类型转换数组
      *
      * @return array
      */
@@ -831,6 +878,7 @@ trait HasAttributes
 
     /**
      * Determine whether a value is Date / DateTime castable for inbound manipulation.
+	 * 确定某个值是否可用于入站操作的Date / DateTime浇注
      *
      * @param  string  $key
      * @return bool
@@ -842,6 +890,7 @@ trait HasAttributes
 
     /**
      * Determine whether a value is JSON castable for inbound manipulation.
+	 * 确定一个值是否可用于入站操作的JSON浇注
      *
      * @param  string  $key
      * @return bool
@@ -853,6 +902,7 @@ trait HasAttributes
 
     /**
      * Get all of the current attributes on the model.
+	 * 获取模型上的所有当前属性
      *
      * @return array
      */
@@ -863,6 +913,7 @@ trait HasAttributes
 
     /**
      * Set the array of model attributes. No checking is done.
+	 * 设置模型属性数组。没有检查。
      *
      * @param  array  $attributes
      * @param  bool  $sync
@@ -881,6 +932,7 @@ trait HasAttributes
 
     /**
      * Get the model's original attribute values.
+	 * 获取模型的原始属性值
      *
      * @param  string|null  $key
      * @param  mixed  $default
@@ -893,6 +945,7 @@ trait HasAttributes
 
     /**
      * Get a subset of the model's attributes.
+	 * 获取模型属性的子集
      *
      * @param  array|mixed  $attributes
      * @return array
@@ -910,6 +963,7 @@ trait HasAttributes
 
     /**
      * Sync the original attributes with the current.
+	 * 将原始属性与当前属性同步
      *
      * @return $this
      */
@@ -922,6 +976,7 @@ trait HasAttributes
 
     /**
      * Sync a single original attribute with its current value.
+	 * 将单个原始属性与其当前值同步
      *
      * @param  string  $attribute
      * @return $this

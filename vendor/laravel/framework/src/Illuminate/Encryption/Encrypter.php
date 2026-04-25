@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，加密，加密器
+ */
 
 namespace Illuminate\Encryption;
 
@@ -11,6 +14,7 @@ class Encrypter implements EncrypterContract
 {
     /**
      * The encryption key.
+	 * 加密密钥
      *
      * @var string
      */
@@ -18,6 +22,7 @@ class Encrypter implements EncrypterContract
 
     /**
      * The algorithm used for encryption.
+	 * 用于加密的算法
      *
      * @var string
      */
@@ -25,6 +30,7 @@ class Encrypter implements EncrypterContract
 
     /**
      * Create a new encrypter instance.
+	 * 创建一个新的加密器实例
      *
      * @param  string  $key
      * @param  string  $cipher
@@ -46,6 +52,7 @@ class Encrypter implements EncrypterContract
 
     /**
      * Determine if the given key and cipher combination is valid.
+	 * 确定给定的密钥和密码组合是否有效
      *
      * @param  string  $key
      * @param  string  $cipher
@@ -61,6 +68,7 @@ class Encrypter implements EncrypterContract
 
     /**
      * Create a new encryption key for the given cipher.
+	 * 为给定的密码创建新的加密密钥
      *
      * @param  string  $cipher
      * @return string
@@ -72,6 +80,7 @@ class Encrypter implements EncrypterContract
 
     /**
      * Encrypt the given value.
+	 * 加密给定的值
      *
      * @param  mixed  $value
      * @param  bool  $serialize
@@ -111,6 +120,7 @@ class Encrypter implements EncrypterContract
 
     /**
      * Encrypt a string without serialization.
+	 * 加密不序列化的字符串
      *
      * @param  string  $value
      * @return string
@@ -122,6 +132,7 @@ class Encrypter implements EncrypterContract
 
     /**
      * Decrypt the given value.
+	 * 解密给定的值
      *
      * @param  mixed  $payload
      * @param  bool  $unserialize
@@ -151,6 +162,7 @@ class Encrypter implements EncrypterContract
 
     /**
      * Decrypt the given string without unserialization.
+	 * 在不反序列化的情况下解密给定字符串
      *
      * @param  string  $payload
      * @return string
@@ -162,6 +174,7 @@ class Encrypter implements EncrypterContract
 
     /**
      * Create a MAC for the given value.
+	 * 为给定值创建一个MAC
      *
      * @param  string  $iv
      * @param  mixed  $value
@@ -174,6 +187,7 @@ class Encrypter implements EncrypterContract
 
     /**
      * Get the JSON array from the given payload.
+	 * 从给定的有效负载获取JSON数组
      *
      * @param  string  $payload
      * @return array
@@ -200,6 +214,7 @@ class Encrypter implements EncrypterContract
 
     /**
      * Verify that the encryption payload is valid.
+	 * 验证加密有效负载是否有效
      *
      * @param  mixed  $payload
      * @return bool
@@ -212,6 +227,7 @@ class Encrypter implements EncrypterContract
 
     /**
      * Determine if the MAC for the given payload is valid.
+	 * 确定给定负载的MAC是否有效
      *
      * @param  array  $payload
      * @return bool
@@ -227,6 +243,7 @@ class Encrypter implements EncrypterContract
 
     /**
      * Calculate the hash of the given payload.
+	 * 计算给定负载的哈希值
      *
      * @param  array  $payload
      * @param  string  $bytes
@@ -241,6 +258,7 @@ class Encrypter implements EncrypterContract
 
     /**
      * Get the encryption key.
+	 * 获取加密密钥
      *
      * @return string
      */

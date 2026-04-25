@@ -22,7 +22,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cache Stores
+    | Cache Stores		缓存存储
     |--------------------------------------------------------------------------
     |
     | Here you may define all of the cache "stores" for your application as
@@ -80,7 +80,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cache Key Prefix
+    | Cache Key Prefix		缓存键前缀
     |--------------------------------------------------------------------------
     |
     | When utilizing a RAM based store such as APC or Memcached, there might

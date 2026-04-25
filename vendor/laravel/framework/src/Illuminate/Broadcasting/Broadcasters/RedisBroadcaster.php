@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，广播，广播装置，Redis 广播员
+ */
 
 namespace Illuminate\Broadcasting\Broadcasters;
 
@@ -11,6 +14,7 @@ class RedisBroadcaster extends Broadcaster
 {
     /**
      * The Redis instance.
+	 * Redis实例
      *
      * @var \Illuminate\Contracts\Redis\Factory
      */
@@ -18,6 +22,7 @@ class RedisBroadcaster extends Broadcaster
 
     /**
      * The Redis connection to use for broadcasting.
+	 * 用于广播的Redis连接
      *
      * @var string
      */
@@ -25,6 +30,7 @@ class RedisBroadcaster extends Broadcaster
 
     /**
      * Create a new broadcaster instance.
+	 * 创建一个新的广播程序实例
      *
      * @param  \Illuminate\Contracts\Redis\Factory  $redis
      * @param  string  $connection
@@ -38,6 +44,7 @@ class RedisBroadcaster extends Broadcaster
 
     /**
      * Authenticate the incoming request for a given channel.
+	 * 验证给定通道的传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
@@ -61,6 +68,7 @@ class RedisBroadcaster extends Broadcaster
 
     /**
      * Return the valid authentication response.
+	 * 返回有效的身份验证响应
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $result
@@ -80,6 +88,7 @@ class RedisBroadcaster extends Broadcaster
 
     /**
      * Broadcast the given event.
+	 * 广播给定的事件
      *
      * @param  array  $channels
      * @param  string  $event

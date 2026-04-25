@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，Http，资源，资源委托
+ */
 
 namespace Illuminate\Http\Resources;
 
@@ -8,6 +11,7 @@ trait DelegatesToResource
 {
     /**
      * Get the value of the resource's route key.
+	 * 获取资源的路由键的值
      *
      * @return mixed
      */
@@ -18,6 +22,7 @@ trait DelegatesToResource
 
     /**
      * Get the route key for the resource.
+	 * 获取资源的路由键
      *
      * @return string
      */
@@ -28,6 +33,7 @@ trait DelegatesToResource
 
     /**
      * Retrieve the model for a bound value.
+	 * 检索绑定值的模型
      *
      * @param  mixed  $value
      * @return void
@@ -40,6 +46,7 @@ trait DelegatesToResource
 
     /**
      * Determine if the given attribute exists.
+	 * 确定给定属性是否存在
      *
      * @param  mixed  $offset
      * @return bool
@@ -51,6 +58,7 @@ trait DelegatesToResource
 
     /**
      * Get the value for a given offset.
+	 * 获取给定偏移量的值
      *
      * @param  mixed  $offset
      * @return mixed
@@ -62,6 +70,7 @@ trait DelegatesToResource
 
     /**
      * Set the value for a given offset.
+	 * 设置给定偏移量的值
      *
      * @param  mixed  $offset
      * @param  mixed  $value
@@ -74,6 +83,7 @@ trait DelegatesToResource
 
     /**
      * Unset the value for a given offset.
+	 * 取消给定偏移量的值
      *
      * @param  mixed  $offset
      * @return void
@@ -85,6 +95,7 @@ trait DelegatesToResource
 
     /**
      * Determine if an attribute exists on the resource.
+	 * 确定资源上是否存在属性
      *
      * @param  string  $key
      * @return bool
@@ -96,6 +107,7 @@ trait DelegatesToResource
 
     /**
      * Unset an attribute on the resource.
+	 * 取消对资源的属性设置
      *
      * @param  string  $key
      * @return void
@@ -107,6 +119,7 @@ trait DelegatesToResource
 
     /**
      * Dynamically get properties from the underlying resource.
+	 * 从底层资源动态获取属性
      *
      * @param  string  $key
      * @return mixed
@@ -118,6 +131,7 @@ trait DelegatesToResource
 
     /**
      * Dynamically pass method calls to the underlying resource.
+	 * 动态地将方法调用传递给底层资源
      *
      * @param  string  $method
      * @param  array  $parameters

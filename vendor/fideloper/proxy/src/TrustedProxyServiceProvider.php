@@ -1,4 +1,7 @@
 <?php
+/**
+ * Fideloper，Proxy，可信代理服务提供商
+ */
 
 namespace Fideloper\Proxy;
 

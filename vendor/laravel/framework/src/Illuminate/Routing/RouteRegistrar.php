@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，路由，路由注册
+ */
 
 namespace Illuminate\Routing;
 
@@ -11,6 +14,7 @@ class RouteRegistrar
 {
     /**
      * The router instance.
+	 * 路由实例
      *
      * @var \Illuminate\Routing\Router
      */
@@ -18,6 +22,7 @@ class RouteRegistrar
 
     /**
      * The attributes to pass on to the router.
+	 * 要传递给路由器的属性
      *
      * @var array
      */
@@ -25,6 +30,7 @@ class RouteRegistrar
 
     /**
      * The methods to dynamically pass through to the router.
+	 * 动态传递给路由器的方法
      *
      * @var array
      */
@@ -34,6 +40,7 @@ class RouteRegistrar
 
     /**
      * The attributes that can be set through this class.
+	 * 可以通过该类设置的属性
      *
      * @var array
      */
@@ -43,6 +50,7 @@ class RouteRegistrar
 
     /**
      * The attributes that are aliased.
+	 * 使用别名的属性
      *
      * @var array
      */
@@ -52,6 +60,7 @@ class RouteRegistrar
 
     /**
      * Create a new route registrar instance.
+	 * 创建一个新的路由注册器实例
      *
      * @param  \Illuminate\Routing\Router  $router
      * @return void
@@ -63,6 +72,7 @@ class RouteRegistrar
 
     /**
      * Set the value for a given attribute.
+	 * 设置给定属性的值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -83,6 +93,7 @@ class RouteRegistrar
 
     /**
      * Route a resource to a controller.
+	 * 将资源路由到控制器
      *
      * @param  string  $name
      * @param  string  $controller
@@ -96,6 +107,7 @@ class RouteRegistrar
 
     /**
      * Create a route group with shared attributes.
+	 * 创建具有共享属性的路由组
      *
      * @param  \Closure|string  $callback
      * @return void
@@ -107,6 +119,7 @@ class RouteRegistrar
 
     /**
      * Register a new route with the given verbs.
+	 * 用给定的动词注册一条新路线
      *
      * @param  array|string  $methods
      * @param  string  $uri
@@ -120,6 +133,7 @@ class RouteRegistrar
 
     /**
      * Register a new route with the router.
+	 * 向路由器注册一条新路由
      *
      * @param  string  $method
      * @param  string  $uri
@@ -137,6 +151,7 @@ class RouteRegistrar
 
     /**
      * Compile the action into an array including the attributes.
+	 * 将动作编译成包含属性的数组
      *
      * @param  \Closure|array|string|null  $action
      * @return array
@@ -156,6 +171,7 @@ class RouteRegistrar
 
     /**
      * Dynamically handle calls into the route registrar.
+	 * 动态处理对路由注册器的调用
      *
      * @param  string  $method
      * @param  array  $parameters
