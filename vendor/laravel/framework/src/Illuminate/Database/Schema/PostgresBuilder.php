@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，Postgres 生成器
+ * Illuminate，数据库，模式，Postgres 生成器
  */
 
 namespace Illuminate\Database\Schema;

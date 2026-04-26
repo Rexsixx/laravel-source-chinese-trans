@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，查询，建立者
+ * Illuminate，数据库，查询，构造器‌
  */
 
 namespace Illuminate\Database\Query;
@@ -481,6 +481,7 @@ class Builder
 
     /**
      * Add a "cross join" clause to the query.
+	 * 向查询添加"交叉连接"子句
      *
      * @param  string  $table
      * @param  string|null  $first
@@ -531,6 +532,7 @@ class Builder
         // If the column is an array, we will assume it is an array of key-value pairs
         // and can add them each as a where clause. We will maintain the boolean we
         // received when the method was called and pass it into the nested where.
+		// 如果列是一个数组，我们将假定它是一个键值对数组并且可以将它们分别作为where子句添加。
         if (is_array($column)) {
             return $this->addArrayOfWheres($column, $boolean);
         }
@@ -668,6 +670,7 @@ class Builder
 
     /**
      * Add an "or where" clause to the query.
+	 * 在查询中添加一个"或where"子句
      *
      * @param  string|array|\Closure  $column
      * @param  string|null  $operator
@@ -685,6 +688,7 @@ class Builder
 
     /**
      * Add a "where" clause comparing two columns to the query.
+	 * 添加一个“where”子句，比较查询中的两列。
      *
      * @param  string|array  $first
      * @param  string|null  $operator
@@ -722,6 +726,7 @@ class Builder
 
     /**
      * Add an "or where" clause comparing two columns to the query.
+	 * 添加“or where”子句，将两个列与查询进行比较。
      *
      * @param  string|array  $first
      * @param  string|null  $operator
@@ -766,6 +771,7 @@ class Builder
 
     /**
      * Add a "where in" clause to the query.
+	 * 向查询添加“where in”子句
      *
      * @param  string  $column
      * @param  mixed   $values
@@ -820,6 +826,7 @@ class Builder
 
     /**
      * Add an "or where in" clause to the query.
+	 * 在查询中添加“or where in”子句
      *
      * @param  string  $column
      * @param  mixed   $values
@@ -832,6 +839,7 @@ class Builder
 
     /**
      * Add a "where not in" clause to the query.
+	 * 在查询中添加“where not in”子句
      *
      * @param  string  $column
      * @param  mixed   $values
@@ -845,6 +853,7 @@ class Builder
 
     /**
      * Add an "or where not in" clause to the query.
+	 * 在查询中添加“或不在”子句
      *
      * @param  string  $column
      * @param  mixed   $values
@@ -934,6 +943,7 @@ class Builder
 
     /**
      * Add a "where not null" clause to the query.
+	 * 在查询中添加“where not null”子句
      *
      * @param  string  $column
      * @param  string  $boolean
@@ -1089,6 +1099,7 @@ class Builder
 
     /**
      * Add a "where day" statement to the query.
+	 * 向查询添加“where day”语句
      *
      * @param  string  $column
      * @param  string  $operator
@@ -1107,6 +1118,7 @@ class Builder
 
     /**
      * Add a "where month" statement to the query.
+	 * 向查询添加“where month”语句
      *
      * @param  string  $column
      * @param  string  $operator
@@ -1125,6 +1137,7 @@ class Builder
 
     /**
      * Add a "where year" statement to the query.
+	 * 向查询中添加“where year”语句
      *
      * @param  string  $column
      * @param  string  $operator
@@ -1287,6 +1300,7 @@ class Builder
 
     /**
      * Add a where not exists clause to the query.
+	 * 向查询添加where not exists子句
      *
      * @param  \Closure  $callback
      * @return \Illuminate\Database\Query\Builder|static
@@ -1298,6 +1312,7 @@ class Builder
 
     /**
      * Add an exists clause to the query.
+	 * 向查询添加exists子句
      *
      * @param  \Illuminate\Database\Query\Builder $query
      * @param  string  $boolean
@@ -1317,6 +1332,7 @@ class Builder
 
     /**
      * Handles dynamic "where" clauses to the query.
+	 * 处理查询的动态“where”子句
      *
      * @param  string  $method
      * @param  string  $parameters
@@ -1380,6 +1396,7 @@ class Builder
 
     /**
      * Add a "group by" clause to the query.
+	 * 向查询添加“group by”子句
      *
      * @param  array  ...$groups
      * @return $this
@@ -1398,6 +1415,7 @@ class Builder
 
     /**
      * Add a "having" clause to the query.
+	 * 在查询中添加“having”子句
      *
      * @param  string  $column
      * @param  string|null  $operator
@@ -1434,6 +1452,7 @@ class Builder
 
     /**
      * Add a "or having" clause to the query.
+	 * 在查询中添加“or having”子句
      *
      * @param  string  $column
      * @param  string|null  $operator
@@ -1480,6 +1499,7 @@ class Builder
 
     /**
      * Add an "order by" clause to the query.
+	 * 向查询添加“order by”子句
      *
      * @param  string  $column
      * @param  string  $direction
@@ -1497,6 +1517,7 @@ class Builder
 
     /**
      * Add a descending "order by" clause to the query.
+	 * 向查询添加降序“order by”子句
      *
      * @param  string  $column
      * @return $this
@@ -1508,6 +1529,7 @@ class Builder
 
     /**
      * Add an "order by" clause for a timestamp to the query.
+	 * 在查询中为时间戳添加“order by”子句
      *
      * @param  string  $column
      * @return \Illuminate\Database\Query\Builder|static
@@ -1519,6 +1541,7 @@ class Builder
 
     /**
      * Add an "order by" clause for a timestamp to the query.
+	 * 在查询中为时间戳添加“order by”子句
      *
      * @param  string  $column
      * @return \Illuminate\Database\Query\Builder|static
@@ -1542,6 +1565,7 @@ class Builder
 
     /**
      * Add a raw "order by" clause to the query.
+	 * 向查询添加一个原始的“order by”子句
      *
      * @param  string  $sql
      * @param  array  $bindings
@@ -1560,6 +1584,7 @@ class Builder
 
     /**
      * Alias to set the "offset" value of the query.
+	 * 设置查询的“偏移”值的别名
      *
      * @param  int  $value
      * @return \Illuminate\Database\Query\Builder|static
@@ -1571,6 +1596,7 @@ class Builder
 
     /**
      * Set the "offset" value of the query.
+	 * 设置查询的“offset”值
      *
      * @param  int  $value
      * @return $this
@@ -1586,6 +1612,7 @@ class Builder
 
     /**
      * Alias to set the "limit" value of the query.
+	 * 设置查询的“限制”值的别名
      *
      * @param  int  $value
      * @return \Illuminate\Database\Query\Builder|static
@@ -1597,6 +1624,7 @@ class Builder
 
     /**
      * Set the "limit" value of the query.
+	 * 设置查询的“limit”值
      *
      * @param  int  $value
      * @return $this
@@ -1627,6 +1655,7 @@ class Builder
 
     /**
      * Constrain the query to the next "page" of results after a given ID.
+	 * 将查询约束到给定ID之后的下一个结果“页面”
      *
      * @param  int  $perPage
      * @param  int  $lastId
@@ -1733,6 +1762,7 @@ class Builder
 
     /**
      * Get the SQL representation of the query.
+	 * 获取查询的SQL表示形式
      *
      * @return string
      */
@@ -1743,6 +1773,7 @@ class Builder
 
     /**
      * Execute a query for a single record by ID.
+	 * 按ID对单个记录执行查询
      *
      * @param  int    $id
      * @param  array  $columns
@@ -1755,6 +1786,7 @@ class Builder
 
     /**
      * Get a single column's value from the first result of a query.
+	 * 从查询的第一个结果中获取单个列的值
      *
      * @param  string  $column
      * @return mixed
@@ -1768,6 +1800,7 @@ class Builder
 
     /**
      * Execute the query as a "select" statement.
+	 * 以“select”语句的形式执行查询
      *
      * @param  array  $columns
      * @return \Illuminate\Support\Collection
@@ -1789,6 +1822,7 @@ class Builder
 
     /**
      * Run the query as a "select" statement against the connection.
+	 * 对连接以“select”语句的形式运行查询
      *
      * @return array
      */
@@ -1874,6 +1908,7 @@ class Builder
 
     /**
      * Run a pagination count query.
+	 * 运行分页计数查询
      *
      * @param  array  $columns
      * @return array
@@ -2013,6 +2048,7 @@ class Builder
 
     /**
      * Concatenate values of a given column as a string.
+	 * 将给定列的值连接为字符串
      *
      * @param  string  $column
      * @param  string  $glue
@@ -2025,6 +2061,7 @@ class Builder
 
     /**
      * Determine if any rows exist for the current query.
+	 * 确定当前查询是否存在任何行
      *
      * @return bool
      */
@@ -2048,6 +2085,7 @@ class Builder
 
     /**
      * Determine if no rows exist for the current query.
+	 * 确定当前查询是否不存在行
      *
      * @return bool
      */
@@ -2058,6 +2096,7 @@ class Builder
 
     /**
      * Retrieve the "count" result of the query.
+	 * 检索查询的“count”结果
      *
      * @param  string  $columns
      * @return int
@@ -2069,6 +2108,7 @@ class Builder
 
     /**
      * Retrieve the minimum value of a given column.
+	 * 检索给定列的最小值
      *
      * @param  string  $column
      * @return mixed
@@ -2080,6 +2120,7 @@ class Builder
 
     /**
      * Retrieve the maximum value of a given column.
+	 * 检索给定列的最大值
      *
      * @param  string  $column
      * @return mixed
@@ -2091,6 +2132,7 @@ class Builder
 
     /**
      * Retrieve the sum of the values of a given column.
+	 * 检索给定列的值之和
      *
      * @param  string  $column
      * @return mixed
@@ -2104,6 +2146,7 @@ class Builder
 
     /**
      * Retrieve the average of the values of a given column.
+	 * 检索给定列的值的平均值
      *
      * @param  string  $column
      * @return mixed
@@ -2115,6 +2158,7 @@ class Builder
 
     /**
      * Alias for the "avg" method.
+	 * “avg”方法的别名
      *
      * @param  string  $column
      * @return mixed
@@ -2126,6 +2170,7 @@ class Builder
 
     /**
      * Execute an aggregate function on the database.
+	 * 在数据库上执行聚合函数
      *
      * @param  string  $function
      * @param  array   $columns
@@ -2145,6 +2190,7 @@ class Builder
 
     /**
      * Execute a numeric aggregate function on the database.
+	 * 在数据库上执行一个数字聚合函数
      *
      * @param  string  $function
      * @param  array   $columns
@@ -2174,6 +2220,7 @@ class Builder
 
     /**
      * Set the aggregate property without running the query.
+	 * 设置聚合属性而不运行查询
      *
      * @param  string  $function
      * @param  array  $columns
@@ -2194,6 +2241,7 @@ class Builder
 
     /**
      * Insert a new record into the database.
+	 * 在数据库中插入一条新记录
      *
      * @param  array  $values
      * @return bool
@@ -2233,6 +2281,7 @@ class Builder
 
     /**
      * Insert a new record and get the value of the primary key.
+	 * 插入一条新记录并获取主键的值
      *
      * @param  array   $values
      * @param  string|null  $sequence
@@ -2249,6 +2298,7 @@ class Builder
 
     /**
      * Update a record in the database.
+	 * 更新数据库中的一条记录
      *
      * @param  array  $values
      * @return int
@@ -2491,6 +2541,7 @@ class Builder
 
     /**
      * Get the database connection instance.
+	 * 获取数据库连接实例
      *
      * @return \Illuminate\Database\ConnectionInterface
      */
@@ -2501,6 +2552,7 @@ class Builder
 
     /**
      * Get the database query processor instance.
+	 * 获取数据库查询处理器实例
      *
      * @return \Illuminate\Database\Query\Processors\Processor
      */
@@ -2511,6 +2563,7 @@ class Builder
 
     /**
      * Get the query grammar instance.
+	 * 获取查询语法实例
      *
      * @return \Illuminate\Database\Query\Grammars\Grammar
      */
@@ -2521,6 +2574,7 @@ class Builder
 
     /**
      * Use the write pdo for query.
+	 * 对查询使用写pdo
      *
      * @return $this
      */
@@ -2533,6 +2587,7 @@ class Builder
 
     /**
      * Clone the query without the given properties.
+	 * 克隆不含给定属性的查询
      *
      * @param  array  $properties
      * @return static
@@ -2548,6 +2603,7 @@ class Builder
 
     /**
      * Clone the query without the given bindings.
+	 * 克隆没有给定绑定的查询
      *
      * @param  array  $except
      * @return static
