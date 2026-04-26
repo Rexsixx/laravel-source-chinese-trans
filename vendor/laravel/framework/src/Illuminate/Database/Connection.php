@@ -188,6 +188,7 @@ class Connection implements ConnectionInterface
         // First we will setup the default properties. We keep track of the DB
         // name we are connected to since it is needed when some reflective
         // type commands are run such as checking whether a table exists.
+		// 首先，我们将设置默认属性。我们保持跟踪已连接DB名称。我们执行类型命令，如检查表是否存在。
         $this->database = $database;
 
         $this->tablePrefix = $tablePrefix;

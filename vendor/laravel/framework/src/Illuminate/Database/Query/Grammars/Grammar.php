@@ -356,6 +356,7 @@ class Grammar extends BaseGrammar
 
     /**
      * Compile a "where date" clause.
+	 * 编译一个“where date”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -368,6 +369,7 @@ class Grammar extends BaseGrammar
 
     /**
      * Compile a "where time" clause.
+	 * 编译一个“where time”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -380,6 +382,7 @@ class Grammar extends BaseGrammar
 
     /**
      * Compile a "where day" clause.
+	 * 编译一个“where day”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -392,6 +395,7 @@ class Grammar extends BaseGrammar
 
     /**
      * Compile a "where month" clause.
+	 * 编译“where month”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -404,6 +408,7 @@ class Grammar extends BaseGrammar
 
     /**
      * Compile a "where year" clause.
+	 * 编译一个“where year”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where

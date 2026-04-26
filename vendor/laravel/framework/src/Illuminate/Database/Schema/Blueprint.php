@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，蓝图
+ * Illuminate，数据库，模式，蓝图
  */
 
 namespace Illuminate\Database\Schema;
@@ -1308,6 +1308,7 @@ class Blueprint
 
     /**
      * Get the table the blueprint describes.
+	 * 获取蓝图描述的表
      *
      * @return string
      */
@@ -1318,6 +1319,7 @@ class Blueprint
 
     /**
      * Get the columns on the blueprint.
+	 * 把这些列画在蓝图上
      *
      * @return \Illuminate\Support\Fluent[]
      */
@@ -1328,6 +1330,7 @@ class Blueprint
 
     /**
      * Get the commands on the blueprint.
+	 * 获取蓝图上的命令
      *
      * @return \Illuminate\Support\Fluent[]
      */

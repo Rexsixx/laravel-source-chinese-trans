@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，语法，MySql 语法
+ * Illuminate，数据库，模式，语法，MySql 语法
  */
 
 namespace Illuminate\Database\Schema\Grammars;
@@ -655,6 +655,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a time type.
+	 * 创建时间类型的列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -666,6 +667,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a time (with time zone) type.
+	 * 为时间（带时区）类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -677,6 +679,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a timestamp type.
+	 * 为时间戳类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -690,6 +693,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a timestamp (with time zone) type.
+	 * 为时间戳（带时区）类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -701,6 +705,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a year type.
+	 * 创建年份类型的列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -712,6 +717,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a binary type.
+	 * 为二进制类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -723,6 +729,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a uuid type.
+	 * 为uid类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -734,6 +741,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for an IP address type.
+	 * 为IP地址类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -745,6 +753,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a MAC address type.
+	 * 创建MAC地址类型的列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -756,6 +765,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial Geometry type.
+	 * 为空间几何类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -767,6 +777,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial Point type.
+	 * 为空间Point类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -778,6 +789,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial LineString type.
+	 * 为空间LineString类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -789,6 +801,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial Polygon type.
+	 * 为空间多边形类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -800,6 +813,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial GeometryCollection type.
+	 * 为空间GeometryCollection类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -811,6 +825,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial MultiPoint type.
+	 * 为空间多点类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -822,6 +837,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial MultiLineString type.
+	 * 为空间MultiLineString类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -833,6 +849,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial MultiPolygon type.
+	 * 为空间MultiPolygon类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -844,6 +861,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Get the SQL for a generated virtual column modifier.
+	 * 为生成的虚拟列修饰符获取SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -858,6 +876,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Get the SQL for a generated stored column modifier.
+	 * 获取生成的存储列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -872,6 +891,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Get the SQL for an unsigned column modifier.
+	 * 获取无符号列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -886,6 +906,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Get the SQL for a character set column modifier.
+	 * 获取字符集列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -900,6 +921,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Get the SQL for a collation column modifier.
+	 * 获取排序列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -914,6 +936,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Get the SQL for a nullable column modifier.
+	 * 获取可空列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -928,6 +951,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Get the SQL for a default column modifier.
+	 * 获取默认列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -942,6 +966,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Get the SQL for an auto-increment column modifier.
+	 * 获取用于自动增量列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -956,6 +981,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Get the SQL for a "first" column modifier.
+	 * 获取“第一”列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -970,6 +996,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Get the SQL for an "after" column modifier.
+	 * 获取“after”列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -984,6 +1011,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Get the SQL for a "comment" column modifier.
+	 * 获取“注释”列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
