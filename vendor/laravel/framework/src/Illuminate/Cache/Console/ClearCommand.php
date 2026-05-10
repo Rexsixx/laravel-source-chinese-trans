@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，控制台，清除命令
+ * Illuminate，缓存，控制台，清除命令 cache:clear
  */
 
 namespace Illuminate\Cache\Console;
@@ -15,7 +15,7 @@ class ClearCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -63,7 +63,7 @@ class ClearCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */
@@ -81,7 +81,7 @@ class ClearCommand extends Command
             'cache:cleared', [$this->argument('store'), $this->tags()]
         );
 
-        $this->info('Cache cleared successfully.');
+        $this->info('Application cache cleared!');
     }
 
     /**
@@ -92,7 +92,11 @@ class ClearCommand extends Command
      */
     public function flushFacades()
     {
-        foreach ($this->files->files(storage_path('framework/cache')) as $file) {
+        if (! $this->files->exists($storagePath = storage_path('framework/cache'))) {
+            return;
+        }
+
+        foreach ($this->files->files($storagePath) as $file) {
             if (preg_match('/facade-.*\.php$/', $file)) {
                 $this->files->delete($file);
             }
@@ -114,7 +118,7 @@ class ClearCommand extends Command
 
     /**
      * Get the tags passed to the command.
-	 * 获取传递给命令的标记
+	 * 获取传递给命令的标记。
      *
      * @return array
      */

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，解析器抽象
+ */
+
 namespace PhpParser;
 
 /*
@@ -33,6 +37,7 @@ abstract class ParserAbstract implements Parser
 
     /*
      * The following members will be filled with generated parsing data:
+	 * 下面的成员将充满生成的解析数据:
      */
 
     /** @var int Size of $tokenToSymbol map */

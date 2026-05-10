@@ -19,7 +19,7 @@ class CacheServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
-	 * 注册服务提供商
+	 * 注册服务提供者
      *
      * @return void
      */
@@ -40,7 +40,7 @@ class CacheServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
-	 * 获取提供商提供的服务
+	 * 获取提供者提供的服务
      *
      * @return array
      */

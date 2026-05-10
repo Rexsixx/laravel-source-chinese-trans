@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，模式，MySql 生成器
+ * Illuminate，数据库，模式，MySql 构建器
  */
 
 namespace Illuminate\Database\Schema;
@@ -71,6 +71,31 @@ class MySqlBuilder extends Builder
     }
 
     /**
+     * Drop all views from the database.
+	 * 从数据库中删除所有视图
+     *
+     * @return void
+     */
+    public function dropAllViews()
+    {
+        $views = [];
+
+        foreach ($this->getAllViews() as $row) {
+            $row = (array) $row;
+
+            $views[] = reset($row);
+        }
+
+        if (empty($views)) {
+            return;
+        }
+
+        $this->connection->statement(
+            $this->grammar->compileDropAllViews($views)
+        );
+    }
+
+    /**
      * Get all of the table names for the database.
 	 * 获取数据库的所有表名
      *
@@ -80,6 +105,19 @@ class MySqlBuilder extends Builder
     {
         return $this->connection->select(
             $this->grammar->compileGetAllTables()
+        );
+    }
+
+    /**
+     * Get all of the view names for the database.
+	 * 获取数据库的所有视图名称
+     *
+     * @return array
+     */
+    protected function getAllViews()
+    {
+        return $this->connection->select(
+            $this->grammar->compileGetAllViews()
         );
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，约束，数据库软删除
+ * Illuminate，基础，测试，约束条件，数据库软删除
  */
 
 namespace Illuminate\Foundation\Testing\Constraints;
@@ -56,7 +56,7 @@ class SoftDeletedInDatabase extends Constraint
      * @param  string  $table
      * @return bool
      */
-    public function matches($table)
+    public function matches($table): bool
     {
         return $this->database->table($table)
                 ->where($this->data)->whereNotNull('deleted_at')->count() > 0;
@@ -64,12 +64,12 @@ class SoftDeletedInDatabase extends Constraint
 
     /**
      * Get the description of the failure.
-	 * 获取故障的描述
+	 * 获取失败的描述
      *
      * @param  string  $table
      * @return string
      */
-    public function failureDescription($table)
+    public function failureDescription($table): string
     {
         return sprintf(
             "any soft deleted row in the table [%s] matches the attributes %s.\n\n%s",
@@ -107,7 +107,7 @@ class SoftDeletedInDatabase extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return json_encode($this->data);
     }

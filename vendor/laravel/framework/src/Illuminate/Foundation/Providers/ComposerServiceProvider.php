@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，提供者，Composer 服务提供商
+ * Illuminate，基础，供应商，Composer 服务提供商
  */
 
 namespace Illuminate\Foundation\Providers;

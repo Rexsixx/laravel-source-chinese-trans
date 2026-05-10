@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，适配器，单元测试，模拟测试用例设置为V8
+ */
+
+/**
  * Mockery
  *
  * LICENSE

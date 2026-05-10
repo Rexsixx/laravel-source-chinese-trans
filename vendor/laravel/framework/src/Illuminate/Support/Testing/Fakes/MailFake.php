@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，佯装，Mail Fake
+ * Illuminate，支持，测试，Fake，Mail Fake
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -14,7 +14,7 @@ class MailFake implements Mailer
 {
     /**
      * All of the mailables that have been sent.
-	 * 所有已发送的邮件
+	 * 所有被发送的邮差
      *
      * @var array
      */
@@ -22,7 +22,7 @@ class MailFake implements Mailer
 
     /**
      * All of the mailables that have been queued.
-	 * 已排队的所有可邮件
+	 * 所有被排队的邮件
      *
      * @var array
      */
@@ -30,7 +30,7 @@ class MailFake implements Mailer
 
     /**
      * Assert if a mailable was sent based on a truth-test callback.
-	 * 判断邮件是否基于真值测试回调发送
+	 * 断言如果通过trutest callback发送邮件
      *
      * @param  string  $mailable
      * @param  callable|int|null  $callback
@@ -42,15 +42,21 @@ class MailFake implements Mailer
             return $this->assertSentTimes($mailable, $callback);
         }
 
+        $message = "The expected [{$mailable}] mailable was not sent.";
+
+        if (count($this->queuedMailables) > 0) {
+            $message .= ' Did you mean to use assertQueued() instead?';
+        }
+
         PHPUnit::assertTrue(
             $this->sent($mailable, $callback)->count() > 0,
-            "The expected [{$mailable}] mailable was not sent."
+            $message
         );
     }
 
     /**
      * Assert if a mailable was sent a number of times.
-	 * 判断邮件是否发送了多次
+	 * 断言是否邮寄的时间有很多次
      *
      * @param  string  $mailable
      * @param  int  $times
@@ -66,7 +72,7 @@ class MailFake implements Mailer
 
     /**
      * Determine if a mailable was not sent based on a truth-test callback.
-	 * 根据真值测试回调确定是否未发送可邮件
+	 * 确定是否可以基于trutest callback发送邮件
      *
      * @param  string  $mailable
      * @param  callable|null  $callback
@@ -93,7 +99,7 @@ class MailFake implements Mailer
 
     /**
      * Assert if a mailable was queued based on a truth-test callback.
-	 * 判断是否根据真值测试回调对可邮件进行了排队
+	 * 断言如果通过对trutest callback来排队,如果发送邮件是排队的。
      *
      * @param  string  $mailable
      * @param  callable|int|null  $callback
@@ -113,7 +119,7 @@ class MailFake implements Mailer
 
     /**
      * Assert if a mailable was queued a number of times.
-	 * 判断可邮件是否排队多次
+	 * 断言如果一个邮件被排队了数次
      *
      * @param  string  $mailable
      * @param  int  $times
@@ -129,7 +135,7 @@ class MailFake implements Mailer
 
     /**
      * Determine if a mailable was not queued based on a truth-test callback.
-	 * 根据真值测试回调确定可邮件是否未排队
+	 * 确定是否基于trutest callback而不排队
      *
      * @param  string  $mailable
      * @param  callable|null  $callback
@@ -145,7 +151,7 @@ class MailFake implements Mailer
 
     /**
      * Assert that no mailables were queued.
-	 * 断言没有可发送邮件排队
+	 * 断言没有收件人排队
      *
      * @return void
      */
@@ -156,7 +162,7 @@ class MailFake implements Mailer
 
     /**
      * Get all of the mailables matching a truth-test callback.
-	 * 获取与真值测试回调匹配的所有邮件
+	 * 获取所有匹配超测试回调的邮差
      *
      * @param  string  $mailable
      * @param  callable|null  $callback
@@ -179,7 +185,7 @@ class MailFake implements Mailer
 
     /**
      * Determine if the given mailable has been sent.
-	 * 确定给定的邮件是否已发送
+	 * 确定是否发送了邮件
      *
      * @param  string  $mailable
      * @return bool
@@ -191,7 +197,7 @@ class MailFake implements Mailer
 
     /**
      * Get all of the queued mailables matching a truth-test callback.
-	 * 获取与真值测试回调匹配的所有排队邮件
+	 * 获取匹配一个trutest callback的排队邮件
      *
      * @param  string  $mailable
      * @param  callable|null  $callback
@@ -214,7 +220,7 @@ class MailFake implements Mailer
 
     /**
      * Determine if the given mailable has been queued.
-	 * 确定给定的可邮件是否已排队
+	 * 确定给定的mailable是否已经排队
      *
      * @param  string  $mailable
      * @return bool
@@ -226,7 +232,7 @@ class MailFake implements Mailer
 
     /**
      * Get all of the mailed mailables for a given type.
-	 * 获取给定类型的所有已发送邮件
+	 * 把所有寄给的邮差都寄给一个给定的类型
      *
      * @param  string  $type
      * @return \Illuminate\Support\Collection
@@ -240,7 +246,7 @@ class MailFake implements Mailer
 
     /**
      * Get all of the mailed mailables for a given type.
-	 * 获取给定类型的所有已发送邮件
+	 * 把所有寄给的邮差都寄给一个给定的类型
      *
      * @param  string  $type
      * @return \Illuminate\Support\Collection
@@ -254,7 +260,7 @@ class MailFake implements Mailer
 
     /**
      * Begin the process of mailing a mailable class instance.
-	 * 开始邮寄可邮寄类实例的过程
+	 * 开始发送一个可邮寄的类实例的过程
      *
      * @param  mixed  $users
      * @return \Illuminate\Mail\PendingMail
@@ -266,7 +272,7 @@ class MailFake implements Mailer
 
     /**
      * Begin the process of mailing a mailable class instance.
-	 * 开始邮寄可邮寄类实例的过程
+	 * 开始发送一个可邮寄的类实例的过程
      *
      * @param  mixed  $users
      * @return \Illuminate\Mail\PendingMail
@@ -278,7 +284,7 @@ class MailFake implements Mailer
 
     /**
      * Send a new message when only a raw text part.
-	 * 发送一个新的消息时，只有一个原始文本部分。
+	 * 当只有原始文本部分时,发送一个新消息。
      *
      * @param  string  $text
      * @param  \Closure|string  $callback
@@ -305,7 +311,7 @@ class MailFake implements Mailer
         }
 
         if ($view instanceof ShouldQueue) {
-            return $this->queue($view, $data, $callback);
+            return $this->queue($view, $data);
         }
 
         $this->mailables[] = $view;
@@ -313,7 +319,7 @@ class MailFake implements Mailer
 
     /**
      * Queue a new e-mail message for sending.
-	 * 将要发送的新电子邮件排队
+	 * 排队发送新的电子邮件信息
      *
      * @param  string|array  $view
      * @param  string|null  $queue

@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，实例化器，实例化接口
+ * Doctrine，实例化器，实例化器接口
  */
 
 namespace Doctrine\Instantiator;

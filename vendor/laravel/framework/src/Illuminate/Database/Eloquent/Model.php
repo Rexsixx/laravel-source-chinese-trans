@@ -15,6 +15,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Contracts\Queue\QueueableEntity;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Contracts\Queue\QueueableCollection;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\ConnectionResolverInterface as Resolver;
 
@@ -141,6 +142,14 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     protected static $globalScopes = [];
 
     /**
+     * The list of models classes that should not be affected with touch.
+	 * 不受touch影响的模型类列表
+     *
+     * @var array
+     */
+    protected static $ignoreOnTouch = [];
+
+    /**
      * The name of the "created at" column.
 	 * “创建时间”列的名称
      *
@@ -212,9 +221,15 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     {
         $class = static::class;
 
+        $booted = [];
+
         foreach (class_uses_recursive($class) as $trait) {
-            if (method_exists($class, $method = 'boot'.class_basename($trait))) {
+            $method = 'boot'.class_basename($trait);
+
+            if (method_exists($class, $method) && ! in_array($method, $booted)) {
                 forward_static_call([$class, $method]);
+
+                $booted[] = $method;
             }
         }
     }
@@ -230,6 +245,57 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         static::$booted = [];
 
         static::$globalScopes = [];
+    }
+
+    /**
+     * Disables relationship model touching for the current class during given callback scope.
+	 * 在给定的回调范围内禁用当前类的关系模型触摸。
+     *
+     * @param  callable  $callback
+     * @return void
+     */
+    public static function withoutTouching(callable $callback)
+    {
+        static::withoutTouchingOn([static::class], $callback);
+    }
+
+    /**
+     * Disables relationship model touching for the given model classes during given callback scope.
+	 * 在给定的回调范围内，为给定的模型类禁用关系模型触摸。
+     *
+     * @param  array  $models
+     * @param  callable  $callback
+     * @return void
+     */
+    public static function withoutTouchingOn(array $models, callable $callback)
+    {
+        static::$ignoreOnTouch = array_values(array_merge(static::$ignoreOnTouch, $models));
+
+        try {
+            call_user_func($callback);
+        } finally {
+            static::$ignoreOnTouch = array_values(array_diff(static::$ignoreOnTouch, $models));
+        }
+    }
+
+    /**
+     * Determine if the given model is ignoring touches.
+	 * 确定给定模型是否忽略触摸
+     *
+     * @param  string|null  $class
+     * @return bool
+     */
+    public static function isIgnoringTouch($class = null)
+    {
+        $class = $class ?: static::class;
+
+        foreach (static::$ignoreOnTouch as $ignoredClass) {
+            if ($class === $ignoredClass || is_subclass_of($class, $ignoredClass)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -254,7 +320,10 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
             if ($this->isFillable($key)) {
                 $this->setAttribute($key, $value);
             } elseif ($totallyGuarded) {
-                throw new MassAssignmentException($key);
+                throw new MassAssignmentException(sprintf(
+                    'Add [%s] to fillable property to allow mass assignment on [%s].',
+                    $key, get_class($this)
+                ));
             }
         }
 
@@ -263,7 +332,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 
     /**
      * Fill the model with an array of attributes. Force mass assignment.
-	 * 用属性数组填充模型。力质量分配。
+	 * 用属性数组填充模型。强制大量分配。
      *
      * @param  array  $attributes
      * @return $this
@@ -300,7 +369,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
      */
     protected function removeTableFromKey($key)
     {
-        return $key;
+        return Str::contains($key, '.') ? last(explode('.', $key)) : $key;
     }
 
     /**
@@ -437,9 +506,9 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     {
         $relations = is_string($relations) ? func_get_args() : $relations;
 
-        return $this->load(array_filter($relations, function ($relation) {
-            return ! $this->relationLoaded($relation);
-        }));
+        $this->newCollection([$this])->loadMissing($relations);
+
+        return $this;
     }
 
     /**
@@ -447,7 +516,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 	 * 将列的值增加给定的量
      *
      * @param  string  $column
-     * @param  int  $amount
+     * @param  float|int  $amount
      * @param  array  $extra
      * @return int
      */
@@ -461,7 +530,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 	 * 将列的值递减给定的量
      *
      * @param  string  $column
-     * @param  int  $amount
+     * @param  float|int  $amount
      * @param  array  $extra
      * @return int
      */
@@ -475,7 +544,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 	 * 在模型上运行增量或递减方法
      *
      * @param  string  $column
-     * @param  int  $amount
+     * @param  float|int  $amount
      * @param  array  $extra
      * @param  string  $method
      * @return int
@@ -500,7 +569,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 	 * 增加底层属性值并与原始属性同步
      *
      * @param  string  $column
-     * @param  int  $amount
+     * @param  float|int  $amount
      * @param  array  $extra
      * @param  string  $method
      * @return void
@@ -846,9 +915,10 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 
     /**
      * Force a hard delete on a soft deleted model.
-	 * 对已软删除的模型强制执行硬删除
+	 * 对已软删除的模型强制执行硬删除。
      *
      * This method protects developers from running forceDelete when trait is missing.
+	 * 这个方法可以防止开发人员在trait缺失时运行forceDelete。
      *
      * @return bool|null
      */
@@ -936,7 +1006,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 
     /**
      * Get a new query builder that doesn't have any global scopes.
-	 * 获取一个没有任何全局作用域的新查询生成器
+	 * 获取一个没有任何全局作用域的新查询生成器。
      *
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
@@ -956,9 +1026,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
      */
     public function newQueryWithoutScope($scope)
     {
-        $builder = $this->newQuery();
-
-        return $builder->withoutGlobalScope($scope);
+        return $this->newQuery()->withoutGlobalScope($scope);
     }
 
     /**
@@ -970,11 +1038,9 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
      */
     public function newQueryForRestoration($ids)
     {
-        if (is_array($ids)) {
-            return $this->newQueryWithoutScopes()->whereIn($this->getQualifiedKeyName(), $ids);
-        }
-
-        return $this->newQueryWithoutScopes()->whereKey($ids);
+        return is_array($ids)
+                ? $this->newQueryWithoutScopes()->whereIn($this->getQualifiedKeyName(), $ids)
+                : $this->newQueryWithoutScopes()->whereKey($ids);
     }
 
     /**
@@ -1112,6 +1178,8 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 
         $this->load(collect($this->relations)->except('pivot')->keys()->toArray());
 
+        $this->syncOriginal();
+
         return $this;
     }
 
@@ -1229,7 +1297,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 
     /**
      * Set the connection resolver instance.
-	 * 置连接解析器实例
+	 * 设置连接解析器实例
      *
      * @param  \Illuminate\Database\ConnectionResolverInterface  $resolver
      * @return void
@@ -1387,6 +1455,37 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     public function getQueueableId()
     {
         return $this->getKey();
+    }
+
+    /**
+     * Get the queueable relationships for the entity.
+	 * 获取实体的可排队关系
+     *
+     * @return array
+     */
+    public function getQueueableRelations()
+    {
+        $relations = [];
+
+        foreach ($this->getRelations() as $key => $relation) {
+            if (method_exists($this, $key)) {
+                $relations[] = $key;
+            }
+
+            if ($relation instanceof QueueableCollection) {
+                foreach ($relation->getQueueableRelations() as $collectionValue) {
+                    $relations[] = $key.'.'.$collectionValue;
+                }
+            }
+
+            if ($relation instanceof QueueableEntity) {
+                foreach ($relation->getQueueableRelations() as $entityKey => $entityValue) {
+                    $relations[] = $key.'.'.$entityValue;
+                }
+            }
+        }
+
+        return array_unique($relations);
     }
 
     /**

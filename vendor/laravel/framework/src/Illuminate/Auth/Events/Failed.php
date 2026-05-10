@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，事件，失败的
+ * Illuminate，Auth，事件，已失败的
  */
 
 namespace Illuminate\Auth\Events;

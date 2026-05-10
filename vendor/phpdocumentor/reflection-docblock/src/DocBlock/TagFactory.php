@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，Doc Block，标签工厂
+ */
 
 declare(strict_types=1);
 
@@ -20,6 +23,7 @@ interface TagFactory
 {
     /**
      * Adds a parameter to the service locator that can be injected in a tag's factory method.
+	 * 将参数添加到可以在标签的工厂方法中注入的服务定位器。
      *
      * When calling a tag's "create" method we always check the signature for dependencies to inject. One way is to
      * typehint a parameter in the signature so that we can use that interface or class name to inject a dependency
@@ -42,6 +46,7 @@ interface TagFactory
 
     /**
      * Factory method responsible for instantiating the correct sub type.
+	 * 负责实例化正确子类型的工厂方法。
      *
      * @param string $tagLine The text for this tag, including description.
      *

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，适配器，单元测试，MockeryPHPUnit集成断言V8的后置条件
+ */
+
+/**
  * Mockery
  *
  * LICENSE

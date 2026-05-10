@@ -1,6 +1,6 @@
 <?php
 /**
- * App，Http，控制器，认证，登录控制器
+ * App，Http，控制台，授权，登录控制器
  */
 
 namespace App\Http\Controllers\Auth;
@@ -12,7 +12,7 @@ class LoginController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Login Controller		登录控制器
+    | Login Controller
     |--------------------------------------------------------------------------
     |
     | This controller handles authenticating users for the application and
@@ -25,7 +25,6 @@ class LoginController extends Controller
 
     /**
      * Where to redirect users after login.
-	 * 登录后重定向用户的位置
      *
      * @var string
      */
@@ -33,7 +32,6 @@ class LoginController extends Controller
 
     /**
      * Create a new controller instance.
-	 * 创建一个新的控制器实例
      *
      * @return void
      */

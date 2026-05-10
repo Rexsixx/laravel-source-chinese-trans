@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，缓存，资源库
+ * Illuminate，契约，缓存，版本库
  */
 
 namespace Illuminate\Contracts\Cache;

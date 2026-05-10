@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理程序，抽象处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -15,6 +18,7 @@ use Monolog\ResettableInterface;
 
 /**
  * Base Handler class providing the Handler structure
+ * 提供Handler结构的基Handler类。
  *
  * Classes extending it should (in most cases) only implement write($record)
  *

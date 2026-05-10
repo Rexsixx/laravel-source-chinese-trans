@@ -99,7 +99,7 @@ interface ConnectionInterface
 
     /**
      * Run a raw, unprepared query against the PDO connection.
-	 * 对PDO连接运行一个未准备的原始查询
+	 * 对PDO连接运行一个未准备的原始查询。
      *
      * @param  string  $query
      * @return bool
@@ -161,7 +161,7 @@ interface ConnectionInterface
 
     /**
      * Execute the given callback in "dry run" mode.
-	 * 以"预演"模式执行给定的回调函数
+	 * 以“预演”模式执行给定的回调函数
      *
      * @param  \Closure  $callback
      * @return array

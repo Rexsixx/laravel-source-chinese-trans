@@ -51,7 +51,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return bool|null
      */
@@ -64,7 +64,9 @@ abstract class GeneratorCommand extends Command
         // First we will check to see if the class already exists. If it does, we don't want
         // to create the class and overwrite the user's code. So, we will bail out so the
         // code is untouched. Otherwise, we will continue generating this class' files.
-        if ((! $this->hasOption('force') || ! $this->option('force')) && $this->alreadyExists($this->getNameInput())) {
+        if ((! $this->hasOption('force') ||
+             ! $this->option('force')) &&
+             $this->alreadyExists($this->getNameInput())) {
             $this->error($this->type.' already exists!');
 
             return false;
@@ -205,7 +207,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Replace the class name for the given stub.
-	 * 替换给定存根的类名。
+	 * 替换给定存根的类名
      *
      * @param  string  $stub
      * @param  string  $name

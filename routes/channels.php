@@ -1,11 +1,8 @@
 <?php
-/**
- * 路由，通道
- */
 
 /*
 |--------------------------------------------------------------------------
-| Broadcast Channels	广播通道
+| Broadcast Channels
 |--------------------------------------------------------------------------
 |
 | Here you may register all of the event broadcasting channels that your

@@ -1,7 +1,4 @@
 <?php
-/**
- * 数据库，用户工厂
- */
 
 use Faker\Generator as Faker;
 

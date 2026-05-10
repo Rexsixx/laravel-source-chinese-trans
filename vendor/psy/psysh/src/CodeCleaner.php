@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清洁器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -43,6 +46,7 @@ use Psy\Exception\ParseErrorException;
 /**
  * A service to clean up user input, detect parse errors before they happen,
  * and generally work around issues with the PHP code evaluation experience.
+ * 一种清理用户输入的服务,在它们发生之前检测解析错误,而且通常在PHP代码评估经验的问题上工作。
  */
 class CodeCleaner
 {
@@ -53,6 +57,7 @@ class CodeCleaner
 
     /**
      * CodeCleaner constructor.
+	 * CodeCleaner构造函数
      *
      * @param Parser        $parser    A PhpParser Parser instance. One will be created if not explicitly supplied
      * @param Printer       $printer   A PhpParser Printer instance. One will be created if not explicitly supplied
@@ -76,6 +81,7 @@ class CodeCleaner
 
     /**
      * Get default CodeCleaner passes.
+	 * 得到默认的CodeCleaner传递
      *
      * @return array
      */
@@ -123,6 +129,7 @@ class CodeCleaner
 
     /**
      * "Warm up" code cleaner passes when we're coming from a debug call.
+	 * 当我们来自调试调用时,“预热”代码清理传递。
      *
      * This is useful, for example, for `UseStatementPass` and `NamespacePass`
      * which keep track of state between calls, to maintain the current

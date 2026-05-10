@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，配置
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -25,6 +29,7 @@ class Configuration
     /**
      * Boolean assertion of whether we can mock methods which do not actually
      * exist for the given class or object (ignored for unreal mocks)
+	 * 布尔断言我们是否可以模拟不实际的方法。
      *
      * @var bool
      */
@@ -42,6 +47,7 @@ class Configuration
 
     /**
      * Parameter map for use with PHP internal classes.
+	 * 使用PHP内部类的参数映射
      *
      * @var array
      */
@@ -52,6 +58,7 @@ class Configuration
     /**
      * Boolean assertion is reflection caching enabled or not. It should be
      * always enabled, except when using PHPUnit's --static-backup option.
+	 * 布尔断言是启用或不启用的反射缓存。
      *
      * @see https://github.com/mockery/mockery/issues/268
      */
@@ -59,6 +66,7 @@ class Configuration
 
     /**
      * Set boolean to allow/prevent mocking of non-existent methods
+	 * 设置布尔允许/防止对不存在的方法进行模拟
      *
      * @param bool $flag
      */
@@ -69,6 +77,7 @@ class Configuration
 
     /**
      * Return flag indicating whether mocking non-existent methods allowed
+	 * 返回标志，指示是否允许模拟不存在的方法。
      *
      * @return bool
      */
@@ -81,6 +90,7 @@ class Configuration
      * @deprecated
      *
      * Set boolean to allow/prevent unnecessary mocking of methods
+	 * 设置boolean以允许/防止不必要的模拟方法
      *
      * @param bool $flag
      */
@@ -93,6 +103,7 @@ class Configuration
 
     /**
      * Return flag indicating whether mocking non-existent methods allowed
+	 * 返回标志，指示是否允许模拟不存在的方法。
      *
      * @return bool
      */
@@ -106,6 +117,7 @@ class Configuration
     /**
      * Set a parameter map (array of param signature strings) for the method
      * of an internal PHP class.
+	 * 为一个内部PHP类的方法设置一个参数映射(param签名字符串数组)
      *
      * @param string $class
      * @param string $method
@@ -125,6 +137,7 @@ class Configuration
 
     /**
      * Remove all overridden parameter maps from internal PHP classes.
+	 * 从内部PHP类中删除所有覆盖的参数映射
      */
     public function resetInternalClassMethodParamMaps()
     {
@@ -133,6 +146,7 @@ class Configuration
 
     /**
      * Get the parameter map of an internal PHP class method
+	 * 获取内部PHP类方法的参数映射
      *
      * @return array|null
      */
@@ -160,6 +174,7 @@ class Configuration
 
     /**
      * Disable reflection caching
+	 * 禁用反射缓存。
      *
      * It should be always enabled, except when using
      * PHPUnit's --static-backup option.
@@ -173,6 +188,7 @@ class Configuration
 
     /**
      * Enable reflection caching
+	 * 启用反射缓存。
      *
      * It should be always enabled, except when using
      * PHPUnit's --static-backup option.
@@ -186,6 +202,7 @@ class Configuration
 
     /**
      * Is reflection cache enabled?
+	 * 是否启用了反射缓存
      */
     public function reflectionCacheEnabled()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，验证，验证器
+ * Illuminate，验证，验证程序
  */
 
 namespace Illuminate\Validation;
@@ -25,7 +25,7 @@ class Validator implements ValidatorContract
 
     /**
      * The Translator implementation.
-	 * 验证器实现
+	 * 翻译程序实现
      *
      * @var \Illuminate\Contracts\Translation\Translator
      */
@@ -73,7 +73,7 @@ class Validator implements ValidatorContract
 
     /**
      * The initial rules provided.
-	 * 提供了初始规则
+	 * 提供的初始规则
      *
      * @var array
      */
@@ -89,7 +89,7 @@ class Validator implements ValidatorContract
 
     /**
      * The current rule that is validating.
-	 * 正在验证的当前规则
+	 * 当前的规则是验证
      *
      * @var string
      */
@@ -97,7 +97,7 @@ class Validator implements ValidatorContract
 
     /**
      * The array of wildcard attributes with their asterisks expanded.
-	 * 扩展了带有星号的通配符属性数组
+	 * 通配符的数组与星号扩展
      *
      * @var array
      */
@@ -105,7 +105,7 @@ class Validator implements ValidatorContract
 
     /**
      * All of the registered "after" callbacks.
-	 * 所有注册的“after”回调
+	 * 所有的注册“后”回调
      *
      * @var array
      */
@@ -113,7 +113,7 @@ class Validator implements ValidatorContract
 
     /**
      * The array of custom error messages.
-	 * 自定义错误消息的数组
+	 * 自定义错误消息数组
      *
      * @var array
      */
@@ -121,7 +121,7 @@ class Validator implements ValidatorContract
 
     /**
      * The array of fallback error messages.
-	 * 回退错误消息数组
+	 * 反错误消息的数组
      *
      * @var array
      */
@@ -137,7 +137,7 @@ class Validator implements ValidatorContract
 
     /**
      * The array of custom displayable values.
-	 * 自定义可显示值的数组
+	 * 定制显示值的数组数组
      *
      * @var array
      */
@@ -145,7 +145,7 @@ class Validator implements ValidatorContract
 
     /**
      * All of the custom validator extensions.
-	 * 所有自定义验证器扩展
+	 * 所有的自定义验证器扩展
      *
      * @var array
      */
@@ -153,7 +153,7 @@ class Validator implements ValidatorContract
 
     /**
      * All of the custom replacer extensions.
-	 * 所有自定义替换器扩展
+	 * 所有的自定义替换器扩展
      *
      * @var array
      */
@@ -161,7 +161,7 @@ class Validator implements ValidatorContract
 
     /**
      * The validation rules that may be applied to files.
-	 * 可能应用于文件的验证规则
+	 * 可以应用于文件的验证规则
      *
      * @var array
      */
@@ -172,7 +172,7 @@ class Validator implements ValidatorContract
 
     /**
      * The validation rules that imply the field is required.
-	 * 隐含该字段的验证规则是必需的
+	 * 意味着需要字段的验证规则
      *
      * @var array
      */
@@ -183,14 +183,14 @@ class Validator implements ValidatorContract
 
     /**
      * The validation rules which depend on other fields as parameters.
-	 * 依赖其他字段作为参数的验证规则
+	 * 验证规则依赖于其他字段作为参数
      *
      * @var array
      */
     protected $dependentRules = [
         'RequiredWith', 'RequiredWithAll', 'RequiredWithout', 'RequiredWithoutAll',
         'RequiredIf', 'RequiredUnless', 'Confirmed', 'Same', 'Different', 'Unique',
-        'Before', 'After', 'BeforeOrEqual', 'AfterOrEqual',
+        'Before', 'After', 'BeforeOrEqual', 'AfterOrEqual', 'Gt', 'Lt', 'Gte', 'Lte',
     ];
 
     /**
@@ -199,7 +199,7 @@ class Validator implements ValidatorContract
      *
      * @var array
      */
-    protected $sizeRules = ['Size', 'Between', 'Min', 'Max'];
+    protected $sizeRules = ['Size', 'Between', 'Min', 'Max', 'Gt', 'Lt', 'Gte', 'Lte'];
 
     /**
      * The numeric related validation rules.
@@ -314,7 +314,7 @@ class Validator implements ValidatorContract
 
     /**
      * Determine if the data fails the validation rules.
-	 * 确定数据是否不符合验证规则
+	 * 确定数据是否通过验证规则
      *
      * @return bool
      */
@@ -327,7 +327,7 @@ class Validator implements ValidatorContract
      * Run the validator's rules against its data.
 	 * 针对其数据运行验证器的规则
      *
-     * @return void
+     * @return array
      *
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -336,6 +336,12 @@ class Validator implements ValidatorContract
         if ($this->fails()) {
             throw new ValidationException($this);
         }
+
+        $data = collect($this->getData());
+
+        return $data->only(collect($this->getRules())->keys()->map(function ($rule) {
+            return explode('.', $rule)[0];
+        })->unique())->toArray();
     }
 
     /**
@@ -350,7 +356,7 @@ class Validator implements ValidatorContract
     {
         $this->currentRule = $rule;
 
-        list($rule, $parameters) = ValidationRuleParser::parse($rule);
+        [$rule, $parameters] = ValidationRuleParser::parse($rule);
 
         if ($rule == '') {
             return;
@@ -395,7 +401,7 @@ class Validator implements ValidatorContract
 
     /**
      * Determine if the given rule depends on other fields.
-	 * 确定给定的规则是否依赖于其他字段。
+	 * 确定给定规则是否依赖于其他字段
      *
      * @param  string  $rule
      * @return bool
@@ -407,7 +413,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the explicit keys from an attribute flattened with dot notation.
-	 * 从使用点表示法平面化的属性中获取显式键。
+	 * 从一个带有点符号的属性中获取显式键。
      *
      * E.g. 'foo.1.bar.spark.baz' -> [1, 'spark'] for 'foo.*.bar.*.baz'
      *
@@ -429,7 +435,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the primary attribute name.
-	 * 获取主属性名称。
+	 * 获取主属性名。
      *
      * For example, if "name.0" is given, "name.*" will be returned.
      *
@@ -751,7 +757,7 @@ class Validator implements ValidatorContract
         $rules = (array) $rules;
 
         foreach ($this->rules[$attribute] as $rule) {
-            list($rule, $parameters) = ValidationRuleParser::parse($rule);
+            [$rule, $parameters] = ValidationRuleParser::parse($rule);
 
             if (in_array($rule, $rules)) {
                 return [$rule, $parameters];
@@ -979,7 +985,7 @@ class Validator implements ValidatorContract
 
     /**
      * Register an array of custom validator message replacers.
-	 * 注册一个自定义验证器消息替换器数组
+	 * 注册一个自定义验证器数组
      *
      * @param  array  $replacers
      * @return void
@@ -997,7 +1003,7 @@ class Validator implements ValidatorContract
 
     /**
      * Register a custom validator message replacer.
-	 * 注册一个自定义验证器消息替换程序
+	 * 注册自定义验证器信息替换器
      *
      * @param  string  $rule
      * @param  \Closure|string  $replacer
@@ -1092,7 +1098,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the Presence Verifier implementation.
-	 * 获取Presence Verifier实现
+	 * 获取现场验证器的实现
      *
      * @return \Illuminate\Validation\PresenceVerifierInterface
      *
@@ -1109,7 +1115,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the Presence Verifier implementation.
-	 * 获取Presence Verifier实现
+	 * 获取现场验证器的实现
      *
      * @param  string  $connection
      * @return \Illuminate\Validation\PresenceVerifierInterface
@@ -1125,7 +1131,7 @@ class Validator implements ValidatorContract
 
     /**
      * Set the Presence Verifier implementation.
-	 * 设置状态验证器实现
+	 * 设置存在验证器实现
      *
      * @param  \Illuminate\Validation\PresenceVerifierInterface  $presenceVerifier
      * @return void
@@ -1137,7 +1143,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the Translator implementation.
-	 * 获取Translator实现
+	 * 获取翻译实现
      *
      * @return \Illuminate\Contracts\Translation\Translator
      */
@@ -1148,7 +1154,7 @@ class Validator implements ValidatorContract
 
     /**
      * Set the Translator implementation.
-	 * 设置Translator实现
+	 * 设置翻译实现
      *
      * @param  \Illuminate\Contracts\Translation\Translator  $translator
      * @return void
@@ -1172,7 +1178,7 @@ class Validator implements ValidatorContract
 
     /**
      * Call a custom validator extension.
-	 * 调用基于类的验证器扩展
+	 * 调用自定义验证器扩展
      *
      * @param  string  $rule
      * @param  array   $parameters
@@ -1191,7 +1197,7 @@ class Validator implements ValidatorContract
 
     /**
      * Call a class based validator extension.
-	 * 调用基于类的验证器扩展
+	 * 调用一个基于类的验证器扩展
      *
      * @param  string  $callback
      * @param  array   $parameters
@@ -1199,14 +1205,14 @@ class Validator implements ValidatorContract
      */
     protected function callClassBasedExtension($callback, $parameters)
     {
-        list($class, $method) = Str::parseCallback($callback, 'validate');
+        [$class, $method] = Str::parseCallback($callback, 'validate');
 
         return call_user_func_array([$this->container->make($class), $method], $parameters);
     }
 
     /**
      * Handle dynamic calls to class methods.
-	 * 处理对类方法的动态调用
+	 * 处理动态调用类方法
      *
      * @param  string  $method
      * @param  array   $parameters
@@ -1222,6 +1228,8 @@ class Validator implements ValidatorContract
             return $this->callExtension($rule, $parameters);
         }
 
-        throw new BadMethodCallException("Method [$method] does not exist.");
+        throw new BadMethodCallException(sprintf(
+            'Method %s::%s does not exist.', static::class, $method
+        ));
     }
 }

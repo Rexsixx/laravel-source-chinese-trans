@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，向许多变形
+ * Illuminate，数据库，Eloquent，关系，形态多样
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -32,6 +32,7 @@ class MorphToMany extends BelongsToMany
 	 * 指示我们是否连接关系的逆。
      *
      * This primarily affects the morphClass constraint.
+	 * 这主要影响morphClass约束。
      *
      * @var bool
      */
@@ -157,6 +158,23 @@ class MorphToMany extends BelongsToMany
               ->setMorphClass($this->morphClass);
 
         return $pivot;
+    }
+
+    /**
+     * Get the pivot columns for the relation.
+	 * 得到关系的主列。
+     *
+     * "pivot_" is prefixed at each column for easy removal later.
+     *
+     * @return array
+     */
+    protected function aliasedPivotColumns()
+    {
+        $defaults = [$this->foreignPivotKey, $this->relatedPivotKey, $this->morphType];
+
+        return collect(array_merge($defaults, $this->pivotColumns))->map(function ($column) {
+            return $this->table.'.'.$column.' as pivot_'.$column;
+        })->unique()->all();
     }
 
     /**

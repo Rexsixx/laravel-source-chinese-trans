@@ -1,13 +1,18 @@
 <?php
+/**
+ * Illuminate，基础，测试，问题，与Redis交互
+ */
 
 namespace Illuminate\Foundation\Testing\Concerns;
 
+use Exception;
 use Illuminate\Redis\RedisManager;
 
 trait InteractsWithRedis
 {
     /**
      * Indicate connection failed if redis is not available.
+	 * 如果redis不可用，则表明连接失败。
      *
      * @var bool
      */
@@ -15,6 +20,7 @@ trait InteractsWithRedis
 
     /**
      * Redis manager instance.
+	 * Redis管理器实例
      *
      * @var \Illuminate\Redis\RedisManager[]
      */
@@ -22,6 +28,7 @@ trait InteractsWithRedis
 
     /**
      * Setup redis connection.
+	 * 建立redis连接
      *
      * @return void
      */
@@ -50,7 +57,7 @@ trait InteractsWithRedis
 
         try {
             $this->redis['predis']->connection()->flushdb();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             if ($host === '127.0.0.1' && $port === 6379 && getenv('REDIS_HOST') === false) {
                 $this->markTestSkipped('Trying default host/port failed, please set environment variable REDIS_HOST & REDIS_PORT to enable '.__CLASS__);
                 static::$connectionFailedOnceWithDefaultsSkip = true;
@@ -62,6 +69,7 @@ trait InteractsWithRedis
 
     /**
      * Teardown redis connection.
+	 * 拆除redis连接
      *
      * @return void
      */
@@ -76,6 +84,7 @@ trait InteractsWithRedis
 
     /**
      * Get redis driver provider.
+	 * 获取redis驱动程序提供程序
      *
      * @return array
      */
@@ -94,6 +103,7 @@ trait InteractsWithRedis
 
     /**
      * Run test if redis is available.
+	 * 如果redis可用，运行测试。
      *
      * @param  callable  $callback
      * @return void

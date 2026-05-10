@@ -10,6 +10,14 @@ use Illuminate\Support\Str;
 
 class ValidationData
 {
+    /**
+     * Initialize and gather data for given attribute.
+	 * 初始化并收集给定属性的数据
+     *
+     * @param  string  $attribute
+     * @param  array  $masterData
+     * @return array
+     */
     public static function initializeAndGatherData($attribute, $masterData)
     {
         $data = Arr::dot(static::initializeAttributeOnData($attribute, $masterData));
@@ -97,7 +105,7 @@ class ValidationData
 
     /**
      * Get the explicit part of the attribute name.
-	 * 获取属性名称的显式部分。
+	 * 获取属性名的显式部分。
      *
      * E.g. 'foo.bar.*.baz' -> 'foo.bar'
      *

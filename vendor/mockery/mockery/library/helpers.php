@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，辅助函数
+ * Mockery，辅助
  */
 
 use Mockery\Matcher\AndAnyOtherArgs;

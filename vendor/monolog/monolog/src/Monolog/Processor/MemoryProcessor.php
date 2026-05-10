@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理器，内存处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -13,6 +16,7 @@ namespace Monolog\Processor;
 
 /**
  * Some methods that are common for all memory processors
+ * 所有内存处理器都通用的一些方法
  *
  * @author Rob Jensen
  */

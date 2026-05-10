@@ -1,4 +1,9 @@
 <?php declare(strict_types = 1);
+
+/**
+ * TheSeer，Tokenizer，Tokenizer
+ */
+
 namespace TheSeer\Tokenizer;
 
 class Tokenizer {

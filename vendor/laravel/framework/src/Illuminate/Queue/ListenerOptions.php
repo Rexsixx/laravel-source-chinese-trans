@@ -9,7 +9,7 @@ class ListenerOptions extends WorkerOptions
 {
     /**
      * The environment the worker should run in.
-	 * 工作者应该运行的环境
+	 * 进程应该运行的环境
      *
      * @var string
      */

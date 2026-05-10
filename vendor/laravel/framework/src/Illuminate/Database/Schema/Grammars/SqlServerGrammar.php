@@ -302,6 +302,22 @@ class SqlServerGrammar extends Grammar
     }
 
     /**
+     * Compile a rename index command.
+	 * 编译一个重命名索引命令
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint $blueprint
+     * @param  \Illuminate\Support\Fluent $command
+     * @return string
+     */
+    public function compileRenameIndex(Blueprint $blueprint, Fluent $command)
+    {
+        return sprintf("sp_rename N'%s', %s, N'INDEX'",
+            $this->wrap($blueprint->getTable().'.'.$command->from),
+            $this->wrap($command->to)
+        );
+    }
+
+    /**
      * Compile the command to enable foreign key constraints.
 	 * 编译命令以启用外键约束
      *
@@ -492,7 +508,7 @@ class SqlServerGrammar extends Grammar
     }
 
     /**
-     * Create the column definition for an enum type.
+     * Create the column definition for an enumeration type.
 	 * 为枚举类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
@@ -500,7 +516,11 @@ class SqlServerGrammar extends Grammar
      */
     protected function typeEnum(Fluent $column)
     {
-        return 'nvarchar(255)';
+        return sprintf(
+            'nvarchar(255) check ("%s" in (%s))',
+            $column->name,
+            $this->quoteString($column->allowed)
+        );
     }
 
     /**
@@ -807,7 +827,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Get the SQL for a default column modifier.
-	 * 获取默认列修饰符的SQL
+	 * 获取默认列修饰符的SQL。
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column

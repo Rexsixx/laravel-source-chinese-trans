@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，信息，Slack 的附件
+ * Illuminate，通知，信息，Slack 附件
  */
 
 namespace Illuminate\Notifications\Messages;
@@ -26,6 +26,14 @@ class SlackAttachment
      * @var string
      */
     public $url;
+
+    /**
+     * The attachment's pretext.
+	 * 附件的借口
+     *
+     * @var string
+     */
+    public $pretext;
 
     /**
      * The attachment's text content.
@@ -77,7 +85,7 @@ class SlackAttachment
 
     /**
      * The attachment's thumb url.
-	 * 附件的thum burl
+	 * 附件的拇指url
      *
      * @var string
      */
@@ -85,7 +93,7 @@ class SlackAttachment
 
     /**
      * The attachment author's name.
-	 * 附件作者姓名
+	 * 附件作者的名字
      *
      * @var string
      */
@@ -148,8 +156,22 @@ class SlackAttachment
     }
 
     /**
+     * Set the pretext of the attachment.
+	 * 设定附件的借口
+     *
+     * @param  string  $pretext
+     * @return $this
+     */
+    public function pretext($pretext)
+    {
+        $this->pretext = $pretext;
+
+        return $this;
+    }
+
+    /**
      * Set the content (text) of the attachment.
-	 * 设置附件的内容（文本）
+	 * 设置附件的内容(文本)
      *
      * @param  string  $content
      * @return $this

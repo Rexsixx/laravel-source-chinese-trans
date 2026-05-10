@@ -61,6 +61,6 @@ class EngineResolver
             return $this->resolved[$engine] = call_user_func($this->resolvers[$engine]);
         }
 
-        throw new InvalidArgumentException("Engine $engine not found.");
+        throw new InvalidArgumentException("Engine [{$engine}] not found.");
     }
 }

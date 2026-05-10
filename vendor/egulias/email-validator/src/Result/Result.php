@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，结果，Result
+ */
 
 namespace Egulias\EmailValidator\Result;
 
@@ -17,6 +20,7 @@ interface Result
 
     /**
      * Short description of the result, human readable.
+	 * 对结果的简短描述,人类的可读性。
      */
     public function description() : string;
 

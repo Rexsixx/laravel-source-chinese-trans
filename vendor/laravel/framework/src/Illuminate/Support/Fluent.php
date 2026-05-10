@@ -64,7 +64,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Convert the Fluent instance to an array.
-	 * 将Fluent实例转换为数组
+	 * 将流畅的实例转换为数组
      *
      * @return array
      */
@@ -75,7 +75,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Convert the object into something JSON serializable.
-	 * 将对象转换为JSON可序列化的对象
+	 * 将对象转换为JSON序列化
      *
      * @return array
      */
@@ -86,7 +86,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Convert the Fluent instance to JSON.
-	 * 将Fluent实例转换为JSON
+	 * 将流畅的实例转换为JSON
      *
      * @param  int  $options
      * @return string
@@ -98,7 +98,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Determine if the given offset exists.
-	 * 确定给定的偏移量是否存在
+	 * 确定给定偏移量是否存在
      *
      * @param  string  $offset
      * @return bool
@@ -122,7 +122,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Set the value at the given offset.
-	 * 在给定的偏移量处设置值
+	 * 在给定偏移量上设置值
      *
      * @param  string  $offset
      * @param  mixed   $value
@@ -135,7 +135,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Unset the value at the given offset.
-	 * 在给定偏移量处取消值的设置
+	 * 在给定偏移量上解开值
      *
      * @param  string  $offset
      * @return void
@@ -147,7 +147,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Handle dynamic calls to the container to set attributes.
-	 * 处理对容器的动态调用以设置属性
+	 * 处理设置属性的动态调用
      *
      * @param  string  $method
      * @param  array   $parameters
@@ -187,7 +187,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Dynamically check if an attribute is set.
-	 * 动态检查是否设置了属性
+	 * 动态检查属性是否设置
      *
      * @param  string  $key
      * @return bool
@@ -199,7 +199,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Dynamically unset an attribute.
-	 * 动态取消设置属性
+	 * 动态不设置属性
      *
      * @param  string  $key
      * @return void

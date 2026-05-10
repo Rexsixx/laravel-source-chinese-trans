@@ -1,13 +1,10 @@
 <?php
-/**
- * 配置，文件系统
- */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Filesystem Disk	默认文件系统磁盘
+    | Default Filesystem Disk
     |--------------------------------------------------------------------------
     |
     | Here you may specify the default filesystem disk that should be used
@@ -20,7 +17,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Cloud Filesystem Disk		默认云文件系统磁盘
+    | Default Cloud Filesystem Disk
     |--------------------------------------------------------------------------
     |
     | Many applications store files both locally and in the cloud. For this
@@ -33,14 +30,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Filesystem Disks		文件系统磁盘
+    | Filesystem Disks
     |--------------------------------------------------------------------------
     |
     | Here you may configure as many filesystem "disks" as you wish, and you
     | may even configure multiple disks of the same driver. Defaults have
     | been setup for each driver as an example of the required options.
     |
-    | Supported Drivers: "local", "ftp", "s3", "rackspace"
+    | Supported Drivers: "local", "ftp", "sftp", "s3", "rackspace"
     |
     */
 
@@ -64,6 +61,7 @@ return [
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
+            'url' => env('AWS_URL'),
         ],
 
     ],

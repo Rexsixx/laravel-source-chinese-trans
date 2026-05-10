@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，工具，模板助手
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -14,11 +18,13 @@ use Whoops\Exception\Frame;
 
 /**
  * Exposes useful tools for working with/in templates
+ * 在模板中使用有用的工具
  */
 class TemplateHelper
 {
     /**
      * An array of variables to be passed to all templates
+	 * 将传递给所有模板的变量数组
      * @var array
      */
     private $variables = [];

@@ -19,7 +19,7 @@ class ResourceRegistrar
 
     /**
      * The default actions for a resourceful controller.
-	 * 资源控制器的默认动作
+	 * 足智多谋的控制器的默认操作
      *
      * @var array
      */
@@ -27,7 +27,7 @@ class ResourceRegistrar
 
     /**
      * The parameters set for this resource instance.
-	 * 为此资源实例设置的参数
+	 * 此资源实例设置的参数
      *
      * @var array|string
      */
@@ -43,7 +43,7 @@ class ResourceRegistrar
 
     /**
      * Singular global parameters.
-	 * 奇异全局参数
+	 * 单一的全局参数
      *
      * @var bool
      */
@@ -51,7 +51,7 @@ class ResourceRegistrar
 
     /**
      * The verbs used in the resource URIs.
-	 * 资源uri中使用的动词
+	 * 在资源uri中使用的动词
      *
      * @var array
      */
@@ -62,7 +62,7 @@ class ResourceRegistrar
 
     /**
      * Create a new resource registrar instance.
-	 * 创建一个新的资源注册器实例
+	 * 创建一个新的资源注册实例
      *
      * @param  \Illuminate\Routing\Router  $router
      * @return void
@@ -79,7 +79,7 @@ class ResourceRegistrar
      * @param  string  $name
      * @param  string  $controller
      * @param  array   $options
-     * @return void
+     * @return \Illuminate\Routing\RouteCollection
      */
     public function register($name, $controller, array $options = [])
     {
@@ -103,14 +103,20 @@ class ResourceRegistrar
 
         $defaults = $this->resourceDefaults;
 
+        $collection = new RouteCollection;
+
         foreach ($this->getResourceMethods($defaults, $options) as $m) {
-            $this->{'addResource'.ucfirst($m)}($name, $base, $controller, $options);
+            $collection->add($this->{'addResource'.ucfirst($m)}(
+                $name, $base, $controller, $options
+            ));
         }
+
+        return $collection;
     }
 
     /**
      * Build a set of prefixed resource routes.
-	 * 建立一组前缀资源路由
+	 * 建立一套固定的资源路线
      *
      * @param  string  $name
      * @param  string  $controller
@@ -119,7 +125,7 @@ class ResourceRegistrar
      */
     protected function prefixedResource($name, $controller, array $options)
     {
-        list($name, $prefix) = $this->getResourcePrefix($name);
+        [$name, $prefix] = $this->getResourcePrefix($name);
 
         // We need to extract the base resource from the resource name. Nested resources
         // are supported in the framework, but we need to know what name to use for a
@@ -171,7 +177,7 @@ class ResourceRegistrar
 
     /**
      * Add the index method for a resourceful route.
-	 * 增加资源路由的索引方法
+	 * 为足智多谋的路线添加索引方法
      *
      * @param  string  $name
      * @param  string  $base
@@ -190,7 +196,7 @@ class ResourceRegistrar
 
     /**
      * Add the create method for a resourceful route.
-	 * 为资源路由添加create方法
+	 * 为足智多谋的路线添加创建方法
      *
      * @param  string  $name
      * @param  string  $base
@@ -209,7 +215,7 @@ class ResourceRegistrar
 
     /**
      * Add the store method for a resourceful route.
-	 * 为资源路由添加store方法
+	 * 为足智多谋的路线添加存储方法
      *
      * @param  string  $name
      * @param  string  $base
@@ -228,7 +234,7 @@ class ResourceRegistrar
 
     /**
      * Add the show method for a resourceful route.
-	 * 为资源路由增加show方法
+	 * 为足智多谋的路线添加展示方法
      *
      * @param  string  $name
      * @param  string  $base
@@ -247,7 +253,7 @@ class ResourceRegistrar
 
     /**
      * Add the edit method for a resourceful route.
-	 * 添加资源路由的编辑方法
+	 * 为一个资源丰富的路线添加编辑方法
      *
      * @param  string  $name
      * @param  string  $base
@@ -266,7 +272,7 @@ class ResourceRegistrar
 
     /**
      * Add the update method for a resourceful route.
-	 * 添加资源路由的更新方式
+	 * 为足实化的路线添加更新方法
      *
      * @param  string  $name
      * @param  string  $base
@@ -285,7 +291,7 @@ class ResourceRegistrar
 
     /**
      * Add the destroy method for a resourceful route.
-	 * 为资源路由添加destroy方法
+	 * 在资源的方法中添加销毁方法
      *
      * @param  string  $name
      * @param  string  $base
@@ -344,7 +350,7 @@ class ResourceRegistrar
 
     /**
      * Format a resource parameter for usage.
-	 * 格式化资源参数以供使用
+	 * 格式化使用的资源参数
      *
      * @param  string  $value
      * @return string
@@ -364,7 +370,7 @@ class ResourceRegistrar
 
     /**
      * Get the action array for a resource route.
-	 * 获取资源路由的操作数组
+	 * 获取资源路由的动作数组
      *
      * @param  string  $resource
      * @param  string  $controller
@@ -419,7 +425,7 @@ class ResourceRegistrar
 
     /**
      * Set or unset the unmapped global parameters to singular.
-	 * 将未映射的全局参数设置或取消设置为单数
+	 * 将未映射的全局参数设置为单数
      *
      * @param  bool  $singular
      * @return void
@@ -454,7 +460,7 @@ class ResourceRegistrar
 
     /**
      * Get or set the action verbs used in the resource URIs.
-	 * 获取或设置资源uri中使用的动作动词
+	 * 获取或设置资源uri中使用的动作谓词
      *
      * @param  array  $verbs
      * @return array

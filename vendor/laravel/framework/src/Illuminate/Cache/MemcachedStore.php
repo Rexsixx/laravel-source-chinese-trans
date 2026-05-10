@@ -77,7 +77,6 @@ class MemcachedStore extends TaggableStore implements LockProvider, Store
 	 * 按键从缓存中检索多个项。
      *
      * Items not found in the cache will have a null value.
-	 * 在缓存中找不到的项将具有空值。
      *
      * @param  array  $keys
      * @return array

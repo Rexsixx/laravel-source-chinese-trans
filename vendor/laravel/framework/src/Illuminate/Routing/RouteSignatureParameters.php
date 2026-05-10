@@ -13,7 +13,7 @@ class RouteSignatureParameters
 {
     /**
      * Extract the route action's signature parameters.
-	 * 提取路由动作的签名参数。
+	 * 提取路由动作的签名参数
      *
      * @param  array  $action
      * @param  string  $subClass
@@ -39,7 +39,7 @@ class RouteSignatureParameters
      */
     protected static function fromClassMethodString($uses)
     {
-        list($class, $method) = Str::parseCallback($uses);
+        [$class, $method] = Str::parseCallback($uses);
 
         if (! method_exists($class, $method) && is_callable($class, $method)) {
             return [];

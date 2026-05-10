@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Capsule，管理者
+ * Illuminate，数据库，压缩，管理器
  */
 
 namespace Illuminate\Database\Capsule;
@@ -138,7 +138,7 @@ class Manager
 
     /**
      * Bootstrap Eloquent so it is ready for usage.
-	 * 引导雄辩，所以它是准备使用。
+	 * 引导Eloquent，所以它是准备使用。
      *
      * @return void
      */

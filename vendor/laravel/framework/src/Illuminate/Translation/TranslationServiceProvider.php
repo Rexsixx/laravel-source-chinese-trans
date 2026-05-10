@@ -45,7 +45,7 @@ class TranslationServiceProvider extends ServiceProvider
 
     /**
      * Register the translation line loader.
-	 * 注册翻译行加载程序
+	 * 注册翻译行装载机
      *
      * @return void
      */

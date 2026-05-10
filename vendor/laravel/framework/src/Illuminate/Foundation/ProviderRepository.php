@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，供应商库
+ * Illuminate，基础，供应商资源库
  */
 
 namespace Illuminate\Foundation;
@@ -13,7 +13,7 @@ class ProviderRepository
 {
     /**
      * The application implementation.
-	 * 应用实现
+	 * 应用实施
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */

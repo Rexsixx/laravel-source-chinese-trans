@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，预先设置，React
+ * Illuminate，基础，控制台，预置，React
  */
 
 namespace Illuminate\Foundation\Console\Presets;
@@ -37,8 +37,8 @@ class React extends Preset
     {
         return [
             'babel-preset-react' => '^6.23.0',
-            'react' => '^15.4.2',
-            'react-dom' => '^15.4.2',
+            'react' => '^16.2.0',
+            'react-dom' => '^16.2.0',
         ] + Arr::except($packages, ['vue']);
     }
 

@@ -25,7 +25,7 @@ class Action
 
     /**
      * Create a new action instance.
-	 * 创建一个新的操作实例
+	 * 创建一个新的动作实例
      *
      * @param  string  $text
      * @param  string  $url

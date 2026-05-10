@@ -6,13 +6,17 @@
 namespace Illuminate\Support\Facades;
 
 /**
+ * @method static void queue(...$parameters)
+ * @method static unqueue($name)
+ * @method static array getQueuedCookies()
+ *
  * @see \Illuminate\Cookie\CookieJar
  */
 class Cookie extends Facade
 {
     /**
      * Determine if a cookie exists on the request.
-	 * 确定请求中是否存在cookie
+	 * 确定请求是否存在cookie
      *
      * @param  string  $key
      * @return bool

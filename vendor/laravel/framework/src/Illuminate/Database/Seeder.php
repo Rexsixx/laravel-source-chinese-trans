@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，播种者
+ * Illuminate，数据库，播种机
  */
 
 namespace Illuminate\Database;

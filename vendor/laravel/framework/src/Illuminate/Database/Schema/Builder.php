@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，模式，生成器
+ * Illuminate，数据库，模式，构建器
  */
 
 namespace Illuminate\Database\Schema;
@@ -79,7 +79,7 @@ class Builder
     {
         $table = $this->connection->getTablePrefix().$table;
 
-        return count($this->connection->select(
+        return count($this->connection->selectFromWriteConnection(
             $this->grammar->compileTableExists(), [$table]
         )) > 0;
     }
@@ -144,7 +144,7 @@ class Builder
      */
     public function getColumnListing($table)
     {
-        $results = $this->connection->select($this->grammar->compileColumnListing(
+        $results = $this->connection->selectFromWriteConnection($this->grammar->compileColumnListing(
             $this->connection->getTablePrefix().$table
         ));
 
@@ -220,6 +220,19 @@ class Builder
     public function dropAllTables()
     {
         throw new LogicException('This database driver does not support dropping all tables.');
+    }
+
+    /**
+     * Drop all views from the database.
+	 * 从数据库中删除所有视图
+     *
+     * @return void
+     *
+     * @throws \LogicException
+     */
+    public function dropAllViews()
+    {
+        throw new LogicException('This database driver does not support dropping all views.');
     }
 
     /**

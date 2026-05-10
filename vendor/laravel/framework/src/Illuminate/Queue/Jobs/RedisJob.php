@@ -21,7 +21,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * The Redis raw job payload.
-	 * Redis的原始作业负载
+	 * Redis的原始工作负载
      *
      * @var string
      */
@@ -72,7 +72,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the raw body string for the job.
-	 * 获取工作的原始主体字符串
+	 * 获取作业的原始主体字符串
      *
      * @return string
      */
@@ -83,7 +83,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Delete the job from the queue.
-	 * 从队列中删除作业
+	 * 从队列中删除工作
      *
      * @return void
      */
@@ -121,7 +121,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the job identifier.
-	 * 获取作业标识符
+	 * 获取工作标识符
      *
      * @return string
      */
@@ -132,7 +132,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the underlying Redis factory implementation.
-	 * 获取底层Redis工厂实现
+	 * 获得底层Redis工厂的实施
      *
      * @return \Illuminate\Contracts\Redis\Factory
      */
@@ -143,7 +143,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Get the underlying reserved Redis job.
-	 * 获取底层预留的Redis作业
+	 * 获得底层Redis工厂的实施
      *
      * @return string
      */

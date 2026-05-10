@@ -8,8 +8,24 @@ namespace Illuminate\Contracts\Queue;
 interface Job
 {
     /**
+     * Get the job identifier.
+	 * 获取作业标识符
+     *
+     * @return string
+     */
+    public function getJobId();
+
+    /**
+     * Get the decoded body of the job.
+	 * 拿到解码后的文件
+     *
+     * @return array
+     */
+    public function payload();
+
+    /**
      * Fire the job.
-	 * 点火作业
+	 * 启动作业
      *
      * @return void
      */
@@ -83,7 +99,7 @@ interface Job
 
     /**
      * Get the timestamp indicating when the job should timeout.
-	 * 获取指示作业何时应该超时的时间戳。
+	 * 获取指示作业何时应该超时的时间戳
      *
      * @return int|null
      */
@@ -99,10 +115,9 @@ interface Job
 
     /**
      * Get the resolved name of the queued job class.
-	 * 获取排队作业类的解析名称。
+	 * 获取排队作业类的解析名称
      *
      * Resolves the name of "wrapped" jobs such as class-based handlers.
-	 * 解析“包装”作业（如基于类的处理程序）的名称。
      *
      * @return string
      */

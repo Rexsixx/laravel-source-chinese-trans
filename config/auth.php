@@ -1,13 +1,13 @@
 <?php
 /**
- * 配置，认证
+ * 配置，auth
  */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Defaults	默认认证
+    | Authentication Defaults
     |--------------------------------------------------------------------------
     |
     | This option controls the default authentication "guard" and password
@@ -23,7 +23,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Guards		身份验证警卫
+    | Authentication Guards
     |--------------------------------------------------------------------------
     |
     | Next, you may define every authentication guard for your application.
@@ -52,7 +52,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | User Providers	用户提供者
+    | User Providers
     |--------------------------------------------------------------------------
     |
     | All authentication drivers have a user provider. This defines how the
@@ -81,7 +81,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Resetting Passwords	重置密码
+    | Resetting Passwords
     |--------------------------------------------------------------------------
     |
     | You may specify multiple password reset configurations if you have more

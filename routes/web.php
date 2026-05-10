@@ -1,11 +1,8 @@
 <?php
-/**
- * 路由，web
- */
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes	Web路由
+| Web Routes
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These

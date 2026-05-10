@@ -28,7 +28,7 @@ class CommandFinished
 
     /**
      * The command output implementation.
-	 * 命令输出实现
+	 * 控制台输出实现
      *
      * @var \Symfony\Component\Console\Output\OutputInterface|null
      */

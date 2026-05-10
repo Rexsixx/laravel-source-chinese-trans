@@ -12,7 +12,7 @@ class Dumper
 {
     /**
      * Dump a value with elegance.
-	 * 优雅地转储一个值
+	 * 优雅地转储价值
      *
      * @param  mixed  $value
      * @return void

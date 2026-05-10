@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，分析程序，部分分析器
+ */
 
 namespace Egulias\EmailValidator\Parser;
 

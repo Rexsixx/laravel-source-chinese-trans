@@ -147,7 +147,7 @@ class SyncQueue extends Queue implements QueueContract
 
     /**
      * Push a new job onto the queue after a delay.
-	 * 在延迟后将新作业推入队列
+	 * 延迟后将新工作推到队列上
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job
@@ -162,7 +162,7 @@ class SyncQueue extends Queue implements QueueContract
 
     /**
      * Pop the next job off of the queue.
-	 * 将下一个作业从队列中弹出
+	 * 从队列中启动下一个作业
      *
      * @param  string  $queue
      * @return \Illuminate\Contracts\Queue\Job|null

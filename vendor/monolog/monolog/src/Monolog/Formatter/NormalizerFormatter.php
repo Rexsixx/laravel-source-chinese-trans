@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，格式器，标准化者格式化器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -16,6 +19,7 @@ use Monolog\Utils;
 
 /**
  * Normalizes incoming records to remove objects/resources so it's easier to dump to various targets
+ * 规范化传入记录以删除对象/资源，以便更容易转储到各种目标。
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
@@ -186,6 +190,7 @@ class NormalizerFormatter implements FormatterInterface
 
     /**
      * Return the JSON representation of a value
+	 * 返回值的JSON表示形式
      *
      * @param  mixed             $data
      * @param  bool              $ignoreErrors

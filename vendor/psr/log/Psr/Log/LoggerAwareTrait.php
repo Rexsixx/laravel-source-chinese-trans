@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psr，Log，记录器意识特征
+ */
 
 namespace Psr\Log;
 
@@ -9,6 +12,7 @@ trait LoggerAwareTrait
 {
     /**
      * The logger instance.
+	 * logger实例
      *
      * @var LoggerInterface|null
      */

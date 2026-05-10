@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，格式器，Elastica 格式化器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -46,6 +49,7 @@ class GelfMessageFormatter extends NormalizerFormatter
 
     /**
      * Translates Monolog log levels to Graylog2 log priorities.
+	 * 将独白日志级别转换为Graylog2日志优先级
      */
     private $logLevels = array(
         Logger::DEBUG     => 7,

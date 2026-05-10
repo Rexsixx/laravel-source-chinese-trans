@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点转偖
+ */
+
 namespace PhpParser;
 
 use PhpParser\Node\Expr\Include_;
@@ -16,6 +20,7 @@ class NodeDumper
 
     /**
      * Constructs a NodeDumper.
+	 * 构建一个NodeDumper
      *
      * Supported options:
      *  * bool dumpComments: Whether comments should be dumped.

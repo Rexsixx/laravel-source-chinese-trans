@@ -176,7 +176,7 @@ class QueueServiceProvider extends ServiceProvider
 
     /**
      * Register the queue worker.
-	 * 注册队列工作器
+	 * 注册队列工作线程
      *
      * @return void
      */

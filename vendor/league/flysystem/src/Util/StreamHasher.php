@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，工具，流哈希计算器
+ */
 
 namespace League\Flysystem\Util;
 
@@ -11,6 +14,7 @@ class StreamHasher
 
     /**
      * StreamHasher constructor.
+	 * StreamHasher构造函数
      *
      * @param string $algo
      */

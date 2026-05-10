@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，重定向器
+ * Illuminate，路由，Redirector
  */
 
 namespace Illuminate\Routing;
@@ -43,7 +43,7 @@ class Redirector
 
     /**
      * Create a new redirect response to the "home" route.
-	 * 创建一个指向“home”路由的新重定向响应
+	 * 创建新的重定向响应“home”路由
      *
      * @param  int  $status
      * @return \Illuminate\Http\RedirectResponse
@@ -55,7 +55,7 @@ class Redirector
 
     /**
      * Create a new redirect response to the previous location.
-	 * 创建到前一个位置的新重定向响应
+	 * 创建对前面位置的新重定向响应
      *
      * @param  int    $status
      * @param  array  $headers
@@ -82,7 +82,7 @@ class Redirector
 
     /**
      * Create a new redirect response, while putting the current URL in the session.
-	 * 创建一个新的重定向响应，同时将当前URL放在会话中。
+	 * 创建一个新的重定向响应,同时在会话中放置当前URL。
      *
      * @param  string  $path
      * @param  int     $status
@@ -99,7 +99,7 @@ class Redirector
 
     /**
      * Create a new redirect response to the previously intended location.
-	 * 创建到先前预期位置的新重定向响应
+	 * 创建一个新的重定向响应,以响应先前预定的位置。
      *
      * @param  string  $default
      * @param  int     $status
@@ -131,7 +131,7 @@ class Redirector
 
     /**
      * Create a new redirect response to an external URL (no validation).
-	 * 创建一个指向外部URL的新重定向响应（不需要验证
+	 * 创建一个新的重定向响应的外部URL(没有验证)
      *
      * @param  string  $path
      * @param  int     $status
@@ -159,10 +159,10 @@ class Redirector
 
     /**
      * Create a new redirect response to a named route.
-	 * 为命名路由创建一个新的重定向响应
+	 * 创建一个新的重定向响应来响应指定的路由
      *
      * @param  string  $route
-     * @param  array   $parameters
+     * @param  mixed   $parameters
      * @param  int     $status
      * @param  array   $headers
      * @return \Illuminate\Http\RedirectResponse
@@ -174,10 +174,10 @@ class Redirector
 
     /**
      * Create a new redirect response to a controller action.
-	 * 为控制器动作创建一个新的重定向响应
+	 * 创建一个新的重定向响应来响应控制器的操作
      *
      * @param  string  $action
-     * @param  array   $parameters
+     * @param  mixed   $parameters
      * @param  int     $status
      * @param  array   $headers
      * @return \Illuminate\Http\RedirectResponse
@@ -189,7 +189,7 @@ class Redirector
 
     /**
      * Create a new redirect response.
-	 * 创建一个新的重定向响应
+	 * 创建新的重定向响应
      *
      * @param  string  $path
      * @param  int     $status

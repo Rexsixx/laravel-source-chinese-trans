@@ -34,12 +34,20 @@ interface Application extends Container
     public function environment();
 
     /**
-     * Determine if we are running in the console.
-	 * 确定我们是否在控制台中运行
+     * Determine if the application is running in the console.
+	 * 确定应用程序是否在控制台中运行
      *
      * @return bool
      */
     public function runningInConsole();
+
+    /**
+     * Determine if the application is running unit tests.
+	 * 确定应用程序是否正在运行单元测试
+     *
+     * @return bool
+     */
+    public function runningUnitTests();
 
     /**
      * Determine if the application is currently down for maintenance.

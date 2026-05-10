@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，消息
+ * Illuminate，电子邮件，信息
  */
 
 namespace Illuminate\Mail;
@@ -23,7 +23,7 @@ class Message
 
     /**
      * CIDs of files embedded in the message.
-	 * 消息中嵌入文件的cid
+	 * 嵌入在消息中的文件的CIDs
      *
      * @var array
      */
@@ -43,6 +43,7 @@ class Message
 
     /**
      * Add a "from" address to the message.
+	 * 在消息中添加一个“from”地址
      *
      * @param  string|array  $address
      * @param  string|null  $name
@@ -57,6 +58,7 @@ class Message
 
     /**
      * Set the "sender" of the message.
+	 * 设置消息的“发送方”
      *
      * @param  string|array  $address
      * @param  string|null  $name
@@ -71,6 +73,7 @@ class Message
 
     /**
      * Set the "return path" of the message.
+	 * 设置消息的“返回路径”
      *
      * @param  string  $address
      * @return $this
@@ -220,7 +223,7 @@ class Message
 
     /**
      * Create a Swift Attachment instance.
-	 * 创建一个Swift Attachment实例
+	 * 创建一个Swift Attachment实例。
      *
      * @param  string  $file
      * @return \Swift_Mime_Attachment
@@ -232,7 +235,7 @@ class Message
 
     /**
      * Attach in-memory data as an attachment.
-	 * 将内存中的数据作为附件附加
+	 * 将内存数据附加为附件
      *
      * @param  string  $data
      * @param  string  $name

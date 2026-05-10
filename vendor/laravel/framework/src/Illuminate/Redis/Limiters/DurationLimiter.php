@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Redis，限值器，负载限制器
+ * Illuminate，Redis，限值器，并发限制器
  */
 
 namespace Illuminate\Redis\Limiters;
@@ -35,7 +35,7 @@ class DurationLimiter
 
     /**
      * The number of seconds a slot should be maintained.
-	 * 应该维护一个槽位的秒数
+	 * 应该保持一个插槽的秒数
      *
      * @var int
      */
@@ -43,7 +43,7 @@ class DurationLimiter
 
     /**
      * The timestamp of the end of the current duration.
-	 * 当前持续时间结束的时间戳
+	 * 当前时间结束的时间戳
      *
      * @var int
      */
@@ -51,7 +51,7 @@ class DurationLimiter
 
     /**
      * The number of remaining slots.
-	 * 剩余槽位的数量
+	 * 剩余槽的数量
      *
      * @var int
      */
@@ -59,7 +59,7 @@ class DurationLimiter
 
     /**
      * Create a new duration limiter instance.
-	 * 创建新的持续时间限制器实例
+	 * 创建一个新的持续时间限制实例
      *
      * @param  \Illuminate\Redis\Connections\Connection $redis
      * @param  string $name
@@ -77,7 +77,7 @@ class DurationLimiter
 
     /**
      * Attempt to acquire the lock for the given number of seconds.
-	 * 尝试在给定的秒数内获取锁
+	 * 试图获得指定数秒的锁
      *
      * @param  int $timeout
      * @param  callable|null $callback
@@ -105,7 +105,7 @@ class DurationLimiter
 
     /**
      * Attempt to acquire the lock.
-	 * 尝试获取锁
+	 * 试图获得锁
      *
      * @return bool
      */
@@ -124,7 +124,7 @@ class DurationLimiter
 
     /**
      * Get the Lua script for acquiring a lock.
-	 * 获取用于获取锁的Lua脚本
+	 * 获取锁的Lua脚本
      *
      * KEYS[1] - The limiter name
      * ARGV[1] - Current time in microseconds

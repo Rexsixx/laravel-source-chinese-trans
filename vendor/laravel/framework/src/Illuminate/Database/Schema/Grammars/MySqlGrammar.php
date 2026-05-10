@@ -19,7 +19,7 @@ class MySqlGrammar extends Grammar
      */
     protected $modifiers = [
         'Unsigned', 'VirtualAs', 'StoredAs', 'Charset', 'Collate', 'Nullable',
-        'Default', 'Increment', 'Comment', 'After', 'First',
+        'Default', 'Increment', 'Comment', 'After', 'First', 'Srid',
     ];
 
     /**
@@ -124,9 +124,9 @@ class MySqlGrammar extends Grammar
         // added to either this create table blueprint or the configuration for this
         // connection that the query is targeting. We'll add it to this SQL query.
         if (isset($blueprint->collation)) {
-            $sql .= ' collate '.$blueprint->collation;
+            $sql .= " collate '{$blueprint->collation}'";
         } elseif (! is_null($collation = $connection->getConfig('collation'))) {
-            $sql .= ' collate '.$collation;
+            $sql .= " collate '{$collation}'";
         }
 
         return $sql;
@@ -369,6 +369,23 @@ class MySqlGrammar extends Grammar
     }
 
     /**
+     * Compile a rename index command.
+	 * 编译一个重命名索引命令
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint $blueprint
+     * @param  \Illuminate\Support\Fluent $command
+     * @return string
+     */
+    public function compileRenameIndex(Blueprint $blueprint, Fluent $command)
+    {
+        return sprintf('alter table %s rename index %s to %s',
+            $this->wrapTable($blueprint),
+            $this->wrap($command->from),
+            $this->wrap($command->to)
+        );
+    }
+
+    /**
      * Compile the SQL needed to drop all tables.
 	 * 编译删除所有表所需的SQL
      *
@@ -381,6 +398,18 @@ class MySqlGrammar extends Grammar
     }
 
     /**
+     * Compile the SQL needed to drop all views.
+	 * 编译删除所有视图所需的SQL
+     *
+     * @param  array  $views
+     * @return string
+     */
+    public function compileDropAllViews($views)
+    {
+        return 'drop view '.implode(',', $this->wrapArray($views));
+    }
+
+    /**
      * Compile the SQL needed to retrieve all table names.
 	 * 编译检索所有表名所需的SQL
      *
@@ -389,6 +418,17 @@ class MySqlGrammar extends Grammar
     public function compileGetAllTables()
     {
         return 'SHOW FULL TABLES WHERE table_type = \'BASE TABLE\'';
+    }
+
+    /**
+     * Compile the SQL needed to retrieve all view names.
+	 * 编译检索所有视图名所需的SQL
+     *
+     * @return string
+     */
+    public function compileGetAllViews()
+    {
+        return 'SHOW FULL TABLES WHERE table_type = \'VIEW\'';
     }
 
     /**
@@ -586,7 +626,7 @@ class MySqlGrammar extends Grammar
     }
 
     /**
-     * Create the column definition for an enum type.
+     * Create the column definition for an enumeration type.
 	 * 为枚举类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
@@ -594,7 +634,7 @@ class MySqlGrammar extends Grammar
      */
     protected function typeEnum(Fluent $column)
     {
-        return "enum('".implode("', '", $column->allowed)."')";
+        return sprintf('enum(%s)', $this->quoteString($column->allowed));
     }
 
     /**
@@ -611,6 +651,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a jsonb type.
+	 * 为jsonb类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -622,6 +663,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a date type.
+	 * 为日期类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -633,6 +675,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a date-time type.
+	 * 为日期-时间类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -644,6 +687,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Create the column definition for a date-time (with time zone) type.
+	 * 为日期-时间（带时区）类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -861,7 +905,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Get the SQL for a generated virtual column modifier.
-	 * 为生成的虚拟列修饰符获取SQL
+	 * 获取生成的虚拟列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -930,7 +974,7 @@ class MySqlGrammar extends Grammar
     protected function modifyCollate(Blueprint $blueprint, Fluent $column)
     {
         if (! is_null($column->collation)) {
-            return ' collate '.$column->collation;
+            return " collate '{$column->collation}'";
         }
     }
 
@@ -1021,6 +1065,21 @@ class MySqlGrammar extends Grammar
     {
         if (! is_null($column->comment)) {
             return " comment '".addslashes($column->comment)."'";
+        }
+    }
+
+    /**
+     * Get the SQL for a SRID column modifier.
+	 * 获取SRID列修饰符的SQL
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string|null
+     */
+    protected function modifySrid(Blueprint $blueprint, Fluent $column)
+    {
+        if (! is_null($column->srid) && is_int($column->srid) && $column->srid > 0) {
+            return ' srid '.$column->srid;
         }
     }
 

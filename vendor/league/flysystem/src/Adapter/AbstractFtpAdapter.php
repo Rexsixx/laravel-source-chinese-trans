@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，适配器，抽象Ftp适配器
+ */
 
 namespace League\Flysystem\Adapter;
 
@@ -78,6 +81,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * True to enable timestamps for FTP servers that return unix-style listings.
+	 * 为启用返回unix风格列表的FTP服务器的时间戳
      *
      * @var bool
      */
@@ -85,6 +89,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * @param array $config
      */
@@ -96,6 +101,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the config.
+	 * 设置配置
      *
      * @param array $config
      *
@@ -120,6 +126,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the host.
+	 * 返回主机
      *
      * @return string
      */
@@ -130,6 +137,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the host.
+	 * 设置主机
      *
      * @param string $host
      *
@@ -144,6 +152,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the public permission value.
+	 * 设置公共权限值
      *
      * @param int $permPublic
      *
@@ -158,6 +167,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the private permission value.
+	 * 设置私有权限值
      *
      * @param int $permPrivate
      *
@@ -172,6 +182,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the ftp port.
+	 * 返回ftp端口
      *
      * @return int
      */
@@ -182,6 +193,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the root folder to work from.
+	 * 返回根文件夹来工作
      *
      * @return string
      */
@@ -192,6 +204,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the ftp port.
+	 * 设置ftp端口
      *
      * @param int|string $port
      *

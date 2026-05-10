@@ -36,7 +36,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * The number of minutes the session should be valid.
-	 * 会话有效的分钟数
+	 * 会话记录的数量应该是有效的
      *
      * @var int
      */
@@ -116,7 +116,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Determine if the session is expired.
-	 * 确定会话是否过期
+	 * 确定会话是否已过期
      *
      * @param  \stdClass  $session
      * @return bool
@@ -149,7 +149,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Perform an insert operation on the session ID.
-	 * 对会话ID执行插入操作
+	 * 在会话ID上执行插入操作
      *
      * @param  string  $sessionId
      * @param  string  $payload
@@ -166,7 +166,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Perform an update operation on the session ID.
-	 * 对会话ID进行更新操作
+	 * 在会话ID上执行更新操作
      *
      * @param  string  $sessionId
      * @param  string  $payload
@@ -179,7 +179,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Get the default payload for the session.
-	 * 获取会话的默认有效负载
+	 * 为会话获取默认负载
      *
      * @param  string  $data
      * @return array
@@ -219,7 +219,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Get the currently authenticated user's ID.
-	 * 获取当前经过身份验证的用户的ID
+	 * 获取目前已验证的用户ID
      *
      * @return mixed
      */
@@ -230,7 +230,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Add the request information to the session payload.
-	 * 将请求信息添加到会话有效负载
+	 * 将请求信息添加到会话负载中
      *
      * @param  array  $payload
      * @return $this
@@ -260,7 +260,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Get the user agent for the current request.
-	 * 获取当前请求的用户代理
+	 * 为当前请求获取用户代理
      *
      * @return string
      */
@@ -289,7 +289,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Get a fresh query builder instance for the table.
-	 * 获取表的新查询生成器实例
+	 * 为表获取一个新的查询生成器实例
      *
      * @return \Illuminate\Database\Query\Builder
      */
@@ -300,7 +300,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Set the existence state for the session.
-	 * 设置会话的存在状态
+	 * 为会话设置存在状态
      *
      * @param  bool  $value
      * @return $this

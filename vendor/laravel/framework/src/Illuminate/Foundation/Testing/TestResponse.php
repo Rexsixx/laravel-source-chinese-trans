@@ -12,6 +12,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Traits\Macroable;
 use PHPUnit\Framework\Assert as PHPUnit;
+use Illuminate\Foundation\Testing\Constraints\SeeInOrder;
 
 /**
  * @mixin \Illuminate\Http\Response
@@ -71,6 +72,54 @@ class TestResponse
     }
 
     /**
+     * Assert that the response has a 200 status code.
+	 * 断言响应的状态码为200
+     *
+     * @return $this
+     */
+    public function assertOk()
+    {
+        PHPUnit::assertTrue(
+            $this->isOk(),
+            'Response status code ['.$this->getStatusCode().'] does not match expected 200 status code.'
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the response has a not found status code.
+	 * 断言响应具有未找到的状态码
+     *
+     * @return $this
+     */
+    public function assertNotFound()
+    {
+        PHPUnit::assertTrue(
+            $this->isNotFound(),
+            'Response status code ['.$this->getStatusCode().'] is not a not found status code.'
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the response has a forbidden status code.
+	 * 断言响应具有被禁止的状态码
+     *
+     * @return $this
+     */
+    public function assertForbidden()
+    {
+        PHPUnit::assertTrue(
+            $this->isForbidden(),
+            'Response status code ['.$this->getStatusCode().'] is not a forbidden status code.'
+        );
+
+        return $this;
+    }
+
+    /**
      * Assert that the response has the given status code.
 	 * 断言响应具有给定的状态码
      *
@@ -103,7 +152,7 @@ class TestResponse
         );
 
         if (! is_null($uri)) {
-            PHPUnit::assertEquals(app('url')->to($uri), $this->headers->get('Location'));
+            $this->assertLocation($uri);
         }
 
         return $this;
@@ -152,17 +201,17 @@ class TestResponse
     }
 
     /**
-     * Asserts that the response contains the given cookie and equals the optional value.
-	 * 断言响应包含给定的cookie并等于可选值
+     * Assert that the current location header matches the given URI.
+	 * 断言当前位置标头与给定的URI匹配
      *
-     * @param  string  $cookieName
-     * @param  mixed  $value
-     * @param  bool  $unserialize
+     * @param  string  $uri
      * @return $this
      */
-    public function assertPlainCookie($cookieName, $value = null, $unserialize = false)
+    public function assertLocation($uri)
     {
-        $this->assertCookie($cookieName, $value, false, $unserialize);
+        PHPUnit::assertEquals(
+            app('url')->to($uri), app('url')->to($this->headers->get('Location'))
+        );
 
         return $this;
     }
@@ -170,6 +219,21 @@ class TestResponse
     /**
      * Asserts that the response contains the given cookie and equals the optional value.
 	 * 断言响应包含给定的cookie并等于可选值
+     *
+     * @param  string  $cookieName
+     * @param  mixed  $value
+     * @return $this
+     */
+    public function assertPlainCookie($cookieName, $value = null)
+    {
+        $this->assertCookie($cookieName, $value, false);
+
+        return $this;
+    }
+
+    /**
+     * Asserts that the response contains the given cookie and equals the optional value.
+	 * 断言响应包含给定的cookie并等于可选值。
      *
      * @param  string  $cookieName
      * @param  mixed  $value
@@ -226,6 +290,30 @@ class TestResponse
     }
 
     /**
+     * Asserts that the response contains the given cookie and is not expired.
+	 * 断言响应包含给定的cookie并且没有过期
+     *
+     * @param  string  $cookieName
+     * @return $this
+     */
+    public function assertCookieNotExpired($cookieName)
+    {
+        PHPUnit::assertNotNull(
+            $cookie = $this->getCookie($cookieName),
+            "Cookie [{$cookieName}] not present on response."
+        );
+
+        $expiresAt = Carbon::createFromTimestamp($cookie->getExpiresTime());
+
+        PHPUnit::assertTrue(
+            $expiresAt->greaterThan(Carbon::now()),
+            "Cookie [{$cookieName}] is expired, it expired at [{$expiresAt}]."
+        );
+
+        return $this;
+    }
+
+    /**
      * Asserts that the response does not contains the given cookie.
 	 * 断言响应不包含给定的cookie
      *
@@ -267,7 +355,21 @@ class TestResponse
      */
     public function assertSee($value)
     {
-        PHPUnit::assertContains($value, $this->getContent());
+        PHPUnit::assertContains((string) $value, $this->getContent());
+
+        return $this;
+    }
+
+    /**
+     * Assert that the given strings are contained in order within the response.
+	 * 断言给定的字符串按顺序包含在响应中
+     *
+     * @param  array  $values
+     * @return $this
+     */
+    public function assertSeeInOrder(array $values)
+    {
+        PHPUnit::assertThat($values, new SeeInOrder($this->getContent()));
 
         return $this;
     }
@@ -281,7 +383,21 @@ class TestResponse
      */
     public function assertSeeText($value)
     {
-        PHPUnit::assertContains($value, strip_tags($this->getContent()));
+        PHPUnit::assertContains((string) $value, strip_tags($this->getContent()));
+
+        return $this;
+    }
+
+    /**
+     * Assert that the given strings are contained in order within the response text.
+	 * 断言给定的字符串按顺序包含在响应文本中
+     *
+     * @param  array  $values
+     * @return $this
+     */
+    public function assertSeeTextInOrder(array $values)
+    {
+        PHPUnit::assertThat($values, new SeeInOrder(strip_tags($this->getContent())));
 
         return $this;
     }
@@ -295,7 +411,7 @@ class TestResponse
      */
     public function assertDontSee($value)
     {
-        PHPUnit::assertNotContains($value, $this->getContent());
+        PHPUnit::assertNotContains((string) $value, $this->getContent());
 
         return $this;
     }
@@ -309,7 +425,7 @@ class TestResponse
      */
     public function assertDontSeeText($value)
     {
-        PHPUnit::assertNotContains($value, strip_tags($this->getContent()));
+        PHPUnit::assertNotContains((string) $value, strip_tags($this->getContent()));
 
         return $this;
     }
@@ -382,12 +498,12 @@ class TestResponse
         ));
 
         foreach (Arr::sortRecursive($data) as $key => $value) {
-            $expected = substr(json_encode([$key => $value]), 1, -1);
+            $expected = $this->jsonSearchStrings($key, $value);
 
             PHPUnit::assertTrue(
                 Str::contains($actual, $expected),
                 'Unable to find JSON fragment: '.PHP_EOL.PHP_EOL.
-                "[{$expected}]".PHP_EOL.PHP_EOL.
+                '['.json_encode([$key => $value]).']'.PHP_EOL.PHP_EOL.
                 'within'.PHP_EOL.PHP_EOL.
                 "[{$actual}]."
             );
@@ -415,12 +531,12 @@ class TestResponse
         ));
 
         foreach (Arr::sortRecursive($data) as $key => $value) {
-            $unexpected = substr(json_encode([$key => $value]), 1, -1);
+            $unexpected = $this->jsonSearchStrings($key, $value);
 
             PHPUnit::assertFalse(
                 Str::contains($actual, $unexpected),
                 'Found unexpected JSON fragment: '.PHP_EOL.PHP_EOL.
-                "[{$unexpected}]".PHP_EOL.PHP_EOL.
+                '['.json_encode([$key => $value]).']'.PHP_EOL.PHP_EOL.
                 'within'.PHP_EOL.PHP_EOL.
                 "[{$actual}]."
             );
@@ -443,7 +559,7 @@ class TestResponse
         ));
 
         foreach (Arr::sortRecursive($data) as $key => $value) {
-            $unexpected = substr(json_encode([$key => $value]), 1, -1);
+            $unexpected = $this->jsonSearchStrings($key, $value);
 
             if (! Str::contains($actual, $unexpected)) {
                 return $this;
@@ -459,6 +575,25 @@ class TestResponse
     }
 
     /**
+     * Get the strings we need to search for when examining the JSON.
+	 * 获取我们在检查JSON时需要搜索的字符串
+     *
+     * @param  string  $key
+     * @param  string  $value
+     * @return array
+     */
+    protected function jsonSearchStrings($key, $value)
+    {
+        $needle = substr(json_encode([$key => $value]), 1, -1);
+
+        return [
+            $needle.']',
+            $needle.'}',
+            $needle.',',
+        ];
+    }
+
+    /**
      * Assert that the response has a given JSON structure.
 	 * 断言响应具有给定的JSON结构
      *
@@ -469,7 +604,7 @@ class TestResponse
     public function assertJsonStructure(array $structure = null, $responseData = null)
     {
         if (is_null($structure)) {
-            return $this->assertJson($this->json());
+            return $this->assertExactJson($this->json());
         }
 
         if (is_null($responseData)) {
@@ -544,12 +679,42 @@ class TestResponse
     }
 
     /**
-     * Validate and return the decoded response JSON.
-	 * 验证并返回解码后的响应JSON
+     * Assert that the response has no JSON validation errors for the given keys.
+	 * 断言响应对于给定的键没有JSON验证错误
      *
-     * @return array
+     * @param  string|array  $keys
+     * @return $this
      */
-    public function decodeResponseJson()
+    public function assertJsonMissingValidationErrors($keys)
+    {
+        $json = $this->json();
+
+        if (! array_key_exists('errors', $json)) {
+            PHPUnit::assertArrayNotHasKey('errors', $json);
+
+            return $this;
+        }
+
+        $errors = $json['errors'];
+
+        foreach (Arr::wrap($keys) as $key) {
+            PHPUnit::assertFalse(
+                isset($errors[$key]),
+                "Found unexpected validation error for key: '{$key}'"
+            );
+        }
+
+        return $this;
+    }
+
+    /**
+     * Validate and return the decoded response JSON.
+	 * 验证并返回解码后的响应JSON。
+     *
+     * @param  string|null  $key
+     * @return mixed
+     */
+    public function decodeResponseJson($key = null)
     {
         $decodedResponse = json_decode($this->getContent(), true);
 
@@ -561,18 +726,19 @@ class TestResponse
             }
         }
 
-        return $decodedResponse;
+        return data_get($decodedResponse, $key);
     }
 
     /**
      * Validate and return the decoded response JSON.
 	 * 验证并返回解码后的响应JSON
      *
-     * @return array
+     * @param  string|null  $key
+     * @return mixed
      */
-    public function json()
+    public function json($key = null)
     {
-        return $this->decodeResponseJson();
+        return $this->decodeResponseJson($key);
     }
 
     /**
@@ -689,7 +855,7 @@ class TestResponse
                 "Session is missing expected key [{$key}]."
             );
         } else {
-            PHPUnit::assertEquals($value, app('session.store')->get($key));
+            PHPUnit::assertEquals($value, $this->session()->get($key));
         }
 
         return $this;
@@ -730,7 +896,7 @@ class TestResponse
 
         $keys = (array) $keys;
 
-        $errors = app('session.store')->get('errors')->getBag($errorBag);
+        $errors = $this->session()->get('errors')->getBag($errorBag);
 
         foreach ($keys as $key => $value) {
             if (is_int($key)) {
@@ -739,6 +905,19 @@ class TestResponse
                 PHPUnit::assertContains($value, $errors->get($key, $format));
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * Assert that the session has no errors.
+	 * 断言会话没有错误
+     *
+     * @return $this
+     */
+    public function assertSessionHasNoErrors()
+    {
+        $this->assertSessionMissing('errors');
 
         return $this;
     }

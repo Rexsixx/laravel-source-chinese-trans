@@ -1,13 +1,10 @@
 <?php
-/**
- * 配置，视图
- */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | View Storage Paths	视图存储路径
+    | View Storage Paths
     |--------------------------------------------------------------------------
     |
     | Most templating systems load templates from disk. Here you may specify
@@ -22,7 +19,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Compiled View Path	编译视图路径
+    | Compiled View Path
     |--------------------------------------------------------------------------
     |
     | This option determines where all the compiled Blade templates will be

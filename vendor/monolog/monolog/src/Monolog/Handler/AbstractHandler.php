@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理程序，抽象处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -18,6 +21,7 @@ use Monolog\ResettableInterface;
 
 /**
  * Base Handler class providing the Handler structure
+ * 提供Handler结构的基Handler类
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
@@ -62,6 +66,7 @@ abstract class AbstractHandler implements HandlerInterface, ResettableInterface
 
     /**
      * Closes the handler.
+	 * 关闭处理程序
      *
      * This will be called automatically when the object is destroyed
      */
@@ -118,6 +123,7 @@ abstract class AbstractHandler implements HandlerInterface, ResettableInterface
 
     /**
      * Sets minimum logging level at which this handler will be triggered.
+	 * 设置触发此处理程序的最低日志级别
      *
      * @param  int|string $level Level or level name
      * @return self
@@ -131,6 +137,7 @@ abstract class AbstractHandler implements HandlerInterface, ResettableInterface
 
     /**
      * Gets minimum logging level at which this handler will be triggered.
+	 * 获取将触发此处理程序的最低日志记录级别
      *
      * @return int
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * App，异常，处理程序
+ * App，条款，处理器
  */
 
 namespace App\Exceptions;
@@ -12,7 +12,7 @@ class Handler extends ExceptionHandler
 {
     /**
      * A list of the exception types that are not reported.
-	 * 未报告的异常类型列表
+	 * 没有报告的异常类型列表
      *
      * @var array
      */
@@ -22,7 +22,6 @@ class Handler extends ExceptionHandler
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
-	 * 不会为验证异常而闪现的输入列表
      *
      * @var array
      */
@@ -33,9 +32,6 @@ class Handler extends ExceptionHandler
 
     /**
      * Report or log an exception.
-	 * 报告或记录异常
-     *
-     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
      * @param  \Exception  $exception
      * @return void
@@ -47,7 +43,6 @@ class Handler extends ExceptionHandler
 
     /**
      * Render an exception into an HTTP response.
-	 * 将异常呈现到HTTP响应中
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $exception

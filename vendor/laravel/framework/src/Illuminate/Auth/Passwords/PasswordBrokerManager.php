@@ -16,7 +16,7 @@ class PasswordBrokerManager implements FactoryContract
 {
     /**
      * The application instance.
-	 * 程序实例
+	 * 应用实例
      *
      * @var \Illuminate\Foundation\Application
      */
@@ -46,7 +46,7 @@ class PasswordBrokerManager implements FactoryContract
      * Attempt to get the broker from the local cache.
 	 * 尝试从本地缓存获取代理
      *
-     * @param  string  $name
+     * @param  string|null  $name
      * @return \Illuminate\Contracts\Auth\PasswordBroker
      */
     public function broker($name = null)
@@ -86,6 +86,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Create a token repository instance based on the given configuration.
+	 * 根据给定的配置创建令牌存储库实例
      *
      * @param  array  $config
      * @return \Illuminate\Auth\Passwords\TokenRepositoryInterface
@@ -111,6 +112,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Get the password broker configuration.
+	 * 获取密码代理配置
      *
      * @param  string  $name
      * @return array
@@ -122,6 +124,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Get the default password broker name.
+	 * 获取默认密码代理名称
      *
      * @return string
      */
@@ -132,6 +135,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Set the default password broker name.
+	 * 设置默认密码代理名称
      *
      * @param  string  $name
      * @return void
@@ -143,6 +147,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Dynamically call the default driver instance.
+	 * 动态调用默认驱动程序实例
      *
      * @param  string  $method
      * @param  array   $parameters

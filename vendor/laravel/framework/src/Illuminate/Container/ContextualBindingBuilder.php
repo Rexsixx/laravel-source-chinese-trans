@@ -19,7 +19,7 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
 
     /**
      * The concrete instance.
-	 * 具体的实例
+	 * 具体的例子
      *
      * @var string
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，广播，广播装置，Redis 广播员
+ * Illuminate，广播，广播员，Redis 广播员
  */
 
 namespace Illuminate\Broadcasting\Broadcasters;
@@ -33,7 +33,7 @@ class RedisBroadcaster extends Broadcaster
 	 * 创建一个新的广播程序实例
      *
      * @param  \Illuminate\Contracts\Redis\Factory  $redis
-     * @param  string  $connection
+     * @param  string|null  $connection
      * @return void
      */
     public function __construct(Redis $redis, $connection = null)

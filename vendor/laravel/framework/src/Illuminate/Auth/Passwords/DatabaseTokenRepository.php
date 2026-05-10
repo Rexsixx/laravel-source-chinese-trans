@@ -55,6 +55,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Create a new token repository instance.
+	 * 创建一个新的令牌存储库实例
      *
      * @param  \Illuminate\Database\ConnectionInterface  $connection
      * @param  \Illuminate\Contracts\Hashing\Hasher  $hasher
@@ -75,6 +76,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Create a new token record.
+	 * 创建一个新的令牌记录
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @return string
@@ -97,6 +99,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Delete all existing reset tokens from the database.
+	 * 从数据库中删除所有现有的重置令牌
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @return int
@@ -108,6 +111,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Build the record payload for the table.
+	 * 为表构建记录有效负载
      *
      * @param  string  $email
      * @param  string  $token
@@ -120,6 +124,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Determine if a token record exists and is valid.
+	 * 确定令牌记录是否存在并且有效
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @param  string  $token
@@ -138,6 +143,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Determine if the token has expired.
+	 * 确定令牌是否已过期
      *
      * @param  string  $createdAt
      * @return bool
@@ -149,6 +155,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Delete a token record by user.
+	 * 按用户删除令牌记录
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @return void
@@ -160,6 +167,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Delete expired tokens.
+	 * 删除过期令牌
      *
      * @return void
      */
@@ -172,6 +180,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Create a new token for the user.
+	 * 为用户创建一个新令牌
      *
      * @return string
      */
@@ -182,6 +191,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Get the database connection instance.
+	 * 获取数据库连接实例
      *
      * @return \Illuminate\Database\ConnectionInterface
      */
@@ -192,6 +202,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Begin a new database query against the table.
+	 * 对表开始一个新的数据库查询
      *
      * @return \Illuminate\Database\Query\Builder
      */
@@ -202,6 +213,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Get the hasher instance.
+	 * 获取哈希实例
      *
      * @return \Illuminate\Contracts\Hashing\Hasher
      */

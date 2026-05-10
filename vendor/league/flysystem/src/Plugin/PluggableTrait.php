@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，插件，可插拔的特征
+ */
 
 namespace League\Flysystem\Plugin;
 
@@ -16,6 +19,7 @@ trait PluggableTrait
 
     /**
      * Register a plugin.
+	 * 注册一个插件
      *
      * @param PluginInterface $plugin
      *
@@ -36,6 +40,7 @@ trait PluggableTrait
 
     /**
      * Find a specific plugin.
+	 * 找到一个特定的插件
      *
      * @param string $method
      *

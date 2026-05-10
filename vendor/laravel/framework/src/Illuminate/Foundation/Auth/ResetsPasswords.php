@@ -18,7 +18,7 @@ trait ResetsPasswords
 
     /**
      * Display the password reset view for the given token.
-	 * 显示给定令牌的密码重置视图
+	 * 显示给定令牌的密码重置视图。
      *
      * If no token is present, display the link request form.
      *

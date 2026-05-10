@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，控制台，缓存表命令 cache:table
+ * Illuminate，缓存，控制器，缓存表命令 cache:table
  */
 
 namespace Illuminate\Cache\Console;
@@ -21,7 +21,7 @@ class CacheTableCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * console命令说明
      *
      * @var string
      */

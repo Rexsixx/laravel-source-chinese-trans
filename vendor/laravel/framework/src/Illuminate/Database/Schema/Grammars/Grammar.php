@@ -24,6 +24,14 @@ abstract class Grammar extends BaseGrammar
     protected $transactions = false;
 
     /**
+     * The commands to be executed outside of create or alter command.
+	 * 要在create或alter命令之外执行的命令
+     *
+     * @var array
+     */
+    protected $fluentCommands = [];
+
+    /**
      * Compile a rename column command.
 	 * 编译重命名列命令
      *
@@ -245,7 +253,7 @@ abstract class Grammar extends BaseGrammar
 
     /**
      * Create an empty Doctrine DBAL TableDiff from the Blueprint.
-	 * 从蓝图中创建一个空的Doctrine DBAL TableDiff
+	 * 从蓝图中创建一个空的Doctrine DBAL TableDif
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Doctrine\DBAL\Schema\AbstractSchemaManager  $schema
@@ -258,6 +266,17 @@ abstract class Grammar extends BaseGrammar
         return tap(new TableDiff($table), function ($tableDiff) use ($schema, $table) {
             $tableDiff->fromTable = $schema->listTableDetails($table);
         });
+    }
+
+    /**
+     * Get the fluent commands for the grammar.
+	 * 获得流利的语法命令
+     *
+     * @return array
+     */
+    public function getFluentCommands()
+    {
+        return $this->fluentCommands;
     }
 
     /**

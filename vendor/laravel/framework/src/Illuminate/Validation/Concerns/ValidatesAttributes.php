@@ -14,6 +14,7 @@ use DateTimeInterface;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rules\Exists;
 use Illuminate\Validation\Rules\Unique;
 use Illuminate\Validation\ValidationData;
@@ -24,7 +25,7 @@ trait ValidatesAttributes
 {
     /**
      * Validate that an attribute was "accepted".
-	 * 验证一个属性是否被“接受”
+	 * 验证一个属性是否被“接受”。
      *
      * This validation rule implies the attribute is "required".
      *
@@ -66,7 +67,7 @@ trait ValidatesAttributes
 
     /**
      * "Break" on first validation fail.
-	 * 第一次验证失败时“中断”
+	 * 第一次验证失败时“中断”。
      *
      * Always returns true, just lets us put "bail" in rules.
      *
@@ -95,7 +96,7 @@ trait ValidatesAttributes
 
     /**
      * Validate the date is before or equal a given date.
-	 * 验证日期在给定日期之前或等于给定日期
+	 * 确认日期之前或相等的日期
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -111,7 +112,7 @@ trait ValidatesAttributes
 
     /**
      * Validate the date is after a given date.
-	 * 验证日期在给定日期之后
+	 * 确认日期在给定日期后
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -170,7 +171,7 @@ trait ValidatesAttributes
 
     /**
      * Get the date format for an attribute if it has one.
-	 * 获取属性的日期格式（如果属性有）
+	 * 获取一个属性,如果它有一个属性
      *
      * @param  string  $attribute
      * @return string|null
@@ -191,7 +192,19 @@ trait ValidatesAttributes
      */
     protected function getDateTimestamp($value)
     {
-        return $value instanceof DateTimeInterface ? $value->getTimestamp() : strtotime($value);
+        if ($value instanceof DateTimeInterface) {
+            return $value->getTimestamp();
+        }
+
+        if ($this->isTestingRelativeDateTime($value)) {
+            $date = $this->getDateTime($value);
+
+            if (! is_null($date)) {
+                return $date->getTimestamp();
+            }
+        }
+
+        return strtotime($value);
     }
 
     /**
@@ -229,11 +242,41 @@ trait ValidatesAttributes
             return $date;
         }
 
+        return $this->getDateTime($value);
+    }
+
+    /**
+     * Get a DateTime instance from a string with no format.
+	 * 从没有格式的字符串中获取DateTime实例
+     *
+     * @param  string $value
+     * @return \DateTime|null
+     */
+    protected function getDateTime($value)
+    {
         try {
+            if ($this->isTestingRelativeDateTime($value)) {
+                return new Carbon($value);
+            }
+
             return new DateTime($value);
         } catch (Exception $e) {
             //
         }
+    }
+
+    /**
+     * Check if the given value should be adjusted to Carbon::getTestNow().
+	 * 检查给定的值是否应该调整为Carbon::getTestNow（）
+     *
+     * @param  mixed $value
+     * @return bool
+     */
+    protected function isTestingRelativeDateTime($value)
+    {
+        return Carbon::hasTestNow() && is_string($value) && (
+            $value === 'now' || Carbon::hasRelativeKeywords($value)
+        );
     }
 
     /**
@@ -331,7 +374,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute has a matching confirmation.
-	 * 验证属性是否具有匹配确认
+	 * 验证属性有匹配确认
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -467,7 +510,7 @@ trait ValidatesAttributes
 
     /**
      * Validate the dimensions of an image matches the given values.
-	 * 验证图像的尺寸是否与给定值匹配
+	 * 验证图像的尺寸与给定的值匹配
      *
      * @param  string $attribute
      * @param  mixed $value
@@ -476,13 +519,17 @@ trait ValidatesAttributes
      */
     public function validateDimensions($attribute, $value, $parameters)
     {
+        if ($this->isValidFileInstance($value) && $value->getClientMimeType() == 'image/svg+xml') {
+            return true;
+        }
+
         if (! $this->isValidFileInstance($value) || ! $sizeDetails = @getimagesize($value->getRealPath())) {
             return false;
         }
 
         $this->requireParameterCount(1, $parameters, 'dimensions');
 
-        list($width, $height) = $sizeDetails;
+        [$width, $height] = $sizeDetails;
 
         $parameters = $this->parseNamedParameters($parameters);
 
@@ -496,7 +543,7 @@ trait ValidatesAttributes
 
     /**
      * Test if the given width and height fail any conditions.
-	 * 测试给定的宽度和高度是否满足任何条件
+	 * 测试如果给定的宽度和高度不受任何条件的影响
      *
      * @param  array  $parameters
      * @param  int  $width
@@ -515,7 +562,7 @@ trait ValidatesAttributes
 
     /**
      * Determine if the given parameters fail a dimension ratio check.
-	 * 确定给定参数是否未通过尺寸比率检查
+	 * 确定给定的参数是否失败尺寸比检查
      *
      * @param  array  $parameters
      * @param  int  $width
@@ -528,7 +575,7 @@ trait ValidatesAttributes
             return false;
         }
 
-        list($numerator, $denominator) = array_replace(
+        [$numerator, $denominator] = array_replace(
             [1, 1], array_filter(sscanf($parameters['ratio'], '%f/%d'))
         );
 
@@ -539,7 +586,7 @@ trait ValidatesAttributes
 
     /**
      * Validate an attribute is unique among other values.
-	 * 验证属性在其他值中是唯一的
+	 * 验证属性在其他值中是惟一的
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -593,7 +640,7 @@ trait ValidatesAttributes
     {
         $this->requireParameterCount(1, $parameters, 'exists');
 
-        list($connection, $table) = $this->parseTable($parameters[0]);
+        [$connection, $table] = $this->parseTable($parameters[0]);
 
         // The second parameter position holds the name of the column that should be
         // verified as existing. If this parameter is not specified we will guess
@@ -637,7 +684,7 @@ trait ValidatesAttributes
 
     /**
      * Validate the uniqueness of an attribute value on a given database table.
-	 * 验证给定数据库表上属性值的唯一性。
+	 * 验证给定数据库表上属性值的唯一性
      *
      * If a database column is not specified, the attribute will be used.
      *
@@ -650,17 +697,17 @@ trait ValidatesAttributes
     {
         $this->requireParameterCount(1, $parameters, 'unique');
 
-        list($connection, $table) = $this->parseTable($parameters[0]);
+        [$connection, $table] = $this->parseTable($parameters[0]);
 
         // The second parameter position holds the name of the column that needs to
         // be verified as unique. If this parameter isn't specified we will just
         // assume that this column to be verified shares the attribute's name.
         $column = $this->getQueryColumn($parameters, $attribute);
 
-        list($idColumn, $id) = [null, null];
+        [$idColumn, $id] = [null, null];
 
         if (isset($parameters[2])) {
-            list($idColumn, $id) = $this->getUniqueIds($parameters);
+            [$idColumn, $id] = $this->getUniqueIds($parameters);
         }
 
         // The presence verifier is responsible for counting rows within this store
@@ -735,7 +782,7 @@ trait ValidatesAttributes
 
     /**
      * Parse the connection / table for the unique / exists rules.
-	 * 解析连接/表中唯一/存在的规则
+	 * 解析惟一/存在规则的连接/表
      *
      * @param  string  $table
      * @return array
@@ -747,7 +794,7 @@ trait ValidatesAttributes
 
     /**
      * Get the column name for an exists / unique query.
-	 * 获取存在/唯一查询的列名
+	 * 获取存在/惟一查询的列名
      *
      * @param  array  $parameters
      * @param  string  $attribute
@@ -761,7 +808,7 @@ trait ValidatesAttributes
 
     /**
      * Guess the database column from the given attribute name.
-	 * 根据给定的属性名猜测数据库列
+	 * 从给定的属性名猜测数据库列
      *
      * @param  string  $attribute
      * @return string
@@ -778,7 +825,7 @@ trait ValidatesAttributes
 
     /**
      * Get the extra conditions for a unique / exists rule.
-	 * 获取唯一/存在规则的额外条件
+	 * 为独特/存在的规则获得额外的条件
      *
      * @param  array  $segments
      * @return array
@@ -827,8 +874,112 @@ trait ValidatesAttributes
     }
 
     /**
+     * Validate that an attribute is greater than another attribute.
+	 * 验证一个属性是否大于另一个属性
+     *
+     * @param  string  $attribute
+     * @param  mixed   $value
+     * @param  array   $parameters
+     * @return bool
+     */
+    public function validateGt($attribute, $value, $parameters)
+    {
+        $this->requireParameterCount(1, $parameters, 'gt');
+
+        $comparedToValue = $this->getValue($parameters[0]);
+
+        $this->shouldBeNumeric($attribute, 'Gt');
+
+        if (is_null($comparedToValue) && (is_numeric($value) && is_numeric($parameters[0]))) {
+            return $this->getSize($attribute, $value) > $parameters[0];
+        }
+
+        $this->requireSameType($value, $comparedToValue);
+
+        return $this->getSize($attribute, $value) > $this->getSize($attribute, $comparedToValue);
+    }
+
+    /**
+     * Validate that an attribute is less than another attribute.
+	 * 验证一个属性是否小于另一个属性
+     *
+     * @param  string  $attribute
+     * @param  mixed   $value
+     * @param  array   $parameters
+     * @return bool
+     */
+    public function validateLt($attribute, $value, $parameters)
+    {
+        $this->requireParameterCount(1, $parameters, 'lt');
+
+        $comparedToValue = $this->getValue($parameters[0]);
+
+        $this->shouldBeNumeric($attribute, 'Lt');
+
+        if (is_null($comparedToValue) && (is_numeric($value) && is_numeric($parameters[0]))) {
+            return $this->getSize($attribute, $value) < $parameters[0];
+        }
+
+        $this->requireSameType($value, $comparedToValue);
+
+        return $this->getSize($attribute, $value) < $this->getSize($attribute, $comparedToValue);
+    }
+
+    /**
+     * Validate that an attribute is greater than or equal another attribute.
+	 * 验证一个属性大于或等于另一个属性
+     *
+     * @param  string  $attribute
+     * @param  mixed   $value
+     * @param  array   $parameters
+     * @return bool
+     */
+    public function validateGte($attribute, $value, $parameters)
+    {
+        $this->requireParameterCount(1, $parameters, 'gte');
+
+        $comparedToValue = $this->getValue($parameters[0]);
+
+        $this->shouldBeNumeric($attribute, 'Gte');
+
+        if (is_null($comparedToValue) && (is_numeric($value) && is_numeric($parameters[0]))) {
+            return $this->getSize($attribute, $value) >= $parameters[0];
+        }
+
+        $this->requireSameType($value, $comparedToValue);
+
+        return $this->getSize($attribute, $value) >= $this->getSize($attribute, $comparedToValue);
+    }
+
+    /**
+     * Validate that an attribute is less than or equal another attribute.
+	 * 验证属性小于或等于另一个属性
+     *
+     * @param  string  $attribute
+     * @param  mixed   $value
+     * @param  array   $parameters
+     * @return bool
+     */
+    public function validateLte($attribute, $value, $parameters)
+    {
+        $this->requireParameterCount(1, $parameters, 'lte');
+
+        $comparedToValue = $this->getValue($parameters[0]);
+
+        $this->shouldBeNumeric($attribute, 'Lte');
+
+        if (is_null($comparedToValue) && (is_numeric($value) && is_numeric($parameters[0]))) {
+            return $this->getSize($attribute, $value) <= $parameters[0];
+        }
+
+        $this->requireSameType($value, $comparedToValue);
+
+        return $this->getSize($attribute, $value) <= $this->getSize($attribute, $comparedToValue);
+    }
+
+    /**
      * Validate the MIME type of a file is an image MIME type.
-	 * 验证文件的MIME类型是否为图像MIME类型
+	 * 验证文件的MIME类型是图像MIME类型
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -841,7 +992,7 @@ trait ValidatesAttributes
 
     /**
      * Validate an attribute is contained within a list of values.
-	 * 验证属性是否包含在值列表中
+	 * 验证属性包含在值列表中
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -1002,7 +1153,7 @@ trait ValidatesAttributes
 
     /**
      * Validate the MIME type of a file upload attribute is in a set of MIME types.
-	 * 验证文件上传属性的MIME类型是否在一组MIME类型中。
+	 * 验证文件上传属性的MIME类型是否在一组MIME类型中
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -1038,14 +1189,18 @@ trait ValidatesAttributes
             return false;
         }
 
+        $phpExtensions = [
+            'php', 'php3', 'php4', 'php5', 'phtml',
+        ];
+
         return ($value instanceof UploadedFile)
-           ? trim(strtolower($value->getClientOriginalExtension())) === 'php'
-           : trim(strtolower($value->getExtension())) === 'php';
+           ? in_array(trim(strtolower($value->getClientOriginalExtension())), $phpExtensions)
+           : in_array(trim(strtolower($value->getExtension())), $phpExtensions);
     }
 
     /**
      * Validate the size of an attribute is greater than a minimum value.
-	 * 验证属性的大小是否大于最小值
+	 * 验证属性的大小大于最小值
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -1061,7 +1216,7 @@ trait ValidatesAttributes
 
     /**
      * "Indicate" validation should pass if value is null.
-	 * 如果value为空，“指示”验证应该通过。
+	 * “指示”验证应该通过如果值为空
      *
      * Always returns true, just lets us put "nullable" in rules.
      *
@@ -1088,7 +1243,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute is numeric.
-	 * 验证属性是否为数字
+	 * 验证属性是数字的
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -1130,6 +1285,26 @@ trait ValidatesAttributes
         $this->requireParameterCount(1, $parameters, 'regex');
 
         return preg_match($parameters[0], $value) > 0;
+    }
+
+    /**
+     * Validate that an attribute does not pass a regular expression check.
+	 * 验证属性没有通过正则表达式检查
+     *
+     * @param  string  $attribute
+     * @param  mixed   $value
+     * @param  array   $parameters
+     * @return bool
+     */
+    public function validateNotRegex($attribute, $value, $parameters)
+    {
+        if (! is_string($value) && ! is_numeric($value)) {
+            return false;
+        }
+
+        $this->requireParameterCount(1, $parameters, 'not_regex');
+
+        return preg_match($parameters[0], $value) < 1;
     }
 
     /**
@@ -1185,7 +1360,7 @@ trait ValidatesAttributes
 
     /**
      * Convert the given values to boolean if they are string "true" / "false".
-	 * 如果给定的值是字符串"true" / "false"，则将其转换为布尔值。
+	 * 如果它们是字符串“true”/“false”,将给定的值转换为布尔值。
      *
      * @param  array  $values
      * @return array
@@ -1205,7 +1380,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute exists when another attribute does not have a given value.
-	 * 当另一个属性没有给定值时，验证该属性是否存在。
+	 * 验证当另一个属性没有给定值时存在属性
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -1229,7 +1404,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute exists when any other attribute exists.
-	 * 当任何其他属性存在时，验证一个属性是否存在。
+	 * 验证当任何其他属性存在时存在属性
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -1247,7 +1422,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute exists when all other attributes exists.
-	 * 当所有其他属性都存在时，验证一个属性是否存在。
+	 * 当所有其他属性存在时,验证属性存在。
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -1384,7 +1559,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute is a string.
-	 * 验证属性是否为字符串
+	 * 验证属性是字符串
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -1397,7 +1572,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute is a valid timezone.
-	 * 验证属性是否为有效的时区
+	 * 验证属性是一个有效的时区
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -1418,7 +1593,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute is a valid URL.
-	 * 验证属性是否为有效的URL
+	 * 验证属性是一个有效的URL
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -1526,7 +1701,7 @@ trait ValidatesAttributes
 
     /**
      * Parse named parameters to $key => $value items.
-	 * 将命名参数解析为$key => $value项
+	 * 解析命名为$ $ value项的参数
      *
      * @param  array  $parameters
      * @return array
@@ -1534,7 +1709,7 @@ trait ValidatesAttributes
     protected function parseNamedParameters($parameters)
     {
         return array_reduce($parameters, function ($result, $item) {
-            list($key, $value) = array_pad(explode('=', $item, 2), 2, null);
+            [$key, $value] = array_pad(explode('=', $item, 2), 2, null);
 
             $result[$key] = $value;
 
@@ -1544,7 +1719,7 @@ trait ValidatesAttributes
 
     /**
      * Require a certain number of parameters to be present.
-	 * 要求提供一定数量的参数
+	 * 需要一定数量的参数
      *
      * @param  int    $count
      * @param  array  $parameters
@@ -1557,6 +1732,39 @@ trait ValidatesAttributes
     {
         if (count($parameters) < $count) {
             throw new InvalidArgumentException("Validation rule $rule requires at least $count parameters.");
+        }
+    }
+
+    /**
+     * Require comparison values to be of the same type.
+	 * 要求比较值与相同类型
+     *
+     * @param  mixed  $first
+     * @param  mixed  $second
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function requireSameType($first, $second)
+    {
+        if (gettype($first) != gettype($second)) {
+            throw new InvalidArgumentException('The values under comparison must be of the same type');
+        }
+    }
+
+    /**
+     * Adds the existing rule to the numericRules array if the attribute's value is numeric.
+	 * 如果属性的值是数字,则将现有规则添加到数字规则数组中。
+     *
+     * @param  string  $attribute
+     * @param  string  $rule
+     *
+     * @return void
+     */
+    protected function shouldBeNumeric($attribute, $rule)
+    {
+        if (is_numeric($this->getValue($attribute))) {
+            $this->numericRules[] = $rule;
         }
     }
 }

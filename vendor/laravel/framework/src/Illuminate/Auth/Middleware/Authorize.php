@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，中间件，验证
+ * Illuminate，Auth，中间件，授权
  */
 
 namespace Illuminate\Auth\Middleware;
@@ -22,7 +22,7 @@ class Authorize
 
     /**
      * The gate instance.
-	 * gate实例
+	 * 大门实例
      *
      * @var \Illuminate\Contracts\Auth\Access\Gate
      */
@@ -30,7 +30,7 @@ class Authorize
 
     /**
      * Create a new middleware instance.
-	 * 创建一个新的中间件实例
+	 * 创建新的中间件实例
      *
      * @param  \Illuminate\Contracts\Auth\Factory  $auth
      * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
@@ -49,7 +49,7 @@ class Authorize
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @param  string  $ability
-     * @param  array|null  $models
+     * @param  array|null  ...$models
      * @return mixed
      *
      * @throws \Illuminate\Auth\AuthenticationException
@@ -85,7 +85,7 @@ class Authorize
 
     /**
      * Get the model to authorize.
-	 * 让模型授权
+	 * 得到模型授权
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $model

@@ -20,10 +20,11 @@ class TransformsRequest
 
     /**
      * Handle an incoming request.
-	 * 处理传入请求
+	 * 处理传入的请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
+     * @param  array  ...$attributes
      * @return mixed
      */
     public function handle($request, Closure $next, ...$attributes)
@@ -55,7 +56,7 @@ class TransformsRequest
 
     /**
      * Clean the data in the parameter bag.
-	 * 清理参数袋中的数据。
+	 * 清理参数袋中的数据
      *
      * @param  \Symfony\Component\HttpFoundation\ParameterBag  $bag
      * @return void

@@ -101,7 +101,7 @@ abstract class AbstractPaginator implements Htmlable
      *
      * @var string
      */
-    public static $defaultView = 'pagination::default';
+    public static $defaultView = 'pagination::bootstrap-4';
 
     /**
      * The default "simple" pagination view.
@@ -109,7 +109,7 @@ abstract class AbstractPaginator implements Htmlable
      *
      * @var string
      */
-    public static $defaultSimpleView = 'pagination::simple-default';
+    public static $defaultSimpleView = 'pagination::simple-bootstrap-4';
 
     /**
      * Determine if the given value is a valid page number.
@@ -259,6 +259,21 @@ abstract class AbstractPaginator implements Htmlable
     }
 
     /**
+     * Load a set of relationships onto the mixed relationship collection.
+	 * 将一组关系加载到混合关系集合中
+     *
+     * @param  string $relation
+     * @param  array  $relations
+     * @return $this
+     */
+    public function loadMorph($relation, $relations)
+    {
+        $this->getCollection()->loadMorph($relation, $relations);
+
+        return $this;
+    }
+
+    /**
      * Get the slice of items being paginated.
 	 * 获取正在分页的项的切片
      *
@@ -304,7 +319,7 @@ abstract class AbstractPaginator implements Htmlable
 
     /**
      * Determine if there are enough items to split into multiple pages.
-	 * 确定是否有足够的项目可以拆分为多个页面
+	 * 确定是否有足够的项目分成多个页面
      *
      * @return bool
      */
@@ -362,7 +377,7 @@ abstract class AbstractPaginator implements Htmlable
 
     /**
      * Set the base path to assign to all URLs.
-	 * 设置分配给所有url的基本路径
+	 * 设置为所有url分配的基本路径
      *
      * @param  string  $path
      * @return $this
@@ -374,7 +389,7 @@ abstract class AbstractPaginator implements Htmlable
 
     /**
      * Set the base path to assign to all URLs.
-	 * 设置分配给所有url的基本路径
+	 * 设置为所有url分配的基本路径
      *
      * @param  string  $path
      * @return $this
@@ -491,6 +506,18 @@ abstract class AbstractPaginator implements Htmlable
     }
 
     /**
+     * Indicate that Bootstrap 3 styling should be used for generated links.
+	 * 说明生成的链接应该使用Bootstrap 3样式
+     *
+     * @return void
+     */
+    public static function useBootstrapThree()
+    {
+        static::defaultView('pagination::default');
+        static::defaultSimpleView('pagination::simple-default');
+    }
+
+    /**
      * Get an iterator for the items.
 	 * 获取项的迭代器
      *
@@ -502,7 +529,7 @@ abstract class AbstractPaginator implements Htmlable
     }
 
     /**
-     * Determine if the list of items is empty or not.
+     * Determine if the list of items is empty.
 	 * 确定项目列表是否为空
      *
      * @return bool
@@ -598,7 +625,7 @@ abstract class AbstractPaginator implements Htmlable
 
     /**
      * Unset the item at the given key.
-	 * 取消给定键处的项设置
+	 * 在给定的键上解开这个项
      *
      * @param  mixed  $key
      * @return void
@@ -610,7 +637,7 @@ abstract class AbstractPaginator implements Htmlable
 
     /**
      * Render the contents of the paginator to HTML.
-	 * 将分页器的内容呈现为HTML
+	 * 将paginator的内容呈现为HTML
      *
      * @return string
      */

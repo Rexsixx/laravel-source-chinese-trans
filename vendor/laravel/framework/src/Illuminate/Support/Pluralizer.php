@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，复数的词缀
+ * Illuminate，支持，复数
  */
 
 namespace Illuminate\Support;
@@ -11,7 +11,7 @@ class Pluralizer
 {
     /**
      * Uncountable word forms.
-	 * 不可数的单词形式
+	 * 不可数的词形式
      *
      * @var array
      */
@@ -61,7 +61,7 @@ class Pluralizer
 
     /**
      * Get the plural form of an English word.
-	 * 了解英语单词的复数形式
+	 * 取一个英语单词的复数形式
      *
      * @param  string  $value
      * @param  int     $count
@@ -69,7 +69,7 @@ class Pluralizer
      */
     public static function plural($value, $count = 2)
     {
-        if ((int) $count === 1 || static::uncountable($value)) {
+        if ((int) abs($count) === 1 || static::uncountable($value)) {
             return $value;
         }
 
@@ -80,7 +80,7 @@ class Pluralizer
 
     /**
      * Get the singular form of an English word.
-	 * 获取英语单词的单数形式
+	 * 取一个英语单词的单数形式
      *
      * @param  string  $value
      * @return string
@@ -106,7 +106,7 @@ class Pluralizer
 
     /**
      * Attempt to match the case on two strings.
-	 * 尝试在两个字符串上匹配大小写
+	 * 尝试用两个字符串匹配这个例子
      *
      * @param  string  $value
      * @param  string  $comparison

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，控制台，种子，存根，动态类，根据实际修改
+ */
 
 use Illuminate\Database\Seeder;
 
@@ -6,6 +9,7 @@ class DummyClass extends Seeder
 {
     /**
      * Run the database seeds.
+	 * 运行数据库种子
      *
      * @return void
      */

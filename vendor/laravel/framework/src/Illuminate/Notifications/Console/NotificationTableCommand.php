@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，控制台，通知表命令
+ * Illuminate，通知，通道，控制台，通知表命令
  */
 
 namespace Illuminate\Notifications\Console;
@@ -21,7 +21,7 @@ class NotificationTableCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述 
+	 * 控制台命令描述
      *
      * @var string
      */

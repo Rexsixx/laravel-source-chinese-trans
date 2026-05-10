@@ -18,7 +18,7 @@ class DatabaseServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application events.
-	 * 引导应用事件
+	 * 引导应用程序事件
      *
      * @return void
      */
@@ -57,8 +57,6 @@ class DatabaseServiceProvider extends ServiceProvider
         // The connection factory is used to create the actual connection instances on
         // the database. We will inject the factory into the manager so that it may
         // make the connections while they are actually needed and not of before.
-		// 连接工厂用于创建实际的数据库连接实例。
-		// 我们将把工厂注入管理器的，以便它可以在他们真正需要的时候建立联系，而不是以前。
         $this->app->singleton('db.factory', function ($app) {
             return new ConnectionFactory($app);
         });
@@ -66,12 +64,10 @@ class DatabaseServiceProvider extends ServiceProvider
         // The database manager is used to resolve various connections, since multiple
         // connections might be managed. It also implements the connection resolver
         // interface which may be used by other components requiring connections.
-		// 数据库管理器用于解析各种连接，因为多个连接可能被管理。
         $this->app->singleton('db', function ($app) {
             return new DatabaseManager($app, $app['db.factory']);
         });
 
-		// 再绑定一个db.connection，用于连接
         $this->app->bind('db.connection', function ($app) {
             return $app['db']->connection();
         });

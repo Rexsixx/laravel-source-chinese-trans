@@ -33,7 +33,7 @@ class Factory implements FactoryContract
 
     /**
      * The view finder implementation.
-	 * 取景器实现
+	 * 视图探测器实现
      *
      * @var \Illuminate\View\ViewFinderInterface
      */
@@ -154,16 +154,18 @@ class Factory implements FactoryContract
 
     /**
      * Get the first view that actually exists from the given list.
-	 * 从给定列表中获取实际存在的第一个视图
+	 * 从给定列表中获取实际存在的第一个视图。
      *
      * @param  array  $views
      * @param  array   $data
      * @param  array   $mergeData
      * @return \Illuminate\Contracts\View\View
+     *
+     * @throws \InvalidArgumentException
      */
     public function first(array $views, $data = [], $mergeData = [])
     {
-        $view = collect($views)->first(function ($view) {
+        $view = Arr::first($views, function ($view) {
             return $this->exists($view);
         });
 
@@ -298,7 +300,7 @@ class Factory implements FactoryContract
     public function getEngineFromPath($path)
     {
         if (! $extension = $this->getExtension($path)) {
-            throw new InvalidArgumentException("Unrecognized extension in file: $path");
+            throw new InvalidArgumentException("Unrecognized extension in file: {$path}");
         }
 
         $engine = $this->extensions[$extension];
@@ -324,7 +326,7 @@ class Factory implements FactoryContract
 
     /**
      * Add a piece of shared data to the environment.
-	 * 向环境中添加一段共享数据
+	 * 将共享数据添加到环境中
      *
      * @param  array|string  $key
      * @param  mixed  $value
@@ -343,7 +345,7 @@ class Factory implements FactoryContract
 
     /**
      * Increment the rendering counter.
-	 * 增加呈现计数器
+	 * 增加渲染计数器
      *
      * @return void
      */
@@ -354,7 +356,7 @@ class Factory implements FactoryContract
 
     /**
      * Decrement the rendering counter.
-	 * 递减呈现计数器
+	 * 减去渲染计数器
      *
      * @return void
      */
@@ -418,7 +420,7 @@ class Factory implements FactoryContract
 
     /**
      * Replace the namespace hints for the given namespace.
-	 * 替换给定名称空间的名称空间提示
+	 * 替换给定名称空间的名称空间
      *
      * @param  string  $namespace
      * @param  string|array  $hints
@@ -433,7 +435,7 @@ class Factory implements FactoryContract
 
     /**
      * Register a valid view extension and its engine.
-	 * 注册一个有效的视图扩展及其引擎
+	 * 注册一个有效的视图扩展和它的引擎
      *
      * @param  string    $extension
      * @param  string    $engine
@@ -455,7 +457,7 @@ class Factory implements FactoryContract
 
     /**
      * Flush all of the factory state like sections and stacks.
-	 * 刷新所有工厂状态，如节和堆栈。
+	 * 把所有的工厂状态都刷新为分段和堆栈
      *
      * @return void
      */
@@ -469,7 +471,7 @@ class Factory implements FactoryContract
 
     /**
      * Flush all of the section contents if done rendering.
-	 * 如果完成呈现，则刷新所有节内容。
+	 * 如果完成渲染,冲洗所有的部分内容
      *
      * @return void
      */
@@ -504,7 +506,7 @@ class Factory implements FactoryContract
 
     /**
      * Get the view finder instance.
-	 * 获取取景器实例
+	 * 获取view finder实例
      *
      * @return \Illuminate\View\ViewFinderInterface
      */
@@ -515,7 +517,7 @@ class Factory implements FactoryContract
 
     /**
      * Set the view finder instance.
-	 * 设置取景器实例
+	 * 设置view finder实例
      *
      * @param  \Illuminate\View\ViewFinderInterface  $finder
      * @return void
@@ -527,7 +529,7 @@ class Factory implements FactoryContract
 
     /**
      * Flush the cache of views located by the finder.
-	 * 刷新查找器定位的视图的缓存
+	 * 刷新finder的视图缓存
      *
      * @return void
      */

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，期望
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -31,6 +35,7 @@ class Expectation implements ExpectationInterface
 {
     /**
      * Mock object to which this expectation belongs
+	 * 此期望所属的模拟对象
      *
      * @var \Mockery\LegacyMockInterface
      */
@@ -38,6 +43,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Method name
+	 * 方法名称
      *
      * @var string
      */
@@ -45,6 +51,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Exception message
+	 * 异常消息
      *
      * @var string|null
      */
@@ -52,6 +59,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Arguments expected by this expectation
+	 * 期望的论点
      *
      * @var array
      */
@@ -59,6 +67,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Count validator store
+	 * 计数验证器存储
      *
      * @var array
      */
@@ -66,6 +75,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * The count validator class to use
+	 * 要使用的计数验证器类
      *
      * @var string
      */
@@ -73,6 +83,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Actual count of calls to this expectation
+	 * 达到此期望的实际调用数
      *
      * @var int
      */
@@ -80,6 +91,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Value to return from this expectation
+	 * 从这个期望中返回的值
      *
      * @var mixed
      */
@@ -87,6 +99,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Array of return values as a queue for multiple return sequence
+	 * 作为多个返回序列队列的返回值数组
      *
      * @var array
      */
@@ -95,6 +108,7 @@ class Expectation implements ExpectationInterface
     /**
      * Array of closures executed with given arguments to generate a result
      * to be returned
+	 * 使用给定参数执行以生成结果的闭包数组
      *
      * @var array
      */
@@ -102,6 +116,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Array of values to be set when this expectation matches
+	 * 当此期望匹配时要设置的值数组
      *
      * @var array
      */
@@ -109,6 +124,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Integer representing the call order of this expectation
+	 * 表示此期望的调用顺序的整数
      *
      * @var int
      */
@@ -116,6 +132,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Integer representing the call order of this expectation on a global basis
+	 * 整数，在全局基础上表示此期望的调用顺序。
      *
      * @var int
      */
@@ -123,6 +140,7 @@ class Expectation implements ExpectationInterface
 
     /**
      * Flag indicating that an exception is expected to be throw (not returned)
+	 * 表示预计会抛出（而不是返回）异常的标志
      *
      * @var bool
      */

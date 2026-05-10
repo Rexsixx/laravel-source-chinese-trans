@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，授权服务提供商
+ * Illuminate，Auth，Auth 服务提供商
  */
 
 namespace Illuminate\Auth;
@@ -31,7 +31,7 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Register the authenticator services.
-	 * 注册身份验证服务
+	 * 注册验证器服务
      *
      * @return void
      */
@@ -68,7 +68,7 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Register the access gate service.
-	 * 注册访问门服务
+	 * 注册门禁服务
      *
      * @return void
      */

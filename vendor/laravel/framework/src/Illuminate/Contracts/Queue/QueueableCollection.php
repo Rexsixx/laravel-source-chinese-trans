@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，队列，可排队的集合
+ * Illuminate，契约，队列，Queueable 集合
  */
 
 namespace Illuminate\Contracts\Queue;
@@ -22,6 +22,14 @@ interface QueueableCollection
      * @return array
      */
     public function getQueueableIds();
+
+    /**
+     * Get the relationships of the entities being queued.
+	 * 获取正在排队的实体之间的关系
+     *
+     * @return array
+     */
+    public function getQueueableRelations();
 
     /**
      * Get the connection of the entities being queued.

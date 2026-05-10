@@ -9,7 +9,7 @@ class MessageLogged
 {
     /**
      * The log "level".
-	 * 日志“level”
+	 * 日志"级别"
      *
      * @var string
      */

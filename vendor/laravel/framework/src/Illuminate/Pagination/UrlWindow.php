@@ -225,7 +225,7 @@ class UrlWindow
 
     /**
      * Get the last page from the paginator.
-	 * 从分页器获取最后一页
+	 * 从分页器中获取最后一页
      *
      * @return int
      */

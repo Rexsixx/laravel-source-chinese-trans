@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，容器，容器
+ * Illuminate，契约，容器，Container
  */
 
 namespace Illuminate\Contracts\Container;

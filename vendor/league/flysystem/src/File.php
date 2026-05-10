@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，文件
+ */
 
 namespace League\Flysystem;
 
@@ -9,6 +12,7 @@ class File extends Handler
 {
     /**
      * Check whether the file exists.
+	 * 检查文件是否存在
      *
      * @return bool
      */
@@ -19,6 +23,7 @@ class File extends Handler
 
     /**
      * Read the file.
+	 * 读取文件
      *
      * @return string|false file contents
      */
@@ -29,6 +34,7 @@ class File extends Handler
 
     /**
      * Read the file as a stream.
+	 * 将文件作为流读取
      *
      * @return resource|false file stream
      */
@@ -39,6 +45,7 @@ class File extends Handler
 
     /**
      * Write the new file.
+	 * 写入新文件
      *
      * @param string $content
      *
@@ -51,6 +58,7 @@ class File extends Handler
 
     /**
      * Write the new file using a stream.
+	 * 使用流写入新文件
      *
      * @param resource $resource
      *
@@ -63,6 +71,7 @@ class File extends Handler
 
     /**
      * Update the file contents.
+	 * 更新文件内容
      *
      * @param string $content
      *
@@ -75,6 +84,7 @@ class File extends Handler
 
     /**
      * Update the file contents with a stream.
+	 * 用流更新文件内容
      *
      * @param resource $resource
      *
@@ -87,6 +97,7 @@ class File extends Handler
 
     /**
      * Create the file or update if exists.
+	 * 如果存在,创建文件或更新
      *
      * @param string $content
      *

@@ -66,7 +66,7 @@ class MessageSelector
     {
         preg_match('/^[\{\[]([^\[\]\{\}]*)[\}\]](.*)/s', $part, $matches);
 
-        if (count($matches) != 3) {
+        if (count($matches) !== 3) {
             return;
         }
 
@@ -75,7 +75,7 @@ class MessageSelector
         $value = $matches[2];
 
         if (Str::contains($condition, ',')) {
-            list($from, $to) = explode(',', $condition, 2);
+            [$from, $to] = explode(',', $condition, 2);
 
             if ($to == '*' && $number >= $from) {
                 return $value;
@@ -105,7 +105,7 @@ class MessageSelector
 
     /**
      * Get the index to use for pluralization.
-	 * 获取用于复数形式的索引。
+	 * 获得用于复数的索引
      *
      * The plural rules are derived from code of the Zend Framework (2010-09-25), which
      * is subject to the new BSD license (http://framework.zend.com/license/new-bsd)

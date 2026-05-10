@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，管理程序
+ * Illuminate，支持，管理器
  */
 
 namespace Illuminate\Support;
@@ -12,7 +12,7 @@ abstract class Manager
 {
     /**
      * The application instance.
-	 * 应用实例
+	 * 应用程序实例
      *
      * @var \Illuminate\Foundation\Application
      */
@@ -20,7 +20,7 @@ abstract class Manager
 
     /**
      * The registered custom driver creators.
-	 * 注册的自定义驱动程序创建者
+	 * 注册自定义驱动程序创建者
      *
      * @var array
      */
@@ -28,7 +28,7 @@ abstract class Manager
 
     /**
      * The array of created "drivers".
-	 * 已创建的“驱动程序”数组
+	 * 创建的“驱动程序”数组
      *
      * @var array
      */
@@ -36,7 +36,7 @@ abstract class Manager
 
     /**
      * Create a new manager instance.
-	 * 创建一个新的管理器实例
+	 * 创建一个新的manager实例
      *
      * @param  \Illuminate\Foundation\Application  $app
      * @return void
@@ -48,7 +48,7 @@ abstract class Manager
 
     /**
      * Get the default driver name.
-	 * 获取默认驱动程序名称
+	 * 获取默认驱动程序名
      *
      * @return string
      */
@@ -56,14 +56,22 @@ abstract class Manager
 
     /**
      * Get a driver instance.
-	 * 获取驱动程序实例
+	 * 获取一个驱动程序实例
      *
      * @param  string  $driver
      * @return mixed
+     *
+     * @throws \InvalidArgumentException
      */
     public function driver($driver = null)
     {
         $driver = $driver ?: $this->getDefaultDriver();
+
+        if (is_null($driver)) {
+            throw new InvalidArgumentException(sprintf(
+                'Unable to resolve NULL driver for [%s].', static::class
+            ));
+        }
 
         // If the given driver has not been created before, we will create the instances
         // here and cache it so we can return it next time very quickly. If there is
@@ -77,7 +85,7 @@ abstract class Manager
 
     /**
      * Create a new driver instance.
-	 * 创建一个新的驱动程序实例
+	 * 创建一个新的驱动实例
      *
      * @param  string  $driver
      * @return mixed
@@ -115,7 +123,7 @@ abstract class Manager
 
     /**
      * Register a custom driver creator Closure.
-	 * 注册自定义驱动程序创建器Closure
+	 * 注册自定义驱动程序创建者关闭
      *
      * @param  string    $driver
      * @param  \Closure  $callback
@@ -141,7 +149,7 @@ abstract class Manager
 
     /**
      * Dynamically call the default driver instance.
-	 * 动态调用默认驱动程序实例
+	 * 动态调用默认驱动实例
      *
      * @param  string  $method
      * @param  array   $parameters

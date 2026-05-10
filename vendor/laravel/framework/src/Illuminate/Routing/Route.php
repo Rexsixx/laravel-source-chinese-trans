@@ -42,7 +42,7 @@ class Route
 
     /**
      * The route action array.
-	 * 路由动作数组
+	 * 路线动作数组
      *
      * @var array
      */
@@ -50,7 +50,7 @@ class Route
 
     /**
      * Indicates whether the route is a fallback route.
-	 * 是否为回退路由
+	 * 指示路线是否是退路
      *
      * @var bool
      */
@@ -66,7 +66,7 @@ class Route
 
     /**
      * The default values for the route.
-	 * 路由的缺省值
+	 * 路由的默认值
      *
      * @var array
      */
@@ -90,7 +90,7 @@ class Route
 
     /**
      * The parameter names for the route.
-	 * 路由的参数名
+	 * 路线的参数名称
      *
      * @var array|null
      */
@@ -98,7 +98,7 @@ class Route
 
     /**
      * The computed gathered middleware.
-	 * 计算集合中间件
+	 * 计算的收集中间件
      *
      * @var array|null
      */
@@ -106,7 +106,7 @@ class Route
 
     /**
      * The compiled version of the route.
-	 * 路由的编译版本
+	 * 编译版本的路由
      *
      * @var \Symfony\Component\Routing\CompiledRoute
      */
@@ -114,7 +114,7 @@ class Route
 
     /**
      * The router instance used by the route.
-	 * 路由使用的路由器实例
+	 * 路由的路由器实例
      *
      * @var \Illuminate\Routing\Router
      */
@@ -122,7 +122,7 @@ class Route
 
     /**
      * The container instance used by the route.
-	 * 路由使用的容器实例
+	 * 由路由使用的容器实例
      *
      * @var \Illuminate\Container\Container
      */
@@ -138,7 +138,7 @@ class Route
 
     /**
      * Create a new Route instance.
-	 * 创建新的路由实例
+	 * 创建一个新的路由实例
      *
      * @param  array|string  $methods
      * @param  string  $uri
@@ -162,7 +162,7 @@ class Route
 
     /**
      * Parse the route action into a standard array.
-	 * 将路由操作解析成一个标准数组
+	 * 将路径操作解析为标准数组
      *
      * @param  callable|array|null  $action
      * @return array
@@ -197,7 +197,6 @@ class Route
 
     /**
      * Checks whether the route's action is a controller.
-	 * 检查路由的动作是否为控制器
      *
      * @return bool
      */
@@ -238,7 +237,7 @@ class Route
 
     /**
      * Get the controller instance for the route.
-	 * 获取路由的控制器实例
+	 * 获取路径的控制器实例
      *
      * @return mixed
      */
@@ -277,7 +276,7 @@ class Route
 
     /**
      * Determine if the route matches given request.
-	 * 确定路由是否与给定请求匹配
+	 * 确定路由匹配的请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  bool  $includingMethod
@@ -302,7 +301,7 @@ class Route
 
     /**
      * Compile the route into a Symfony CompiledRoute instance.
-	 * 将路由编译成一个Symfony CompiledRoute实例
+	 * 将这条路线编译成一个对称的compileulte实例
      *
      * @return \Symfony\Component\Routing\CompiledRoute
      */
@@ -317,7 +316,7 @@ class Route
 
     /**
      * Bind the route to a given request for execution.
-	 * 将路由绑定到给定的执行请求
+	 * 将路径绑定到给定的执行请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @return $this
@@ -334,7 +333,7 @@ class Route
 
     /**
      * Determine if the route has parameters.
-	 * 确定路由是否有参数
+	 * 确定路线是否有参数
      *
      * @return bool
      */
@@ -345,7 +344,7 @@ class Route
 
     /**
      * Determine a given parameter exists from the route.
-	 * 从路由中确定给定参数是否存在
+	 * 确定从路由中存在给定参数
      *
      * @param  string $name
      * @return bool
@@ -374,7 +373,7 @@ class Route
 
     /**
      * Set a parameter to the given value.
-	 * 将参数设置为给定值
+	 * 为给定的值设置一个参数
      *
      * @param  string  $name
      * @param  mixed   $value
@@ -389,7 +388,7 @@ class Route
 
     /**
      * Unset a parameter on the route if it is set.
-	 * 如果路由上设置了某个参数，则取消该参数。
+	 * 在设置时在路由上打开一个参数
      *
      * @param  string  $name
      * @return void
@@ -420,7 +419,7 @@ class Route
 
     /**
      * Get the key / value list of parameters without null values.
-	 * 获取不带空值的参数的键/值列表
+	 * 获取没有空值的参数的键/值列表
      *
      * @return array
      */
@@ -433,7 +432,7 @@ class Route
 
     /**
      * Get all of the parameter names for the route.
-	 * 获取路由的所有参数名
+	 * 获取路由的所有参数名称
      *
      * @return array
      */
@@ -448,7 +447,7 @@ class Route
 
     /**
      * Get the parameter names for the route.
-	 * 获取路由的参数名
+	 * 获取路由的参数名称
      *
      * @return array
      */
@@ -463,7 +462,7 @@ class Route
 
     /**
      * Get the parameters that are listed in the route / controller signature.
-	 * 获取路由/控制器签名中列出的参数
+	 * 获取在路由/控制器签名中列出的参数
      *
      * @param  string|null  $subClass
      * @return array
@@ -475,7 +474,7 @@ class Route
 
     /**
      * Set a default value for the route.
-	 * 设置路由的缺省值
+	 * 为路由设置默认值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -490,7 +489,7 @@ class Route
 
     /**
      * Set a regular expression requirement on the route.
-	 * 在路由上配置正则表达式要求
+	 * 在路由上设置一个正则表达式要求
      *
      * @param  array|string  $name
      * @param  string  $expression
@@ -507,7 +506,7 @@ class Route
 
     /**
      * Parse arguments to the where method into an array.
-	 * 将where方法的参数解析到数组中
+	 * 将参数解析为数组中的方法
      *
      * @param  array|string  $name
      * @param  string  $expression
@@ -520,7 +519,7 @@ class Route
 
     /**
      * Set a list of regular expression requirements on the route.
-	 * 设置路由上的正则表达式需求列表
+	 * 在路由上设置一个正则表达式要求列表
      *
      * @param  array  $wheres
      * @return $this
@@ -549,7 +548,7 @@ class Route
 
     /**
      * Get the HTTP verbs the route responds to.
-	 * 获取路由响应的HTTP动词
+	 * 获取路由响应的HTTP谓词
      *
      * @return array
      */
@@ -634,7 +633,7 @@ class Route
 
     /**
      * Add a prefix to the route URI.
-	 * 为路由URI添加前缀。
+	 * 在路由URI中添加一个前缀
      *
      * @param  string  $prefix
      * @return $this
@@ -650,7 +649,7 @@ class Route
 
     /**
      * Get the URI associated with the route.
-	 * 获取与路由关联的URI
+	 * 获取与路由相关的URI
      *
      * @return string
      */
@@ -675,7 +674,6 @@ class Route
 
     /**
      * Get the name of the route instance.
-	 * 获取路由实例的名称
      *
      * @return string
      */
@@ -686,7 +684,6 @@ class Route
 
     /**
      * Add or change the route name.
-	 * 添加或修改路由名称
      *
      * @param  string  $name
      * @return $this
@@ -700,7 +697,6 @@ class Route
 
     /**
      * Determine whether the route's name matches the given patterns.
-	 * 确定路由的名称是否与给定的模式匹配
      *
      * @param  dynamic  $patterns
      * @return bool
@@ -722,7 +718,6 @@ class Route
 
     /**
      * Set the handler for the route.
-	 * 设置路由的处理程序
      *
      * @param  \Closure|string  $action
      * @return $this
@@ -739,7 +734,6 @@ class Route
 
     /**
      * Parse a string based action for the "uses" fluent method.
-	 * 为“uses”流畅方法解析一个基于字符串的动作
      *
      * @param  string  $action
      * @return string
@@ -757,7 +751,6 @@ class Route
 
     /**
      * Get the action name for the route.
-	 * 获取路由的动作名称
      *
      * @return string
      */
@@ -768,7 +761,6 @@ class Route
 
     /**
      * Get the method name of the route action.
-	 * 获取路由操作的方法名
      *
      * @return string
      */
@@ -779,7 +771,6 @@ class Route
 
     /**
      * Get the action array or one of its properties for the route.
-	 * 获取该路由的动作数组或其中一个属性
      *
      * @param  string|null  $key
      * @return mixed
@@ -791,7 +782,6 @@ class Route
 
     /**
      * Set the action array for the route.
-	 * 设置路由的动作数组
      *
      * @param  array  $action
      * @return $this
@@ -805,7 +795,6 @@ class Route
 
     /**
      * Get all middleware, including the ones from the controller.
-	 * 获取所有中间件，包括来自控制器的中间件。
      *
      * @return array
      */
@@ -824,7 +813,7 @@ class Route
 
     /**
      * Get or set the middlewares attached to the route.
-	 * 获取或设置附加到路由的中间件
+	 * 获取或设置附加到路由的中器
      *
      * @param  array|string|null $middleware
      * @return $this|array
@@ -848,7 +837,7 @@ class Route
 
     /**
      * Get the middleware for the route's controller.
-	 * 获取路由控制器的中间件
+	 * 为路由的控制器获取中间件
      *
      * @return array
      */
@@ -865,7 +854,7 @@ class Route
 
     /**
      * Get the dispatcher for the route's controller.
-	 * 获取路由控制器的调度程序
+	 * 为路由的控制器获取调度员
      *
      * @return \Illuminate\Routing\Contracts\ControllerDispatcher
      */
@@ -912,7 +901,7 @@ class Route
 
     /**
      * Set the router instance on the route.
-	 * 设置路由上的router实例
+	 * 在路由上设置路由器实例
      *
      * @param  \Illuminate\Routing\Router  $router
      * @return $this

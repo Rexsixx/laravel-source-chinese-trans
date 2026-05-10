@@ -40,7 +40,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The number of times the job may be attempted.
-	 * 工作的次数可能会被尝试
+	 * 可能尝试该作业的次数
      *
      * @var int
      */
@@ -108,7 +108,7 @@ class CallQueuedListener implements ShouldQueue
      */
     protected function setJobInstanceIfNecessary(Job $job, $instance)
     {
-        if (in_array(InteractsWithQueue::class, class_uses_recursive(get_class($instance)))) {
+        if (in_array(InteractsWithQueue::class, class_uses_recursive($instance))) {
             $instance->setJob($job);
         }
 
@@ -117,9 +117,10 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Call the failed method on the job instance.
-	 * 在作业实例上调用失败的方法
+	 * 在作业实例上调用失败的方法。
      *
      * The event instance and the exception will be passed.
+	 * 将传递事件实例和异常。
      *
      * @param  \Exception  $e
      * @return void

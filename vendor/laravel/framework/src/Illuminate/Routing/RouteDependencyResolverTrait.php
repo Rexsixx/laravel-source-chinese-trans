@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由依赖解析器特性
+ * Illuminate，路由，路由依赖分解器特性
  */
 
 namespace Illuminate\Routing;
@@ -14,7 +14,7 @@ trait RouteDependencyResolverTrait
 {
     /**
      * Resolve the object method's type-hinted dependencies.
-	 * 解析对象方法的类型暗示依赖项
+	 * 解决对象方法的类型暗示依赖关系
      *
      * @param  array  $parameters
      * @param  object  $instance
@@ -34,7 +34,7 @@ trait RouteDependencyResolverTrait
 
     /**
      * Resolve the given method's type-hinted dependencies.
-	 * 解析给定方法的类型提示依赖项
+	 * 解析给定方法的类型-暗示依赖项
      *
      * @param  array  $parameters
      * @param  \ReflectionFunctionAbstract  $reflector

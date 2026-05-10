@@ -149,7 +149,7 @@ class Connection implements ConnectionInterface
 
     /**
      * Indicates if the connection is in a "dry run".
-	 * 说明如果连接是“干运行”
+	 * 指示连接是否处于“试运行”状态
      *
      * @var bool
      */
@@ -188,7 +188,6 @@ class Connection implements ConnectionInterface
         // First we will setup the default properties. We keep track of the DB
         // name we are connected to since it is needed when some reflective
         // type commands are run such as checking whether a table exists.
-		// 首先，我们将设置默认属性。我们保持跟踪已连接DB名称。我们执行类型命令，如检查表是否存在。
         $this->database = $database;
 
         $this->tablePrefix = $tablePrefix;
@@ -548,7 +547,7 @@ class Connection implements ConnectionInterface
             }
 
             $this->recordsHaveBeenModified(
-                $change = ($this->getPdo()->exec($query) === false ? false : true)
+                $change = $this->getPdo()->exec($query) !== false
             );
 
             return $change;
@@ -598,7 +597,7 @@ class Connection implements ConnectionInterface
 
         // Now we'll execute this callback and capture the result. Once it has been
         // executed we will restore the value of query logging and give back the
-        // value of hte callback so the original callers can have the results.
+        // value of the callback so the original callers can have the results.
         $result = $callback();
 
         $this->loggingQueries = $loggingQueries;
@@ -997,7 +996,7 @@ class Connection implements ConnectionInterface
             return $this->getPdo();
         }
 
-        if ($this->getConfig('sticky') && $this->recordsModified) {
+        if ($this->recordsModified && $this->getConfig('sticky')) {
             return $this->getPdo();
         }
 
@@ -1028,7 +1027,7 @@ class Connection implements ConnectionInterface
      * Set the PDO connection used for reading.
 	 * 设置用于读取的PDO连接
      *
-     * @param  \PDO||\Closure|null  $pdo
+     * @param  \PDO|\Closure|null  $pdo
      * @return $this
      */
     public function setReadPdo($pdo)
@@ -1179,6 +1178,17 @@ class Connection implements ConnectionInterface
     }
 
     /**
+     * Unset the event dispatcher for this connection.
+	 * 取消此连接的事件调度程序的设置
+     *
+     * @return void
+     */
+    public function unsetEventDispatcher()
+    {
+        $this->events = null;
+    }
+
+    /**
      * Determine if the connection in a "dry run".
 	 * 确定连接是否在“预演”中
      *
@@ -1235,7 +1245,7 @@ class Connection implements ConnectionInterface
 
     /**
      * Determine whether we're logging queries.
-	 * 确定我们是否记录查询
+	 * 确定我们是否记录查询。
      *
      * @return bool
      */

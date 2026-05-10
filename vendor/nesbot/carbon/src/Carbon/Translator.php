@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，翻译器
+ */
 
 namespace Carbon;
 
@@ -8,6 +11,7 @@ class Translator extends Translation\Translator
 {
     /**
      * Singleton for Translator.
+	 * 单例翻译器
      *
      * @var static
      */
@@ -15,6 +19,7 @@ class Translator extends Translation\Translator
 
     /**
      * List of custom localized messages.
+	 * 自定义本地化消息列表
      *
      * @var array
      */
@@ -22,6 +27,7 @@ class Translator extends Translation\Translator
 
     /**
      * Return a singleton instance of Translator.
+	 * 返回Translator的单例实例
      *
      * @param string|null $locale optional initial locale ("en" - english by default)
      *

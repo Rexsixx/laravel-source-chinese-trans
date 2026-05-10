@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，迁移，存根，虚拟类，根据实际调整
+ * Illuminate，数据库，迁移，存根，动态类，根据实际修改
  */
 
 use Illuminate\Support\Facades\Schema;

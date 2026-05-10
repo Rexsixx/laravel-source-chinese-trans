@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，控制台，模型制作命令
+ */
 
 namespace Illuminate\Foundation\Console;
 
@@ -10,6 +13,7 @@ class ModelMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
+	 * 控制台命令名
      *
      * @var string
      */
@@ -17,6 +21,7 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * The console command description.
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -24,6 +29,7 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
+	 * 生成的类的类型
      *
      * @var string
      */
@@ -31,6 +37,7 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * Execute the console command.
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -62,25 +69,33 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * Create a model factory for the model.
+	 * 为模型创建一个模型工厂
      *
      * @return void
      */
     protected function createFactory()
     {
+        $factory = Str::studly(class_basename($this->argument('name')));
+
         $this->call('make:factory', [
-            'name' => $this->argument('name').'Factory',
+            'name' => "{$factory}Factory",
             '--model' => $this->argument('name'),
         ]);
     }
 
     /**
      * Create a migration file for the model.
+	 * 为模型创建一个迁移文件
      *
      * @return void
      */
     protected function createMigration()
     {
         $table = Str::plural(Str::snake(class_basename($this->argument('name'))));
+
+        if ($this->option('pivot')) {
+            $table = Str::singular($table);
+        }
 
         $this->call('make:migration', [
             'name' => "create_{$table}_table",
@@ -90,6 +105,7 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * Create a controller for the model.
+	 * 为模型创建一个控制器
      *
      * @return void
      */
@@ -107,6 +123,7 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
+	 * 获取生成器的存根文件
      *
      * @return string
      */
@@ -121,6 +138,7 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
+	 * 获取类的默认名称空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -132,6 +150,7 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * Get the console command options.
+	 * 获取控制台命令选项
      *
      * @return array
      */

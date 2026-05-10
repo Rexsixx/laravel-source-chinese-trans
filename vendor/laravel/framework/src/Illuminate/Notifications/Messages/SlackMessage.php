@@ -98,6 +98,19 @@ class SlackMessage
     public $http = [];
 
     /**
+     * Indicate that the notification gives information about an operation.
+	 * 指示通知提供有关操作的信息
+     *
+     * @return $this
+     */
+    public function info()
+    {
+        $this->level = 'info';
+
+        return $this;
+    }
+
+    /**
      * Indicate that the notification gives information about a successful operation.
 	 * 指示通知提供有关成功操作的信息
      *
@@ -171,7 +184,7 @@ class SlackMessage
 
     /**
      * Set the Slack channel the message should be sent to.
-	 * 设置消息应该发送到的Slack频道
+	 * 设置松弛通道,应该发送消息
      *
      * @param  string $channel
      * @return $this
@@ -199,7 +212,7 @@ class SlackMessage
 
     /**
      * Define an attachment for the message.
-	 * 为消息定义一个附件
+	 * 设置Slack消息的内容
      *
      * @param  \Closure  $callback
      * @return $this
@@ -215,7 +228,7 @@ class SlackMessage
 
     /**
      * Get the color for the message.
-	 * 获取消息的颜色
+	 * 获取信息的颜色
      *
      * @return string
      */
@@ -274,7 +287,7 @@ class SlackMessage
 
     /**
      * Set additional request options for the Guzzle HTTP client.
-	 * 为Guzzle HTTP客户端设置其他请求选项
+	 * 为Guzzle HTTP客户机设置额外的请求选项
      *
      * @param  array  $options
      * @return $this

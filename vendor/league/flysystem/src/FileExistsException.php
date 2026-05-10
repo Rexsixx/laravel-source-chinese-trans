@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，文件存在异常
+ */
 
 namespace League\Flysystem;
 
@@ -13,6 +16,7 @@ class FileExistsException extends Exception
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * @param string        $path
      * @param int           $code
@@ -27,6 +31,7 @@ class FileExistsException extends Exception
 
     /**
      * Get the path which was found.
+	 * 获取找到的路径
      *
      * @return string
      */

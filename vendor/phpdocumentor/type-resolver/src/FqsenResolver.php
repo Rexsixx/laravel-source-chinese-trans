@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，Fqsen 分解器
+ */
 
 declare(strict_types=1);
 
@@ -22,6 +25,7 @@ use function strpos;
 
 /**
  * Resolver for Fqsen using Context information
+ * 使用上下文信息解析Fqsen
  *
  * @psalm-immutable
  */
@@ -45,6 +49,7 @@ class FqsenResolver
 
     /**
      * Tests whether the given type is a Fully Qualified Structural Element Name.
+	 * 测试是否给定类型是一个完全合格的结构元素名
      */
     private function isFqsen(string $type): bool
     {

@@ -1,4 +1,8 @@
 <?php
+/**
+ * Egulias，EmailValidator，分析程序，双引号
+ */
+
 namespace Egulias\EmailValidator\Parser;
 
 use Egulias\EmailValidator\EmailLexer;

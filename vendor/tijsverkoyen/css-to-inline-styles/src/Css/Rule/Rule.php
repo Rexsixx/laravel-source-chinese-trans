@@ -1,4 +1,7 @@
 <?php
+/**
+ * TijsVerkoyen，CssToInlineStyles，Css，规则，Rule
+ */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css\Rule;
 
@@ -29,6 +32,7 @@ final class Rule
 
     /**
      * Rule constructor.
+	 * 规则构造函数
      *
      * @param string      $selector
      * @param Property[]  $properties
@@ -45,6 +49,7 @@ final class Rule
 
     /**
      * Get selector
+	 * 获取选择器
      *
      * @return string
      */

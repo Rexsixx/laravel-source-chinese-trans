@@ -33,7 +33,7 @@ trait CompilesStacks
 
     /**
      * Compile the end-push statements into valid PHP.
-	 * 将end-push语句编译成有效的PHP
+	 * 将最终推送语句编译成有效的PHP
      *
      * @return string
      */
@@ -56,7 +56,7 @@ trait CompilesStacks
 
     /**
      * Compile the end-prepend statements into valid PHP.
-	 * 将end-prepend语句编译成有效的PHP
+	 * 将最终的prepend语句编译成有效的PHP
      *
      * @return string
      */

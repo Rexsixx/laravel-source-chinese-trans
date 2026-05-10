@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，适配器，抽象适配器
+ */
 
 namespace League\Flysystem\Adapter;
 
@@ -18,6 +21,7 @@ abstract class AbstractAdapter implements AdapterInterface
 
     /**
      * Set the path prefix.
+	 * 设置路径前缀
      *
      * @param string $prefix
      *

@@ -9,7 +9,7 @@ interface Rule
 {
     /**
      * Determine if the validation rule passes.
-	 * 确定验证规则是否通过。
+	 * 确定验证规则是否通过
      *
      * @param  string  $attribute
      * @param  mixed  $value

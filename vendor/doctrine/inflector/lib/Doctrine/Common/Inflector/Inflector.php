@@ -1,8 +1,8 @@
 <?php
 /**
- * Doctrine，公共，偏转器，偏转器
+ * Doctrine，公共，反射，Inflector
  */
- 
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -89,6 +89,7 @@ class Inflector
 
     /**
      * Converts a word into the format for a Doctrine class name. Converts 'table_name' to 'TableName'.
+	 * 将单词转换为Doctrine类名的格式。将‘table_name’转换为‘table_name’。
      */
     public static function classify(string $word) : string
     {
@@ -258,7 +259,6 @@ class Inflector
 
     /**
      * Returns a word in plural form.
-	 * 返回复数形式的单词
      *
      * @param string $word The word in singular form.
      *
@@ -275,7 +275,6 @@ class Inflector
 
     /**
      * Returns a word in singular form.
-	 * 以单数形式返回一个单词
      *
      * @param string $word The word in plural form.
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，传输管理者
+ * Illuminate，电子邮件，传输管理器
  */
 
 namespace Illuminate\Mail;
@@ -75,7 +75,7 @@ class TransportManager extends Manager
      * Create an instance of the Amazon SES Swift Transport driver.
 	 * 创建一个Amazon SES Swift Transport驱动程序的实例
      *
-     * @return \Swift_SendmailTransport
+     * @return \Illuminate\Mail\Transport\SesTransport
      */
     protected function createSesDriver()
     {
@@ -98,7 +98,7 @@ class TransportManager extends Manager
     protected function addSesCredentials(array $config)
     {
         if ($config['key'] && $config['secret']) {
-            $config['credentials'] = Arr::only($config, ['key', 'secret']);
+            $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
         }
 
         return $config;
@@ -127,9 +127,7 @@ class TransportManager extends Manager
 
         return new MailgunTransport(
             $this->guzzle($config),
-            $config['secret'],
-            $config['domain'],
-            $config['endpoint'] ?? null
+            $config['secret'], $config['domain']
         );
     }
 
@@ -150,7 +148,7 @@ class TransportManager extends Manager
 
     /**
      * Create an instance of the SparkPost Swift Transport driver.
-	 * 创建一个SparkPost Swift Transport驱动程序的实例
+	 * 创建SparkPost Swift运输驱动程序的实例
      *
      * @return \Illuminate\Mail\Transport\SparkPostTransport
      */
@@ -165,7 +163,7 @@ class TransportManager extends Manager
 
     /**
      * Create an instance of the Log Swift Transport driver.
-	 * 创建Log Swift Transport驱动程序的实例
+	 * 创建一个日志快速传输驱动程序的实例。
      *
      * @return \Illuminate\Mail\Transport\LogTransport
      */
@@ -201,7 +199,7 @@ class TransportManager extends Manager
 
     /**
      * Get the default mail driver name.
-	 * 获取默认的邮件驱动程序名称
+	 * 获取默认邮件驱动程序名称
      *
      * @return string
      */

@@ -28,6 +28,22 @@ class Factory implements ArrayAccess
     protected $states = [];
 
     /**
+     * The registered after making callbacks.
+	 * 回调后注册
+     *
+     * @var array
+     */
+    protected $afterMaking = [];
+
+    /**
+     * The registered after creating callbacks.
+	 * 创建回调后注册的
+     *
+     * @var array
+     */
+    protected $afterCreating = [];
+
+    /**
      * The Faker instance for the builder.
 	 * 生成器的Faker实例
      *
@@ -94,7 +110,7 @@ class Factory implements ArrayAccess
 
     /**
      * Define a state with a given set of attributes.
-	 * 用一组给定的属性定义一个状态
+	 * 用一组给定的属性定义一个状态。
      *
      * @param  string  $class
      * @param  string  $state
@@ -106,6 +122,66 @@ class Factory implements ArrayAccess
         $this->states[$class][$state] = $attributes;
 
         return $this;
+    }
+
+    /**
+     * Define a callback to run after making a model.
+	 * 定义一个在创建模型后运行的回调函数
+     *
+     * @param  string  $class
+     * @param  callable  $callback
+     * @param  string  $name
+     * @return $this
+     */
+    public function afterMaking($class, callable $callback, $name = 'default')
+    {
+        $this->afterMaking[$class][$name][] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Define a callback to run after making a model with given state.
+	 * 定义一个回调函数，在生成具有给定状态的模型后运行。
+     *
+     * @param  string  $class
+     * @param  string  $state
+     * @param  callable  $callback
+     * @return $this
+     */
+    public function afterMakingState($class, $state, callable $callback)
+    {
+        return $this->afterMaking($class, $callback, $state);
+    }
+
+    /**
+     * Define a callback to run after creating a model.
+	 * 定义一个在创建模型后运行的回调函数
+     *
+     * @param  string  $class
+     * @param  callable  $callback
+     * @param  string $name
+     * @return $this
+     */
+    public function afterCreating($class, callable $callback, $name = 'default')
+    {
+        $this->afterCreating[$class][$name][] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Define a callback to run after creating a model with given state.
+	 * 定义一个回调，以便在创建具有给定状态的模型后运行。
+     *
+     * @param  string  $class
+     * @param  string  $state
+     * @param  callable  $callback
+     * @return $this
+     */
+    public function afterCreatingState($class, $state, callable $callback)
+    {
+        return $this->afterCreating($class, $callback, $state);
     }
 
     /**
@@ -178,7 +254,7 @@ class Factory implements ArrayAccess
 
     /**
      * Get the raw attribute array for a given model.
-	 * 获取给定模型的原始属性数组
+	 * 获取给定模型的原始属性数组。
      *
      * @param  string  $class
      * @param  array  $attributes
@@ -202,7 +278,10 @@ class Factory implements ArrayAccess
      */
     public function of($class, $name = 'default')
     {
-        return new FactoryBuilder($class, $name, $this->definitions, $this->states, $this->faker);
+        return new FactoryBuilder(
+            $class, $name, $this->definitions, $this->states,
+            $this->afterMaking, $this->afterCreating, $this->faker
+        );
     }
 
     /**

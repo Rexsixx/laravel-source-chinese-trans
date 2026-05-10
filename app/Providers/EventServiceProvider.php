@@ -1,6 +1,6 @@
 <?php
 /**
- * App，供应商，事件服务提供商
+ * App，提供商，事件服务提供商
  */
 
 namespace App\Providers;
@@ -12,7 +12,6 @@ class EventServiceProvider extends ServiceProvider
 {
     /**
      * The event listener mappings for the application.
-	 * 应用程序的事件侦听器映射
      *
      * @var array
      */
@@ -24,7 +23,6 @@ class EventServiceProvider extends ServiceProvider
 
     /**
      * Register any events for your application.
-	 * 为您的应用程序注册任何事件
      *
      * @return void
      */

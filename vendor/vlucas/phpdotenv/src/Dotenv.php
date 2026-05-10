@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，Dotenv
+ */
 
 namespace Dotenv;
 
@@ -6,6 +9,7 @@ use Dotenv\Exception\InvalidPathException;
 
 /**
  * This is the dotenv class.
+ * 这是dotenv类。
  *
  * It's responsible for loading a `.env` file in the given directory and
  * setting the environment vars.
@@ -14,6 +18,7 @@ class Dotenv
 {
     /**
      * The file path.
+	 * 文件路径
      *
      * @var string
      */
@@ -21,6 +26,7 @@ class Dotenv
 
     /**
      * The loader instance.
+	 * 加载实例
      *
      * @var \Dotenv\Loader|null
      */
@@ -28,6 +34,7 @@ class Dotenv
 
     /**
      * Create a new dotenv instance.
+	 * 创建一个新的dotenv实例
      *
      * @param string $path
      * @param string $file
@@ -42,6 +49,7 @@ class Dotenv
 
     /**
      * Load environment file in given directory.
+	 * 在给定目录中加载环境文件
      *
      * @throws \Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidFileException
      *
@@ -54,6 +62,7 @@ class Dotenv
 
     /**
      * Load environment file in given directory, suppress InvalidPathException.
+	 * 在给定目录中加载环境文件,抑制无效异常。
      *
      * @throws \Dotenv\Exception\InvalidFileException
      *

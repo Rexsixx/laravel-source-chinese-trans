@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译器，问题，编译的评论
+ * Illuminate，视图，编译器，问题，编译组件
  */
 
 namespace Illuminate\View\Compilers\Concerns;
@@ -44,7 +44,7 @@ trait CompilesComponents
 
     /**
      * Compile the end-slot statements into valid PHP.
-	 * 将结束槽语句编译成有效的PHP
+	 * 将最终槽语句编译成有效的PHP
      *
      * @return string
      */

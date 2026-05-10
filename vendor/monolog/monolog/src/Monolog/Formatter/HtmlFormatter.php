@@ -1,4 +1,8 @@
 <?php
+/**
+ * Monolog，格式器，Html 格式化器
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -15,6 +19,7 @@ use Monolog\Utils;
 
 /**
  * Formats incoming records into an HTML table
+ * 将传入的记录格式化为HTML表。
  *
  * This is especially useful for html email logging
  *
@@ -24,6 +29,7 @@ class HtmlFormatter extends NormalizerFormatter
 {
     /**
      * Translates Monolog log levels to html color priorities.
+	 * 翻译独白日志级别的html颜色优先级
      */
     protected $logLevels = array(
         Logger::DEBUG     => '#cccccc',
@@ -46,6 +52,7 @@ class HtmlFormatter extends NormalizerFormatter
 
     /**
      * Creates an HTML table row
+	 * 创建一个HTML表行
      *
      * @param  string $th       Row header content
      * @param  string $td       Row standard cell content

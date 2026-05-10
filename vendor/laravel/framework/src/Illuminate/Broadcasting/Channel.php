@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，广播，信通
+ * Illuminate，广播，通道
  */
 
 namespace Illuminate\Broadcasting;
@@ -9,7 +9,7 @@ class Channel
 {
     /**
      * The channel's name.
-	 * 信道的名称
+	 * 通道的名称
      *
      * @var string
      */

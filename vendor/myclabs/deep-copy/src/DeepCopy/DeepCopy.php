@@ -1,4 +1,7 @@
 <?php
+/**
+ * DeepCopy，深拷贝
+ */
 
 namespace DeepCopy;
 
@@ -34,6 +37,7 @@ class DeepCopy
 
     /**
      * Filters to apply.
+	 * 请求过滤器
      *
      * @var array Array of ['filter' => Filter, 'matcher' => Matcher] pairs.
      */
@@ -41,6 +45,7 @@ class DeepCopy
 
     /**
      * Type Filters to apply.
+	 * 申请的类型筛选器
      *
      * @var array Array of ['filter' => Filter, 'matcher' => Matcher] pairs.
      */
@@ -72,6 +77,7 @@ class DeepCopy
 
     /**
      * If enabled, will not throw an exception when coming across an uncloneable property.
+	 * 如果启用，将不会在遇到不可克隆属性时抛出异常。
      *
      * @param $skipUncloneable
      *
@@ -86,6 +92,7 @@ class DeepCopy
 
     /**
      * Deep copies the given object.
+	 * 深度复制给定对象
      *
      * @template TObject
      *

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，Uuid 工厂接口
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -22,11 +26,13 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 /**
  * UuidFactoryInterface defines common functionality all `UuidFactory` instances
  * must implement
+ * UuidFactory的接口定义了通用功能所有的UuidFactory实例必须执行。
  */
 interface UuidFactoryInterface
 {
     /**
      * Generate a version 1 UUID from a host ID, sequence number, and the current time.
+	 * 从主机ID、序列号和当前时间生成一个版本1 UUID。
      *
      * @param int|string|null $node A 48-bit number representing the hardware address
      *     This number may be represented as an integer or a hexadecimal string.

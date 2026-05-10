@@ -23,7 +23,7 @@ class FreshCommand extends Command
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -31,7 +31,7 @@ class FreshCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -41,15 +41,22 @@ class FreshCommand extends Command
             return;
         }
 
-        $this->dropAllTables(
-            $database = $this->input->getOption('database')
-        );
+        $database = $this->input->getOption('database');
+
+        if ($this->option('drop-views')) {
+            $this->dropAllViews($database);
+
+            $this->info('Dropped all views successfully.');
+        }
+
+        $this->dropAllTables($database);
 
         $this->info('Dropped all tables successfully.');
 
         $this->call('migrate', [
             '--database' => $database,
             '--path' => $this->input->getOption('path'),
+            '--realpath' => $this->input->getOption('realpath'),
             '--force' => true,
         ]);
 
@@ -70,6 +77,20 @@ class FreshCommand extends Command
         $this->laravel['db']->connection($database)
                     ->getSchemaBuilder()
                     ->dropAllTables();
+    }
+
+    /**
+     * Drop all of the database views.
+	 * 删除所有数据库视图
+     *
+     * @param  string  $database
+     * @return void
+     */
+    protected function dropAllViews($database)
+    {
+        $this->laravel['db']->connection($database)
+                    ->getSchemaBuilder()
+                    ->dropAllViews();
     }
 
     /**
@@ -110,9 +131,13 @@ class FreshCommand extends Command
         return [
             ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use.'],
 
+            ['drop-views', null, InputOption::VALUE_NONE, 'Drop all tables and views.'],
+
             ['force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production.'],
 
-            ['path', null, InputOption::VALUE_OPTIONAL, 'The path of migrations files to be executed.'],
+            ['path', null, InputOption::VALUE_OPTIONAL, 'The path to the migrations files to be executed.'],
+
+            ['realpath', null, InputOption::VALUE_NONE, 'Indicate any provided migration file paths are pre-resolved absolute paths.'],
 
             ['seed', null, InputOption::VALUE_NONE, 'Indicates if the seed task should be re-run.'],
 

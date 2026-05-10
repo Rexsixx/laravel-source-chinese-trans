@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，视图
+ * Illuminate，视图，View
  */
 
 namespace Illuminate\View;
@@ -12,6 +12,7 @@ use BadMethodCallException;
 use Illuminate\Support\Str;
 use Illuminate\Support\MessageBag;
 use Illuminate\Contracts\View\Engine;
+use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\Support\MessageProvider;
@@ -19,6 +20,10 @@ use Illuminate\Contracts\View\View as ViewContract;
 
 class View implements ArrayAccess, ViewContract
 {
+    use Macroable {
+        __call as macroCall;
+    }
+
     /**
      * The view factory instance.
 	 * 视图工厂实例
@@ -140,7 +145,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Get the evaluated contents of the view.
-	 * 获取视图的求值内容
+	 * 获取视图的评估内容
      *
      * @return string
      */
@@ -230,7 +235,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Format the given message provider into a MessageBag.
-	 * 将给定的消息提供程序格式化为MessageBag
+	 * 将给定的消息提供者格式化为MessageBag
      *
      * @param  \Illuminate\Contracts\Support\MessageProvider|array  $provider
      * @return \Illuminate\Support\MessageBag
@@ -429,8 +434,14 @@ class View implements ArrayAccess, ViewContract
      */
     public function __call($method, $parameters)
     {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
         if (! Str::startsWith($method, 'with')) {
-            throw new BadMethodCallException("Method [$method] does not exist on view.");
+            throw new BadMethodCallException(sprintf(
+                'Method %s::%s does not exist.', static::class, $method
+            ));
         }
 
         return $this->with(Str::camel(substr($method, 4)), $parameters[0]);

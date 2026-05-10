@@ -18,6 +18,7 @@ interface MessageBag extends Arrayable
     /**
      * Add a message to the bag.
 	 * 在包中添加一条消息
+	 * 
      *
      * @param  string  $key
      * @param  string  $message
@@ -65,7 +66,7 @@ interface MessageBag extends Arrayable
 
     /**
      * Get all of the messages for every key in the bag.
-	 * 找到包里每把钥匙的所有信息
+	 * 找到包里每把钥匙的所有信息。
      *
      * @param  string  $format
      * @return array

@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，Doc Block，实例探查器
+ */
 
 declare(strict_types=1);
 
@@ -28,6 +31,7 @@ use const DIRECTORY_SEPARATOR;
 
 /**
  * Class used to find an example file's location based on a given ExampleDescriptor.
+ * 类用于在给定的exampledescription中找到一个示例文件的位置。
  */
 class ExampleFinder
 {
@@ -62,6 +66,7 @@ class ExampleFinder
 
     /**
      * Returns the project's root directory where an 'examples' folder can be expected.
+	 * 返回项目的根目录,其中一个“示例”文件夹可以被期望
      */
     public function getSourceDirectory(): string
     {

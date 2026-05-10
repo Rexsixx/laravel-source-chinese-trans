@@ -1,12 +1,13 @@
 <?php
 /**
- * App，Http，控制器，认证，注册控制器
+ * App，Http，控制台，授权，注册控制器
  */
 
 namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -14,7 +15,7 @@ class RegisterController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Register Controller	注册控制器
+    | Register Controller
     |--------------------------------------------------------------------------
     |
     | This controller handles the registration of new users as well as their
@@ -27,7 +28,6 @@ class RegisterController extends Controller
 
     /**
      * Where to redirect users after registration.
-	 * 在注册后重定向用户
      *
      * @var string
      */
@@ -35,7 +35,6 @@ class RegisterController extends Controller
 
     /**
      * Create a new controller instance.
-	 * 创建一个新的控制器实例
      *
      * @return void
      */
@@ -46,7 +45,6 @@ class RegisterController extends Controller
 
     /**
      * Get a validator for an incoming registration request.
-	 * 获取输入注册请求的验证器
      *
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
@@ -62,7 +60,6 @@ class RegisterController extends Controller
 
     /**
      * Create a new user instance after a valid registration.
-	 * 在有效注册后创建一个新的用户实例
      *
      * @param  array  $data
      * @return \App\User
@@ -72,7 +69,7 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'password' => Hash::make($data['password']),
         ]);
     }
 }

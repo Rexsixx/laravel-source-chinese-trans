@@ -1,13 +1,10 @@
 <?php
-/**
- * 配置，数据库
- */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Database Connection Name		默认数据库连接名称
+    | Default Database Connection Name
     |--------------------------------------------------------------------------
     |
     | Here you may specify which of the database connections below you wish
@@ -20,7 +17,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Database Connections		数据库连接
+    | Database Connections
     |--------------------------------------------------------------------------
     |
     | Here are each of the database connections setup for your application.
@@ -85,7 +82,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Migration Repository Table	迁移存储库表
+    | Migration Repository Table
     |--------------------------------------------------------------------------
     |
     | This table keeps track of all the migrations that have already run for
@@ -98,7 +95,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Redis Databases	Redis数据库
+    | Redis Databases
     |--------------------------------------------------------------------------
     |
     | Redis is an open source, fast, and advanced key-value store that also

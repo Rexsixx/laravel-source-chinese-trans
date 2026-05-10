@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，读取接口
+ */
 
 namespace League\Flysystem;
 
@@ -6,6 +9,7 @@ interface ReadInterface
 {
     /**
      * Check whether a file exists.
+	 * 检查文件是否存在
      *
      * @param string $path
      *
@@ -15,6 +19,7 @@ interface ReadInterface
 
     /**
      * Read a file.
+	 * 读取文件
      *
      * @param string $path
      *
@@ -24,6 +29,7 @@ interface ReadInterface
 
     /**
      * Read a file as a stream.
+	 * 作为流读取文件
      *
      * @param string $path
      *
@@ -33,6 +39,7 @@ interface ReadInterface
 
     /**
      * List contents of a directory.
+	 * 列出目录的内容
      *
      * @param string $directory
      * @param bool   $recursive
@@ -43,6 +50,7 @@ interface ReadInterface
 
     /**
      * Get all the meta data of a file or directory.
+	 * 获取文件或目录的所有元数据
      *
      * @param string $path
      *
@@ -52,6 +60,7 @@ interface ReadInterface
 
     /**
      * Get the size of a file.
+	 * 获取文件的大小
      *
      * @param string $path
      *
@@ -61,6 +70,7 @@ interface ReadInterface
 
     /**
      * Get the mimetype of a file.
+	 * 获取文件的mime类型
      *
      * @param string $path
      *
@@ -70,6 +80,7 @@ interface ReadInterface
 
     /**
      * Get the last modified time of a file as a timestamp.
+	 * 获取文件的最后修改时间作为时间戳
      *
      * @param string $path
      *
@@ -79,6 +90,7 @@ interface ReadInterface
 
     /**
      * Get the visibility of a file.
+	 * 获得文件的可见性
      *
      * @param string $path
      *

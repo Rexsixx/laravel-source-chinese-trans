@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，构建器，默认Uuid生成器
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -31,6 +35,7 @@ class DefaultUuidBuilder implements UuidBuilderInterface
 
     /**
      * Constructs the DefaultUuidBuilder
+	 * 构造DefaultUuidBuilder
      *
      * @param NumberConverterInterface $converter The number converter to use when constructing the Uuid
      */

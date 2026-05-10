@@ -1,9 +1,13 @@
 <?php
+/**
+ * Psr，Log，记录器接口
+ */
 
 namespace Psr\Log;
 
 /**
  * Describes a logger instance.
+ * 描述一个logger实例。
  *
  * The message MUST be a string or object implementing __toString().
  *
@@ -21,6 +25,7 @@ interface LoggerInterface
 {
     /**
      * System is unusable.
+	 * 系统是不可用的
      *
      * @param string  $message
      * @param mixed[] $context
@@ -31,6 +36,7 @@ interface LoggerInterface
 
     /**
      * Action must be taken immediately.
+	 * 必须立即采取行动。
      *
      * Example: Entire website down, database unavailable, etc. This should
      * trigger the SMS alerts and wake you up.

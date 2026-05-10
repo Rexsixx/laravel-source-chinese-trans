@@ -18,7 +18,7 @@ class StartSession
 {
     /**
      * The session manager.
-	 * 会话管理
+	 * 会话管理器
      *
      * @var \Illuminate\Session\SessionManager
      */
@@ -26,7 +26,7 @@ class StartSession
 
     /**
      * Indicates if the session was handled for the current request.
-	 * 指示是否为当前请求处理了会话
+	 * 指示是否为当前请求处理会话
      *
      * @var bool
      */
@@ -46,7 +46,7 @@ class StartSession
 
     /**
      * Handle an incoming request.
-	 * 处理传入请求
+	 * 处理传入的请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -83,7 +83,7 @@ class StartSession
 
     /**
      * Perform any final actions for the request lifecycle.
-	 * 为请求生命周期执行任何最终操作
+	 * 对请求生命周期执行任何最终操作
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Symfony\Component\HttpFoundation\Response  $response
@@ -98,7 +98,7 @@ class StartSession
 
     /**
      * Start the session for the given request.
-	 * 为给定请求启动会话
+	 * 为给定的请求启动会话
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Contracts\Session\Session
@@ -114,7 +114,7 @@ class StartSession
 
     /**
      * Get the session implementation from the manager.
-	 * 从管理器获取会话实现
+	 * 从经理那里获得会话实现
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Contracts\Session\Session
@@ -128,7 +128,7 @@ class StartSession
 
     /**
      * Remove the garbage from the session if necessary.
-	 * 如果需要，从会话中删除垃圾。
+	 * 如果需要,请从会话中删除垃圾。
      *
      * @param  \Illuminate\Contracts\Session\Session  $session
      * @return void
@@ -147,7 +147,7 @@ class StartSession
 
     /**
      * Determine if the configuration odds hit the lottery.
-	 * 确定配置的概率是否命中彩票
+	 * 确定配置是否命中lottery
      *
      * @param  array  $config
      * @return bool
@@ -159,7 +159,7 @@ class StartSession
 
     /**
      * Store the current URL for the request if necessary.
-	 * 如果需要，存储请求的当前URL。
+	 * 如果需要,存储当前URL
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Contracts\Session\Session  $session
@@ -197,7 +197,7 @@ class StartSession
 
     /**
      * Get the session lifetime in seconds.
-	 * 获取会话生存期（以秒为单位）
+	 * 在几秒钟内完成会话
      *
      * @return int
      */
@@ -208,7 +208,7 @@ class StartSession
 
     /**
      * Get the cookie lifetime in seconds.
-	 * 获取以秒为单位的cookie生命周期
+	 * 在几秒钟内得到cookie
      *
      * @return \DateTimeInterface
      */
@@ -221,7 +221,7 @@ class StartSession
 
     /**
      * Determine if a session driver has been configured.
-	 * 确定是否已配置会话驱动程序
+	 * 确定是否已经配置了会话驱动程序
      *
      * @return bool
      */

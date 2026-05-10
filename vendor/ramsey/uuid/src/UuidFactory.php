@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，Uuid 工厂
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -56,6 +60,7 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      * Constructs a `UuidFactory` for creating `Ramsey\Uuid\UuidInterface` instances
+	 * 构建“UuidFactory”来创建“Ramsey \ uidinterface”实例
      *
      * @param FeatureSet $features A set of features for use when creating UUIDs
      */

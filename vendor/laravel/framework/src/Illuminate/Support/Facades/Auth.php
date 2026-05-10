@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，认证
+ * Illuminate，支持，门面，Auth
  */
 
 namespace Illuminate\Support\Facades;
@@ -21,6 +21,11 @@ namespace Illuminate\Support\Facades;
  * @method static bool onceUsingId(mixed $id)
  * @method static bool viaRemember()
  * @method static void logout()
+ * @method static \Symfony\Component\HttpFoundation\Response|null onceBasic(string $field = 'email',array $extraConditions = [])
+ * @method static null|bool logoutOtherDevices(string $password, string $attribute = 'password')
+ * @method static \Illuminate\Contracts\Auth\UserProvider|null createUserProvider(string $provider = null)
+ * @method static \Illuminate\Auth\AuthManager extend(string $driver, \Closure $callback)
+ * @method static \Illuminate\Auth\AuthManager provider(string $name, \Closure $callback)
  *
  * @see \Illuminate\Auth\AuthManager
  * @see \Illuminate\Contracts\Auth\Factory
@@ -42,7 +47,7 @@ class Auth extends Facade
 
     /**
      * Register the typical authentication routes for an application.
-	 * 为应用程序注册典型的身份验证路由
+	 * 注册应用程序的典型身份验证路由
      *
      * @return void
      */

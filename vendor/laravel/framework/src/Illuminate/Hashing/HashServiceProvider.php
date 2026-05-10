@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，哈希，哈希服务提供者
+ * Illuminate，哈希，哈希服务提供商
  */
 
 namespace Illuminate\Hashing;
@@ -25,8 +25,12 @@ class HashServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('hash', function () {
-            return new BcryptHasher;
+        $this->app->singleton('hash', function ($app) {
+            return new HashManager($app);
+        });
+
+        $this->app->singleton('hash.driver', function ($app) {
+            return $app['hash']->driver();
         });
     }
 
@@ -38,6 +42,6 @@ class HashServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['hash'];
+        return ['hash', 'hash.driver'];
     }
 }

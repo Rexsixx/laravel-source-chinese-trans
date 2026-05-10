@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，格式器，Flowdock 格式化器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -13,6 +16,7 @@ namespace Monolog\Formatter;
 
 /**
  * formats the record to be used in the FlowdockHandler
+ * 格式化要在FlowdockHandler中使用的记录
  *
  * @author Dominik Liebler <liebler.dominik@gmail.com>
  */

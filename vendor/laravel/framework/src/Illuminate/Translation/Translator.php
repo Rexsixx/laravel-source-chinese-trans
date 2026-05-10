@@ -60,7 +60,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Create a new translator instance.
-	 * 创建一个新的翻译器实例
+	 * 创建一个新的翻译实例
      *
      * @param  \Illuminate\Contracts\Translation\Loader  $loader
      * @param  string  $locale
@@ -74,7 +74,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Determine if a translation exists for a given locale.
-	 * 确定给定语言环境是否存在翻译
+	 * 确定是否存在一个给定的语言环境
      *
      * @param  string  $key
      * @param  string|null  $locale
@@ -101,7 +101,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the translation for a given key.
-	 * 获取给定键的翻译
+	 * 为给定的键获得翻译
      *
      * @param  string  $key
      * @param  array   $replace
@@ -125,7 +125,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      */
     public function get($key, array $replace = [], $locale = null, $fallback = true)
     {
-        list($namespace, $group, $item) = $this->parseKey($key);
+        [$namespace, $group, $item] = $this->parseKey($key);
 
         // Here we will get the locale that should be used for the language line. If one
         // was not passed, we will use the default locales which was given to us when
@@ -187,7 +187,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get a translation according to an integer value.
-	 * 根据整数值获取翻译
+	 * 根据整数值获得翻译
      *
      * @param  string  $key
      * @param  int|array|\Countable  $number
@@ -202,7 +202,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get a translation according to an integer value.
-	 * 根据整数值获取翻译
+	 * 根据整数值获得翻译
      *
      * @param  string  $key
      * @param  int|array|\Countable  $number
@@ -232,7 +232,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the proper locale for a choice operation.
-	 * 为选择操作获取适当的区域设置
+	 * 为选择操作获取适当的语言环境
      *
      * @param  string|null  $locale
      * @return string
@@ -244,7 +244,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Retrieve a language line out the loaded array.
-	 * 从加载的数组中检索语言行
+	 * 检索加载数组的语言行
      *
      * @param  string  $namespace
      * @param  string  $group
@@ -268,7 +268,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Make the place-holder replacements on a line.
-	 * 在一行上替换占位符
+	 * 使标语牌更换在一条线上
      *
      * @param  string  $line
      * @param  array   $replace
@@ -295,7 +295,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Sort the replacements array.
-	 * 对替换数组进行排序
+	 * 排序替换数组
      *
      * @param  array  $replace
      * @return array
@@ -309,7 +309,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Add translation lines to the given locale.
-	 * 向给定的语言环境添加翻译行
+	 * 在给定的地区添加翻译行
      *
      * @param  array  $lines
      * @param  string  $locale
@@ -319,7 +319,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
     public function addLines(array $lines, $locale, $namespace = '*')
     {
         foreach ($lines as $key => $value) {
-            list($group, $item) = explode('.', $key, 2);
+            [$group, $item] = explode('.', $key, 2);
 
             Arr::set($this->loaded, "$namespace.$group.$locale.$item", $value);
         }
@@ -350,7 +350,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Determine if the given group has been loaded.
-	 * 确定是否已加载给定的组
+	 * 确定给定组是否已加载
      *
      * @param  string  $namespace
      * @param  string  $group
@@ -364,7 +364,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Add a new namespace to the loader.
-	 * 向加载器添加一个新的命名空间
+	 * 在加载器中添加一个新的命名空间
      *
      * @param  string  $namespace
      * @param  string  $hint
@@ -377,7 +377,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Add a new JSON path to the loader.
-	 * 向加载器添加一个新的JSON路径
+	 * 在加载器中添加一个新的JSON路径
      *
      * @param  string  $path
      * @return void
@@ -407,7 +407,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the array of locales to be checked.
-	 * 获取要检查的区域设置数组
+	 * 让数组的位置被检查
      *
      * @param  string|null  $locale
      * @return array
@@ -457,7 +457,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the default locale being used.
-	 * 获取正在使用的默认区域设置
+	 * 获取使用的默认区域环境
      *
      * @return string
      */
@@ -468,7 +468,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the default locale being used.
-	 * 获取正在使用的默认区域设置
+	 * 获取使用的默认区域环境
      *
      * @return string
      */
@@ -479,7 +479,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Set the default locale.
-	 * 设置默认语言环境
+	 * 设置默认区域设置
      *
      * @param  string  $locale
      * @return void
@@ -491,7 +491,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the fallback locale being used.
-	 * 获取正在使用的回退区域设置
+	 * 获取正在使用的休闲场所
      *
      * @return string
      */
@@ -502,7 +502,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Set the fallback locale being used.
-	 * 设置正在使用的回退区域设置
+	 * 设置正在使用的休闲场所
      *
      * @param  string  $fallback
      * @return void
@@ -510,5 +510,17 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
     public function setFallback($fallback)
     {
         $this->fallback = $fallback;
+    }
+
+    /**
+     * Set the loaded translation groups.
+	 * 设置加载的翻译组
+     *
+     * @param  array  $loaded
+     * @return void
+     */
+    public function setLoaded(array $loaded)
+    {
+        $this->loaded = $loaded;
     }
 }

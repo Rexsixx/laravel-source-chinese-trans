@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，命令，列表命令
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * ListCommand displays the list of all available commands for the application.
+ * ListCommand显示应用程序所有可用命令的列表
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -33,7 +37,7 @@ class ListCommand extends Command
         $this
             ->setName('list')
             ->setDefinition($this->createDefinition())
-            ->setDescription('Lists commands')
+            ->setDescription('List commands')
             ->setHelp(<<<'EOF'
 The <info>%command.name%</info> command lists all commands:
 
@@ -74,12 +78,11 @@ EOF
             'raw_text' => $input->getOption('raw'),
             'namespace' => $input->getArgument('namespace'),
         ]);
+
+        return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    private function createDefinition()
+    private function createDefinition(): InputDefinition
     {
         return new InputDefinition([
             new InputArgument('namespace', InputArgument::OPTIONAL, 'The namespace name'),

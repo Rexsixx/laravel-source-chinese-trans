@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清洁器，调用时间通过参考传递
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -19,6 +22,7 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * Validate that the user did not use the call-time pass-by-reference that causes a fatal error.
+ * 验证用户没有使用调用时传递引用导致致命错误。
  *
  * As of PHP 5.4.0, call-time pass-by-reference was removed, so using it will raise a fatal error.
  *
@@ -30,6 +34,7 @@ class CallTimePassByReferencePass extends CodeCleanerPass
 
     /**
      * Validate of use call-time pass-by-reference.
+	 * 验证使用调用时传递引用
      *
      * @throws RuntimeException if the user used call-time pass-by-reference
      *

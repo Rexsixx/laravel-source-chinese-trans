@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，佯装，总线 Fake
+ * Illuminate，支持，测试，Fake，总线 Fake
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -12,7 +12,7 @@ class BusFake implements Dispatcher
 {
     /**
      * The commands that have been dispatched.
-	 * 已调度的命令
+	 * 已发出的命令
      *
      * @var array
      */
@@ -20,7 +20,7 @@ class BusFake implements Dispatcher
 
     /**
      * Assert if a job was dispatched based on a truth-test callback.
-	 * 断言作业是否基于真值测试回调进行分派
+	 * 断言是否根据trutest callback发送了一份工作
      *
      * @param  string  $command
      * @param  callable|int|null  $callback
@@ -40,7 +40,7 @@ class BusFake implements Dispatcher
 
     /**
      * Assert if a job was pushed a number of times.
-	 * 判断一个作业是否被推送了多次
+	 * 断言如果工作被推了很多次
      *
      * @param  string  $command
      * @param  int  $times
@@ -56,7 +56,7 @@ class BusFake implements Dispatcher
 
     /**
      * Determine if a job was dispatched based on a truth-test callback.
-	 * 确定是否根据true -test回调分派了作业
+	 * 确定是否根据trutest callback发送了一份工作
      *
      * @param  string  $command
      * @param  callable|null  $callback
@@ -72,7 +72,7 @@ class BusFake implements Dispatcher
 
     /**
      * Get all of the jobs matching a truth-test callback.
-	 * 获取所有符合真实测试回调的工作
+	 * 让所有的工作都匹配一个truand测试回调
      *
      * @param  string  $command
      * @param  callable|null  $callback
@@ -95,7 +95,7 @@ class BusFake implements Dispatcher
 
     /**
      * Determine if there are any stored commands for a given class.
-	 * 确定是否有任何针对给定类的存储命令
+	 * 确定给定类是否有存储命令
      *
      * @param  string  $command
      * @return bool
@@ -107,7 +107,7 @@ class BusFake implements Dispatcher
 
     /**
      * Dispatch a command to its appropriate handler.
-	 * 将命令分派给相应的处理程序
+	 * 向其适当的处理程序发送命令
      *
      * @param  mixed  $command
      * @return mixed
@@ -119,7 +119,7 @@ class BusFake implements Dispatcher
 
     /**
      * Dispatch a command to its appropriate handler in the current process.
-	 * 将命令分派给当前进程中相应的处理程序
+	 * 在当前过程中向其适当的处理程序发送命令
      *
      * @param  mixed  $command
      * @param  mixed  $handler
@@ -132,7 +132,7 @@ class BusFake implements Dispatcher
 
     /**
      * Set the pipes commands should be piped through before dispatching.
-	 * 设置调度前需要通过管道的命令
+	 * 在调度前设置管道命令
      *
      * @param  array  $pipes
      * @return $this
@@ -140,5 +140,41 @@ class BusFake implements Dispatcher
     public function pipeThrough(array $pipes)
     {
         //
+    }
+
+    /**
+     * Determine if the given command has a handler.
+	 * 确定给定的命令是否有处理程序
+     *
+     * @param  mixed  $command
+     * @return bool
+     */
+    public function hasCommandHandler($command)
+    {
+        return false;
+    }
+
+    /**
+     * Retrieve the handler for a command.
+	 * 检索命令的处理程序
+     *
+     * @param  mixed  $command
+     * @return mixed
+     */
+    public function getCommandHandler($command)
+    {
+        return false;
+    }
+
+    /**
+     * Map a command to a handler.
+	 * 向处理程序映射一个命令
+     *
+     * @param  array  $map
+     * @return $this
+     */
+    public function map(array $map)
+    {
+        return $this;
     }
 }

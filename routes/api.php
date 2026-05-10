@@ -1,13 +1,10 @@
 <?php
-/**
- * 路由，api
- */
 
 use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes	API路由
+| API Routes
 |--------------------------------------------------------------------------
 |
 | Here is where you can register API routes for your application. These

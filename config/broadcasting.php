@@ -7,7 +7,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Broadcaster	默认广播员
+    | Default Broadcaster
     |--------------------------------------------------------------------------
     |
     | This option controls the default broadcaster that will be used by the
@@ -22,7 +22,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Broadcast Connections		广播连接
+    | Broadcast Connections
     |--------------------------------------------------------------------------
     |
     | Here you may define all of the broadcast connections that will be used

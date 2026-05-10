@@ -19,7 +19,7 @@ class BroadcastEvent implements ShouldQueue
 
     /**
      * The event instance.
-	 * 事件实例
+	 * 事件实例 
      *
      * @var mixed
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，引导，引导供应商
+ * Illuminate，基础，引导程序，引导供应商
  */
 
 namespace Illuminate\Foundation\Bootstrap;

@@ -1,4 +1,8 @@
 <?php
+/**
+ * PharIo，Manifest，无效的应用程序名异常
+ */
+
 /*
  * This file is part of PharIo\Manifest.
  *

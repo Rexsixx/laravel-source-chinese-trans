@@ -49,7 +49,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Indicates if we have made it through the base setUp function.
-	 * 指示我们是否通过了基本setUp函
+	 * 指示我们是否通过了基本setUp函数
      *
      * @var bool
      */

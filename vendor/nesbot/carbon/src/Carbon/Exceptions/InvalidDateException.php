@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，异常，无效日期异常
+ */
 
 /*
  * This file is part of the Carbon package.
@@ -18,6 +21,7 @@ class InvalidDateException extends InvalidArgumentException
 {
     /**
      * The invalid field.
+	 * 无效字段
      *
      * @var string
      */
@@ -25,6 +29,7 @@ class InvalidDateException extends InvalidArgumentException
 
     /**
      * The invalid value.
+	 * 无效值
      *
      * @var mixed
      */
@@ -32,6 +37,7 @@ class InvalidDateException extends InvalidArgumentException
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * @param string          $field
      * @param mixed           $value

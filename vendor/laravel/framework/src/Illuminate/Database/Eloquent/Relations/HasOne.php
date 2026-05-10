@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，有一个
+ * Illuminate，数据库，Eloquent，关系，一对一（关联）
  */
 
 namespace Illuminate\Database\Eloquent\Relations;

@@ -11,7 +11,7 @@ class MemcachedLock extends Lock implements LockContract
 {
     /**
      * The Memcached instance.
-	 * Memcached 实例
+	 * Memcached实例
      *
      * @var \Memcached
      */

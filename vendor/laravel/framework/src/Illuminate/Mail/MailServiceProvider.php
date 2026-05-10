@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，邮件服务提供者
+ * Illuminate，电子邮件，电子邮件服务提供者
  */
 
 namespace Illuminate\Mail;
@@ -8,6 +8,7 @@ namespace Illuminate\Mail;
 use Swift_Mailer;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Swift_DependencyContainer;
 use Illuminate\Support\ServiceProvider;
 
 class MailServiceProvider extends ServiceProvider
@@ -70,7 +71,7 @@ class MailServiceProvider extends ServiceProvider
 
     /**
      * Set a global address on the mailer by type.
-	 * 按类型在邮件上设置全局地址
+	 * 按类型设置发送邮件的全局地址
      *
      * @param  \Illuminate\Mail\Mailer  $mailer
      * @param  array  $config
@@ -100,6 +101,12 @@ class MailServiceProvider extends ServiceProvider
         // mailer instance, passing in the transport instances, which allows us to
         // override this transporter instances during app start-up if necessary.
         $this->app->singleton('swift.mailer', function ($app) {
+            if ($domain = $app->make('config')->get('mail.domain')) {
+                Swift_DependencyContainer::getInstance()
+                                ->register('mime.idgenerator.idright')
+                                ->asValue($domain);
+            }
+
             return new Swift_Mailer($app['swift.transport']->driver());
         });
     }

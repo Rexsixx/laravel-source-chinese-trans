@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，警卫队助手
+ * Illuminate，Auth，警卫助手
  */
 
 namespace Illuminate\Auth;
@@ -10,7 +10,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
 /**
  * These methods are typically the same across all guards.
- * 这些方法通常在所有警卫中都是一样的。
+ * 这些方法在所有守卫中通常是相同的
  */
 trait GuardHelpers
 {
@@ -45,6 +45,17 @@ trait GuardHelpers
         }
 
         throw new AuthenticationException;
+    }
+
+    /**
+     * Determine if the guard has a user instance.
+	 * 确定守卫是否有用户实例
+     *
+     * @return bool
+     */
+    public function hasUser()
+    {
+        return ! is_null($this->user);
     }
 
     /**

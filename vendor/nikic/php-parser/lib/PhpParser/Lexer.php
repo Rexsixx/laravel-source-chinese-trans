@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，Lexer
+ */
+
 namespace PhpParser;
 
 use PhpParser\Parser\Tokens;
@@ -27,6 +31,7 @@ class Lexer
 
     /**
      * Creates a Lexer.
+	 * 创建Lexer
      *
      * @param array $options Options array. Currently only the 'usedAttributes' option is supported,
      *                       which is an array of attributes to add to the AST nodes. Possible
@@ -61,6 +66,7 @@ class Lexer
 
     /**
      * Initializes the lexer for lexing the provided source code.
+	 * 初始化词法分析器以对所提供的源代码进行词法分析。
      *
      * This function does not throw if lexing errors occur. Instead, errors may be retrieved using
      * the getErrors() method.
@@ -119,6 +125,7 @@ class Lexer
 
     /**
      * Check whether comment token is unterminated.
+	 * 检查注释令牌是否未终止
      *
      * @return bool
      */

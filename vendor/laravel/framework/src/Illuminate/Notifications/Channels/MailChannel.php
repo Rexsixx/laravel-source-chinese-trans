@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，频道，Mail 频道
+ * Illuminate，通知，通道，电子邮件通道
  */
 
 namespace Illuminate\Notifications\Channels;
@@ -24,7 +24,7 @@ class MailChannel
 
     /**
      * The markdown implementation.
-	 * 降价实现
+	 * markdown实现
      *
      * @var \Illuminate\Mail\Markdown
      */
@@ -56,7 +56,7 @@ class MailChannel
     {
         $message = $notification->toMail($notifiable);
 
-        if (! $notifiable->routeNotificationFor('mail') &&
+        if (! $notifiable->routeNotificationFor('mail', $notification) &&
             ! $message instanceof Mailable) {
             return;
         }
@@ -74,7 +74,7 @@ class MailChannel
 
     /**
      * Get the mailer Closure for the message.
-	 * 获取邮件的邮件封包
+	 * 获取消息的mailer闭包
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -119,7 +119,7 @@ class MailChannel
      */
     protected function buildMessage($mailMessage, $notifiable, $notification, $message)
     {
-        $this->addressMessage($mailMessage, $notifiable, $message);
+        $this->addressMessage($mailMessage, $notifiable, $notification, $message);
 
         $mailMessage->subject($message->subject ?: Str::title(
             Str::snake(class_basename($notification), ' ')
@@ -134,25 +134,30 @@ class MailChannel
 
     /**
      * Address the mail message.
-	 * 邮件消息的地址
+	 * 处理邮件信息
      *
      * @param  \Illuminate\Mail\Message  $mailMessage
      * @param  mixed  $notifiable
+     * @param  \Illuminate\Notifications\Notification  $notification
      * @param  \Illuminate\Notifications\Messages\MailMessage  $message
      * @return void
      */
-    protected function addressMessage($mailMessage, $notifiable, $message)
+    protected function addressMessage($mailMessage, $notifiable, $notification, $message)
     {
         $this->addSender($mailMessage, $message);
 
-        $mailMessage->to($this->getRecipients($notifiable, $message));
+        $mailMessage->to($this->getRecipients($notifiable, $notification, $message));
 
-        if ($message->cc) {
-            $mailMessage->cc($message->cc[0], Arr::get($message->cc, 1));
+        if (! empty($message->cc)) {
+            foreach ($message->cc as $cc) {
+                $mailMessage->cc($cc[0], Arr::get($cc, 1));
+            }
         }
 
-        if ($message->bcc) {
-            $mailMessage->bcc($message->bcc[0], Arr::get($message->bcc, 1));
+        if (! empty($message->bcc)) {
+            foreach ($message->bcc as $bcc) {
+                $mailMessage->bcc($bcc[0], Arr::get($bcc, 1));
+            }
         }
     }
 
@@ -171,7 +176,9 @@ class MailChannel
         }
 
         if (! empty($message->replyTo)) {
-            $mailMessage->replyTo($message->replyTo[0], Arr::get($message->replyTo, 1));
+            foreach ($message->replyTo as $replyTo) {
+                $mailMessage->replyTo($replyTo[0], Arr::get($replyTo, 1));
+            }
         }
     }
 
@@ -180,17 +187,20 @@ class MailChannel
 	 * 获取给定消息的收件人
      *
      * @param  mixed  $notifiable
+     * @param  \Illuminate\Notifications\Notification  $notification
      * @param  \Illuminate\Notifications\Messages\MailMessage  $message
      * @return mixed
      */
-    protected function getRecipients($notifiable, $message)
+    protected function getRecipients($notifiable, $notification, $message)
     {
-        if (is_string($recipients = $notifiable->routeNotificationFor('mail'))) {
+        if (is_string($recipients = $notifiable->routeNotificationFor('mail', $notification))) {
             $recipients = [$recipients];
         }
 
-        return collect($recipients)->map(function ($recipient) {
-            return is_string($recipient) ? $recipient : $recipient->email;
+        return collect($recipients)->mapWithKeys(function ($recipient, $email) {
+            return is_numeric($email)
+                    ? [$email => (is_string($recipient) ? $recipient : $recipient->email)]
+                    : [$email => $recipient];
         })->all();
     }
 

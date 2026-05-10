@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，命名空间项解析器
+ * Illuminate，支持，命名空间项目解析器
  */
 
 namespace Illuminate\Support;
@@ -9,7 +9,7 @@ class NamespacedItemResolver
 {
     /**
      * A cache of the parsed items.
-	 * 已解析项的缓存
+	 * 缓存项的缓存
      *
      * @var array
      */
@@ -50,7 +50,7 @@ class NamespacedItemResolver
 
     /**
      * Parse an array of basic segments.
-	 * 解析基本段数组
+	 * 解析数组的基本段
      *
      * @param  array  $segments
      * @return array
@@ -74,14 +74,14 @@ class NamespacedItemResolver
 
     /**
      * Parse an array of namespaced segments.
-	 * 解析一个命名空间段数组
+	 * 解析一个命名空间的数组
      *
      * @param  string  $key
      * @return array
      */
     protected function parseNamespacedSegments($key)
     {
-        list($namespace, $item) = explode('::', $key);
+        [$namespace, $item] = explode('::', $key);
 
         // First we'll just explode the first segment to get the namespace and group
         // since the item should be in the remaining segments. Once we have these

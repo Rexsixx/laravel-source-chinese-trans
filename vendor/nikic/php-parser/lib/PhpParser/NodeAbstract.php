@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点摘要
+ */
+
 namespace PhpParser;
 
 abstract class NodeAbstract implements Node, \JsonSerializable
@@ -8,6 +12,7 @@ abstract class NodeAbstract implements Node, \JsonSerializable
 
     /**
      * Creates a Node.
+	 * 创建一个节点
      *
      * @param array $attributes Array of attributes
      */
@@ -17,6 +22,7 @@ abstract class NodeAbstract implements Node, \JsonSerializable
 
     /**
      * Gets line the node started in (alias of getStartLine).
+	 * 获取节点开始于(getStartLine别名)的行
      *
      * @return int Start line (or -1 if not available)
      */
@@ -26,6 +32,7 @@ abstract class NodeAbstract implements Node, \JsonSerializable
 
     /**
      * Gets line the node started in.
+	 * 获取节点开始的行。
      *
      * Requires the 'startLine' attribute to be enabled in the lexer (enabled by default).
      *
@@ -37,6 +44,7 @@ abstract class NodeAbstract implements Node, \JsonSerializable
 
     /**
      * Gets the line the node ended in.
+	 * 获取节点结束的行。
      *
      * Requires the 'endLine' attribute to be enabled in the lexer (enabled by default).
      *

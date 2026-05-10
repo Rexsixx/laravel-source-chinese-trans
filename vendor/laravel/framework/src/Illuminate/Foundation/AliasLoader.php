@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，别名加载机
+ * Illuminate，基础，别名加载器
  */
 
 namespace Illuminate\Foundation;
@@ -255,7 +255,7 @@ class AliasLoader
 
     /**
      * Clone method.
-	 * 克隆方式
+	 * 克隆方法
      *
      * @return void
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，异常，Pcre 异常
+ */
 
 declare(strict_types=1);
 

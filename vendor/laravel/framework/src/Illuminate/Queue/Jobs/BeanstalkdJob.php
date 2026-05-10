@@ -30,7 +30,7 @@ class BeanstalkdJob extends Job implements JobContract
 
     /**
      * Create a new job instance.
-	 * 创建新的作业实例
+	 * 创建一个新的作业实例
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  \Pheanstalk\Pheanstalk  $pheanstalk
@@ -105,7 +105,7 @@ class BeanstalkdJob extends Job implements JobContract
 
     /**
      * Get the job identifier.
-	 * 获取作业标识符
+	 * 获取工作标识符
      *
      * @return int
      */
@@ -116,7 +116,7 @@ class BeanstalkdJob extends Job implements JobContract
 
     /**
      * Get the raw body string for the job.
-	 * 获取工作的原始主体字符串
+	 * 为工作获得原始的身体字符串
      *
      * @return string
      */
@@ -127,7 +127,7 @@ class BeanstalkdJob extends Job implements JobContract
 
     /**
      * Get the underlying Pheanstalk instance.
-	 * 获取底层Pheanstalk实例
+	 * 获取潜在的Pheanstalk实例
      *
      * @return \Pheanstalk\Pheanstalk
      */
@@ -138,7 +138,7 @@ class BeanstalkdJob extends Job implements JobContract
 
     /**
      * Get the underlying Pheanstalk job.
-	 * 获取底层的Pheanstalk作业
+	 * 获得潜在的Pheanstalk作业
      *
      * @return \Pheanstalk\Job
      */

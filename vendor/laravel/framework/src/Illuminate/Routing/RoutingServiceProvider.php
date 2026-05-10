@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由服务提供商
+ * Illuminate，路由，路由服务提供者
  */
 
 namespace Illuminate\Routing;
@@ -25,17 +25,11 @@ class RoutingServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerRouter();
-
         $this->registerUrlGenerator();
-
         $this->registerRedirector();
-
         $this->registerPsrRequest();
-
         $this->registerPsrResponse();
-
         $this->registerResponseFactory();
-
         $this->registerControllerDispatcher();
     }
 
@@ -74,8 +68,15 @@ class RoutingServiceProvider extends ServiceProvider
                 )
             );
 
+            // Next we will set a few service resolvers on the URL generator so it can
+            // get the information it needs to function. This just provides some of
+            // the convenience features to this URL generator like "signed" URLs.
             $url->setSessionResolver(function () {
                 return $this->app['session'];
+            });
+
+            $url->setKeyResolver(function () {
+                return $this->app->make('config')->get('app.key');
             });
 
             // If the route collection is "rebound", for example, when the routes stay
@@ -91,7 +92,7 @@ class RoutingServiceProvider extends ServiceProvider
 
     /**
      * Get the URL generator request rebinder.
-	 * 获取URL生成器请求重新绑定器
+	 * 获取URL生成器请求重新绑定
      *
      * @return \Closure
      */
@@ -126,7 +127,7 @@ class RoutingServiceProvider extends ServiceProvider
 
     /**
      * Register a binding for the PSR-7 request implementation.
-	 * 为PSR-7请求实现注册绑定
+	 * 为PSR-7请求实现注册一个绑定
      *
      * @return void
      */
@@ -139,7 +140,7 @@ class RoutingServiceProvider extends ServiceProvider
 
     /**
      * Register a binding for the PSR-7 response implementation.
-	 * 为PSR-7响应实现注册绑定
+	 * 为PSR-7响应实现注册一个绑定
      *
      * @return void
      */
@@ -165,7 +166,7 @@ class RoutingServiceProvider extends ServiceProvider
 
     /**
      * Register the controller dispatcher.
-	 * 注册控制器调度程序
+	 * 注册控制器调度员
      *
      * @return void
      */

@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，支持，进程工具包
+ * Illuminate，支持，过程 Utils
  */
 
 namespace Illuminate\Support;
 
 /**
  * ProcessUtils is a bunch of utility methods.
- * ProcessUtils是一堆实用程序方法。
+ * ProcessUtils是一堆实用方法。
  *
  * This class was originally copied from Symfony 3.
  */
@@ -15,7 +15,7 @@ class ProcessUtils
 {
     /**
      * Escapes a string to be used as a shell argument.
-	 * 转义要用作shell参数的字符串
+	 * 从一个字符串中逃出来作为一个shell参数
      *
      * @param  string  $argument
      * @return string
@@ -62,7 +62,7 @@ class ProcessUtils
 
     /**
      * Is the given string surrounded by the given character?
-	 * 给定字符串是否被给定字符包围？
+	 * 给定的字符串是否被给定的字符包围?
      *
      * @param  string  $arg
      * @param  string  $char

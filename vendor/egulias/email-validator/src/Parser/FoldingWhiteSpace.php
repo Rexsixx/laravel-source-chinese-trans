@@ -1,4 +1,8 @@
 <?php
+/**
+ * Egulias，EmailValidator，分析程序，折叠白色空间
+ */
+
 namespace Egulias\EmailValidator\Parser;
 
 use Egulias\EmailValidator\EmailLexer;
@@ -13,7 +17,7 @@ use Egulias\EmailValidator\Result\Reason\ExpectingCTEXT;
 use Egulias\EmailValidator\Result\Result;
 use Egulias\EmailValidator\Result\ValidEmail;
 
-class  FoldingWhiteSpace extends PartParser
+class FoldingWhiteSpace extends PartParser
 {
     public const FWS_TYPES = [
         EmailLexer::S_SP,

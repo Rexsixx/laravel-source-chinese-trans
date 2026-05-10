@@ -80,7 +80,7 @@ class SyncJob extends Job implements JobContract
 
     /**
      * Get the raw body string for the job.
-	 * 获取工作的原始主体字符串
+	 * 为工作获得原始的身体字符串
      *
      * @return string
      */
@@ -91,7 +91,7 @@ class SyncJob extends Job implements JobContract
 
     /**
      * Get the name of the queue the job belongs to.
-	 * 获取作业所属队列的名称
+	 * 获取该工作所属队列的名称
      *
      * @return string
      */

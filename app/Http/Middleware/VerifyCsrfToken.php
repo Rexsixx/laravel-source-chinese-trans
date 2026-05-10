@@ -11,7 +11,6 @@ class VerifyCsrfToken extends Middleware
 {
     /**
      * The URIs that should be excluded from CSRF verification.
-	 * 应该从CSRF验证中排除的uri
      *
      * @var array
      */

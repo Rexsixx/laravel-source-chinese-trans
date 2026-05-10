@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，控制台，路由列表命令
+ */
 
 namespace Illuminate\Foundation\Console;
 
@@ -14,6 +17,7 @@ class RouteListCommand extends Command
 {
     /**
      * The console command name.
+	 * 控制台命令名
      *
      * @var string
      */
@@ -21,6 +25,7 @@ class RouteListCommand extends Command
 
     /**
      * The console command description.
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -28,6 +33,7 @@ class RouteListCommand extends Command
 
     /**
      * The router instance.
+	 * 路由器实例
      *
      * @var \Illuminate\Routing\Router
      */
@@ -35,6 +41,7 @@ class RouteListCommand extends Command
 
     /**
      * An array of all the registered routes.
+	 * 所有已注册路由的数组
      *
      * @var \Illuminate\Routing\RouteCollection
      */
@@ -42,6 +49,7 @@ class RouteListCommand extends Command
 
     /**
      * The table headers for the command.
+	 * 命令的表头
      *
      * @var array
      */
@@ -49,6 +57,7 @@ class RouteListCommand extends Command
 
     /**
      * Create a new route command instance.
+	 * 创建新的路由命令实例
      *
      * @param  \Illuminate\Routing\Router  $router
      * @return void
@@ -63,12 +72,13 @@ class RouteListCommand extends Command
 
     /**
      * Execute the console command.
+	 * 执行控制台命令
      *
      * @return void
      */
     public function handle()
     {
-        if (count($this->routes) == 0) {
+        if (count($this->routes) === 0) {
             return $this->error("Your application doesn't have any routes.");
         }
 
@@ -77,6 +87,7 @@ class RouteListCommand extends Command
 
     /**
      * Compile the routes into a displayable format.
+	 * 将路由编译成可显示的格式
      *
      * @return array
      */
@@ -99,6 +110,7 @@ class RouteListCommand extends Command
 
     /**
      * Get the route information for a given route.
+	 * 获取给定路线的路线信息
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return array
@@ -110,13 +122,14 @@ class RouteListCommand extends Command
             'method' => implode('|', $route->methods()),
             'uri'    => $route->uri(),
             'name'   => $route->getName(),
-            'action' => $route->getActionName(),
+            'action' => ltrim($route->getActionName(), '\\'),
             'middleware' => $this->getMiddleware($route),
         ]);
     }
 
     /**
      * Sort the routes by a given element.
+	 * 按给定元素对路由进行排序
      *
      * @param  string  $sort
      * @param  array  $routes
@@ -131,6 +144,7 @@ class RouteListCommand extends Command
 
     /**
      * Display the route information on the console.
+	 * 在控制台中显示路由信息
      *
      * @param  array  $routes
      * @return void
@@ -142,6 +156,7 @@ class RouteListCommand extends Command
 
     /**
      * Get before filters.
+	 * 在过滤器之前获取
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return string
@@ -155,6 +170,7 @@ class RouteListCommand extends Command
 
     /**
      * Filter the route by URI and / or name.
+	 * 通过URI和/或名称过滤路由
      *
      * @param  array  $route
      * @return array|null
@@ -172,6 +188,7 @@ class RouteListCommand extends Command
 
     /**
      * Get the console command options.
+	 * 获取控制台命令选项
      *
      * @return array
      */

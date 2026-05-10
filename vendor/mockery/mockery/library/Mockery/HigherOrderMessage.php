@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，高阶消息
+ */
+
+/**
  * Mockery
  *
  * LICENSE

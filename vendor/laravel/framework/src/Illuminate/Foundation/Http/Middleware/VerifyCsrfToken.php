@@ -19,7 +19,7 @@ class VerifyCsrfToken
 
     /**
      * The application instance.
-	 * 应用实例
+	 * 程序实例
      *
      * @var \Illuminate\Foundation\Application
      */
@@ -43,7 +43,7 @@ class VerifyCsrfToken
 
     /**
      * Create a new middleware instance.
-	 * 创建新的中间件实例
+	 * 创建一个新的中间件实例
      *
      * @param  \Illuminate\Foundation\Application  $app
      * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
@@ -57,7 +57,7 @@ class VerifyCsrfToken
 
     /**
      * Handle an incoming request.
-	 * 处理传入的请求
+	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next

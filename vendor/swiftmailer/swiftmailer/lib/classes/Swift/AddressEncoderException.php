@@ -1,4 +1,7 @@
 <?php
+/**
+ * Swift，Swift 地址编码器异常
+ */
 
 /*
  * This file is part of SwiftMailer.
@@ -11,6 +14,7 @@
 /**
  * AddressEncoderException when the specified email address is in a format that
  * cannot be encoded by a given address encoder.
+ * 当指定的电子邮件地址格式为格式时,AddressEncoderException不能由给定的地址编码器编码。
  *
  * @author Christian Schmidt
  */

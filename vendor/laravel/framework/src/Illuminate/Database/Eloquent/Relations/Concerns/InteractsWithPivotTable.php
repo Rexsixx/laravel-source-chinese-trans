@@ -16,6 +16,7 @@ trait InteractsWithPivotTable
 	 * 从父模型切换一个（或多个）模型。
      *
      * Each existing model is detached, and non existing ones are attached.
+	 * 每个现有的模型是分离的，而不存在的模型是附加的。
      *
      * @param  mixed  $ids
      * @param  bool   $touch
@@ -140,7 +141,7 @@ trait InteractsWithPivotTable
     {
         return collect($records)->mapWithKeys(function ($attributes, $id) {
             if (! is_array($attributes)) {
-                list($id, $attributes) = [$attributes, []];
+                [$id, $attributes] = [$attributes, []];
             }
 
             return [$id => $attributes];
@@ -197,7 +198,7 @@ trait InteractsWithPivotTable
             $attributes = $this->addTimestampsToAttachment($attributes, true);
         }
 
-        $updated = $this->newPivotStatementForId($id)->update(
+        $updated = $this->newPivotStatementForId($this->parseId($id))->update(
             $this->castAttributes($attributes)
         );
 
@@ -270,7 +271,7 @@ trait InteractsWithPivotTable
      */
     protected function formatAttachRecord($key, $value, $attributes, $hasTimestamps)
     {
-        list($id, $attributes) = $this->extractAttachIdAndAttributes($key, $value, $attributes);
+        [$id, $attributes] = $this->extractAttachIdAndAttributes($key, $value, $attributes);
 
         return array_merge(
             $this->baseAttachRecord($id, $hasTimestamps), $this->castAttributes($attributes)
@@ -314,6 +315,10 @@ trait InteractsWithPivotTable
             $record = $this->addTimestampsToAttachment($record);
         }
 
+        foreach ($this->pivotValues as $value) {
+            $record[$value['column']] = $value['value'];
+        }
+
         return $record;
     }
 
@@ -328,6 +333,12 @@ trait InteractsWithPivotTable
     protected function addTimestampsToAttachment(array $record, $exists = false)
     {
         $fresh = $this->parent->freshTimestamp();
+
+        if ($this->using) {
+            $pivotModel = new $this->using;
+
+            $fresh = $fresh->format($pivotModel->getDateFormat());
+        }
 
         if (! $exists && $this->hasPivotColumn($this->createdAt())) {
             $record[$this->createdAt()] = $fresh;
@@ -431,6 +442,7 @@ trait InteractsWithPivotTable
 
     /**
      * Get a new pivot statement for a given "other" ID.
+	 * 获取给定“other”ID的新枢轴语句
      *
      * @param  mixed  $id
      * @return \Illuminate\Database\Query\Builder
@@ -499,6 +511,18 @@ trait InteractsWithPivotTable
         }
 
         return (array) $value;
+    }
+
+    /**
+     * Get the ID from the given mixed value.
+	 * 从给定的混合值中获取ID
+     *
+     * @param  mixed  $value
+     * @return mixed
+     */
+    protected function parseId($value)
+    {
+        return $value instanceof Model ? $value->{$this->relatedKey} : $value;
     }
 
     /**

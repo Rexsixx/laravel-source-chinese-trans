@@ -1,13 +1,10 @@
 <?php
-/**
- * 配置，服务
- */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Third Party Services		第三方服务
+    | Third Party Services
     |--------------------------------------------------------------------------
     |
     | This file is for storing the credentials for third party services such
@@ -25,7 +22,7 @@ return [
     'ses' => [
         'key' => env('SES_KEY'),
         'secret' => env('SES_SECRET'),
-        'region' => 'us-east-1',
+        'region' => env('SES_REGION', 'us-east-1'),
     ],
 
     'sparkpost' => [

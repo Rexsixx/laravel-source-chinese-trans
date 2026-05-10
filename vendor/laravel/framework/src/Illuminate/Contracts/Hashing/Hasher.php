@@ -1,12 +1,21 @@
 <?php
 /**
- * Illuminate，契约，哈希，哈希计算器
+ * Illuminate，契约，哈希，哈希
  */
 
 namespace Illuminate\Contracts\Hashing;
 
 interface Hasher
 {
+    /**
+     * Get information about the given hashed value.
+	 * 获取有关给定散列值的信息
+     *
+     * @param  string  $hashedValue
+     * @return array
+     */
+    public function info($hashedValue);
+
     /**
      * Hash the given value.
 	 * 对给定值进行散列

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，会话，会话服务提供商
+ * Illuminate，会话，会话服务提供者
  */
 
 namespace Illuminate\Session;

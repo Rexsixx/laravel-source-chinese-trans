@@ -70,7 +70,7 @@ class CacheManager implements FactoryContract
      * Get a cache driver instance.
 	 * 获取缓存驱动程序实例
      *
-     * @param  string  $driver
+     * @param  string|null  $driver
      * @return mixed
      */
     public function driver($driver = null)
@@ -134,7 +134,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Create an instance of the APC cache driver.
-	 * 创建APC缓存驱动程序的实例
+	 * 创建APC缓存驱动程序的实例。
      *
      * @param  array  $config
      * @return \Illuminate\Cache\ApcStore
@@ -219,7 +219,7 @@ class CacheManager implements FactoryContract
 
     /**
      * Create an instance of the database cache driver.
-	 * 创建数据库缓存驱动程序的实例。
+	 * 创建数据库缓存驱动程序的实例
      *
      * @param  array  $config
      * @return \Illuminate\Cache\DatabaseStore

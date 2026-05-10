@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，地址
+ */
 
 declare(strict_types=1);
 
@@ -15,6 +18,7 @@ namespace phpDocumentor\Reflection;
 
 /**
  * The location where an element occurs within a file.
+ * 元素在文件中出现的位置
  *
  * @psalm-immutable
  */
@@ -28,6 +32,7 @@ final class Location
 
     /**
      * Initializes the location for an element using its line number in the file and optionally the column number.
+	 * 初始化元素的位置,使用其行号在文件中,并可选列号。
      */
     public function __construct(int $lineNumber, int $columnNumber = 0)
     {

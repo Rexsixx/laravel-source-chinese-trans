@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，频道，Slack Webhook 通道
+ * Illuminate，通知，通道，Slack Webhook 通道
  */
 
 namespace Illuminate\Notifications\Channels;
@@ -39,11 +39,11 @@ class SlackWebhookChannel
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return void
      */
     public function send($notifiable, Notification $notification)
     {
-        if (! $url = $notifiable->routeNotificationFor('slack')) {
+        if (! $url = $notifiable->routeNotificationFor('slack', $notification)) {
             return;
         }
 
@@ -100,6 +100,7 @@ class SlackWebhookChannel
                 'footer_icon' => $attachment->footerIcon,
                 'image_url' => $attachment->imageUrl,
                 'mrkdwn_in' => $attachment->markdown,
+                'pretext' => $attachment->pretext,
                 'text' => $attachment->content,
                 'thumb_url' => $attachment->thumbUrl,
                 'title' => $attachment->title,

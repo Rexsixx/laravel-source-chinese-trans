@@ -30,8 +30,8 @@ class SendQueuedNotifications implements ShouldQueue
     public $notification;
 
     /**
-     * All of the channels to send the notification too.
-	 * 所有发送通知的通道
+     * All of the channels to send the notification to.
+	 * 将通知发送到的所有通道
      *
      * @var array
      */

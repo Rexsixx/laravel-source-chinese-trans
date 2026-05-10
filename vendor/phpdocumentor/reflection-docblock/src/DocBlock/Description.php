@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，Doc Block，描述
+ */
 
 declare(strict_types=1);
 
@@ -20,6 +23,7 @@ use function vsprintf;
 
 /**
  * Object representing to description for a DocBlock.
+ * 表示DocBlock的对象。
  *
  * A Description object can consist of plain text but can also include tags. A Description Formatter can then combine
  * a body template with sprintf-style placeholders together with formatted tags in order to reconstitute a complete
@@ -60,6 +64,7 @@ class Description
 
     /**
      * Initializes a Description with its body (template) and a listing of the tags used in the body template.
+	 * 初始化描述其body(模板)和在body模板中使用的标签的列表
      *
      * @param Tag[] $tags
      */

@@ -1,13 +1,10 @@
 <?php
-/**
- * 路由，控制台
- */
 
 use Illuminate\Foundation\Inspiring;
 
 /*
 |--------------------------------------------------------------------------
-| Console Routes	控制台路由
+| Console Routes
 |--------------------------------------------------------------------------
 |
 | This file is where you may define all of your Closure based console

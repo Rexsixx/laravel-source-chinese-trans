@@ -1,12 +1,13 @@
 <?php
 /**
- * Illuminate，电子邮件，邮件程序
+ * Illuminate，电子邮件，可邮寄的
  */
 
 namespace Illuminate\Mail;
 
 use Swift_Mailer;
 use InvalidArgumentException;
+use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Support\Htmlable;
@@ -165,6 +166,19 @@ class Mailer implements MailerContract, MailQueueContract
     }
 
     /**
+     * Send a new message with only an HTML part.
+	 * 发送只包含HTML部分的新消息
+     *
+     * @param  string  $html
+     * @param  mixed  $callback
+     * @return void
+     */
+    public function html($html, $callback)
+    {
+        return $this->send(['html' => new HtmlString($html)], [], $callback);
+    }
+
+    /**
      * Send a new message when only a raw text part.
 	 * 发送一个新的消息时，只有一个原始文本部分。
      *
@@ -204,11 +218,11 @@ class Mailer implements MailerContract, MailQueueContract
         // First we need to parse the view, which could either be a string or an array
         // containing both an HTML and plain text versions of the view which should
         // be used when sending an e-mail. We will extract both of them out here.
-        list($view, $plain, $raw) = $this->parseView($view);
+        [$view, $plain, $raw] = $this->parseView($view);
 
         $data['message'] = $this->createMessage();
 
-        return $this->renderView($view, $data);
+        return $this->renderView($view ?: $plain, $data);
     }
 
     /**
@@ -229,22 +243,22 @@ class Mailer implements MailerContract, MailQueueContract
         // First we need to parse the view, which could either be a string or an array
         // containing both an HTML and plain text versions of the view which should
         // be used when sending an e-mail. We will extract both of them out here.
-        list($view, $plain, $raw) = $this->parseView($view);
+        [$view, $plain, $raw] = $this->parseView($view);
 
         $data['message'] = $message = $this->createMessage();
 
         // Once we have retrieved the view content for the e-mail we will set the body
         // of this message using the HTML type, which will provide a simple wrapper
         // to creating view based emails that are able to receive arrays of data.
-        $this->addContent($message, $view, $plain, $raw, $data);
-
         call_user_func($callback, $message);
+
+        $this->addContent($message, $view, $plain, $raw, $data);
 
         // If a global "to" address has been set, we will set that address on the mail
         // message. This is primarily useful during local development in which each
         // message should be delivered into a single mail address for inspection.
         if (isset($this->to['address'])) {
-            $this->setGlobalTo($message);
+            $this->setGlobalToAndRemoveCcAndBcc($message);
         }
 
         // Next we will determine if the message should be sent. We give the developer
@@ -252,10 +266,10 @@ class Mailer implements MailerContract, MailQueueContract
         // its recipients. We will then fire the sent event for the sent message.
         $swiftMessage = $message->getSwiftMessage();
 
-        if ($this->shouldSendMessage($swiftMessage)) {
+        if ($this->shouldSendMessage($swiftMessage, $data)) {
             $this->sendSwiftMessage($swiftMessage);
 
-            $this->dispatchSentEvent($message);
+            $this->dispatchSentEvent($message, $data);
         }
     }
 
@@ -355,11 +369,12 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Set the global "to" address on the given message.
+	 * 在给定消息上设置全局“to”地址
      *
      * @param  \Illuminate\Mail\Message  $message
      * @return void
      */
-    protected function setGlobalTo($message)
+    protected function setGlobalToAndRemoveCcAndBcc($message)
     {
         $message->to($this->to['address'], $this->to['name'], true);
         $message->cc(null, null, true);
@@ -475,7 +490,7 @@ class Mailer implements MailerContract, MailQueueContract
 	 * 发送一个Swift消息实例
      *
      * @param  \Swift_Message  $message
-     * @return void
+     * @return int|null
      */
     protected function sendSwiftMessage($message)
     {
@@ -491,16 +506,17 @@ class Mailer implements MailerContract, MailQueueContract
 	 * 确定是否可以发送消息
      *
      * @param  \Swift_Message  $message
+     * @param  array  $data
      * @return bool
      */
-    protected function shouldSendMessage($message)
+    protected function shouldSendMessage($message, $data = [])
     {
         if (! $this->events) {
             return true;
         }
 
         return $this->events->until(
-            new Events\MessageSending($message)
+            new Events\MessageSending($message, $data)
         ) !== false;
     }
 
@@ -509,20 +525,21 @@ class Mailer implements MailerContract, MailQueueContract
 	 * 分派消息发送事件
      *
      * @param  \Illuminate\Mail\Message  $message
+     * @param  array  $data
      * @return void
      */
-    protected function dispatchSentEvent($message)
+    protected function dispatchSentEvent($message, $data = [])
     {
         if ($this->events) {
             $this->events->dispatch(
-                new Events\MessageSent($message->getSwiftMessage())
+                new Events\MessageSent($message->getSwiftMessage(), $data)
             );
         }
     }
 
     /**
      * Force the transport to re-connect.
-	 * 强制传输重新连接
+	 * 强制传输重新连接。
      *
      * This will prevent errors in daemon queue situations.
      *
@@ -568,7 +585,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Set the Swift Mailer instance.
-	 * 设置Swift邮件实例
+	 * 设置Swift Mailer实例
      *
      * @param  \Swift_Mailer  $swift
      * @return void

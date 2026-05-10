@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，支持，可转为HTML的
+ * Illuminate，契约，支持，Html 能力
  */
 
 namespace Illuminate\Contracts\Support;

@@ -19,7 +19,7 @@ class ForgetFailedCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令说明
+	 * 控制台命令描述
      *
      * @var string
      */

@@ -73,6 +73,7 @@ class PendingDispatch
 
     /**
      * Set the desired queue for the chain.
+	 * 为链设置所需的队列
      *
      * @param  string|null  $queue
      * @return $this
@@ -86,6 +87,7 @@ class PendingDispatch
 
     /**
      * Set the desired delay for the job.
+	 * 为作业设置所需的延迟
      *
      * @param  \DateTime|int|null  $delay
      * @return $this

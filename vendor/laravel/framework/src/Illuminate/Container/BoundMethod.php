@@ -14,7 +14,7 @@ class BoundMethod
 {
     /**
      * Call the given Closure / class@method and inject its dependencies.
-	 * 调用给定的Closure/class@method并注入它的依赖项
+	 * 调用给定的Closure / class@method并注入它的依赖项
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  callable|string  $callback
@@ -129,7 +129,7 @@ class BoundMethod
 
     /**
      * Get the proper reflection instance for the given callback.
-	 * 获取给定回调的适当反射实例
+	 * 获取给定回调的适当反射实例。
      *
      * @param  callable|string  $callback
      * @return \ReflectionFunctionAbstract
@@ -162,6 +162,10 @@ class BoundMethod
             $dependencies[] = $parameters[$parameter->name];
 
             unset($parameters[$parameter->name]);
+        } elseif ($parameter->getClass() && array_key_exists($parameter->getClass()->name, $parameters)) {
+            $dependencies[] = $parameters[$parameter->getClass()->name];
+
+            unset($parameters[$parameter->getClass()->name]);
         } elseif ($parameter->getClass()) {
             $dependencies[] = $container->make($parameter->getClass()->name);
         } elseif ($parameter->isDefaultValueAvailable()) {

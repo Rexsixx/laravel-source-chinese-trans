@@ -50,7 +50,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Return a new response from the application.
-	 * 从应用程序返回一个新的响应
+	 * 返回应用程序的新响应
      *
      * @param  string  $content
      * @param  int  $status
@@ -64,7 +64,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Return a new view response from the application.
-	 * 从应用程序返回一个新的视图响应
+	 * 返回应用程序的新视图响应
      *
      * @param  string  $view
      * @param  array  $data
@@ -110,7 +110,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Return a new streamed response from the application.
-	 * 从应用程序返回一个新的流响应
+	 * 返回应用程序的新流响应
      *
      * @param  \Closure  $callback
      * @param  int  $status
@@ -123,11 +123,36 @@ class ResponseFactory implements FactoryContract
     }
 
     /**
+     * Return a new streamed response as a file download from the application.
+	 * 从应用程序中返回新的流响应作为文件下载
+     *
+     * @param  \Closure  $callback
+     * @param  string|null  $name
+     * @param  array  $headers
+     * @param  string|null  $disposition
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    public function streamDownload($callback, $name = null, array $headers = [], $disposition = 'attachment')
+    {
+        $response = new StreamedResponse($callback, 200, $headers);
+
+        if (! is_null($name)) {
+            $response->headers->set('Content-Disposition', $response->headers->makeDisposition(
+                $disposition,
+                $name,
+                $this->fallbackName($name)
+            ));
+        }
+
+        return $response;
+    }
+
+    /**
      * Create a new file download response.
 	 * 创建一个新的文件下载响应
      *
      * @param  \SplFileInfo|string  $file
-     * @param  string  $name
+     * @param  string|null  $name
      * @param  array  $headers
      * @param  string|null  $disposition
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
@@ -137,10 +162,22 @@ class ResponseFactory implements FactoryContract
         $response = new BinaryFileResponse($file, 200, $headers, true, $disposition);
 
         if (! is_null($name)) {
-            return $response->setContentDisposition($disposition, $name, str_replace('%', '', Str::ascii($name)));
+            return $response->setContentDisposition($disposition, $name, $this->fallbackName($name));
         }
 
         return $response;
+    }
+
+    /**
+     * Convert the string to ASCII characters that are equivalent to the given name.
+	 * 将字符串转换为相当于给定名称的ASCII字符
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function fallbackName($name)
+    {
+        return str_replace('%', '', Str::ascii($name));
     }
 
     /**
@@ -173,7 +210,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new redirect response to a named route.
-	 * 为命名路由创建一个新的重定向响应
+	 * 创建一个新的重定向响应来响应指定的路由
      *
      * @param  string  $route
      * @param  array  $parameters
@@ -188,7 +225,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new redirect response to a controller action.
-	 * 为控制器动作创建一个新的重定向响应
+	 * 创建一个新的重定向响应来响应控制器的操作
      *
      * @param  string  $action
      * @param  array  $parameters
@@ -203,7 +240,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new redirect response, while putting the current URL in the session.
-	 * 创建一个新的重定向响应，同时将当前URL放在会话中。
+	 * 创建一个新的重定向响应,同时在会话中放置当前URL。
      *
      * @param  string  $path
      * @param  int  $status
@@ -218,7 +255,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new redirect response to the previously intended location.
-	 * 创建到先前预期位置的新重定向响应
+	 * 创建一个新的重定向响应,以响应先前预定的位置。
      *
      * @param  string  $default
      * @param  int  $status

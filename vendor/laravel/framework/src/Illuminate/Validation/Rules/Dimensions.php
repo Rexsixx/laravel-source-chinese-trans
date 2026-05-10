@@ -57,7 +57,7 @@ class Dimensions
 
     /**
      * Set the "min width" constraint.
-	 * 设置“最小宽度”约束
+	 * 设置“min宽度”约束
      *
      * @param  int  $value
      * @return $this
@@ -71,7 +71,7 @@ class Dimensions
 
     /**
      * Set the "min height" constraint.
-	 * 设置“最小高度”约束
+	 * 设置“min高度”约束
      *
      * @param  int  $value
      * @return $this
@@ -99,7 +99,7 @@ class Dimensions
 
     /**
      * Set the "max height" constraint.
-	 * 设置“最大高度”约束
+	 * 设置“最大值高度”约束
      *
      * @param  int  $value
      * @return $this
@@ -113,7 +113,7 @@ class Dimensions
 
     /**
      * Set the "ratio" constraint.
-	 * 设置“比率”约束
+	 * 设置“比率”约束。
      *
      * @param  float  $value
      * @return $this

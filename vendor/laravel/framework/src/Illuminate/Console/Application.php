@@ -19,6 +19,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Illuminate\Contracts\Console\Application as ApplicationContract;
 
 class Application extends SymfonyApplication implements ApplicationContract
@@ -41,7 +42,7 @@ class Application extends SymfonyApplication implements ApplicationContract
 
     /**
      * The console application bootstrappers.
-	 * 控制台应用程序引导器
+	 * 控制台应用程序引导程序
      *
      * @var array
      */
@@ -49,7 +50,7 @@ class Application extends SymfonyApplication implements ApplicationContract
 
     /**
      * The Event Dispatcher.
-	 * 事件调度员
+	 * 事件调度程序
      *
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
@@ -178,18 +179,28 @@ class Application extends SymfonyApplication implements ApplicationContract
      *
      * @param  string  $command
      * @param  array  $parameters
-     * @param  \Symfony\Component\Console\Output\OutputInterface  $outputBuffer
+     * @param  \Symfony\Component\Console\Output\OutputInterface|null  $outputBuffer
      * @return int
+     *
+     * @throws \Symfony\Component\Console\Exception\CommandNotFoundException
      */
     public function call($command, array $parameters = [], $outputBuffer = null)
     {
-        $parameters = collect($parameters)->prepend($command);
+        if (is_subclass_of($command, SymfonyCommand::class)) {
+            $command = $this->laravel->make($command)->getName();
+        }
+
+        if (! $this->has($command)) {
+            throw new CommandNotFoundException(sprintf('The command "%s" does not exist.', $command));
+        }
+
+        array_unshift($parameters, $command);
 
         $this->lastOutput = $outputBuffer ?: new BufferedOutput;
 
         $this->setCatchExceptions(false);
 
-        $result = $this->run(new ArrayInput($parameters->toArray()), $this->lastOutput);
+        $result = $this->run(new ArrayInput($parameters), $this->lastOutput);
 
         $this->setCatchExceptions(true);
 
@@ -204,7 +215,9 @@ class Application extends SymfonyApplication implements ApplicationContract
      */
     public function output()
     {
-        return $this->lastOutput ? $this->lastOutput->fetch() : '';
+        return $this->lastOutput && method_exists($this->lastOutput, 'fetch')
+                        ? $this->lastOutput->fetch()
+                        : '';
     }
 
     /**
@@ -267,7 +280,7 @@ class Application extends SymfonyApplication implements ApplicationContract
 
     /**
      * Get the default input definitions for the applications.
-	 * 获取应用程序的默认输入定义
+	 * 获取应用程序的默认输入定义。
      *
      * This is used to add the --env option to every available command.
      *

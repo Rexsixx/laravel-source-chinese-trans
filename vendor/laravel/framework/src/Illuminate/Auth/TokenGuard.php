@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，令牌警卫
+ * Illuminate，认证，令牌警卫
  */
 
 namespace Illuminate\Auth;
@@ -43,14 +43,16 @@ class TokenGuard implements Guard
      *
      * @param  \Illuminate\Contracts\Auth\UserProvider  $provider
      * @param  \Illuminate\Http\Request  $request
+     * @param  string  $inputKey
+     * @param  string  $storageKey
      * @return void
      */
-    public function __construct(UserProvider $provider, Request $request)
+    public function __construct(UserProvider $provider, Request $request, $inputKey = 'api_token', $storageKey = 'api_token')
     {
         $this->request = $request;
         $this->provider = $provider;
-        $this->inputKey = 'api_token';
-        $this->storageKey = 'api_token';
+        $this->inputKey = $inputKey;
+        $this->storageKey = $storageKey;
     }
 
     /**

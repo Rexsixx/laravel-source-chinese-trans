@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，信使包
+ * Illuminate，支持，信息包
  */
 
 namespace Illuminate\Support;
@@ -16,7 +16,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 {
     /**
      * All of the registered messages.
-	 * 所有已注册的消息
+	 * 所有的注册信息
      *
      * @var array
      */
@@ -47,7 +47,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Get the keys present in the message bag.
-	 * 把钥匙放在留言袋里
+	 * 获取信息包中的密钥
      *
      * @return array
      */
@@ -58,7 +58,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Add a message to the bag.
-	 * 在包中添加一条消息
+	 * 在袋子里添加一个信息
      *
      * @param  string  $key
      * @param  string  $message
@@ -75,7 +75,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Determine if a key and message combination already exists.
-	 * 确定键和消息组合是否已经存在
+	 * 确定是否已经存在一个密钥和消息组合
      *
      * @param  string  $key
      * @param  string  $message
@@ -90,7 +90,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Merge a new array of messages into the bag.
-	 * 将一组新的消息合并到包中
+	 * 将新的消息数组合并到包中
      *
      * @param  \Illuminate\Contracts\Support\MessageProvider|array  $messages
      * @return $this
@@ -108,7 +108,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Determine if messages exist for all of the given keys.
-	 * 确定是否存在所有给定键的消息
+	 * 确定所有给定键是否存在消息
      *
      * @param  array|string  $key
      * @return bool
@@ -132,7 +132,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Determine if messages exist for any of the given keys.
-	 * 确定是否存在任何给定键的消息
+	 * 确定对于任何给定键是否存在消息
      *
      * @param  array|string  $keys
      * @return bool
@@ -152,7 +152,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Get the first message from the bag for a given key.
-	 * 从包中获取给定键的第一条消息
+	 * 从包中获取第一个信息
      *
      * @param  string  $key
      * @param  string  $format
@@ -169,7 +169,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Get all of the messages from the bag for a given key.
-	 * 从包中获取给定键的所有消息
+	 * 从包中获取所有信息
      *
      * @param  string  $key
      * @param  string  $format
@@ -216,7 +216,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Get all of the messages for every key in the bag.
-	 * 找到包里每把密钥的所有信息
+	 * 把所有的信息都得到袋子里的每一个钥匙
      *
      * @param  string  $format
      * @return array
@@ -236,7 +236,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Get all of the unique messages for every key in the bag.
-	 * 得到包里每把钥匙的唯一信息
+	 * 为包中的每一个键获取所有的惟一消息
      *
      * @param  string  $format
      * @return array
@@ -248,7 +248,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Format an array of messages.
-	 * 格式化消息数组
+	 * 格式化一组消息
      *
      * @param  array   $messages
      * @param  string  $format
@@ -268,7 +268,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Get the appropriate format based on the given format.
-	 * 根据给定的格式获取适当的格式
+	 * 根据给定的格式获得适当的格式
      *
      * @param  string  $format
      * @return string
@@ -302,7 +302,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Get the messages for the instance.
-	 * 获取实例的消息
+	 * 获取该实例的消息
      *
      * @return \Illuminate\Support\MessageBag
      */
@@ -338,7 +338,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Determine if the message bag has any messages.
-	 * 确定消息包中是否有任何消息
+	 * 确定消息包是否有任何消息
      *
      * @return bool
      */
@@ -349,7 +349,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Determine if the message bag has any messages.
-	 * 确定消息包中是否有任何消息
+	 * 确定消息包是否有任何消息
      *
      * @return bool
      */
@@ -360,7 +360,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Determine if the message bag has any messages.
-	 * 确定消息包中是否有任何消息
+	 * 确定消息包是否有任何消息
      *
      * @return bool
      */
@@ -371,7 +371,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Get the number of messages in the container.
-	 * 获取容器中的消息数
+	 * 获取容器中的消息数量
      *
      * @return int
      */
@@ -382,7 +382,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Get the instance as an array.
-	 * 以数组的形式获取实例
+	 * 以实例为数组
      *
      * @return array
      */
@@ -393,7 +393,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Convert the object into something JSON serializable.
-	 * 将对象转换为JSON可序列化的对象
+	 * 将对象转换为JSON序列化
      *
      * @return array
      */
@@ -404,7 +404,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Convert the object to its JSON representation.
-	 * 将对象转换为其JSON表示形式
+	 * 将对象转换为JSON表示
      *
      * @param  int  $options
      * @return string
@@ -416,7 +416,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Convert the message bag to its string representation.
-	 * 将消息包转换为其字符串表示形式
+	 * 将消息包转换为字符串表示
      *
      * @return string
      */

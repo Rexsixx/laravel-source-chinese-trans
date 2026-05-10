@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，通知
+ * Illuminate，支持，门面，Notification
  */
 
 namespace Illuminate\Support\Facades;
@@ -10,13 +10,17 @@ use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Testing\Fakes\NotificationFake;
 
 /**
+ * @method static void send(\Illuminate\Support\Collection|array|mixed $notifiables, $notification)
+ * @method static void sendNow(\Illuminate\Support\Collection|array|mixed $notifiables, $notification)
+ * @method static mixed channel(string|null $name = null)
+ *
  * @see \Illuminate\Notifications\ChannelManager
  */
 class Notification extends Facade
 {
     /**
      * Replace the bound instance with a fake.
-	 * 将绑定实例替换为伪实例
+	 * 用假的方式替换绑定的实例
      *
      * @return \Illuminate\Support\Testing\Fakes\NotificationFake
      */
@@ -29,7 +33,7 @@ class Notification extends Facade
 
     /**
      * Begin sending a notification to an anonymous notifiable.
-	 * 开始向匿名通知对象发送通知
+	 * 开始向匿名通知发送通知
      *
      * @param  string  $channel
      * @param  mixed  $route

@@ -93,7 +93,7 @@ class BelongsTo extends Relation
 
     /**
      * Set the base constraints on the relation query.
-	 * 在关系查询上设置基本约束
+	 * 在关系查询上设置基本约束。
      *
      * @return void
      */
@@ -294,7 +294,7 @@ class BelongsTo extends Relation
         $query->getModel()->setTable($hash);
 
         return $query->whereColumn(
-            $hash.'.'.$query->getModel()->getKeyName(), '=', $this->getQualifiedForeignKey()
+            $hash.'.'.$this->ownerKey, '=', $this->getQualifiedForeignKey()
         );
     }
 

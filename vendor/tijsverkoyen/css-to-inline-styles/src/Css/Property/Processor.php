@@ -1,4 +1,7 @@
 <?php
+/**
+ * TijsVerkoyen，CssToInlineStyles，Css，性质，处理器
+ */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css\Property;
 
@@ -8,6 +11,7 @@ class Processor
 {
     /**
      * Split a string into separate properties
+	 * 将字符串分割成单独的属性
      *
      * @param string $propertiesString
      *
@@ -61,6 +65,7 @@ class Processor
 
     /**
      * Converts a property-string into an object
+	 * 将属性字符串转换为对象
      *
      * @param string $property
      *
@@ -86,6 +91,7 @@ class Processor
 
     /**
      * Converts an array of property-strings into objects
+	 * 将属性字符串的数组转换为对象
      *
      * @param string[] $properties
      *

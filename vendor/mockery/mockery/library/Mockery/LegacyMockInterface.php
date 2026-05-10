@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，Legacy 模拟接口
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -24,6 +28,7 @@ interface LegacyMockInterface
 {
     /**
      * Alternative setup method to constructor
+	 * 构造函数的可选设置方法
      *
      * @param \Mockery\Container $container
      * @param object $partialObject
@@ -33,6 +38,7 @@ interface LegacyMockInterface
 
     /**
      * Set expected method calls
+	 * 设置预期的方法调用
      *
      * @param string|array ...$methodNames one or many methods that are expected to be called in this mock
      *
@@ -42,6 +48,7 @@ interface LegacyMockInterface
 
     /**
      * Shortcut method for setting an expectation that a method should not be called.
+	 * 用于设置不应调用方法的期望的快捷方法。
      *
      * @param string|array ...$methodNames one or many methods that are expected not to be called in this mock
      * @return \Mockery\ExpectationInterface|\Mockery\Expectation|\Mockery\HigherOrderMessage
@@ -50,6 +57,7 @@ interface LegacyMockInterface
 
     /**
      * Allows additional methods to be mocked that do not explicitly exist on mocked class
+	 * 允许其他的方法被嘲笑,在被嘲笑的类上没有显式地存在。
      * @param String $method name of the method to be mocked
      */
     public function shouldAllowMockingMethod($method);
@@ -68,6 +76,7 @@ interface LegacyMockInterface
 
     /**
      * Set mock to defer unexpected methods to its parent if possible
+	 * 如果可能的话,设置模拟将意想不到的方法推迟到它的父母。
      *
      * @deprecated 2.0.0 Please use makePartial() instead
      *
@@ -77,6 +86,7 @@ interface LegacyMockInterface
 
     /**
      * Set mock to defer unexpected methods to its parent if possible
+	 * 如果可能的话，将mock设置为将意外的方法推迟给它的父方法。
      *
      * @return Mock
      */

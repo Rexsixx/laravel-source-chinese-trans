@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，格式器，Elastica 格式化器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -14,6 +17,7 @@ namespace Monolog\Formatter;
 /**
  * Formats data into an associative array of scalar values.
  * Objects and arrays will be JSON encoded.
+ * 将数据格式化为标量值的关联数组。对象和数组将被JSON编码。
  *
  * @author Andrew Lawson <adlawson@gmail.com>
  */

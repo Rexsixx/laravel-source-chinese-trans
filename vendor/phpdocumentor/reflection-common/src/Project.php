@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，项目
+ */
 
 declare(strict_types=1);
 

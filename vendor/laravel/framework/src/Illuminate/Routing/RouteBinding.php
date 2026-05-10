@@ -13,7 +13,7 @@ class RouteBinding
 {
     /**
      * Create a Route model binding for a given callback.
-	 * 为给定的回调创建一个Route模型绑定
+	 * 为给定的回调创建一个路由模型绑定
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  \Closure|string  $binder
@@ -30,7 +30,7 @@ class RouteBinding
 
     /**
      * Create a class based binding using the IoC container.
-	 * 使用IoC容器创建基于类的绑定
+	 * 使用IoC容器创建类基础绑定
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  string  $binding
@@ -42,7 +42,7 @@ class RouteBinding
             // If the binding has an @ sign, we will assume it's being used to delimit
             // the class name from the bind method name. This allows for bindings
             // to run multiple bind methods in a single class for convenience.
-            list($class, $method) = Str::parseCallback($binding, 'bind');
+            [$class, $method] = Str::parseCallback($binding, 'bind');
 
             $callable = [$container->make($class), $method];
 
@@ -52,7 +52,7 @@ class RouteBinding
 
     /**
      * Create a Route model binding for a model.
-	 * 为模型创建一个Route模型绑定
+	 * 为模型创建路由模型绑定
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  string  $class

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理程序，Doctrine Couch DB 处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -17,6 +20,7 @@ use Doctrine\CouchDB\CouchDBClient;
 
 /**
  * CouchDB handler for Doctrine CouchDB ODM
+ * Doctrine CouchDB ODM的CouchDB处理器
  *
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
  */

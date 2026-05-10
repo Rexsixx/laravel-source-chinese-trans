@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，身份验证管理器
+ * Illuminate，Auth，认证管理器
  */
 
 namespace Illuminate\Auth;
@@ -15,7 +15,7 @@ class AuthManager implements FactoryContract
 
     /**
      * The application instance.
-	 * 应用实例
+	 * 程序实例
      *
      * @var \Illuminate\Foundation\Application
      */
@@ -42,7 +42,6 @@ class AuthManager implements FactoryContract
 	 * 各种服务共享的用户解析器。
      *
      * Determines the default user for Gate, Request, and the Authenticatable contract.
-	 * 确定Gate、Request和Authenticatable契约的默认用户。
      *
      * @var \Closure
      */
@@ -105,7 +104,7 @@ class AuthManager implements FactoryContract
             return $this->{$driverMethod}($name, $config);
         }
 
-        throw new InvalidArgumentException("Auth guard driver [{$name}] is not defined.");
+        throw new InvalidArgumentException("Auth driver [{$config['driver']}] for guard [{$name}] is not defined.");
     }
 
     /**
@@ -275,7 +274,7 @@ class AuthManager implements FactoryContract
 
     /**
      * Register a custom driver creator Closure.
-	 * 注册自定义驱动程序创建器Closure
+	 * 注册自定义驱动程序创建器Closure。
      *
      * @param  string  $driver
      * @param  \Closure  $callback

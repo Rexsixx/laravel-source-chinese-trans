@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，通道管理器
+ * Illuminate，通知，通道管理器
  */
 
 namespace Illuminate\Notifications;
@@ -131,7 +131,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Create a new driver instance.
-	 * 创建一个新的驱动程序实例
+	 * 创建一个新的驱动实例
      *
      * @param  string  $driver
      * @return mixed
@@ -164,7 +164,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Get the default channel driver name.
-	 * 获取默认通道驱动程序名称
+	 * 获取默认通道驱动程序名
      *
      * @return string
      */

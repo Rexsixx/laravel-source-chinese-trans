@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，计数验证器，精确的
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -26,6 +30,7 @@ class Exact extends CountValidatorAbstract
 {
     /**
      * Validate the call count against this validator
+	 * 根据此验证器验证调用计数
      *
      * @param int $n
      * @return bool

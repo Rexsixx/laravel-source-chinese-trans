@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，格式器，Wildfire 格式化器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -15,6 +18,7 @@ use Monolog\Logger;
 
 /**
  * Serializes a log message according to Wildfire's header requirements
+ * 根据Wildfire的报头要求序列化日志消息
  *
  * @author Eric Clemmons (@ericclemmons) <eric@uxdriven.com>
  * @author Christophe Coevoet <stof@notk.org>
@@ -26,6 +30,7 @@ class WildfireFormatter extends NormalizerFormatter
 
     /**
      * Translates Monolog log levels to Wildfire levels.
+	 * 将独白日志级别转换为Wildfire级别
      */
     private $logLevels = array(
         Logger::DEBUG     => 'LOG',

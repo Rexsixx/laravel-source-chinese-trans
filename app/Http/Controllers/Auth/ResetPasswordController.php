@@ -1,6 +1,6 @@
 <?php
 /**
- * App，Http，控制器，认证，重置密码控制器
+ * App，Http，控制台，授权，重置密码控制器
  */
 
 namespace App\Http\Controllers\Auth;
@@ -12,7 +12,7 @@ class ResetPasswordController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Password Reset Controller		密码重置控制器
+    | Password Reset Controller
     |--------------------------------------------------------------------------
     |
     | This controller is responsible for handling password reset requests
@@ -25,7 +25,6 @@ class ResetPasswordController extends Controller
 
     /**
      * Where to redirect users after resetting their password.
-	 * 在重新设置密码后重定向用户
      *
      * @var string
      */
@@ -33,7 +32,6 @@ class ResetPasswordController extends Controller
 
     /**
      * Create a new controller instance.
-	 * 创建新的控制器实例 
      *
      * @return void
      */

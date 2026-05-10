@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psr，Log，零记录器
+ */
 
 namespace Psr\Log;
 
@@ -14,6 +17,7 @@ class NullLogger extends AbstractLogger
 {
     /**
      * Logs with an arbitrary level.
+	 * 用任意级别的日志
      *
      * @param mixed  $level
      * @param string $message

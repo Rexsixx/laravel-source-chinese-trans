@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，请求窗体
+ * Illuminate，基础，Http，表格请求
  */
 
 namespace Illuminate\Foundation\Http;
@@ -192,7 +192,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
         $rules = $this->container->call([$this, 'rules']);
 
         return $this->only(collect($rules)->keys()->map(function ($rule) {
-            return str_contains($rule, '.') ? explode('.', $rule)[0] : $rule;
+            return explode('.', $rule)[0];
         })->unique()->toArray());
     }
 

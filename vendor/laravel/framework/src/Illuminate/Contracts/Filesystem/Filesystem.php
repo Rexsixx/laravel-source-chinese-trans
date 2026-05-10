@@ -9,7 +9,7 @@ interface Filesystem
 {
     /**
      * The public visibility setting.
-	 * 公众能见度设置
+	 * 公共可见性设置
      *
      * @var string
      */
@@ -85,7 +85,7 @@ interface Filesystem
 
     /**
      * Append to a file.
-	 * 追加到一个文件
+	 * 附加行到一个文件
      *
      * @param  string  $path
      * @param  string  $data

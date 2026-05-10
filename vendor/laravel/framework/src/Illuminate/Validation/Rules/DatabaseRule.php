@@ -26,8 +26,8 @@ trait DatabaseRule
     protected $column;
 
     /**
-     * There extra where clauses for the query.
-	 * 还有额外的where子句用于查询
+     * The extra where clauses for the query.
+	 * 查询的额外where子句
      *
      * @var array
      */
@@ -35,7 +35,7 @@ trait DatabaseRule
 
     /**
      * The array of custom query callbacks.
-	 * 自定义查询回调函数数组
+	 * 自定义查询回调数组
      *
      * @var array
      */
@@ -57,7 +57,7 @@ trait DatabaseRule
 
     /**
      * Set a "where" constraint on the query.
-	 * 在查询上设置“where”约束
+	 * 设置查询的“where”约束
      *
      * @param  string|\Closure  $column
      * @param  array|string|null  $value
@@ -80,7 +80,7 @@ trait DatabaseRule
 
     /**
      * Set a "where not" constraint on the query.
-	 * 在查询上设置“where not”约束
+	 * 在查询中设置“不”约束
      *
      * @param  string  $column
      * @param  array|string  $value
@@ -151,7 +151,7 @@ trait DatabaseRule
 
     /**
      * Register a custom query callback.
-	 * 注册一个自定义查询回调
+	 * 注册自定义查询回调
      *
      * @param  \Closure  $callback
      * @return $this

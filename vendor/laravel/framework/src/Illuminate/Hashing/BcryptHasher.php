@@ -8,15 +8,27 @@ namespace Illuminate\Hashing;
 use RuntimeException;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 
-class BcryptHasher implements HasherContract
+class BcryptHasher extends AbstractHasher implements HasherContract
 {
     /**
-     * Default crypt cost factor.
-	 * 默认crypt成本因子
+     * The default cost factor.
+	 * 默认的成本因子
      *
      * @var int
      */
     protected $rounds = 10;
+
+    /**
+     * Create a new hasher instance.
+	 * 创建一个新的散列实例
+     *
+     * @param  array  $options
+     * @return void
+     */
+    public function __construct(array $options = [])
+    {
+        $this->rounds = $options['rounds'] ?? $this->rounds;
+    }
 
     /**
      * Hash the given value.
@@ -39,24 +51,6 @@ class BcryptHasher implements HasherContract
         }
 
         return $hash;
-    }
-
-    /**
-     * Check the given plain value against a hash.
-	 * 根据散列检查给定的普通值
-     *
-     * @param  string  $value
-     * @param  string  $hashedValue
-     * @param  array   $options
-     * @return bool
-     */
-    public function check($value, $hashedValue, array $options = [])
-    {
-        if (strlen($hashedValue) === 0) {
-            return false;
-        }
-
-        return password_verify($value, $hashedValue);
     }
 
     /**

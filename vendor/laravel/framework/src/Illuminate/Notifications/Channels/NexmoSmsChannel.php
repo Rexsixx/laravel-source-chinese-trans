@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，频道，Nexmo 短信频道
+ * Illuminate，通知，通道，Nexmo 短信通道
  */
 
 namespace Illuminate\Notifications\Channels;
@@ -51,7 +51,7 @@ class NexmoSmsChannel
      */
     public function send($notifiable, Notification $notification)
     {
-        if (! $to = $notifiable->routeNotificationFor('nexmo')) {
+        if (! $to = $notifiable->routeNotificationFor('nexmo', $notification)) {
             return;
         }
 

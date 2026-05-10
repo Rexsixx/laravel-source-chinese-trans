@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，控制台，监听命令
+ * Illuminate，队列，控制台，倾听命令
  */
 
 namespace Illuminate\Queue\Console;
@@ -13,7 +13,7 @@ class ListenCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
@@ -29,7 +29,7 @@ class ListenCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令说明
+	 * 控制台命令描述
      *
      * @var string
      */

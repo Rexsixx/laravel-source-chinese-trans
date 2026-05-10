@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，实例化器，实例化器
+ * Doctrine，Instantiator，实例化器
  */
 
 namespace Doctrine\Instantiator;
@@ -49,7 +49,7 @@ final class Instantiator implements InstantiatorInterface
 
     /**
      * Array of objects that can directly be cloned, indexed by class name.
-	 * 可以直接克隆的对象数组,由类名索引
+	 * 可以直接克隆的对象数组，按类名索引。
      *
      * @var object[]
      */
@@ -86,6 +86,7 @@ final class Instantiator implements InstantiatorInterface
 
     /**
      * Builds the requested object and caches it in static properties for performance
+	 * 生成所请求的对象并将其缓存到静态属性中以提高性能
      *
      * @phpstan-param class-string<T> $className
      *

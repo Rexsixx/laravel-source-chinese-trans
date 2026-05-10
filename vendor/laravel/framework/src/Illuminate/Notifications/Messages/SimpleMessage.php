@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，信息，简单信息
+ * Illuminate，通知，信息，简单消息
  */
 
 namespace Illuminate\Notifications\Messages;
@@ -12,7 +12,7 @@ class SimpleMessage
 {
     /**
      * The "level" of the notification (info, success, error).
-	 * 通知的“级别”（info, success, error）
+	 * 通知的“级别”（info, success, error
      *
      * @var string
      */

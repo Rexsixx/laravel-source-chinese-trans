@@ -1,13 +1,10 @@
 <?php
-/**
- * 配置，缓存
- */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Cache Store	默认缓存存储
+    | Default Cache Store
     |--------------------------------------------------------------------------
     |
     | This option controls the default cache connection that gets used while
@@ -22,7 +19,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cache Stores		缓存存储
+    | Cache Stores
     |--------------------------------------------------------------------------
     |
     | Here you may define all of the cache "stores" for your application as
@@ -80,7 +77,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cache Key Prefix		缓存键前缀
+    | Cache Key Prefix
     |--------------------------------------------------------------------------
     |
     | When utilizing a RAM based store such as APC or Memcached, there might

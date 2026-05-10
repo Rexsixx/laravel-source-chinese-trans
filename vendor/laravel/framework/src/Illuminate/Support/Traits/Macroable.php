@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，特性，宏
+ * Illuminate，支持，特性，宏观的
  */
 
 namespace Illuminate\Support\Traits;
@@ -40,6 +40,7 @@ trait Macroable
      *
      * @param  object  $mixin
      * @return void
+     * @throws \ReflectionException
      */
     public static function mixin($mixin)
     {
@@ -56,7 +57,7 @@ trait Macroable
 
     /**
      * Checks if macro is registered.
-	 * 检查是否注册了宏
+	 * 检查宏是否注册
      *
      * @param  string  $name
      * @return bool
@@ -68,7 +69,7 @@ trait Macroable
 
     /**
      * Dynamically handle calls to the class.
-	 * 动态处理对类的调用
+	 * 动态地处理对类的调用
      *
      * @param  string  $method
      * @param  array   $parameters
@@ -79,7 +80,9 @@ trait Macroable
     public static function __callStatic($method, $parameters)
     {
         if (! static::hasMacro($method)) {
-            throw new BadMethodCallException("Method {$method} does not exist.");
+            throw new BadMethodCallException(sprintf(
+                'Method %s::%s does not exist.', static::class, $method
+            ));
         }
 
         if (static::$macros[$method] instanceof Closure) {
@@ -91,7 +94,7 @@ trait Macroable
 
     /**
      * Dynamically handle calls to the class.
-	 * 动态处理对类的调用。
+	 * 动态地处理对类的调用
      *
      * @param  string  $method
      * @param  array   $parameters
@@ -102,7 +105,9 @@ trait Macroable
     public function __call($method, $parameters)
     {
         if (! static::hasMacro($method)) {
-            throw new BadMethodCallException("Method {$method} does not exist.");
+            throw new BadMethodCallException(sprintf(
+                'Method %s::%s does not exist.', static::class, $method
+            ));
         }
 
         $macro = static::$macros[$method];
