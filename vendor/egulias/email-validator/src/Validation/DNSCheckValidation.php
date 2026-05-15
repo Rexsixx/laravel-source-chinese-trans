@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，验证，DNS 检查验证
+ */
 
 namespace Egulias\EmailValidator\Validation;
 
@@ -125,6 +128,7 @@ class DNSCheckValidation implements EmailValidation
 
     /**
      * Validate the DNS records for given host.
+	 * 验证给定主机的DNS记录
      *
      * @param string $host A set of DNS records in the format returned by dns_get_record.
      *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，错误处理程序
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -17,6 +20,7 @@ use Monolog\Handler\AbstractHandler;
 
 /**
  * Monolog error handler
+ * Monolog错误处理器
  *
  * A facility to enable logging of runtime errors, exceptions and fatal errors.
  *

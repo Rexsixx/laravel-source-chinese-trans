@@ -64,7 +64,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Database Connection
+    | Session Database Connection	会话数据库连接
     |--------------------------------------------------------------------------
     |
     | When using the "database" or "redis" session drivers, you may specify a
@@ -77,7 +77,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Database Table
+    | Session Database Table	会话数据库表
     |--------------------------------------------------------------------------
     |
     | When using the "database" session driver, you may specify the table we
@@ -90,7 +90,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Cache Store
+    | Session Cache Store	会话缓存存储
     |--------------------------------------------------------------------------
     |
     | When using the "apc" or "memcached" session drivers, you may specify a
@@ -103,7 +103,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Sweeping Lottery
+    | Session Sweeping Lottery	会话扫描Lottery
     |--------------------------------------------------------------------------
     |
     | Some session drivers must manually sweep their storage location to get
@@ -116,7 +116,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Cookie Name
+    | Session Cookie Name	会话Cookie名称
     |--------------------------------------------------------------------------
     |
     | Here you may change the name of the cookie used to identify a session
@@ -132,7 +132,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Cookie Path
+    | Session Cookie Path	会话Cookie路径
     |--------------------------------------------------------------------------
     |
     | The session cookie path determines the path for which the cookie will
@@ -145,7 +145,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Cookie Domain
+    | Session Cookie Domain		会话Cookie域
     |--------------------------------------------------------------------------
     |
     | Here you may change the domain of the cookie used to identify a session
@@ -158,7 +158,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | HTTPS Only Cookies
+    | HTTPS Only Cookies	仅支持HTTPS的cookie
     |--------------------------------------------------------------------------
     |
     | By setting this option to true, session cookies will only be sent back

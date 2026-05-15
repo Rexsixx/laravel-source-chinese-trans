@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，有效的生成器
+ */
 
 namespace Faker;
 
@@ -34,6 +37,7 @@ class ValidGenerator
     /**
      * Catch and proxy all generator calls but return only valid values
      * @param string $attribute
+	 * 捕获和代理所有生成器调用,但只返回有效值。
      *
      * @return mixed
      */

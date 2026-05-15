@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，公共，偏转器，偏转器
+ * Doctrine，公共，偏转器，Inflector
  */
  
 /*

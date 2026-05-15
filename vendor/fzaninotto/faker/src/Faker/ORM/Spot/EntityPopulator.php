@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，Spot，实体填充器
+ */
 
 namespace Faker\ORM\Spot;
 
@@ -10,6 +13,7 @@ use Spot\Relation\BelongsTo;
 
 /**
  * Service class for populating a table through a Spot Entity class.
+ * 用于通过Spot Entity类填充表的服务类
  */
 class EntityPopulator
 {

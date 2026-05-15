@@ -1,4 +1,7 @@
 <?php
+/**
+ * DeepCopy，类型过滤器，浅层复制过滤器
+ */
 
 namespace DeepCopy\TypeFilter;
 

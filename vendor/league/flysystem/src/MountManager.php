@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，安装管理器
+ */
 
 namespace League\Flysystem;
 
@@ -8,6 +11,7 @@ use League\Flysystem\Plugin\PluginNotFoundException;
 
 /**
  * Class MountManager.
+ * 类MountManager。
  *
  * Proxies methods to Filesystem (@see __call):
  *
@@ -32,6 +36,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * @param FilesystemInterface[] $filesystems [:prefix => Filesystem,]
      *
@@ -44,6 +49,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Mount filesystems.
+	 * 挂载文件系统
      *
      * @param FilesystemInterface[] $filesystems [:prefix => Filesystem,]
      *
@@ -62,6 +68,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Mount filesystems.
+	 * 安装文件系统
      *
      * @param string              $prefix
      * @param FilesystemInterface $filesystem

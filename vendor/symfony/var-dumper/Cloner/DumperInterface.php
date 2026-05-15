@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，克隆，转储接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\VarDumper\Cloner;
 
 /**
  * DumperInterface used by Data objects.
+ * DumperInterface对象使用的接口
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

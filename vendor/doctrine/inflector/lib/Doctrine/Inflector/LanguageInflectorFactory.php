@@ -1,4 +1,7 @@
 <?php
+/**
+ * Doctrine，偏转器，语言偏转器工厂
+ */
 
 declare(strict_types=1);
 
@@ -10,6 +13,7 @@ interface LanguageInflectorFactory
 {
     /**
      * Applies custom rules for singularisation
+	 * 应用自定义规则
      *
      * @param bool $reset If true, will unset default inflections for all new rules
      *
@@ -19,6 +23,7 @@ interface LanguageInflectorFactory
 
     /**
      * Applies custom rules for pluralisation
+	 * 应用自定义规则
      *
      * @param bool $reset If true, will unset default inflections for all new rules
      *

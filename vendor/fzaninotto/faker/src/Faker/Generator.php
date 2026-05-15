@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，生成器
+ */
 
 namespace Faker;
 
@@ -250,6 +253,7 @@ class Generator
 
     /**
      * Replaces tokens ('{{ tokenName }}') with the result from the token method call
+	 * 将token （'{{tokenName}}'）替换为token方法调用的结果
      *
      * @param  string $string String that needs to bet parsed
      * @return string

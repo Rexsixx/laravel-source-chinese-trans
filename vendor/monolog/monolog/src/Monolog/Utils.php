@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，工具包
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -25,6 +28,7 @@ class Utils
 
     /**
      * Makes sure if a relative path is passed in it is turned into an absolute path
+	 * 如果一条相对的路径被传递,它就会变成一个绝对的路径。
      *
      * @param string $streamUrl stream URL or path without protocol
      *
@@ -55,6 +59,7 @@ class Utils
 
     /**
      * Return the JSON representation of a value
+	 * 返回值的JSON表示形式
      *
      * @param  mixed             $data
      * @param  int               $encodeFlags flags to pass to json encode, defaults to JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，唯一名字生成器
+ */
 
 namespace Faker;
 
@@ -24,6 +27,7 @@ class UniqueGenerator
 
     /**
      * Catch and proxy all generator calls but return only unique values
+	 * 捕获并代理所有生成器调用，但只返回唯一的值。
      * @param string $attribute
      * @return mixed
      */

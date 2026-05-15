@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，配置
+ */
 
 namespace League\Flysystem;
 
@@ -26,6 +29,7 @@ class Config
 
     /**
      * Get a setting.
+	 * 得到一个设置
      *
      * @param string $key
      * @param mixed  $default

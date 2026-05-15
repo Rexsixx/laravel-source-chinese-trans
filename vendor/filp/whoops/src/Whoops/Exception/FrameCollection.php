@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，异常，框架集合
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -34,6 +38,7 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
 
     /**
      * Filters frames using a callable, returns the same FrameCollection
+	 * 使用可调用的过滤帧,返回相同的框架。
      *
      * @param  callable        $callable
      * @return FrameCollection

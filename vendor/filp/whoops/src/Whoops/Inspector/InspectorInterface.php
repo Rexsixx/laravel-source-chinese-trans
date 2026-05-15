@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，检查员，检查员接口
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -35,6 +39,7 @@ interface InspectorInterface
 
     /**
      * Returns a url to the php-manual related to the underlying error - when available.
+	 * 在可用的时候,将url返回到与基本错误相关的phop手动。
      *
      * @return string|null
      */
@@ -42,6 +47,7 @@ interface InspectorInterface
 
     /**
      * Does the wrapped Exception has a previous Exception?
+	 * 包装异常有一个以前的例外吗?
      * @return bool
      */
     public function hasPreviousException();

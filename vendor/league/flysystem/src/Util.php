@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，工具
+ */
 
 namespace League\Flysystem;
 
@@ -11,6 +14,7 @@ class Util
 {
     /**
      * Get normalized pathinfo.
+	 * 获取规范化的路径信息
      *
      * @param string $path
      *
@@ -33,6 +37,7 @@ class Util
 
     /**
      * Normalize a dirname return value.
+	 * 将dirname返回值规范化
      *
      * @param string $dirname
      *
@@ -45,6 +50,7 @@ class Util
 
     /**
      * Get a normalized dirname from a path.
+	 * 从路径中获得标准化的dirname
      *
      * @param string $path
      *
@@ -57,6 +63,7 @@ class Util
 
     /**
      * Map result arrays.
+	 * 映射结果数组
      *
      * @param array $object
      * @param array $map

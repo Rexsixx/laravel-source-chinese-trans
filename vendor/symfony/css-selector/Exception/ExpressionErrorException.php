@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，异常，表达式错误异常
+ */
 
 /*
  * This file is part of the Symfony package.

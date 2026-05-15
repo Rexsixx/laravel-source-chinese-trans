@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，XPath，翻译程序
+ */
 
 /*
  * This file is part of the Symfony package.

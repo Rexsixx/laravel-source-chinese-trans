@@ -1,4 +1,8 @@
 <?php
+/**
+ * Faker，ORM，CakePHP，实体填充器
+ */
+
 
 namespace Faker\ORM\CakePHP;
 

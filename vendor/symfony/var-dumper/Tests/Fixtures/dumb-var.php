@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，测试，固定装置，dumb-var
+ */
 
 namespace Symfony\Component\VarDumper\Tests\Fixture;
 

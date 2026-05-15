@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，CssSelector 转换器
+ */
 
 /*
  * This file is part of the Symfony package.

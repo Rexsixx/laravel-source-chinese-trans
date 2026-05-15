@@ -1,4 +1,7 @@
 <?php
+/**
+ * DeepCopy，DeepCopy
+ */
 
 namespace DeepCopy;
 
@@ -34,6 +37,7 @@ class DeepCopy
 
     /**
      * Filters to apply.
+	 * 要应用的过滤器
      *
      * @var array Array of ['filter' => Filter, 'matcher' => Matcher] pairs.
      */

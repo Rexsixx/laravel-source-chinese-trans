@@ -1,4 +1,7 @@
 <?php
+/**
+ * Cron，字段接口
+ */
 
 namespace Cron;
 use DateTime;
@@ -10,6 +13,7 @@ interface FieldInterface
 {
     /**
      * Check if the respective value of a DateTime field satisfies a CRON exp
+	 * 检查DateTime字段的各自值是否满足CRON exp
      *
      * @param DateTime $date  DateTime object to check
      * @param string   $value CRON expression to test against

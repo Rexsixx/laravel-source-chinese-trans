@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，Util，Mime 类型
+ */
 
 namespace League\Flysystem\Util;
 

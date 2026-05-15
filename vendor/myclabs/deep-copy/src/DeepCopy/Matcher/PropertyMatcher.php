@@ -1,4 +1,7 @@
 <?php
+/**
+ * DeepCopy，匹配器，性质匹配器
+ */
 
 namespace DeepCopy\Matcher;
 

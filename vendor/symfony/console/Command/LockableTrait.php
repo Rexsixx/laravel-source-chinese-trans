@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，命令，可锁定特性
+ */
 
 /*
  * This file is part of the Symfony package.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，日志翻译
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -108,6 +111,7 @@ class LoggingTranslator implements TranslatorInterface, LegacyTranslatorInterfac
 
     /**
      * Gets the fallback locales.
+	 * 获取备用区域设置
      *
      * @return array The fallback locales
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * 测试，创建应用程序
+ */
 
 namespace Tests;
 
@@ -9,6 +12,7 @@ trait CreatesApplication
 {
     /**
      * Creates the application.
+	 * 创建应用程序
      *
      * @return \Illuminate\Foundation\Application
      */

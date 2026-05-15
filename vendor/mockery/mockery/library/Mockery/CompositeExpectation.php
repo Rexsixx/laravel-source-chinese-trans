@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，复合期望
+ */
+
+/**
  * Mockery
  *
  * LICENSE

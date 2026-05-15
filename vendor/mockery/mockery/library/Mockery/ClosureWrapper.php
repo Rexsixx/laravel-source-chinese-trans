@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，封装包装器
+ */
 
 /**
  * Mockery

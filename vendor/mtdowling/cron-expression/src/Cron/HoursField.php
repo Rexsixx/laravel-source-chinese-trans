@@ -1,4 +1,7 @@
 <?php
+/**
+ * Cron，小时字段
+ */
 
 namespace Cron;
 use DateTime;

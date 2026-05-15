@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，应用程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -101,6 +104,7 @@ class Application
 
     /**
      * Runs the current application.
+	 * 运行当前应用程序
      *
      * @return int 0 if everything went fine, or an error code
      *
@@ -191,6 +195,7 @@ class Application
 
     /**
      * Runs the current application.
+	 * 运行当前应用程序
      *
      * @return int 0 if everything went fine, or an error code
      */
@@ -265,6 +270,7 @@ class Application
 
     /**
      * Get the helper set associated with the command.
+	 * 获取与该命令关联的帮助器集
      *
      * @return HelperSet The HelperSet instance associated with this command
      */

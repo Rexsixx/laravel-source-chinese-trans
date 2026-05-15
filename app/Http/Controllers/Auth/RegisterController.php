@@ -20,6 +20,7 @@ class RegisterController extends Controller
     | This controller handles the registration of new users as well as their
     | validation and creation. By default this controller uses a trait to
     | provide this functionality without requiring any additional code.
+	| 这个控制器负责处理新用户的注册，和验证与创建一样。
     |
     */
 

@@ -44,6 +44,7 @@ class ShareErrorsFromSession
         // If the current session has an "errors" variable bound to it, we will share
         // its value with all view instances so the views can easily access errors
         // without having to bind. An empty bag is set when there aren't errors.
+		// 如果当前会话绑定了一个“errors”变量，我们将分享它在所有视图实例中的值。
         $this->view->share(
             'errors', $request->session()->get('errors') ?: new ViewErrorBag
         );

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，Caster，类存根
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\VarDumper\Caster;
 
 /**
  * Represents a PHP class identifier.
+ * 表示一个PHP类标识符
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

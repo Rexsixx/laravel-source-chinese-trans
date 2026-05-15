@@ -1,4 +1,7 @@
 <?php
+/**
+ * Doctrine，偏转器，规则，英语，未弯曲的
+ */
 
 declare(strict_types=1);
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * DeepCopy
+ */
 
 namespace DeepCopy;
 

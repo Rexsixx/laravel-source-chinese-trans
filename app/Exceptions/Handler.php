@@ -36,6 +36,7 @@ class Handler extends ExceptionHandler
 	 * 报告或记录异常
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
+	 * 这是向Sentry、bug等发送异常的好地方。
      *
      * @param  \Exception  $exception
      * @return void

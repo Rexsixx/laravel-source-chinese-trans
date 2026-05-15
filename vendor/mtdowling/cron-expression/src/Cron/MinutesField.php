@@ -1,4 +1,7 @@
 <?php
+/**
+ * Cron，分字段
+ */
 
 namespace Cron;
 

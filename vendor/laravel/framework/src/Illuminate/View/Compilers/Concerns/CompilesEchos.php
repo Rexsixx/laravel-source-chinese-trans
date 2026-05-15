@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译器，问题，编译Echos
+ * Illuminate，视图，编译器，问题，编译 Echos
  */
 
 namespace Illuminate\View\Compilers\Concerns;
@@ -40,6 +40,7 @@ trait CompilesEchos
 
     /**
      * Compile the "raw" echo statements.
+	 * 编译“原始”echo语句
      *
      * @param  string  $value
      * @return string
@@ -59,6 +60,7 @@ trait CompilesEchos
 
     /**
      * Compile the "regular" echo statements.
+	 * 编译“常规”echo语句
      *
      * @param  string  $value
      * @return string

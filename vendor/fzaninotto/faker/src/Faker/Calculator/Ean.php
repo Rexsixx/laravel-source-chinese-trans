@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，Calculator，Ean
+ */
 
 namespace Faker\Calculator;
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Fideloper，配置
+ */
 
 return [
 

@@ -28,6 +28,7 @@ class TrustProxies
 
     /**
      * The proxy header mappings.
+	 * 代理头映射
      *
      * @var array
      */
@@ -35,6 +36,7 @@ class TrustProxies
 
     /**
      * Create a new trusted proxies middleware instance.
+	 * 创建一个新的可信代理中间件实例
      *
      * @param \Illuminate\Contracts\Config\Repository $config
      */
@@ -45,6 +47,7 @@ class TrustProxies
 
     /**
      * Handle an incoming request.
+	 * 处理传入的请求
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
@@ -63,6 +66,7 @@ class TrustProxies
 
     /**
      * Sets the trusted proxies on the request to the value of trustedproxy.proxies
+	 * 在请求上设置可信代理,以满足托管代理的值。
      *
      * @param \Illuminate\Http\Request $request
      */
@@ -94,6 +98,7 @@ class TrustProxies
 
     /**
      * We specify the IP addresses to trust explicitly.
+	 * 我们指定了明确信任的IP地址
      *
      * @param \Illuminate\Http\Request $request
      * @param array                    $trustedIps

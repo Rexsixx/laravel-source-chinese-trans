@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，Xml，有XPath测试
+ */
+
 namespace Hamcrest\Xml;
 
 class HasXPathTest extends \Hamcrest\AbstractMatcherTest

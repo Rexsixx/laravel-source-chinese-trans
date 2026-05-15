@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，MimeTypeDetection，Finfo Mime类型检测器
+ */
 
 declare(strict_types=1);
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Doctrine，偏转器，规则，置换
+ */
 
 declare(strict_types=1);
 

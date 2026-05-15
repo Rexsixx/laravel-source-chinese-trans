@@ -1,4 +1,8 @@
 <?php
+/**
+ * Egulias，EmailValidator，结果，Spoof 邮件
+ */
+
 namespace Egulias\EmailValidator\Result;
 
 use Egulias\EmailValidator\Result\Reason\SpoofEmail as ReasonSpoofEmail;

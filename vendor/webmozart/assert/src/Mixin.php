@@ -1,4 +1,7 @@
 <?php
+/**
+ * Webmozart，Assert，Mixin
+ */
 
 namespace Webmozart\Assert;
 

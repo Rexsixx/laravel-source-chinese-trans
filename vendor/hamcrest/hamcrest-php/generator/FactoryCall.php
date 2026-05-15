@@ -1,4 +1,7 @@
 <?php
+/**
+ * 工厂调取
+ */
 
 /*
  Copyright (c) 2009 hamcrest.org

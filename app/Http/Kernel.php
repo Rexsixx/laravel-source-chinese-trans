@@ -54,6 +54,7 @@ class Kernel extends HttpKernel
 	 * 应用程序的路由中间件
      *
      * These middleware may be assigned to groups or used individually.
+	 * 这些中间件可以分配给组，也可以单独使用。
      *
      * @var array
      */

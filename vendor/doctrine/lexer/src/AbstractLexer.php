@@ -39,6 +39,7 @@ abstract class AbstractLexer
 
     /**
      * Array of scanned tokens.
+	 * 扫描令牌数组
      *
      * @var list<Token<T, V>>
      */
@@ -46,6 +47,7 @@ abstract class AbstractLexer
 
     /**
      * Current lexer position in input string.
+	 * 输入字符串中的当前词汇位置
      *
      * @var int
      */
@@ -53,6 +55,7 @@ abstract class AbstractLexer
 
     /**
      * Current peek of current lexer position.
+	 * 当前的lexer位置
      *
      * @var int
      */
@@ -60,6 +63,7 @@ abstract class AbstractLexer
 
     /**
      * The next token in the input.
+	 * 输入中的下一个令牌
      *
      * @var Token<T, V>|null
      */
@@ -67,6 +71,7 @@ abstract class AbstractLexer
 
     /**
      * The last matched/seen token.
+	 * 最后一个匹配/见令牌
      *
      * @var Token<T, V>|null
      */
@@ -74,6 +79,7 @@ abstract class AbstractLexer
 
     /**
      * Composed regex for input parsing.
+	 * 组成的regex用于输入解析
      *
      * @var non-empty-string|null
      */
@@ -81,6 +87,7 @@ abstract class AbstractLexer
 
     /**
      * Sets the input data to be tokenized.
+	 * 设置输入数据来控制。
      *
      * The Lexer is immediately reset and the new input tokenized.
      * Any unprocessed tokens from any previous input are lost.
@@ -100,6 +107,7 @@ abstract class AbstractLexer
 
     /**
      * Resets the lexer.
+	 * 重新设置词典
      *
      * @return void
      */

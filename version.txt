@@ -1,7 +1,7 @@
 
 Laravel Version: 5.5.50
 Select PHP Version: 7.2
-Require PhP Version: 7.0 - 7.3
+Require PHP Version: 7.0 - 7.3
 Frame Start Date: 2017-08-30
 Frame End Date: 2020-08-30
 LTS

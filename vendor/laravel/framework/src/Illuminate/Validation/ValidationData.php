@@ -102,6 +102,7 @@ class ValidationData
      * E.g. 'foo.bar.*.baz' -> 'foo.bar'
      *
      * Allows us to not spin through all of the flattened data for some operations.
+	 * 允许我们在某些操作中不必遍历所有的扁平数据。
      *
      * @param  string  $attribute
      * @return string

@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，Util，内容列表格式化程序
+ */
 
 namespace League\Flysystem\Util;
 

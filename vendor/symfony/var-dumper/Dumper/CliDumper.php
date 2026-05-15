@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，存储，Cli 存储
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * CliDumper dumps variables for command line output.
+ * CliDumper为命令行输出变量
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

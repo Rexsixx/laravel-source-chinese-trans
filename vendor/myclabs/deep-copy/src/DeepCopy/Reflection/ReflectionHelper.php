@@ -1,4 +1,7 @@
 <?php
+/**
+ * DeepCopy，反射，反射助手
+ */
 
 namespace DeepCopy\Reflection;
 
@@ -12,6 +15,7 @@ class ReflectionHelper
 {
     /**
      * Retrieves all properties (including private ones), from object and all its ancestors.
+	 * 从对象及其所有祖先中检索所有属性（包括私有属性）。
      *
      * Standard \ReflectionClass->getProperties() does not return private properties from ancestor classes.
      *

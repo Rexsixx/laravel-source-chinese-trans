@@ -1,4 +1,7 @@
 <?php
+/**
+ * 测试，单位，示例测试
+ */
 
 namespace Tests\Unit;
 
@@ -9,6 +12,7 @@ class ExampleTest extends TestCase
 {
     /**
      * A basic test example.
+	 * 一个基本的测试示例
      *
      * @return void
      */

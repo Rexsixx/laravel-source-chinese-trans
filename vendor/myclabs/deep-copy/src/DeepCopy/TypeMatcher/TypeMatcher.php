@@ -1,4 +1,7 @@
 <?php
+/**
+ * DeepCopy，类型匹配器，TypeMatcher
+ */
 
 namespace DeepCopy\TypeMatcher;
 

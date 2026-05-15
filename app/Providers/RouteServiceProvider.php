@@ -15,6 +15,7 @@ class RouteServiceProvider extends ServiceProvider
 	 * 此命名空间应用于控制器路由。
      *
      * In addition, it is set as the URL generator's root namespace.
+	 * 此外，它被设置为URL生成器的根名称空间。
      *
      * @var string
      */
@@ -53,6 +54,7 @@ class RouteServiceProvider extends ServiceProvider
 	 * 为应用程序定义“web”路由。
      *
      * These routes all receive session state, CSRF protection, etc.
+	 * 这些路由都接收会话状态、CSRF保护等。
      *
      * @return void
      */

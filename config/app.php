@@ -13,6 +13,7 @@ return [
     | This value is the name of your application. This value is used when the
     | framework needs to place the application's name in a notification or
     | any other location as required by the application or its packages.
+	| 这个值是应用程序的名称。
     |
     */
 
@@ -113,7 +114,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Logging Configuration
+    | Logging Configuration		日志配置
     |--------------------------------------------------------------------------
     |
     | Here you may configure the log settings for your application. Out of
@@ -130,7 +131,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Autoloaded Service Providers
+    | Autoloaded Service Providers	自动加载的服务提供商
     |--------------------------------------------------------------------------
     |
     | The service providers listed here will be automatically loaded on the
@@ -184,7 +185,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Class Aliases
+    | Class Aliases		类别名
     |--------------------------------------------------------------------------
     |
     | This array of class aliases will be registered when this application

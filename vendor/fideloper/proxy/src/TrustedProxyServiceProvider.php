@@ -13,6 +13,7 @@ class TrustedProxyServiceProvider extends ServiceProvider
 {
     /**
      * Boot the service provider.
+	 * 引导服务提供者
      *
      * @return void
      */
@@ -31,6 +32,7 @@ class TrustedProxyServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
+	 * 注册服务提供者
      *
      * @return void
      */

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，异常，框架
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */

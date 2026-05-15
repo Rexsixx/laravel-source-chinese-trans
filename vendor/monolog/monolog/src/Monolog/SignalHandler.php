@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，信号处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -17,6 +20,7 @@ use ReflectionExtension;
 
 /**
  * Monolog POSIX signal handler
+ * Monolog位置信号处理器
  *
  * @author Robert Gust-Bardon <robert@gust-bardon.org>
  */

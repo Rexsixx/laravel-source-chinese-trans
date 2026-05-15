@@ -1,4 +1,8 @@
 <?php
+/**
+ * JakubOnderka，PhpConsoleHighlighter，高光色测试
+ */
+
 namespace JakubOnderka\PhpConsoleHighlighter;
 
 class HighlighterTest extends \PHPUnit_Framework_TestCase

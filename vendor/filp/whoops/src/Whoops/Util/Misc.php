@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，Util，混杂的
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -10,6 +14,7 @@ class Misc
 {
     /**
      * Can we at this point in time send HTTP headers?
+	 * 在这个时候,我们能发送HTTP头吗?
      *
      * Currently this checks if we are even serving an HTTP request,
      * as opposed to running from a command line.
@@ -32,6 +37,7 @@ class Misc
 
     /**
      * Check, if possible, that this execution was triggered by a command line.
+	 * 如果可能的话,检查这个执行是由命令行触发的。
      * @return bool
      */
     public static function isCommandLine()

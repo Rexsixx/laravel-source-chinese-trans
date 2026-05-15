@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，结果，Result
+ */
 
 namespace Egulias\EmailValidator\Result;
 
@@ -6,6 +9,7 @@ interface Result
 {
     /**
      * Is validation result valid?
+	 * 验证结果有效吗?
      */
     public function isValid() : bool;
 
