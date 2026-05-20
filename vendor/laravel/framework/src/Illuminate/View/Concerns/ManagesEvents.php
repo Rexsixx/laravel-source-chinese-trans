@@ -32,7 +32,7 @@ trait ManagesEvents
 
     /**
      * Register multiple view composers via an array.
-	 * 通过一个数组注册多个视图作曲家
+	 * 通过一个数组注册多个视图composers
      *
      * @param  array  $composers
      * @return array
@@ -116,7 +116,7 @@ trait ManagesEvents
 
     /**
      * Build a class based container callback Closure.
-	 * 构建一个基于类的容器回调闭包
+	 * 构建基于类的容器回调关闭
      *
      * @param  string  $class
      * @param  string  $prefix
@@ -124,11 +124,12 @@ trait ManagesEvents
      */
     protected function buildClassEventCallback($class, $prefix)
     {
-        list($class, $method) = $this->parseClassEvent($class, $prefix);
+        [$class, $method] = $this->parseClassEvent($class, $prefix);
 
         // Once we have the class and method name, we can build the Closure to resolve
         // the instance out of the IoC container and call the method on it with the
         // given arguments that are passed to the Closure as the composer's data.
+		// 一旦有了类和方法名，我们可以构建闭包来解决从IoC容器中取出的实例。
         return function () use ($class, $method) {
             return call_user_func_array(
                 [$this->container->make($class), $method], func_get_args()
@@ -138,7 +139,7 @@ trait ManagesEvents
 
     /**
      * Parse a class based composer name.
-	 * 解析基于编写器名称的类
+	 * 解析基于类的作曲家的名字
      *
      * @param  string  $class
      * @param  string  $prefix
@@ -163,7 +164,7 @@ trait ManagesEvents
 
     /**
      * Add a listener to the event dispatcher.
-	 * 向事件调度程序添加侦听器
+	 * 在事件调度器中添加一个侦听器
      *
      * @param  string    $name
      * @param  \Closure  $callback
@@ -182,7 +183,7 @@ trait ManagesEvents
 
     /**
      * Call the composer for a given view.
-	 * 调用给定视图的编写器
+	 * 为给定的视图调用作曲家
      *
      * @param  \Illuminate\Contracts\View\View  $view
      * @return void
@@ -194,7 +195,7 @@ trait ManagesEvents
 
     /**
      * Call the creator for a given view.
-	 * 调用给定视图的创建者
+	 * 调用创建者的给定视图
      *
      * @param  \Illuminate\Contracts\View\View  $view
      * @return void

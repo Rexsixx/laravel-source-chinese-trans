@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，Thingy
+ */
+
 namespace Hamcrest;
 
 class Thingy

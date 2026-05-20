@@ -1,13 +1,13 @@
 <?php
 /**
- * 配置，电子邮件
+ * 配置，mail
  */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Mail Driver	邮件驱动
+    | Mail Driver	邮件驱动器
     |--------------------------------------------------------------------------
     |
     | Laravel supports both SMTP and PHP's "mail" function as drivers for the
@@ -49,7 +49,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Global "From" Address		全局“From”地址
+    | Global "From" Address	“全球”地址
     |--------------------------------------------------------------------------
     |
     | You may wish for all e-mails sent by your application to be sent from
@@ -65,7 +65,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | E-Mail Encryption Protocol
+    | E-Mail Encryption Protocol	电子邮件加密协议
     |--------------------------------------------------------------------------
     |
     | Here you may specify the encryption protocol that should be used when
@@ -78,7 +78,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | SMTP Server Username
+    | SMTP Server Username	服务器用户名
     |--------------------------------------------------------------------------
     |
     | If your SMTP server requires a username for authentication, you should
@@ -93,7 +93,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Sendmail System Path
+    | Sendmail System Path	Sendmail系统路径
     |--------------------------------------------------------------------------
     |
     | When using the "sendmail" driver to send e-mails, we will need to know
@@ -106,7 +106,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Markdown Mail Settings
+    | Markdown Mail Settings	Markdown邮件设置
     |--------------------------------------------------------------------------
     |
     | If you are using Markdown based email rendering, you may configure your

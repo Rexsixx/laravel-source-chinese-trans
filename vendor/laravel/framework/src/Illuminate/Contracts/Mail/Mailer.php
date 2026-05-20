@@ -1,9 +1,11 @@
 <?php
 /**
- * Illuminate，契约，电子邮件，邮件程序
+ * Illuminate，契约，Mail，可邮寄的
  */
 
 namespace Illuminate\Contracts\Mail;
+
+use Illuminate\Contracts\Mail\Mailable as MailableContract;
 
 interface Mailer
 {

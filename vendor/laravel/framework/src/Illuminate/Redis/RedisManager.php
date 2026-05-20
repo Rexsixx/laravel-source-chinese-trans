@@ -31,7 +31,7 @@ class RedisManager implements Factory
 
     /**
      * The Redis connections.
-	 * Redis连接
+	 * Redis的连接
      *
      * @var mixed
      */
@@ -92,9 +92,7 @@ class RedisManager implements Factory
             return $this->resolveCluster($name);
         }
 
-        throw new InvalidArgumentException(
-            "Redis connection [{$name}] not configured."
-        );
+        throw new InvalidArgumentException("Redis connection [{$name}] not configured.");
     }
 
     /**

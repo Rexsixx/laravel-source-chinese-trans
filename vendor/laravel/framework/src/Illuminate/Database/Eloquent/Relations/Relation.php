@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，关系
+ * Illuminate，数据库，Eloquent，关系，Relation
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -179,9 +179,13 @@ abstract class Relation
      */
     public function touch()
     {
-        $column = $this->getRelated()->getUpdatedAtColumn();
+        $model = $this->getRelated();
 
-        $this->rawUpdate([$column => $this->getRelated()->freshTimestampString()]);
+        if (! $model::isIgnoringTouch()) {
+            $this->rawUpdate([
+                $model->getUpdatedAtColumn() => $model->freshTimestampString(),
+            ]);
+        }
     }
 
     /**
@@ -213,7 +217,7 @@ abstract class Relation
 
     /**
      * Add the constraints for an internal relationship existence query.
-	 * 为内部关系存在性查询添加约束。
+	 * 为内部关系存在性查询添加约束
      *
      * Essentially, these queries compare on column names like whereColumn.
      *
@@ -241,7 +245,7 @@ abstract class Relation
     {
         return collect($models)->map(function ($value) use ($key) {
             return $key ? $value->getAttribute($key) : $value->getKey();
-        })->values()->unique()->sort()->all();
+        })->values()->unique(null, true)->sort()->all();
     }
 
     /**
@@ -312,6 +316,7 @@ abstract class Relation
 
     /**
      * Get the name of the "updated at" column.
+	 * 获取“更新时间”列的名称
      *
      * @return string
      */
@@ -322,6 +327,7 @@ abstract class Relation
 
     /**
      * Get the name of the related model's "updated at" column.
+	 * 获取相关模型的“更新时间”列的名称
      *
      * @return string
      */
@@ -377,9 +383,7 @@ abstract class Relation
      */
     public static function getMorphedModel($alias)
     {
-        return array_key_exists($alias, self::$morphMap)
-                        ? self::$morphMap[$alias]
-                        : null;
+        return self::$morphMap[$alias] ?? null;
     }
 
     /**

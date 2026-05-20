@@ -29,7 +29,7 @@ class ValidationException extends Exception
 
     /**
      * The status code to use for the response.
-	 * 用于响应的状态码
+	 * 用于响应的状态代码
      *
      * @var int
      */
@@ -45,7 +45,7 @@ class ValidationException extends Exception
 
     /**
      * The path the client should be redirected to.
-	 * 客户端应该重定向到的路径
+	 * 客户端应该重定向的路径
      *
      * @var string
      */
@@ -71,7 +71,7 @@ class ValidationException extends Exception
 
     /**
      * Create a new validation exception from a plain array of messages.
-	 * 从普通消息数组创建新的验证异常
+	 * 从普通的消息数组中创建一个新的验证异常
      *
      * @param  array  $messages
      * @return static
@@ -100,7 +100,7 @@ class ValidationException extends Exception
 
     /**
      * Set the HTTP status code to be used for the response.
-	 * 设置用于响应的HTTP状态码
+	 * 设置要用于响应的HTTP状态代码
      *
      * @param  int  $status
      * @return $this
@@ -114,7 +114,7 @@ class ValidationException extends Exception
 
     /**
      * Set the error bag on the exception.
-	 * 在异常上设置错误包
+	 * 在异常情况下设置错误包
      *
      * @param  string  $errorBag
      * @return $this
@@ -128,7 +128,7 @@ class ValidationException extends Exception
 
     /**
      * Set the URL to redirect to on a validation error.
-	 * 设置验证错误时要重定向到的URL
+	 * 设置URL重定向到验证错误
      *
      * @param  string  $url
      * @return $this

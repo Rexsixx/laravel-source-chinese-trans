@@ -1,4 +1,8 @@
 <?php
+/**
+ * PharIo，Manifest，显性元素异常
+ */
+
 
 namespace PharIo\Manifest;
 

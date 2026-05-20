@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，运送，SparkPost 运输
+ * Illuminate，电子邮件，传输，SparkPost 传输
  */
 
 namespace Illuminate\Mail\Transport;
@@ -61,7 +61,7 @@ class SparkPostTransport extends Transport
 
         $message->setBcc([]);
 
-        $response = $this->client->post('https://api.sparkpost.com/api/v1/transmissions', [
+        $response = $this->client->post($this->getEndpoint(), [
             'headers' => [
                 'Authorization' => $this->key,
             ],
@@ -137,7 +137,7 @@ class SparkPostTransport extends Transport
 
     /**
      * Set the API key being used by the transport.
-	 * 设置传输所使用的API密钥
+	 * 设置传输所使用的API密钥。
      *
      * @param  string  $key
      * @return string
@@ -145,6 +145,17 @@ class SparkPostTransport extends Transport
     public function setKey($key)
     {
         return $this->key = $key;
+    }
+
+    /**
+     * Get the SparkPost API endpoint.
+	 * 获取SparkPost API端点
+     *
+     * @return string
+     */
+    public function getEndpoint()
+    {
+        return $this->getOptions()['endpoint'] ?? 'https://api.sparkpost.com/api/v1/transmissions';
     }
 
     /**
@@ -160,7 +171,7 @@ class SparkPostTransport extends Transport
 
     /**
      * Set the transmission options being used by the transport.
-	 * 设置传输所使用的传输选项
+	 * 设置运输使用的传输选项
      *
      * @param  array  $options
      * @return array

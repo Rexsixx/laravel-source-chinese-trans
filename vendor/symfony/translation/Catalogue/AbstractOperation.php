@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，目录，抽象操作
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Translation\MessageCatalogueInterface;
 
 /**
  * Base catalogues binary operation class.
+ * 基本目录二进制操作类。
  *
  * A catalogue binary operation performs operation on
  * source (the left argument) and target (the right argument) catalogues.
@@ -91,7 +95,7 @@ abstract class AbstractOperation implements OperationInterface
     public function getMessages($domain)
     {
         if (!\in_array($domain, $this->getDomains())) {
-            throw new InvalidArgumentException(sprintf('Invalid domain: %s.', $domain));
+            throw new InvalidArgumentException(sprintf('Invalid domain: "%s".', $domain));
         }
 
         if (!isset($this->messages[$domain]['all'])) {
@@ -107,7 +111,7 @@ abstract class AbstractOperation implements OperationInterface
     public function getNewMessages($domain)
     {
         if (!\in_array($domain, $this->getDomains())) {
-            throw new InvalidArgumentException(sprintf('Invalid domain: %s.', $domain));
+            throw new InvalidArgumentException(sprintf('Invalid domain: "%s".', $domain));
         }
 
         if (!isset($this->messages[$domain]['new'])) {
@@ -123,7 +127,7 @@ abstract class AbstractOperation implements OperationInterface
     public function getObsoleteMessages($domain)
     {
         if (!\in_array($domain, $this->getDomains())) {
-            throw new InvalidArgumentException(sprintf('Invalid domain: %s.', $domain));
+            throw new InvalidArgumentException(sprintf('Invalid domain: "%s".', $domain));
         }
 
         if (!isset($this->messages[$domain]['obsolete'])) {

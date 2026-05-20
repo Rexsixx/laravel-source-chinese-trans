@@ -78,6 +78,7 @@ trait InteractsWithExceptionHandling
 
             /**
              * Create a new class instance.
+			 * 创建一个新的类实例
              *
              * @param  \Illuminate\Contracts\Debug\ExceptionHandler  $originalHandler
              * @param  array  $except
@@ -91,6 +92,7 @@ trait InteractsWithExceptionHandling
 
             /**
              * Report the given exception.
+			 * 报告给定的异常
              *
              * @param  \Exception  $e
              * @return void
@@ -102,6 +104,7 @@ trait InteractsWithExceptionHandling
 
             /**
              * Render the given exception.
+			 * 呈现给定的异常
              *
              * @param  \Illuminate\Http\Request  $request
              * @param  \Exception  $e
@@ -128,6 +131,7 @@ trait InteractsWithExceptionHandling
 
             /**
              * Render the exception for the console.
+			 * 为控制台呈现异常
              *
              * @param  \Symfony\Component\Console\Output\OutputInterface  $output
              * @param  \Exception  $e

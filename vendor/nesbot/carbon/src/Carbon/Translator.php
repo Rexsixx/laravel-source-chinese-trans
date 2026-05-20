@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，翻译器
+ */
 
 namespace Carbon;
 
@@ -8,6 +11,7 @@ class Translator extends Translation\Translator
 {
     /**
      * Singleton for Translator.
+	 * 单例翻译器
      *
      * @var static
      */
@@ -15,6 +19,7 @@ class Translator extends Translation\Translator
 
     /**
      * List of custom localized messages.
+	 * 自定义本地化消息列表
      *
      * @var array
      */
@@ -22,6 +27,7 @@ class Translator extends Translation\Translator
 
     /**
      * Return a singleton instance of Translator.
+	 * 返回Translator的单例实例
      *
      * @param string|null $locale optional initial locale ("en" - english by default)
      *
@@ -71,6 +77,7 @@ class Translator extends Translation\Translator
 
     /**
      * Init messages language from matching file in Lang directory.
+	 * 在Lang目录中匹配文件的Init消息语言
      *
      * @param string $locale
      *
@@ -87,6 +94,7 @@ class Translator extends Translation\Translator
 
     /**
      * Set messages of a locale and take file first if present.
+	 * 设置环境信息,并首先处理文件。
      *
      * @param string $locale
      * @param array  $messages
@@ -108,6 +116,7 @@ class Translator extends Translation\Translator
     /**
      * Get messages of a locale, if none given, return all the
      * languages.
+	 * 获取一个区域的消息,如果没有给出,返回所有语言。
      *
      * @param string|null $locale
      *
@@ -120,6 +129,7 @@ class Translator extends Translation\Translator
 
     /**
      * Set the current translator locale and indicate if the source locale file exists
+	 * 设置当前的翻译环境,并指示源地区文件是否存在。
      *
      * @param string $locale locale ex. en
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，会话，控制台，会话表命令
+ * Illuminate，会话，控制台，会话表指令
  */
 
 namespace Illuminate\Session\Console;
@@ -21,7 +21,7 @@ class SessionTableCommand extends Command
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -42,7 +42,7 @@ class SessionTableCommand extends Command
 
     /**
      * Create a new session table command instance.
-	 * 创建新的会话表命令实例
+	 * 创建一个新的会话表命令实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  \Illuminate\Support\Composer  $composer
@@ -58,7 +58,7 @@ class SessionTableCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */

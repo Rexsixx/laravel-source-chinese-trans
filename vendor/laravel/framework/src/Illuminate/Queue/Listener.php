@@ -22,7 +22,7 @@ class Listener
 
     /**
      * The environment the workers should run under.
-	 * 线程工作的环境
+	 * 工作线程的环境
      *
      * @var string
      */
@@ -38,7 +38,7 @@ class Listener
 
     /**
      * The amount of times to try a job before logging it failed.
-	 * 在记录作业失败之前尝试该作业的次数
+	 * 在日志记录失败之前,尝试工作的次数。
      *
      * @var int
      */
@@ -46,7 +46,7 @@ class Listener
 
     /**
      * The queue worker command line.
-	 * 队列工作者命令行
+	 * 队列线程命令行
      *
      * @var string
      */
@@ -75,7 +75,7 @@ class Listener
 
     /**
      * Build the environment specific worker command.
-	 * 构建特定于环境的worker命令
+	 * 构建环境特定的worker命令
      *
      * @return string
      */
@@ -88,7 +88,7 @@ class Listener
 
     /**
      * Get the PHP binary.
-	 * 获取PHP二进制文件
+	 * 获取PHP二进制
      *
      * @return string
      */
@@ -101,7 +101,7 @@ class Listener
 
     /**
      * Get the Artisan binary.
-	 * 获取Artisan二进制文件
+	 * 获得Artisan二进制
      *
      * @return string
      */
@@ -109,12 +109,12 @@ class Listener
     {
         return defined('ARTISAN_BINARY')
                         ? ProcessUtils::escapeArgument(ARTISAN_BINARY)
-                        : 'artisan';
+                        : ProcessUtils::escapeArgument('artisan');
     }
 
     /**
      * Listen to the given queue connection.
-	 * 监听给定的队列连接
+	 * 侦听给定的队列连接
      *
      * @param  string  $connection
      * @param  string  $queue
@@ -132,7 +132,7 @@ class Listener
 
     /**
      * Create a new Symfony process for the worker.
-	 * 为工作者创建一个新的Symfony进程
+	 * 为工人创造一个新的Symfony过程
      *
      * @param  string  $connection
      * @param  string  $queue
@@ -146,6 +146,7 @@ class Listener
         // If the environment is set, we will append it to the command string so the
         // workers will run under the specified environment. Otherwise, they will
         // just run under the production environment which is not always right.
+		// 如果环境已设置好，我们将将其添加到命令字符串中，以便工作进程能够在指定的环境中运行。
         if (isset($options->environment)) {
             $command = $this->addEnvironment($command, $options);
         }
@@ -153,6 +154,7 @@ class Listener
         // Next, we will just format out the worker commands with all of the various
         // options available for the command. This will produce the final command
         // line that we will pass into a Symfony process object for processing.
+		// 接下来，我们将对这些工作指令进行格式化处理，同时涵盖该指令所具备的所有可用选项。
         $command = $this->formatCommand(
             $command, $connection, $queue, $options
         );
@@ -164,7 +166,7 @@ class Listener
 
     /**
      * Add the environment option to the given command.
-	 * 将环境选项添加到给定命令中
+	 * 将环境选项添加到给定的命令
      *
      * @param  string  $command
      * @param  \Illuminate\Queue\ListenerOptions  $options
@@ -198,7 +200,7 @@ class Listener
 
     /**
      * Run the given process.
-	 * 运行给定的进程
+	 * 运行给定的过程
      *
      * @param  \Symfony\Component\Process\Process  $process
      * @param  int  $memory
@@ -213,6 +215,7 @@ class Listener
         // Once we have run the job we'll go check if the memory limit has been exceeded
         // for the script. If it has, we will kill this script so the process manager
         // will restart this with a clean slate of memory automatically on exiting.
+		// 一旦我们完成了这项任务，就会去检查一下该脚本的内存使用量是否已超过限制。
         if ($this->memoryExceeded($memory)) {
             $this->stop();
         }
@@ -220,7 +223,7 @@ class Listener
 
     /**
      * Handle output from the worker process.
-	 * 处理工作进程的输出
+	 * 处理员工流程中的输出
      *
      * @param  int  $type
      * @param  string  $line
@@ -235,7 +238,7 @@ class Listener
 
     /**
      * Determine if the memory limit has been exceeded.
-	 * 确定是否已超过内存限制
+	 * 确定是否已经超过了内存限制
      *
      * @param  int  $memoryLimit
      * @return bool
@@ -247,13 +250,13 @@ class Listener
 
     /**
      * Stop listening and bail out of the script.
-	 * 别再听了，跳出剧本。
+	 * 停止监听并从脚本中获得保释
      *
      * @return void
      */
     public function stop()
     {
-        exit;
+        die;
     }
 
     /**

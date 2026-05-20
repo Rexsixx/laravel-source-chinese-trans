@@ -1,10 +1,13 @@
 <?php
+/**
+ * NunoMaduro，Manifest，需要元素测试
+ */
 
 namespace PharIo\Manifest;
 
 use DOMDocument;
 
-class RequiresElementTest extends \PHPUnit_Framework_TestCase {
+class RequiresElementTest extends \PHPUnit\Framework\TestCase {
     /**
      * @var DOMDocument
      */

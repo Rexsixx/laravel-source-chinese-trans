@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，比较器，闭包比较器
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -14,15 +17,33 @@ namespace Prophecy\Comparator;
 use Prophecy\Prophecy\ProphecyInterface;
 use SebastianBergmann\Comparator\ObjectComparator;
 
+/**
+ * @final
+ */
 class ProphecyComparator extends ObjectComparator
 {
-    public function accepts($expected, $actual)
+    /**
+     * @param mixed $expected
+     * @param mixed $actual
+     */
+    public function accepts($expected, $actual): bool
     {
         return is_object($expected) && is_object($actual) && $actual instanceof ProphecyInterface;
     }
 
-    public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false, array &$processed = array())
+    /**
+     * @param mixed $expected
+     * @param mixed $actual
+     * @param float $delta
+     * @param bool  $canonicalize
+     * @param bool  $ignoreCase
+     * @param array $processed
+     *
+     * @phpstan-param list<array{object, object}> $processed
+     */
+    public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false, array &$processed = array()): void
     {
+        \assert($actual instanceof ProphecyInterface);
         parent::assertEquals($expected, $actual->reveal(), $delta, $canonicalize, $ignoreCase, $processed);
     }
 }

@@ -1,8 +1,11 @@
 <?php
+/**
+ * NunoMaduro，Manifest，组件元素试验
+ */
 
 namespace PharIo\Manifest;
 
-class ComponentElementTest extends \PHPUnit_Framework_TestCase {
+class ComponentElementTest extends \PHPUnit\Framework\TestCase {
     /**
      * @var ComponentElement
      */

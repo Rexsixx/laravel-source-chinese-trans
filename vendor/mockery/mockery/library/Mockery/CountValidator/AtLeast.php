@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，计数验证器，至少
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -26,6 +30,7 @@ class AtLeast extends CountValidatorAbstract
 {
     /**
      * Checks if the validator can accept an additional nth call
+	 * 检查验证器是否可以接受额外的第n个调用
      *
      * @param int $n
      * @return bool
@@ -37,6 +42,7 @@ class AtLeast extends CountValidatorAbstract
 
     /**
      * Validate the call count against this validator
+	 * 根据此验证器验证调用计数
      *
      * @param int $n
      * @return bool

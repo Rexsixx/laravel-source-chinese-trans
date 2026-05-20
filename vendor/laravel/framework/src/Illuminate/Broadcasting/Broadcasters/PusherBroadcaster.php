@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，广播，广播装置，Pusher 广播员
+ * Illuminate，广播，广播员，Pusher 广播员
  */
 
 namespace Illuminate\Broadcasting\Broadcasters;
@@ -69,13 +69,16 @@ class PusherBroadcaster extends Broadcaster
     {
         if (Str::startsWith($request->channel_name, 'private')) {
             return $this->decodePusherResponse(
-                $this->pusher->socket_auth($request->channel_name, $request->socket_id)
+                $request, $this->pusher->socket_auth($request->channel_name, $request->socket_id)
             );
         }
 
         return $this->decodePusherResponse(
+            $request,
             $this->pusher->presence_auth(
-                $request->channel_name, $request->socket_id, $request->user()->getAuthIdentifier(), $result)
+                $request->channel_name, $request->socket_id,
+                $request->user()->getAuthIdentifier(), $result
+            )
         );
     }
 
@@ -83,12 +86,18 @@ class PusherBroadcaster extends Broadcaster
      * Decode the given Pusher response.
 	 * 解码给定的pushher响应
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $response
      * @return array
      */
-    protected function decodePusherResponse($response)
+    protected function decodePusherResponse($request, $response)
     {
-        return json_decode($response, true);
+        if (! $request->input('callback', false)) {
+            return json_decode($response, true);
+        }
+
+        return response()->json(json_decode($response, true))
+                    ->withCallback($request->callback);
     }
 
     /**

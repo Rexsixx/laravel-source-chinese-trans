@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，插件，强制重命名
+ */
 
 namespace League\Flysystem\Plugin;
 
@@ -17,6 +20,7 @@ class ForcedRename extends AbstractPlugin
 
     /**
      * Renames a file, overwriting the destination if it exists.
+	 * 重命名文件，如果目标存在，则覆盖目标。
      *
      * @param string $path    Path to the existing file.
      * @param string $newpath The new path of the file.

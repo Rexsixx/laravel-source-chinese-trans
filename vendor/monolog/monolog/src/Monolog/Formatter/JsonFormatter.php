@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，格式器，Json 格式化器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -17,6 +20,7 @@ use Throwable;
 
 /**
  * Encodes whatever record data is passed to it as json
+ * 将传递给它的任何记录数据编码为json。
  *
  * This can be useful to log to databases or remote APIs
  *
@@ -63,6 +67,7 @@ class JsonFormatter extends NormalizerFormatter
 
     /**
      * True if newlines are appended to every formatted record
+	 * 如果将换行符附加到每个格式化的记录，则为True。
      *
      * @return bool
      */
@@ -104,6 +109,7 @@ class JsonFormatter extends NormalizerFormatter
 
     /**
      * Return a JSON-encoded array of records.
+	 * 返回一个json编码的记录数组
      *
      * @param  array  $records
      * @return string

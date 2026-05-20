@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，配置
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -29,6 +32,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * The Psy Shell configuration.
+ * Psy Shell配置
  */
 class Configuration
 {
@@ -102,6 +106,7 @@ class Configuration
 
     /**
      * Construct a Configuration instance.
+	 * 构建一个配置实例。
      *
      * Optionally, supply an array of configuration values to load.
      *
@@ -134,6 +139,7 @@ class Configuration
 
     /**
      * Initialize the configuration.
+	 * 初始化配置。
      *
      * This checks for the presence of Readline and Pcntl extensions.
      *

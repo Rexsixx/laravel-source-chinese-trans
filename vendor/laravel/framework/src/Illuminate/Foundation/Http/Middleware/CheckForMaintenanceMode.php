@@ -6,6 +6,7 @@
 namespace Illuminate\Foundation\Http\Middleware;
 
 use Closure;
+use Symfony\Component\HttpFoundation\IpUtils;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Http\Exceptions\MaintenanceModeException;
 
@@ -20,8 +21,16 @@ class CheckForMaintenanceMode
     protected $app;
 
     /**
+     * The URIs that should be accessible while maintenance mode is enabled.
+	 * 在启用维护模式时应该可以访问的uri
+     *
+     * @var array
+     */
+    protected $except = [];
+
+    /**
      * Create a new middleware instance.
-	 * 创建新的中间件实例
+	 * 创建一个新的中间件实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -46,9 +55,39 @@ class CheckForMaintenanceMode
         if ($this->app->isDownForMaintenance()) {
             $data = json_decode(file_get_contents($this->app->storagePath().'/framework/down'), true);
 
+            if (isset($data['allowed']) && IpUtils::checkIp($request->ip(), (array) $data['allowed'])) {
+                return $next($request);
+            }
+
+            if ($this->inExceptArray($request)) {
+                return $next($request);
+            }
+
             throw new MaintenanceModeException($data['time'], $data['retry'], $data['message']);
         }
 
         return $next($request);
+    }
+
+    /**
+     * Determine if the request has a URI that should be accessible in maintenance mode.
+	 * 确定请求是否具有在维护模式下可访问的URI
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    protected function inExceptArray($request)
+    {
+        foreach ($this->except as $except) {
+            if ($except !== '/') {
+                $except = trim($except, '/');
+            }
+
+            if ($request->fullUrlIs($except) || $request->is($except)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

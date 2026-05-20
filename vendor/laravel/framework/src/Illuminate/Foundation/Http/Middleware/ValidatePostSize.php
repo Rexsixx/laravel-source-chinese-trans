@@ -33,7 +33,7 @@ class ValidatePostSize
 
     /**
      * Determine the server 'post_max_size' as bytes.
-	 * 确定服务器‘post_max_size’为字节
+	 * 确定服务器'post_max_size'为字节
      *
      * @return int
      */

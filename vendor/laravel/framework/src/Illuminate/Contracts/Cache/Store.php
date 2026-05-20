@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，缓存，储存
+ * Illuminate，契约，缓存，存储
  */
 
 namespace Illuminate\Contracts\Cache;
@@ -18,10 +18,9 @@ interface Store
 
     /**
      * Retrieve multiple items from the cache by key.
-	 * 按键从缓存中检索多个项
+	 * 按键从缓存中检索多个项。
      *
      * Items not found in the cache will have a null value.
-	 * 在缓存中找不到的项将具有空值
      *
      * @param  array  $keys
      * @return array

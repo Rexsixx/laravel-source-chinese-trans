@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，SQLite 生成器
+ * Illuminate，数据库，模式，SQLite 构建器
  */
 
 namespace Illuminate\Database\Schema;
@@ -22,6 +22,21 @@ class SQLiteBuilder extends Builder
         $this->connection->select($this->grammar->compileEnableWriteableSchema());
 
         $this->connection->select($this->grammar->compileDropAllTables());
+
+        $this->connection->select($this->grammar->compileDisableWriteableSchema());
+    }
+
+    /**
+     * Drop all views from the database.
+	 * 从数据库中删除所有视图
+     *
+     * @return void
+     */
+    public function dropAllViews()
+    {
+        $this->connection->select($this->grammar->compileEnableWriteableSchema());
+
+        $this->connection->select($this->grammar->compileDropAllViews());
 
         $this->connection->select($this->grammar->compileDisableWriteableSchema());
     }

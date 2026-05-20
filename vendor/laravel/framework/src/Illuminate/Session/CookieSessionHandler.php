@@ -16,7 +16,7 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * The cookie jar instance.
-	 * cookie压缩实例
+	 * cookie jar 实例
      *
      * @var \Illuminate\Contracts\Cookie\Factory
      */
@@ -32,7 +32,7 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * The number of minutes the session should be valid.
-	 * 会话有效的分钟数
+	 * 会议记录的数量应该是有效的
      *
      * @var int
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，Shell
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -36,6 +39,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * The Psy Shell application.
+ * Psy Shell应用
  *
  * Usage:
  *
@@ -76,6 +80,7 @@ class Shell extends Application
 
     /**
      * Create a new Psy Shell.
+	 * 创建一个新的Psy Shell
      *
      * @param Configuration $config (default: null)
      */
@@ -102,6 +107,7 @@ class Shell extends Application
 
     /**
      * Check whether the first thing in a backtrace is an include call.
+	 * 检查backtrace中的第一件事是否包括调用。
      *
      * This is used by the psysh bin to decide whether to start a shell on boot,
      * or to simply autoload the library.
@@ -114,6 +120,7 @@ class Shell extends Application
 
     /**
      * Invoke a Psy Shell from the current context.
+	 * 从当前上下文调用Psy Shell
      *
      * @see Psy\debug
      * @deprecated will be removed in 1.0. Use \Psy\debug instead

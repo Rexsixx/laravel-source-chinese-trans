@@ -6,12 +6,19 @@
 namespace Illuminate\Database\Query\Grammars;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JsonExpression;
 
 class MySqlGrammar extends Grammar
 {
+    /**
+     * The grammar specific operators.
+	 * 语法特定的操作符
+     *
+     * @var array
+     */
+    protected $operators = ['sounds like'];
+
     /**
      * The components that make up a select clause.
 	 * 组成select子句的组件
@@ -51,6 +58,19 @@ class MySqlGrammar extends Grammar
     }
 
     /**
+     * Compile a "JSON contains" statement into SQL.
+	 * 将“JSON contains”语句编译成SQL
+     *
+     * @param  string  $column
+     * @param  string  $value
+     * @return string
+     */
+    protected function compileJsonContains($column, $value)
+    {
+        return 'json_contains('.$this->wrap($column).', '.$value.')';
+    }
+
+    /**
      * Compile a single union statement.
 	 * 编译单个联合语句
      *
@@ -59,9 +79,9 @@ class MySqlGrammar extends Grammar
      */
     protected function compileUnion(array $union)
     {
-        $conjuction = $union['all'] ? ' union all ' : ' union ';
+        $conjunction = $union['all'] ? ' union all ' : ' union ';
 
-        return $conjuction.'('.$union['query']->toSql().')';
+        return $conjunction.'('.$union['query']->toSql().')';
     }
 
     /**
@@ -108,11 +128,15 @@ class MySqlGrammar extends Grammar
         // Each one of the columns in the update statements needs to be wrapped in the
         // keyword identifiers, also a place-holder needs to be created for each of
         // the values in the list of bindings so we can make the sets statements.
+		// 更新语句中的每一个列都需要被包在关键字标识中,
+		// 也需要为绑定列表中的每个值创建一个place-holder,这样我们就可以进行集合语句。
         $columns = $this->compileUpdateColumns($values);
 
         // If the query has any "join" clauses, we will setup the joins on the builder
         // and compile them so we can attach them to this update, as update queries
         // can get join statements to attach to other tables when they're needed.
+		// 如果查询有任何“join”子句,我们将在构建器上设置连接,并编译它们,
+		// 这样我们就可以将它们连接到这个更新,因为更新查询可以在需要时连接到其他表的连接语句。
         $joins = '';
 
         if (isset($query->joins)) {
@@ -274,7 +298,7 @@ class MySqlGrammar extends Grammar
     {
         $joins = ' '.$this->compileJoins($query, $query->joins);
 
-        $alias = strpos(strtolower($table), ' as ') !== false
+        $alias = stripos($table, ' as ') !== false
                 ? explode(' as ', $table)[1] : $table;
 
         return trim("delete {$alias} from {$table}{$joins} {$where}");
@@ -289,18 +313,7 @@ class MySqlGrammar extends Grammar
      */
     protected function wrapValue($value)
     {
-        if ($value === '*') {
-            return $value;
-        }
-
-        // If the given value is a JSON selector we will wrap it differently than a
-        // traditional value. We will need to split this path and wrap each part
-        // wrapped, etc. Otherwise, we will simply wrap the value as a string.
-        if ($this->isJsonSelector($value)) {
-            return $this->wrapJsonSelector($value);
-        }
-
-        return '`'.str_replace('`', '``', $value).'`';
+        return $value === '*' ? $value : '`'.str_replace('`', '``', $value).'`';
     }
 
     /**
@@ -312,24 +325,16 @@ class MySqlGrammar extends Grammar
      */
     protected function wrapJsonSelector($value)
     {
-        $path = explode('->', $value);
+        $delimiter = str_contains($value, '->>')
+            ? '->>'
+            : '->';
 
-        $field = $this->wrapValue(array_shift($path));
+        $path = explode($delimiter, $value);
 
-        return sprintf('%s->\'$.%s\'', $field, collect($path)->map(function ($part) {
+        $field = $this->wrapSegments(explode('.', array_shift($path)));
+
+        return sprintf('%s'.$delimiter.'\'$.%s\'', $field, collect($path)->map(function ($part) {
             return '"'.$part.'"';
         })->implode('.'));
-    }
-
-    /**
-     * Determine if the given string is a JSON selector.
-	 * 确定给定字符串是否是JSON选择器
-     *
-     * @param  string  $value
-     * @return bool
-     */
-    protected function isJsonSelector($value)
-    {
-        return Str::contains($value, '->');
     }
 }

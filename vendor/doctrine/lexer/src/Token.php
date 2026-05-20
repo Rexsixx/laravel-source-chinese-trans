@@ -32,6 +32,7 @@ final class Token implements ArrayAccess
 
     /**
      * The type of the token (identifier, numeric, string, input parameter, none)
+	 * 令牌的类型(标识符、数字、字符串、输入参数、none)
      *
      * @readonly
      * @var T|null
@@ -40,6 +41,7 @@ final class Token implements ArrayAccess
 
     /**
      * The position of the token in the input string
+	 * 输入字符串中的令牌的位置
      *
      * @readonly
      * @var int

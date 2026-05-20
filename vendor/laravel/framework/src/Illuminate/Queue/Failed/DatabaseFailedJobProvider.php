@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，失败的，数据库失败的作业提供程序
+ * Illuminate，队列，失败，数据库失败的作业提供程序
  */
 
 namespace Illuminate\Queue\Failed;

@@ -341,7 +341,7 @@ abstract class HasOneOrMany extends Relation
      */
     public function update(array $attributes)
     {
-        if ($this->related->usesTimestamps()) {
+        if ($this->related->usesTimestamps() && ! is_null($this->relatedUpdatedAt())) {
             $attributes[$this->relatedUpdatedAt()] = $this->related->freshTimestampString();
         }
 
@@ -399,6 +399,7 @@ abstract class HasOneOrMany extends Relation
 
     /**
      * Get the key for comparing against the parent key in "has" query.
+	 * 获取用于与“has”查询中的父键进行比较的键
      *
      * @return string
      */

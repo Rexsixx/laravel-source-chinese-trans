@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，论证，令牌，任何值令牌
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -13,6 +16,7 @@ namespace Prophecy\Argument\Token;
 
 /**
  * Any single value token.
+ * 任何一个值令牌
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -21,7 +25,7 @@ class AnyValueToken implements TokenInterface
     /**
      * Always scores 3 for any argument.
      *
-     * @param $argument
+     * @param mixed $argument
      *
      * @return int
      */

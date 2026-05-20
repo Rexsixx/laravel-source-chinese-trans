@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，命令行加载器，命令加载器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,6 +24,7 @@ interface CommandLoaderInterface
 {
     /**
      * Loads a command.
+	 * 加载命令
      *
      * @param string $name
      *
@@ -32,6 +36,7 @@ interface CommandLoaderInterface
 
     /**
      * Checks if a command exists.
+	 * 检查是否存在命令
      *
      * @param string $name
      *

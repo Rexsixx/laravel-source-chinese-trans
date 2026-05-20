@@ -22,7 +22,7 @@ use const PREG_SPLIT_OFFSET_CAPTURE;
 
 /**
  * Base class for writing simple lexers, i.e. for creating small DSLs.
- * 用于编写简单词法分析器的基类，即用于创建小型DSLs。
+ * 用于编写简单词法分析器的基类，即用于创建小型dsl。
  *
  * @template T of UnitEnum|string|int
  * @template V of string|int
@@ -31,7 +31,7 @@ abstract class AbstractLexer
 {
     /**
      * Lexer original input string.
-	 * 输入字符串
+	 * Lexer原始输入字符串
      *
      * @var string
      */
@@ -39,6 +39,7 @@ abstract class AbstractLexer
 
     /**
      * Array of scanned tokens.
+	 * 扫描令牌数组
      *
      * @var list<Token<T, V>>
      */
@@ -46,6 +47,7 @@ abstract class AbstractLexer
 
     /**
      * Current lexer position in input string.
+	 * 输入字符串中的当前词汇位置
      *
      * @var int
      */
@@ -53,6 +55,7 @@ abstract class AbstractLexer
 
     /**
      * Current peek of current lexer position.
+	 * 当前词法分析器位置的当前顶点
      *
      * @var int
      */
@@ -60,6 +63,7 @@ abstract class AbstractLexer
 
     /**
      * The next token in the input.
+	 * 输入中的下一个令牌
      *
      * @var Token<T, V>|null
      */
@@ -67,6 +71,7 @@ abstract class AbstractLexer
 
     /**
      * The last matched/seen token.
+	 * 最后一个匹配/见令牌
      *
      * @var Token<T, V>|null
      */
@@ -74,6 +79,7 @@ abstract class AbstractLexer
 
     /**
      * Composed regex for input parsing.
+	 * 组成的regex用于输入解析
      *
      * @var non-empty-string|null
      */
@@ -81,6 +87,7 @@ abstract class AbstractLexer
 
     /**
      * Sets the input data to be tokenized.
+	 * 设置输入数据来控制。
      *
      * The Lexer is immediately reset and the new input tokenized.
      * Any unprocessed tokens from any previous input are lost.
@@ -100,6 +107,7 @@ abstract class AbstractLexer
 
     /**
      * Resets the lexer.
+	 * 重新设置词典
      *
      * @return void
      */
@@ -113,6 +121,7 @@ abstract class AbstractLexer
 
     /**
      * Resets the peek pointer to 0.
+	 * 将peek指针重新设置为0
      *
      * @return void
      */
@@ -123,6 +132,7 @@ abstract class AbstractLexer
 
     /**
      * Resets the lexer position on the input to the given position.
+	 * 将输入上的词法分析器位置重置为给定位置
      *
      * @param int $position Position to place the lexical scanner.
      *
@@ -135,6 +145,7 @@ abstract class AbstractLexer
 
     /**
      * Retrieve the original lexer's input until a given position.
+	 * 检索原始词法分析器的输入，直到给定位置。
      *
      * @param int $position
      *
@@ -147,6 +158,7 @@ abstract class AbstractLexer
 
     /**
      * Checks whether a given token matches the current lookahead.
+	 * 检查给定的令牌是否与当前的前瞻匹配
      *
      * @param T $type
      *

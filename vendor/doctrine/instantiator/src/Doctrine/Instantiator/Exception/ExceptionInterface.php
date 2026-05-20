@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，实例化器，异常，异常接口
+ * Doctrine，Instantiator，异常，异常接口
  */
 
 namespace Doctrine\Instantiator\Exception;

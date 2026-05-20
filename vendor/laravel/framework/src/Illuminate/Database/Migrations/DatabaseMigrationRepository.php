@@ -48,8 +48,8 @@ class DatabaseMigrationRepository implements MigrationRepositoryInterface
     }
 
     /**
-     * Get the ran migrations.
-	 * 获取运行迁移
+     * Get the completed migrations.
+	 * 获取完成的迁移
      *
      * @return array
      */
@@ -91,11 +91,25 @@ class DatabaseMigrationRepository implements MigrationRepositoryInterface
     }
 
     /**
+     * Get the completed migrations with their batch numbers.
+	 * 获取已完成的迁移及其批号
+     *
+     * @return array
+     */
+    public function getMigrationBatches()
+    {
+        return $this->table()
+                ->orderBy('batch', 'asc')
+                ->orderBy('migration', 'asc')
+                ->pluck('batch', 'migration')->all();
+    }
+
+    /**
      * Log that a migration was run.
 	 * 运行迁移的日志
      *
      * @param  string  $file
-     * @param  int     $batch
+     * @param  int  $batch
      * @return void
      */
     public function log($file, $batch)

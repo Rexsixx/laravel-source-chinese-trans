@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理器，Mercurial 处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -15,6 +18,7 @@ use Monolog\Logger;
 
 /**
  * Injects Hg branch and Hg revision number in all records
+ * 在所有记录中注入汞柱分支和汞柱修订号
  *
  * @author Jonathan A. Schweder <jonathanschweder@gmail.com>
  */

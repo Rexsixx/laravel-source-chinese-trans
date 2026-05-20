@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，版本更新，Noop检查器
+ */
 
 /*
  * This file is part of Psy Shell.

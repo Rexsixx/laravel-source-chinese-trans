@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，错误
+ */
+
 namespace PhpParser;
 
 class Error extends \RuntimeException
@@ -9,6 +13,7 @@ class Error extends \RuntimeException
 
     /**
      * Creates an Exception signifying a parse error.
+	 * 创建一个异常，表示解析错误。
      *
      * @param string    $message    Error message
      * @param array|int $attributes Attributes of node/token where error occurred
@@ -26,6 +31,7 @@ class Error extends \RuntimeException
 
     /**
      * Gets the error message
+	 * 获取错误消息
      *
      * @return string Error message
      */
@@ -35,6 +41,7 @@ class Error extends \RuntimeException
 
     /**
      * Gets the line the error starts in.
+	 * 获取错误开始所在的行
      *
      * @return int Error start line
      */
@@ -44,6 +51,7 @@ class Error extends \RuntimeException
 
     /**
      * Gets the line the error ends in.
+	 * 得到错误结束的线
      *
      * @return int Error end line
      */
@@ -53,6 +61,7 @@ class Error extends \RuntimeException
 
     /**
      * Gets the attributes of the node/token the error occurred at.
+	 * 获取错误发生的节点/令牌的属性
      *
      * @return array
      */

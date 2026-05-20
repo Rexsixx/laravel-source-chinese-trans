@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，预先设置，无
+ * Illuminate，基础，控制台，预置，绝不
  */
 
 namespace Illuminate\Foundation\Console\Presets;
@@ -39,8 +39,9 @@ class None extends Preset
     protected static function updatePackageArray(array $packages)
     {
         unset(
-            $packages['bootstrap-sass'],
+            $packages['bootstrap'],
             $packages['jquery'],
+            $packages['popper.js'],
             $packages['vue'],
             $packages['babel-preset-react'],
             $packages['react'],

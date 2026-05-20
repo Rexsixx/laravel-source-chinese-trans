@@ -12,7 +12,7 @@ trait CapsuleManagerTrait
 {
     /**
      * The current globally used instance.
-	 * 当前全局使用的实例
+	 * 当前的全局使用实例
      *
      * @var object
      */
@@ -44,7 +44,7 @@ trait CapsuleManagerTrait
 
     /**
      * Make this capsule instance available globally.
-	 * 使这个capsule实例全局可用
+	 * 使这个胶囊实例在全球可用
      *
      * @return void
      */

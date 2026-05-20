@@ -29,7 +29,7 @@ trait RetrievesMultipleKeys
 
     /**
      * Store multiple items in the cache for a given number of minutes.
-	 * 在给定的分钟数内将多个项存储在缓存中
+	 * 在给定的分钟数内将多个项存储在缓存中。
      *
      * @param  array  $values
      * @param  float|int  $minutes

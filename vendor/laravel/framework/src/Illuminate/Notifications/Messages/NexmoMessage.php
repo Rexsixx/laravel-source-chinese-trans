@@ -17,7 +17,7 @@ class NexmoMessage
 
     /**
      * The phone number the message should be sent from.
-	 * 应该发送信息的电话号码
+	 * 电话号码应该从电话发送
      *
      * @var string
      */

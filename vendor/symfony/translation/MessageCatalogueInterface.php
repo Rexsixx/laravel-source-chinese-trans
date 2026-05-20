@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，翻译，信息目录接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +23,7 @@ use Symfony\Component\Config\Resource\ResourceInterface;
  */
 interface MessageCatalogueInterface
 {
-    const INTL_DOMAIN_SUFFIX = '+intl-icu';
+    public const INTL_DOMAIN_SUFFIX = '+intl-icu';
 
     /**
      * Gets the catalogue locale.

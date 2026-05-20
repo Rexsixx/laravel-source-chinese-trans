@@ -5,15 +5,17 @@
 
 namespace Illuminate\Database\Eloquent\Concerns;
 
+use Illuminate\Support\Arr;
 use Illuminate\Contracts\Events\Dispatcher;
 
 trait HasEvents
 {
     /**
      * The event map for the model.
-	 * 模型的事件映射
+	 * 模型的事件映射。
      *
      * Allows for object-based events for native Eloquent events.
+	 * 允许原生Eloquent事件的基于对象的事件
      *
      * @var array
      */
@@ -24,28 +26,44 @@ trait HasEvents
 	 * 用户公开的可观察事件。
      *
      * These are extra user-defined events observers may subscribe to.
+	 * 这些是观察者可以订阅的额外用户定义事件。
      *
      * @var array
      */
     protected $observables = [];
 
     /**
-     * Register an observer with the Model.
-	 * 向模型注册一个观察者
+     * Register observers with the model.
+	 * 向模型注册观察者
      *
-     * @param  object|string  $class
+     * @param  object|array|string  $classes
      * @return void
      */
-    public static function observe($class)
+    public static function observe($classes)
     {
         $instance = new static;
 
+        foreach (Arr::wrap($classes) as $class) {
+            $instance->registerObserver($class);
+        }
+    }
+
+    /**
+     * Register a single observer with the model.
+	 * 向模型注册一个观察者
+     *
+     * @param  object|string $class
+     * @return void
+     */
+    protected function registerObserver($class)
+    {
         $className = is_string($class) ? $class : get_class($class);
 
         // When registering a model observer, we will spin through the possible events
         // and determine if this observer has that method. If it does, we will hook
         // it into the model's event system, making it convenient to watch these.
-        foreach ($instance->getObservableEvents() as $event) {
+		// 当注册模型观察者时,我们将在可能的事件中旋转,并确定这个观察者是否有该方法。
+        foreach ($this->getObservableEvents() as $event) {
             if (method_exists($class, $event)) {
                 static::registerModelEvent($event, $className.'@'.$event);
             }
@@ -62,9 +80,9 @@ trait HasEvents
     {
         return array_merge(
             [
-                'retrieved', 'creating', 'created', 'updating',
-                'updated', 'deleting', 'deleted', 'saving',
-                'saved', 'restoring', 'restored',
+                'retrieved', 'creating', 'created', 'updating', 'updated',
+                'saving', 'saved', 'restoring', 'restored',
+                'deleting', 'deleted', 'forceDeleted',
             ],
             $this->observables
         );
@@ -146,6 +164,7 @@ trait HasEvents
         // First, we will get the proper method to call on the event dispatcher, and then we
         // will attempt to fire a custom, object based event for the given event. If that
         // returns a result we can return that result, or we'll call the string events.
+		// 首先,我们将得到正确的方法调用事件调遣器,然后我们将尝试通过给定的事件来触发一个自定义的对象。
         $method = $halt ? 'until' : 'fire';
 
         $result = $this->filterModelEventResults(
@@ -250,6 +269,7 @@ trait HasEvents
 
     /**
      * Register an updated model event with the dispatcher.
+	 * 向调度程序注册更新后的模型事件
      *
      * @param  \Closure|string  $callback
      * @return void
@@ -261,7 +281,8 @@ trait HasEvents
 
     /**
      * Register a creating model event with the dispatcher.
-     *
+	 * 向调度程序注册一个创建模型事件
+     * 
      * @param  \Closure|string  $callback
      * @return void
      */

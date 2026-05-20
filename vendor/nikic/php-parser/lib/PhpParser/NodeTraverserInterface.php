@@ -1,11 +1,16 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点交叉界面
+ */
+
 namespace PhpParser;
 
 interface NodeTraverserInterface
 {
     /**
      * Adds a visitor.
+	 * 添加一个访问者
      *
      * @param NodeVisitor $visitor Visitor to add
      */
@@ -13,6 +18,7 @@ interface NodeTraverserInterface
 
     /**
      * Removes an added visitor.
+	 * 删除添加的访问者
      *
      * @param NodeVisitor $visitor
      */
@@ -20,6 +26,7 @@ interface NodeTraverserInterface
 
     /**
      * Traverses an array of nodes using the registered visitors.
+	 * 使用注册访问者遍历一系列节点
      *
      * @param Node[] $nodes Array of nodes
      *

@@ -18,6 +18,14 @@ class PendingMail
     protected $mailer;
 
     /**
+     * The locale of the message.
+	 * 消息的区域设置
+     *
+     * @var array
+     */
+    protected $locale;
+
+    /**
      * The "to" recipients of the message.
 	 * 消息的“to”收件人
      *
@@ -43,7 +51,7 @@ class PendingMail
 
     /**
      * Create a new mailable mailer instance.
-	 * 创建一个新的可邮件邮件实例。
+	 * 创建一个新的可邮件邮件实例
      *
      * @param  \Illuminate\Mail\Mailer  $mailer
      * @return void
@@ -51,6 +59,20 @@ class PendingMail
     public function __construct(Mailer $mailer)
     {
         $this->mailer = $mailer;
+    }
+
+    /**
+     * Set the locale of the message.
+	 * 设置消息的区域设置
+     *
+     * @param  string  $locale
+     * @return $this
+     */
+    public function locale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
     }
 
     /**
@@ -125,7 +147,7 @@ class PendingMail
 
     /**
      * Push the given mailable onto the queue.
-	 * 将给定的可邮件推送到队列中
+	 * 将给定的mailable推到队列上
      *
      * @param  \Illuminate\Mail\Mailable  $mailable
      * @return mixed
@@ -143,7 +165,7 @@ class PendingMail
 
     /**
      * Deliver the queued message after the given delay.
-	 * 在给定的延迟之后交付排队消息
+	 * 在给定延迟后发送队列消息
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  \Illuminate\Mail\Mailable  $mailable
@@ -165,6 +187,7 @@ class PendingMail
     {
         return $mailable->to($this->to)
                         ->cc($this->cc)
-                        ->bcc($this->bcc);
+                        ->bcc($this->bcc)
+                        ->locale($this->locale);
     }
 }

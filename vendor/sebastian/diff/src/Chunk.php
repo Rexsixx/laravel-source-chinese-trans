@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Diff，Chunk
+ */
+
 /*
  * This file is part of sebastian/diff.
  *
@@ -33,7 +38,7 @@ final class Chunk
     private $endRange;
 
     /**
-     * @var array
+     * @var Line[]
      */
     private $lines;
 
@@ -66,13 +71,25 @@ final class Chunk
         return $this->endRange;
     }
 
+    /**
+     * @return Line[]
+     */
     public function getLines(): array
     {
         return $this->lines;
     }
 
-    public function setLines(array $lines)
+    /**
+     * @param Line[] $lines
+     */
+    public function setLines(array $lines): void
     {
+        foreach ($lines as $line) {
+            if (!$line instanceof Line) {
+                throw new InvalidArgumentException;
+            }
+        }
+
         $this->lines = $lines;
     }
 }

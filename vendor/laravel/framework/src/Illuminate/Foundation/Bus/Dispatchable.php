@@ -5,6 +5,8 @@
 
 namespace Illuminate\Foundation\Bus;
 
+use Illuminate\Contracts\Bus\Dispatcher;
+
 trait Dispatchable
 {
     /**
@@ -16,6 +18,17 @@ trait Dispatchable
     public static function dispatch()
     {
         return new PendingDispatch(new static(...func_get_args()));
+    }
+
+    /**
+     * Dispatch a command to its appropriate handler in the current process.
+	 * 将命令分派给当前进程中相应的处理程序
+     *
+     * @return mixed
+     */
+    public static function dispatchNow()
+    {
+        return app(Dispatcher::class)->dispatchNow(new static(...func_get_args()));
     }
 
     /**

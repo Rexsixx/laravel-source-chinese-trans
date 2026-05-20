@@ -67,11 +67,23 @@ interface ResponseFactory
     public function stream($callback, $status = 200, array $headers = []);
 
     /**
+     * Return a new streamed response as a file download from the application.
+	 * 返回一个新的流响应，作为从应用程序下载的文件。
+     *
+     * @param  \Closure  $callback
+     * @param  string|null  $name
+     * @param  array  $headers
+     * @param  string|null  $disposition
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    public function streamDownload($callback, $name = null, array $headers = [], $disposition = 'attachment');
+
+    /**
      * Create a new file download response.
 	 * 创建一个新的文件下载响应
      *
      * @param  \SplFileInfo|string  $file
-     * @param  string  $name
+     * @param  string|null  $name
      * @param  array  $headers
      * @param  string|null  $disposition
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse

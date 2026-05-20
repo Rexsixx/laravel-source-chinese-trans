@@ -29,8 +29,10 @@ trait ManagesTransactions
             // We'll simply execute the given callback within a try / catch block and if we
             // catch any exception we can rollback this transaction so that none of this
             // gets actually persisted to a database or stored in a permanent fashion.
+			// 我们将简单地在一个try / catch块中执行给定的回调,如果我们知道任何例外,
+			// 我们可以回滚这个事务,这样就不会有任何一个东西被持久化到数据库中,或者以永久的方式存储。
             try {
-                return tap($callback($this), function ($result) {
+                return tap($callback($this), function () {
                     $this->commit();
                 });
             }
@@ -66,6 +68,7 @@ trait ManagesTransactions
         // On a deadlock, MySQL rolls back the entire transaction so we can't just
         // retry the query. We have to throw this exception all the way out and
         // let the developer handle it in another way. We will decrement too.
+		// 在死锁上,MySQL将整个事务卷回来,所以我们不能仅仅重新尝试查询。
         if ($this->causedByDeadlock($e) &&
             $this->transactions > 1) {
             $this->transactions--;
@@ -138,7 +141,7 @@ trait ManagesTransactions
      * Handle an exception from a transaction beginning.
 	 * 从事务开始处理异常
      *
-     * @param  \Exception  $e
+     * @param  \Throwable  $e
      * @return void
      *
      * @throws \Exception
@@ -177,6 +180,8 @@ trait ManagesTransactions
      *
      * @param  int|null  $toLevel
      * @return void
+     *
+     * @throws \Exception
      */
     public function rollBack($toLevel = null)
     {
@@ -194,7 +199,11 @@ trait ManagesTransactions
         // Next, we will actually perform this rollback within this database and fire the
         // rollback event. We will also set the current transaction level to the given
         // level that was passed into this method so it will be right from here out.
-        $this->performRollBack($toLevel);
+        try {
+            $this->performRollBack($toLevel);
+        } catch (Exception $e) {
+            $this->handleRollBackException($e);
+        }
 
         $this->transactions = $toLevel;
 
@@ -217,6 +226,23 @@ trait ManagesTransactions
                 $this->queryGrammar->compileSavepointRollBack('trans'.($toLevel + 1))
             );
         }
+    }
+
+    /**
+     * Handle an exception from a rollback.
+	 * 处理回滚的异常
+     *
+     * @param \Exception  $e
+     *
+     * @throws \Exception
+     */
+    protected function handleRollBackException($e)
+    {
+        if ($this->causedByLostConnection($e)) {
+            $this->transactions = 0;
+        }
+
+        throw $e;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，问题，与身份验证交互
+ * Illuminate，基础，测试，问题，与数据库交互
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;

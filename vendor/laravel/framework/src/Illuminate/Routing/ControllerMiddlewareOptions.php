@@ -29,7 +29,7 @@ class ControllerMiddlewareOptions
 
     /**
      * Set the controller methods the middleware should apply to.
-	 * 设置中间件应该应用的控制器方法
+	 * 设置中间件应该适用的控制器方法
      *
      * @param  array|string|dynamic  $methods
      * @return $this

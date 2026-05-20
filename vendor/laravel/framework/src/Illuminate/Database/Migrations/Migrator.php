@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，迁移，迁移
+ * Illuminate，数据库，迁移，移植器
  */
 
 namespace Illuminate\Database\Migrations;
@@ -137,7 +137,7 @@ class Migrator
         // First we will just make sure that there are any migrations to run. If there
         // aren't, we will just make a note of it to the developer so they're aware
         // that all of the migrations have been run against this database system.
-        if (count($migrations) == 0) {
+        if (count($migrations) === 0) {
             $this->note('<info>Nothing to migrate.</info>');
 
             return;
@@ -507,6 +507,17 @@ class Migrator
     public function paths()
     {
         return $this->paths;
+    }
+
+    /**
+     * Get the default connection name.
+	 * 获取默认连接名称
+     *
+     * @return string
+     */
+    public function getConnection()
+    {
+        return $this->connection;
     }
 
     /**

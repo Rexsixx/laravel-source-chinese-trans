@@ -1,11 +1,12 @@
 <?php
 /**
- * Illuminate，支持，可选择的
+ * Illuminate，支持，选项
  */
 
 namespace Illuminate\Support;
 
 use ArrayAccess;
+use ArrayObject;
 
 class Optional implements ArrayAccess
 {
@@ -15,7 +16,7 @@ class Optional implements ArrayAccess
 
     /**
      * The underlying object.
-	 * 基础对象
+	 * 底层对象
      *
      * @var mixed
      */
@@ -35,7 +36,7 @@ class Optional implements ArrayAccess
 
     /**
      * Dynamically access a property on the underlying object.
-	 * 动态访问基础对象上的属性
+	 * 动态访问底层对象上的属性
      *
      * @param  string  $key
      * @return mixed
@@ -43,32 +44,33 @@ class Optional implements ArrayAccess
     public function __get($key)
     {
         if (is_object($this->value)) {
-            return $this->value->{$key};
+            return $this->value->{$key} ?? null;
         }
     }
 
     /**
-     * Dynamically pass a method to the underlying object.
-	 * 动态地将方法传递给底层对象
+     * Dynamically check a property exists on the underlying object.
+	 * 动态检查底层对象上存在的属性
      *
-     * @param  string  $method
-     * @param  array  $parameters
-     * @return mixed
+     * @param $name
+     * @return bool
      */
-    public function __call($method, $parameters)
+    public function __isset($name)
     {
-        if (static::hasMacro($method)) {
-            return $this->macroCall($method, $parameters);
+        if (is_object($this->value)) {
+            return isset($this->value->{$name});
         }
 
-        if (is_object($this->value)) {
-            return $this->value->{$method}(...$parameters);
+        if (is_array($this->value) || $this->value instanceof ArrayObject) {
+            return isset($this->value[$name]);
         }
+
+        return false;
     }
 
     /**
      * Determine if an item exists at an offset.
-	 * 确定某项是否存在于偏移量处
+	 * 确定是否存在一个偏移量
      *
      * @param  mixed  $key
      * @return bool
@@ -80,7 +82,7 @@ class Optional implements ArrayAccess
 
     /**
      * Get an item at a given offset.
-	 * 获取给定偏移量处的项
+	 * 在给定的偏移量中得到一个项
      *
      * @param  mixed  $key
      * @return mixed
@@ -92,7 +94,7 @@ class Optional implements ArrayAccess
 
     /**
      * Set the item at a given offset.
-	 * 在给定的偏移量处设置项
+	 * 将该项设置为给定偏移量
      *
      * @param  mixed  $key
      * @param  mixed  $value
@@ -107,7 +109,7 @@ class Optional implements ArrayAccess
 
     /**
      * Unset the item at a given offset.
-	 * 在给定的偏移量处取消项的设置
+	 * 在给定的偏移量下解开这个项
      *
      * @param  string  $key
      * @return void
@@ -116,6 +118,25 @@ class Optional implements ArrayAccess
     {
         if (Arr::accessible($this->value)) {
             unset($this->value[$key]);
+        }
+    }
+
+    /**
+     * Dynamically pass a method to the underlying object.
+	 * 动态将方法传递到底层对象
+     *
+     * @param  string  $method
+     * @param  array  $parameters
+     * @return mixed
+     */
+    public function __call($method, $parameters)
+    {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
+        if (is_object($this->value)) {
+            return $this->value->{$method}(...$parameters);
         }
     }
 }

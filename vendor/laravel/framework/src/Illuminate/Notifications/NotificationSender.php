@@ -5,7 +5,7 @@
 
 namespace Illuminate\Notifications;
 
-use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -39,7 +39,7 @@ class NotificationSender
 
     /**
      * Create a new notification sender instance.
-	 * 创建一个新的通知发送方实例
+	 * 创建一个新的通知发送器实例
      *
      * @param  \Illuminate\Notifications\ChannelManager  $manager
      * @param  \Illuminate\Contracts\Bus\Dispatcher  $bus
@@ -92,7 +92,7 @@ class NotificationSender
                 continue;
             }
 
-            $notificationId = Uuid::uuid4()->toString();
+            $notificationId = Str::uuid()->toString();
 
             foreach ((array) $viaChannels as $channel) {
                 $this->sendToNotifiable($notifiable, $notificationId, clone $original, $channel);
@@ -102,7 +102,7 @@ class NotificationSender
 
     /**
      * Send the given notification to the given notifiable via a channel.
-	 * 通过通道将给定的通知发送给给定的通知对象
+	 * 通过通道将给定的通知发送给通知
      *
      * @param  mixed  $notifiable
      * @param  string  $id
@@ -158,7 +158,7 @@ class NotificationSender
         $original = clone $notification;
 
         foreach ($notifiables as $notifiable) {
-            $notificationId = Uuid::uuid4()->toString();
+            $notificationId = Str::uuid()->toString();
 
             foreach ($original->via($notifiable) as $channel) {
                 $notification = clone $original;

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，期望管理者
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -24,6 +28,7 @@ class ExpectationDirector
 {
     /**
      * Method name the director is directing
+	 * 管理者的方法名称是被指向的
      *
      * @var string
      */
@@ -31,6 +36,7 @@ class ExpectationDirector
 
     /**
      * Mock object the director is attached to
+	 * 模拟对象,导演附在。
      *
      * @var \Mockery\MockInterface|\Mockery\LegacyMockInterface
      */
@@ -38,6 +44,7 @@ class ExpectationDirector
 
     /**
      * Stores an array of all expectations for this mock
+	 * 为这个模拟存储一系列期望
      *
      * @var array
      */
@@ -45,6 +52,7 @@ class ExpectationDirector
 
     /**
      * The expected order of next call
+	 * 下一次调取的预期顺序
      *
      * @var int
      */
@@ -52,6 +60,7 @@ class ExpectationDirector
 
     /**
      * Stores an array of all default expectations for this mock
+	 * 为这个模拟存储一系列默认的期望
      *
      * @var array
      */
@@ -59,6 +68,7 @@ class ExpectationDirector
 
     /**
      * Constructor
+	 * 构造函数
      *
      * @param string $name
      * @param \Mockery\LegacyMockInterface $mock
@@ -71,6 +81,7 @@ class ExpectationDirector
 
     /**
      * Add a new expectation to the director
+	 * 向主管增加一个新的期望
      *
      * @param \Mockery\Expectation $expectation
      */
@@ -81,6 +92,7 @@ class ExpectationDirector
 
     /**
      * Handle a method call being directed by this instance
+	 * 处理由此实例定向的方法调用
      *
      * @param array $args
      * @return mixed
@@ -108,6 +120,7 @@ class ExpectationDirector
 
     /**
      * Verify all expectations of the director
+	 * 核实主管的所有期望
      *
      * @throws \Mockery\CountValidator\Exception
      * @return void
@@ -127,6 +140,7 @@ class ExpectationDirector
 
     /**
      * Attempt to locate an expectation matching the provided args
+	 * 尝试定位一个期望匹配提供的args
      *
      * @param array $args
      * @return mixed
@@ -167,6 +181,7 @@ class ExpectationDirector
 
     /**
      * Search current array of expectations for a match
+	 * 搜索当前期望数组以查找匹配项
      *
      * @param array $expectations
      * @param array $args
@@ -188,6 +203,7 @@ class ExpectationDirector
 
     /**
      * Return all expectations assigned to this director
+	 * 返回分配给该主管的所有期望
      *
      * @return array
      */
@@ -198,6 +214,7 @@ class ExpectationDirector
 
     /**
      * Return all expectations assigned to this director
+	 * 返回分配给该主管的所有期望
      *
      * @return array
      */
@@ -208,6 +225,7 @@ class ExpectationDirector
 
     /**
      * Return the number of expectations assigned to this director.
+	 * 返回分配给该导演的期望数
      *
      * @return int
      */

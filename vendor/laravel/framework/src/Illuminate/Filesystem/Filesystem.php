@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，文件系统，文件系统
+ * Illuminate，文件系统，Filesystem
  */
 
 namespace Illuminate\Filesystem;
@@ -418,7 +418,7 @@ class Filesystem
     public function files($directory, $hidden = false)
     {
         return iterator_to_array(
-            Finder::create()->files()->ignoreDotFiles(! $hidden)->in($directory)->depth(0),
+            Finder::create()->files()->ignoreDotFiles(! $hidden)->in($directory)->depth(0)->sortByName(),
             false
         );
     }
@@ -434,7 +434,7 @@ class Filesystem
     public function allFiles($directory, $hidden = false)
     {
         return iterator_to_array(
-            Finder::create()->files()->ignoreDotFiles(! $hidden)->in($directory),
+            Finder::create()->files()->ignoreDotFiles(! $hidden)->in($directory)->sortByName(),
             false
         );
     }
@@ -450,7 +450,7 @@ class Filesystem
     {
         $directories = [];
 
-        foreach (Finder::create()->in($directory)->directories()->depth(0) as $dir) {
+        foreach (Finder::create()->in($directory)->directories()->depth(0)->sortByName() as $dir) {
             $directories[] = $dir->getPathname();
         }
 
@@ -487,10 +487,8 @@ class Filesystem
      */
     public function moveDirectory($from, $to, $overwrite = false)
     {
-        if ($overwrite && $this->isDirectory($to)) {
-            if (! $this->deleteDirectory($to)) {
-                return false;
-            }
+        if ($overwrite && $this->isDirectory($to) && ! $this->deleteDirectory($to)) {
+            return false;
         }
 
         return @rename($from, $to) === true;
@@ -526,6 +524,7 @@ class Filesystem
             // As we spin through items, we will check to see if the current file is actually
             // a directory or a file. When it is actually a directory we will need to call
             // back into this function recursively to keep copying these nested folders.
+			// 当我们在项目中旋转时,我们将检查当前文件是否实际上是一个目录或文件。
             $target = $destination.'/'.$item->getBasename();
 
             if ($item->isDir()) {
@@ -539,6 +538,7 @@ class Filesystem
             // If the current items is just a regular file, we will just copy this to the new
             // location and keep looping. If for some reason the copy fails we'll bail out
             // and return false, so the developer is aware that the copy process failed.
+			// 如果当前项目只是一个常规文件,我们将把它复制到新的位置并保持循环。
             else {
                 if (! $this->copy($item->getPathname(), $target)) {
                     return false;
@@ -551,7 +551,7 @@ class Filesystem
 
     /**
      * Recursively delete a directory.
-	 * 递归删除目录。
+	 * 递归删除目录
      *
      * The directory itself may be optionally preserved.
      *
@@ -571,6 +571,8 @@ class Filesystem
             // If the item is a directory, we can just recurse into the function and
             // delete that sub-directory otherwise we'll just delete the file and
             // keep iterating through each file until the directory is cleaned.
+			// 如果该项目是一个目录,我们可以将其递归到函数中,并删除该子目录,
+			// 否则我们将删除该文件,并继续遍历每个文件,直到清除目录。
             if ($item->isDir() && ! $item->isLink()) {
                 $this->deleteDirectory($item->getPathname());
             }
@@ -578,6 +580,8 @@ class Filesystem
             // If the item is just a file, we can go ahead and delete it since we're
             // just looping through and waxing all of the files in this directory
             // and calling directories recursively, so we delete the real path.
+			// 如果这个项目只是一个文件,我们可以继续删除它,
+			// 因为我们只是在这个目录中循环通过并waxing所有的文件,然后递归地调用目录,因此我们删除了真正的路径。
             else {
                 $this->delete($item->getPathname());
             }
@@ -588,6 +592,28 @@ class Filesystem
         }
 
         return true;
+    }
+
+    /**
+     * Remove all of the directories within a given directory.
+	 * 删除给定目录中的所有目录
+     *
+     * @param  string  $directory
+     * @return bool
+     */
+    public function deleteDirectories($directory)
+    {
+        $allDirectories = $this->directories($directory);
+
+        if (! empty($allDirectories)) {
+            foreach ($allDirectories as $directoryName) {
+                $this->deleteDirectory($directoryName);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

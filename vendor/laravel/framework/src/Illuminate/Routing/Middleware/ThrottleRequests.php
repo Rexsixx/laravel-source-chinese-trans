@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，中间件，节流阀请求
+ * Illuminate，路由，中间件，节流请求
  */
 
 namespace Illuminate\Routing\Middleware;
@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 use Illuminate\Cache\RateLimiter;
 use Illuminate\Support\InteractsWithTime;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 
 class ThrottleRequests
 {
@@ -19,7 +19,7 @@ class ThrottleRequests
 
     /**
      * The rate limiter instance.
-	 * 速率限制器实例
+	 * 速率限制实例
      *
      * @var \Illuminate\Cache\RateLimiter
      */
@@ -39,14 +39,14 @@ class ThrottleRequests
 
     /**
      * Handle an incoming request.
-	 * 处理传入请求。
+	 * 处理传入的请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @param  int|string  $maxAttempts
      * @param  float|int  $decayMinutes
      * @return mixed
-     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     * @throws \Illuminate\Http\Exceptions\ThrottleRequestsException
      */
     public function handle($request, Closure $next, $maxAttempts = 60, $decayMinutes = 1)
     {
@@ -54,7 +54,7 @@ class ThrottleRequests
 
         $maxAttempts = $this->resolveMaxAttempts($request, $maxAttempts);
 
-        if ($this->limiter->tooManyAttempts($key, $maxAttempts, $decayMinutes)) {
+        if ($this->limiter->tooManyAttempts($key, $maxAttempts)) {
             throw $this->buildException($key, $maxAttempts);
         }
 
@@ -70,7 +70,7 @@ class ThrottleRequests
 
     /**
      * Resolve the number of attempts if the user is authenticated or not.
-	 * 解析用户是否通过身份验证的尝试次数
+	 * 如果用户经过身份验证,就解决尝试的次数。
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int|string  $maxAttempts
@@ -82,12 +82,16 @@ class ThrottleRequests
             $maxAttempts = explode('|', $maxAttempts, 2)[$request->user() ? 1 : 0];
         }
 
+        if (! is_numeric($maxAttempts) && $request->user()) {
+            $maxAttempts = $request->user()->{$maxAttempts};
+        }
+
         return (int) $maxAttempts;
     }
 
     /**
      * Resolve request signature.
-	 * 解析请求签名
+	 * 解决请求签名
      *
      * @param  \Illuminate\Http\Request  $request
      * @return string
@@ -103,18 +107,16 @@ class ThrottleRequests
             return sha1($route->getDomain().'|'.$request->ip());
         }
 
-        throw new RuntimeException(
-            'Unable to generate the request signature. Route unavailable.'
-        );
+        throw new RuntimeException('Unable to generate the request signature. Route unavailable.');
     }
 
     /**
      * Create a 'too many attempts' exception.
-	 * 创建一个“too many attempts”异常
+	 * 创建一个“太多尝试”的例外
      *
      * @param  string  $key
      * @param  int  $maxAttempts
-     * @return \Symfony\Component\HttpKernel\Exception\HttpException
+     * @return \Illuminate\Http\Exceptions\ThrottleRequestsException
      */
     protected function buildException($key, $maxAttempts)
     {
@@ -126,14 +128,14 @@ class ThrottleRequests
             $retryAfter
         );
 
-        return new HttpException(
-            429, 'Too Many Attempts.', null, $headers
+        return new ThrottleRequestsException(
+            'Too Many Attempts.', null, $headers
         );
     }
 
     /**
      * Get the number of seconds until the next retry.
-	 * 获取到下一次重试的秒数
+	 * 把时间数拨到下一个重试
      *
      * @param  string  $key
      * @return int
@@ -145,7 +147,7 @@ class ThrottleRequests
 
     /**
      * Add the limit header information to the given response.
-	 * 将限制头信息添加到给定的响应中
+	 * 将极限头信息添加到给定的响应
      *
      * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @param  int  $maxAttempts
@@ -164,7 +166,7 @@ class ThrottleRequests
 
     /**
      * Get the limit headers information.
-	 * 获取限制标头信息
+	 * 获取极限头信息
      *
      * @param  int  $maxAttempts
      * @param  int  $remainingAttempts
@@ -188,7 +190,7 @@ class ThrottleRequests
 
     /**
      * Calculate the number of remaining attempts.
-	 * 计算剩余的尝试次数
+	 * 计算剩余尝试的数量
      *
      * @param  string  $key
      * @param  int  $maxAttempts

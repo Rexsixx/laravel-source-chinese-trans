@@ -102,7 +102,7 @@ class SoftDeletingScope implements Scope
 
     /**
      * Add the without-trashed extension to the builder.
-	 * 向构建器中添加无垃圾扩展
+	 * 向构建器中添加未被丢弃的扩展
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @return void

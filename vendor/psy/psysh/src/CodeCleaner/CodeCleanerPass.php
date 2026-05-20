@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清洁器，代码清洁器通过
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -15,6 +18,7 @@ use PhpParser\NodeVisitorAbstract;
 
 /**
  * A CodeCleaner pass is a PhpParser Node Visitor.
+ * CodeCleaner pass是PhpParser节点访问者
  */
 abstract class CodeCleanerPass extends NodeVisitorAbstract
 {

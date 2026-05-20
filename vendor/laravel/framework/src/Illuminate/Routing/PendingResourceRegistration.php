@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，待处理资源注册
+ * Illuminate，路由，等待资源注册
  */
 
 namespace Illuminate\Routing;
@@ -9,7 +9,7 @@ class PendingResourceRegistration
 {
     /**
      * The resource registrar.
-	 * 资源注册商
+	 * 资源注册员
      *
      * @var \Illuminate\Routing\ResourceRegistrar
      */
@@ -40,8 +40,16 @@ class PendingResourceRegistration
     protected $options = [];
 
     /**
+     * The resource's registration status.
+	 * 资源的注册状态
+     *
+     * @var bool
+     */
+    protected $registered = false;
+
+    /**
      * Create a new pending resource registration instance.
-	 * 创建一个新的挂起的资源注册实例
+	 * 创建一个新的等待资源注册实例
      *
      * @param  \Illuminate\Routing\ResourceRegistrar  $registrar
      * @param  string  $name
@@ -59,7 +67,7 @@ class PendingResourceRegistration
 
     /**
      * Set the methods the controller should apply to.
-	 * 设置控制器应该应用的方法
+	 * 设置控制器应该适用的方法
      *
      * @param  array|string|dynamic  $methods
      * @return \Illuminate\Routing\PendingResourceRegistration
@@ -87,7 +95,7 @@ class PendingResourceRegistration
 
     /**
      * Set the route names for controller actions.
-	 * 设置控制器动作的路由名
+	 * 设置控制器操作的路由名称
      *
      * @param  array|string  $names
      * @return \Illuminate\Routing\PendingResourceRegistration
@@ -101,7 +109,7 @@ class PendingResourceRegistration
 
     /**
      * Set the route name for a controller action.
-	 * 设置控制器动作的路由名
+	 * 为控制器操作设置路由名称
      *
      * @param  string  $method
      * @param  string  $name
@@ -116,7 +124,7 @@ class PendingResourceRegistration
 
     /**
      * Override the route parameter names.
-	 * 覆盖路由参数名
+	 * 覆盖路径参数名
      *
      * @param  array|string  $parameters
      * @return \Illuminate\Routing\PendingResourceRegistration
@@ -130,7 +138,7 @@ class PendingResourceRegistration
 
     /**
      * Override a route parameter's name.
-	 * 重写路由参数的名称
+	 * 覆盖路由参数的名称
      *
      * @param  string  $previous
      * @param  string  $new
@@ -158,13 +166,30 @@ class PendingResourceRegistration
     }
 
     /**
+     * Register the resource route.
+	 * 注册资源路由
+     *
+     * @return \Illuminate\Routing\RouteCollection
+     */
+    public function register()
+    {
+        $this->registered = true;
+
+        return $this->registrar->register(
+            $this->name, $this->controller, $this->options
+        );
+    }
+
+    /**
      * Handle the object's destruction.
-	 * 处理对象的销毁
+	 * 处理对象的破坏
      *
      * @return void
      */
     public function __destruct()
     {
-        $this->registrar->register($this->name, $this->controller, $this->options);
+        if (! $this->registered) {
+            $this->register();
+        }
     }
 }

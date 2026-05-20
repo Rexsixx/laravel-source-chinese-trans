@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，Uuid 接口
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -24,11 +28,13 @@ use Serializable;
 /**
  * UuidInterface defines common functionality for all universally unique
  * identifiers (UUIDs)
+ * UuidInterface为所有普遍独特的标识符定义了常见的功能
  */
 interface UuidInterface extends JsonSerializable, Serializable
 {
     /**
      * Compares this UUID to the specified UUID.
+	 * 将此UUID与指定的UUID进行比较。
      *
      * The first of two UUIDs is greater than the second if the most
      * significant field in which the UUIDs differ is greater for the first
@@ -44,6 +50,7 @@ interface UuidInterface extends JsonSerializable, Serializable
 
     /**
      * Compares this object to the specified object.
+	 * 将此对象与指定对象进行比较。
      *
      * The result is true if and only if the argument is not null, is a UUID
      * object, has the same variant, and contains the same value, bit for bit,
@@ -64,6 +71,7 @@ interface UuidInterface extends JsonSerializable, Serializable
 
     /**
      * Returns the number converter to use for converting hex values to/from integers.
+	 * 返回数字转换器用于将hex值转换为/从整数
      *
      * @return NumberConverterInterface
      */

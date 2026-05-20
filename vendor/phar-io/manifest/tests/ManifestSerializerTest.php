@@ -1,4 +1,7 @@
 <?php
+/**
+ * PharIo，Manifest，Manifest 序列化测试
+ */
 
 namespace PharIo\Manifest;
 
@@ -44,7 +47,7 @@ use PharIo\Version\Version;
  * @uses \PharIo\Version\Version
  * @uses \PharIo\Version\VersionConstraint
  */
-class ManifestSerializerTest extends \PHPUnit_Framework_TestCase {
+class ManifestSerializerTest extends \PHPUnit\Framework\TestCase {
     /**
      * @dataProvider dataProvider
      *

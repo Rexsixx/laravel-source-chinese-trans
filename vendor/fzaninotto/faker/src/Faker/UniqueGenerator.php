@@ -1,10 +1,14 @@
 <?php
+/**
+ * Faker，唯一生成器
+ */
 
 namespace Faker;
 
 /**
  * Proxy for other generators, to return only unique values. Works with
  * Faker\Generator\Base->unique()
+ * 其他生成器的代理，只返回唯一的值。
  */
 class UniqueGenerator
 {
@@ -24,6 +28,7 @@ class UniqueGenerator
 
     /**
      * Catch and proxy all generator calls but return only unique values
+	 * 捕获并代理所有生成器调用，但只返回唯一的值。
      * @param string $attribute
      * @return mixed
      */
@@ -34,6 +39,7 @@ class UniqueGenerator
 
     /**
      * Catch and proxy all generator calls with arguments but return only unique values
+	 * 捕获并代理所有带参数的生成器调用，但只返回唯一的值。
      * @param string $name
      * @param array $arguments
      * @return mixed

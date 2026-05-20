@@ -27,7 +27,7 @@ class Kernel implements KernelContract
 
     /**
      * The router instance.
-	 * 路由器实例
+	 * 路由实例
      *
      * @var \Illuminate\Routing\Router
      */
@@ -74,7 +74,7 @@ class Kernel implements KernelContract
 
     /**
      * The priority-sorted list of middleware.
-	 * 中间件的优先级排序列表。
+	 * 中间件的优先级排序列表
      *
      * Forces the listed middleware to always be in the given order.
      *
@@ -227,7 +227,7 @@ class Kernel implements KernelContract
                 continue;
             }
 
-            list($name) = $this->parseMiddleware($middleware);
+            [$name] = $this->parseMiddleware($middleware);
 
             $instance = $this->app->make($name);
 
@@ -262,7 +262,7 @@ class Kernel implements KernelContract
      */
     protected function parseMiddleware($middleware)
     {
-        list($name, $parameters) = array_pad(explode(':', $middleware, 2), 2, []);
+        [$name, $parameters] = array_pad(explode(':', $middleware, 2), 2, []);
 
         if (is_string($parameters)) {
             $parameters = explode(',', $parameters);

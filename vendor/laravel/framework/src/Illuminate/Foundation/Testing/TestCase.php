@@ -49,7 +49,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Indicates if we have made it through the base setUp function.
-	 * 指示我们是否通过了基本setUp函
+	 * 指示我们是否通过了基本setUp函数
      *
      * @var bool
      */
@@ -60,6 +60,7 @@ abstract class TestCase extends BaseTestCase
 	 * 创建应用程序。
      *
      * Needs to be implemented by subclasses.
+	 * 需要由子类实现。
      *
      * @return \Symfony\Component\HttpKernel\HttpKernelInterface
      */

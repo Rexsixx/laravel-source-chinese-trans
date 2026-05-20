@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，分析程序，Php5
+ */
 
 namespace PhpParser\Parser;
 
@@ -11,6 +14,7 @@ use PhpParser\Node\Stmt;
 
 /* This is an automatically GENERATED file, which should not be manually edited.
  * Instead edit one of the following:
+ * 这是一个自动生成的文件,不应该手动编辑。
  *  * the grammar files grammar/php5.y or grammar/php7.y
  *  * the skeleton file grammar/parser.template
  *  * the preprocessing script grammar/rebuildParsers.php

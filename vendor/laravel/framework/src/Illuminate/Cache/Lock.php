@@ -72,7 +72,7 @@ abstract class Lock
 
     /**
      * Attempt to acquire the lock for the given number of seconds.
-	 * 尝试在给定的秒数内获取锁
+	 * 试图获得指定数秒的锁
      *
      * @param  int  $seconds
      * @param  callable|null  $callback

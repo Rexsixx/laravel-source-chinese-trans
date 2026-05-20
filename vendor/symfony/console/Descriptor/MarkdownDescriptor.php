@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，描述符号，Markdown描述符
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -143,7 +146,7 @@ class MarkdownDescriptor extends Descriptor
      */
     protected function describeApplication(Application $application, array $options = [])
     {
-        $describedNamespace = isset($options['namespace']) ? $options['namespace'] : null;
+        $describedNamespace = $options['namespace'] ?? null;
         $description = new ApplicationDescription($application, $describedNamespace);
         $title = $this->getApplicationTitle($application);
 
@@ -167,7 +170,7 @@ class MarkdownDescriptor extends Descriptor
         }
     }
 
-    private function getApplicationTitle(Application $application)
+    private function getApplicationTitle(Application $application): string
     {
         if ('UNKNOWN' !== $application->getName()) {
             if ('UNKNOWN' !== $application->getVersion()) {

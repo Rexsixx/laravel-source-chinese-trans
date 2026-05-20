@@ -82,10 +82,9 @@ class RetryCommand extends Command
 
     /**
      * Reset the payload attempts.
-	 * 重置负载尝试。
+	 * 重置负载尝试
      *
      * Applicable to Redis jobs which store attempts in their payload.
-	 * 适用于在负载中存储尝试的Redis作业。
      *
      * @param  string  $payload
      * @return string

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，电子邮件，可邮寄的
+ * Illuminate，契约，Mail，可邮寄的
  */
 
 namespace Illuminate\Contracts\Mail;
@@ -29,7 +29,7 @@ interface Mailable
 
     /**
      * Deliver the queued message after the given delay.
-	 * 在给定的延迟之后交付排队消息。
+	 * 在给定的延迟之后交付排队消息
      *
      * @param  \DateTime|int  $delay
      * @param  \Illuminate\Contracts\Queue\Factory  $queue

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，容器，容器
+ * Illuminate，容器，Container
  */
 
 namespace Illuminate\Container;
@@ -89,7 +89,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * The stack of concretions currently being built.
-	 * 目前正在建造的堆栈
+	 * 目前正在建造的混凝土堆
      *
      * @var array
      */
@@ -205,7 +205,6 @@ class Container implements ArrayAccess, ContainerContract
     /**
      * Determine if a given type is shared.
 	 * 确定是否共享给定类型
-	 * 
      *
      * @param  string  $abstract
      * @return bool
@@ -301,13 +300,29 @@ class Container implements ArrayAccess, ContainerContract
      * Bind a callback to resolve with Container::call.
 	 * 绑定一个回调函数来解析Container::call
      *
-     * @param  string  $method
+     * @param  array|string  $method
      * @param  \Closure  $callback
      * @return void
      */
     public function bindMethod($method, $callback)
     {
-        $this->methodBindings[$method] = $callback;
+        $this->methodBindings[$this->parseBindMethod($method)] = $callback;
+    }
+
+    /**
+     * Get the method to be bound in class@method format.
+	 * 以class@method格式获取要绑定的方法
+     *
+     * @param  array|string $method
+     * @return string
+     */
+    protected function parseBindMethod($method)
+    {
+        if (is_array($method)) {
+            return $method[0].'@'.$method[1];
+        }
+
+        return $method;
     }
 
     /**
@@ -412,6 +427,7 @@ class Container implements ArrayAccess, ContainerContract
         // We'll check to determine if this type has been bound before, and if it has
         // we will fire the rebound callbacks registered with the container and it
         // can be updated with consuming classes that have gotten resolved here.
+		// 我们将检查这种类型是否已经被绑定,如果它有我们将在容器中注册的反弹回调,它可以通过在这里解决的消费类进行更新。
         $this->instances[$abstract] = $instance;
 
         if ($isBound) {
@@ -666,6 +682,8 @@ class Container implements ArrayAccess, ContainerContract
         // If an instance of the type is currently being managed as a singleton we'll
         // just return an existing instance instead of instantiating new instances
         // so the developer can keep using the same objects instance every time.
+		// 如果一个类型的实例目前被管理为单例,我们将返回一个现有实例,而不是实例化新实例,
+		// 因此开发人员可以随时使用相同的对象实例。
         if (isset($this->instances[$abstract]) && ! $needsContextualBuild) {
             return $this->instances[$abstract];
         }
@@ -686,6 +704,7 @@ class Container implements ArrayAccess, ContainerContract
         // If we defined any extenders for this type, we'll need to spin through them
         // and apply them to the object being built. This allows for the extension
         // of services, such as changing configuration or decorating the object.
+		// 如果我们定义了这种类型的任何extenders,我们需要通过它们进行旋转,并将它们应用到正在构建的对象中。
         foreach ($this->getExtenders($abstract) as $extender) {
             $object = $extender($object, $this);
         }
@@ -998,6 +1017,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Register a new resolving callback.
+	 * 注册一个新的解析回调
      *
      * @param  \Closure|string  $abstract
      * @param  \Closure|null  $callback
@@ -1018,6 +1038,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Register a new after resolving callback for all types.
+	 * 为所有类型解析回调后注册一个new
      *
      * @param  \Closure|string  $abstract
      * @param  \Closure|null  $callback
@@ -1038,6 +1059,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Fire all of the resolving callbacks.
+	 * 触发所有解析回调
      *
      * @param  string  $abstract
      * @param  mixed   $object
@@ -1056,6 +1078,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Fire all of the after resolving callbacks.
+	 * 在解决回调后触发所有的
      *
      * @param  string  $abstract
      * @param  mixed   $object
@@ -1072,6 +1095,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Get all callbacks for a given type.
+	 * 获取给定类型的所有回调
      *
      * @param  string  $abstract
      * @param  object  $object
@@ -1094,6 +1118,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Fire an array of callbacks with an object.
+	 * 用对象触发回调数组
      *
      * @param  mixed  $object
      * @param  array  $callbacks
@@ -1108,6 +1133,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Get the container's bindings.
+	 * 获取容器的绑定
      *
      * @return array
      */
@@ -1158,6 +1184,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Remove all of the extender callbacks for a given type.
+	 * 删除给定类型的所有扩展程序回调
      *
      * @param  string  $abstract
      * @return void
@@ -1169,6 +1196,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Drop all of the stale instances and aliases.
+	 * 删除所有过时的实例和别名
      *
      * @param  string  $abstract
      * @return void
@@ -1180,6 +1208,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Remove a resolved instance from the instance cache.
+	 * 从实例缓存中删除已解析实例
      *
      * @param  string  $abstract
      * @return void
@@ -1191,6 +1220,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Clear all of the instances from the container.
+	 * 从容器中清除所有实例
      *
      * @return void
      */
@@ -1201,6 +1231,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Flush the container of all bindings and resolved instances.
+	 * 刷新所有绑定和解析实例的容器
      *
      * @return void
      */
@@ -1215,6 +1246,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Set the globally available instance of the container.
+	 * 设置容器的全局可用实例
      *
      * @return static
      */
@@ -1229,9 +1261,10 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Set the shared instance of the container.
+	 * 设置容器的共享实例
      *
      * @param  \Illuminate\Contracts\Container\Container|null  $container
-     * @return static
+     * @return \Illuminate\Contracts\Container\Container|static
      */
     public static function setInstance(ContainerContract $container = null)
     {
@@ -1240,6 +1273,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Determine if a given offset exists.
+	 * 确定给定的偏移量是否存在
      *
      * @param  string  $key
      * @return bool
@@ -1251,6 +1285,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Get the value at a given offset.
+	 * 获取给定偏移量处的值
      *
      * @param  string  $key
      * @return mixed
@@ -1262,6 +1297,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Set the value at a given offset.
+	 * 在给定的偏移量处设置值
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -1276,6 +1312,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Unset the value at a given offset.
+	 * 在给定偏移量处取消值的设置
      *
      * @param  string  $key
      * @return void

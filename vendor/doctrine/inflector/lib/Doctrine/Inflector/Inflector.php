@@ -1,4 +1,7 @@
 <?php
+/**
+ * Doctrine，Inflector，偏转器
+ */
 
 declare(strict_types=1);
 
@@ -228,6 +231,7 @@ class Inflector
 
     /**
      * Converts a word into the format for a Doctrine table name. Converts 'ModelName' to 'model_name'.
+	 * 将单词转换为Doctrine表名的格式。将‘ModelName’转换为‘model_name’。
      */
     public function tableize(string $word): string
     {

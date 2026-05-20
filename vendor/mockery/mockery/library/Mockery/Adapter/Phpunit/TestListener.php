@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，适配器，单元测试，测试侦听器
+ */
+
+/**
  * Mockery
  *
  * LICENSE

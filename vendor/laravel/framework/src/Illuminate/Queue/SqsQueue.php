@@ -121,7 +121,7 @@ class SqsQueue extends Queue implements QueueContract
 
     /**
      * Pop the next job off of the queue.
-	 * 将下一个作业从队列中弹出
+	 * 从队列中启动下一个作业
      *
      * @param  string  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
@@ -158,7 +158,7 @@ class SqsQueue extends Queue implements QueueContract
 
     /**
      * Get the underlying SQS instance.
-	 * 获取底层SQS实例
+	 * 获取底层的SQS实例
      *
      * @return \Aws\Sqs\SqsClient
      */

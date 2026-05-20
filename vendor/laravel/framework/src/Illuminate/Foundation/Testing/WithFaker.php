@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，使用伪造者
+ * Illuminate，基础，测试，与 Faker
  */
 
 namespace Illuminate\Foundation\Testing;

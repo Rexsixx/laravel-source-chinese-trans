@@ -1,13 +1,13 @@
 <?php
 /**
- * 配置，认证
+ * 配置，auth
  */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Defaults	默认认证
+    | Authentication Defaults	身份验证默认值
     |--------------------------------------------------------------------------
     |
     | This option controls the default authentication "guard" and password
@@ -23,7 +23,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Guards		身份验证警卫
+    | Authentication Guards		认证警卫
     |--------------------------------------------------------------------------
     |
     | Next, you may define every authentication guard for your application.
@@ -81,7 +81,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Resetting Passwords	重置密码
+    | Resetting Passwords	重新设置密码
     |--------------------------------------------------------------------------
     |
     | You may specify multiple password reset configurations if you have more

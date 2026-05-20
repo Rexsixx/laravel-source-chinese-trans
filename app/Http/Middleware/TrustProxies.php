@@ -12,23 +12,17 @@ class TrustProxies extends Middleware
 {
     /**
      * The trusted proxies for this application.
-	 * 该应用程序的可信代理
+	 * 应该从CSRF验证中排除的uri
      *
      * @var array
      */
     protected $proxies;
 
     /**
-     * The current proxy header mappings.
-	 * 当前代理标头映射
+     * The headers that should be used to detect proxies.
+	 * 应该用于检测代理的标头
      *
-     * @var array
+     * @var int
      */
-    protected $headers = [
-        Request::HEADER_FORWARDED => 'FORWARDED',
-        Request::HEADER_X_FORWARDED_FOR => 'X_FORWARDED_FOR',
-        Request::HEADER_X_FORWARDED_HOST => 'X_FORWARDED_HOST',
-        Request::HEADER_X_FORWARDED_PORT => 'X_FORWARDED_PORT',
-        Request::HEADER_X_FORWARDED_PROTO => 'X_FORWARDED_PROTO',
-    ];
+    protected $headers = Request::HEADER_X_FORWARDED_ALL;
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，构建器，Enum Case
+ */
 
 declare(strict_types=1);
 
@@ -21,6 +24,7 @@ class EnumCase implements PhpParser\Builder
 
     /**
      * Creates an enum case builder.
+	 * 创建枚举案例构建器
      *
      * @param string|Identifier $name  Name
      */
@@ -30,6 +34,7 @@ class EnumCase implements PhpParser\Builder
 
     /**
      * Sets the value.
+	 * 设置值
      *
      * @param Node\Expr|string|int $value
      *
@@ -43,6 +48,7 @@ class EnumCase implements PhpParser\Builder
 
     /**
      * Sets doc comment for the constant.
+	 * 为常量设置doc注释
      *
      * @param PhpParser\Comment\Doc|string $docComment Doc comment to set
      *

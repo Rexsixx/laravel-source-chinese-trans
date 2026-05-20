@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，事件，广播通知创建
+ * Illuminate，通知，事件，控制台，广播通知已创建
  */
 
 namespace Illuminate\Notifications\Events;
@@ -40,7 +40,7 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -56,7 +56,7 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * Get the channels the event should broadcast on.
-	 * 获取该事件应该播放的频道
+	 * 获取事件应该播放的频道
      *
      * @return array
      */
@@ -69,20 +69,6 @@ class BroadcastNotificationCreated implements ShouldBroadcast
         }
 
         return [new PrivateChannel($this->channelName())];
-    }
-
-    /**
-     * Get the data that should be sent with the broadcasted event.
-	 * 获取应该随广播事件一起发送的数据
-     *
-     * @return array
-     */
-    public function broadcastWith()
-    {
-        return array_merge($this->data, [
-            'id' => $this->notification->id,
-            'type' => get_class($this->notification),
-        ]);
     }
 
     /**
@@ -100,5 +86,32 @@ class BroadcastNotificationCreated implements ShouldBroadcast
         $class = str_replace('\\', '.', get_class($this->notifiable));
 
         return $class.'.'.$this->notifiable->getKey();
+    }
+
+    /**
+     * Get the data that should be sent with the broadcasted event.
+	 * 获取应该随广播事件一起发送的数据
+     *
+     * @return array
+     */
+    public function broadcastWith()
+    {
+        return array_merge($this->data, [
+            'id' => $this->notification->id,
+            'type' => $this->broadcastType(),
+        ]);
+    }
+
+    /**
+     * Get the type of the notification being broadcast.
+	 * 获取正在播放的通知的类型
+     *
+     * @return string
+     */
+    public function broadcastType()
+    {
+        return method_exists($this->notification, 'broadcastType')
+                    ? $this->notification->broadcastType()
+                    : get_class($this->notification);
     }
 }

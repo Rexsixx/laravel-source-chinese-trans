@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，Doc Block 工厂
+ */
 
 declare(strict_types=1);
 
@@ -43,6 +46,7 @@ final class DocBlockFactory implements DocBlockFactoryInterface
 
     /**
      * Initializes this factory with the required subcontractors.
+	 * 以所需的分包商初始化这个工厂
      */
     public function __construct(DescriptionFactory $descriptionFactory, TagFactory $tagFactory)
     {

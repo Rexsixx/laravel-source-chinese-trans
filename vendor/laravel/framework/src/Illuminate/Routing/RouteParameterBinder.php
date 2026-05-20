@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由参数绑定器
+ * Illuminate，路由，线路参数粘合剂
  */
 
 namespace Illuminate\Routing;
@@ -11,7 +11,7 @@ class RouteParameterBinder
 {
     /**
      * The route instance.
-	 * 路由实例
+	 * 路线实例
      *
      * @var \Illuminate\Routing\Route
      */
@@ -31,7 +31,7 @@ class RouteParameterBinder
 
     /**
      * Get the parameters for the route.
-	 * 获取路由的参数
+	 * 获取路由参数
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
@@ -57,7 +57,7 @@ class RouteParameterBinder
 
     /**
      * Get the parameter matches for the path portion of the URI.
-	 * 获取URI的路径部分的参数匹配
+	 * 获取URI路径部分的参数匹配
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
@@ -88,7 +88,7 @@ class RouteParameterBinder
 
     /**
      * Combine a set of parameter matches with the route's keys.
-	 * 将一组参数匹配与路由的关键字组合起来。
+	 * 将一组参数与路由的键相匹配
      *
      * @param  array  $matches
      * @return array
@@ -108,7 +108,7 @@ class RouteParameterBinder
 
     /**
      * Replace null parameters with their defaults.
-	 * 用默认值替换空参数
+	 * 将零参数替换为默认值
      *
      * @param  array  $parameters
      * @return array

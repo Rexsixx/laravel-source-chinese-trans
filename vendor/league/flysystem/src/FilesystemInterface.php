@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，文件系统接口
+ */
 
 namespace League\Flysystem;
 
@@ -8,6 +11,7 @@ interface FilesystemInterface
 {
     /**
      * Check whether a file exists.
+	 * 检查文件是否存在
      *
      * @param string $path
      *
@@ -17,6 +21,7 @@ interface FilesystemInterface
 
     /**
      * Read a file.
+	 * 读取文件
      *
      * @param string $path The path to the file.
      *
@@ -28,6 +33,7 @@ interface FilesystemInterface
 
     /**
      * Retrieves a read-stream for a path.
+	 * 检索路径的读流
      *
      * @param string $path The path to the file.
      *
@@ -39,6 +45,7 @@ interface FilesystemInterface
 
     /**
      * List contents of a directory.
+	 * 列出目录的内容
      *
      * @param string $directory The directory to list.
      * @param bool   $recursive Whether to list recursively.
@@ -49,6 +56,7 @@ interface FilesystemInterface
 
     /**
      * Get a file's metadata.
+	 * 获取文件的元数据
      *
      * @param string $path The path to the file.
      *
@@ -60,6 +68,7 @@ interface FilesystemInterface
 
     /**
      * Get a file's size.
+	 * 获取文件的大小
      *
      * @param string $path The path to the file.
      *
@@ -71,6 +80,7 @@ interface FilesystemInterface
 
     /**
      * Get a file's mime-type.
+	 * 获取文件的mime类型
      *
      * @param string $path The path to the file.
      *
@@ -82,6 +92,7 @@ interface FilesystemInterface
 
     /**
      * Get a file's timestamp.
+	 * 获取文件的时间戳
      *
      * @param string $path The path to the file.
      *
@@ -93,6 +104,7 @@ interface FilesystemInterface
 
     /**
      * Get a file's visibility.
+	 * 获取文件的可见性
      *
      * @param string $path The path to the file.
      *
@@ -104,6 +116,7 @@ interface FilesystemInterface
 
     /**
      * Write a new file.
+	 * 编写一个新文件
      *
      * @param string $path     The path of the new file.
      * @param string $contents The file contents.
@@ -117,6 +130,7 @@ interface FilesystemInterface
 
     /**
      * Write a new file using a stream.
+	 * 使用流编写新文件
      *
      * @param string   $path     The path of the new file.
      * @param resource $resource The file handle.
@@ -131,6 +145,7 @@ interface FilesystemInterface
 
     /**
      * Update an existing file.
+	 * 更新现有文件
      *
      * @param string $path     The path of the existing file.
      * @param string $contents The file contents.

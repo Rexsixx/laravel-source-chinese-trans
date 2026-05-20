@@ -1,12 +1,13 @@
 <?php
 /**
- * Illuminate，数据库，架构，语法，SQLite 语法
+ * Illuminate，数据库，模式，语法，SQLite 语法
  */
 
 namespace Illuminate\Database\Schema\Grammars;
 
 use RuntimeException;
 use Illuminate\Support\Fluent;
+use Doctrine\DBAL\Schema\Index;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Schema\Blueprint;
 
@@ -72,6 +73,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Get the foreign key syntax for a table creation statement.
+	 * 获取表创建语句的外键语法
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @return string|null
@@ -92,7 +94,7 @@ class SQLiteGrammar extends Grammar
 
             // If this foreign key specifies the action to be taken on update we will add
             // that to the statement here. We'll append it to this SQL and then return
-            // the SQL so we can keep adding any other foreign consraints onto this.
+            // the SQL so we can keep adding any other foreign constraints onto this.
             if (! is_null($foreign->onUpdate)) {
                 $sql .= " on update {$foreign->onUpdate}";
             }
@@ -103,6 +105,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Get the SQL for the foreign key.
+	 * 获取外键的SQL
      *
      * @param  \Illuminate\Support\Fluent  $foreign
      * @return string
@@ -121,6 +124,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Get the primary key syntax for a table creation statement.
+	 * 获取表创建语句的主键语法
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @return string|null
@@ -134,6 +138,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile alter table commands for adding columns.
+	 * 编译alter table命令来添加列
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -150,6 +155,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a unique key command.
+	 * 编译唯一的密钥命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -166,6 +172,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a plain index key command.
+	 * 编译一个普通索引键命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -182,6 +189,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a spatial index key command.
+	 * 编译一个空间索引键命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -194,6 +202,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a foreign key command.
+	 * 编译外键命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -206,6 +215,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a drop table command.
+	 * 编译一个删除表命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -218,6 +228,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a drop table (if exists) command.
+	 * 编译一个删除表（如果存在）命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -230,6 +241,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile the SQL needed to drop all tables.
+	 * 编译删除所有表所需的SQL
      *
      * @return string
      */
@@ -239,7 +251,19 @@ class SQLiteGrammar extends Grammar
     }
 
     /**
+     * Compile the SQL needed to drop all views.
+	 * 编译删除所有视图所需的SQL
+     *
+     * @return string
+     */
+    public function compileDropAllViews()
+    {
+        return "delete from sqlite_master where type in ('view')";
+    }
+
+    /**
      * Compile a drop column command.
+	 * 编译删除列命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -263,6 +287,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a drop unique key command.
+	 * 编译一个删除唯一键命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -277,6 +302,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a drop index command.
+	 * 编写一个删除索引命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -291,6 +317,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a drop spatial index command.
+	 * 编译一个删除空间索引命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -303,6 +330,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a rename table command.
+	 * 编译一个重命名表命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -316,7 +344,42 @@ class SQLiteGrammar extends Grammar
     }
 
     /**
+     * Compile a rename index command.
+	 * 编译一个重命名索引命令
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint $blueprint
+     * @param  \Illuminate\Support\Fluent $command
+     * @param  \Illuminate\Database\Connection $connection
+     * @return array
+     */
+    public function compileRenameIndex(Blueprint $blueprint, Fluent $command, Connection $connection)
+    {
+        $schemaManager = $connection->getDoctrineSchemaManager();
+
+        $indexes = $schemaManager->listTableIndexes($this->getTablePrefix().$blueprint->getTable());
+
+        $index = array_get($indexes, $command->from);
+
+        if (! $index) {
+            throw new RuntimeException("Index [{$command->from}] does not exist.");
+        }
+
+        $newIndex = new Index(
+            $command->to, $index->getColumns(), $index->isUnique(),
+            $index->isPrimary(), $index->getFlags(), $index->getOptions()
+        );
+
+        $platform = $schemaManager->getDatabasePlatform();
+
+        return [
+            $platform->getDropIndexSQL($command->from, $this->getTablePrefix().$blueprint->getTable()),
+            $platform->getCreateIndexSQL($newIndex, $this->getTablePrefix().$blueprint->getTable()),
+        ];
+    }
+
+    /**
      * Compile the command to enable foreign key constraints.
+	 * 编译命令以启用外键约束
      *
      * @return string
      */
@@ -327,6 +390,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile the command to disable foreign key constraints.
+	 * 编译命令以禁用外键约束
      *
      * @return string
      */
@@ -337,6 +401,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile the SQL needed to enable a writable schema.
+	 * 编译启用可写模式所需的SQL
      *
      * @return string
      */
@@ -347,6 +412,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile the SQL needed to disable a writable schema.
+	 * 编译禁用可写模式所需的SQL
      *
      * @return string
      */
@@ -357,6 +423,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a char type.
+	 * 为char类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -368,6 +435,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a string type.
+	 * 为字符串类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -379,6 +447,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a text type.
+	 * 为文本类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -390,6 +459,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a medium text type.
+	 * 为中等文本类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -401,6 +471,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a long text type.
+	 * 为长文本类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -412,6 +483,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a integer type.
+	 * 为整数类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -423,6 +495,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a big integer type.
+	 * 为大整数类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -434,6 +507,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a medium integer type.
+	 * 为中等整数类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -445,6 +519,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a tiny integer type.
+	 * 为一个小整数类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -456,6 +531,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a small integer type.
+	 * 为小整数类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -467,6 +543,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a float type.
+	 * 为float类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -478,6 +555,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a double type.
+	 * 创建双类型的列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -489,6 +567,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a decimal type.
+	 * 为十进制类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -500,6 +579,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a boolean type.
+	 * 为布尔类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -510,18 +590,24 @@ class SQLiteGrammar extends Grammar
     }
 
     /**
-     * Create the column definition for an enum type.
+     * Create the column definition for an enumeration type.
+	 * 为枚举类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
     protected function typeEnum(Fluent $column)
     {
-        return 'varchar';
+        return sprintf(
+            'varchar check ("%s" in (%s))',
+            $column->name,
+            $this->quoteString($column->allowed)
+        );
     }
 
     /**
      * Create the column definition for a json type.
+	 * 为json类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -533,6 +619,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a jsonb type.
+	 * 为jsonb类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -544,6 +631,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a date type.
+	 * 为日期类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -555,6 +643,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a date-time type.
+	 * 为日期-时间类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -566,6 +655,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a date-time (with time zone) type.
+	 * 为日期-时间（带时区）类型创建列定义。
      *
      * Note: "SQLite does not have a storage class set aside for storing dates and/or times."
      * @link https://www.sqlite.org/datatype3.html
@@ -580,6 +670,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a time type.
+	 * 创建时间类型的列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -591,6 +682,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a time (with time zone) type.
+	 * 为时间（带时区）类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -602,6 +694,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a timestamp type.
+	 * 为时间戳类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -613,6 +706,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a timestamp (with time zone) type.
+	 * 为时间戳（带时区）类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -624,6 +718,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a year type.
+	 * 创建年份类型的列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -635,6 +730,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a binary type.
+	 * 为二进制类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -646,6 +742,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a uuid type.
+	 * 为uid类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -657,6 +754,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for an IP address type.
+	 * 为IP地址类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -668,6 +766,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a MAC address type.
+	 * 创建MAC地址类型的列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -679,6 +778,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial Geometry type.
+	 * 为空间几何类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -690,6 +790,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial Point type.
+	 * 为空间Point类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -701,6 +802,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial LineString type.
+	 * 为空间LineString类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -712,6 +814,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial Polygon type.
+	 * 为空间多边形类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -723,6 +826,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial GeometryCollection type.
+	 * 为空间GeometryCollection类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -734,6 +838,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial MultiPoint type.
+	 * 为空间多点类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -745,6 +850,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial MultiLineString type.
+	 * 为空间MultiLineString类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string

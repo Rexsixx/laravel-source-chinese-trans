@@ -1,11 +1,13 @@
 <?php
 /**
- * Illuminate，数据库，查询，语法，语法
+ * Illuminate，数据库，查询，语法，Grammar
  */
 
 namespace Illuminate\Database\Query\Grammars;
 
+use RuntimeException;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Database\Grammar as BaseGrammar;
@@ -73,7 +75,7 @@ class Grammar extends BaseGrammar
 
     /**
      * Compile the components necessary for a select clause.
-	 * 编译select子句所需的组件
+	 * 编译select子句所需的组件。
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return array
@@ -163,10 +165,12 @@ class Grammar extends BaseGrammar
      */
     protected function compileJoins(Builder $query, $joins)
     {
-        return collect($joins)->map(function ($join) {
+        return collect($joins)->map(function ($join) use ($query) {
             $table = $this->wrapTable($join->table);
 
-            return trim("{$join->type} join {$table} {$this->compileWheres($join)}");
+            $nestedJoins = is_null($join->joins) ? '' : ' '.$this->compileJoins($query, $join->joins);
+
+            return trim("{$join->type} join {$table}{$nestedJoins} {$this->compileWheres($join)}");
         })->implode(' ');
     }
 
@@ -351,11 +355,16 @@ class Grammar extends BaseGrammar
     {
         $between = $where['not'] ? 'not between' : 'between';
 
-        return $this->wrap($where['column']).' '.$between.' ? and ?';
+        $min = $this->parameter(reset($where['values']));
+
+        $max = $this->parameter(end($where['values']));
+
+        return $this->wrap($where['column']).' '.$between.' '.$min.' and '.$max;
     }
 
     /**
      * Compile a "where date" clause.
+	 * 编译一个“where date”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -368,6 +377,7 @@ class Grammar extends BaseGrammar
 
     /**
      * Compile a "where time" clause.
+	 * 编写一个“where time”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -380,6 +390,7 @@ class Grammar extends BaseGrammar
 
     /**
      * Compile a "where day" clause.
+	 * 编写一个“where day”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -392,6 +403,7 @@ class Grammar extends BaseGrammar
 
     /**
      * Compile a "where month" clause.
+	 * 编写“where month”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -404,6 +416,7 @@ class Grammar extends BaseGrammar
 
     /**
      * Compile a "where year" clause.
+	 * 编写一个“where year”子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -431,7 +444,7 @@ class Grammar extends BaseGrammar
     }
 
     /**
-     * Compile a where clause comparing two columns.
+     * Compile a where clause comparing two columns..
 	 * 编译一个比较两列的where子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
@@ -500,6 +513,66 @@ class Grammar extends BaseGrammar
     protected function whereNotExists(Builder $query, $where)
     {
         return 'not exists ('.$this->compileSelect($where['query']).')';
+    }
+
+    /**
+     * Compile a where row values condition.
+	 * 编译where行值条件
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $where
+     * @return string
+     */
+    protected function whereRowValues(Builder $query, $where)
+    {
+        $columns = $this->columnize($where['columns']);
+
+        $values = $this->parameterize($where['values']);
+
+        return '('.$columns.') '.$where['operator'].' ('.$values.')';
+    }
+
+    /**
+     * Compile a "where JSON contains" clause.
+	 * 编译一个“where JSON contains”子句
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $where
+     * @return string
+     */
+    protected function whereJsonContains(Builder $query, $where)
+    {
+        $not = $where['not'] ? 'not ' : '';
+
+        return $not.$this->compileJsonContains(
+            $where['column'], $this->parameter($where['value'])
+        );
+    }
+
+    /**
+     * Compile a "JSON contains" statement into SQL.
+	 * 将“JSON contains”语句编译成SQL
+     *
+     * @param  string  $column
+     * @param  string  $value
+     * @return string
+     * @throws \RuntimeException
+     */
+    protected function compileJsonContains($column, $value)
+    {
+        throw new RuntimeException('This database engine does not support JSON contains operations.');
+    }
+
+    /**
+     * Prepare the binding for a "JSON contains" statement.
+	 * 为“JSON contains”语句准备绑定
+     *
+     * @param  mixed  $binding
+     * @return string
+     */
+    public function prepareBindingForJsonContains($binding)
+    {
+        return json_encode($binding);
     }
 
     /**
@@ -676,9 +749,9 @@ class Grammar extends BaseGrammar
      */
     protected function compileUnion(array $union)
     {
-        $conjuction = $union['all'] ? ' union all ' : ' union ';
+        $conjunction = $union['all'] ? ' union all ' : ' union ';
 
-        return $conjuction.$union['query']->toSql();
+        return $conjunction.$union['query']->toSql();
     }
 
     /**
@@ -877,6 +950,73 @@ class Grammar extends BaseGrammar
     public function compileSavepointRollBack($name)
     {
         return 'ROLLBACK TO SAVEPOINT '.$name;
+    }
+
+    /**
+     * Wrap a value in keyword identifiers.
+	 * 将值包装在关键字标识符中
+     *
+     * @param  \Illuminate\Database\Query\Expression|string  $value
+     * @param  bool    $prefixAlias
+     * @return string
+     */
+    public function wrap($value, $prefixAlias = false)
+    {
+        if ($this->isExpression($value)) {
+            return $this->getValue($value);
+        }
+
+        // If the value being wrapped has a column alias we will need to separate out
+        // the pieces so we can wrap each of the segments of the expression on its
+        // own, and then join these both back together using the "as" connector.
+        if (stripos($value, ' as ') !== false) {
+            return $this->wrapAliasedValue($value, $prefixAlias);
+        }
+
+        // If the given value is a JSON selector we will wrap it differently than a
+        // traditional value. We will need to split this path and wrap each part
+        // wrapped, etc. Otherwise, we will simply wrap the value as a string.
+        if ($this->isJsonSelector($value)) {
+            return $this->wrapJsonSelector($value);
+        }
+
+        return $this->wrapSegments(explode('.', $value));
+    }
+
+    /**
+     * Wrap the given JSON selector.
+	 * 包装给定的JSON选择器
+     *
+     * @param  string  $value
+     * @return string
+     */
+    protected function wrapJsonSelector($value)
+    {
+        throw new RuntimeException('This database engine does not support JSON operations.');
+    }
+
+    /**
+     * Wrap the given JSON path.
+	 * 包装给定的JSON路径
+     *
+     * @param  string  $value
+     * @return string
+     */
+    protected function wrapJsonPath($value)
+    {
+        return '\'$."'.str_replace('->', '"."', $value).'"\'';
+    }
+
+    /**
+     * Determine if the given string is a JSON selector.
+	 * 确定给定字符串是否是JSON选择器
+     *
+     * @param  string  $value
+     * @return bool
+     */
+    protected function isJsonSelector($value)
+    {
+        return Str::contains($value, '->');
     }
 
     /**

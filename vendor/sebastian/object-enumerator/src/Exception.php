@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，ObjectEnumerator，异常
+ */
+
 /*
  * This file is part of Object Enumerator.
  *

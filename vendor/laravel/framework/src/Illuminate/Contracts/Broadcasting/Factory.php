@@ -11,7 +11,7 @@ interface Factory
      * Get a broadcaster implementation by name.
 	 * 按名称获取广播器实现
      *
-     * @param  string  $name
+     * @param  string|null  $name
      * @return void
      */
     public function connection($name = null);

@@ -1,4 +1,8 @@
 <?php
+/**
+ * PharIo，Manifest，Email
+ */
+
 /*
  * This file is part of PharIo\Manifest.
  *

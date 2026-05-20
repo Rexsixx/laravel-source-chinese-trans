@@ -30,8 +30,8 @@ class RedirectResponse extends BaseRedirectResponse
     protected $request;
 
     /**
-     * The session store implementation.
-	 * 会话存储实现
+     * The session store instance.
+	 * 会话存储实例
      *
      * @var \Illuminate\Session\Store
      */
@@ -208,8 +208,8 @@ class RedirectResponse extends BaseRedirectResponse
     }
 
     /**
-     * Get the session store implementation.
-	 * 获取会话存储实现
+     * Get the session store instance.
+	 * 获取会话存储实例
      *
      * @return \Illuminate\Session\Store|null
      */
@@ -219,8 +219,8 @@ class RedirectResponse extends BaseRedirectResponse
     }
 
     /**
-     * Set the session store implementation.
-	 * 设置会话存储实现
+     * Set the session store instance.
+	 * 设置会话存储实例
      *
      * @param  \Illuminate\Session\Store  $session
      * @return void
@@ -250,8 +250,8 @@ class RedirectResponse extends BaseRedirectResponse
             return $this->with(Str::snake(substr($method, 4)), $parameters[0]);
         }
 
-        throw new BadMethodCallException(
-            "Method [$method] does not exist on Redirect."
-        );
+        throw new BadMethodCallException(sprintf(
+            'Method %s::%s does not exist.', static::class, $method
+        ));
     }
 }

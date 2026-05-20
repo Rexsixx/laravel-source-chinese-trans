@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，控制台生成命令
+ * Illuminate，基础，控制台，控制台编译命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -13,7 +13,7 @@ class ConsoleMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */

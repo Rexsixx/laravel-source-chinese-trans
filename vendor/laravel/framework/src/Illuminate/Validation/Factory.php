@@ -15,7 +15,7 @@ class Factory implements FactoryContract
 {
     /**
      * The Translator implementation.
-	 * 翻译机实现
+	 * 翻译程序实现
      *
      * @var \Illuminate\Contracts\Translation\Translator
      */
@@ -39,7 +39,7 @@ class Factory implements FactoryContract
 
     /**
      * All of the custom validator extensions.
-	 * 所有自定义验证器扩展
+	 * 所有的自定义验证器扩展
      *
      * @var array
      */
@@ -47,7 +47,7 @@ class Factory implements FactoryContract
 
     /**
      * All of the custom implicit validator extensions.
-	 * 所有自定义隐式验证器扩展
+	 * 所有的自定义隐式验证器扩展
      *
      * @var array
      */
@@ -55,7 +55,7 @@ class Factory implements FactoryContract
 
     /**
      * All of the custom dependent validator extensions.
-	 * 所有自定义依赖验证器扩展
+	 * 所有的自定义依赖验证器扩展
      *
      * @var array
      */
@@ -63,7 +63,7 @@ class Factory implements FactoryContract
 
     /**
      * All of the custom validator message replacers.
-	 * 所有自定义验证器消息替换程序
+	 * 所有的自定义验证器信息替换器
      *
      * @var array
      */
@@ -71,7 +71,7 @@ class Factory implements FactoryContract
 
     /**
      * All of the fallback messages for custom rules.
-	 * 自定义规则的所有回退消息
+	 * 定制规则的所有回退消息
      *
      * @var array
      */
@@ -87,7 +87,7 @@ class Factory implements FactoryContract
 
     /**
      * Create a new Validator factory instance.
-	 * 创建一个新的Validator工厂实例
+	 * 创建一个新的验证器工厂实例
      *
      * @param  \Illuminate\Contracts\Translation\Translator $translator
      * @param  \Illuminate\Contracts\Container\Container  $container
@@ -101,7 +101,7 @@ class Factory implements FactoryContract
 
     /**
      * Create a new Validator instance.
-	 * 创建一个新的Validator实例
+	 * 创建一个新的验证器实例
      *
      * @param  array  $data
      * @param  array  $rules
@@ -114,6 +114,7 @@ class Factory implements FactoryContract
         // The presence verifier is responsible for checking the unique and exists data
         // for the validator. It is behind an interface so that multiple versions of
         // it may be written besides database. We'll inject it into the validator.
+		// 状态验证器负责检查惟一性，验证器存在数据。
         $validator = $this->resolve(
             $data, $rules, $messages, $customAttributes
         );
@@ -136,24 +137,24 @@ class Factory implements FactoryContract
 
     /**
      * Validate the given data against the provided rules.
-	 * 根据提供的规则验证给定的数据
+	 * 根据所提供的规则验证给定的数据
      *
      * @param  array  $data
      * @param  array  $rules
      * @param  array  $messages
      * @param  array  $customAttributes
-     * @return void
+     * @return array
      *
      * @throws \Illuminate\Validation\ValidationException
      */
     public function validate(array $data, array $rules, array $messages = [], array $customAttributes = [])
     {
-        $this->make($data, $rules, $messages, $customAttributes)->validate();
+        return $this->make($data, $rules, $messages, $customAttributes)->validate();
     }
 
     /**
      * Resolve a new Validator instance.
-	 * 解析一个新的Validator实例
+	 * 解决一个新的验证器实例
      *
      * @param  array  $data
      * @param  array  $rules
@@ -195,7 +196,7 @@ class Factory implements FactoryContract
 
     /**
      * Register a custom validator extension.
-	 * 注册一个自定义验证器扩展
+	 * 注册自定义验证器
      *
      * @param  string  $rule
      * @param  \Closure|string  $extension
@@ -249,7 +250,7 @@ class Factory implements FactoryContract
 
     /**
      * Register a custom validator message replacer.
-	 * 注册一个自定义验证器消息替换程序
+	 * 注册自定义验证器信息替换器
      *
      * @param  string   $rule
      * @param  \Closure|string  $replacer
@@ -262,7 +263,7 @@ class Factory implements FactoryContract
 
     /**
      * Set the Validator instance resolver.
-	 * 设置Validator实例解析器
+	 * 设置验证器实例解析器
      *
      * @param  \Closure  $resolver
      * @return void
@@ -274,7 +275,7 @@ class Factory implements FactoryContract
 
     /**
      * Get the Translator implementation.
-	 * 获取Translator实现
+	 * 获取翻译实现
      *
      * @return \Illuminate\Contracts\Translation\Translator
      */
@@ -285,7 +286,7 @@ class Factory implements FactoryContract
 
     /**
      * Get the Presence Verifier implementation.
-	 * 获取Presence Verifier实现
+	 * 获取现场验证器的实现
      *
      * @return \Illuminate\Validation\PresenceVerifierInterface
      */
@@ -296,7 +297,7 @@ class Factory implements FactoryContract
 
     /**
      * Set the Presence Verifier implementation.
-	 * 设置状态验证器实现
+	 * 设置存在验证器实现
      *
      * @param  \Illuminate\Validation\PresenceVerifierInterface  $presenceVerifier
      * @return void

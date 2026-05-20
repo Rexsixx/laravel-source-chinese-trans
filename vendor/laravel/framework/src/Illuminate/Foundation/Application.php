@@ -33,7 +33,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @var string
      */
-    const VERSION = '5.5.50';
+    const VERSION = '5.6.40';
 
     /**
      * The base path for the Laravel installation.
@@ -85,7 +85,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * All of the registered service providers.
-	 * 终止回调的数组
+	 * 所有已注册的服务提供者
      *
      * @var array
      */
@@ -106,14 +106,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * @var array
      */
     protected $deferredServices = [];
-
-    /**
-     * A custom callback used to configure Monolog.
-	 * 用于配置独白的自定义回调
-     *
-     * @var callable|null
-     */
-    protected $monologConfigurator;
 
     /**
      * The custom database path defined by the developer.
@@ -149,7 +141,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * The application namespace.
-	 * 应用的命名空间
+	 * 应用命名空间
      *
      * @var string
      */
@@ -157,7 +149,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Create a new Illuminate application instance.
-	 * 创建一个新的照亮应用实例
+	 * 创建一个新的Illuminate应用实例
      *
      * @param  string|null  $basePath
      * @return void
@@ -207,7 +199,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Register all of the base service providers.
-	 * 注册所有的基本服务提供者
+	 * 注册所有的基本服务提供者。
      *
      * @return void
      */
@@ -257,7 +249,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Register a callback to run before a bootstrapper.
 	 * 注册一个回调，在引导程序之前运行。
-	 * 
      *
      * @param  string  $bootstrapper
      * @param  \Closure  $callback
@@ -522,7 +513,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function environmentFilePath()
     {
-        return $this->environmentPath().'/'.$this->environmentFile();
+        return $this->environmentPath().DIRECTORY_SEPARATOR.$this->environmentFile();
     }
 
     /**
@@ -536,13 +527,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         if (func_num_args() > 0) {
             $patterns = is_array(func_get_arg(0)) ? func_get_arg(0) : func_get_args();
 
-            foreach ($patterns as $pattern) {
-                if (Str::is($pattern, $this['env'])) {
-                    return true;
-                }
-            }
-
-            return false;
+            return Str::is($patterns, $this['env']);
         }
 
         return $this['env'];
@@ -574,25 +559,25 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
-     * Determine if we are running in the console.
-	 * 确定我们是否在控制台中运行
+     * Determine if the application is running in the console.
+	 * 确定应用程序是否在控制台中运行
      *
      * @return bool
      */
     public function runningInConsole()
     {
-        return php_sapi_name() == 'cli' || php_sapi_name() == 'phpdbg';
+        return php_sapi_name() === 'cli' || php_sapi_name() === 'phpdbg';
     }
 
     /**
-     * Determine if we are running unit tests.
-	 * 确定我们是否正在运行单元测试
+     * Determine if the application is running unit tests.
+	 * 确定应用程序是否正在运行单元测试
      *
      * @return bool
      */
     public function runningUnitTests()
     {
-        return $this['env'] == 'testing';
+        return $this['env'] === 'testing';
     }
 
     /**
@@ -638,6 +623,21 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
         if (method_exists($provider, 'register')) {
             $provider->register();
+        }
+
+        // If there are bindings / singletons set as properties on the provider we
+        // will spin through them and register them with the application, which
+        // serves as a convenience layer while registering a lot of bindings.
+        if (property_exists($provider, 'bindings')) {
+            foreach ($provider->bindings as $key => $value) {
+                $this->bind($key, $value);
+            }
+        }
+
+        if (property_exists($provider, 'singletons')) {
+            foreach ($provider->singletons as $key => $value) {
+                $this->singleton($key, $value);
+            }
         }
 
         $this->markAsRegistered($provider);
@@ -694,7 +694,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Mark the given provider as registered.
-	 * 将给定的提供程序标记为已注册
+	 * 给定的提供程序标记为已注册
      *
      * @param  \Illuminate\Support\ServiceProvider  $provider
      * @return void
@@ -923,7 +923,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Get the path to the cached services.php file.
-	 * 获取缓存的services.php文件的路径。
+	 * 获取缓存的services.php文件的路径
      *
      * @return string
      */
@@ -1034,7 +1034,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Terminate the application.
-	 * 终止应用程序
+	 * 终止应用
      *
      * @return void
      */
@@ -1116,42 +1116,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
-     * Define a callback to be used to configure Monolog.
-	 * 定义一个用于配置Monolog的回调
-     *
-     * @param  callable  $callback
-     * @return $this
-     */
-    public function configureMonologUsing(callable $callback)
-    {
-        $this->monologConfigurator = $callback;
-
-        return $this;
-    }
-
-    /**
-     * Determine if the application has a custom Monolog configurator.
-	 * 确定应用程序是否具有自定义的Monolog配置器
-     *
-     * @return bool
-     */
-    public function hasMonologConfigurator()
-    {
-        return ! is_null($this->monologConfigurator);
-    }
-
-    /**
-     * Get the custom Monolog configurator for the application.
-	 * 获取应用程序的自定义Monolog配置器
-     *
-     * @return callable
-     */
-    public function getMonologConfigurator()
-    {
-        return $this->monologConfigurator;
-    }
-
-    /**
      * Get the current application locale.
 	 * 获取当前应用程序区域设置
      *
@@ -1215,9 +1179,10 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             'filesystem'           => [\Illuminate\Filesystem\FilesystemManager::class, \Illuminate\Contracts\Filesystem\Factory::class],
             'filesystem.disk'      => [\Illuminate\Contracts\Filesystem\Filesystem::class],
             'filesystem.cloud'     => [\Illuminate\Contracts\Filesystem\Cloud::class],
-            'hash'                 => [\Illuminate\Contracts\Hashing\Hasher::class],
+            'hash'                 => [\Illuminate\Hashing\HashManager::class],
+            'hash.driver'          => [\Illuminate\Contracts\Hashing\Hasher::class],
             'translator'           => [\Illuminate\Translation\Translator::class, \Illuminate\Contracts\Translation\Translator::class],
-            'log'                  => [\Illuminate\Log\Writer::class, \Illuminate\Contracts\Logging\Log::class, \Psr\Log\LoggerInterface::class],
+            'log'                  => [\Illuminate\Log\LogManager::class, \Psr\Log\LoggerInterface::class],
             'mailer'               => [\Illuminate\Mail\Mailer::class, \Illuminate\Contracts\Mail\Mailer::class, \Illuminate\Contracts\Mail\MailQueue::class],
             'auth.password'        => [\Illuminate\Auth\Passwords\PasswordBrokerManager::class, \Illuminate\Contracts\Auth\PasswordBrokerFactory::class],
             'auth.password.broker' => [\Illuminate\Auth\Passwords\PasswordBroker::class, \Illuminate\Contracts\Auth\PasswordBroker::class],

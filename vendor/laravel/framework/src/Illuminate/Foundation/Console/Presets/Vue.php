@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，预先设置，Vue
+ * Illuminate，基础，控制台，预置，Vue
  */
 
 namespace Illuminate\Foundation\Console\Presets;
@@ -44,7 +44,7 @@ class Vue extends Preset
 
     /**
      * Update the Webpack configuration.
-	 * 更新Webpack配置
+	 * 更新Webpack配置。
      *
      * @return void
      */

@@ -1,12 +1,13 @@
 <?php
 /**
- * Illuminate，Auth，会话警卫
+ * Illuminate，认证，会话警卫
  */
 
 namespace Illuminate\Auth;
 
 use RuntimeException;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Contracts\Auth\UserProvider;
@@ -27,7 +28,7 @@ class SessionGuard implements StatefulGuard, SupportsBasicAuth
 	 * 卫兵的名字。典型的“会话”。
      *
      * Corresponds to guard name in authentication configuration.
-	 * 与认证配置中的守卫名称对应。
+	 * 与认证配置中的守卫名称对应
      *
      * @var string
      */
@@ -35,7 +36,7 @@ class SessionGuard implements StatefulGuard, SupportsBasicAuth
 
     /**
      * The user we last attempted to retrieve.
-	 * 我们最后尝试检索的用户
+	 * 我们上次尝试检索的用户
      *
      * @var \Illuminate\Contracts\Auth\Authenticatable
      */
@@ -104,7 +105,7 @@ class SessionGuard implements StatefulGuard, SupportsBasicAuth
      * @param  string  $name
      * @param  \Illuminate\Contracts\Auth\UserProvider  $provider
      * @param  \Illuminate\Contracts\Session\Session  $session
-     * @param  \Symfony\Component\HttpFoundation\Request  $request
+     * @param  \Symfony\Component\HttpFoundation\Request|null  $request
      * @return void
      */
     public function __construct($name,
@@ -120,7 +121,7 @@ class SessionGuard implements StatefulGuard, SupportsBasicAuth
 
     /**
      * Get the currently authenticated user.
-	 * 获取当前经过身份验证的用户
+	 * 获取当前经过身份验证的用
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
@@ -142,10 +143,9 @@ class SessionGuard implements StatefulGuard, SupportsBasicAuth
         // First we will try to load the user using the identifier in the session if
         // one exists. Otherwise we will check for a "remember me" cookie in this
         // request, and if one exists, attempt to retrieve the user using that.
-        if (! is_null($id)) {
-            if ($this->user = $this->provider->retrieveById($id)) {
-                $this->fireAuthenticatedEvent($this->user);
-            }
+		// 首先，我们将尝试使用会话if中的标识符加载用户如果存在。
+        if (! is_null($id) && $this->user = $this->provider->retrieveById($id)) {
+            $this->fireAuthenticatedEvent($this->user);
         }
 
         // If the user is null, but we decrypt a "recaller" cookie we can attempt to
@@ -283,9 +283,7 @@ class SessionGuard implements StatefulGuard, SupportsBasicAuth
      *
      * @param  string  $field
      * @param  array  $extraConditions
-     * @return void
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+     * @return \Symfony\Component\HttpFoundation\Response|null
      */
     public function basic($field = 'email', $extraConditions = [])
     {
@@ -309,9 +307,7 @@ class SessionGuard implements StatefulGuard, SupportsBasicAuth
      *
      * @param  string  $field
      * @param  array  $extraConditions
-     * @return void
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
+     * @return \Symfony\Component\HttpFoundation\Response|null
      */
     public function onceBasic($field = 'email', $extraConditions = [])
     {
@@ -360,7 +356,6 @@ class SessionGuard implements StatefulGuard, SupportsBasicAuth
 	 * 获取基本身份验证的响应
      *
      * @return void
-     *
      * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
      */
     protected function failedBasicResponse()
@@ -490,7 +485,7 @@ class SessionGuard implements StatefulGuard, SupportsBasicAuth
 
     /**
      * Queue the recaller cookie into the cookie jar.
-	 * 将召回cookie排队放入cookie压缩中
+	 * 将召回cookie排队放入cookie罐中
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @return void
@@ -573,6 +568,32 @@ class SessionGuard implements StatefulGuard, SupportsBasicAuth
         $user->setRememberToken($token = Str::random(60));
 
         $this->provider->updateRememberToken($user, $token);
+    }
+
+    /**
+     * Invalidate other sessions for the current user.
+	 * 使当前用户的其他会话无效。
+     *
+     * The application must be using the AuthenticateSession middleware.
+	 * 应用程序必须使用authenticatessession中间件。
+     *
+     * @param  string  $password
+     * @param  string  $attribute
+     * @return bool|null
+     */
+    public function logoutOtherDevices($password, $attribute = 'password')
+    {
+        if (! $this->user()) {
+            return;
+        }
+
+        $result = tap($this->user()->forceFill([
+            $attribute => Hash::make($password),
+        ]))->save();
+
+        $this->queueRecallerCookie($this->user());
+
+        return $result;
     }
 
     /**

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，格式器，Fluentd 格式化器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -15,6 +18,7 @@ use Monolog\Utils;
 
 /**
  * Class FluentdFormatter
+ * 类FluentdFormatter
  *
  * Serializes a log message to Fluentd unix socket protocol
  *

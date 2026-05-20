@@ -15,6 +15,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
         Concerns\CompilesComponents,
         Concerns\CompilesConditionals,
         Concerns\CompilesEchos,
+        Concerns\CompilesHelpers,
         Concerns\CompilesIncludes,
         Concerns\CompilesInjections,
         Concerns\CompilesJson,
@@ -50,7 +51,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * The file currently being compiled.
-	 * 当前正在编译的文件
+	 * 目前正在编译的文件
      *
      * @var string
      */
@@ -71,7 +72,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Array of opening and closing tags for raw echos.
-	 * 原始回声的开始和结束标记数组
+	 * 对原始回声的打开和关闭标记的数组
      *
      * @var array
      */
@@ -79,7 +80,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Array of opening and closing tags for regular echos.
-	 * 常规回显的开始和结束标记数组
+	 * 定期回音的打开和关闭标签的数组
      *
      * @var array
      */
@@ -87,7 +88,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Array of opening and closing tags for escaped echos.
-	 * 转义回显的开始和结束标记数组
+	 * 开封和关闭标签的数组
      *
      * @var array
      */
@@ -95,6 +96,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * The "regular" / legacy echo string format.
+	 * “常规”/遗留回波字符串格式
      *
      * @var string
      */
@@ -102,7 +104,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Array of footer lines to be added to template.
-	 * 要添加到模板中的页脚行数组
+	 * 将页脚线数组添加到模板中
      *
      * @var array
      */
@@ -110,7 +112,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Array to temporary store the raw blocks found in the template.
-	 * 数组来临时存储在模板中找到的原始块
+	 * 数组到临时存储模板中发现的原始块
      *
      * @var array
      */
@@ -118,7 +120,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Compile the view at the given path.
-	 * 在给定路径编译视图
+	 * 在给定路径上编译视图
      *
      * @param  string  $path
      * @return void
@@ -288,14 +290,14 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Parse the tokens from the template.
-	 * 解析模板中的令牌
+	 * 从模板解析标记
      *
      * @param  array  $token
      * @return string
      */
     protected function parseToken($token)
     {
-        list($id, $content) = $token;
+        [$id, $content] = $token;
 
         if ($id == T_INLINE_HTML) {
             foreach ($this->compilers as $type) {
@@ -324,7 +326,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Compile Blade statements that start with "@".
-	 * 编译以“@”开头的Blade语句
+	 * 用“@”开始编译刀片语句
      *
      * @param  string  $value
      * @return string
@@ -340,7 +342,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Compile a single Blade @ statement.
-	 * 编译一条Blade @语句
+	 * 编译单个刀片@语句
      *
      * @param  array  $match
      * @return string
@@ -377,7 +379,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Strip the parentheses from the given expression.
-	 * 从给定表达式中去掉括号
+	 * 从给定的表达式中删除括号
      *
      * @param  string  $expression
      * @return string
@@ -405,7 +407,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Get the extensions used by the compiler.
-	 * 获取编译器使用的扩展名
+	 * 获取编译器使用的扩展
      *
      * @return array
      */
@@ -427,13 +429,13 @@ class BladeCompiler extends Compiler implements CompilerInterface
         $this->conditions[$name] = $callback;
 
         $this->directive($name, function ($expression) use ($name) {
-            return $expression
+            return $expression !== ''
                     ? "<?php if (\Illuminate\Support\Facades\Blade::check('{$name}', {$expression})): ?>"
                     : "<?php if (\Illuminate\Support\Facades\Blade::check('{$name}')): ?>";
         });
 
         $this->directive('else'.$name, function ($expression) use ($name) {
-            return $expression
+            return $expression !== ''
                 ? "<?php elseif (\Illuminate\Support\Facades\Blade::check('{$name}', {$expression})): ?>"
                 : "<?php elseif (\Illuminate\Support\Facades\Blade::check('{$name}')): ?>";
         });
@@ -454,6 +456,48 @@ class BladeCompiler extends Compiler implements CompilerInterface
     public function check($name, ...$parameters)
     {
         return call_user_func($this->conditions[$name], ...$parameters);
+    }
+
+    /**
+     * Register a component alias directive.
+	 * 注册一个组件别名指令
+     *
+     * @param  string  $path
+     * @param  string  $alias
+     * @return void
+     */
+    public function component($path, $alias = null)
+    {
+        $alias = $alias ?: array_last(explode('.', $path));
+
+        $this->directive($alias, function ($expression) use ($path) {
+            return $expression
+                        ? "<?php \$__env->startComponent('{$path}', {$expression}); ?>"
+                        : "<?php \$__env->startComponent('{$path}'); ?>";
+        });
+
+        $this->directive('end'.$alias, function ($expression) {
+            return '<?php echo $__env->renderComponent(); ?>';
+        });
+    }
+
+    /**
+     * Register an include alias directive.
+	 * 注册一个包含别名指令
+     *
+     * @param  string  $path
+     * @param  string  $alias
+     * @return void
+     */
+    public function include($path, $alias = null)
+    {
+        $alias = $alias ?: array_last(explode('.', $path));
+
+        $this->directive($alias, function ($expression) use ($path) {
+            $expression = $this->stripParentheses($expression) ?: '[]';
+
+            return "<?php echo \$__env->make('{$path}', {$expression}, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>";
+        });
     }
 
     /**
@@ -493,13 +537,24 @@ class BladeCompiler extends Compiler implements CompilerInterface
     }
 
     /**
-     * Set the echo format to double encode entities.
-	 * 将echo格式设置为双编码实体
+     * Set the "echo" format to double encode entities.
+	 * 将“echo”格式设置为对实体进行双编码
      *
      * @return void
      */
-    public function doubleEncode()
+    public function withDoubleEncoding()
     {
         $this->setEchoFormat('e(%s, true)');
+    }
+
+    /**
+     * Set the "echo" format to not double encode entities.
+	 * 将“echo”格式设置为不对实体进行双重编码
+     *
+     * @return void
+     */
+    public function withoutDoubleEncoding()
+    {
+        $this->setEchoFormat('e(%s, false)');
     }
 }

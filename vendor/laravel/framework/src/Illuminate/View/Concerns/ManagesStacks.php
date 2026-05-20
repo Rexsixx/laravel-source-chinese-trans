@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，问题，管理栈
+ * Illuminate，视图，问题，管理堆栈
  */
 
 namespace Illuminate\View\Concerns;
@@ -19,7 +19,7 @@ trait ManagesStacks
 
     /**
      * All of the finished, captured prepend sections.
-	 * 所有完成的、捕获的前置部分。
+	 * 所有完成的,捕获prepend节。
      *
      * @var array
      */
@@ -27,7 +27,7 @@ trait ManagesStacks
 
     /**
      * The stack of in-progress push sections.
-	 * 正在进行的push段的堆栈
+	 * 正在推进的部分
      *
      * @var array
      */
@@ -35,7 +35,7 @@ trait ManagesStacks
 
     /**
      * Start injecting content into a push section.
-	 * 开始向推送部分注入内容
+	 * 开始将内容注入到一个push部分
      *
      * @param  string  $section
      * @param  string  $content
@@ -54,7 +54,7 @@ trait ManagesStacks
 
     /**
      * Stop injecting content into a push section.
-	 * 停止向推送部分注入内容
+	 * 停止将内容注入到一个push部分
      *
      * @return string
      * @throws \InvalidArgumentException
@@ -72,7 +72,7 @@ trait ManagesStacks
 
     /**
      * Append content to a given push section.
-	 * 将内容附加到给定的推送部分
+	 * 将内容附加到给定的push部分
      *
      * @param  string  $section
      * @param  string  $content
@@ -93,7 +93,7 @@ trait ManagesStacks
 
     /**
      * Start prepending content into a push section.
-	 * 开始将内容添加到推送部分
+	 * 开始预等待的内容到一个push部分
      *
      * @param  string  $section
      * @param  string  $content
@@ -112,7 +112,7 @@ trait ManagesStacks
 
     /**
      * Stop prepending content into a push section.
-	 * 停止在推送部分添加内容
+	 * 停止预等待的内容进入一个push部分
      *
      * @return string
      * @throws \InvalidArgumentException
@@ -130,7 +130,7 @@ trait ManagesStacks
 
     /**
      * Prepend content to a given stack.
-	 * 将内容预放到给定的堆栈中
+	 * Prepend内容到给定的堆栈
      *
      * @param  string  $section
      * @param  string  $content

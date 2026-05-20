@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，Capsule，管理器
+ * Illuminate，队列，Capsule，管理程序
  */
 
 namespace Illuminate\Queue\Capsule;
@@ -40,6 +40,7 @@ class Manager
         // Once we have the container setup, we will setup the default configuration
         // options in the container "config" bindings. This just makes this queue
         // manager behave correctly since all the correct binding are in place.
+		// 一旦我们有了容器设置,我们将在容器“配置”绑定中设置默认配置选项。
         $this->setupDefaultConfiguration();
 
         $this->setupManager();

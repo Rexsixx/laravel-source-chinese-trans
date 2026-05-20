@@ -7,10 +7,8 @@ namespace Illuminate\Cache;
 
 use Closure;
 use Exception;
-use Illuminate\Support\Str;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Support\InteractsWithTime;
-use Illuminate\Database\PostgresConnection;
 use Illuminate\Database\ConnectionInterface;
 
 class DatabaseStore implements Store
@@ -35,7 +33,7 @@ class DatabaseStore implements Store
 
     /**
      * A string that should be prepended to keys.
-	 * 应添加到键前的字符串
+	 * 应该加在键前的字符串
      *
      * @var string
      */
@@ -43,7 +41,7 @@ class DatabaseStore implements Store
 
     /**
      * Create a new database store.
-	 * 创建新的数据库存储。
+	 * 创建一个新的数据库存储
      *
      * @param  \Illuminate\Database\ConnectionInterface  $connection
      * @param  string  $table
@@ -59,8 +57,7 @@ class DatabaseStore implements Store
 
     /**
      * Retrieve an item from the cache by key.
-	 * 创建新的数据库存储
-	 * 
+	 * 按键从缓存中检索项
      *
      * @param  string|array  $key
      * @return mixed
@@ -89,12 +86,12 @@ class DatabaseStore implements Store
             return;
         }
 
-        return $this->unserialize($cache->value);
+        return unserialize($cache->value);
     }
 
     /**
      * Store an item in the cache for a given number of minutes.
-	 * 将项目在缓存中存储给定的分钟数
+	 * 将项存储在缓存中给定的分钟数
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -105,7 +102,7 @@ class DatabaseStore implements Store
     {
         $key = $this->prefix.$key;
 
-        $value = $this->serialize($value);
+        $value = serialize($value);
 
         $expiration = $this->getTime() + (int) ($minutes * 60);
 
@@ -172,7 +169,7 @@ class DatabaseStore implements Store
 
             $cache = is_array($cache) ? (object) $cache : $cache;
 
-            $current = $this->unserialize($cache->value);
+            $current = unserialize($cache->value);
 
             // Here we'll call this callback function that was given to the function which
             // is used to either increment or decrement the function. We use a callback
@@ -187,7 +184,7 @@ class DatabaseStore implements Store
             // since database cache values are encrypted by default with secure storage
             // that can't be easily read. We will return the new value after storing.
             $this->table()->where('key', $prefixed)->update([
-                'value' => $this->serialize($new),
+                'value' => serialize($new),
             ]);
 
             return $new;
@@ -274,39 +271,5 @@ class DatabaseStore implements Store
     public function getPrefix()
     {
         return $this->prefix;
-    }
-
-    /**
-     * Serialize the given value.
-	 * 序列化给定的值
-     *
-     * @param  mixed  $value
-     * @return string
-     */
-    protected function serialize($value)
-    {
-        $result = serialize($value);
-
-        if ($this->connection instanceof PostgresConnection && Str::contains($result, "\0")) {
-            $result = base64_encode($result);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Unserialize the given value.
-	 * 反序列化给定的值
-     *
-     * @param  string  $value
-     * @return mixed
-     */
-    protected function unserialize($value)
-    {
-        if ($this->connection instanceof PostgresConnection && ! Str::contains($value, [':', ';'])) {
-            $value = base64_decode($value);
-        }
-
-        return unserialize($value);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，重调
+ * Illuminate，Auth，重调用
  */
 
 namespace Illuminate\Auth;
@@ -11,7 +11,7 @@ class Recaller
 {
     /**
      * The "recaller" / "remember me" cookie string.
-	 * “回忆者”/“记住我”cookie字符串
+	 * “recaller”/“记住我”的cookie字符串
      *
      * @var string
      */

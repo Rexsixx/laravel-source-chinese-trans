@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，构建器，类常量
+ */
 
 declare(strict_types=1);
 
@@ -24,6 +27,7 @@ class ClassConst implements PhpParser\Builder
 
     /**
      * Creates a class constant builder
+	 * 创建类常量构建器
      *
      * @param string|Identifier                          $name  Name
      * @param Node\Expr|bool|null|int|float|string|array|\UnitEnum $value Value
@@ -34,6 +38,7 @@ class ClassConst implements PhpParser\Builder
 
     /**
      * Add another constant to const group
+	 * 向const组添加另一个常数
      *
      * @param string|Identifier                          $name  Name
      * @param Node\Expr|bool|null|int|float|string|array|\UnitEnum $value Value
@@ -48,6 +53,7 @@ class ClassConst implements PhpParser\Builder
 
     /**
      * Makes the constant public.
+	 * 让常数公共
      *
      * @return $this The builder instance (for fluid interface)
      */

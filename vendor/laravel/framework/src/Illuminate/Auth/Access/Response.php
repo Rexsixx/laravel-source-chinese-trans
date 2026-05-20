@@ -42,7 +42,7 @@ class Response
      * Get the string representation of the message.
 	 * 获取消息的字符串表示形式
      *
-     * @return string
+     * @return string|null
      */
     public function __toString()
     {

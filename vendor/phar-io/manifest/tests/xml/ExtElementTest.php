@@ -1,8 +1,11 @@
 <?php
+/**
+ * NunoMaduro，Manifest，Ext 元素测试
+ */
 
 namespace PharIo\Manifest;
 
-class ExtElementTest extends \PHPUnit_Framework_TestCase {
+class ExtElementTest extends \PHPUnit\Framework\TestCase {
     /**
      * @var ExtElement
      */

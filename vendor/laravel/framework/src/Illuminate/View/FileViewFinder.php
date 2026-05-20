@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，文件视图查找器
+ * Illuminate，视图，文件视图探测器
  */
 
 namespace Illuminate\View;
@@ -98,7 +98,7 @@ class FileViewFinder implements ViewFinderInterface
      */
     protected function findNamespacedView($name)
     {
-        list($namespace, $view) = $this->parseNamespaceSegments($name);
+        [$namespace, $view] = $this->parseNamespaceSegments($name);
 
         return $this->findInPaths($view, $this->hints[$namespace]);
     }
@@ -116,8 +116,8 @@ class FileViewFinder implements ViewFinderInterface
     {
         $segments = explode(static::HINT_PATH_DELIMITER, $name);
 
-        if (count($segments) != 2) {
-            throw new InvalidArgumentException("View [$name] has an invalid name.");
+        if (count($segments) !== 2) {
+            throw new InvalidArgumentException("View [{$name}] has an invalid name.");
         }
 
         if (! isset($this->hints[$segments[0]])) {
@@ -147,7 +147,7 @@ class FileViewFinder implements ViewFinderInterface
             }
         }
 
-        throw new InvalidArgumentException("View [$name] not found.");
+        throw new InvalidArgumentException("View [{$name}] not found.");
     }
 
     /**
@@ -228,7 +228,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Replace the namespace hints for the given namespace.
-	 * 替换给定名称空间的名称空间提示
+	 * 替换给定名称空间的名称空间
      *
      * @param  string  $namespace
      * @param  string|array  $hints
@@ -241,7 +241,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Register an extension with the view finder.
-	 * 用视图器注册一个扩展
+	 * 用视图查找器注册一个扩展
      *
      * @param  string  $extension
      * @return void
@@ -257,7 +257,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Returns whether or not the view name has any hint information.
-	 * 返回视图名是否有任何提示信息
+	 * 返回是否视图名称有任何提示信息
      *
      * @param  string  $name
      * @return bool
@@ -269,7 +269,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Flush the cache of located views.
-	 * 刷新已定位视图的缓存
+	 * 刷新位置视图的缓存
      *
      * @return void
      */
@@ -280,13 +280,27 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Get the filesystem instance.
-	 * 得到文件系统实例
+	 * 获取文件系统实例
      *
      * @return \Illuminate\Filesystem\Filesystem
      */
     public function getFilesystem()
     {
         return $this->files;
+    }
+
+    /**
+     * Set the active view paths.
+	 * 设置活动视图路径
+     *
+     * @param  array  $paths
+     * @return $this
+     */
+    public function setPaths($paths)
+    {
+        $this->paths = $paths;
+
+        return $this;
     }
 
     /**
@@ -302,7 +316,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Get the namespace to file path hints.
-	 * 将名称空间获取到文件路径提示
+	 * 获取命名空间到文件路径提示
      *
      * @return array
      */
@@ -313,7 +327,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Get registered extensions.
-	 * 注册扩展名
+	 * 获得注册扩展
      *
      * @return array
      */

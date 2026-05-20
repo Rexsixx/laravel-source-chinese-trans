@@ -1,14 +1,19 @@
 <?php
+/**
+ * Hamcrest
+ */
 
 /*
  Copyright (c) 2009-2010 hamcrest.org
  */
 
 // This file is generated from the static method @factory doctags.
+// 这个文件是由静态方法@factory doctag生成的。
 
 if (!function_exists('assertThat')) {
     /**
      * Make an assertion and throw {@link Hamcrest_AssertionError} if it fails.
+	 * 做一个断言，如果失败就抛出{@link Hamcrest_AssertionError}。
      *
      * Example:
      * <pre>

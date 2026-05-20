@@ -1,4 +1,7 @@
 <?php
+/**
+ * PharIo，Manifest，单文件制图测试
+ */
 
 namespace PharIo\Manifest;
 
@@ -42,7 +45,7 @@ namespace PharIo\Manifest;
  * @uses \PharIo\Version\Version
  * @uses \PharIo\Version\VersionConstraint
  */
-class ManifestDocumentMapperTest extends \PHPUnit_Framework_TestCase {
+class ManifestDocumentMapperTest extends \PHPUnit\Framework\TestCase {
     /**
      * @dataProvider dataProvider
      *

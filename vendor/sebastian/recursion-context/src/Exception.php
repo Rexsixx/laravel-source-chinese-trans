@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，RecursionContext，异常
+ */
+
 /*
  * This file is part of the Recursion Context package.
  *

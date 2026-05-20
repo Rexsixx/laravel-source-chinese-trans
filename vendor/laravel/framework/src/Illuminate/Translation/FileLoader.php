@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，翻译，文件加载机
+ * Illuminate，翻译，文件装载机
  */
 
 namespace Illuminate\Translation;
@@ -37,7 +37,7 @@ class FileLoader implements Loader
 
     /**
      * All of the namespace hints.
-	 * 所有命名空间提示
+	 * 所有名称空间提示
      *
      * @var array
      */
@@ -45,7 +45,7 @@ class FileLoader implements Loader
 
     /**
      * Create a new file loader instance.
-	 * 创建一个新的文件加载器实例
+	 * 创建一个新的文件加载实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string  $path
@@ -59,7 +59,7 @@ class FileLoader implements Loader
 
     /**
      * Load the messages for the given locale.
-	 * 加载给定区域设置的消息
+	 * 为给定的地区加载消息
      *
      * @param  string  $locale
      * @param  string  $group
@@ -81,7 +81,7 @@ class FileLoader implements Loader
 
     /**
      * Load a namespaced translation group.
-	 * 加载一个名称空间翻译组
+	 * 加载一个名称空间转换组
      *
      * @param  string  $locale
      * @param  string  $group
@@ -101,7 +101,7 @@ class FileLoader implements Loader
 
     /**
      * Load a local namespaced translation group for overrides.
-	 * 为覆盖加载本地命名空间翻译组
+	 * 加载一个本地名称空间的翻译组来访问
      *
      * @param  array  $lines
      * @param  string  $locale
@@ -122,7 +122,7 @@ class FileLoader implements Loader
 
     /**
      * Load a locale from a given path.
-	 * 从给定路径加载区域设置
+	 * 从给定的路径加载一个区域设置
      *
      * @param  string  $path
      * @param  string  $locale
@@ -140,7 +140,7 @@ class FileLoader implements Loader
 
     /**
      * Load a locale from the given JSON file path.
-	 * 从给定的JSON文件路径加载区域设置
+	 * 从给定的JSON文件路径加载一个区域设置
      *
      * @param  string  $locale
      * @return array
@@ -167,7 +167,7 @@ class FileLoader implements Loader
 
     /**
      * Add a new namespace to the loader.
-	 * 向加载器添加一个新的命名空间
+	 * 在加载器中添加一个新的名称空间
      *
      * @param  string  $namespace
      * @param  string  $hint
@@ -180,7 +180,7 @@ class FileLoader implements Loader
 
     /**
      * Add a new JSON path to the loader.
-	 * 向加载器添加一个新的JSON路径
+	 * 在加载器中添加一个新的JSON路径
      *
      * @param  string  $path
      * @return void
@@ -192,7 +192,7 @@ class FileLoader implements Loader
 
     /**
      * Get an array of all the registered namespaces.
-	 * 获取所有已注册名称空间的数组
+	 * 获取所有注册名称空间的数组
      *
      * @return array
      */

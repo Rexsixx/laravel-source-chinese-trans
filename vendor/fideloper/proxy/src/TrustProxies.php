@@ -6,6 +6,7 @@
 namespace Fideloper\Proxy;
 
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Contracts\Config\Repository;
 
 class TrustProxies
@@ -20,21 +21,23 @@ class TrustProxies
 
     /**
      * The trusted proxies for the application.
-	 * 获取目标类路径
+	 * 应用程序的可信代理
      *
-     * @var array
+     * @var null|string|array
      */
     protected $proxies;
 
     /**
      * The proxy header mappings.
+	 * 代理头映射
      *
-     * @var array
+     * @var null|string|int
      */
     protected $headers;
 
     /**
      * Create a new trusted proxies middleware instance.
+	 * 创建一个新的可信代理中间件实例
      *
      * @param \Illuminate\Contracts\Config\Repository $config
      */
@@ -45,6 +48,7 @@ class TrustProxies
 
     /**
      * Handle an incoming request.
+	 * 处理传入的请求
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
@@ -53,9 +57,9 @@ class TrustProxies
      *
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        $this->setTrustedProxyHeaderNames($request);
+        $request::setTrustedProxies([], $this->getTrustedHeaderNames()); // Reset trusted proxies between requests
         $this->setTrustedProxyIpAddresses($request);
 
         return $next($request);
@@ -63,124 +67,90 @@ class TrustProxies
 
     /**
      * Sets the trusted proxies on the request to the value of trustedproxy.proxies
+	 * 将请求上的可信代理设置为trustedproxy.proxies的值
      *
      * @param \Illuminate\Http\Request $request
      */
-    protected function setTrustedProxyIpAddresses($request)
+    protected function setTrustedProxyIpAddresses(Request $request)
     {
         $trustedIps = $this->proxies ?: $this->config->get('trustedproxy.proxies');
 
-        // We only trust specific IP addresses
-        if (is_array($trustedIps)) {
-            return $this->setTrustedProxyIpAddressesToSpecificIps($request, $trustedIps);
-        }
-
-        // We trust any IP address that calls us, but not proxies further
-        // up the forwarding chain.
-        // TODO: Determine if this should only trust the first IP address
-        //       Currently it trusts the entire chain (array of IPs),
-        //       potentially making the "**" convention redundant.
-        if ($trustedIps === '*') {
+        // Trust any IP address that calls us
+        // `**` for backwards compatibility, but is deprecated
+        if ($trustedIps === '*' || $trustedIps === '**') {
             return $this->setTrustedProxyIpAddressesToTheCallingIp($request);
         }
 
-        // We trust all proxies. Those that call us, and those that are
-        // further up the calling chain (e.g., where the X-FORWARDED-FOR
-        // header has multiple IP addresses listed);
-        if ($trustedIps === '**') {
-            return $this->setTrustedProxyIpAddressesToAllIps($request);
+        // Support IPs addresses separated by comma
+        $trustedIps = is_string($trustedIps) ? array_map('trim', explode(',', $trustedIps)) : $trustedIps;
+
+        // Only trust specific IP addresses
+        if (is_array($trustedIps)) {
+            return $this->setTrustedProxyIpAddressesToSpecificIps($request, $trustedIps);
         }
     }
 
     /**
-     * We specify the IP addresses to trust explicitly.
+     * Specify the IP addresses to trust explicitly.
+	 * 明确指定要信任的IP地址
      *
      * @param \Illuminate\Http\Request $request
      * @param array                    $trustedIps
      */
-    private function setTrustedProxyIpAddressesToSpecificIps($request, $trustedIps)
+    private function setTrustedProxyIpAddressesToSpecificIps(Request $request, $trustedIps)
     {
-        $request->setTrustedProxies((array) $trustedIps, $this->getTrustedHeaderSet());
+        $request->setTrustedProxies((array) $trustedIps, $this->getTrustedHeaderNames());
     }
 
     /**
-     * We set the trusted proxy to be the first IP addresses received.
+     * Set the trusted proxy to be the IP address calling this servers
+	 * 将可信代理设置为调用这些服务器的IP地址
      *
      * @param \Illuminate\Http\Request $request
      */
-    private function setTrustedProxyIpAddressesToTheCallingIp($request)
+    private function setTrustedProxyIpAddressesToTheCallingIp(Request $request)
     {
-        $request->setTrustedProxies($request->getClientIps(), $this->getTrustedHeaderSet());
+        $request->setTrustedProxies([$request->server->get('REMOTE_ADDR')], $this->getTrustedHeaderNames());
     }
 
     /**
-     * Trust all IP Addresses.
+     * Retrieve trusted header name(s), falling back to defaults if config not set.
+	 * 检索可信的报头名称，如果未设置配置，则返回默认值。
      *
-     * @param \Illuminate\Http\Request $request
-     */
-    private function setTrustedProxyIpAddressesToAllIps($request)
-    {
-        // 0.0.0.0/0 is the CIDR for all ipv4 addresses
-        // 2000:0:0:0:0:0:0:0/3 is the CIDR for all ipv6 addresses currently
-        // allocated http://www.iana.org/assignments/ipv6-unicast-address-assignments/ipv6-unicast-address-assignments.xhtml
-        $request->setTrustedProxies(['0.0.0.0/0', '2000:0:0:0:0:0:0:0/3'], $this->getTrustedHeaderSet());
-    }
-
-    /**
-     * Set the trusted header names based on the content of trustedproxy.headers.
-     *
-     * Note: Depreciated in Symfony 3.3+, but available for backwards compatibility.
-     *
-     * @depreciated
-     *
-     * @param \Illuminate\Http\Request $request
-     */
-    protected function setTrustedProxyHeaderNames($request)
-    {
-        $trustedHeaderNames = $this->getTrustedHeaderNames();
-
-        if(!is_array($trustedHeaderNames)) { return; } // Leave the defaults
-
-        foreach ($trustedHeaderNames as $headerKey => $headerName) {
-            $request->setTrustedHeaderName($headerKey, $headerName);
-        }
-    }
-
-    /**
-     * Retrieve trusted header names, falling back to defaults if config not set.
-     *
-     * @return array
+     * @return int A bit field of Request::HEADER_*, to set which headers to trust from your proxies.
      */
     protected function getTrustedHeaderNames()
     {
-        return $this->headers ?: $this->config->get('trustedproxy.headers');
-    }
+        $headers = $this->headers ?: $this->config->get('trustedproxy.headers');
+        switch ($headers) {
+            case 'HEADER_X_FORWARDED_AWS_ELB':
+            case Request::HEADER_X_FORWARDED_AWS_ELB:
+                return Request::HEADER_X_FORWARDED_AWS_ELB;
+                break;
+            case 'HEADER_FORWARDED':
+            case Request::HEADER_FORWARDED:
+                return Request::HEADER_FORWARDED;
+                break;
+            case 'HEADER_X_FORWARDED_FOR':
+            case Request::HEADER_X_FORWARDED_FOR:
+                return Request::HEADER_X_FORWARDED_FOR;
+                break;
+            case 'HEADER_X_FORWARDED_HOST':
+            case Request::HEADER_X_FORWARDED_HOST:
+                return Request::HEADER_X_FORWARDED_HOST;
+                break;
+            case 'HEADER_X_FORWARDED_PORT':
+            case Request::HEADER_X_FORWARDED_PORT:
+                return Request::HEADER_X_FORWARDED_PORT;
+                break;
+            case 'HEADER_X_FORWARDED_PROTO':
+            case Request::HEADER_X_FORWARDED_PROTO:
+                return Request::HEADER_X_FORWARDED_PROTO;
+                break;
+            default:
+                return Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO | Request::HEADER_X_FORWARDED_AWS_ELB;
+        }
 
-    /**
-     * Construct bit field integer of the header set that setTrustedProxies() expects.
-     *
-     * @return int
-     */
-    protected function getTrustedHeaderSet()
-    {
-        $trustedHeaderNames = $this->getTrustedHeaderNames();
-        $headerKeys = array_keys($this->getTrustedHeaderNames());
-
-        return array_reduce($headerKeys, function ($set, $key) use ($trustedHeaderNames) {
-            // PHP 7+ gives a warning if non-numeric value is used
-            // resulting in a thrown ErrorException within Laravel
-            // This error occurs with Symfony < 3.3, PHP7+
-            if(! is_numeric($key)) {
-                return $set;
-            }
-
-            // If the header value is null, it is a distrusted header,
-            // so we will ignore it and move on.
-            if (is_null($trustedHeaderNames[$key])) {
-                return $set;
-            }
-
-            return $set | $key;
-        }, 0);
+        return $headers;
     }
 }

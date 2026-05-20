@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，总线，总线服务提供商
+ * Illuminate，总线，总线服务供应商
  */
 
 namespace Illuminate\Bus;

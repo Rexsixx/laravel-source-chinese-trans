@@ -5,10 +5,13 @@
 
 namespace Illuminate\Database;
 
+use Illuminate\Support\Traits\Macroable;
 use Illuminate\Database\Query\Expression;
 
 abstract class Grammar
 {
+    use Macroable;
+
     /**
      * The grammar table prefix.
 	 * 语法表前缀
@@ -60,9 +63,11 @@ abstract class Grammar
         }
 
         // If the value being wrapped has a column alias we will need to separate out
-        // the pieces so we can wrap each of the segments of the expression on it
-        // own, and then joins them both back together with the "as" connector.
-        if (strpos(strtolower($value), ' as ') !== false) {
+        // the pieces so we can wrap each of the segments of the expression on its
+        // own, and then join these both back together using the "as" connector.
+		// 如果包的值有一个列的别名,那么我们就需要将这些片段分开,
+		// 这样我们就可以将表达式的每一个部分打包,然后用“作为”连接器来连接它们。
+        if (stripos($value, ' as ') !== false) {
             return $this->wrapAliasedValue($value, $prefixAlias);
         }
 
@@ -84,6 +89,7 @@ abstract class Grammar
         // If we are wrapping a table we need to prefix the alias with the table prefix
         // as well in order to generate proper syntax. If this is a column of course
         // no prefix is necessary. The condition will be true when from wrapTable.
+		// 如果我们正在包装一个表,我们需要用表前缀来前缀别名,以生成适当的语法。
         if ($prefixAlias) {
             $segments[1] = $this->tablePrefix.$segments[1];
         }
@@ -159,6 +165,22 @@ abstract class Grammar
     public function parameter($value)
     {
         return $this->isExpression($value) ? $this->getValue($value) : '?';
+    }
+
+    /**
+     * Quote the given string literal.
+	 * 引用给定的字符串字面值
+     *
+     * @param  string|array  $value
+     * @return string
+     */
+    public function quoteString($value)
+    {
+        if (is_array($value)) {
+            return implode(', ', array_map([$this, __FUNCTION__], $value));
+        }
+
+        return "'$value'";
     }
 
     /**

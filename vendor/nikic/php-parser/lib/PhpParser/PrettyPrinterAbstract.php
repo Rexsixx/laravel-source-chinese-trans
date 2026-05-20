@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，漂亮打印机抽象
+ */
+
 namespace PhpParser;
 
 use PhpParser\Internal\DiffElem;
@@ -139,6 +143,7 @@ abstract class PrettyPrinterAbstract
 
     /**
      * Creates a pretty printer instance using the given options.
+	 * 使用给定的选项创建一个漂亮的打印机实例。
      *
      * Supported options:
      *  * bool $shortArraySyntax = false: Whether to use [] instead of array() as the default array
@@ -155,6 +160,7 @@ abstract class PrettyPrinterAbstract
 
     /**
      * Reset pretty printing state.
+	 * 重置漂亮的打印状态
      */
     protected function resetState() {
         $this->indentLevel = 0;
@@ -164,6 +170,7 @@ abstract class PrettyPrinterAbstract
 
     /**
      * Set indentation level
+	 * 压痕水平
      *
      * @param int $level Level in number of spaces
      */
@@ -174,6 +181,7 @@ abstract class PrettyPrinterAbstract
 
     /**
      * Increase indentation level.
+	 * 增加压痕水平
      */
     protected function indent() {
         $this->indentLevel += 4;
@@ -182,6 +190,7 @@ abstract class PrettyPrinterAbstract
 
     /**
      * Decrease indentation level.
+	 * 减少压痕水平
      */
     protected function outdent() {
         assert($this->indentLevel >= 4);
@@ -191,6 +200,7 @@ abstract class PrettyPrinterAbstract
 
     /**
      * Pretty prints an array of statements.
+	 * 漂亮打印出一系列的语句
      *
      * @param Node[] $stmts Array of statements
      *
@@ -205,6 +215,7 @@ abstract class PrettyPrinterAbstract
 
     /**
      * Pretty prints an expression.
+	 * 漂亮的指纹表达
      *
      * @param Expr $node Expression node
      *
@@ -217,6 +228,7 @@ abstract class PrettyPrinterAbstract
 
     /**
      * Pretty prints a file of statements (includes the opening <?php tag if it is required).
+	 * 漂亮的打印文件文件(包括打开< ?如果需要,php标签。
      *
      * @param Node[] $stmts Array of statements
      *
@@ -241,6 +253,7 @@ abstract class PrettyPrinterAbstract
 
     /**
      * Preprocesses the top-level nodes to initialize pretty printer state.
+	 * 预处理顶级节点以初始化漂亮的打印机状态
      *
      * @param Node[] $nodes Array of nodes
      */
@@ -257,6 +270,7 @@ abstract class PrettyPrinterAbstract
 
     /**
      * Handles (and removes) no-indent and doc-string-end tokens.
+	 * 处理(和删除)无缩进和doc- end标记
      *
      * @param string $str
      * @return string

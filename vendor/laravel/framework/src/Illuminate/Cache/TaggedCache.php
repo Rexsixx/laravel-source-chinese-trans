@@ -36,7 +36,7 @@ class TaggedCache extends Repository
 
     /**
      * Increment the value of an item in the cache.
-	 * 在缓存中增加一个项目的值
+	 * 增加缓存中项的值
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -48,8 +48,8 @@ class TaggedCache extends Repository
     }
 
     /**
-     * Increment the value of an item in the cache.
-	 * 增加缓存中项的值
+     * Decrement the value of an item in the cache.
+	 * 递减缓存中项的值
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -81,7 +81,7 @@ class TaggedCache extends Repository
 
     /**
      * Get a fully qualified key for a tagged item.
-	 * 在缓存中增加一个项目的值
+	 * 获取标记项的完全限定键
      *
      * @param  string  $key
      * @return string

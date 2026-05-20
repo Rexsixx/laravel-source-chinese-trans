@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
 {
     /**
      * The Artisan commands provided by your application.
-	 * 应用程序提供的Artisan命令
+	 * 您的应用程序提供的Artisan命令
      *
      * @var array
      */

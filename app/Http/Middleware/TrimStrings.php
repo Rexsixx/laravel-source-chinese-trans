@@ -1,6 +1,6 @@
 <?php
 /**
- * App，Http，中间件，裁剪字符串
+ * App，Http，中间件，修剪字符串
  */
 
 namespace App\Http\Middleware;

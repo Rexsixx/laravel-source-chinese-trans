@@ -11,7 +11,7 @@ trait SupportsDefaultModels
 {
     /**
      * Indicates if a default model instance should be used.
-	 * 指示是否应使用默认模型实例
+	 * 指示是否应使用默认模型实例。
      *
      * Alternatively, may be a Closure or array.
      *
@@ -58,7 +58,7 @@ trait SupportsDefaultModels
         $instance = $this->newRelatedInstanceFor($parent);
 
         if (is_callable($this->withDefault)) {
-            return call_user_func($this->withDefault, $instance) ?: $instance;
+            return call_user_func($this->withDefault, $instance, $parent) ?: $instance;
         }
 
         if (is_array($this->withDefault)) {

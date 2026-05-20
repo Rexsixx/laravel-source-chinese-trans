@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，分析程序
+ */
 
 namespace Dotenv;
 
@@ -14,6 +17,7 @@ class Parser
 
     /**
      * Parse the given variable name.
+	 * 解析给定的变量名
      *
      * @param string $name
      *
@@ -26,6 +30,7 @@ class Parser
 
     /**
      * Parse the given variable value.
+	 * 解析给定的变量值
      *
      * @param string $value
      *
@@ -46,6 +51,7 @@ class Parser
 
     /**
      * Parse the given quoted value.
+	 * 解析给定的引用值
      *
      * @param string $value
      *
@@ -105,6 +111,7 @@ class Parser
 
     /**
      * Parse the given unquoted value.
+	 * 解析给定的未引用值
      *
      * @param string $value
      *

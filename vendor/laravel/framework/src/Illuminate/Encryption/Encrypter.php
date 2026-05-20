@@ -136,7 +136,7 @@ class Encrypter implements EncrypterContract
      *
      * @param  mixed  $payload
      * @param  bool  $unserialize
-     * @return string
+     * @return mixed
      *
      * @throws \Illuminate\Contracts\Encryption\DecryptException
      */

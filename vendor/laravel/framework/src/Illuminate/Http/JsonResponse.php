@@ -20,7 +20,7 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Constructor.
-	 * 构造函数
+	 * 构造方法
      *
      * @param  mixed  $data
      * @param  int    $status
@@ -50,7 +50,6 @@ class JsonResponse extends BaseJsonResponse
     /**
      * Get the json_decoded data from the response.
 	 * 从响应中获取json_decoded数据
-	 * 
      *
      * @param  bool  $assoc
      * @param  int  $depth
@@ -94,9 +93,16 @@ class JsonResponse extends BaseJsonResponse
      */
     protected function hasValidJson($jsonError)
     {
-        return $jsonError === JSON_ERROR_NONE ||
-                ($jsonError === JSON_ERROR_UNSUPPORTED_TYPE &&
-                $this->hasEncodingOption(JSON_PARTIAL_OUTPUT_ON_ERROR));
+        if ($jsonError === JSON_ERROR_NONE) {
+            return true;
+        }
+
+        return $this->hasEncodingOption(JSON_PARTIAL_OUTPUT_ON_ERROR) &&
+                    in_array($jsonError, [
+                        JSON_ERROR_RECURSION,
+                        JSON_ERROR_INF_OR_NAN,
+                        JSON_ERROR_UNSUPPORTED_TYPE,
+                    ]);
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，转变为
+ * Illuminate，数据库，Eloquent，关系，多态
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -102,7 +102,7 @@ class MorphTo extends BelongsTo
      */
     public function getResults()
     {
-        return $this->ownerKey ? $this->query->first() : null;
+        return $this->ownerKey ? parent::getResults() : null;
     }
 
     /**
@@ -134,12 +134,14 @@ class MorphTo extends BelongsTo
     {
         $instance = $this->createModelByType($type);
 
+        $ownerKey = $this->ownerKey ?? $instance->getKeyName();
+
         $query = $this->replayMacros($instance->newQuery())
                             ->mergeConstraintsFrom($this->getQuery())
                             ->with($this->getQuery()->getEagerLoads());
 
         return $query->whereIn(
-            $instance->getTable().'.'.$instance->getKeyName(), $this->gatherKeysByType($type)
+            $instance->getTable().'.'.$ownerKey, $this->gatherKeysByType($type)
         )->get();
     }
 
@@ -196,8 +198,10 @@ class MorphTo extends BelongsTo
     protected function matchToMorphParents($type, Collection $results)
     {
         foreach ($results as $result) {
-            if (isset($this->dictionary[$type][$result->getKey()])) {
-                foreach ($this->dictionary[$type][$result->getKey()] as $model) {
+            $ownerKey = ! is_null($this->ownerKey) ? $result->{$this->ownerKey} : $result->getKey();
+
+            if (isset($this->dictionary[$type][$ownerKey])) {
+                foreach ($this->dictionary[$type][$ownerKey] as $model) {
                     $model->setRelation($this->relation, $result);
                 }
             }
@@ -240,6 +244,38 @@ class MorphTo extends BelongsTo
     }
 
     /**
+     * Touch all of the related models for the relationship.
+	 * 触摸关系的所有相关模型
+     *
+     * @return void
+     */
+    public function touch()
+    {
+        if (! is_null($this->ownerKey)) {
+            parent::touch();
+        }
+    }
+
+    /**
+     * Remove all or passed registered global scopes.
+	 * 删除所有或传递的已注册全局作用域
+     *
+     * @param  array|null  $scopes
+     * @return $this
+     */
+    public function withoutGlobalScopes(array $scopes = null)
+    {
+        $this->getQuery()->withoutGlobalScopes($scopes);
+
+        $this->macroBuffer[] = [
+            'method' => __FUNCTION__,
+            'parameters' => [$scopes],
+        ];
+
+        return $this;
+    }
+
+    /**
      * Get the foreign key "type" name.
 	 * 获取外键“类型”名称
      *
@@ -263,7 +299,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Replay stored macro calls on the actual related instance.
-	 * 在实际相关实例上重播存储的宏调用
+	 * 在实际相关实例上重播存储的宏调用。
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
@@ -294,6 +330,7 @@ class MorphTo extends BelongsTo
         // If we tried to call a method that does not exist on the parent Builder instance,
         // we'll assume that we want to call a query macro (e.g. withTrashed) that only
         // exists on related models. We will just store the call and replay it later.
+		// 如果我们试图调用父Builder实例上不存在的方法，我们假设我们只需要调用一个查询宏（例如withTrashed）。
         catch (BadMethodCallException $e) {
             $this->macroBuffer[] = compact('method', 'parameters');
 

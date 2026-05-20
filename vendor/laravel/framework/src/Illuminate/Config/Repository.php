@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，配置，存储库
+ * Illuminate，配置，版本库
  */
 
 namespace Illuminate\Config;
@@ -13,7 +13,7 @@ class Repository implements ArrayAccess, ConfigContract
 {
     /**
      * All of the configuration items.
-	 * 所有的配置项
+	 * 所有配置项
      *
      * @var array
      */
@@ -21,7 +21,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Create a new configuration repository.
-	 * 创建新的配置存储库
+	 * 创建一个新的配置存储库
      *
      * @param  array  $items
      * @return void
@@ -73,7 +73,7 @@ class Repository implements ArrayAccess, ConfigContract
 
         foreach ($keys as $key => $default) {
             if (is_numeric($key)) {
-                list($key, $default) = [$default, null];
+                [$key, $default] = [$default, null];
             }
 
             $config[$key] = Arr::get($this->items, $key, $default);
@@ -101,7 +101,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Prepend a value onto an array configuration value.
-	 * 将值Prepend用于数组配置值
+	 * 在数组配置值前添加一个值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -118,7 +118,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Push a value onto an array configuration value.
-	 * 将值推到数组配置值上
+	 * 将一个值压入数组配置值
      *
      * @param  string  $key
      * @param  mixed  $value

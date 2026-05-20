@@ -44,6 +44,7 @@ class PhpEngine implements Engine
         // We'll evaluate the contents of the view inside a try/catch block so we can
         // flush out any stray output that might get out before an error occurs or
         // an exception is thrown. This prevents any partial views from leaking.
+		// 我们将在一个尝试/ catch block中评估视图的内容。
         try {
             include $__path;
         } catch (Exception $e) {

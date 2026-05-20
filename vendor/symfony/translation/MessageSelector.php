@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，信息选择器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -11,7 +14,7 @@
 
 namespace Symfony\Component\Translation;
 
-@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.2, use IdentityTranslator instead.', MessageSelector::class), E_USER_DEPRECATED);
+@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.2, use IdentityTranslator instead.', MessageSelector::class), \E_USER_DEPRECATED);
 
 use Symfony\Component\Translation\Exception\InvalidArgumentException;
 

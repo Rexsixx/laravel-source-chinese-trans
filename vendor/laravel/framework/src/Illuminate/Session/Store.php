@@ -1,11 +1,12 @@
 <?php
 /**
- * Illuminate，会话，存储
+ * Illuminate，会话，储存
  */
 
 namespace Illuminate\Session;
 
 use Closure;
+use stdClass;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use SessionHandlerInterface;
@@ -47,7 +48,7 @@ class Store implements Session
 
     /**
      * Session store started status.
-	 * 会话存储启动状态
+	 * 会话存储开始状态
      *
      * @var bool
      */
@@ -55,7 +56,7 @@ class Store implements Session
 
     /**
      * Create a new session instance.
-	 * 创建一个新的会话实例
+	 * 确定会话是否使用cookie会话
      *
      * @param  string $name
      * @param  \SessionHandlerInterface $handler
@@ -71,7 +72,7 @@ class Store implements Session
 
     /**
      * Start the session, reading the data from a handler.
-	 * 启动会话，从处理程序读取数据。
+	 * 启动会话,从处理程序读取数据。
      *
      * @return bool
      */
@@ -118,7 +119,7 @@ class Store implements Session
 
     /**
      * Prepare the raw string data from the session for unserialization.
-	 * 准备来自会话的原始字符串数据以进行反序列化
+	 * 为未序列化的会话准备原始字符串数据
      *
      * @param  string  $data
      * @return string
@@ -130,7 +131,7 @@ class Store implements Session
 
     /**
      * Save the session data to storage.
-	 * 将会话数据保存到存储中
+	 * 将会话数据保存到存储
      *
      * @return bool
      */
@@ -147,7 +148,7 @@ class Store implements Session
 
     /**
      * Prepare the serialized session data for storage.
-	 * 准备序列化的会话数据进行存储
+	 * 准备存储的序列化会话数据
      *
      * @param  string  $data
      * @return string
@@ -159,7 +160,7 @@ class Store implements Session
 
     /**
      * Age the flash data for the session.
-	 * 将会话的flash数据老化
+	 * 处理会话的flash数据
      *
      * @return void
      */
@@ -185,21 +186,23 @@ class Store implements Session
 
     /**
      * Checks if a key exists.
-	 * 检查是否存在密钥
+	 * 检查是否存在键
      *
      * @param  string|array  $key
      * @return bool
      */
     public function exists($key)
     {
-        return ! collect(is_array($key) ? $key : func_get_args())->contains(function ($key) {
-            return ! Arr::exists($this->attributes, $key);
+        $placeholder = new stdClass();
+
+        return ! collect(is_array($key) ? $key : func_get_args())->contains(function ($key) use ($placeholder) {
+            return $this->get($key, $placeholder) === $placeholder;
         });
     }
 
     /**
      * Checks if a key is present and not null.
-	 * 检查键是否存在且不为空
+	 * 检查密钥是否存在,而不是null。
      *
      * @param  string|array  $key
      * @return bool
@@ -226,7 +229,6 @@ class Store implements Session
 
     /**
      * Get the value of a given key and then forget it.
-	 * 获取给定键的值，然后忘记它。
      *
      * @param  string  $key
      * @param  string  $default
@@ -239,7 +241,6 @@ class Store implements Session
 
     /**
      * Determine if the session contains old input.
-	 * 确定会话是否包含旧的输入
      *
      * @param  string  $key
      * @return bool
@@ -253,7 +254,6 @@ class Store implements Session
 
     /**
      * Get the requested item from the flashed input array.
-	 * 从闪过的输入数组中获取请求的项
      *
      * @param  string  $key
      * @param  mixed   $default
@@ -266,7 +266,6 @@ class Store implements Session
 
     /**
      * Replace the given session attributes entirely.
-	 * 完全替换给定的会话属性
      *
      * @param  array  $attributes
      * @return void
@@ -278,7 +277,6 @@ class Store implements Session
 
     /**
      * Put a key / value pair or array of key / value pairs in the session.
-	 * 在会话中放入一个键/值对或键/值对数组
      *
      * @param  string|array  $key
      * @param  mixed       $value
@@ -297,7 +295,6 @@ class Store implements Session
 
     /**
      * Get an item from the session, or store the default value.
-	 * 从会话中获取项，或存储默认值。
      *
      * @param  string  $key
      * @param  \Closure  $callback
@@ -316,7 +313,6 @@ class Store implements Session
 
     /**
      * Push a value onto a session array.
-	 * 将值压入会话数组
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -333,7 +329,6 @@ class Store implements Session
 
     /**
      * Increment the value of an item in the session.
-	 * 增加会话中某项的值
      *
      * @param  string  $key
      * @param  int  $amount
@@ -348,7 +343,7 @@ class Store implements Session
 
     /**
      * Decrement the value of an item in the session.
-	 * 递减会话中某项的值
+	 * 在会话中减去一个项目的值
      *
      * @param  string  $key
      * @param  int  $amount
@@ -361,7 +356,7 @@ class Store implements Session
 
     /**
      * Flash a key / value pair to the session.
-	 * 将一个键/值对Flash到会话中
+	 * 将一个键/值对发送到会话
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -378,7 +373,7 @@ class Store implements Session
 
     /**
      * Flash a key / value pair to the session for immediate use.
-	 * 将一个键/值对保存到会话中以便立即使用
+	 * 将一个键/值对打开到会话中,以便立即使用。
      *
      * @param  string $key
      * @param  mixed $value
@@ -393,7 +388,7 @@ class Store implements Session
 
     /**
      * Reflash all of the session flash data.
-	 * 刷新所有会话刷新数据
+	 * 反射所有会话flash数据
      *
      * @return void
      */
@@ -406,7 +401,7 @@ class Store implements Session
 
     /**
      * Reflash a subset of the current flash data.
-	 * 刷新当前flash数据的子集
+	 * 反射当前闪存数据的一个子集
      *
      * @param  array|mixed  $keys
      * @return void
@@ -420,7 +415,7 @@ class Store implements Session
 
     /**
      * Merge new flash keys into the new flash array.
-	 * 将新的flash key合并到新的flash array中
+	 * 将新的flash键合并到新的flash数组中
      *
      * @param  array  $keys
      * @return void
@@ -446,7 +441,7 @@ class Store implements Session
 
     /**
      * Flash an input array to the session.
-	 * 将输入数组刷新到会话
+	 * 将输入数组发送到会话
      *
      * @param  array  $value
      * @return void
@@ -458,7 +453,7 @@ class Store implements Session
 
     /**
      * Remove an item from the session, returning its value.
-	 * 从会话中删除项，返回其值。
+	 * 从会话中删除一个项目,返回它的值。
      *
      * @param  string  $key
      * @return mixed
@@ -470,7 +465,7 @@ class Store implements Session
 
     /**
      * Remove one or many items from the session.
-	 * 从会话中删除一个或多个项目
+	 * 从会话中删除一个或多个项
      *
      * @param  string|array  $keys
      * @return void
@@ -482,7 +477,6 @@ class Store implements Session
 
     /**
      * Remove all of the items from the session.
-	 * 从会话中删除所有项
      *
      * @return void
      */
@@ -493,7 +487,6 @@ class Store implements Session
 
     /**
      * Flush the session data and regenerate the ID.
-	 * 刷新会话数据并重新生成ID
      *
      * @return bool
      */
@@ -506,19 +499,19 @@ class Store implements Session
 
     /**
      * Generate a new session identifier.
-	 * 生成一个新的会话标识符
      *
      * @param  bool  $destroy
      * @return bool
      */
     public function regenerate($destroy = false)
     {
-        return $this->migrate($destroy);
+        return tap($this->migrate($destroy), function () {
+            $this->regenerateToken();
+        });
     }
 
     /**
      * Generate a new session ID for the session.
-	 * 为会话生成一个新的会话ID
      *
      * @param  bool  $destroy
      * @return bool
@@ -538,7 +531,6 @@ class Store implements Session
 
     /**
      * Determine if the session has been started.
-	 * 确定会话是否已启动
      *
      * @return bool
      */
@@ -549,7 +541,6 @@ class Store implements Session
 
     /**
      * Get the name of the session.
-	 * 获取会话的名称
      *
      * @return string
      */
@@ -560,7 +551,6 @@ class Store implements Session
 
     /**
      * Set the name of the session.
-	 * 设置会话名称
      *
      * @param  string  $name
      * @return void
@@ -572,7 +562,6 @@ class Store implements Session
 
     /**
      * Get the current session ID.
-	 * 获取当前会话ID
      *
      * @return string
      */
@@ -583,7 +572,6 @@ class Store implements Session
 
     /**
      * Set the session ID.
-	 * 设置会话ID
      *
      * @param  string  $id
      * @return void
@@ -595,7 +583,7 @@ class Store implements Session
 
     /**
      * Determine if this is a valid session ID.
-	 * 确定这是否是有效的会话ID
+	 * 确定这是否是一个有效的会话ID
      *
      * @param  string  $id
      * @return bool
@@ -607,7 +595,7 @@ class Store implements Session
 
     /**
      * Get a new, random session ID.
-	 * 获取一个新的、随机的会话ID。
+	 * 获取一个新的,随机会话ID。
      *
      * @return string
      */
@@ -618,7 +606,7 @@ class Store implements Session
 
     /**
      * Set the existence of the session on the handler if applicable.
-	 * 如果适用，在处理程序上设置会话的存在性。
+	 * 如果适用,在处理程序上设置会话的存在。
      *
      * @param  bool  $value
      * @return void
@@ -654,7 +642,7 @@ class Store implements Session
 
     /**
      * Get the previous URL from the session.
-	 * 从会话中获取前一个URL
+	 * 从会话中获取前面的URL
      *
      * @return string|null
      */
@@ -665,7 +653,7 @@ class Store implements Session
 
     /**
      * Set the "previous" URL in the session.
-	 * 设置会话中的“前一个”URL
+	 * 在会话中设置“之前的”URL
      *
      * @param  string  $url
      * @return void

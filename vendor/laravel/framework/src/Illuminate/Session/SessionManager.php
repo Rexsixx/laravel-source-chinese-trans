@@ -23,7 +23,7 @@ class SessionManager extends Manager
 
     /**
      * Create an instance of the "array" session driver.
-	 * 创建“array”会话驱动程序的实例
+	 * 创建“数组”会话驱动程序的实例
      *
      * @return \Illuminate\Session\Store
      */
@@ -103,7 +103,7 @@ class SessionManager extends Manager
 
     /**
      * Create an instance of the APC session driver.
-	 * 创建APC会话驱动程序的实例。
+	 * 创建APC会话驱动程序的实例
      *
      * @return \Illuminate\Session\Store
      */
@@ -125,7 +125,7 @@ class SessionManager extends Manager
 
     /**
      * Create an instance of the Redis session driver.
-	 * 创建一个Redis会话驱动程序实例
+	 * 创建Redis会话驱动程序的实例
      *
      * @return \Illuminate\Session\Store
      */
@@ -142,7 +142,7 @@ class SessionManager extends Manager
 
     /**
      * Create an instance of a cache driven driver.
-	 * 创建缓存驱动程序的实例
+	 * 创建一个缓存驱动驱动程序的实例
      *
      * @param  string  $driver
      * @return \Illuminate\Session\Store
@@ -212,7 +212,7 @@ class SessionManager extends Manager
 
     /**
      * Get the default session driver name.
-	 * 获取默认会话驱动程序名称
+	 * 获取默认会话驱动程序名
      *
      * @return string
      */
@@ -223,7 +223,7 @@ class SessionManager extends Manager
 
     /**
      * Set the default session driver name.
-	 * 设置默认的会话驱动程序名称
+	 * 设置默认会话驱动程序名
      *
      * @param  string  $name
      * @return void

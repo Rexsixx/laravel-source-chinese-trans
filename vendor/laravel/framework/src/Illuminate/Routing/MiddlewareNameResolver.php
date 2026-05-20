@@ -11,7 +11,7 @@ class MiddlewareNameResolver
 {
     /**
      * Resolve the middleware name to a class name(s) preserving passed parameters.
-	 * 将中间件名称解析为保留传递参数的类名
+	 * 将中间件名称解析为一个类名称(s)保存通过参数
      *
      * @param  string  $name
      * @param  array  $map
@@ -41,14 +41,14 @@ class MiddlewareNameResolver
         // Finally, when the middleware is simply a string mapped to a class name the
         // middleware name will get parsed into the full class name and parameters
         // which may be run using the Pipeline which accepts this string format.
-        list($name, $parameters) = array_pad(explode(':', $name, 2), 2, null);
+        [$name, $parameters] = array_pad(explode(':', $name, 2), 2, null);
 
         return ($map[$name] ?? $name).(! is_null($parameters) ? ':'.$parameters : '');
     }
 
     /**
      * Parse the middleware group and format it for usage.
-	 * 解析中间件组并对其进行格式化以供使用
+	 * 解析中间件组并格式化它的使用
      *
      * @param  string  $name
      * @param  array  $map
@@ -71,7 +71,7 @@ class MiddlewareNameResolver
                 continue;
             }
 
-            list($middleware, $parameters) = array_pad(
+            [$middleware, $parameters] = array_pad(
                 explode(':', $middleware, 2), 2, null
             );
 

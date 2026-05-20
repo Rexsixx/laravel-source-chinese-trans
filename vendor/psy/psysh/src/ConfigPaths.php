@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，配置路径
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -15,11 +18,13 @@ use XdgBaseDir\Xdg;
 
 /**
  * A Psy Shell configuration path helper.
+ * 一个Psy Shell配置路径助手
  */
 class ConfigPaths
 {
     /**
      * Get potential config directory paths.
+	 * 获取潜在的配置目录路径。
      *
      * Returns `~/.psysh`, `%APPDATA%/PsySH` (when on Windows), and all
      * XDG Base Directory config directories:
@@ -37,6 +42,7 @@ class ConfigPaths
 
     /**
      * Get potential home config directory paths.
+	 * 获取潜在的家庭配置目录路径。
      *
      * Returns `~/.psysh`, `%APPDATA%/PsySH` (when on Windows), and the
      * XDG Base Directory home config directory:

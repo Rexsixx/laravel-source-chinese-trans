@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，Comparator，数组比较器
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -7,16 +11,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Comparator;
 
 /**
  * Compares arrays for equality.
+ * 比较数组的等式
  */
 class ArrayComparator extends Comparator
 {
     /**
      * Returns whether the comparator can compare two values.
+	 * 返回比较器可以比较两个值
      *
      * @param mixed $expected The first value to compare
      * @param mixed $actual   The second value to compare

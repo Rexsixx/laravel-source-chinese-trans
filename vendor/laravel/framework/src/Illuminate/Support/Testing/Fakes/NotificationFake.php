@@ -1,11 +1,11 @@
 <?php
 /**
- * Illuminate，支持，测试，佯装，通知 Fake
+ * Illuminate，支持，测试，Fake，通知 Fake
  */
 
 namespace Illuminate\Support\Testing\Fakes;
 
-use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Illuminate\Contracts\Notifications\Factory as NotificationFactory;
@@ -15,7 +15,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 {
     /**
      * All of the notifications that have been sent.
-	 * 所有已发送的通知
+	 * 所有被发送的通知
      *
      * @var array
      */
@@ -23,7 +23,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Assert if a notification was sent based on a truth-test callback.
-	 * 判断通知是否基于真值测试回调发送
+	 * 断言如果基于trutest callback发送通知
      *
      * @param  mixed  $notifiable
      * @param  string  $notification
@@ -52,7 +52,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Assert if a notification was sent a number of times.
-	 * 判断是否发送了多次通知
+	 * 断言是否发送了许多次通知
      *
      * @param  mixed  $notifiable
      * @param  string  $notification
@@ -63,13 +63,13 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
     {
         PHPUnit::assertTrue(
             ($count = $this->sent($notifiable, $notification)->count()) === $times,
-            "The expected [{$notification}] notification was sent {$count} times instead of {$times} times."
+            "Expected [{$notification}] to be sent {$times} times, but was sent {$count} times."
         );
     }
 
     /**
      * Determine if a notification was sent based on a truth-test callback.
-	 * 确定是否根据真值测试回调发送了通知
+	 * 确定是否基于trutest callback发送通知
      *
      * @param  mixed  $notifiable
      * @param  string  $notification
@@ -104,8 +104,30 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
     }
 
     /**
+     * Assert the total amount of times a notification was sent.
+	 * 断言发送通知的总次数
+     *
+     * @param  int  $expectedCount
+     * @param  string  $notification
+     * @return void
+     */
+    public function assertTimesSent($expectedCount, $notification)
+    {
+        $actualCount = collect($this->notifications)
+            ->flatten(1)
+            ->reduce(function ($count, $sent) use ($notification) {
+                return $count + count($sent[$notification] ?? []);
+            }, 0);
+
+        PHPUnit::assertSame(
+            $expectedCount, $actualCount,
+            "Expected [{$notification}] to be sent {$expectedCount} times, but was sent {$actualCount} times."
+        );
+    }
+
+    /**
      * Get all of the notifications matching a truth-test callback.
-	 * 获取所有与true -test回调匹配的通知
+	 * 获取与一个trutest callback匹配的所有通知
      *
      * @param  mixed  $notifiable
      * @param  string  $notification
@@ -131,7 +153,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Determine if there are more notifications left to inspect.
-	 * 确定是否还有更多通知需要检查
+	 * 确定是否有更多通知留给检查
      *
      * @param  mixed  $notifiable
      * @param  string  $notification
@@ -144,7 +166,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Get all of the notifications for a notifiable entity by type.
-	 * 按类型获取可通知实体的所有通知
+	 * 通过类型获取通知对象的所有通知
      *
      * @param  mixed  $notifiable
      * @param  string  $notification
@@ -161,7 +183,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Send the given notification to the given notifiable entities.
-	 * 将给定的通知发送到给定的可通知实体
+	 * 将给定的通知发送给已通知的实体
      *
      * @param  \Illuminate\Support\Collection|array|mixed  $notifiables
      * @param  mixed  $notification
@@ -174,7 +196,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Send the given notification immediately.
-	 * 立即发送给定的通知
+	 * 立即发送通知
      *
      * @param  \Illuminate\Support\Collection|array|mixed  $notifiables
      * @param  mixed  $notification
@@ -188,7 +210,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
         foreach ($notifiables as $notifiable) {
             if (! $notification->id) {
-                $notification->id = Uuid::uuid4()->toString();
+                $notification->id = Str::uuid()->toString();
             }
 
             $this->notifications[get_class($notifiable)][$notifiable->getKey()][get_class($notification)][] = [
@@ -201,7 +223,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Get a channel instance by name.
-	 * 按名称获取通道实例
+	 * 通过名称获取通道实例
      *
      * @param  string|null  $name
      * @return mixed

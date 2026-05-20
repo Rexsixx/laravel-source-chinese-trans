@@ -1,4 +1,7 @@
 <?php
+/**
+ * Swiftmailer，swift引入
+ */
 
 /*
  * This file is part of SwiftMailer.

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点访问者，名称解析器
+ */
+
 namespace PhpParser\NodeVisitor;
 
 use PhpParser\ErrorHandler;
@@ -24,6 +28,7 @@ class NameResolver extends NodeVisitorAbstract
 
     /**
      * Constructs a name resolution visitor.
+	 * 构造一个名称解析访问者。
      *
      * Options:
      *  * preserveOriginalNames (default false): An "originalName" attribute will be added to
@@ -43,6 +48,7 @@ class NameResolver extends NodeVisitorAbstract
 
     /**
      * Get name resolution context.
+	 * 获取名称解析上下文
      *
      * @return NameContext
      */

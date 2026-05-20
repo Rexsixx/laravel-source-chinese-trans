@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，常用工具
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -25,6 +28,7 @@ class Utils
 
     /**
      * Makes sure if a relative path is passed in it is turned into an absolute path
+	 * 确保传入的相对路径被转换为绝对路径
      *
      * @param string $streamUrl stream URL or path without protocol
      *
@@ -55,6 +59,7 @@ class Utils
 
     /**
      * Return the JSON representation of a value
+	 * 返回值的JSON表示形式
      *
      * @param  mixed             $data
      * @param  int               $encodeFlags flags to pass to json encode, defaults to JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
@@ -87,6 +92,7 @@ class Utils
 
     /**
      * Handle a json_encode failure.
+	 * 处理json_encode失败。
      *
      * If the failure is due to invalid string encoding, try to clean the
      * input and encode again. If the second encoding attempt fails, the
@@ -157,6 +163,7 @@ class Utils
 
     /**
      * Detect invalid UTF-8 string characters and convert to valid UTF-8.
+	 * 检测无效的UTF-8字符串字符并转换为有效的UTF-8。
      *
      * Valid UTF-8 input will be left unmodified, but strings containing
      * invalid UTF-8 codepoints will be reencoded as UTF-8 with an assumed

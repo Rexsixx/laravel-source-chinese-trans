@@ -14,7 +14,7 @@ class RouteAction
 {
     /**
      * Parse the given action into an array.
-	 * 将给定的动作解析为数组
+	 * 将给定的动作解析为一个数组
      *
      * @param  string  $uri
      * @param  mixed  $action
@@ -25,6 +25,7 @@ class RouteAction
         // If no action is passed in right away, we assume the user will make use of
         // fluent routing. In that case, we set a default closure, to be executed
         // if the user never explicitly sets an action to handle the given uri.
+		// 如果立即没有传递任何操作信息，我们就假定用户会使用流畅的路由功能。
         if (is_null($action)) {
             return static::missingAction($uri);
         }
@@ -33,7 +34,10 @@ class RouteAction
         // as the "uses" property, because there is nothing else we need to do when
         // it is available. Otherwise we will need to find it in the action list.
         if (is_callable($action)) {
-            return ['uses' => $action];
+            return ! is_array($action) ? ['uses' => $action] : [
+                'uses' => $action[0].'@'.$action[1],
+                'controller' => $action[0].'@'.$action[1],
+            ];
         }
 
         // If no "uses" property has been set, we will dig through the array to find a
@@ -52,7 +56,7 @@ class RouteAction
 
     /**
      * Get an action for a route that has no action.
-	 * 为没有动作的路由获取一个动作
+	 * 为一条没有行动的路线采取行动
      *
      * @param  string  $uri
      * @return array
@@ -66,7 +70,7 @@ class RouteAction
 
     /**
      * Find the callable in an action array.
-	 * 在动作数组中查找可调用对象
+	 * 在操作数组中找到可调用的
      *
      * @param  array  $action
      * @return callable
@@ -80,10 +84,12 @@ class RouteAction
 
     /**
      * Make an action for an invokable controller.
-	 * 为可调用控制器创建一个操作
+	 * 为一个可调用的控制器做一个动作
      *
      * @param  string $action
      * @return string
+     *
+     * @throws \UnexpectedValueException
      */
     protected static function makeInvokable($action)
     {

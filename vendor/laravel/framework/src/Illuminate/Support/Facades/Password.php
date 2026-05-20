@@ -1,18 +1,23 @@
 <?php
 /**
- * Illuminate，支持，门面，密码
+ * Illuminate，支持，门面，Password
  */
 
 namespace Illuminate\Support\Facades;
 
 /**
+ * @method static string sendResetLink(array $credentials)
+ * @method static mixed reset(array $credentials, \Closure $callback)
+ * @method static void validator(\Closure $callback)
+ * @method static bool validateNewPassword(array $credentials)
+ *
  * @see \Illuminate\Auth\Passwords\PasswordBroker
  */
 class Password extends Facade
 {
     /**
      * Constant representing a successfully sent reminder.
-	 * 表示成功发送提醒的常量
+	 * 代表一个成功发送提醒的常量
      *
      * @var string
      */
@@ -28,7 +33,7 @@ class Password extends Facade
 
     /**
      * Constant representing the user not found response.
-	 * 表示用户未找到响应的常量
+	 * 代表用户未找到响应的常量
      *
      * @var string
      */

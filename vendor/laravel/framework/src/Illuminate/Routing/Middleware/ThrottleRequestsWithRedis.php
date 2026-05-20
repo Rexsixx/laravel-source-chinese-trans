@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，中间件，节流请求与Redis
+ * Illuminate，路由，中间件，对 Redis的节流请求
  */
 
 namespace Illuminate\Routing\Middleware;
@@ -21,7 +21,7 @@ class ThrottleRequestsWithRedis extends ThrottleRequests
 
     /**
      * The timestamp of the end of the current duration.
-	 * 当前持续时间结束的时间戳
+	 * 当前时间结束的时间戳
      *
      * @var int
      */
@@ -29,7 +29,7 @@ class ThrottleRequestsWithRedis extends ThrottleRequests
 
     /**
      * The number of remaining slots.
-	 * 剩余槽位的数量
+	 * 剩余槽的数量
      *
      * @var int
      */
@@ -49,7 +49,7 @@ class ThrottleRequestsWithRedis extends ThrottleRequests
 
     /**
      * Handle an incoming request.
-	 * 处理传入请求
+	 * 处理传入的请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -78,7 +78,7 @@ class ThrottleRequestsWithRedis extends ThrottleRequests
 
     /**
      * Determine if the given key has been "accessed" too many times.
-	 * 确定给定的键是否被“访问”了太多次
+	 * 确定给定的键是否被“访问”过多次
      *
      * @param  string  $key
      * @param  int  $maxAttempts
@@ -92,7 +92,7 @@ class ThrottleRequestsWithRedis extends ThrottleRequests
         );
 
         return tap(! $limiter->acquire(), function () use ($limiter) {
-            list($this->decaysAt, $this->remaining) = [
+            [$this->decaysAt, $this->remaining] = [
                 $limiter->decaysAt, $limiter->remaining,
             ];
         });
@@ -100,7 +100,7 @@ class ThrottleRequestsWithRedis extends ThrottleRequests
 
     /**
      * Calculate the number of remaining attempts.
-	 * 计算剩余的尝试次数
+	 * 计算剩余尝试的数量
      *
      * @param  string  $key
      * @param  int  $maxAttempts
@@ -118,7 +118,7 @@ class ThrottleRequestsWithRedis extends ThrottleRequests
 
     /**
      * Get the number of seconds until the lock is released.
-	 * 获取锁被释放前的秒数
+	 * 把锁释放到锁定数秒
      *
      * @param  string  $key
      * @return int

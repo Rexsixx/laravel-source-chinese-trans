@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译器，编译器
+ * Illuminate，视图，编译器，编译程序
  */
 
 namespace Illuminate\View\Compilers;
@@ -20,7 +20,7 @@ abstract class Compiler
 
     /**
      * Get the cache path for the compiled views.
-	 * 获取编译视图的缓存路径
+	 * 获取已编译视图的缓存路径
      *
      * @var string
      */
@@ -48,7 +48,7 @@ abstract class Compiler
 
     /**
      * Get the path to the compiled version of a view.
-	 * 获取视图的编译版本的路径
+	 * 获取对已编译版本的视图的路径
      *
      * @param  string  $path
      * @return string
@@ -60,7 +60,7 @@ abstract class Compiler
 
     /**
      * Determine if the view at the given path is expired.
-	 * 确定给定路径上的视图是否已过期
+	 * 确定给定路径的视图是否已过期
      *
      * @param  string  $path
      * @return bool
@@ -72,6 +72,7 @@ abstract class Compiler
         // If the compiled file doesn't exist we will indicate that the view is expired
         // so that it can be re-compiled. Else, we will verify the last modification
         // of the views is less than the modification times of the compiled views.
+		// 如果编译的文件不存在，我们将指出视图已过期。
         if (! $this->files->exists($compiled)) {
             return true;
         }

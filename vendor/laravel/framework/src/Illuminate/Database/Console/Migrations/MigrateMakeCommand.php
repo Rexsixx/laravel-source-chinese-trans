@@ -20,11 +20,12 @@ class MigrateMakeCommand extends BaseCommand
     protected $signature = 'make:migration {name : The name of the migration.}
         {--create= : The table to be created.}
         {--table= : The table to migrate.}
-        {--path= : The location where the migration file should be created.}';
+        {--path= : The location where the migration file should be created.}
+        {--realpath : Indicate any provided migration file paths are pre-resolved absolute paths.}';
 
     /**
      * The console command description.
-	 * 控制台命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -64,7 +65,7 @@ class MigrateMakeCommand extends BaseCommand
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */
@@ -92,11 +93,7 @@ class MigrateMakeCommand extends BaseCommand
         // "create" in the name. This will allow us to provide a convenient way
         // of creating migrations that create new tables for the application.
         if (! $table) {
-            if (preg_match('/^create_(\w+)_table$/', $name, $matches)) {
-                $table = $matches[1];
-
-                $create = true;
-            }
+            [$table, $create] = TableGuesser::guess($name);
         }
 
         // Now we are ready to write the migration out to disk. Once we've written
@@ -134,9 +131,22 @@ class MigrateMakeCommand extends BaseCommand
     protected function getMigrationPath()
     {
         if (! is_null($targetPath = $this->input->getOption('path'))) {
-            return $this->laravel->basePath().'/'.$targetPath;
+            return ! $this->usingRealPath()
+                            ? $this->laravel->basePath().'/'.$targetPath
+                            : $targetPath;
         }
 
         return parent::getMigrationPath();
+    }
+
+    /**
+     * Determine if the given path(s) are pre-resolved "real" paths.
+	 * 确定给定的路径是否是预先解析的“真实”路径
+     *
+     * @return bool
+     */
+    protected function usingRealPath()
+    {
+        return $this->input->hasOption('realpath') && $this->option('realpath');
     }
 }

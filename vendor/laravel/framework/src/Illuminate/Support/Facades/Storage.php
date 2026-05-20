@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，存储
+ * Illuminate，支持，门面，Storage
  */
 
 namespace Illuminate\Support\Facades;
@@ -8,13 +8,15 @@ namespace Illuminate\Support\Facades;
 use Illuminate\Filesystem\Filesystem;
 
 /**
+ * @method static \Illuminate\Contracts\Filesystem\Filesystem disk(string $name = null)
+ *
  * @see \Illuminate\Filesystem\FilesystemManager
  */
 class Storage extends Facade
 {
     /**
      * Replace the given disk with a local testing disk.
-	 * 将给定磁盘替换为本地测试磁盘
+	 * 用本地测试磁盘替换给定的磁盘
      *
      * @param  string|null  $disk
      *
@@ -33,7 +35,7 @@ class Storage extends Facade
 
     /**
      * Replace the given disk with a persistent local testing disk.
-	 * 将给定磁盘替换为持久的本地测试磁盘
+	 * 用持久的本地测试磁盘替换给定的磁盘
      *
      * @param  string|null  $disk
      * @return void

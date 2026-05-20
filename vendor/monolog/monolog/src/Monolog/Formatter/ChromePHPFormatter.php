@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，格式器，Chrome PHP 格式化器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -15,6 +18,7 @@ use Monolog\Logger;
 
 /**
  * Formats a log message according to the ChromePHP array format
+ * 根据ChromePHP数组格式格式化日志消息
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
@@ -22,6 +26,7 @@ class ChromePHPFormatter implements FormatterInterface
 {
     /**
      * Translates Monolog log levels to Wildfire levels.
+	 * 把Monolog的级别转化为Wildfire的级别
      */
     private $logLevels = array(
         Logger::DEBUG     => 'log',

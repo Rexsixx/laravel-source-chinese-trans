@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，广播，广播管理员
+ * Illuminate，广播，广播管理者
  */
 
 namespace Illuminate\Broadcasting;
@@ -31,7 +31,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * The array of resolved broadcast drivers.
-	 * 解析的广播驱动程序的数组
+	 * 已解析的广播驱动程序数组
      *
      * @var array
      */
@@ -73,7 +73,10 @@ class BroadcastManager implements FactoryContract
         $attributes = $attributes ?: ['middleware' => ['web']];
 
         $this->app['router']->group($attributes, function ($router) {
-            $router->post('/broadcasting/auth', '\\'.BroadcastController::class.'@authenticate');
+            $router->match(
+                ['get', 'post'], '/broadcasting/auth',
+                '\\'.BroadcastController::class.'@authenticate'
+            );
         });
     }
 
@@ -153,7 +156,7 @@ class BroadcastManager implements FactoryContract
      * Get a driver instance.
 	 * 获取驱动程序实例
      *
-     * @param  string  $name
+     * @param  string|null  $name
      * @return mixed
      */
     public function driver($name = null)

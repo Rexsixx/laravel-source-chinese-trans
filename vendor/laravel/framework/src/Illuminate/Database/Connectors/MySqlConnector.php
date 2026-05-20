@@ -91,10 +91,9 @@ class MySqlConnector extends Connector implements ConnectorInterface
 
     /**
      * Create a DSN string from a configuration.
-	 * 从配置中创建DSN字符串。
+	 * 从配置中创建DSN字符串
      *
      * Chooses socket or host/port based on the 'unix_socket' config value.
-	 * 根据‘unix_socket’配置值选择套接字或主机/端口。
      *
      * @param  array   $config
      * @return string
@@ -187,7 +186,6 @@ class MySqlConnector extends Connector implements ConnectorInterface
 	 * 获取查询以启用严格模式
      *
      * @param  \PDO  $connection
-     *
      * @return string
      */
     protected function strictMode(PDO $connection)

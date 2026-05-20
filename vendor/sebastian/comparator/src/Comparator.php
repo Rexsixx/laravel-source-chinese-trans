@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，Comparator，比较器
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -7,13 +11,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Comparator;
 
 use SebastianBergmann\Exporter\Exporter;
 
 /**
  * Abstract base class for comparators which compare values for equality.
+ * 比较器的抽象基类,比较了相等的值。
  */
 abstract class Comparator
 {
@@ -32,9 +36,6 @@ abstract class Comparator
         $this->exporter = new Exporter;
     }
 
-    /**
-     * @param Factory $factory
-     */
     public function setFactory(Factory $factory)
     {
         $this->factory = $factory;

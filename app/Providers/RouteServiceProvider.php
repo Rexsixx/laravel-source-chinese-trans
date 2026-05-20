@@ -1,6 +1,6 @@
 <?php
 /**
- * App，供应商，路由服务提供商
+ * App，提供商，路由服务提供商
  */
 
 namespace App\Providers;
@@ -65,10 +65,9 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define the "api" routes for the application.
-	 * 定义应用程序的“api”路由。
+	 * 为应用程序定义“api”路由。
      *
      * These routes are typically stateless.
-	 * 这些路由通常是无状态的
      *
      * @return void
      */

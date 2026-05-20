@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，命令行加载器，容器命令加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Exception\CommandNotFoundException;
 
 /**
  * Loads commands from a PSR-11 container.
+ * 从PSR-11容器中加载命令
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
@@ -25,8 +29,7 @@ class ContainerCommandLoader implements CommandLoaderInterface
     private $commandMap;
 
     /**
-     * @param ContainerInterface $container  A container from which to load command services
-     * @param array              $commandMap An array with command names as keys and service ids as values
+     * @param array $commandMap An array with command names as keys and service ids as values
      */
     public function __construct(ContainerInterface $container, array $commandMap)
     {

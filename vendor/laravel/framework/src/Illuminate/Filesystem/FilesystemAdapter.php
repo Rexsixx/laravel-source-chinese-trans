@@ -219,7 +219,7 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
      */
     public function putFileAs($path, $file, $name, $options = [])
     {
-        $stream = fopen($file->getRealPath(), 'r+');
+        $stream = fopen($file->getRealPath(), 'r');
 
         // Next, we will format the path of the file and store the file using a stream since
         // they provide better performance than alternatives. Once we write the file this
@@ -284,7 +284,7 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
 
     /**
      * Append to a file.
-	 * 附加行到一个文件
+	 * 附加到文件中
      *
      * @param  string  $path
      * @param  string  $data
@@ -405,6 +405,8 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
 
         if (method_exists($adapter, 'getUrl')) {
             return $adapter->getUrl($path);
+        } elseif (method_exists($this->driver, 'getUrl')) {
+            return $this->driver->getUrl($path);
         } elseif ($adapter instanceof AwsS3Adapter) {
             return $this->getAwsUrl($adapter, $path);
         } elseif ($adapter instanceof RackspaceAdapter) {
@@ -621,7 +623,7 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
 
     /**
      * Create a directory.
-	 * 创建目录
+	 * 创建一个目录
      *
      * @param  string  $path
      * @return bool
@@ -708,7 +710,7 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
                 return AdapterInterface::VISIBILITY_PRIVATE;
         }
 
-        throw new InvalidArgumentException('Unknown visibility: '.$visibility);
+        throw new InvalidArgumentException("Unknown visibility: {$visibility}");
     }
 
     /**

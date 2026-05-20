@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，支持，供应商，认证服务提供商
+ * Illuminate，基础，支持，提供者，认证服务提供商
  */
 
 namespace Illuminate\Foundation\Support\Providers;
@@ -37,5 +37,16 @@ class AuthServiceProvider extends ServiceProvider
     public function register()
     {
         //
+    }
+
+    /**
+     * Get the policies defined on the provider.
+	 * 获取在提供程序上定义的策略
+     *
+     * @return array
+     */
+    public function policies()
+    {
+        return $this->policies;
     }
 }

@@ -13,7 +13,7 @@ trait ResponseTrait
 {
     /**
      * The original content of the response.
-	 * 响应的原始内容
+	 * 回复的原始内容
      *
      * @var mixed
      */
@@ -130,7 +130,7 @@ trait ResponseTrait
 
     /**
      * Set the exception to attach to the response.
-	 * 将异常设置为附加到响应
+	 * 将异常设置为附加到响应。
      *
      * @param  \Exception  $e
      * @return $this

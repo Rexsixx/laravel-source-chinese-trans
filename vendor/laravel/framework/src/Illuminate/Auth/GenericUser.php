@@ -137,7 +137,7 @@ class GenericUser implements UserContract
 
     /**
      * Dynamically unset a value on the user.
-	 * 动态取消对用户的值设置
+	 * 用户提供程序实现
      *
      * @param  string  $key
      * @return void

@@ -21,7 +21,7 @@ class Login
 
     /**
      * Indicates if the user should be "remembered".
-	 * 指示是否需要"记住"用户
+	 * 指示是否需要“记住”用户
      *
      * @var bool
      */

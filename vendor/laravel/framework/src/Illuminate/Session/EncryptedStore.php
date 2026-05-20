@@ -13,7 +13,7 @@ class EncryptedStore extends Store
 {
     /**
      * The encrypter instance.
-	 * 加密器实例
+	 * 加密实例
      *
      * @var \Illuminate\Contracts\Encryption\Encrypter
      */
@@ -38,7 +38,7 @@ class EncryptedStore extends Store
 
     /**
      * Prepare the raw string data from the session for unserialization.
-	 * 准备来自会话的原始字符串数据以进行反序列化
+	 * 为未序列化的会话准备原始字符串数据
      *
      * @param  string  $data
      * @return string
@@ -54,7 +54,7 @@ class EncryptedStore extends Store
 
     /**
      * Prepare the serialized session data for storage.
-	 * 准备序列化的会话数据进行存储
+	 * 准备存储的序列化会话数据
      *
      * @param  string  $data
      * @return string
@@ -66,7 +66,7 @@ class EncryptedStore extends Store
 
     /**
      * Get the encrypter instance.
-	 * 获取加密器实例
+	 * 获取加密实例
      *
      * @return \Illuminate\Contracts\Encryption\Encrypter
      */

@@ -58,7 +58,7 @@ class ViewErrorBag implements Countable
 
     /**
      * Add a new MessageBag instance to the bags.
-	 * 向包中添加一个新的MessageBag实例
+	 * 在包中添加一个新的MessageBag实例
      *
      * @param  string  $key
      * @param  \Illuminate\Contracts\Support\MessageBag  $bag
@@ -73,7 +73,7 @@ class ViewErrorBag implements Countable
 
     /**
      * Determine if the default message bag has any messages.
-	 * 确定默认消息包是否包含任何消息
+	 * 确定默认消息包是否有任何消息
      *
      * @return bool
      */
@@ -84,7 +84,7 @@ class ViewErrorBag implements Countable
 
     /**
      * Get the number of messages in the default bag.
-	 * 获取默认包中的消息数
+	 * 在默认包中获取消息的数量
      *
      * @return int
      */
@@ -95,7 +95,7 @@ class ViewErrorBag implements Countable
 
     /**
      * Dynamically call methods on the default bag.
-	 * 动态调用默认包上的方法
+	 * 在默认包上动态调用方法
      *
      * @param  string  $method
      * @param  array  $parameters
@@ -108,7 +108,7 @@ class ViewErrorBag implements Countable
 
     /**
      * Dynamically access a view error bag.
-	 * 动态访问视图错误包
+	 * 动态访问一个视图错误包
      *
      * @param  string  $key
      * @return \Illuminate\Contracts\Support\MessageBag
@@ -133,7 +133,7 @@ class ViewErrorBag implements Countable
 
     /**
      * Convert the default bag to its string representation.
-	 * 将默认包转换为其字符串表示形式
+	 * 将默认包转换为字符串表示
      *
      * @return string
      */

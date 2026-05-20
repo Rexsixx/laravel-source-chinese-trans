@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，线程调度，管理频率
+ * Illuminate，控制台，调度，管理频率
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -390,7 +390,6 @@ trait ManagesFrequencies
     /**
      * Schedule the event to run yearly.
 	 * 计划该活动每年运行一次
-	 * 
      *
      * @return $this
      */

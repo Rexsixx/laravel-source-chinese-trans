@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，控制台彩色工厂
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -16,6 +19,7 @@ use JakubOnderka\PhpConsoleHighlighter\Highlighter;
 
 /**
  * Builds `ConsoleColor` instances configured according to the given color mode.
+ * 根据给定的颜色模式构建“rest - console - or”实例
  */
 class ConsoleColorFactory
 {

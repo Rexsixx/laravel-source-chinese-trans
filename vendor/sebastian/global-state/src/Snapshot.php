@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，GlobalState，Snapshot
+ */
+
 /*
  * This file is part of sebastian/global-state.
  *

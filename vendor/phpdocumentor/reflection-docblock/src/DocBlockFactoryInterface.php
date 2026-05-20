@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，Doc Block Factory 接口
+ */
 
 declare(strict_types=1);
 
@@ -11,6 +14,7 @@ interface DocBlockFactoryInterface
 {
     /**
      * Factory method for easy instantiation.
+	 * 易于实例化的工厂方法
      *
      * @param array<string, class-string<Tag>> $additionalTags
      */

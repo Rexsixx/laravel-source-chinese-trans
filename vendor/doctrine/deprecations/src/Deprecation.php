@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，Deprecations，反对
+ * Doctrine，Deprecation，弃用
  */
 
 declare(strict_types=1);
@@ -72,7 +72,7 @@ class Deprecation
 
     /**
      * Trigger a deprecation for the given package and identfier.
-	 * 触发对给定包和标识符的弃用。
+	 * 触发对给定包和标识符的弃用
      *
      * The link should point to a Github issue or Wiki entry detailing the
      * deprecation. It is additionally used to de-duplicate the trigger of the
@@ -115,6 +115,7 @@ class Deprecation
 
     /**
      * Trigger a deprecation for the given package and identifier when called from outside.
+	 * 从外部调用时触发对给定包和标识符的弃用。
      *
      * "Outside" means we assume that $package is currently installed as a
      * dependency and the caller is not a file in that package. When $package

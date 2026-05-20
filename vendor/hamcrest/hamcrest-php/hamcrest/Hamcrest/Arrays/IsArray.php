@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，是否数组
+ */
+
 namespace Hamcrest\Arrays;
 
 /*
@@ -16,6 +20,7 @@ use Hamcrest\Util;
 /**
  * Matcher for array whose elements satisfy a sequence of matchers.
  * The array size must equal the number of element matchers.
+ * 用于元素满足匹配器序列的数组的匹配器。
  */
 class IsArray extends TypeSafeMatcher
 {

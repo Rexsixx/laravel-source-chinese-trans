@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，结果，多重误差
+ */
 
 namespace Egulias\EmailValidator\Result;
 

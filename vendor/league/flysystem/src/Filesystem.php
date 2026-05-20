@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，文件系统
+ */
 
 namespace League\Flysystem;
 
@@ -28,6 +31,7 @@ class Filesystem implements FilesystemInterface
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param AdapterInterface $adapter
      * @param Config|array     $config
@@ -40,6 +44,7 @@ class Filesystem implements FilesystemInterface
 
     /**
      * Get the Adapter.
+	 * 获取适配器
      *
      * @return AdapterInterface adapter
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，Postgres 生成器
+ * Illuminate，数据库，模式，Postgres 构建器
  */
 
 namespace Illuminate\Database\Schema;
@@ -16,7 +16,7 @@ class PostgresBuilder extends Builder
      */
     public function hasTable($table)
     {
-        list($schema, $table) = $this->parseSchemaAndTable($table);
+        [$schema, $table] = $this->parseSchemaAndTable($table);
 
         $table = $this->connection->getTablePrefix().$table;
 
@@ -57,6 +57,31 @@ class PostgresBuilder extends Builder
     }
 
     /**
+     * Drop all views from the database.
+	 * 从数据库中删除所有视图
+     *
+     * @return void
+     */
+    public function dropAllViews()
+    {
+        $views = [];
+
+        foreach ($this->getAllViews() as $row) {
+            $row = (array) $row;
+
+            $views[] = reset($row);
+        }
+
+        if (empty($views)) {
+            return;
+        }
+
+        $this->connection->statement(
+            $this->grammar->compileDropAllViews($views)
+        );
+    }
+
+    /**
      * Get all of the table names for the database.
 	 * 获取数据库的所有表名
      *
@@ -70,6 +95,19 @@ class PostgresBuilder extends Builder
     }
 
     /**
+     * Get all of the view names for the database.
+	 * 获取数据库的所有视图名称
+     *
+     * @return array
+     */
+    protected function getAllViews()
+    {
+        return $this->connection->select(
+            $this->grammar->compileGetAllViews($this->connection->getConfig('schema'))
+        );
+    }
+
+    /**
      * Get the column listing for a given table.
 	 * 获取给定表的列清单
      *
@@ -78,7 +116,7 @@ class PostgresBuilder extends Builder
      */
     public function getColumnListing($table)
     {
-        list($schema, $table) = $this->parseSchemaAndTable($table);
+        [$schema, $table] = $this->parseSchemaAndTable($table);
 
         $table = $this->connection->getTablePrefix().$table;
 

@@ -1,4 +1,8 @@
 <?php
+/**
+ * PharIo，Manifest，Php 扩展需求
+ */
+
 /*
  * This file is part of PharIo\Manifest.
  *

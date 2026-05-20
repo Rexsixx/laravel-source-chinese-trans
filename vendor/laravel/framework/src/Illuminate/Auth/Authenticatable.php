@@ -39,7 +39,7 @@ trait Authenticatable
 
     /**
      * Get the password for the user.
-	 * 为用户获取密码
+	 * 获取用户的密码
      *
      * @return string
      */
@@ -77,7 +77,7 @@ trait Authenticatable
 
     /**
      * Get the column name for the "remember me" token.
-	 * 获取“记住我”的列名
+	 * 获取“记住我”令牌的列名
      *
      * @return string
      */

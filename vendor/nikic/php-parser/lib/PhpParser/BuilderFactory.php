@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，构建器工厂
+ */
+
 namespace PhpParser;
 
 use PhpParser\Node\Arg;
@@ -14,6 +18,7 @@ class BuilderFactory
 {
     /**
      * Creates an attribute node.
+	 * 创建属性节点
      *
      * @param string|Name $name Name of the attribute
      * @param array       $args Attribute named arguments
@@ -29,6 +34,7 @@ class BuilderFactory
 
     /**
      * Creates a namespace builder.
+	 * 创建名称空间构建器
      *
      * @param null|string|Node\Name $name Name of the namespace
      *
@@ -40,6 +46,7 @@ class BuilderFactory
 
     /**
      * Creates a class builder.
+	 * 创建一个类构建器
      *
      * @param string $name Name of the class
      *
@@ -51,6 +58,7 @@ class BuilderFactory
 
     /**
      * Creates an interface builder.
+	 * 创建接口构建器
      *
      * @param string $name Name of the interface
      *
@@ -62,6 +70,7 @@ class BuilderFactory
 
     /**
      * Creates a trait builder.
+	 * 创建一个特质构建者
      *
      * @param string $name Name of the trait
      *
@@ -73,6 +82,7 @@ class BuilderFactory
 
     /**
      * Creates an enum builder.
+	 * 创造一个enum builder
      *
      * @param string $name Name of the enum
      *
@@ -84,6 +94,7 @@ class BuilderFactory
 
     /**
      * Creates a trait use builder.
+	 * 创建一个特性使用生成器
      *
      * @param Node\Name|string ...$traits Trait names
      *
@@ -95,6 +106,7 @@ class BuilderFactory
 
     /**
      * Creates a trait use adaptation builder.
+	 * 创建一个特性使用适应性构建器
      *
      * @param Node\Name|string|null  $trait  Trait name
      * @param Node\Identifier|string $method Method name

@@ -33,7 +33,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Debug Mode	应用环境
+    | Application Debug Mode	应用程序调试模式
     |--------------------------------------------------------------------------
     |
     | When your application is in debug mode, detailed error messages with
@@ -46,7 +46,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application URL	应用URL
+    | Application URL	申请网址
     |--------------------------------------------------------------------------
     |
     | This URL is used by the console to properly generate URLs when using
@@ -59,7 +59,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Timezone		应用时区
+    | Application Timezone	申请时区
     |--------------------------------------------------------------------------
     |
     | Here you may specify the default timezone for your application, which
@@ -72,7 +72,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Locale Configuration		应用程序区域设置配置
+    | Application Locale Configuration	应用区域配置
     |--------------------------------------------------------------------------
     |
     | The application locale determines the default locale that will be used
@@ -85,7 +85,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Fallback Locale	应用程序回退区域设置
+    | Application Fallback Locale	申请回选地区
     |--------------------------------------------------------------------------
     |
     | The fallback locale determines the locale to use when the current one
@@ -113,24 +113,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Logging Configuration
-    |--------------------------------------------------------------------------
-    |
-    | Here you may configure the log settings for your application. Out of
-    | the box, Laravel uses the Monolog PHP logging library. This gives
-    | you a variety of powerful log handlers / formatters to utilize.
-    |
-    | Available Settings: "single", "daily", "syslog", "errorlog"
-    |
-    */
-
-    'log' => env('APP_LOG', 'single'),
-
-    'log_level' => env('APP_LOG_LEVEL', 'debug'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Autoloaded Service Providers
+    | Autoloaded Service Providers	自动服务提供商
     |--------------------------------------------------------------------------
     |
     | The service providers listed here will be automatically loaded on the
@@ -184,7 +167,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Class Aliases
+    | Class Aliases	类别名
     |--------------------------------------------------------------------------
     |
     | This array of class aliases will be registered when this application

@@ -1,12 +1,13 @@
 <?php
 /**
- * Illuminate，控制台，线程调度，事件
+ * Illuminate，控制台，调度，事件
  */
 
 namespace Illuminate\Console\Scheduling;
 
 use Closure;
 use Cron\CronExpression;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use GuzzleHttp\Client as HttpClient;
 use Illuminate\Contracts\Mail\Mailer;
@@ -32,7 +33,7 @@ class Event
      *
      * @var string
      */
-    public $expression = '* * * * * *';
+    public $expression = '* * * * *';
 
     /**
      * The timezone the date should be evaluated on.
@@ -73,6 +74,14 @@ class Event
      * @var bool
      */
     public $withoutOverlapping = false;
+
+    /**
+     * Indicates if the command should only be allowed to run on one server for each cron expression.
+	 * 指示是否应该只允许对每个cron表达式在一台服务器上运行该命令
+     *
+     * @var bool
+     */
+    public $onOneServer = false;
 
     /**
      * The amount of time the mutex should be valid.
@@ -147,10 +156,10 @@ class Event
     public $description;
 
     /**
-     * The mutex implementation.
-	 * 互斥锁的实现
+     * The event mutex implementation.
+	 * 事件互斥锁的实现
      *
-     * @var \Illuminate\Console\Scheduling\Mutex
+     * @var \Illuminate\Console\Scheduling\EventMutex
      */
     public $mutex;
 
@@ -158,11 +167,11 @@ class Event
      * Create a new event instance.
 	 * 创建一个新的事件实例
      *
-     * @param  \Illuminate\Console\Scheduling\Mutex  $mutex
+     * @param  \Illuminate\Console\Scheduling\EventMutex  $mutex
      * @param  string  $command
      * @return void
      */
-    public function __construct(Mutex $mutex, $command)
+    public function __construct(EventMutex $mutex, $command)
     {
         $this->mutex = $mutex;
         $this->command = $command;
@@ -407,7 +416,7 @@ class Event
     {
         $this->ensureOutputIsBeingCapturedForEmail();
 
-        $addresses = is_array($addresses) ? $addresses : [$addresses];
+        $addresses = Arr::wrap($addresses);
 
         return $this->then(function (Mailer $mailer) use ($addresses, $onlyIfOutputExists) {
             $this->emailOutput($mailer, $addresses, $onlyIfOutputExists);
@@ -493,6 +502,19 @@ class Event
     }
 
     /**
+     * Register a callback to ping a given URL before the job runs if the given condition is true.
+	 * 注册一个回调函数，如果给定的条件为真，则在作业运行之前ping给定的URL。
+     *
+     * @param  bool  $value
+     * @param  string  $url
+     * @return $this
+     */
+    public function pingBeforeIf($value, $url)
+    {
+        return $value ? $this->pingBefore($url) : $this;
+    }
+
+    /**
      * Register a callback to ping a given URL after the job runs.
 	 * 注册一个回调函数，以便在作业运行后ping给定的URL。
      *
@@ -504,6 +526,19 @@ class Event
         return $this->then(function () use ($url) {
             (new HttpClient)->get($url);
         });
+    }
+
+    /**
+     * Register a callback to ping a given URL after the job runs if the given condition is true.
+	 * 如果给定的条件为真，则在作业运行后注册一个回调来ping给定的URL。
+     *
+     * @param  bool  $value
+     * @param  string  $url
+     * @return $this
+     */
+    public function thenPingIf($value, $url)
+    {
+        return $value ? $this->thenPing($url) : $this;
     }
 
     /**
@@ -578,6 +613,19 @@ class Event
         })->skip(function () {
             return $this->mutex->exists($this);
         });
+    }
+
+    /**
+     * Allow the event to only run on one server for each cron expression.
+	 * 对于每个cron表达式，允许事件仅在一台服务器上运行。
+     *
+     * @return $this
+     */
+    public function onOneServer()
+    {
+        $this->onOneServer = true;
+
+        return $this;
     }
 
     /**
@@ -721,13 +769,13 @@ class Event
     }
 
     /**
-     * Set the mutex implementation to be used.
-	 * 设置要使用的互斥锁实现
+     * Set the event mutex implementation to be used.
+	 * 设置要使用的事件互斥锁实现
      *
-     * @param  \Illuminate\Console\Scheduling\Mutex  $mutex
+     * @param  \Illuminate\Console\Scheduling\EventMutex  $mutex
      * @return $this
      */
-    public function preventOverlapsUsing(Mutex $mutex)
+    public function preventOverlapsUsing(EventMutex $mutex)
     {
         $this->mutex = $mutex;
 

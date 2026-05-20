@@ -1,8 +1,11 @@
 <?php
+/**
+ * NunoMaduro，Manifest，作者元素测试
+ */
 
 namespace PharIo\Manifest;
 
-class AuthorElementTest extends \PHPUnit_Framework_TestCase {
+class AuthorElementTest extends \PHPUnit\Framework\TestCase {
     /**
      * @var AuthorElement
      */

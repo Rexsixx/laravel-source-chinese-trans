@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，记录器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -19,6 +22,7 @@ use Exception;
 
 /**
  * Monolog log channel
+ * Monolog日志通道
  *
  * It contains a stack of Handlers and a stack of Processors,
  * and uses them to store records that are added to it.
@@ -29,11 +33,13 @@ class Logger implements LoggerInterface, ResettableInterface
 {
     /**
      * Detailed debug information
+	 * 详细的调试信息
      */
     const DEBUG = 100;
 
     /**
      * Interesting events
+	 * 有趣的事件
      *
      * Examples: User logs in, SQL logs.
      */
@@ -41,11 +47,13 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Uncommon events
+	 * 不寻常事件
      */
     const NOTICE = 250;
 
     /**
      * Exceptional occurrences that are not errors
+	 * 异常的事件并不是错误
      *
      * Examples: Use of deprecated APIs, poor use of an API,
      * undesirable things that are not necessarily wrong.

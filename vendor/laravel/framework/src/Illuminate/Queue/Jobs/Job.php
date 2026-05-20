@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，作业，作业
+ * Illuminate，队列，作业，Job
  */
 
 namespace Illuminate\Queue\Jobs;
@@ -53,21 +53,29 @@ abstract class Job
 
     /**
      * The name of the connection the job belongs to.
-	 * 作业所属的连接的名称
+	 * 该工作所属的连接名称
      */
     protected $connectionName;
 
     /**
      * The name of the queue the job belongs to.
-	 * 作业所属队列的名称
+	 * 工作所属的队列的名称
      *
      * @var string
      */
     protected $queue;
 
     /**
+     * Get the job identifier.
+	 * 获取工作标识符
+     *
+     * @return string
+     */
+    abstract public function getJobId();
+
+    /**
      * Get the raw body of the job.
-	 * 得到工作的原始主体
+	 * 得到工作的原始身体
      *
      * @return string
      */
@@ -75,7 +83,7 @@ abstract class Job
 
     /**
      * Fire the job.
-	 * 启动这个作业
+	 * 解雇工作
      *
      * @return void
      */
@@ -83,14 +91,14 @@ abstract class Job
     {
         $payload = $this->payload();
 
-        list($class, $method) = JobName::parse($payload['job']);
+        [$class, $method] = JobName::parse($payload['job']);
 
         ($this->instance = $this->resolve($class))->{$method}($this, $payload['data']);
     }
 
     /**
      * Delete the job from the queue.
-	 * 从队列中删除作业
+	 * 从队列中删除工作
      *
      * @return void
      */
@@ -135,7 +143,7 @@ abstract class Job
 
     /**
      * Determine if the job has been deleted or released.
-	 * 确定作业是否已被删除或释放
+	 * 确定工作是否已被删除或发布
      *
      * @return bool
      */
@@ -146,7 +154,7 @@ abstract class Job
 
     /**
      * Determine if the job has been marked as a failure.
-	 * 确定作业是否已被标记为失败
+	 * 确定工作是否被标记为失败
      *
      * @return bool
      */
@@ -157,7 +165,7 @@ abstract class Job
 
     /**
      * Mark the job as "failed".
-	 * 把这项作业标记为“失败”
+	 * 标记作业为“失败”
      *
      * @return void
      */
@@ -168,7 +176,7 @@ abstract class Job
 
     /**
      * Process an exception that caused the job to fail.
-	 * 处理导致作业失败的异常
+	 * 流程一个导致作业失败的异常
      *
      * @param  \Exception  $e
      * @return void
@@ -179,7 +187,7 @@ abstract class Job
 
         $payload = $this->payload();
 
-        list($class, $method) = JobName::parse($payload['job']);
+        [$class, $method] = JobName::parse($payload['job']);
 
         if (method_exists($this->instance = $this->resolve($class), 'failed')) {
             $this->instance->failed($payload['data'], $e);
@@ -200,7 +208,7 @@ abstract class Job
 
     /**
      * Get the decoded body of the job.
-	 * 拿到解码后的主体
+	 * 获得作业的解码体
      *
      * @return array
      */
@@ -211,7 +219,7 @@ abstract class Job
 
     /**
      * Get the number of times to attempt a job.
-	 * 获取尝试某项工作的次数
+	 * 获得作业的次数
      *
      * @return int|null
      */
@@ -222,7 +230,7 @@ abstract class Job
 
     /**
      * Get the number of seconds the job can run.
-	 * 获取作业可以运行的秒数
+	 * 得到作业的数量
      *
      * @return int|null
      */
@@ -233,7 +241,7 @@ abstract class Job
 
     /**
      * Get the timestamp indicating when the job should timeout.
-	 * 获取指示作业何时应该超时的时间戳
+	 * 获取指示何时应该超时的时间戳
      *
      * @return int|null
      */
@@ -255,7 +263,7 @@ abstract class Job
 
     /**
      * Get the resolved name of the queued job class.
-	 * 获取排队作业类的解析名称。
+	 * 获取排队工作类的解析名称。
      *
      * Resolves the name of "wrapped" jobs such as class-based handlers.
      *
@@ -268,7 +276,7 @@ abstract class Job
 
     /**
      * Get the name of the connection the job belongs to.
-	 * 获取作业所属的连接的名称
+	 * 获取该工作所属的连接的名称
      *
      * @return string
      */
@@ -279,7 +287,7 @@ abstract class Job
 
     /**
      * Get the name of the queue the job belongs to.
-	 * 获取作业所属队列的名称
+	 * 获取该作业所属队列的名称
      *
      * @return string
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，排队管理程序
+ * Illuminate，队列，队列管理器
  */
 
 namespace Illuminate\Queue;
@@ -77,7 +77,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Register an event listener for the exception occurred job event.
-	 * 为异常发生的作业事件注册事件侦听器
+	 * 在工作事件中注册一个事件侦听器
      *
      * @param  mixed  $callback
      * @return void
@@ -89,7 +89,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Register an event listener for the daemon queue loop.
-	 * 为守护进程队列循环注册一个事件侦听器
+	 * 在工作事件中注册一个事件侦听器
      *
      * @param  mixed  $callback
      * @return void
@@ -101,7 +101,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Register an event listener for the failed job event.
-	 * 为失败的作业事件注册一个事件侦听器
+	 * 为失败的工作事件注册一个事件监听器
      *
      * @param  mixed  $callback
      * @return void
@@ -113,7 +113,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Register an event listener for the daemon queue stopping.
-	 * 为守护进程队列停止注册一个事件侦听器
+	 * 为守护进程队列停止注册事件侦听器
      *
      * @param  mixed  $callback
      * @return void
@@ -137,7 +137,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Resolve a queue connection instance.
-	 * 解析队列连接实例
+	 * 解决队列连接实例
      *
      * @param  string  $name
      * @return \Illuminate\Contracts\Queue\Queue
@@ -149,6 +149,8 @@ class QueueManager implements FactoryContract, MonitorContract
         // If the connection has not been resolved yet we will resolve it now as all
         // of the connections are resolved when they are actually needed so we do
         // not make any unnecessary connection to the various queue end-points.
+		// 如果连接还没有得到解决,但是我们现在将解决它,因为所有的连接都在实际需要的时候解决,
+		// 因此我们不会对各种队列端点没有任何不必要的连接。
         if (! isset($this->connections[$name])) {
             $this->connections[$name] = $this->resolve($name);
 
@@ -176,7 +178,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Get the connector for a given driver.
-	 * 获取给定驱动程序的连接器
+	 * 为给定的驱动程序获取连接器
      *
      * @param  string  $driver
      * @return \Illuminate\Queue\Connectors\ConnectorInterface
@@ -207,7 +209,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Add a queue connection resolver.
-	 * 添加队列连接解析器。
+	 * 添加队列连接解析器
      *
      * @param  string    $driver
      * @param  \Closure  $resolver
@@ -248,6 +250,7 @@ class QueueManager implements FactoryContract, MonitorContract
     /**
      * Set the name of the default queue connection.
 	 * 设置默认队列连接的名称
+	 * 
      *
      * @param  string  $name
      * @return void
@@ -271,7 +274,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Determine if the application is in maintenance mode.
-	 * 确定应用程序是否处于维护模式
+	 * 确定应用程序是否在维护模式中
      *
      * @return bool
      */
@@ -282,7 +285,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Dynamically pass calls to the default connection.
-	 * 动态地将调用传递给默认连接
+	 * 动态传递对默认连接的调用
      *
      * @param  string  $method
      * @param  array   $parameters

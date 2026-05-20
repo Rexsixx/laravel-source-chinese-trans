@@ -15,7 +15,7 @@ class AppNameCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
@@ -23,7 +23,7 @@ class AppNameCommand extends Command
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命描述
      *
      * @var string
      */
@@ -71,7 +71,7 @@ class AppNameCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -134,6 +134,7 @@ class AppNameCommand extends Command
 
     /**
      * Set the bootstrap namespaces.
+	 * 设置引导命名空间
      *
      * @return void
      */
@@ -156,6 +157,7 @@ class AppNameCommand extends Command
 
     /**
      * Set the namespace in the appropriate configuration files.
+	 * 在适当的配置文件中设置名称空间
      *
      * @return void
      */
@@ -168,6 +170,7 @@ class AppNameCommand extends Command
 
     /**
      * Set the application provider namespaces.
+	 * 设置应用程序提供程序名称空间
      *
      * @return void
      */
@@ -188,6 +191,7 @@ class AppNameCommand extends Command
 
     /**
      * Set the authentication User namespace.
+	 * 设置鉴权用户命名空间
      *
      * @return void
      */
@@ -202,6 +206,7 @@ class AppNameCommand extends Command
 
     /**
      * Set the services User namespace.
+	 * 设置业务用户命名空间
      *
      * @return void
      */
@@ -216,6 +221,7 @@ class AppNameCommand extends Command
 
     /**
      * Set the PSR-4 namespace in the Composer file.
+	 * 在Composer文件中设置PSR-4命名空间
      *
      * @return void
      */
@@ -230,6 +236,7 @@ class AppNameCommand extends Command
 
     /**
      * Set the namespace in database factory files.
+	 * 在数据库工厂文件中设置名称空间
      *
      * @return void
      */
@@ -250,6 +257,7 @@ class AppNameCommand extends Command
 
     /**
      * Replace the given string in the given file.
+	 * 替换给定文件中的给定字符串
      *
      * @param  string  $path
      * @param  string|array  $search
@@ -265,6 +273,7 @@ class AppNameCommand extends Command
 
     /**
      * Get the path to the bootstrap/app.php file.
+	 * 获取bootstrap/app.php文件的路径
      *
      * @return string
      */

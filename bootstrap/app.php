@@ -1,11 +1,11 @@
 <?php
 /**
- * app
+ * 引导，app
  */
 
 /*
 |--------------------------------------------------------------------------
-| Create The Application	创建应用
+| Create The Application
 |--------------------------------------------------------------------------
 |
 | The first thing we will do is create a new Laravel application instance
@@ -20,7 +20,7 @@ $app = new Illuminate\Foundation\Application(
 
 /*
 |--------------------------------------------------------------------------
-| Bind Important Interfaces		绑定重要接口
+| Bind Important Interfaces
 |--------------------------------------------------------------------------
 |
 | Next, we need to bind some important interfaces into the container so
@@ -46,7 +46,7 @@ $app->singleton(
 
 /*
 |--------------------------------------------------------------------------
-| Return The Application	返回应用
+| Return The Application
 |--------------------------------------------------------------------------
 |
 | This script returns the application instance. The instance is given to

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，有多个穿过
+ * Illuminate，数据库，Eloquent，关系，多对多关联（通过关联表）
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -150,9 +150,7 @@ class HasManyThrough extends Relation
      */
     public function throughParentSoftDeletes()
     {
-        return in_array(SoftDeletes::class, class_uses_recursive(
-            get_class($this->throughParent)
-        ));
+        return in_array(SoftDeletes::class, class_uses_recursive($this->throughParent));
     }
 
     /**
@@ -352,7 +350,7 @@ class HasManyThrough extends Relation
         $result = $this->find($id, $columns);
 
         if (is_array($id)) {
-            if (count($result) == count(array_unique($id))) {
+            if (count($result) === count(array_unique($id))) {
                 return $result;
             }
         } elseif (! is_null($result)) {
@@ -382,16 +380,9 @@ class HasManyThrough extends Relation
      */
     public function get($columns = ['*'])
     {
-        // First we'll add the proper select columns onto the query so it is run with
-        // the proper columns. Then, we will get the results and hydrate out pivot
-        // models with the result of those columns as a separate model relation.
-        $columns = $this->query->getQuery()->columns ? [] : $columns;
+        $builder = $this->prepareQueryBuilder($columns);
 
-        $builder = $this->query->applyScopes();
-
-        $models = $builder->addSelect(
-            $this->shouldSelect($columns)
-        )->getModels();
+        $models = $builder->getModels();
 
         // If we actually found models we will also eager load any relationships that
         // have been specified as needing to be eager loaded. This will solve the
@@ -405,6 +396,7 @@ class HasManyThrough extends Relation
 
     /**
      * Get a paginator for the "select" statement.
+	 * 获取“select”语句的分页器
      *
      * @param  int  $perPage
      * @param  array  $columns
@@ -453,6 +445,65 @@ class HasManyThrough extends Relation
     }
 
     /**
+     * Chunk the results of the query.
+	 * 将查询的结果分块
+     *
+     * @param  int  $count
+     * @param  callable  $callback
+     * @return bool
+     */
+    public function chunk($count, callable $callback)
+    {
+        return $this->prepareQueryBuilder()->chunk($count, $callback);
+    }
+
+    /**
+     * Get a generator for the given query.
+	 * 获取给定查询的生成器
+     *
+     * @return \Generator
+     */
+    public function cursor()
+    {
+        return $this->prepareQueryBuilder()->cursor();
+    }
+
+    /**
+     * Execute a callback over each item while chunking.
+	 * 在分块时对每个项执行回调
+     *
+     * @param  callable  $callback
+     * @param  int  $count
+     * @return bool
+     */
+    public function each(callable $callback, $count = 1000)
+    {
+        return $this->chunk($count, function ($results) use ($callback) {
+            foreach ($results as $key => $value) {
+                if ($callback($value, $key) === false) {
+                    return false;
+                }
+            }
+        });
+    }
+
+    /**
+     * Prepare the query builder for query execution.
+	 * 为查询执行准备查询生成器
+     *
+     * @param  array  $columns
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function prepareQueryBuilder($columns = ['*'])
+    {
+        $builder = $this->query->applyScopes();
+
+        return $builder->addSelect(
+            $this->shouldSelect($builder->getQuery()->columns ? [] : $columns)
+        );
+    }
+
+    /**
      * Add the constraints for a relationship query.
 	 * 为关系查询添加约束
      *
@@ -496,7 +547,7 @@ class HasManyThrough extends Relation
         $query->getModel()->setTable($hash);
 
         return $query->select($columns)->whereColumn(
-            $parentQuery->getQuery()->from.'.'.$query->getModel()->getKeyName(), '=', $this->getQualifiedFirstKeyName()
+            $parentQuery->getQuery()->from.'.'.$this->localKey, '=', $this->getQualifiedFirstKeyName()
         );
     }
 

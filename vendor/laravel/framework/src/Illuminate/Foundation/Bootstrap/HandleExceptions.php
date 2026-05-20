@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，引导，处理异常
+ * Illuminate，基础，引导程序，处理异常
  */
 
 namespace Illuminate\Foundation\Bootstrap;
@@ -69,7 +69,7 @@ class HandleExceptions
 
     /**
      * Handle an uncaught exception from the application.
-	 * 处理应用程序中未捕获的异常
+	 * 处理应用程序中未捕获的异常。
      *
      * Note: Most exceptions can be handled via the try / catch block in
      * the HTTP and Console kernels. But, fatal error exceptions must

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，上下文
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy;
 
 /**
  * The Shell execution context.
+ * Shell执行上下文。
  *
  * This class encapsulates the current variables, most recent return value and
  * exception, and the current namespace.

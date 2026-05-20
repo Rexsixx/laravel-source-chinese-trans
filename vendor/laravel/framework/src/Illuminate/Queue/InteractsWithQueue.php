@@ -43,7 +43,7 @@ trait InteractsWithQueue
 
     /**
      * Fail the job from the queue.
-	 * 从队列中失败作业
+	 * 从队列中失败
      *
      * @param  \Throwable  $exception
      * @return void
@@ -57,7 +57,7 @@ trait InteractsWithQueue
 
     /**
      * Release the job back into the queue.
-	 * 将作业释放回队列
+	 * 把工作放回队列中
      *
      * @param  int   $delay
      * @return void

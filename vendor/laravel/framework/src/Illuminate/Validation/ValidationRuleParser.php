@@ -103,7 +103,7 @@ class ValidationRuleParser
 
     /**
      * Prepare the given rule for the Validator.
-	 * 为Validator准备给定的规则
+	 * 为验证器准备给定规则
      *
      * @param  mixed  $rule
      * @return mixed
@@ -154,7 +154,7 @@ class ValidationRuleParser
 
     /**
      * Merge additional rules into a given attribute(s).
-	 * 将其他规则合并到给定的属性中
+	 * 将附加规则合并为给定属性(s)
      *
      * @param  array  $results
      * @param  string|array  $attribute
@@ -178,7 +178,7 @@ class ValidationRuleParser
 
     /**
      * Merge additional rules into a given attribute.
-	 * 将其他规则合并到给定的属性中
+	 * 将附加规则合并为给定属性
      *
      * @param  array  $results
      * @param  string  $attribute
@@ -222,7 +222,7 @@ class ValidationRuleParser
 
     /**
      * Parse an array based rule.
-	 * 解析一个基于数组的规则
+	 * 解析基于数组的规则
      *
      * @param  array  $rules
      * @return array
@@ -247,7 +247,7 @@ class ValidationRuleParser
         // easy {rule}:{parameters} formatting convention. For instance the
         // rule "Max:3" states that the value may only be three letters.
         if (strpos($rules, ':') !== false) {
-            list($rules, $parameter) = explode(':', $rules, 2);
+            [$rules, $parameter] = explode(':', $rules, 2);
 
             $parameters = static::parseParameters($rules, $parameter);
         }
@@ -265,7 +265,9 @@ class ValidationRuleParser
      */
     protected static function parseParameters($rule, $parameter)
     {
-        if (strtolower($rule) == 'regex') {
+        $rule = strtolower($rule);
+
+        if (in_array($rule, ['regex', 'not_regex', 'notregex'], true)) {
             return [$parameter];
         }
 

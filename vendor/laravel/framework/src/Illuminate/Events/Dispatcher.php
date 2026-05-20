@@ -43,6 +43,14 @@ class Dispatcher implements DispatcherContract
     protected $wildcards = [];
 
     /**
+     * The cached wildcard listeners.
+	 * 缓存的通配符侦听器
+     *
+     * @var array
+     */
+    protected $wildcardsCache = [];
+
+    /**
      * The queue resolver instance.
 	 * 队列解析器实例
      *
@@ -92,6 +100,8 @@ class Dispatcher implements DispatcherContract
     protected function setupWildcardListen($event, $listener)
     {
         $this->wildcards[$event][] = $this->makeListener($listener, true);
+
+        $this->wildcardsCache = [];
     }
 
     /**
@@ -149,7 +159,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Resolve the subscriber instance.
-	 * 解析订户实例
+	 * 解析订阅者实例
      *
      * @param  object|string  $subscriber
      * @return mixed
@@ -204,7 +214,7 @@ class Dispatcher implements DispatcherContract
         // When the given "event" is actually an object we will assume it is an event
         // object and use the class as the event name and this event itself as the
         // payload to the handler, which makes object based events quite simple.
-        list($event, $payload) = $this->parseEventAndPayload(
+        [$event, $payload] = $this->parseEventAndPayload(
             $event, $payload
         );
 
@@ -248,7 +258,7 @@ class Dispatcher implements DispatcherContract
     protected function parseEventAndPayload($event, $payload)
     {
         if (is_object($event)) {
-            list($payload, $event) = [[$event], get_class($event)];
+            [$payload, $event] = [[$event], get_class($event)];
         }
 
         return [$event, Arr::wrap($payload)];
@@ -305,7 +315,8 @@ class Dispatcher implements DispatcherContract
         $listeners = $this->listeners[$eventName] ?? [];
 
         $listeners = array_merge(
-            $listeners, $this->getWildcardListeners($eventName)
+            $listeners,
+            $this->wildcardsCache[$eventName] ?? $this->getWildcardListeners($eventName)
         );
 
         return class_exists($eventName, false)
@@ -330,7 +341,7 @@ class Dispatcher implements DispatcherContract
             }
         }
 
-        return $wildcards;
+        return $this->wildcardsCache[$eventName] = $wildcards;
     }
 
     /**
@@ -407,7 +418,7 @@ class Dispatcher implements DispatcherContract
      */
     protected function createClassCallable($listener)
     {
-        list($class, $method) = $this->parseClassCallable($listener);
+        [$class, $method] = $this->parseClassCallable($listener);
 
         if ($this->handlerShouldBeQueued($class)) {
             return $this->createQueuedHandlerCallable($class, $method);
@@ -495,7 +506,7 @@ class Dispatcher implements DispatcherContract
      */
     protected function queueHandler($class, $method, $arguments)
     {
-        list($listener, $job) = $this->createListenerAndJob($class, $method, $arguments);
+        [$listener, $job] = $this->createListenerAndJob($class, $method, $arguments);
 
         $connection = $this->resolveQueue()->connection(
             $listener->connection ?? null

@@ -91,6 +91,8 @@ class UrlWindow
         // If the current page is very close to the beginning of the page range, we will
         // just render the beginning of the page range, followed by the last 2 of the
         // links in this list, since we will not have room to create a full slider.
+		// 如果当前页面非常接近页面范围的开始,我们将呈现页面范围的开始,
+		// 后面是列表中的最后两个链接,因为我们将没有空间创建一个完整的滑块。
         if ($this->currentPage() <= $window) {
             return $this->getSliderTooCloseToBeginning($window);
         }
@@ -98,6 +100,8 @@ class UrlWindow
         // If the current page is close to the ending of the page range we will just get
         // this first couple pages, followed by a larger window of these ending pages
         // since we're too close to the end of the list to create a full on slider.
+		// 如果当前的页面接近页面范围的结束,我们就会得到第一个过去的页面,
+		// 然后是这些结束页面的一个更大的窗口,因为我们离列表的末尾太近,无法在滑块上创建一个完整的窗口。
         elseif ($this->currentPage() > ($this->lastPage() - $window)) {
             return $this->getSliderTooCloseToEnding($window);
         }
@@ -225,7 +229,7 @@ class UrlWindow
 
     /**
      * Get the last page from the paginator.
-	 * 从分页器获取最后一页
+	 * 从分页器中获取最后一页
      *
      * @return int
      */

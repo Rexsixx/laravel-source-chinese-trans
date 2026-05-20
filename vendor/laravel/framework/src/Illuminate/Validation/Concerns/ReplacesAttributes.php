@@ -41,7 +41,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the different rule.
-	 * 替换不同规则的所有占位符
+	 * 更换所有的标杆,以代替不同的规则。
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -56,7 +56,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the digits rule.
-	 * 替换数字规则的所有占位符
+	 * 替换所有的标语符,以表示数字规则。
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -71,7 +71,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the digits (between) rule.
-	 * 替换数字（between）规则的所有占位符
+	 * 将所有的标杆替换为(中间)规则
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -86,7 +86,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the min rule.
-	 * 替换min规则的所有占位符
+	 * 将所有的标杆替换为min规则
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -101,7 +101,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the max rule.
-	 * 替换max规则的所有占位符
+	 * 将所有的标杆替换为max规则
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -116,7 +116,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the in rule.
-	 * 替换in规则的所有占位符
+	 * 将所有的标语牌替换为规则
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -135,7 +135,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the not_in rule.
-	 * 替换not_in规则的所有占位符
+	 * 将所有的标杆替换为not_in规则
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -150,7 +150,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the in_array rule.
-	 * 替换in_array规则的所有占位符
+	 * 替换in_array规则的所有位置-持有人
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -165,7 +165,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the mimetypes rule.
-	 * 替换mimetypes规则的所有占位符
+	 * 替换mimetype规则的所有标杆
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -180,7 +180,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the mimes rule.
-	 * 替换mime规则的所有占位符
+	 * 将所有的标牌替换为mimes规则
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -195,7 +195,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the required_with rule.
-	 * 替换required_with规则的所有占位符
+	 * 用规则替换所有的place - holder
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -210,7 +210,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the required_with_all rule.
-	 * 替换required_with_all规则的所有占位符
+	 * 替换所需的所有标杆-所有规则
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -225,7 +225,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the required_without rule.
-	 * 替换required_without规则的所有占位符
+	 * 将所需的所有标杆替换为不规则
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -240,7 +240,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the required_without_all rule.
-	 * 替换required_without_all规则的所有占位符
+	 * 用out_all规则替换所有的place - holder
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -255,7 +255,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the size rule.
-	 * 替换大小规则的所有占位符
+	 * 将所有的标杆替换为大小规则
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -269,8 +269,68 @@ trait ReplacesAttributes
     }
 
     /**
+     * Replace all place-holders for the gt rule.
+	 * 用gt规则替换所有的标杆
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array   $parameters
+     * @return string
+     */
+    protected function replaceGt($message, $attribute, $rule, $parameters)
+    {
+        return str_replace(':value', $this->getSize($parameters[0], $this->getValue($parameters[0])), $message);
+    }
+
+    /**
+     * Replace all place-holders for the lt rule.
+	 * 将所有的标杆替换为lt规则
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array   $parameters
+     * @return string
+     */
+    protected function replaceLt($message, $attribute, $rule, $parameters)
+    {
+        return str_replace(':value', $this->getSize($parameters[0], $this->getValue($parameters[0])), $message);
+    }
+
+    /**
+     * Replace all place-holders for the gte rule.
+	 * 将所有的标杆替换为gte规则
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array   $parameters
+     * @return string
+     */
+    protected function replaceGte($message, $attribute, $rule, $parameters)
+    {
+        return str_replace(':value', $this->getSize($parameters[0], $this->getValue($parameters[0])), $message);
+    }
+
+    /**
+     * Replace all place-holders for the lte rule.
+	 * 更换lte规则的所有标杆
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array   $parameters
+     * @return string
+     */
+    protected function replaceLte($message, $attribute, $rule, $parameters)
+    {
+        return str_replace(':value', $this->getSize($parameters[0], $this->getValue($parameters[0])), $message);
+    }
+
+    /**
      * Replace all place-holders for the required_if rule.
-	 * 替换required_if规则的所有占位符
+	 * 替换所需的所有标杆-如果规则
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -289,7 +349,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the required_unless rule.
-	 * 替换required_unless规则的所有占位符
+	 * 除非规则,将所有的place - holder替换为需求。
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -299,14 +359,20 @@ trait ReplacesAttributes
      */
     protected function replaceRequiredUnless($message, $attribute, $rule, $parameters)
     {
-        $other = $this->getDisplayableAttribute(array_shift($parameters));
+        $other = $this->getDisplayableAttribute($parameters[0]);
 
-        return str_replace([':other', ':values'], [$other, implode(', ', $parameters)], $message);
+        $values = [];
+
+        foreach (array_slice($parameters, 1) as $value) {
+            $values[] = $this->getDisplayableValue($parameters[0], $value);
+        }
+
+        return str_replace([':other', ':values'], [$other, implode(', ', $values)], $message);
     }
 
     /**
      * Replace all place-holders for the same rule.
-	 * 替换同一规则的所有占位符
+	 * 用相同的规则替换所有的标杆
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -321,7 +387,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the before rule.
-	 * 替换before规则的所有占位符
+	 * 在规则之前替换所有的标杆
      *
      * @param  string  $message
      * @param  string  $attribute
@@ -385,7 +451,7 @@ trait ReplacesAttributes
 
     /**
      * Replace all place-holders for the dimensions rule.
-	 * 替换维度规则的所有占位符
+	 * 替换尺寸规则的所有标杆
      *
      * @param  string  $message
      * @param  string  $attribute

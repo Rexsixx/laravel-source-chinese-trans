@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，队列
+ * Illuminate，队列，Queue
  */
 
 namespace Illuminate\Queue;
@@ -22,16 +22,8 @@ abstract class Queue
     protected $container;
 
     /**
-     * The encrypter implementation.
-	 * 加密器实现
-     *
-     * @var \Illuminate\Contracts\Encryption\Encrypter
-     */
-    protected $encrypter;
-
-    /**
      * The connection name for the queue.
-	 * 队列的连接名称
+	 * 队列的连接名
      *
      * @var string
      */
@@ -39,7 +31,7 @@ abstract class Queue
 
     /**
      * Push a new job onto the queue.
-	 * 将新作业推送到队列中
+	 * 将新作业推到队列上
      *
      * @param  string  $queue
      * @param  string  $job
@@ -53,7 +45,7 @@ abstract class Queue
 
     /**
      * Push a new job onto the queue after a delay.
-	 * 在延迟后将新作业推入队列
+	 * 延迟后将新作业推到队列上
      *
      * @param  string  $queue
      * @param  \DateTimeInterface|\DateInterval|int  $delay
@@ -68,7 +60,7 @@ abstract class Queue
 
     /**
      * Push an array of jobs onto the queue.
-	 * 将一组作业推入队列
+	 * 将一系列工作推到队列上
      *
      * @param  array   $jobs
      * @param  mixed   $data
@@ -84,7 +76,7 @@ abstract class Queue
 
     /**
      * Create a payload string from the given job and data.
-	 * 根据给定的作业和数据创建有效负载字符串
+	 * 从给定的工作和数据创建一个有效负载字符串
      *
      * @param  string  $job
      * @param  mixed   $data
@@ -107,7 +99,7 @@ abstract class Queue
 
     /**
      * Create a payload array from the given job and data.
-	 * 根据给定的作业和数据创建有效负载数组
+	 * 从给定的工作和数据创建一个有效负载数组
      *
      * @param  string  $job
      * @param  mixed   $data
@@ -122,7 +114,7 @@ abstract class Queue
 
     /**
      * Create a payload for an object-based queue handler.
-	 * 为基于对象的队列处理程序创建有效负载
+	 * 为基于对象的队列处理程序创建负载
      *
      * @param  mixed  $job
      * @return array
@@ -193,7 +185,7 @@ abstract class Queue
 
     /**
      * Get the connection name for the queue.
-	 * 获取队列的连接名称
+	 * 获取队列的连接名
      *
      * @return string
      */
@@ -204,7 +196,7 @@ abstract class Queue
 
     /**
      * Set the connection name for the queue.
-	 * 设置队列的连接名称
+	 * 设置队列的连接名
      *
      * @param  string  $name
      * @return $this

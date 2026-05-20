@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由服务提供商
+ * Illuminate，路由，路由服务提供者
  */
 
 namespace Illuminate\Routing;
@@ -25,17 +25,11 @@ class RoutingServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerRouter();
-
         $this->registerUrlGenerator();
-
         $this->registerRedirector();
-
         $this->registerPsrRequest();
-
         $this->registerPsrResponse();
-
         $this->registerResponseFactory();
-
         $this->registerControllerDispatcher();
     }
 
@@ -66,6 +60,7 @@ class RoutingServiceProvider extends ServiceProvider
             // The URL generator needs the route collection that exists on the router.
             // Keep in mind this is an object, so we're passing by references here
             // and all the registered routes will be available to the generator.
+			// URL生成器需要路由器上存在的路由集合。
             $app->instance('routes', $routes);
 
             $url = new UrlGenerator(
@@ -74,8 +69,16 @@ class RoutingServiceProvider extends ServiceProvider
                 )
             );
 
+            // Next we will set a few service resolvers on the URL generator so it can
+            // get the information it needs to function. This just provides some of
+            // the convenience features to this URL generator like "signed" URLs.
+			// 接下来，我们将在 URL 生成器上设置一些服务解析器，以便它能够获取运行所需的信息。
             $url->setSessionResolver(function () {
                 return $this->app['session'];
+            });
+
+            $url->setKeyResolver(function () {
+                return $this->app->make('config')->get('app.key');
             });
 
             // If the route collection is "rebound", for example, when the routes stay
@@ -91,7 +94,7 @@ class RoutingServiceProvider extends ServiceProvider
 
     /**
      * Get the URL generator request rebinder.
-	 * 获取URL生成器请求重新绑定器
+	 * 获取URL生成器请求重新绑定
      *
      * @return \Closure
      */
@@ -116,6 +119,7 @@ class RoutingServiceProvider extends ServiceProvider
             // If the session is set on the application instance, we'll inject it into
             // the redirector instance. This allows the redirect responses to allow
             // for the quite convenient "with" methods that flash to the session.
+			// 如果会话设置在应用程序实例上，我们将将其注入到重定向器实例中。
             if (isset($app['session.store'])) {
                 $redirector->setSession($app['session.store']);
             }
@@ -126,7 +130,7 @@ class RoutingServiceProvider extends ServiceProvider
 
     /**
      * Register a binding for the PSR-7 request implementation.
-	 * 为PSR-7请求实现注册绑定
+	 * 为PSR-7请求实现注册一个绑定
      *
      * @return void
      */
@@ -139,7 +143,7 @@ class RoutingServiceProvider extends ServiceProvider
 
     /**
      * Register a binding for the PSR-7 response implementation.
-	 * 为PSR-7响应实现注册绑定
+	 * 为PSR-7响应实现注册一个绑定
      *
      * @return void
      */
@@ -165,7 +169,7 @@ class RoutingServiceProvider extends ServiceProvider
 
     /**
      * Register the controller dispatcher.
-	 * 注册控制器调度程序
+	 * 注册控制器调度员
      *
      * @return void
      */
