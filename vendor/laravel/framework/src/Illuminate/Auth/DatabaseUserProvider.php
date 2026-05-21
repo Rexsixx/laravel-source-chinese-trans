@@ -119,6 +119,7 @@ class DatabaseUserProvider implements UserProvider
         // First we will add each credential element to the query as a where clause.
         // Then we can execute the query and, if we found a user, return it in a
         // generic "user" object that will be utilized by the Guard instances.
+		// 首先,我们将将每个凭据元素添加到查询中,作为where子句。
         $query = $this->conn->table($this->table);
 
         foreach ($credentials as $key => $value) {
@@ -136,6 +137,7 @@ class DatabaseUserProvider implements UserProvider
         // Now we are ready to execute the query to see if we have an user matching
         // the given credentials. If not, we will just return nulls and indicate
         // that there are no matching users for these given credential arrays.
+		// 现在我们已经准备好执行查询,看看是否有一个用户匹配给定的凭证。
         $user = $query->first();
 
         return $this->getGenericUser($user);

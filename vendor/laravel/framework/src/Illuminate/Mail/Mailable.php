@@ -416,6 +416,7 @@ class Mailable implements MailableContract, Renderable
 	 * 设置此消息的优先级。
      *
      * The value is an integer where 1 is the highest priority and 5 is the lowest.
+	 * 值是一个整数,1是最高的优先级,5是最低的。
      *
      * @param  int  $level
      * @return $this

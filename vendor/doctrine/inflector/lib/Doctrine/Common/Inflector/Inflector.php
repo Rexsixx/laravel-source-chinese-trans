@@ -148,6 +148,7 @@ class Inflector
     /**
      * Clears Inflectors inflected value caches, and resets the inflection
      * rules to the initial values.
+	 * 清除词缀器的词缀值缓存，并将词缀规则重置为初始值。
      *
      * @deprecated
      */

@@ -36,6 +36,7 @@ class ValidGenerator
 
     /**
      * Catch and proxy all generator calls but return only valid values
+	 * 捕获并代理所有生成器调用，但只返回有效值。
      * @param string $attribute
      *
      * @return mixed
@@ -47,6 +48,7 @@ class ValidGenerator
 
     /**
      * Catch and proxy all generator calls with arguments but return only valid values
+	 * 捕获和代理所有使用参数的生成器调用,但只返回有效值。
      * @param string $name
      * @param array $arguments
      *

@@ -60,6 +60,7 @@ abstract class TestCase extends BaseTestCase
 	 * 创建应用程序。
      *
      * Needs to be implemented by subclasses.
+	 * 需要由子类实现。
      *
      * @return \Symfony\Component\HttpKernel\HttpKernelInterface
      */

@@ -65,6 +65,7 @@ class DescriptionFactory
 
     /**
      * Returns the parsed text of this description.
+	 * 返回这个描述的解析文本
      */
     public function create(string $contents, ?TypeContext $context = null): Description
     {

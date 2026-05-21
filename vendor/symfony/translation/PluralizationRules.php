@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，复数规则
+ */
 
 /*
  * This file is part of the Symfony package.

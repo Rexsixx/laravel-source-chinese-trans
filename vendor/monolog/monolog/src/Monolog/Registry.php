@@ -88,6 +88,7 @@ class Registry
 
     /**
      * Removes instance from registry by name or instance
+	 * 通过名称或实例从注册表中删除实例
      *
      * @param string|Logger $logger Name or logger instance
      */
@@ -104,6 +105,7 @@ class Registry
 
     /**
      * Clears the registry
+	 * 清除注册表
      */
     public static function clear()
     {

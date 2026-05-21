@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpFoundation，请求头包
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * ResponseHeaderBag is a container for Response HTTP headers.
+ * ServerBag是$_SERVER变量的HTTP头的容器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

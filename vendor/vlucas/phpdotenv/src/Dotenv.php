@@ -80,6 +80,7 @@ class Dotenv
 
     /**
      * Load environment file in given directory.
+	 * 在给定目录中加载环境文件
      *
      * @throws \Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidFileException
      *
@@ -92,6 +93,7 @@ class Dotenv
 
     /**
      * Returns the full path to the file.
+	 * 返回文件的完整路径
      *
      * @param string $path
      * @param string $file
@@ -111,6 +113,7 @@ class Dotenv
 
     /**
      * Actually load the data.
+	 * 实际上加载数据
      *
      * @param bool $overload
      *
@@ -125,6 +128,7 @@ class Dotenv
 
     /**
      * Required ensures that the specified variables exist, and returns a new validator object.
+	 * 需要确保指定的变量存在,并返回一个新的验证器对象。
      *
      * @param string|string[] $variable
      *
@@ -137,6 +141,7 @@ class Dotenv
 
     /**
      * Get the list of environment variables declared inside the 'env' file.
+	 * 获取“env”文件中声明的环境变量列表
      *
      * @return array
      */

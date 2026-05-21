@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpKernel，异常，预处理失败 Http异常
+ */
 
 /*
  * This file is part of the Symfony package.

@@ -21,6 +21,7 @@ class EncryptedStore extends Store
 
     /**
      * Create a new session instance.
+	 * 创建一个新的会话实例
      *
      * @param  string $name
      * @param  \SessionHandlerInterface $handler

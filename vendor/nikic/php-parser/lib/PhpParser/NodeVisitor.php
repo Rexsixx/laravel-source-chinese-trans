@@ -44,6 +44,7 @@ interface NodeVisitor
 
     /**
      * Called when leaving a node.
+	 * 在离开节点时调用
      *
      * Return value semantics:
      *  * null
@@ -65,6 +66,7 @@ interface NodeVisitor
 
     /**
      * Called once after traversal.
+	 * 遍历后调用一次。
      *
      * Return value semantics:
      *  * null:      $nodes stays as-is

@@ -25,6 +25,7 @@ class RouteAction
         // If no action is passed in right away, we assume the user will make use of
         // fluent routing. In that case, we set a default closure, to be executed
         // if the user never explicitly sets an action to handle the given uri.
+		// 如果立即没有传递任何操作信息，我们就假定用户会使用流畅的路由功能。
         if (is_null($action)) {
             return static::missingAction($uri);
         }

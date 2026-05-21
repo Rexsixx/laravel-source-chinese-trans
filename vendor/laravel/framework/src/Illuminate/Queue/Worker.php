@@ -105,6 +105,7 @@ class Worker
             // Before reserving any jobs, we will make sure this queue is not paused and
             // if it is we will just pause this worker for a given amount of time and
             // make sure we do not need to kill this worker process off completely.
+			// 在保留任何工作之前,我们会确保这个队列没有停顿,如果是我们将暂停这个工人的时间,确保我们不需要完全杀死这个工作线程。
             if (! $this->daemonShouldRun($options, $connectionName, $queue)) {
                 $this->pauseWorker($options, $lastRestart);
 
@@ -151,6 +152,7 @@ class Worker
         // We will register a signal handler for the alarm signal so that we can kill this
         // process if it is running too long because it has frozen. This uses the async
         // signals supported in recent versions of PHP to accomplish it conveniently.
+		// 我们将为警报信号注册一个信号处理程序,这样我们就可以杀死这个进程,如果它运行太久,因为它已经冻结了。
         pcntl_signal(SIGALRM, function () {
             $this->kill(1);
         });
@@ -242,6 +244,7 @@ class Worker
         // If we're able to pull a job off of the stack, we will process it and then return
         // from this method. If there is no job on the queue, we will "sleep" the worker
         // for the specified number of seconds, then keep processing jobs after sleep.
+		// 如果我们能够从堆栈中拉出一个工作,我们将处理它,然后从这个方法返回。
         if ($job) {
             return $this->runJob($job, $connectionName, $options);
         }
@@ -400,6 +403,7 @@ class Worker
 	 * 如果它超过了最大允许的尝试,那么指定的工作就失败了。
      *
      * This will likely be because the job previously exceeded a timeout.
+	 * 这很可能是因为之前的工作超时。
      *
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job

@@ -129,6 +129,7 @@ trait ManagesEvents
         // Once we have the class and method name, we can build the Closure to resolve
         // the instance out of the IoC container and call the method on it with the
         // given arguments that are passed to the Closure as the composer's data.
+		// 一旦有了类和方法名，我们可以构建闭包来解决从IoC容器中取出的实例。
         return function () use ($class, $method) {
             return call_user_func_array(
                 [$this->container->make($class), $method], func_get_args()

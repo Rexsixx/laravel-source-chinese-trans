@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，分析程序，评论策略，域名的评论
+ */
 
 namespace Egulias\EmailValidator\Parser\CommentStrategy;
 

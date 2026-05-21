@@ -12,12 +12,13 @@ class LoginController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Login Controller
+    | Login Controller	登录控制器
     |--------------------------------------------------------------------------
     |
     | This controller handles authenticating users for the application and
     | redirecting them to your home screen. The controller uses a trait
     | to conveniently provide its functionality to your applications.
+	| 此控制器负责对应用程序的用户进行身份验证，并将他们重定向至您的主界面。
     |
     */
 
@@ -25,6 +26,7 @@ class LoginController extends Controller
 
     /**
      * Where to redirect users after login.
+	 * 登录后重定向用户的位置
      *
      * @var string
      */
@@ -32,6 +34,7 @@ class LoginController extends Controller
 
     /**
      * Create a new controller instance.
+	 * 创建一个新的控制器实例
      *
      * @return void
      */

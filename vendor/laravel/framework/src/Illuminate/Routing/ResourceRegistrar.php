@@ -90,6 +90,7 @@ class ResourceRegistrar
         // If the resource name contains a slash, we will assume the developer wishes to
         // register these resource routes with a prefix so we will set that up out of
         // the box so they don't have to mess with it. Otherwise, we will continue.
+		// 如果资源名称包含斜杠，我们将假定开发者希望为这些资源路由设置前缀，因此系统将自动完成此配置，无需手动干预。
         if (Str::contains($name, '/')) {
             $this->prefixedResource($name, $controller, $options);
 
@@ -99,6 +100,7 @@ class ResourceRegistrar
         // We need to extract the base resource from the resource name. Nested resources
         // are supported in the framework, but we need to know what name to use for a
         // place-holder on the route parameters, which should be the base resources.
+		// 我们需要从资源名称中提取基本资源。
         $base = $this->getResourceWildcard(last(explode('.', $name)));
 
         $defaults = $this->resourceDefaults;
@@ -130,6 +132,7 @@ class ResourceRegistrar
         // We need to extract the base resource from the resource name. Nested resources
         // are supported in the framework, but we need to know what name to use for a
         // place-holder on the route parameters, which should be the base resources.
+		// 我们需要从资源名称中提取基本资源。
         $callback = function ($me) use ($name, $controller, $options) {
             $me->resource($name, $controller, $options);
         };
@@ -151,6 +154,7 @@ class ResourceRegistrar
         // To get the prefix, we will take all of the name segments and implode them on
         // a slash. This will generate a proper URI prefix for us. Then we take this
         // last segment, which will be considered the final resources name we use.
+		// 为了获得前缀，我们将获取所有名称段，然后用斜线将其内爆。
         $prefix = implode('/', array_slice($segments, 0, -1));
 
         return [end($segments), $prefix];
@@ -324,6 +328,8 @@ class ResourceRegistrar
         // Once we have built the base URI, we'll remove the parameter holder for this
         // base resource name so that the individual route adders can suffix these
         // paths however they need to, as some do not have any parameters at all.
+		// 一旦我们构建了基本URI，我们将删除此源名称的参数持有者，
+		// 以便各个路由加法器可以根据需要为这些路径添加后缀，因为有些路径根本没有任何参数。
         $segments = explode('.', $resource);
 
         $uri = $this->getNestedResourceUri($segments);
@@ -343,6 +349,7 @@ class ResourceRegistrar
         // We will spin through the segments and create a place-holder for each of the
         // resource segments, as well as the resource itself. Then we should get an
         // entire string for the resource URI that contains all nested resources.
+		// 我们将遍历这些片段，并为每个资源片段以及资源本身创建一个占位符。
         return implode('/', array_map(function ($s) {
             return $s.'/{'.$this->getResourceWildcard($s).'}';
         }, $segments));
@@ -407,6 +414,7 @@ class ResourceRegistrar
         // If the names array has been provided to us we will check for an entry in the
         // array first. We will also check for the specific method within this array
         // so the names may be specified on a more "granular" level using methods.
+		// 如果名称数组已提供给我们，我们将首先检查数组中的条目。
         if (isset($options['names'])) {
             if (is_string($options['names'])) {
                 $name = $options['names'];
@@ -418,6 +426,7 @@ class ResourceRegistrar
         // If a global prefix has been assigned to all names for this resource, we will
         // grab that so we can prepend it onto the name when we create this name for
         // the resource action. Otherwise we'll just use an empty string for here.
+		// 如果为该资源的所有名称都分配了全局前缀，我们将获取该前缀，以便在为资源操作创建名称时将其添加到名称前面。
         $prefix = isset($options['as']) ? $options['as'].'.' : '';
 
         return trim(sprintf('%s%s.%s', $prefix, $name, $method), '.');

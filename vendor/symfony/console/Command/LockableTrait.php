@@ -63,6 +63,7 @@ trait LockableTrait
 
     /**
      * Releases the command lock if there is one.
+	 * 如果有命令锁,释放命令锁。
      */
     private function release()
     {

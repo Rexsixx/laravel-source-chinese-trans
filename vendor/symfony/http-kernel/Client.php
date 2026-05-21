@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpKernel，客户端
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -22,6 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Client simulates a browser and makes requests to an HttpKernel instance.
+ * 客户端模拟浏览器并向HttpKernel实例发出请求。
  *
  * @method Request  getRequest()  A Request instance
  * @method Response getResponse() A Response instance
@@ -47,6 +51,7 @@ class Client extends AbstractBrowser
 
     /**
      * Sets whether to catch exceptions when the kernel is handling a request.
+	 * 设置内核处理请求时是否捕获异常。
      *
      * @param bool $catchExceptions Whether to catch exceptions
      */
@@ -57,6 +62,7 @@ class Client extends AbstractBrowser
 
     /**
      * Makes a request.
+	 * 提出请求
      *
      * @return Response A Response instance
      */

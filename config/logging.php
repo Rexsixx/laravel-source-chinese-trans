@@ -1,4 +1,7 @@
 <?php
+/**
+ * 配置，logging
+ */
 
 use Monolog\Handler\StreamHandler;
 
@@ -6,12 +9,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Log Channel
+    | Default Log Channel	默认日志通道
     |--------------------------------------------------------------------------
     |
     | This option defines the default log channel that gets used when writing
     | messages to the logs. The name specified in this option should match
     | one of the channels defined in the "channels" configuration array.
+	| 此选项定义了在向日志中写入消息时所使用的默认日志通道。
     |
     */
 
@@ -19,12 +23,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Log Channels
+    | Log Channels	Log通道
     |--------------------------------------------------------------------------
     |
     | Here you may configure the log channels for your application. Out of
     | the box, Laravel uses the Monolog PHP logging library. This gives
     | you a variety of powerful log handlers / formatters to utilize.
+	| 在这里，您可以为您的应用程序配置日志通道。
     |
     | Available Drivers: "single", "daily", "slack", "syslog",
     |                    "errorlog", "monolog",

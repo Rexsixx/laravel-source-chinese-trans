@@ -1,15 +1,19 @@
 <?php
+/**
+ * 配置，queue
+ */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Queue Connection Name
+    | Default Queue Connection Name		默认队列连接名
     |--------------------------------------------------------------------------
     |
     | Laravel's queue API supports an assortment of back-ends via a single
     | API, giving you convenient access to each back-end using the same
     | syntax for every one. Here you may define a default connection.
+	| Laravel 的队列 API 通过单一 API 支持多种后端，让您能够使用相同的语法便捷地访问每一个后端。
     |
     */
 
@@ -17,12 +21,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Queue Connections
+    | Queue Connections		队列连接
     |--------------------------------------------------------------------------
     |
     | Here you may configure the connection information for each server that
     | is used by your application. A default configuration has been added
     | for each back-end shipped with Laravel. You are free to add more.
+	| 在这里，您可以为您的应用程序所使用的每台服务器配置连接信息。
     |
     | Drivers: "sync", "database", "beanstalkd", "sqs", "redis", "null"
     |
@@ -69,12 +74,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Failed Queue Jobs
+    | Failed Queue Jobs		失败的队列工作
     |--------------------------------------------------------------------------
     |
     | These options configure the behavior of failed queue job logging so you
     | can control which database and table are used to store the jobs that
     | have failed. You may change them to any database / table you wish.
+	| 这些选项用于配置失败队列作业日志的处理方式，使您能够控制使用哪些数据库和表来存储已失败的作业。
     |
     */
 

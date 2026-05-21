@@ -111,6 +111,7 @@ class Command extends SymfonyCommand
         // We will go ahead and set the name, description, and parameters on console
         // commands just to make things a little easier on the developer. This is
         // so they don't have to all be manually specified in the constructors.
+		// 我们将继续在控制台命令上设置名称、描述和参数,以便使开发人员更容易。
         if (isset($this->signature)) {
             $this->configureUsingFluentDefinition();
         } else {
@@ -120,6 +121,7 @@ class Command extends SymfonyCommand
         // Once we have constructed the command, we'll set the description and other
         // related properties of the command. If a signature wasn't used to build
         // the command we'll set the arguments and the options on this command.
+		// 一旦我们构建了命令,我们将设置命令的描述和其他相关属性。
         $this->setDescription($this->description);
 
         $this->setHidden($this->hidden);
@@ -159,6 +161,7 @@ class Command extends SymfonyCommand
         // We will loop through all of the arguments and options for the command and
         // set them all on the base command instance. This specifies what can get
         // passed into these commands as "parameters" to control the execution.
+		// 我们将通过所有的参数和选项来循环,并将它们设置为基本命令实例。
         foreach ($this->getArguments() as $arguments) {
             call_user_func_array([$this, 'addArgument'], $arguments);
         }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * NunoMaduro，Manifest，显性文件加载异常测试
+ */
 
 namespace PharIo\Manifest;
 

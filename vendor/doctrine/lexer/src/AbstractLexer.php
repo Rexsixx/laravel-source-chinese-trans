@@ -132,6 +132,7 @@ abstract class AbstractLexer
 
     /**
      * Resets the lexer position on the input to the given position.
+	 * 将输入上的词法分析器位置重置为给定位置
      *
      * @param int $position Position to place the lexical scanner.
      *
@@ -144,6 +145,7 @@ abstract class AbstractLexer
 
     /**
      * Retrieve the original lexer's input until a given position.
+	 * 检索原始词法分析器的输入，直到给定位置。
      *
      * @param int $position
      *
@@ -156,6 +158,7 @@ abstract class AbstractLexer
 
     /**
      * Checks whether a given token matches the current lookahead.
+	 * 检查给定的令牌是否与当前的前瞻匹配
      *
      * @param T $type
      *

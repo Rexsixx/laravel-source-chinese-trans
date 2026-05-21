@@ -42,6 +42,7 @@ abstract class AbstractAdapter implements AdapterInterface
 
     /**
      * Get the path prefix.
+	 * 获取路径前缀
      *
      * @return string|null path prefix or null if pathPrefix is empty
      */
@@ -52,6 +53,7 @@ abstract class AbstractAdapter implements AdapterInterface
 
     /**
      * Prefix a path.
+	 * 前缀一条路径
      *
      * @param string $path
      *
@@ -64,6 +66,7 @@ abstract class AbstractAdapter implements AdapterInterface
 
     /**
      * Remove a path prefix.
+	 * 删除路径前缀
      *
      * @param string $path
      *

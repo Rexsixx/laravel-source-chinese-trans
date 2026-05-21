@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，环境，控制台
+ */
+
 /*
  * This file is part of sebastian/environment.
  *

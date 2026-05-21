@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，处理程序，抽象处理器
+ * Monolog，处理程序，抽象处理处理程序
  */
 
 /*
@@ -47,6 +47,7 @@ abstract class AbstractProcessingHandler extends AbstractHandler
 
     /**
      * Writes the record down to the log of the implementing handler
+	 * 将记录写入实现处理程序的日志
      *
      * @param  array $record
      * @return void
@@ -55,6 +56,7 @@ abstract class AbstractProcessingHandler extends AbstractHandler
 
     /**
      * Processes a record.
+	 * 处理记录
      *
      * @param  array $record
      * @return array

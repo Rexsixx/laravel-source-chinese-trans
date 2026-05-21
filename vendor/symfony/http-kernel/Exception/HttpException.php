@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpKernel，异常，Http 异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpKernel\Exception;
 
 /**
  * HttpException.
+ * Http异常
  *
  * @author Kris Wallsmith <kris@symfony.com>
  */
@@ -41,6 +45,7 @@ class HttpException extends \RuntimeException implements HttpExceptionInterface
 
     /**
      * Set response headers.
+	 * 设置响应报头
      *
      * @param array $headers Response headers
      */

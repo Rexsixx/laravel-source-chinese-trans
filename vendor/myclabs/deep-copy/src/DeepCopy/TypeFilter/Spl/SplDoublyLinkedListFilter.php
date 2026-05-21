@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，类型过滤器，Spl，Spl双链列表过滤器
+ */
 
 namespace DeepCopy\TypeFilter\Spl;
 

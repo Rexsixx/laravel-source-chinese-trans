@@ -92,6 +92,7 @@ class Local extends AbstractAdapter
 
     /**
      * Ensure the root directory exists.
+	 * 确保根目录存在
      *
      * @param string $root root directory path
      *

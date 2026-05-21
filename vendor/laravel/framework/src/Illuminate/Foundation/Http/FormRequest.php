@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，表格请求
+ * Illuminate，基础，Http，表单请求
  */
 
 namespace Illuminate\Foundation\Http;

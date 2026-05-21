@@ -69,6 +69,7 @@ class Writer implements WriterContract
 
     /**
      * Declares whether or not the trace should appear.
+	 * 说明是否应该出现跟踪
      *
      * @var bool
      */
@@ -76,6 +77,7 @@ class Writer implements WriterContract
 
     /**
      * Declares whether or not the editor should appear.
+	 * 声明编辑器是否应该出现
      *
      * @var bool
      */
@@ -83,6 +85,7 @@ class Writer implements WriterContract
 
     /**
      * Creates an instance of the writer.
+	 * 创建一个作者的实例
      *
      * @param \Symfony\Component\Console\Output\OutputInterface|null $output
      * @param \NunoMaduro\Collision\Contracts\ArgumentFormatter|null $argumentFormatter
@@ -169,6 +172,7 @@ class Writer implements WriterContract
 
     /**
      * Returns pertinent frames.
+	 * 返回相关帧
      *
      * @param  \Whoops\Exception\Inspector $inspector
      *
@@ -193,6 +197,7 @@ class Writer implements WriterContract
 
     /**
      * Renders the title of the exception.
+	 * 呈现异常的标题
      *
      * @param \Whoops\Exception\Inspector $inspector
      *
@@ -230,6 +235,7 @@ class Writer implements WriterContract
 
     /**
      * Renders the trace of the exception.
+	 * 呈现异常的跟踪
      *
      * @param  array $frames
      *
@@ -261,6 +267,7 @@ class Writer implements WriterContract
 
     /**
      * Renders an message into the console.
+	 * 将消息呈现到控制台
      *
      * @param  string $message
      * @param  bool $break

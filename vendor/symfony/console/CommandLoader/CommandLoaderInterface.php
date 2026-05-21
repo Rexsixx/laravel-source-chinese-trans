@@ -36,6 +36,7 @@ interface CommandLoaderInterface
 
     /**
      * Checks if a command exists.
+	 * 检查是否存在命令
      *
      * @param string $name
      *

@@ -9,6 +9,7 @@ interface Result
 {
     /**
      * Is validation result valid?
+	 * 原因
      */
     public function isValid() : bool;
 

@@ -1,9 +1,13 @@
 <?php
+/**
+ * Carbon，可序列化的
+ */
 
 interface JsonSerializable
 {
     /**
      * Specify data which should be serialized to JSON.
+	 * 指定应该序列化到JSON的数据
      *
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
      *

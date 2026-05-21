@@ -43,6 +43,7 @@ class ExampleFinder
 
     /**
      * Attempts to find the example contents for the given descriptor.
+	 * 试图查找给定描述符的示例内容
      */
     public function find(Example $example): string
     {

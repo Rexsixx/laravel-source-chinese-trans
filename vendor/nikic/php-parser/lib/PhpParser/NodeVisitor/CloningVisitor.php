@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点访问者，克隆访问者
+ */
+
 namespace PhpParser\NodeVisitor;
 
 use PhpParser\Node;
@@ -7,6 +11,7 @@ use PhpParser\NodeVisitorAbstract;
 
 /**
  * Visitor cloning all nodes and linking to the original nodes using an attribute.
+ * 访问者克隆所有节点,并使用属性链接到原始节点。
  *
  * This visitor is required to perform format-preserving pretty prints.
  */

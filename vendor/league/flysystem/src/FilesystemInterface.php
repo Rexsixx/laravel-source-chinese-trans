@@ -92,6 +92,7 @@ interface FilesystemInterface
 
     /**
      * Get a file's timestamp.
+	 * 获取文件的时间戳
      *
      * @param string $path The path to the file.
      *
@@ -103,6 +104,7 @@ interface FilesystemInterface
 
     /**
      * Get a file's visibility.
+	 * 获取文件的可见性
      *
      * @param string $path The path to the file.
      *
@@ -114,6 +116,7 @@ interface FilesystemInterface
 
     /**
      * Write a new file.
+	 * 编写一个新文件
      *
      * @param string $path     The path of the new file.
      * @param string $contents The file contents.
@@ -127,6 +130,7 @@ interface FilesystemInterface
 
     /**
      * Write a new file using a stream.
+	 * 使用流编写新文件
      *
      * @param string   $path     The path of the new file.
      * @param resource $resource The file handle.
@@ -141,6 +145,7 @@ interface FilesystemInterface
 
     /**
      * Update an existing file.
+	 * 更新现有文件
      *
      * @param string $path     The path of the existing file.
      * @param string $contents The file contents.

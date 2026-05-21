@@ -76,6 +76,7 @@ class Description
 
     /**
      * Returns the body template.
+	 * 返回body模板
      */
     public function getBodyTemplate(): string
     {

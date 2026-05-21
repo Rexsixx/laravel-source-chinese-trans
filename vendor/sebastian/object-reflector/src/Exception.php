@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，ObjectReflector，异常
+ */
+
 /*
  * This file is part of object-reflector.
  *

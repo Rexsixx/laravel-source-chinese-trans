@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，发生器，时间发生器工厂
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE

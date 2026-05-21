@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpFoundation，响应
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ class_exists(ResponseHeaderBag::class);
 
 /**
  * Response represents an HTTP response.
+ * Response表示HTTP响应。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -228,6 +232,7 @@ class Response
 
     /**
      * Returns the Response as an HTTP string.
+	 * 以HTTP字符串的形式返回响应。
      *
      * The string representation of the Response is the same as the
      * one that will be sent to the client only if the prepare() method

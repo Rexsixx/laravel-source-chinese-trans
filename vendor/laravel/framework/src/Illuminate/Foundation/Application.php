@@ -617,6 +617,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         // If the given "provider" is a string, we will resolve it, passing in the
         // application instance automatically for the developer. This is simply
         // a more convenient way of specifying your service provider classes.
+		// 如果给定的“提供者”是一个字符串，我们将对其进行解析，并自动将应用程序实例传递给开发人员。
         if (is_string($provider)) {
             $provider = $this->resolveProvider($provider);
         }
@@ -628,6 +629,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         // If there are bindings / singletons set as properties on the provider we
         // will spin through them and register them with the application, which
         // serves as a convenience layer while registering a lot of bindings.
+		// 如果在提供者中设置了绑定/单例作为属性，我们将遍历这些设置并将其与应用程序进行关联，
+		// 这样在注册大量绑定时就提供了一个便利的中间层。
         if (property_exists($provider, 'bindings')) {
             foreach ($provider->bindings as $key => $value) {
                 $this->bind($key, $value);
@@ -645,6 +648,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         // If the application has already booted, we will call this boot method on
         // the provider class so it has an opportunity to do its boot logic and
         // will be ready for any usage by this developer's application logic.
+		// 如果应用程序已经启动，我们将在这个提供者类上调用此启动方法，
+		// 以便它有机会执行其启动逻辑，并为该开发者的应用程序逻辑做好准备，使其能够随时被使用。
         if ($this->booted) {
             $this->bootProvider($provider);
         }
@@ -717,6 +722,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         // We will simply spin through each of the deferred providers and register each
         // one and boot them if the application has booted. This should make each of
         // the remaining services available to this application for immediate use.
+		// 我们将逐一检查每个延迟启动的提供者，并为其注册信息，然后在应用程序启动时启动它们。
         foreach ($this->deferredServices as $service => $provider) {
             $this->loadDeferredProvider($service);
         }
@@ -742,6 +748,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         // If the service provider has not already been loaded and registered we can
         // register it with the application and remove the service from this list
         // of deferred services, since it will already be loaded on subsequent.
+		// 如果服务提供者尚未被加载并注册，我们可以将其与应用程序进行关联，
+		// 并从这列待处理服务中移除该服务，因为它会在后续步骤中被加载。
         if (! isset($this->loadedProviders[$provider])) {
             $this->registerDeferredProvider($provider, $service);
         }
@@ -760,6 +768,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         // Once the provider that provides the deferred service has been registered we
         // will remove it from our local list of the deferred services with related
         // providers so that this container does not try to resolve it out again.
+		// 一旦提供了延迟服务的供应商已完成注册，我们将将其从我们本地的延迟服务及相关供应商列表中移除，以防止该容器再次尝试解析该服务。
         if ($service) {
             unset($this->deferredServices[$service]);
         }
@@ -834,6 +843,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         // Once the application has booted we will also fire some "booted" callbacks
         // for any listeners that need to do work after this initial booting gets
         // finished. This is useful when ordering the boot-up processes we run.
+		// 一旦应用程序启动完成，我们还会为任何需要在初始启动完成后继续执行工作的监听者触发一些“启动完成”回调。
         $this->fireAppCallbacks($this->bootingCallbacks);
 
         array_walk($this->serviceProviders, function ($p) {

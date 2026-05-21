@@ -24,6 +24,7 @@ use Ramsey\Uuid\DegradedUuid;
 
 /**
  * DegradedUuidBuilder builds instances of DegradedUuid
+ * DegradedUuidBuilder构建DegradedUuid实例
  */
 class DegradedUuidBuilder implements UuidBuilderInterface
 {
@@ -34,6 +35,7 @@ class DegradedUuidBuilder implements UuidBuilderInterface
 
     /**
      * Constructs the DegradedUuidBuilder
+	 * 构建DegradedUuidBuilder
      *
      * @param NumberConverterInterface $converter The number converter to use when constructing the DegradedUuid
      */

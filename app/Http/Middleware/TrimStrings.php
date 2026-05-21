@@ -11,6 +11,7 @@ class TrimStrings extends Middleware
 {
     /**
      * The names of the attributes that should not be trimmed.
+	 * 不应该修剪的属性的名称
      *
      * @var array
      */

@@ -54,6 +54,7 @@ class BoundMethod
         // We will assume an @ sign is used to delimit the class name from the method
         // name. We will split on this @ sign and then build a callable array that
         // we can pass right back into the "call" method for dependency binding.
+		// 我们将使用@符号来分隔方法名称中的类名。
         $method = count($segments) == 2
                         ? $segments[1] : $defaultMethod;
 
@@ -84,6 +85,7 @@ class BoundMethod
         // Here we need to turn the array callable into a Class@method string we can use to
         // examine the container and see if there are any method bindings for this given
         // method. If there are, we can call this method binding callback immediately.
+		// 在这里,我们需要将数组callable转换为一个类@ method字符串,我们可以使用它来检查容器,并查看该给定方法是否有任何方法绑定。
         $method = static::normalizeMethod($callback);
 
         if ($container->hasMethodBinding($method)) {

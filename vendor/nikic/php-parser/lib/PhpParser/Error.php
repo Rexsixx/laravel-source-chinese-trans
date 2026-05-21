@@ -51,6 +51,7 @@ class Error extends \RuntimeException
 
     /**
      * Gets the line the error ends in.
+	 * 得到错误结束的线
      *
      * @return int Error end line
      */
@@ -60,6 +61,7 @@ class Error extends \RuntimeException
 
     /**
      * Gets the attributes of the node/token the error occurred at.
+	 * 获取错误发生的节点/令牌的属性
      *
      * @return array
      */

@@ -94,6 +94,8 @@ class RouteCollection implements Countable, IteratorAggregate
         // If the route has a name, we will add it to the name look-up table so that we
         // will quickly be able to find any route associate with a name and not have
         // to iterate through every route every time we need to perform a look-up.
+		// 如果该路由有名称，我们将将其添加到名称查找表中，这样我们就能快速找到与某个名称相关的任何路由，
+		// 而无需每次进行查找时都逐一检查所有路由。
         $action = $route->getAction();
 
         if (isset($action['as'])) {
@@ -103,6 +105,7 @@ class RouteCollection implements Countable, IteratorAggregate
         // When the route is routing to a controller we will also store the action that
         // is used by the route. This will let us reverse route to controllers while
         // processing a request and easily generate URLs to the given controllers.
+		// 当路由指向控制器时，我们还会存储该路由所使用的操作。
         if (isset($action['controller'])) {
             $this->addToActionList($action, $route);
         }
@@ -126,6 +129,7 @@ class RouteCollection implements Countable, IteratorAggregate
 	 * 刷新名称查找表。
      *
      * This is done in case any names are fluently defined or if routes are overwritten.
+	 * 这样做是为了防止任何名称被流利地定义或路由被覆盖。
      *
      * @return void
      */
@@ -145,6 +149,7 @@ class RouteCollection implements Countable, IteratorAggregate
 	 * 刷新动作查找表。
      *
      * This is done in case any actions are overwritten with new controllers.
+	 * 这是在任何操作被新控制器覆盖的情况下完成的。
      *
      * @return void
      */
@@ -175,6 +180,7 @@ class RouteCollection implements Countable, IteratorAggregate
         // First, we will see if we can find a matching route for this current request
         // method. If we can, great, we can just return it so that it can be called
         // by the consumer. Otherwise we will check for routes with another verb.
+		// 首先，我们要看看能否为当前的请求方法找到一个匹配的路径。
         $route = $this->matchAgainstRoutes($routes, $request);
 
         if (! is_null($route)) {
@@ -184,6 +190,7 @@ class RouteCollection implements Countable, IteratorAggregate
         // If no route was found we will now check if a matching route is specified by
         // another HTTP verb. If it is we will need to throw a MethodNotAllowed and
         // inform the user agent of which HTTP verb it should use for this route.
+		// 如果未找到任何匹配的路由，那么我们现在将检查是否由其他 HTTP 动词指定了一个相匹配的路由。
         $others = $this->checkForAlternateVerbs($request);
 
         if (count($others) > 0) {
@@ -227,6 +234,7 @@ class RouteCollection implements Countable, IteratorAggregate
         // Here we will spin through all verbs except for the current request verb and
         // check to see if any routes respond to them. If they do, we will return a
         // proper error response with the correct headers on the response string.
+		// 接下来，我们将遍历所有动词（除了当前请求所使用的动词之外），并检查是否有任何路由能够响应这些动词。
         $others = [];
 
         foreach ($methods as $method) {

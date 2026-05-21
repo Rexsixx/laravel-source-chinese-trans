@@ -55,6 +55,7 @@ class NodeTraverser implements NodeTraverserInterface
 
     /**
      * Adds a visitor.
+	 * 添加一个访问者
      *
      * @param NodeVisitor $visitor Visitor to add
      */

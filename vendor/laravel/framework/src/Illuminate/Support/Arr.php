@@ -257,6 +257,7 @@ class Arr
 
         foreach ($keys as $key) {
             // if the exact key exists in the top-level, remove it
+			// 如果顶层中存在确切的键，则删除它。
             if (static::exists($array, $key)) {
                 unset($array[$key]);
 
@@ -368,6 +369,7 @@ class Arr
 	 * 确定数组是否关联。
      *
      * An array is "associative" if it doesn't have sequential numerical keys beginning with zero.
+	 * 如果数组没有以零开头的顺序数字键，则该数组是“关联的”。
      *
      * @param  array  $array
      * @return bool
@@ -413,6 +415,7 @@ class Arr
             // If the key is "null", we will just append the value to the array and keep
             // looping. Otherwise we will key the array using the value of the key we
             // received from the developer. Then we'll return the final array form.
+			// 如果键值为“null”，我们将把该值附加到数组中并保留循环。
             if (is_null($key)) {
                 $results[] = $itemValue;
             } else {
@@ -530,6 +533,7 @@ class Arr
 	 * 使用“点”符号将一个数组项设置为给定值。
      *
      * If no key is given to the method, the entire array will be replaced.
+	 * 如果没有给该方法提供关键,则将替换整个数组。
      *
      * @param  array   $array
      * @param  string  $key
@@ -550,6 +554,8 @@ class Arr
             // If the key doesn't exist at this depth, we will just create an empty array
             // to hold the next value, allowing us to create the arrays to hold final
             // values at the correct depth. Then we'll keep digging into the array.
+			// 如果在当前深度找不到该键，我们就只需创建一个空数组来存放下一个值，
+			// 这样就能在正确的深度创建用于存放最终值的数组了。
             if (! isset($array[$key]) || ! is_array($array[$key])) {
                 $array[$key] = [];
             }

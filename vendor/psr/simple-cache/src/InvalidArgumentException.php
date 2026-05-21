@@ -1,5 +1,5 @@
 <?php
-**
+/**
  * SebastianBergmann，SimpleCache，无效参数异常
  */
 

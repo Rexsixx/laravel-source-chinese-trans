@@ -108,6 +108,7 @@ final class BuilderHelpers
 
     /**
      * Normalizes a name: Converts string names to Name nodes.
+	 * 规范名称:将字符串名称转换为名称节点
      *
      * @param Name|string $name The name to normalize
      *
@@ -139,6 +140,7 @@ final class BuilderHelpers
 
     /**
      * Normalizes a name: Converts string names to Name nodes, while also allowing expressions.
+	 * 规范名称:将字符串名称转换为名称节点,同时允许表达式。
      *
      * @param Expr|Name|string $name The name to normalize
      *

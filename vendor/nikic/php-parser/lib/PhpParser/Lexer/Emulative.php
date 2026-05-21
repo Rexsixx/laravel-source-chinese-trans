@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，Lexer，有竞争心的
+ * PhpParser，Lexer，竞争性的
  */
 
 namespace PhpParser\Lexer;

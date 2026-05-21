@@ -94,6 +94,7 @@ class CarbonInterval extends DateInterval
 
     /**
      * Determine if the interval was created via DateTime:diff() or not.
+	 * 确定间隔是通过DateTime创建的:diff()或不是
      *
      * @param DateInterval $interval
      *

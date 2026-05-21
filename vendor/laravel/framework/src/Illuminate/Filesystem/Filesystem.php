@@ -514,6 +514,7 @@ class Filesystem
         // If the destination directory does not actually exist, we will go ahead and
         // create it recursively, which just gets the destination prepared to copy
         // the files over. Once we make the directory we'll proceed the copying.
+		// 如果目标目录实际上并不存在，我们将继续递归地创建它，这样就能提前准备好目标目录以便将文件复制过去。
         if (! $this->isDirectory($destination)) {
             $this->makeDirectory($destination, 0777, true);
         }
@@ -524,6 +525,7 @@ class Filesystem
             // As we spin through items, we will check to see if the current file is actually
             // a directory or a file. When it is actually a directory we will need to call
             // back into this function recursively to keep copying these nested folders.
+			// 当我们在项目中旋转时,我们将检查当前文件是否实际上是一个目录或文件。
             $target = $destination.'/'.$item->getBasename();
 
             if ($item->isDir()) {
@@ -537,6 +539,7 @@ class Filesystem
             // If the current items is just a regular file, we will just copy this to the new
             // location and keep looping. If for some reason the copy fails we'll bail out
             // and return false, so the developer is aware that the copy process failed.
+			// 如果当前项目只是一个常规文件,我们将把它复制到新的位置并保持循环。
             else {
                 if (! $this->copy($item->getPathname(), $target)) {
                     return false;
@@ -552,6 +555,7 @@ class Filesystem
 	 * 递归删除目录
      *
      * The directory itself may be optionally preserved.
+	 * 目录本身可以选择保存。
      *
      * @param  string  $directory
      * @param  bool    $preserve
@@ -569,6 +573,8 @@ class Filesystem
             // If the item is a directory, we can just recurse into the function and
             // delete that sub-directory otherwise we'll just delete the file and
             // keep iterating through each file until the directory is cleaned.
+			// 如果该项目是一个目录,我们可以将其递归到函数中,并删除该子目录,
+			// 否则我们将删除该文件,并继续遍历每个文件,直到清除目录。
             if ($item->isDir() && ! $item->isLink()) {
                 $this->deleteDirectory($item->getPathname());
             }
@@ -576,6 +582,8 @@ class Filesystem
             // If the item is just a file, we can go ahead and delete it since we're
             // just looping through and waxing all of the files in this directory
             // and calling directories recursively, so we delete the real path.
+			// 如果这个项目只是一个文件,我们可以继续删除它,
+			// 因为我们只是在这个目录中循环通过并waxing所有的文件,然后递归地调用目录,因此我们删除了真正的路径。
             else {
                 $this->delete($item->getPathname());
             }

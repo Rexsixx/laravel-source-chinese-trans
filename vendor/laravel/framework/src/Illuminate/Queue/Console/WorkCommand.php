@@ -79,6 +79,8 @@ class WorkCommand extends Command
         // We'll listen to the processed and failed events so we can write information
         // to the console as jobs are processed, which will let the developer watch
         // which jobs are coming through a queue and be informed on its progress.
+		// 我们将收听经过处理和失败的事件,这样我们可以在处理工作时将信息写入控制台,
+		// 这将让开发人员监视哪些工作正在通过队列,并将其进展告知。
         $this->listenForEvents();
 
         $connection = $this->argument('connection')
@@ -87,6 +89,7 @@ class WorkCommand extends Command
         // We need to get the right queue for the connection which is set in the queue
         // configuration file for the application. We will pull it based on the set
         // connection being run for the queue operation currently being executed.
+		// 我们需要为应用程序的队列配置文件设置连接的正确队列。
         $queue = $this->getQueue($connection);
 
         $this->runWorker(

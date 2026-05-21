@@ -180,6 +180,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
         // If the message exists in the container, we will transform it and return
         // the message. Otherwise, we'll check if the key is implicit & collect
         // all the messages that match a given key and output it as an array.
+		// 如果消息存在于容器中，我们将对其进行转换并返回消息。
         if (array_key_exists($key, $this->messages)) {
             return $this->transform(
                 $this->messages[$key], $this->checkFormat($format), $key

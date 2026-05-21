@@ -47,11 +47,13 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Uncommon events
+	 * 不寻常事件
      */
     const NOTICE = 250;
 
     /**
      * Exceptional occurrences that are not errors
+	 * 异常的事件并不是错误
      *
      * Examples: Use of deprecated APIs, poor use of an API,
      * undesirable things that are not necessarily wrong.

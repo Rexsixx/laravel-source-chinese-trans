@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，中间件，对Redis的节流请求
+ * Illuminate，路由，中间件，对 Redis的节流请求
  */
 
 namespace Illuminate\Routing\Middleware;

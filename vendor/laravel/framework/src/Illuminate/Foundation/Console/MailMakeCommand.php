@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，邮件生成命令
+ * Illuminate，基础，控制台，邮件编译命令
  */
 
 namespace Illuminate\Foundation\Console;

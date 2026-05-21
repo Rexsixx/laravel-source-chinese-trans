@@ -41,6 +41,7 @@ class ViewServiceProvider extends ServiceProvider
             // Next we need to grab the engine resolver instance that will be used by the
             // environment. The resolver will be used by an environment to get each of
             // the various engine implementations such as plain PHP or Blade engine.
+			// 接下来，我们需要获取引擎解析器实例。
             $resolver = $app['view.engine.resolver'];
 
             $finder = $app['view.finder'];

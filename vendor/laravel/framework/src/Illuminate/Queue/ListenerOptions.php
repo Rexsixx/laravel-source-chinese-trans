@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，侦听器的选项
+ * Illuminate，队列，监听器的选项
  */
 
 namespace Illuminate\Queue;

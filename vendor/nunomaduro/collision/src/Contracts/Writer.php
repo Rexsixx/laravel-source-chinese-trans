@@ -28,6 +28,7 @@ interface Writer
     /**
      * Ignores traces where the file string matches one
      * of the provided regex expressions.
+	 * 忽略文件字符串匹配提供的regex表达式的跟踪
      *
      * @param  string[] $ignore The regex expressions.
      *
@@ -37,6 +38,7 @@ interface Writer
 
     /**
      * Declares whether or not the Writer should show the trace.
+	 * 声明作者是否应该显示跟踪
      *
      * @param  bool $show
      *
@@ -46,6 +48,7 @@ interface Writer
 
     /**
      * Declares whether or not the Writer should show the editor.
+	 * 声明作者是否应该向编辑显示
      *
      * @param  bool $show
      *
@@ -55,6 +58,7 @@ interface Writer
 
     /**
      * Writes the details of the exception on the console.
+	 * 在控制台写入异常的详细信息
      *
      * @param \Whoops\Exception\Inspector $inspector
      */
@@ -62,6 +66,7 @@ interface Writer
 
     /**
      * Sets the output.
+	 * 设置输出
      *
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
      *
@@ -71,6 +76,7 @@ interface Writer
 
     /**
      * Gets the output.
+	 * 得到输出
      *
      * @return \Symfony\Component\Console\Output\OutputInterface
      */

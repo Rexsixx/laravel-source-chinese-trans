@@ -62,6 +62,7 @@ trait HasEvents
         // When registering a model observer, we will spin through the possible events
         // and determine if this observer has that method. If it does, we will hook
         // it into the model's event system, making it convenient to watch these.
+		// 当注册模型观察者时,我们将在可能的事件中旋转,并确定这个观察者是否有该方法。
         foreach ($this->getObservableEvents() as $event) {
             if (method_exists($class, $event)) {
                 static::registerModelEvent($event, $className.'@'.$event);
@@ -163,6 +164,7 @@ trait HasEvents
         // First, we will get the proper method to call on the event dispatcher, and then we
         // will attempt to fire a custom, object based event for the given event. If that
         // returns a result we can return that result, or we'll call the string events.
+		// 首先,我们将得到正确的方法调用事件调遣器,然后我们将尝试通过给定的事件来触发一个自定义的对象。
         $method = $halt ? 'until' : 'fire';
 
         $result = $this->filterModelEventResults(

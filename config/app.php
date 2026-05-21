@@ -7,12 +7,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Name
+    | Application Name	应用名称
     |--------------------------------------------------------------------------
     |
     | This value is the name of your application. This value is used when the
     | framework needs to place the application's name in a notification or
     | any other location as required by the application or its packages.
+	| 该值是应用程序的名称。
     |
     */
 
@@ -20,12 +21,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Environment
+    | Application Environment	应用环境
     |--------------------------------------------------------------------------
     |
     | This value determines the "environment" your application is currently
     | running in. This may determine how you prefer to configure various
     | services your application utilizes. Set this in your ".env" file.
+	| 此值决定了您的应用程序当前所处的“环境”。
     |
     */
 
@@ -33,12 +35,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Debug Mode
+    | Application Debug Mode	应用程序调试模式
     |--------------------------------------------------------------------------
     |
     | When your application is in debug mode, detailed error messages with
     | stack traces will be shown on every error that occurs within your
     | application. If disabled, a simple generic error page is shown.
+	| 当您的应用程序处于调试模式时，每当在应用程序中出现错误时，都会显示详细的错误信息以及堆栈跟踪信息。
     |
     */
 
@@ -46,12 +49,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application URL
+    | Application URL	应用网址
     |--------------------------------------------------------------------------
     |
     | This URL is used by the console to properly generate URLs when using
     | the Artisan command line tool. You should set this to the root of
     | your application so that it is used when running Artisan tasks.
+	| 此 URL 由控制台在使用 Artisan 命令行工具时用于正确生成网址。
     |
     */
 
@@ -59,12 +63,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Timezone
+    | Application Timezone	应用时区
     |--------------------------------------------------------------------------
     |
     | Here you may specify the default timezone for your application, which
     | will be used by the PHP date and date-time functions. We have gone
     | ahead and set this to a sensible default for you out of the box.
+	| 在此您可以为您的应用程序指定默认时区，该时区将被 PHP 的日期和日期时间函数所使用。
     |
     */
 
@@ -72,12 +77,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Locale Configuration
+    | Application Locale Configuration	应用区域配置
     |--------------------------------------------------------------------------
     |
     | The application locale determines the default locale that will be used
     | by the translation service provider. You are free to set this value
     | to any of the locales which will be supported by the application.
+	| 应用程序的区域设置决定了翻译服务提供商所使用的默认区域设置。
     |
     */
 
@@ -85,12 +91,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Fallback Locale
+    | Application Fallback Locale	申请回选地区
     |--------------------------------------------------------------------------
     |
     | The fallback locale determines the locale to use when the current one
     | is not available. You may change the value to correspond to any of
     | the language folders that are provided through your application.
+	| 备用语言环境决定了在当前语言环境不可用时应使用的语言环境。
     |
     */
 
@@ -98,12 +105,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Encryption Key
+    | Encryption Key	加密密钥
     |--------------------------------------------------------------------------
     |
     | This key is used by the Illuminate encrypter service and should be set
     | to a random, 32 character string, otherwise these encrypted strings
     | will not be safe. Please do this before deploying an application!
+	| 此密钥由 Illuminate 加密服务使用，应设置为一个随机生成的 32 位字符串，否则这些加密字符串将无法保证安全。
     |
     */
 
@@ -113,12 +121,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Autoloaded Service Providers
+    | Autoloaded Service Providers	自动服务提供商
     |--------------------------------------------------------------------------
     |
     | The service providers listed here will be automatically loaded on the
     | request to your application. Feel free to add your own services to
     | this array to grant expanded functionality to your applications.
+	| 这里列出的服务提供商将在您提交申请时自动加载到您的应用程序中。
     |
     */
 
@@ -167,12 +176,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Class Aliases
+    | Class Aliases	类别名
     |--------------------------------------------------------------------------
     |
     | This array of class aliases will be registered when this application
     | is started. However, feel free to register as many as you wish as
     | the aliases are "lazy" loaded so they don't hinder performance.
+	| 这些类别别名列表将在应用程序启动时进行注册。
     |
     */
 

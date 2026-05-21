@@ -1,6 +1,6 @@
 <?php
 /**
- * App，Http，中间件，验证Csrf令牌
+ * App，Http，中间件，验证 Csrf令牌
  */
 
 namespace App\Http\Middleware;
@@ -11,6 +11,7 @@ class VerifyCsrfToken extends Middleware
 {
     /**
      * The URIs that should be excluded from CSRF verification.
+	 * 应该从CSRF验证中排除的uri
      *
      * @var array
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，格式器，文件格式格式化器
+ * Monolog，格式器，Fluentd 格式化器
  */
 
 /*

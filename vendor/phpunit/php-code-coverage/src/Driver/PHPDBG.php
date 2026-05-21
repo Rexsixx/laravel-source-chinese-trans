@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，CodeCoverage，驱动程序，Driver
+ * SebastianBergmann，CodeCoverage，驱动程序，PHPDBG
  */
 
 /*

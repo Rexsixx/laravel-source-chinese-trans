@@ -147,6 +147,7 @@ class CallQueuedHandler
 	 * 在作业实例上调用失败的方法。
      *
      * The exception that caused the failure will be passed.
+	 * 导致失败的异常将被传递。
      *
      * @param  array  $data
      * @param  \Exception  $e

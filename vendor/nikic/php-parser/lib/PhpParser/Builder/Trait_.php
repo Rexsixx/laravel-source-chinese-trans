@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，构建器，Trait_
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser;
@@ -19,6 +23,7 @@ class Trait_ extends Declaration
 
     /**
      * Creates an interface builder.
+	 * 创建一个接口构建器
      *
      * @param string $name Name of the interface
      */
@@ -28,6 +33,7 @@ class Trait_ extends Declaration
 
     /**
      * Adds a statement.
+	 * 添加语句
      *
      * @param Stmt|PhpParser\Builder $stmt The statement to add
      *

@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，Comparator，比较器
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -13,6 +17,7 @@ use SebastianBergmann\Exporter\Exporter;
 
 /**
  * Abstract base class for comparators which compare values for equality.
+ * 比较器的抽象基类,比较了相等的值。
  */
 abstract class Comparator
 {

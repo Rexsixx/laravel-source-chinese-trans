@@ -128,11 +128,15 @@ class MySqlGrammar extends Grammar
         // Each one of the columns in the update statements needs to be wrapped in the
         // keyword identifiers, also a place-holder needs to be created for each of
         // the values in the list of bindings so we can make the sets statements.
+		// 更新语句中的每一个列都需要被包在关键字标识中,
+		// 也需要为绑定列表中的每个值创建一个place-holder,这样我们就可以进行集合语句。
         $columns = $this->compileUpdateColumns($values);
 
         // If the query has any "join" clauses, we will setup the joins on the builder
         // and compile them so we can attach them to this update, as update queries
         // can get join statements to attach to other tables when they're needed.
+		// 如果查询有任何“join”子句,我们将在构建器上设置连接,并编译它们,
+		// 这样我们就可以将它们连接到这个更新,因为更新查询可以在需要时连接到其他表的连接语句。
         $joins = '';
 
         if (isset($query->joins)) {

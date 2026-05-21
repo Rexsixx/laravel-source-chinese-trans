@@ -1,6 +1,6 @@
 <?php
 /**
- * App，条款，处理器
+ * App，条款，处理程序
  */
 
 namespace App\Exceptions;
@@ -22,6 +22,7 @@ class Handler extends ExceptionHandler
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
+	 * 不会为验证异常而闪现的输入列表
      *
      * @var array
      */
@@ -32,6 +33,7 @@ class Handler extends ExceptionHandler
 
     /**
      * Report or log an exception.
+	 * 报告或记录异常
      *
      * @param  \Exception  $exception
      * @return void
@@ -43,6 +45,7 @@ class Handler extends ExceptionHandler
 
     /**
      * Render an exception into an HTTP response.
+	 * 将异常呈现到HTTP响应中
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $exception

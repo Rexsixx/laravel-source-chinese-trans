@@ -63,6 +63,7 @@ class Parameter
 
     /**
      * Get the string representation for the paramater type.
+	 * 获取paramater表的字符串表示
      *
      * @return string|null
      */
@@ -73,6 +74,7 @@ class Parameter
 
     /**
      * Get the string representation for the paramater type.
+	 * 获取paramater表的字符串表示
      *
      * @return string
      *

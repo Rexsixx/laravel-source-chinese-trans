@@ -1,15 +1,19 @@
 <?php
+/**
+ * 数据库，用户工厂
+ */
 
 use Faker\Generator as Faker;
 
 /*
 |--------------------------------------------------------------------------
-| Model Factories
+| Model Factories	模型工厂
 |--------------------------------------------------------------------------
 |
 | This directory should contain each of the model factory definitions for
 | your application. Factories provide a convenient way to generate new
 | model instances for testing / seeding your application's database.
+| 此目录应包含您应用程序中所有的模型工厂定义。
 |
 */
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，翻译，间隔
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
 
 /**
  * Tests if a given number belongs to a given math interval.
+ * 测试如果给定的数字属于给定的数学间隔。
  *
  * An interval can represent a finite set of numbers:
  *
@@ -40,6 +44,7 @@ class Interval
 {
     /**
      * Tests if the given number is in the math interval.
+	 * 测试如果给定的数字在数学区间
      *
      * @param int    $number   A number
      * @param string $interval An interval

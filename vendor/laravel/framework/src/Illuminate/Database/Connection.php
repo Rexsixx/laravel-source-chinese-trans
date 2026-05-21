@@ -188,6 +188,7 @@ class Connection implements ConnectionInterface
         // First we will setup the default properties. We keep track of the DB
         // name we are connected to since it is needed when some reflective
         // type commands are run such as checking whether a table exists.
+		// 首先,我们将设置默认属性。我们跟踪DB名称,因为当一些反射型命令运行时,它是需要的,比如检查表是否存在。
         $this->database = $database;
 
         $this->tablePrefix = $tablePrefix;
@@ -197,6 +198,7 @@ class Connection implements ConnectionInterface
         // We need to initialize a query grammar and the query post processors
         // which are both very important parts of the database abstractions
         // so we initialize these to their default values while starting.
+		// 我们需要初始化一个查询语法和查询后处理器,这些处理器都是数据库抽象的重要部分,因此我们在开始时将它们初始化到默认值。
         $this->useDefaultQueryGrammar();
 
         $this->useDefaultPostProcessor();
@@ -356,6 +358,7 @@ class Connection implements ConnectionInterface
             // For select statements, we'll simply execute the query and return an array
             // of the database result set. Each element in the array will be a single
             // row from the database table, and will either be an array or objects.
+			// 对于select语句,我们将简单地执行查询并返回一个数据库结果集的数组。
             $statement = $this->prepared($this->getPdoForSelect($useReadPdo)
                               ->prepare($query));
 
@@ -386,6 +389,7 @@ class Connection implements ConnectionInterface
             // First we will create a statement for the query. Then, we will set the fetch
             // mode and prepare the bindings for the query. Once that's done we will be
             // ready to execute the query against the database and return the cursor.
+			// 首先,我们将为查询创建一个语句。然后,我们将设置fetch模式并为查询准备绑定。
             $statement = $this->prepared($this->getPdoForSelect($useReadPdo)
                               ->prepare($query));
 
@@ -396,6 +400,7 @@ class Connection implements ConnectionInterface
             // Next, we'll execute the query against the database and return the statement
             // so we can return the cursor. The cursor will use a PHP generator to give
             // back one row at a time without using a bunch of memory to render them.
+			// 接下来,我们将执行对数据库的查询,并返回语句,这样我们就可以返回光标。
             $statement->execute();
 
             return $statement;
@@ -518,6 +523,7 @@ class Connection implements ConnectionInterface
             // For update or delete statements, we want to get the number of rows affected
             // by the statement and return that back to the developer. We'll first need
             // to execute the statement and then we'll use PDO to fetch the affected.
+			// 对于更新或删除语句,我们希望获得受声明影响的行数,并将其返回给开发人员。
             $statement = $this->getPdo()->prepare($query);
 
             $this->bindValues($statement, $this->prepareBindings($bindings));
@@ -569,6 +575,8 @@ class Connection implements ConnectionInterface
             // Basically to make the database connection "pretend", we will just return
             // the default values for all the query methods, then we will return an
             // array of queries that were "executed" within the Closure callback.
+			// 基本上为了让数据库连接“假装”,我们将只返回所有查询方法的默认值,
+			// 然后我们将返回在闭包回调中“执行”的查询数组。
             $callback($this);
 
             $this->pretending = false;
@@ -591,6 +599,7 @@ class Connection implements ConnectionInterface
         // First we will back up the value of the logging queries property and then
         // we'll be ready to run callbacks. This query log will also get cleared
         // so we will have a new log of all the queries that are executed now.
+		// 首先,我们将备份日志查询属性的值,然后我们准备运行回调。
         $this->enableQueryLog();
 
         $this->queryLog = [];
@@ -598,6 +607,8 @@ class Connection implements ConnectionInterface
         // Now we'll execute this callback and capture the result. Once it has been
         // executed we will restore the value of query logging and give back the
         // value of the callback so the original callers can have the results.
+		// 现在我们将执行这个回调并捕获结果。
+		// 一旦执行,我们将恢复查询日志的值,并归还回调的值,以便原始的调用者可以得到结果。
         $result = $callback();
 
         $this->loggingQueries = $loggingQueries;
@@ -668,6 +679,7 @@ class Connection implements ConnectionInterface
         // Here we will run this query. If an exception occurs we'll determine if it was
         // caused by a connection that has been lost. If that is the cause, we'll try
         // to re-establish connection and re-run the query with a fresh connection.
+		// 这里我们将运行这个查询。如果发生异常,我们将确定它是由丢失的连接造成的。
         try {
             $result = $this->runQueryCallback($query, $bindings, $callback);
         } catch (QueryException $e) {

@@ -34,6 +34,7 @@ class PostgresConnector extends Connector implements ConnectorInterface
         // First we'll create the basic DSN and connection instance connecting to the
         // using the configuration option specified by the developer. We will also
         // set the default character set on the connections to UTF-8 by default.
+		// 首先,我们将创建连接到使用开发人员指定的配置选项的基本DSN和连接实例。
         $connection = $this->createConnection(
             $this->getDsn($config), $config, $this->getOptions($config)
         );
@@ -149,6 +150,7 @@ class PostgresConnector extends Connector implements ConnectorInterface
         // First we will create the basic DSN setup as well as the port if it is in
         // in the configuration options. This will give us the basic DSN we will
         // need to establish the PDO connections and return them back for use.
+		// 首先,如果在配置选项中,我们将创建基本的DSN设置和端口。
         extract($config, EXTR_SKIP);
 
         $host = isset($host) ? "host={$host};" : '';

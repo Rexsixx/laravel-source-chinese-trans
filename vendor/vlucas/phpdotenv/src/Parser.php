@@ -111,6 +111,7 @@ class Parser
 
     /**
      * Parse the given unquoted value.
+	 * 解析给定的未引用值
      *
      * @param string $value
      *

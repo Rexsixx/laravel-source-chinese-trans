@@ -146,6 +146,7 @@ class Listener
         // If the environment is set, we will append it to the command string so the
         // workers will run under the specified environment. Otherwise, they will
         // just run under the production environment which is not always right.
+		// 如果环境已设置好，我们将将其添加到命令字符串中，以便工作进程能够在指定的环境中运行。
         if (isset($options->environment)) {
             $command = $this->addEnvironment($command, $options);
         }
@@ -153,6 +154,7 @@ class Listener
         // Next, we will just format out the worker commands with all of the various
         // options available for the command. This will produce the final command
         // line that we will pass into a Symfony process object for processing.
+		// 接下来，我们将对这些工作指令进行格式化处理，同时涵盖该指令所具备的所有可用选项。
         $command = $this->formatCommand(
             $command, $connection, $queue, $options
         );
@@ -213,6 +215,7 @@ class Listener
         // Once we have run the job we'll go check if the memory limit has been exceeded
         // for the script. If it has, we will kill this script so the process manager
         // will restart this with a clean slate of memory automatically on exiting.
+		// 一旦我们完成了这项任务，就会去检查一下该脚本的内存使用量是否已超过限制。
         if ($this->memoryExceeded($memory)) {
             $this->stop();
         }

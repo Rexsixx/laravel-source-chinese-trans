@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，已上载文件
+ * Illuminate，Http，已上传文件
  */
 
 namespace Illuminate\Http;

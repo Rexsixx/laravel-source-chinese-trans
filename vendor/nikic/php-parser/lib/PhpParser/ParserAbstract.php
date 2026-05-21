@@ -9,6 +9,7 @@ namespace PhpParser;
 /*
  * This parser is based on a skeleton written by Moriyoshi Koizumi, which in
  * turn is based on work by Masato Bito.
+ * 这个解析器是基于由Moriyoshi Koizumi写的骨骼的,它在里面turn是基于Masato Bito的工作。
  */
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Cast\Double;
@@ -101,6 +102,7 @@ abstract class ParserAbstract implements Parser
 
     /*
      * The following members are part of the parser state:
+	 * 下面的成员是解析器状态的一部分:
      */
 
     /** @var Lexer Lexer that is used when parsing */
@@ -125,11 +127,13 @@ abstract class ParserAbstract implements Parser
 
     /**
      * Initialize $reduceCallbacks map.
+	 * 初始化$ reduce映射
      */
     abstract protected function initReduceCallbacks();
 
     /**
      * Creates a parser instance.
+	 * 创建一个解析器实例。
      *
      * Options: Currently none.
      *
@@ -149,6 +153,7 @@ abstract class ParserAbstract implements Parser
 
     /**
      * Parses PHP code into a node tree.
+	 * 将PHP代码解析为节点树。
      *
      * If a non-throwing error handler is used, the parser will continue parsing after an error
      * occurred and attempt to build a partial AST.

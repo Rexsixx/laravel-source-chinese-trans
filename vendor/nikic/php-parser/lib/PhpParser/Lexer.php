@@ -290,6 +290,7 @@ class Lexer
 
     /**
      * Fetches the next token.
+	 * 获取下一个令牌。
      *
      * The available attributes are determined by the 'usedAttributes' option, which can
      * be specified in the constructor. The following attributes are supported:
@@ -393,6 +394,7 @@ class Lexer
 
     /**
      * Returns the token array for current code.
+	 * 为当前代码返回令牌数组。
      *
      * The token array is in the same format as provided by the
      * token_get_all() function and does not discard tokens (i.e.

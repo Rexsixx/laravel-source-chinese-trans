@@ -89,6 +89,9 @@
                     <a href="https://forge.laravel.com">Forge</a>
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
+				<div>
+					5.6.40
+				</div>
             </div>
         </div>
     </body>

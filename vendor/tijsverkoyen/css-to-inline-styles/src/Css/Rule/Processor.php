@@ -46,6 +46,7 @@ class Processor
 
     /**
      * Converts a rule-string into an object
+	 * 将规则字符串转换为对象
      *
      * @param string $rule
      * @param int    $originalOrder
@@ -146,6 +147,7 @@ class Processor
     /**
      * Sorts an array on the specificity element in an ascending way
      * Lower specificity will be sorted to the beginning of the array
+	 * 在一种提升方式上对特异性元素进行排序,将对数组的开始排序。
      *
      * @param Rule $e1 The first element.
      * @param Rule $e2 The second element.

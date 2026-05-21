@@ -115,6 +115,7 @@ class Processor
 
     /**
      * Build the property-string for multiple properties
+	 * 为多个属性构建属性字符串
      *
      * @param Property[] $properties
      *

@@ -134,6 +134,7 @@ class Ftp extends AbstractFtpAdapter
 
     /**
      * Connect to the FTP server.
+	 * 连接到FTP服务器
      */
     public function connect()
     {

@@ -334,6 +334,7 @@ class Builder
         // If the given query is a Closure, we will execute it while passing in a new
         // query instance to the Closure. This will give the developer a chance to
         // format and work with the query before we cast it to a raw SQL string.
+		// 如果给定的查询是一个闭包,那么我们将在一个新的查询实例中执行它,以结束它。
         if ($query instanceof Closure) {
             $callback = $query;
 
@@ -632,6 +633,7 @@ class Builder
         // If the column is an array, we will assume it is an array of key-value pairs
         // and can add them each as a where clause. We will maintain the boolean we
         // received when the method was called and pass it into the nested where.
+		// 如果列是一个数组,我们将假定它是一个键值对的数组,并可以将它们添加到where子句中。
         if (is_array($column)) {
             return $this->addArrayOfWheres($column, $boolean);
         }
@@ -639,6 +641,7 @@ class Builder
         // Here we will make some assumptions about the operator. If only 2 values are
         // passed to the method, we will assume that the operator is an equals sign
         // and keep going. Otherwise, we'll require the operator to be passed in.
+		// 在这里,我们将对操作符做一些假设。如果将两个值传递给该方法,我们将假定操作符是一个对等的符号并继续前进。
         [$value, $operator] = $this->prepareValueAndOperator(
             $value, $operator, func_num_args() === 2
         );
@@ -2284,6 +2287,7 @@ class Builder
         // First, we will need to select the results of the query accounting for the
         // given columns / key. Once we have the results, we will be able to take
         // the results and get the exact data that was requested for the query.
+		// 首先,我们需要选择给定列/键的查询计算结果。
         $queryResult = $this->onceWithColumns(
             is_null($key) ? [$column] : [$column, $key],
             function () {
@@ -2300,6 +2304,7 @@ class Builder
         // If the columns are qualified with a table or have an alias, we cannot use
         // those directly in the "pluck" operations since the results from the DB
         // are only keyed by the column itself. We'll strip the table out here.
+		// 如果列符合表或有别名,那么我们就不能直接使用那些“fork”操作,因为DB的结果只会被列本身所控制。
         $column = $this->stripTableForPluck($column);
 
         $key = $this->stripTableForPluck($key);
@@ -2401,6 +2406,7 @@ class Builder
         // If the results has rows, we will get the row and see if the exists column is a
         // boolean true. If there is no results for this query we will return false as
         // there are no rows for this query at all and we can return that info here.
+		// 如果结果有行,我们将得到行,并查看存在的列是否为布尔真。
         if (isset($results[0])) {
             $results = (array) $results[0];
 
@@ -2530,6 +2536,7 @@ class Builder
         // If there is no result, we can obviously just return 0 here. Next, we will check
         // if the result is an integer or float. If it is already one of these two data
         // types we can just return the result as-is, otherwise we will convert this.
+		// 如果没有结果,我们显然可以返回0。接下来,我们将检查结果是否是一个整数或浮动。
         if (! $result) {
             return 0;
         }
@@ -2541,6 +2548,7 @@ class Builder
         // If the result doesn't contain a decimal place, we will assume it is an int then
         // cast it to one. When it does we will cast it to a float since it needs to be
         // cast to the expected data type for the developers out of pure convenience.
+		// 如果结果不包含小数点,我们会假设它是一个int然后将其抛向一个int。
         return strpos((string) $result, '.') === false
                 ? (int) $result : (float) $result;
     }
@@ -2571,6 +2579,7 @@ class Builder
 	 * 在选择给定列时执行给定的回调。
      *
      * After running the callback, the columns are reset to the original value.
+	 * 运行回调后,列将重置为原始值。
      *
      * @param  array  $columns
      * @param  callable  $callback
@@ -2603,6 +2612,8 @@ class Builder
         // Since every insert gets treated like a batch insert, we will make sure the
         // bindings are structured in a way that is convenient when building these
         // inserts statements by verifying these elements are actually an array.
+		// 由于每个插入都像批量插入一样被处理,所以我们将确保绑定以一种方便的方式结构,
+		// 因为通过验证这些元素来构建这些插入语句实际上是一个数组。
         if (empty($values)) {
             return true;
         }
@@ -2614,6 +2625,7 @@ class Builder
         // Here, we will sort the insert keys for every record so that each insert is
         // in the same order for the record. We need to make sure this is the case
         // so there are not any errors or problems when inserting these records.
+		// 在这里,我们将为每一个记录排序插入键,以便每个插入都与记录相同的顺序。
         else {
             foreach ($values as $key => $value) {
                 ksort($value);
@@ -2625,6 +2637,7 @@ class Builder
         // Finally, we will run this query against the database connection and return
         // the results. We will need to also flatten these bindings before running
         // the query so they are all in one huge, flattened array for execution.
+		// 最后,我们将运行此查询以防止数据库连接并返回结果。
         return $this->connection->insert(
             $this->grammar->compileInsert($this, $values),
             $this->cleanBindings(Arr::flatten($values, 1))
@@ -2737,6 +2750,8 @@ class Builder
         // If an ID is passed to the method, we will set the where clause to check the
         // ID to let developers to simply and quickly remove a single row from this
         // database without manually specifying the "where" clauses on the query.
+		// 如果将一个ID传递给该方法,我们将设置where子句,以检查ID,
+		// 让开发人员简单地快速从这个数据库中删除一个行,而不需要手动指定查询中的“where”子句。
         if (! is_null($id)) {
             $this->where($this->from.'.id', '=', $id);
         }

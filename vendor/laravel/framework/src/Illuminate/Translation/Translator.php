@@ -130,6 +130,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // Here we will get the locale that should be used for the language line. If one
         // was not passed, we will use the default locales which was given to us when
         // the translator was instantiated. Then, we can load the lines and return.
+		// 在这里,我们将获得应该用于语言行的语言环境。
         $locales = $fallback ? $this->localeArray($locale)
                              : [$locale ?: $this->locale];
 
@@ -144,6 +145,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // If the line doesn't exist, we will return back the key which was requested as
         // that will be quick to spot in the UI if language keys are wrong or missing
         // from the application's language files. Otherwise we can return the line.
+		// 如果行不存在，我们将返回所请求的键。
         if (isset($line)) {
             return $line;
         }
@@ -167,6 +169,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // For JSON translations, there is only one file per locale, so we will simply load
         // that file and then we will be ready to check the array for the key. These are
         // only one level deep so we do not need to do any fancy searching through it.
+		// 对于JSON翻译，每个语言环境只有一个文件。
         $this->load('*', '*', $locale);
 
         $line = $this->loaded['*']['*'][$locale][$key] ?? null;
@@ -219,6 +222,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // If the given "number" is actually an array or countable we will simply count the
         // number of elements in an instance. This allows developers to pass an array of
         // items without having to count it on their end first which gives bad syntax.
+		// 如果给定的“数字”实际上是一个数组或可计数的序列，我们将直接计算该实例中的元素数量。
         if (is_array($number) || $number instanceof Countable) {
             $number = count($number);
         }
@@ -343,6 +347,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // The loader is responsible for returning the array of language lines for the
         // given namespace, group, and locale. We'll set the lines in this array of
         // lines that have already been loaded so that we can easily access them.
+		// 加载器的任务是返回给定命名空间、组和语言环境下的语言行数组。
         $lines = $this->loader->load($locale, $group, $namespace);
 
         $this->loaded[$namespace][$group][$locale] = $lines;

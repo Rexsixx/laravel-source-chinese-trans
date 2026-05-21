@@ -71,6 +71,7 @@ class HtmlFormatter extends NormalizerFormatter
 
     /**
      * Create a HTML h1 tag
+	 * 创建一个HTML h1标签
      *
      * @param  string $title Text to be in the h1
      * @param  int    $level Error level
@@ -85,6 +86,7 @@ class HtmlFormatter extends NormalizerFormatter
 
     /**
      * Formats a log record.
+	 * 格式化日志记录
      *
      * @param  array $record A record to format
      * @return mixed The formatted record
@@ -119,6 +121,7 @@ class HtmlFormatter extends NormalizerFormatter
 
     /**
      * Formats a set of log records.
+	 * 格式化一组日志记录
      *
      * @param  array $records A set of records to format
      * @return mixed The formatted set of records

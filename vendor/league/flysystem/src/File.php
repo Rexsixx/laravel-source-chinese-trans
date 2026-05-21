@@ -110,6 +110,7 @@ class File extends Handler
 
     /**
      * Create the file or update if exists using a stream.
+	 * 如果存在使用流,创建文件或更新。
      *
      * @param resource $resource
      *
@@ -122,6 +123,7 @@ class File extends Handler
 
     /**
      * Rename the file.
+	 * 重命名文件
      *
      * @param string $newpath
      *

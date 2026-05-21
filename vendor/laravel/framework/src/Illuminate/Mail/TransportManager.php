@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，传输管理器
+ * Illuminate，电子邮件，传送管理器
  */
 
 namespace Illuminate\Mail;
@@ -35,6 +35,8 @@ class TransportManager extends Manager
         // The Swift SMTP transport instance will allow us to use any SMTP backend
         // for delivering mail such as Sendgrid, Amazon SES, or a custom server
         // a developer has available. We will just pass this configured host.
+		// Swift SMTP传输实例将允许我们使用任何SMTP后端发送邮件,
+		// 如Sendgrid、Amazon SES或开发人员可用的定制服务器。我们将通过这个配置的主机。
         $transport = new SmtpTransport($config['host'], $config['port']);
 
         if (isset($config['encryption'])) {
@@ -44,6 +46,7 @@ class TransportManager extends Manager
         // Once we have the transport we will check for the presence of a username
         // and password. If we have it we will set the credentials on the Swift
         // transporter instance so that we'll properly authenticate delivery.
+		// 一旦我们有了运输,我们将检查用户名和密码的存在。
         if (isset($config['username'])) {
             $transport->setUsername($config['username']);
 
@@ -53,6 +56,7 @@ class TransportManager extends Manager
         // Next we will set any stream context options specified for the transport
         // and then return it. The option is not required any may not be inside
         // the configuration array at all so we'll verify that before adding.
+		// 接下来,我们将设置用于传输的任何流上下文选项,然后返回它。
         if (isset($config['stream'])) {
             $transport->setStreamOptions($config['stream']);
         }

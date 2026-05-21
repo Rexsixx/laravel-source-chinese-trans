@@ -42,6 +42,7 @@ class Terminal
 
     /**
      * Gets the terminal height.
+	 * 到达终端高度
      *
      * @return int
      */

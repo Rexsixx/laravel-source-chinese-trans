@@ -29,6 +29,7 @@ trait FormatsMessages
         // First we will retrieve the custom message for the validation rule if one
         // exists. If a custom validation message is being used we'll return the
         // custom message, otherwise we'll keep searching for a valid message.
+		// 首先，我们将检索验证规则的自定义消息如果存在。
         if (! is_null($inlineMessage)) {
             return $inlineMessage;
         }

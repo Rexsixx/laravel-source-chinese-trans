@@ -111,6 +111,7 @@ class Comment implements \JsonSerializable
 
     /**
      * Gets the line number the comment started on.
+	 * 得到评论开始的行号
      *
      * @deprecated Use getStartLine() instead
      *
@@ -122,6 +123,7 @@ class Comment implements \JsonSerializable
 
     /**
      * Gets the file offset the comment started on.
+	 * 获取文件来抵消评论的开始
      *
      * @deprecated Use getStartFilePos() instead
      *

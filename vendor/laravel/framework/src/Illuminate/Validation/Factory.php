@@ -114,6 +114,7 @@ class Factory implements FactoryContract
         // The presence verifier is responsible for checking the unique and exists data
         // for the validator. It is behind an interface so that multiple versions of
         // it may be written besides database. We'll inject it into the validator.
+		// 状态验证器负责检查惟一性，验证器存在数据。
         $validator = $this->resolve(
             $data, $rules, $messages, $customAttributes
         );

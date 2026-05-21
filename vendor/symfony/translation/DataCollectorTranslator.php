@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，翻译，数据收集器转换器
+ */
 
 /*
  * This file is part of the Symfony package.

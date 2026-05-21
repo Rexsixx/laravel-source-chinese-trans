@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，适配器，抽象Ftp适配器
+ * League，Flysystem，适配器，抽象 Ftp适配器
  */
 
 namespace League\Flysystem\Adapter;
@@ -219,6 +219,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the root folder to work from.
+	 * 设置根文件夹
      *
      * @param string $root
      *
@@ -233,6 +234,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the ftp username.
+	 * 返回ftp用户名
      *
      * @return string username
      */
@@ -245,6 +247,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set ftp username.
+	 * 设置ftp用户名
      *
      * @param string $username
      *
@@ -259,6 +262,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the password.
+	 * 返回密码
      *
      * @return string password
      */
@@ -269,6 +273,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the ftp password.
+	 * 设置ftp密码
      *
      * @param string $password
      *
@@ -283,6 +288,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the amount of seconds before the connection will timeout.
+	 * 返回连接将超时之前的秒数
      *
      * @return int
      */
@@ -293,6 +299,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the amount of seconds before the connection should timeout.
+	 * 在连接应该超时之前设置数秒
      *
      * @param int $timeout
      *
@@ -307,6 +314,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Return the FTP system type.
+	 * 返回FTP系统类型
      *
      * @return string
      */
@@ -317,6 +325,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the FTP system type (windows or unix).
+	 * 设置FTP系统类型(windows或unix)
      *
      * @param string $systemType
      *
@@ -331,6 +340,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * True to enable timestamps for FTP servers that return unix-style listings.
+	 * True为返回unix样式列表的FTP服务器启用时间戳
      *
      * @param bool $bool
      *

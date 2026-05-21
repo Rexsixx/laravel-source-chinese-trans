@@ -85,6 +85,7 @@ class ValidationData
 	 * 根据给定的点标记路径提取数据。
      *
      * Used to extract a sub-section of the data for faster iteration.
+	 * 用于提取数据的一个子部分，以便更快地迭代。
      *
      * @param  string  $attribute
      * @param  array  $masterData
@@ -110,6 +111,7 @@ class ValidationData
      * E.g. 'foo.bar.*.baz' -> 'foo.bar'
      *
      * Allows us to not spin through all of the flattened data for some operations.
+	 * 允许我们在某些操作中不必遍历所有的扁平数据。
      *
      * @param  string  $attribute
      * @return string

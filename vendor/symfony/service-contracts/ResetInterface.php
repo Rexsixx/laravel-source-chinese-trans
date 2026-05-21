@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，服务，复位接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Contracts\Service;
 
 /**
  * Provides a way to reset an object to its initial state.
+ * 提供一种方法将对象重置为初始状态。
  *
  * When calling the "reset()" method on an object, it should be put back to its
  * initial state. This usually means clearing any internal buffers and forwarding

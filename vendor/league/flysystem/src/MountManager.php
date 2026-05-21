@@ -210,6 +210,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * List with plugin adapter.
+	 * 带有插件适配器的列表
      *
      * @param array  $keys
      * @param string $directory
@@ -230,6 +231,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Move a file.
+	 * 移动一个文件
      *
      * @param string $from
      * @param string $to

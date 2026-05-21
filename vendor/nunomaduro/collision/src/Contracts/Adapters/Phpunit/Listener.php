@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，契约，适配器，Php单元，倾听者
+ * NunoMaduro，Collision，契约，适配器，Php单元，倾听器
  */
 
 /**

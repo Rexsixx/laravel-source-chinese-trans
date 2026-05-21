@@ -70,6 +70,7 @@ class Enum_ extends Declaration
 
     /**
      * Adds a statement.
+	 * 添加语句
      *
      * @param Stmt|PhpParser\Builder $stmt The statement to add
      *

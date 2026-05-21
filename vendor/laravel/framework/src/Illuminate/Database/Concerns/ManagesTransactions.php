@@ -29,6 +29,8 @@ trait ManagesTransactions
             // We'll simply execute the given callback within a try / catch block and if we
             // catch any exception we can rollback this transaction so that none of this
             // gets actually persisted to a database or stored in a permanent fashion.
+			// 我们将简单地在一个try / catch块中执行给定的回调,如果我们知道任何例外,
+			// 我们可以回滚这个事务,这样就不会有任何一个东西被持久化到数据库中,或者以永久的方式存储。
             try {
                 return tap($callback($this), function () {
                     $this->commit();
@@ -66,6 +68,7 @@ trait ManagesTransactions
         // On a deadlock, MySQL rolls back the entire transaction so we can't just
         // retry the query. We have to throw this exception all the way out and
         // let the developer handle it in another way. We will decrement too.
+		// 在死锁上,MySQL将整个事务卷回来,所以我们不能仅仅重新尝试查询。
         if ($this->causedByDeadlock($e) &&
             $this->transactions > 1) {
             $this->transactions--;

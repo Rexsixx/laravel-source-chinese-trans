@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，格式器，Elastica 格式化器
+ * Monolog，格式器，Gelf 信息格式化器
  */
 
 /*
@@ -19,6 +19,7 @@ use Gelf\Message;
 
 /**
  * Serializes a log message to GELF
+ * 将日志消息序列化为GELF
  * @see http://www.graylog2.org/about/gelf
  *
  * @author Matt Lehner <mlehner@gmail.com>

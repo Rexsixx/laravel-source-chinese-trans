@@ -74,6 +74,7 @@ abstract class Grammar extends BaseGrammar
         // We need to prepare several of the elements of the foreign key definition
         // before we can create the SQL, such as wrapping the tables and convert
         // an array of columns to comma-delimited strings for the SQL queries.
+		// 在我们创建SQL之前,我们需要准备几个外部密钥定义的元素,比如包装表,并将一个列的数组转换为SQL查询的逗号分隔的字符串。
         $sql = sprintf('alter table %s add constraint %s ',
             $this->wrapTable($blueprint),
             $this->wrap($command->index)
@@ -82,6 +83,7 @@ abstract class Grammar extends BaseGrammar
         // Once we have the initial portion of the SQL statement we will add on the
         // key name, table name, and referenced columns. These will complete the
         // main portion of the SQL statement and this SQL will almost be done.
+		// 一旦我们有了SQL语句的初始部分,我们将添加密钥名称、表名和引用列。
         $sql .= sprintf('foreign key (%s) references %s (%s)',
             $this->columnize($command->columns),
             $this->wrapTable($command->on),
@@ -91,6 +93,7 @@ abstract class Grammar extends BaseGrammar
         // Once we have the basic foreign key creation statement constructed we can
         // build out the syntax for what should happen on an update or delete of
         // the affected columns, which will get something like "cascade", etc.
+		// 一旦我们有了基本的外键创建语句,我们就可以在对受影响的列的更新或删除中发生的事情构建语法,这将得到类似“级联”等的语法。
         if (! is_null($command->onDelete)) {
             $sql .= " on delete {$command->onDelete}";
         }

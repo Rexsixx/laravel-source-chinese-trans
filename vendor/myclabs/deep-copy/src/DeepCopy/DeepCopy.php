@@ -186,6 +186,7 @@ class DeepCopy
 
     /**
      * Copies an object.
+	 * 复制一个对象
      *
      * @param object $object
      *
@@ -291,6 +292,7 @@ class DeepCopy
 
     /**
      * Returns first filter that matches variable, `null` if no such filter found.
+	 * 返回第一个匹配变量的过滤器,如果没有这样的过滤器。
      *
      * @param array $filterRecords Associative array with 2 members: 'filter' with value of type {@see TypeFilter} and
      *                             'matcher' with value of type {@see TypeMatcher}

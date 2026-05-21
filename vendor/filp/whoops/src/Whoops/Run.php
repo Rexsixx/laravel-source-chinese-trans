@@ -68,6 +68,7 @@ final class Run implements RunInterface
 
     /**
      * In certain scenarios, like in shutdown handler, we can not throw exceptions.
+	 * 在某些情况下，比如在shutdown处理程序中，我们不能抛出异常。
      *
      * @var bool
      */
@@ -75,6 +76,7 @@ final class Run implements RunInterface
 
     /**
      * The inspector factory to create inspectors.
+	 * 检查员工厂要制造检查员
      *
      * @var InspectorFactoryInterface
      */

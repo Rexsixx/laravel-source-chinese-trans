@@ -1,15 +1,19 @@
 <?php
+/**
+ * 配置，cache
+ */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Cache Store
+    | Default Cache Store	默认缓存存储
     |--------------------------------------------------------------------------
     |
     | This option controls the default cache connection that gets used while
     | using this caching library. This connection is used when another is
     | not explicitly specified when executing a given caching function.
+	| 此选项用于控制在使用此缓存库时所使用的默认缓存连接。
     |
     | Supported: "apc", "array", "database", "file", "memcached", "redis"
     |
@@ -19,12 +23,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cache Stores
+    | Cache Stores	缓存存储
     |--------------------------------------------------------------------------
     |
     | Here you may define all of the cache "stores" for your application as
     | well as their drivers. You may even define multiple stores for the
     | same cache driver to group types of items stored in your caches.
+	| 在这里，您可以为您的应用程序定义所有的缓存“存储”以及它们的驱动程序。
     |
     */
 
@@ -77,12 +82,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cache Key Prefix
+    | Cache Key Prefix	缓存键前缀
     |--------------------------------------------------------------------------
     |
     | When utilizing a RAM based store such as APC or Memcached, there might
     | be other applications utilizing the same cache. So, we'll specify a
     | value to get prefixed to all our keys so we can avoid collisions.
+	| 当使用基于随机存取存储器（RAM）的存储设备（如 APC 或 Memcached）时，可能会有其他应用程序也使用了相同的缓存。
     |
     */
 

@@ -48,6 +48,7 @@ class EnumCase implements PhpParser\Builder
 
     /**
      * Sets doc comment for the constant.
+	 * 为常量设置doc注释
      *
      * @param PhpParser\Comment\Doc|string $docComment Doc comment to set
      *

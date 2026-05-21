@@ -12,6 +12,7 @@ class AuthServiceProvider extends ServiceProvider
 {
     /**
      * The policy mappings for the application.
+	 * 应用程序的策略映射
      *
      * @var array
      */
@@ -21,6 +22,7 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Register any authentication / authorization services.
+	 * 注册任何身份验证/授权服务
      *
      * @return void
      */

@@ -28,6 +28,7 @@ trait ValidatesAttributes
 	 * 验证一个属性是否被“接受”。
      *
      * This validation rule implies the attribute is "required".
+	 * 该验证规则暗示该属性是“必需的”。
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -70,6 +71,7 @@ trait ValidatesAttributes
 	 * 第一次验证失败时“中断”。
      *
      * Always returns true, just lets us put "bail" in rules.
+	 * 总是返回true，只是让我们在规则中加入“保释”。
      *
      * @return bool
      */
@@ -1549,6 +1551,7 @@ trait ValidatesAttributes
 	 * “验证”可选属性。
      *
      * Always returns true, just lets us put sometimes in rules.
+	 * 总是返回true，只是让我们加入规则。
      *
      * @return bool
      */
@@ -1645,6 +1648,7 @@ trait ValidatesAttributes
         // return the proper size accordingly. If it is a number, then number itself
         // is the size. If it is a file, we take kilobytes, and for a string the
         // entire length of the string will be considered the attribute size.
+		// 此方法将确定属性是数字、字符串、或文件，并相应地返回适当的大小。
         if (is_numeric($value) && $hasNumeric) {
             return $value;
         } elseif (is_array($value)) {

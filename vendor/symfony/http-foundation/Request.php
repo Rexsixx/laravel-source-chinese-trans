@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpFoundation，请求
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -25,6 +28,7 @@ class_exists(ServerBag::class);
 
 /**
  * Request represents an HTTP request.
+ * Request表示HTTP请求。
  *
  * The methods dealing with URL accept / return a raw path (% encoded):
  *   * getBasePath
@@ -76,6 +80,7 @@ class Request
 
     /**
      * Custom parameters.
+	 * 自定义参数
      *
      * @var ParameterBag
      */

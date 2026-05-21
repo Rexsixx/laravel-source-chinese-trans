@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，VarDumper，转储，抽象转储器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\VarDumper\Cloner\DumperInterface;
 
 /**
  * Abstract mechanism for dumping a Data object.
+ * 用于转储数据对象的抽象机制
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -55,6 +59,7 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
 
     /**
      * Sets the output destination of the dumps.
+	 * 设置转储的输出目的地
      *
      * @param callable|resource|string $output A line dumper callable, an opened stream or an output path
      *

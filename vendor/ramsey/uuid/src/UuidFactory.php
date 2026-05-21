@@ -78,6 +78,7 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      * Returns the UUID coder-decoder used by this factory
+	 * 返回本工厂使用的uuuid密码解码器
      *
      * @return CodecInterface
      */

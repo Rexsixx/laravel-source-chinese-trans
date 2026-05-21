@@ -67,6 +67,7 @@ abstract class FunctionLike extends Declaration
 
     /**
      * Sets the return type for PHP 7.
+	 * 为PHP 7设置返回类型
      *
      * @param string|Node\Name|Node\Identifier|Node\ComplexType $type
      *

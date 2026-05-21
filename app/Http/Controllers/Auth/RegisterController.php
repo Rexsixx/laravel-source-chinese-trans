@@ -15,12 +15,13 @@ class RegisterController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Register Controller
+    | Register Controller	注册控制器
     |--------------------------------------------------------------------------
     |
     | This controller handles the registration of new users as well as their
     | validation and creation. By default this controller uses a trait to
     | provide this functionality without requiring any additional code.
+	| 此控制器负责新用户的注册工作，包括对其进行验证以及创建相关账户。
     |
     */
 
@@ -28,6 +29,7 @@ class RegisterController extends Controller
 
     /**
      * Where to redirect users after registration.
+	 * 注册后将用户重定向到哪里
      *
      * @var string
      */
@@ -35,6 +37,7 @@ class RegisterController extends Controller
 
     /**
      * Create a new controller instance.
+	 * 创建一个新的控制器实例
      *
      * @return void
      */
@@ -45,6 +48,7 @@ class RegisterController extends Controller
 
     /**
      * Get a validator for an incoming registration request.
+	 * 获取传入注册请求的验证器
      *
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
@@ -60,6 +64,7 @@ class RegisterController extends Controller
 
     /**
      * Create a new user instance after a valid registration.
+	 * 在有效注册后创建一个新的用户实例
      *
      * @param  array  $data
      * @return \App\User

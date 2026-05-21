@@ -177,6 +177,7 @@ class Str
             // If the given value is an exact match we can of course return true right
             // from the beginning. Otherwise, we will translate asterisks and do an
             // actual pattern match against the two strings to see if they match.
+			// 如果给定的值是精确匹配的，从开始返会true。
             if ($pattern == $value) {
                 return true;
             }

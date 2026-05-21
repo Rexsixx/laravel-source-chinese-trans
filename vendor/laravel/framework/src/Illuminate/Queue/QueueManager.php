@@ -149,6 +149,8 @@ class QueueManager implements FactoryContract, MonitorContract
         // If the connection has not been resolved yet we will resolve it now as all
         // of the connections are resolved when they are actually needed so we do
         // not make any unnecessary connection to the various queue end-points.
+		// 如果连接还没有得到解决,但是我们现在将解决它,因为所有的连接都在实际需要的时候解决,
+		// 因此我们不会对各种队列端点没有任何不必要的连接。
         if (! isset($this->connections[$name])) {
             $this->connections[$name] = $this->resolve($name);
 

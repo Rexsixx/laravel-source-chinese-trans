@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，控制台，倾听命令
+ * Illuminate，队列，控制台，监听命令
  */
 
 namespace Illuminate\Queue\Console;
@@ -68,6 +68,7 @@ class ListenCommand extends Command
         // We need to get the right queue for the connection which is set in the queue
         // configuration file for the application. We will pull it based on the set
         // connection being run for the queue operation currently being executed.
+		// 我们需要为应用程序的队列配置文件设置连接的正确队列。
         $queue = $this->getQueue(
             $connection = $this->input->getArgument('connection')
         );

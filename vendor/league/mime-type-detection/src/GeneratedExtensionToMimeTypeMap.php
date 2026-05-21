@@ -1,6 +1,6 @@
 <?php
 /**
- * League，MimeTypeDetection，生成扩展到Mime类型映射
+ * League，MimeTypeDetection，生成扩展到 Mime类型映射
  */
 
 declare(strict_types=1);

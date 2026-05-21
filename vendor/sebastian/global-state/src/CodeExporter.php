@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，GlobalState，代码出口商
+ */
+
 /*
  * This file is part of sebastian/global-state.
  *

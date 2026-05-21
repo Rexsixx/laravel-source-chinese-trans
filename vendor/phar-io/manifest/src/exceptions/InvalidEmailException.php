@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Manifest，无效Email异常
+ * PharIo，Manifest，无效 Email异常
  */
 
 /*

@@ -84,6 +84,7 @@ class ControllerMakeCommand extends GeneratorCommand
 	 * 用给定的名称构建类。
      *
      * Remove the base controller import if we are already in base namespace.
+	 * 如果我们已经在基命名空间中，请删除基控制器导入。
      *
      * @param  string  $name
      * @return string

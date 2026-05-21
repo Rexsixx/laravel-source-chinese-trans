@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，Fake，未决邮件 Fake
+ * Illuminate，支持，测试，Fake，待处理的邮件 Fake
  */
 
 namespace Illuminate\Support\Testing\Fakes;

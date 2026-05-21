@@ -1,4 +1,8 @@
 <?php
+/**
+ * NunoMaduro，Manifest，需求测试
+ */
+
 /*
  * This file is part of PharIo\Manifest.
  *

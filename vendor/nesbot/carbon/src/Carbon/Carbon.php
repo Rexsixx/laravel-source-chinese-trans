@@ -65,6 +65,7 @@ class Carbon extends DateTime implements JsonSerializable
 
     /**
      * The day constants.
+	 * 天的常数
      */
     const SUNDAY = 0;
     const MONDAY = 1;
@@ -91,6 +92,7 @@ class Carbon extends DateTime implements JsonSerializable
 
     /**
      * Number of X in Y.
+	 * Y的X号
      */
     const YEARS_PER_CENTURY = 100;
     const YEARS_PER_DECADE = 10;

@@ -59,6 +59,7 @@ class StartSession
         // If a session driver has been configured, we will need to start the session here
         // so that the data is ready for an application. Note that the Laravel sessions
         // do not make use of PHP "native" sessions in any way since they are crappy.
+		// 如果已经配置了会话驱动程序，我们将需要在这里启动会话，以便为应用程序准备好数据。
         if ($this->sessionConfigured()) {
             $request->setLaravelSession(
                 $session = $this->startSession($request)
@@ -72,6 +73,7 @@ class StartSession
         // Again, if the session has been configured we will need to close out the session
         // so that the attributes may be persisted to some storage medium. We will also
         // add the session identifier cookie to the application response headers now.
+		// 同样，如果已经配置了会话，我们将需要关闭会话。以便将属性持久化到某些存储介质中。
         if ($this->sessionConfigured()) {
             $this->storeCurrentUrl($request, $session);
 

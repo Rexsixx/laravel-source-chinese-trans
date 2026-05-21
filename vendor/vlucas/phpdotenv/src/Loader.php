@@ -43,6 +43,7 @@ class Loader
 
     /**
      * Create a new loader instance.
+	 * 创建一个新的加载实例
      *
      * @param string $filePath
      * @param bool   $immutable
@@ -57,6 +58,7 @@ class Loader
 
     /**
      * Set immutable value.
+	 * 设置不变的值
      *
      * @param bool $immutable
      *
@@ -71,6 +73,7 @@ class Loader
 
     /**
      * Get immutable value.
+	 * 得到不可变值
      *
      * @return bool
      */
@@ -81,6 +84,7 @@ class Loader
 
     /**
      * Load `.env` file in given directory.
+	 * 导入指定目录中的env文件
      *
      * @throws \Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidFileException
      *
@@ -103,6 +107,7 @@ class Loader
 
     /**
      * Ensures the given filePath is readable.
+	 * 确保给定的filePath是可读的
      *
      * @throws \Dotenv\Exception\InvalidPathException
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，文件装载机测试
+ * PharIo，Manifest，Manifest 装载机试验
  */
 
 namespace PharIo\Manifest;

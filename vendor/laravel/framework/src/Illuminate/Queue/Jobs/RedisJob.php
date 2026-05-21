@@ -60,6 +60,7 @@ class RedisJob extends Job implements JobContract
         // The $job variable is the original job JSON as it existed in the ready queue while
         // the $reserved variable is the raw JSON in the reserved queue. The exact format
         // of the reserved job is required in order for us to properly delete its data.
+		// $job变量是原始的作业JSON,因为它存在于准备好的队列中,而$预留变量是保留队列中的原始JSON。
         $this->job = $job;
         $this->redis = $redis;
         $this->queue = $queue;

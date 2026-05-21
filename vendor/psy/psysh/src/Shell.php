@@ -120,6 +120,7 @@ class Shell extends Application
 
     /**
      * Invoke a Psy Shell from the current context.
+	 * 从当前上下文调用Psy Shell
      *
      * @see Psy\debug
      * @deprecated will be removed in 1.0. Use \Psy\debug instead

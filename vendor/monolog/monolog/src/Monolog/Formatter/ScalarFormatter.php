@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，格式器，Elastica 格式化器
+ * Monolog，格式器，Scalar 格式化器
  */
 
 /*

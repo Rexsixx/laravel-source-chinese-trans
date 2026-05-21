@@ -51,6 +51,7 @@ class NodeFinder
 
     /**
      * Find first node satisfying a filter callback.
+	 * 发现一个满足过滤器回调的第一个节点
      *
      * @param Node|Node[] $nodes  Single node or array of nodes to search in
      * @param callable    $filter Filter callback: function(Node $node) : bool
@@ -73,6 +74,7 @@ class NodeFinder
 
     /**
      * Find first node that is an instance of a certain class.
+	 * 查找第一个节点,这是某个类的实例。
      *
      * @param Node|Node[] $nodes  Single node or array of nodes to search in
      * @param string      $class Class name

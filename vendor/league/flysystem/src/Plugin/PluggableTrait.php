@@ -59,6 +59,7 @@ trait PluggableTrait
 
     /**
      * Invoke a plugin by method name.
+	 * 通过方法名称调用一个插件
      *
      * @param string              $method
      * @param array               $arguments
@@ -79,6 +80,7 @@ trait PluggableTrait
 
     /**
      * Plugins pass-through.
+	 * 插件通过
      *
      * @param string $method
      * @param array  $arguments

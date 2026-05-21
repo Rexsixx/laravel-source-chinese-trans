@@ -290,6 +290,7 @@ class Validator implements ValidatorContract
         // We'll spin through each rule, validating the attributes attached to that
         // rule. Any error messages will be added to the containers with each of
         // the other error messages, returning true if we don't have messages.
+		// 我们将遍历每个规则，验证附加的规则属性。
         foreach ($this->rules as $attribute => $rules) {
             $attribute = str_replace('\.', '->', $attribute);
 

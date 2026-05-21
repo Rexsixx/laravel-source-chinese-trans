@@ -71,6 +71,7 @@ interface UuidInterface extends JsonSerializable, Serializable
 
     /**
      * Returns the number converter to use for converting hex values to/from integers.
+	 * 返回数字转换器用于将hex值转换为/从整数
      *
      * @return NumberConverterInterface
      */

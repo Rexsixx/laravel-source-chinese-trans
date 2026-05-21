@@ -57,6 +57,7 @@ class QueueServiceProvider extends ServiceProvider
             // Once we have an instance of the queue manager, we will register the various
             // resolvers for the queue connectors. These connectors are responsible for
             // creating the classes that accept queue configs and instantiate queues.
+			// 一旦我们有了队列管理器的实例,我们将为队列连接器注册各种解析器。
             return tap(new QueueManager($app), function ($manager) {
                 $this->registerConnectors($manager);
             });

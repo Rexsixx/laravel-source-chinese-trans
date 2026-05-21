@@ -163,6 +163,7 @@ class Utils
 
     /**
      * Detect invalid UTF-8 string characters and convert to valid UTF-8.
+	 * 检测无效的UTF-8字符串字符并转换为有效的UTF-8。
      *
      * Valid UTF-8 input will be left unmodified, but strings containing
      * invalid UTF-8 codepoints will be reencoded as UTF-8 with an assumed

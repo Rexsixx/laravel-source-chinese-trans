@@ -55,6 +55,7 @@ if (class_exists(\PHPUnit\Runner\Version::class) && substr(\PHPUnit\Runner\Versi
 
         /**
          * Creates a new instance of the class.
+		 * 说明是否应该出现跟踪
          *
          * @param \NunoMaduro\Collision\Contracts\Writer|null $writer
          */
@@ -164,6 +165,7 @@ if (class_exists(\PHPUnit\Runner\Version::class) && substr(\PHPUnit\Runner\Versi
 
         /**
          * Builds an Writer.
+		 * 建立一个作家
          *
          * @return \NunoMaduro\Collision\Contracts\Writer
          */

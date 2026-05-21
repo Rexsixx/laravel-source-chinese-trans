@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpKernel，Http 内核接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpKernel;
 
 /**
  * Allows the Kernel to be rebooted using a temporary cache directory.
+ * 允许使用临时缓存目录重新引导内核。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -20,6 +24,7 @@ interface RebootableInterface
 {
     /**
      * Reboots a kernel.
+	 * 重新启动内核。
      *
      * The getCacheDir() method of a rebootable kernel should not be called
      * while building the container. Use the %kernel.cache_dir% parameter instead.

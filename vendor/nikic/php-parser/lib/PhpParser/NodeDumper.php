@@ -36,6 +36,7 @@ class NodeDumper
 
     /**
      * Dumps a node or array.
+	 * 转储一个节点或数组
      *
      * @param array|Node  $node Node or array to dump
      * @param string|null $code Code corresponding to dumped AST. This only needs to be passed if
@@ -174,6 +175,7 @@ class NodeDumper
 
     /**
      * Dump node position, if possible.
+	 * 如果可能的话,转储节点位置。
      *
      * @param Node $node Node for which to dump position
      *

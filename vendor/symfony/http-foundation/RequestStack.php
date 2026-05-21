@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpFoundation，请求堆栈
+ */
 
 /*
  * This file is part of the Symfony package.

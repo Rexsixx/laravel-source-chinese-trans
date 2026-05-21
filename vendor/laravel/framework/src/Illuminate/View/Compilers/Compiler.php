@@ -72,6 +72,7 @@ abstract class Compiler
         // If the compiled file doesn't exist we will indicate that the view is expired
         // so that it can be re-compiled. Else, we will verify the last modification
         // of the views is less than the modification times of the compiled views.
+		// 如果编译的文件不存在，我们将指出视图已过期。
         if (! $this->files->exists($compiled)) {
             return true;
         }

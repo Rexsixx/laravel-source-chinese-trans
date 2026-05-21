@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，容器，容器
+ * Illuminate，容器，Container
  */
 
 namespace Illuminate\Container;
@@ -242,6 +242,7 @@ class Container implements ArrayAccess, ContainerContract
         // If no concrete type was given, we will simply set the concrete type to the
         // abstract type. After that, the concrete type to be registered as shared
         // without being forced to state their classes in both of the parameters.
+		// 如果未给出具体的类型，我们将直接将具体类型设置为抽象类型。
         $this->dropStaleInstances($abstract);
 
         if (is_null($concrete)) {
@@ -251,6 +252,8 @@ class Container implements ArrayAccess, ContainerContract
         // If the factory is not a Closure, it means it is just a class name which is
         // bound into this container to the abstract type and we will just wrap it
         // up inside its own Closure to give us more convenience when extending.
+		// 如果该工厂并非一个“闭包”，这意味着它只是一个类名，它被绑定到这个容器中的抽象类型上。
+		// 我们只需将它封装在自己的“闭包”中，以便在扩展时能提供更大的便利性。
         if (! $concrete instanceof Closure) {
             $concrete = $this->getClosure($abstract, $concrete);
         }
@@ -260,6 +263,8 @@ class Container implements ArrayAccess, ContainerContract
         // If the abstract type was already resolved in this container we'll fire the
         // rebound listener so that any objects which have already gotten resolved
         // can have their copy of the object updated via the listener callbacks.
+		// 如果该抽象类型已在当前容器中已确定，则我们将触发回弹监听器，
+		// 以便任何已确定的对象都能通过监听器回调来更新其对象副本。
         if ($this->resolved($abstract)) {
             $this->rebound($abstract);
         }
@@ -427,6 +432,7 @@ class Container implements ArrayAccess, ContainerContract
         // We'll check to determine if this type has been bound before, and if it has
         // we will fire the rebound callbacks registered with the container and it
         // can be updated with consuming classes that have gotten resolved here.
+		// 我们将检查这种类型是否已经被绑定,如果它有我们将在容器中注册的反弹回调,它可以通过在这里解决的消费类进行更新。
         $this->instances[$abstract] = $instance;
 
         if ($isBound) {
@@ -681,6 +687,8 @@ class Container implements ArrayAccess, ContainerContract
         // If an instance of the type is currently being managed as a singleton we'll
         // just return an existing instance instead of instantiating new instances
         // so the developer can keep using the same objects instance every time.
+		// 如果一个类型的实例目前被管理为单例,我们将返回一个现有实例,而不是实例化新实例,
+		// 因此开发人员可以随时使用相同的对象实例。
         if (isset($this->instances[$abstract]) && ! $needsContextualBuild) {
             return $this->instances[$abstract];
         }
@@ -692,6 +700,7 @@ class Container implements ArrayAccess, ContainerContract
         // We're ready to instantiate an instance of the concrete type registered for
         // the binding. This will instantiate the types, as well as resolve any of
         // its "nested" dependencies recursively until all have gotten resolved.
+		// 我们已准备好实例化与该绑定所关联的具体类型的实例。
         if ($this->isBuildable($concrete, $abstract)) {
             $object = $this->build($concrete);
         } else {
@@ -701,6 +710,7 @@ class Container implements ArrayAccess, ContainerContract
         // If we defined any extenders for this type, we'll need to spin through them
         // and apply them to the object being built. This allows for the extension
         // of services, such as changing configuration or decorating the object.
+		// 如果我们定义了这种类型的任何extenders,我们需要通过它们进行旋转,并将它们应用到正在构建的对象中。
         foreach ($this->getExtenders($abstract) as $extender) {
             $object = $extender($object, $this);
         }
@@ -763,6 +773,7 @@ class Container implements ArrayAccess, ContainerContract
         // Next we need to see if a contextual binding might be bound under an alias of the
         // given abstract type. So, we will need to check if any aliases exist with this
         // type and then spin through them and check for contextual bindings on these.
+		// 接下来，我们需要查看是否有可能将一个上下文绑定操作绑定到给定抽象类型的别名上。
         if (empty($this->abstractAliases[$abstract])) {
             return;
         }
@@ -815,6 +826,8 @@ class Container implements ArrayAccess, ContainerContract
         // If the concrete type is actually a Closure, we will just execute it and
         // hand back the results of the functions, which allows functions to be
         // used as resolvers for more fine-tuned resolution of these objects.
+		// 如果具体的类型实际上是闭包，我们就会直接执行它，并将函数的结果返回给用户，
+		// 这样就使得函数能够作为这些对象更精确解析的解析器被使用。
         if ($concrete instanceof Closure) {
             return $concrete($this, $this->getLastParameterOverride());
         }
@@ -964,6 +977,7 @@ class Container implements ArrayAccess, ContainerContract
         // If we can not resolve the class instance, we will check to see if the value
         // is optional, and if it is we will return the optional parameter value as
         // the value of the dependency, similarly to how we do this with scalars.
+		// 如果无法解析类实例，我们将检查该值是否为可选值，如果是，则将可选参数的值作为依赖项的值返回，其方式与处理标量值时相同。
         catch (BindingResolutionException $e) {
             if ($parameter->isOptional()) {
                 return $parameter->getDefaultValue();

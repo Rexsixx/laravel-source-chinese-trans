@@ -10,6 +10,7 @@ class Tokenizer {
 
     /**
      * Token Map for "non-tokens"
+	 * “非令牌”令牌图
      *
      * @var array
      */

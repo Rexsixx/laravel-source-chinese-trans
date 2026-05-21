@@ -101,6 +101,7 @@ class NameContext
 
     /**
      * Get resolved name.
+	 * 得到解析的名称
      *
      * @param Name $name Name to resolve
      * @param int  $type One of Stmt\Use_::TYPE_{FUNCTION|CONSTANT}
@@ -145,6 +146,7 @@ class NameContext
 
     /**
      * Get resolved class name.
+	 * 获取解析类名
      *
      * @param Name $name Class ame to resolve
      *
@@ -156,6 +158,7 @@ class NameContext
 
     /**
      * Get possible ways of writing a fully qualified name (e.g., by making use of aliases).
+	 * 有可能写一个完全合格的名字的方法。通过使用别名。
      *
      * @param string $name Fully-qualified name (without leading namespace separator)
      * @param int    $type One of Stmt\Use_::TYPE_*

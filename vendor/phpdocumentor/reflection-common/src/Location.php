@@ -42,6 +42,7 @@ final class Location
 
     /**
      * Returns the line number that is covered by this location.
+	 * 返回被这个位置覆盖的行号
      */
     public function getLineNumber() : int
     {
@@ -50,6 +51,7 @@ final class Location
 
     /**
      * Returns the column number (character position on a line) for this location object.
+	 * 返回该位置对象的列号(线的字符位置)
      */
     public function getColumnNumber() : int
     {

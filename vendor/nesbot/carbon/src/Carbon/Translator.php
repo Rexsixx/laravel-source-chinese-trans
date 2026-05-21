@@ -77,6 +77,7 @@ class Translator extends Translation\Translator
 
     /**
      * Init messages language from matching file in Lang directory.
+	 * 在Lang目录中匹配文件的Init消息语言
      *
      * @param string $locale
      *
@@ -93,6 +94,7 @@ class Translator extends Translation\Translator
 
     /**
      * Set messages of a locale and take file first if present.
+	 * 设置环境信息,并首先处理文件。
      *
      * @param string $locale
      * @param array  $messages
@@ -114,6 +116,7 @@ class Translator extends Translation\Translator
     /**
      * Get messages of a locale, if none given, return all the
      * languages.
+	 * 获取一个区域的消息,如果没有给出,返回所有语言。
      *
      * @param string|null $locale
      *
@@ -126,6 +129,7 @@ class Translator extends Translation\Translator
 
     /**
      * Set the current translator locale and indicate if the source locale file exists
+	 * 设置当前的翻译环境,并指示源地区文件是否存在。
      *
      * @param string $locale locale ex. en
      *
