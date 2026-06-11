@@ -9,7 +9,7 @@ trait ManagesTranslations
 {
     /**
      * The translation replacements for the translation being rendered.
-	 * 翻译替代正在呈现的翻译
+	 * 翻译替代呈现的翻译
      *
      * @var array
      */

@@ -20,7 +20,6 @@ use ReflectionExtension;
 
 /**
  * Monolog POSIX signal handler
- * POSIX信号处理器
  *
  * @author Robert Gust-Bardon <robert@gust-bardon.org>
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，软删除范围
+ * Illuminate，数据库，Eloquent，软删除作用域
  */
 
 namespace Illuminate\Database\Eloquent;
@@ -102,7 +102,7 @@ class SoftDeletingScope implements Scope
 
     /**
      * Add the without-trashed extension to the builder.
-	 * 向构建器中添加未被丢弃的扩展
+	 * 向构建器中添加无垃圾扩展
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @return void

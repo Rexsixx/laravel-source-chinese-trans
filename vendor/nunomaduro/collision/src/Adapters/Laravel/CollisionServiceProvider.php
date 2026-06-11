@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，适配器，Laravel，冲突服务供应商
+ * NunoMaduro，冲突，适配器，Laravel，碰撞服务供应商
  */
 
 /**
@@ -26,6 +26,7 @@ use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract
  * 这是一个碰撞Laravel适配器服务提供者实现。
  *
  * Registers the Error Handler on Laravel.
+ * 在Laravel上注册错误处理程序。
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */

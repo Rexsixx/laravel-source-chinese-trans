@@ -1,6 +1,6 @@
 <?php
 /**
- * App，Http，控制台，授权，注册控制器
+ * App，Http，控制器，认证，注册器控制器
  */
 
 namespace App\Http\Controllers\Auth;
@@ -15,7 +15,7 @@ class RegisterController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Register Controller	注册控制器
+    | Register Controller	注册器控制器
     |--------------------------------------------------------------------------
     |
     | This controller handles the registration of new users as well as their
@@ -29,7 +29,7 @@ class RegisterController extends Controller
 
     /**
      * Where to redirect users after registration.
-	 * 注册后将用户重定向到哪里
+	 * 在注册后重定向用户
      *
      * @var string
      */
@@ -56,9 +56,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
     }
 

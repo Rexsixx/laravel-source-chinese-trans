@@ -31,7 +31,6 @@ class FileExistsException extends Exception
 
     /**
      * Get the path which was found.
-	 * 获取找到的路径
      *
      * @return string
      */

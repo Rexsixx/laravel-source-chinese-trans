@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，认证，用户身份验证
+ * Illuminate，基础，认证，对用户进行身份验证
  */
 
 namespace Illuminate\Foundation\Auth;
@@ -64,10 +64,12 @@ trait AuthenticatesUsers
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
      */
     protected function validateLogin(Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             $this->username() => 'required|string',
             'password' => 'required|string',
         ]);

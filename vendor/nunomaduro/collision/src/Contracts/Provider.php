@@ -1,7 +1,4 @@
 <?php
-/**
- * NunoMaduro，Collision，契约，供应者
- */
 
 /*
  * This file is part of Collision.
@@ -16,7 +13,6 @@ namespace NunoMaduro\Collision\Contracts;
 
 /**
  * This is an Collision Provider contract.
- * 这是一个碰撞供应商合同
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
@@ -24,7 +20,6 @@ interface Provider
 {
     /**
      * Registers the current Handler as Error Handler.
-	 * 将当前处理程序注册为错误处理程序
      *
      * @return \NunoMaduro\Collision\Contracts\Provider
      */
@@ -32,7 +27,6 @@ interface Provider
 
     /**
      * Returns the handler.
-	 * 返回处理程序
      *
      * @return \NunoMaduro\Collision\Contracts\Handler
      */

@@ -44,7 +44,7 @@ trait CompilesComponents
 
     /**
      * Compile the end-slot statements into valid PHP.
-	 * 将最终槽语句编译成有效的PHP
+	 * 将结束槽语句编译成有效的PHP
      *
      * @return string
      */

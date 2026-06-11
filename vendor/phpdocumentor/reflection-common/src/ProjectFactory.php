@@ -1,6 +1,6 @@
 <?php
 /**
- * phpDocumentor，Reflection，项目工厂
+ * phpDocumentor，反射，项目工厂
  */
 
 declare(strict_types=1);
@@ -24,7 +24,6 @@ interface ProjectFactory
 {
     /**
      * Creates a project from the set of files.
-	 * 从文件集合创建一个项目
      *
      * @param File[] $files
      */

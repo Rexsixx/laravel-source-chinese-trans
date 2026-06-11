@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，Vendor 发布命令
+ * Illuminate，基础，控制台，供应商发布命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -45,14 +45,14 @@ class VendorPublishCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'vendor:publish {--force : Overwrite any existing files.}
-                    {--all : Publish assets for all service providers without prompt.}
-                    {--provider= : The service provider that has assets you want to publish.}
-                    {--tag=* : One or many tags that have assets you want to publish.}';
+    protected $signature = 'vendor:publish {--force : Overwrite any existing files}
+                    {--all : Publish assets for all service providers without prompt}
+                    {--provider= : The service provider that has assets you want to publish}
+                    {--tag=* : One or many tags that have assets you want to publish}';
 
     /**
      * The console command description.
-	 * 控制台命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -156,9 +156,9 @@ class VendorPublishCommand extends Command
     {
         [$type, $value] = explode(': ', strip_tags($choice));
 
-        if ($type == 'Provider') {
+        if ($type === 'Provider') {
             $this->provider = $value;
-        } elseif ($type == 'Tag') {
+        } elseif ($type === 'Tag') {
             $this->tags = [$value];
         }
     }
@@ -265,7 +265,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Create the directory to house the published files if needed.
-	 * 如果需要，创建目录来存放发布的文件
+	 * 如果需要，创建目录来存放发布的文件。
      *
      * @param  string  $directory
      * @return void

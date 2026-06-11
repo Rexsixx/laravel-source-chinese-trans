@@ -182,6 +182,8 @@ class FileStore implements Store
         // If the file doesn't exist, we obviously cannot return the cache so we will
         // just return null. Otherwise, we'll get the contents of the file and get
         // the expiration UNIX timestamps from the start of the file's contents.
+		// 如果文件不存在,我们显然无法返回缓存,因此我们将返回null。
+		// 否则,我们将得到文件的内容,并从文件的内容开始获得过期的UNIX时间戳。
         try {
             $expire = substr(
                 $contents = $this->files->get($path, true), 0, 10
@@ -193,6 +195,8 @@ class FileStore implements Store
         // If the current time is greater than expiration timestamps we will delete
         // the file and return null. This helps clean up the old files and keeps
         // this directory much cleaner for us as old files aren't hanging out.
+		// 如果当前时间大于过期时间戳,我们将删除文件并返回null。
+		// 这有助于清理旧文件,并保持这个目录对我们来说更干净,因为旧文件不会挂在外面。
         if ($this->currentTime() >= $expire) {
             $this->forget($key);
 
@@ -204,6 +208,8 @@ class FileStore implements Store
         // Next, we'll extract the number of minutes that are remaining for a cache
         // so that we can properly retain the time for things like the increment
         // operation that may be performed on this cache on a later operation.
+		// 接下来，我们将提取缓存剩余的分钟数，以便正确保留时间，
+		// 例如在后续操作中可能对这个缓存执行的递增操作。
         $time = ($expire - $this->currentTime()) / 60;
 
         return compact('data', 'time');

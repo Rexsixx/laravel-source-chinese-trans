@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，可重调接口
+ * Monolog，再设置接口
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Monolog;
 
 /**
  * Handler or Processor implementing this interface will be reset when Logger::reset() is called.
- * 当调用Logger::reset（）时，实现此接口的Handler或Processor将被重置。
  *
  * Resetting ends a log cycle gets them back to their initial state.
  *

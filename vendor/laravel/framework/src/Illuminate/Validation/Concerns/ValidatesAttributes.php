@@ -98,7 +98,7 @@ trait ValidatesAttributes
 
     /**
      * Validate the date is before or equal a given date.
-	 * 确认日期之前或相等的日期
+	 * 验证日期在给定日期之前或等于给定日期
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -173,7 +173,7 @@ trait ValidatesAttributes
 
     /**
      * Get the date format for an attribute if it has one.
-	 * 获取一个属性,如果它有一个属性
+	 * 获取属性的日期格式（如果属性有）
      *
      * @param  string  $attribute
      * @return string|null
@@ -376,7 +376,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute has a matching confirmation.
-	 * 验证属性有匹配确认
+	 * 验证属性是否具有匹配确认
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -512,7 +512,7 @@ trait ValidatesAttributes
 
     /**
      * Validate the dimensions of an image matches the given values.
-	 * 验证图像的尺寸与给定的值匹配
+	 * 验证图像的尺寸是否与给定值匹配
      *
      * @param  string $attribute
      * @param  mixed $value
@@ -521,7 +521,7 @@ trait ValidatesAttributes
      */
     public function validateDimensions($attribute, $value, $parameters)
     {
-        if ($this->isValidFileInstance($value) && $value->getClientMimeType() == 'image/svg+xml') {
+        if ($this->isValidFileInstance($value) && $value->getClientMimeType() === 'image/svg+xml') {
             return true;
         }
 
@@ -545,7 +545,7 @@ trait ValidatesAttributes
 
     /**
      * Test if the given width and height fail any conditions.
-	 * 测试如果给定的宽度和高度不受任何条件的影响
+	 * 测试给定的宽度和高度是否满足任何条件
      *
      * @param  array  $parameters
      * @param  int  $width
@@ -564,7 +564,7 @@ trait ValidatesAttributes
 
     /**
      * Determine if the given parameters fail a dimension ratio check.
-	 * 确定给定的参数是否失败尺寸比检查
+	 * 确定给定参数是否未通过尺寸比率检查
      *
      * @param  array  $parameters
      * @param  int  $width
@@ -588,7 +588,7 @@ trait ValidatesAttributes
 
     /**
      * Validate an attribute is unique among other values.
-	 * 验证属性在其他值中是惟一的
+	 * 验证属性在其他值中是唯一的
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -597,23 +597,55 @@ trait ValidatesAttributes
      */
     public function validateDistinct($attribute, $value, $parameters)
     {
-        $attributeName = $this->getPrimaryAttribute($attribute);
-
-        $attributeData = ValidationData::extractDataFromPath(
-            ValidationData::getLeadingExplicitAttributePath($attributeName), $this->data
-        );
-
-        $pattern = str_replace('\*', '[^.]+', preg_quote($attributeName, '#'));
-
-        $data = Arr::where(Arr::dot($attributeData), function ($value, $key) use ($attribute, $pattern) {
-            return $key != $attribute && (bool) preg_match('#^'.$pattern.'\z#u', $key);
-        });
+        $data = Arr::except($this->getDistinctValues($attribute), $attribute);
 
         if (in_array('ignore_case', $parameters)) {
             return empty(preg_grep('/^'.preg_quote($value, '/').'$/iu', $data));
         }
 
         return ! in_array($value, array_values($data));
+    }
+
+    /**
+     * Get the values to distinct between.
+	 * 得到不同的值
+     *
+     * @param  string  $attribute
+     * @return array
+     */
+    protected function getDistinctValues($attribute)
+    {
+        $attributeName = $this->getPrimaryAttribute($attribute);
+
+        if (! property_exists($this, 'distinctValues')) {
+            return $this->extractDistinctValues($attributeName);
+        }
+
+        if (! array_key_exists($attributeName, $this->distinctValues)) {
+            $this->distinctValues[$attributeName] = $this->extractDistinctValues($attributeName);
+        }
+
+        return $this->distinctValues[$attributeName];
+    }
+
+    /**
+     * Extract the distinct values from the data.
+	 * 从数据中提取不同的值
+     *
+     * @param  string  $attribute
+     * @return array
+     */
+    protected function extractDistinctValues($attribute)
+    {
+        $attributeData = ValidationData::extractDataFromPath(
+            ValidationData::getLeadingExplicitAttributePath($attribute), $this->data
+        );
+
+        $pattern = str_replace('\*', '[^.]+', preg_quote($attribute, '#'));
+
+        return Arr::where(Arr::dot($attributeData), function ($value, $key) use ($pattern) {
+            return (bool) preg_match('#^'.$pattern.'\z#u', $key);
+        });
     }
 
     /**
@@ -647,9 +679,11 @@ trait ValidatesAttributes
         // The second parameter position holds the name of the column that should be
         // verified as existing. If this parameter is not specified we will guess
         // that the columns being "verified" shares the given attribute's name.
+		// 第二个参数“position”用于指定需要验证是否存在的一列的名称。
+		// 如果这个参数没有指定,我们将猜测“验证”的列会共享给定的属性的名称。
         $column = $this->getQueryColumn($parameters, $attribute);
 
-        $expected = (is_array($value)) ? count($value) : 1;
+        $expected = is_array($value) ? count(array_unique($value)) : 1;
 
         return $this->getExistCount(
             $connection, $table, $column, $value, $parameters
@@ -689,6 +723,7 @@ trait ValidatesAttributes
 	 * 验证给定数据库表上属性值的唯一性
      *
      * If a database column is not specified, the attribute will be used.
+	 * 如果未指定数据库列，则使用该属性。
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -704,6 +739,8 @@ trait ValidatesAttributes
         // The second parameter position holds the name of the column that needs to
         // be verified as unique. If this parameter isn't specified we will just
         // assume that this column to be verified shares the attribute's name.
+		// 第二个参数“position”所代表的是需要进行唯一性验证的列的名称。
+		// 如果这个参数没有指定,我们将假设该列被验证,并共享属性的名称。
         $column = $this->getQueryColumn($parameters, $attribute);
 
         [$idColumn, $id] = [null, null];
@@ -715,6 +752,8 @@ trait ValidatesAttributes
         // The presence verifier is responsible for counting rows within this store
         // mechanism which might be a relational database or any other permanent
         // data store like Redis, etc. We will use it to determine uniqueness.
+		// 该存在验证器负责统计此存储机制（可能是关系型数据库，
+		// 也可能是像 Redis 这样的任何其他永久性数据存储）中的行数。我们将利用它来确定唯一性。
         $verifier = $this->getPresenceVerifierFor($connection);
 
         $extra = $this->getUniqueExtra($parameters);
@@ -755,7 +794,7 @@ trait ValidatesAttributes
             $id = $this->getValue($matches[1]);
         }
 
-        if (strtolower($id) == 'null') {
+        if (strtolower($id) === 'null') {
             $id = null;
         }
 
@@ -784,7 +823,7 @@ trait ValidatesAttributes
 
     /**
      * Parse the connection / table for the unique / exists rules.
-	 * 解析惟一/存在规则的连接/表
+	 * 解析连接/表中唯一/存在的规则
      *
      * @param  string  $table
      * @return array
@@ -796,7 +835,7 @@ trait ValidatesAttributes
 
     /**
      * Get the column name for an exists / unique query.
-	 * 获取存在/惟一查询的列名
+	 * 获取存在/唯一查询的列名
      *
      * @param  array  $parameters
      * @param  string  $attribute
@@ -810,7 +849,7 @@ trait ValidatesAttributes
 
     /**
      * Guess the database column from the given attribute name.
-	 * 从给定的属性名猜测数据库列
+	 * 根据给定的属性名猜测数据库列
      *
      * @param  string  $attribute
      * @return string
@@ -827,7 +866,7 @@ trait ValidatesAttributes
 
     /**
      * Get the extra conditions for a unique / exists rule.
-	 * 为独特/存在的规则获得额外的条件
+	 * 获取唯一/存在规则的额外条件
      *
      * @param  array  $segments
      * @return array
@@ -929,7 +968,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute is greater than or equal another attribute.
-	 * 验证一个属性大于或等于另一个属性
+	 * 验证一个属性是否大于或等于另一个属性
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -955,7 +994,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute is less than or equal another attribute.
-	 * 验证属性小于或等于另一个属性
+	 * 验证一个属性是否小于或等于另一个属性
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -981,7 +1020,7 @@ trait ValidatesAttributes
 
     /**
      * Validate the MIME type of a file is an image MIME type.
-	 * 验证文件的MIME类型是图像MIME类型
+	 * 验证文件的MIME类型是否为图像MIME类型
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -994,7 +1033,7 @@ trait ValidatesAttributes
 
     /**
      * Validate an attribute is contained within a list of values.
-	 * 验证属性包含在值列表中
+	 * 验证属性是否包含在值列表中
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -1010,7 +1049,7 @@ trait ValidatesAttributes
                 }
             }
 
-            return count(array_diff($value, $parameters)) == 0;
+            return count(array_diff($value, $parameters)) === 0;
         }
 
         return ! is_array($value) && in_array((string) $value, $parameters);
@@ -1202,7 +1241,7 @@ trait ValidatesAttributes
 
     /**
      * Validate the size of an attribute is greater than a minimum value.
-	 * 验证属性的大小大于最小值
+	 * 验证属性的大小是否大于最小值
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -1218,9 +1257,10 @@ trait ValidatesAttributes
 
     /**
      * "Indicate" validation should pass if value is null.
-	 * “指示”验证应该通过如果值为空
+	 * 如果value为空，“指示”验证应该通过。
      *
      * Always returns true, just lets us put "nullable" in rules.
+	 * 总是返回true,让我们在规则中放置“无效”。
      *
      * @return bool
      */
@@ -1245,7 +1285,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute is numeric.
-	 * 验证属性是数字的
+	 * 验证属性是否为数字
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -1362,7 +1402,7 @@ trait ValidatesAttributes
 
     /**
      * Convert the given values to boolean if they are string "true" / "false".
-	 * 如果它们是字符串“true”/“false”,将给定的值转换为布尔值。
+	 * 如果给定的值是字符串"true" / "false"，则将其转换为布尔值。
      *
      * @param  array  $values
      * @return array
@@ -1382,7 +1422,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute exists when another attribute does not have a given value.
-	 * 验证当另一个属性没有给定值时存在属性
+	 * 当另一个属性没有给定值时，验证该属性是否存在。
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -1406,7 +1446,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute exists when any other attribute exists.
-	 * 验证当任何其他属性存在时存在属性
+	 * 当任何其他属性存在时，验证一个属性是否存在。
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -1424,7 +1464,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute exists when all other attributes exists.
-	 * 当所有其他属性存在时,验证属性存在。
+	 * 当所有其他属性都存在时，验证一个属性是否存在。
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -1561,8 +1601,22 @@ trait ValidatesAttributes
     }
 
     /**
+     * Validate the attribute starts with a given substring.
+	 * 验证以给定子字符串开头的属性
+     *
+     * @param  string  $attribute
+     * @param  mixed   $value
+     * @param  array   $parameters
+     * @return bool
+     */
+    public function validateStartsWith($attribute, $value, $parameters)
+    {
+        return Str::startsWith($value, $parameters);
+    }
+
+    /**
      * Validate that an attribute is a string.
-	 * 验证属性是字符串
+	 * 验证属性是否为字符串
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -1575,7 +1629,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute is a valid timezone.
-	 * 验证属性是一个有效的时区
+	 * 验证属性是否为有效的时区
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -1596,7 +1650,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute is a valid URL.
-	 * 验证属性是一个有效的URL
+	 * 验证属性是否为有效的URL
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -1633,6 +1687,23 @@ trait ValidatesAttributes
     }
 
     /**
+     * Validate that an attribute is a valid UUID.
+	 * 验证属性是否为有效的UUID
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @return bool
+     */
+    public function validateUuid($attribute, $value)
+    {
+        if (! is_string($value)) {
+            return false;
+        }
+
+        return preg_match('/^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/iD', $value) > 0;
+    }
+
+    /**
      * Get the size of an attribute.
 	 * 获取属性的大小
      *
@@ -1648,7 +1719,8 @@ trait ValidatesAttributes
         // return the proper size accordingly. If it is a number, then number itself
         // is the size. If it is a file, we take kilobytes, and for a string the
         // entire length of the string will be considered the attribute size.
-		// 此方法将确定属性是数字、字符串、或文件，并相应地返回适当的大小。
+		// 此方法会判断该属性是数字、字符串还是文件，并据此返回相应的大小。
+		// 如果它是一个数字,那么数字本身就是大小。如果它是一个文件,我们使用千字节,而字符串的整个长度将被考虑为属性大小。
         if (is_numeric($value) && $hasNumeric) {
             return $value;
         } elseif (is_array($value)) {
@@ -1684,6 +1756,8 @@ trait ValidatesAttributes
      * @param  mixed  $second
      * @param  string  $operator
      * @return bool
+     *
+     * @throws \InvalidArgumentException
      */
     protected function compare($first, $second, $operator)
     {
@@ -1705,7 +1779,7 @@ trait ValidatesAttributes
 
     /**
      * Parse named parameters to $key => $value items.
-	 * 解析命名为$ $ value项的参数
+	 * 将命名参数解析为$key => $value项
      *
      * @param  array  $parameters
      * @return array
@@ -1723,7 +1797,7 @@ trait ValidatesAttributes
 
     /**
      * Require a certain number of parameters to be present.
-	 * 需要一定数量的参数
+	 * 要求提供一定数量的参数
      *
      * @param  int    $count
      * @param  array  $parameters
@@ -1741,7 +1815,7 @@ trait ValidatesAttributes
 
     /**
      * Require comparison values to be of the same type.
-	 * 要求比较值与相同类型
+	 * 要求比较值具有相同类型
      *
      * @param  mixed  $first
      * @param  mixed  $second
@@ -1758,7 +1832,7 @@ trait ValidatesAttributes
 
     /**
      * Adds the existing rule to the numericRules array if the attribute's value is numeric.
-	 * 如果属性的值是数字,则将现有规则添加到数字规则数组中。
+	 * 如果属性的值为数字，则将现有规则添加到numericRules数组中。
      *
      * @param  string  $attribute
      * @param  string  $rule

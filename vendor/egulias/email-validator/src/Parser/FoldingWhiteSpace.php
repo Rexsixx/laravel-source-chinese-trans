@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，EmailValidator，分析程序，折叠白色空间
+ * Egulias，电子邮件验证器，分析程序，折叠白色空间
  */
 
 namespace Egulias\EmailValidator\Parser;
@@ -72,6 +72,7 @@ class FoldingWhiteSpace extends PartParser
         }
 
         //this has no coverage. Condition is repeated from above one
+		// 这没有覆盖范围。从上方重复条件。
         if (!$this->lexer->isNextTokenAny(array(EmailLexer::S_SP, EmailLexer::S_HTAB))) {
             return new InvalidEmail(new CRLFAtTheEnd(), ((array) $this->lexer->token)['value']);
         }

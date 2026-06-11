@@ -30,7 +30,6 @@ use ReturnTypeWillChange;
 
 /**
  * Represents a universally unique identifier (UUID), according to RFC 4122.
- * 表示一个普遍唯一的标识符(UUID),根据RFC 4122。
  *
  * This class provides immutable UUID objects (the Uuid class) and the static
  * methods `uuid1()`, `uuid3()`, `uuid4()`, and `uuid5()` for generating version

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，动态类，根据实际修改
+ * Illuminate，基础，控制台，存根，动态类，根据实际需要修改
  */
 
 namespace DummyNamespace;
@@ -11,7 +11,7 @@ class DummyClass extends Command
 {
     /**
      * The name and signature of the console command.
-	 *控制台命令的名称和签名
+	 * console命令的名称和签名
      *
      * @var string
      */
@@ -19,7 +19,7 @@ class DummyClass extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * console命令说明
      *
      * @var string
      */
@@ -38,7 +38,6 @@ class DummyClass extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
      *
      * @return mixed
      */

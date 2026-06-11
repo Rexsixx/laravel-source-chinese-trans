@@ -1,7 +1,4 @@
 <?php
-/**
- * phpDocumentor，Reflection，工具包
- */
 
 declare(strict_types=1);
 
@@ -26,7 +23,6 @@ abstract class Utils
 {
     /**
      * Wrapper function for phps preg_split
-	 * phps preg_split的包装器函数
      *
      * This function is inspired by {@link https://github.com/thecodingmachine/safe/blob/master/generated/pcre.php}. But
      * since this library is all about performance we decided to strip everything we don't need. Reducing the amount

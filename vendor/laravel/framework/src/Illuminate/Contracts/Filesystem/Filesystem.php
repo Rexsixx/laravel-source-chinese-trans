@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，文件系统，文件系统
+ * Illuminate，契约，文件系统，Filesystem
  */
 
 namespace Illuminate\Contracts\Filesystem;
@@ -9,7 +9,7 @@ interface Filesystem
 {
     /**
      * The public visibility setting.
-	 * 公共可见性设置
+	 * 公众能见度设置
      *
      * @var string
      */
@@ -44,6 +44,17 @@ interface Filesystem
     public function get($path);
 
     /**
+     * Get a resource to read the file.
+	 * 获取读取文件的资源
+     *
+     * @param  string  $path
+     * @return resource|null The path resource or null on failure.
+     *
+     * @throws FileNotFoundException
+     */
+    public function readStream($path);
+
+    /**
      * Write the contents of a file.
 	 * 写入文件的内容
      *
@@ -53,6 +64,20 @@ interface Filesystem
      * @return bool
      */
     public function put($path, $contents, $options = []);
+
+    /**
+     * Write a new file using a stream.
+	 * 使用流写一个新文件
+     *
+     * @param  string  $path
+     * @param  resource $resource
+     * @param  array  $options
+     * @return bool
+     *
+     * @throws \InvalidArgumentException If $resource is not a file handle.
+     * @throws FileExistsException
+     */
+    public function writeStream($path, $resource, array $options = []);
 
     /**
      * Get the visibility for the given path.
@@ -69,7 +94,7 @@ interface Filesystem
      *
      * @param  string  $path
      * @param  string  $visibility
-     * @return void
+     * @return bool
      */
     public function setVisibility($path, $visibility);
 
@@ -180,7 +205,7 @@ interface Filesystem
 
     /**
      * Create a directory.
-	 * 创建目录
+	 * 创建一个目录
      *
      * @param  string  $path
      * @return bool

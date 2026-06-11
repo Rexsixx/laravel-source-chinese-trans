@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，CodeCoverage，工具
+ * SebastianBergmann，代码覆盖率，工具
  */
 
 /*
@@ -15,7 +15,6 @@ namespace SebastianBergmann\CodeCoverage;
 
 /**
  * Utility methods.
- * 工具方法
  */
 final class Util
 {

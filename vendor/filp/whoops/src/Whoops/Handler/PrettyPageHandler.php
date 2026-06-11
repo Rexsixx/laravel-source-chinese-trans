@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，处理器，漂亮页面处理程序
+ * Whoops，处理者，漂亮页面处理程序
  */
 
 /**
@@ -39,6 +39,7 @@ class PrettyPageHandler extends Handler
 	 * 搜寻资源的搜索路径。
      *
      * Stored in the reverse order they're declared.
+	 * 以相反的顺序存储。
      *
      * @var array
      */
@@ -46,6 +47,7 @@ class PrettyPageHandler extends Handler
 
     /**
      * Fast lookup cache for known resource locations.
+	 * 为已知的资源位置快速查找缓存
      *
      * @var array
      */

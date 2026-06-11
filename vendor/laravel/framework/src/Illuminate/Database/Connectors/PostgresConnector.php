@@ -35,6 +35,7 @@ class PostgresConnector extends Connector implements ConnectorInterface
         // using the configuration option specified by the developer. We will also
         // set the default character set on the connections to UTF-8 by default.
 		// 首先,我们将创建连接到使用开发人员指定的配置选项的基本DSN和连接实例。
+		// 我们还将默认设置与UTF-8连接的默认字符。
         $connection = $this->createConnection(
             $this->getDsn($config), $config, $this->getOptions($config)
         );
@@ -44,6 +45,8 @@ class PostgresConnector extends Connector implements ConnectorInterface
         // Next, we will check to see if a timezone has been specified in this config
         // and if it has we will issue a statement to modify the timezone with the
         // database. Setting this DB timezone is an optional configuration item.
+		// 接下来,我们将检查是否在这个配置中指定了一个时区,如果它有我们将发布一个声明来修改数据库的时区。
+		// 设置这个DB时区是一个可选的配置项。
         $this->configureTimezone($connection, $config);
 
         $this->configureSchema($connection, $config);
@@ -51,6 +54,8 @@ class PostgresConnector extends Connector implements ConnectorInterface
         // Postgres allows an application_name to be set by the user and this name is
         // used to when monitoring the application with pg_stat_activity. So we'll
         // determine if the option has been specified and run a statement if so.
+		// Postgres允许用户设置一个application_name,并在使用pg_stat_activity监视应用程序时使用这个名称。
+		// 因此,我们将确定是否已经指定了该选项并运行语句。
         $this->configureApplicationName($connection, $config);
 
         return $connection;
@@ -66,9 +71,11 @@ class PostgresConnector extends Connector implements ConnectorInterface
      */
     protected function configureEncoding($connection, $config)
     {
-        $charset = $config['charset'];
+        if (! isset($config['charset'])) {
+            return;
+        }
 
-        $connection->prepare("set names '$charset'")->execute();
+        $connection->prepare("set names '{$config['charset']}'")->execute();
     }
 
     /**
@@ -151,6 +158,7 @@ class PostgresConnector extends Connector implements ConnectorInterface
         // in the configuration options. This will give us the basic DSN we will
         // need to establish the PDO connections and return them back for use.
 		// 首先,如果在配置选项中,我们将创建基本的DSN设置和端口。
+		// 这将给我们基本的DSN,我们需要建立PDO连接并返回它们使用。
         extract($config, EXTR_SKIP);
 
         $host = isset($host) ? "host={$host};" : '';
@@ -160,6 +168,8 @@ class PostgresConnector extends Connector implements ConnectorInterface
         // If a port was specified, we will add it to this Postgres DSN connections
         // format. Once we have done that we are ready to return this connection
         // string back out for usage, as this has been fully constructed here.
+		// 如果指定了一个端口,我们将将它添加到这个Postgres DSN连接格式。
+		// 一旦我们完成了,我们就可以重新返回这个连接字符串,因为这里已经完全构建了。
         if (isset($config['port'])) {
             $dsn .= ";port={$port}";
         }

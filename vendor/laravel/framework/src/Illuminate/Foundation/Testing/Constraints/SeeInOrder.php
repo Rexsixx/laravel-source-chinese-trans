@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，约束条件，整理
+ * Illuminate，基础，测试，约束，按顺序查看
  */
 
 namespace Illuminate\Foundation\Testing\Constraints;

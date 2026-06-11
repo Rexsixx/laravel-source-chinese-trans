@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，高阶排序代理
+ * Illuminate，支持，高阶轻拍代理
  */
 
 namespace Illuminate\Support;
@@ -9,7 +9,7 @@ class HigherOrderTapProxy
 {
     /**
      * The target being tapped.
-	 * 目标被发掘
+	 * 被监听的目标
      *
      * @var mixed
      */
@@ -29,7 +29,7 @@ class HigherOrderTapProxy
 
     /**
      * Dynamically pass method calls to the target.
-	 * 动态通过方法调用目标
+	 * 动态地将方法调用传递给目标
      *
      * @param  string  $method
      * @param  array  $parameters

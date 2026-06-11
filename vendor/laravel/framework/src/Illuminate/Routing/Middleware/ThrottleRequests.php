@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，中间件，节流请求
+ * Illuminate，路由，中间件，节流阀的请求
  */
 
 namespace Illuminate\Routing\Middleware;
@@ -19,7 +19,7 @@ class ThrottleRequests
 
     /**
      * The rate limiter instance.
-	 * 速率限制实例
+	 * 速率限制器实例
      *
      * @var \Illuminate\Cache\RateLimiter
      */
@@ -39,13 +39,14 @@ class ThrottleRequests
 
     /**
      * Handle an incoming request.
-	 * 处理传入的请求
+	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @param  int|string  $maxAttempts
      * @param  float|int  $decayMinutes
-     * @return mixed
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \Illuminate\Http\Exceptions\ThrottleRequestsException
      */
     public function handle($request, Closure $next, $maxAttempts = 60, $decayMinutes = 1)
@@ -70,7 +71,7 @@ class ThrottleRequests
 
     /**
      * Resolve the number of attempts if the user is authenticated or not.
-	 * 如果用户经过身份验证,就解决尝试的次数。
+	 * 解析用户是否通过身份验证的尝试次数
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int|string  $maxAttempts
@@ -91,10 +92,11 @@ class ThrottleRequests
 
     /**
      * Resolve request signature.
-	 * 解决请求签名
+	 * 解析请求签名
      *
      * @param  \Illuminate\Http\Request  $request
      * @return string
+     *
      * @throws \RuntimeException
      */
     protected function resolveRequestSignature($request)
@@ -112,7 +114,7 @@ class ThrottleRequests
 
     /**
      * Create a 'too many attempts' exception.
-	 * 创建一个“太多尝试”的例外
+	 * 创建一个“too many attempts”异常
      *
      * @param  string  $key
      * @param  int  $maxAttempts
@@ -135,7 +137,7 @@ class ThrottleRequests
 
     /**
      * Get the number of seconds until the next retry.
-	 * 把时间数拨到下一个重试
+	 * 获取到下一次重试的秒数
      *
      * @param  string  $key
      * @return int
@@ -147,7 +149,7 @@ class ThrottleRequests
 
     /**
      * Add the limit header information to the given response.
-	 * 将极限头信息添加到给定的响应
+	 * 将限制头信息添加到给定的响应中
      *
      * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @param  int  $maxAttempts
@@ -166,7 +168,7 @@ class ThrottleRequests
 
     /**
      * Get the limit headers information.
-	 * 获取极限头信息
+	 * 获取限制标头信息
      *
      * @param  int  $maxAttempts
      * @param  int  $remainingAttempts
@@ -190,7 +192,7 @@ class ThrottleRequests
 
     /**
      * Calculate the number of remaining attempts.
-	 * 计算剩余尝试的数量
+	 * 计算剩余的尝试次数
      *
      * @param  string  $key
      * @param  int  $maxAttempts

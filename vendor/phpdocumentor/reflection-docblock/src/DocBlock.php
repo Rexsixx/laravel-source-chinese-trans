@@ -1,7 +1,4 @@
 <?php
-/**
- * phpDocumentor，Reflection，Doc Block
- */
 
 declare(strict_types=1);
 
@@ -84,7 +81,6 @@ final class DocBlock
 
     /**
      * Returns the current context.
-	 * 返回当前上下文
      */
     public function getContext(): ?Types\Context
     {
@@ -93,7 +89,6 @@ final class DocBlock
 
     /**
      * Returns the current location.
-	 * 返回当前位置
      */
     public function getLocation(): ?Location
     {

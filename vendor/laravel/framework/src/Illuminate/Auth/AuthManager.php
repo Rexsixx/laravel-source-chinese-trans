@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，认证管理器
+ * Illuminate，认证，身份验证管理器
  */
 
 namespace Illuminate\Auth;
@@ -15,7 +15,7 @@ class AuthManager implements FactoryContract
 
     /**
      * The application instance.
-	 * 程序实例
+	 * 应用实例
      *
      * @var \Illuminate\Foundation\Application
      */
@@ -42,6 +42,7 @@ class AuthManager implements FactoryContract
 	 * 各种服务共享的用户解析器。
      *
      * Determines the default user for Gate, Request, and the Authenticatable contract.
+	 * 确定网关、请求和认证合同的默认用户。
      *
      * @var \Closure
      */
@@ -109,7 +110,7 @@ class AuthManager implements FactoryContract
 
     /**
      * Call a custom driver creator.
-	 * 调用自定义驱动程序创建者
+	 * 调用自定义驱动程序创建者。
      *
      * @param  string  $name
      * @param  array  $config
@@ -137,6 +138,7 @@ class AuthManager implements FactoryContract
         // When using the remember me functionality of the authentication services we
         // will need to be set the encryption instance of the guard, which allows
         // secure, encrypted cookie values to get generated for those cookies.
+		// 在使用身份验证服务的功能时,我们需要设置警卫的加密实例,它允许安全、加密的cookie值来生成这些cookie。
         if (method_exists($guard, 'setCookieJar')) {
             $guard->setCookieJar($this->app['cookie']);
         }
@@ -165,9 +167,13 @@ class AuthManager implements FactoryContract
         // The token guard implements a basic API token based guard implementation
         // that takes an API token field from the request and matches it to the
         // user in the database or another persistence layer where users are.
+		// 令牌警卫实现了一个基于API标记的保护实现,它从请求中获取API令牌字段,
+		// 并将其匹配到数据库中的用户或用户在的另一个持久性层。
         $guard = new TokenGuard(
             $this->createUserProvider($config['provider'] ?? null),
-            $this->app['request']
+            $this->app['request'],
+            $config['input_key'] ?? 'api_token',
+            $config['storage_key'] ?? 'api_token'
         );
 
         $this->app->refresh('request', $guard, 'setRequest');
@@ -274,7 +280,7 @@ class AuthManager implements FactoryContract
 
     /**
      * Register a custom driver creator Closure.
-	 * 注册自定义驱动程序创建器Closure。
+	 * 注册自定义驱动程序创建器Closure
      *
      * @param  string  $driver
      * @param  \Closure  $callback

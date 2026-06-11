@@ -71,7 +71,6 @@ class Mockery
 
     /**
      * Defines the global helper functions
-	 * 定义全局辅助函数
      *
      * @return void
      */

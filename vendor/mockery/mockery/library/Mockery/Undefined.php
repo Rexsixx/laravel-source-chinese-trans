@@ -41,7 +41,6 @@ class Undefined
 
     /**
      * Return a string, avoiding E_RECOVERABLE_ERROR
-	 * 返回字符串,避免E_RECOVERABLE_ERROR
      *
      * @return string
      */

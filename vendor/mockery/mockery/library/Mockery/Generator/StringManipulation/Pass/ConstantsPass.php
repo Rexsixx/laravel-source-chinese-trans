@@ -1,7 +1,4 @@
 <?php
-/**
- * Mockery，生成器，字符串操作，传递，常量传递
- */
 
 namespace Mockery\Generator\StringManipulation\Pass;
 

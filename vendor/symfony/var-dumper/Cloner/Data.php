@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，VarDumper，克隆，数据
+ * Symfony，组件，Var Dumper，克隆，数据
  */
 
 /*
@@ -204,7 +204,6 @@ class Data implements \ArrayAccess, \Countable, \IteratorAggregate
 
     /**
      * Returns a depth limited clone of $this.
-	 * 返回一个深度有限的克隆
      *
      * @param int $maxDepth The max dumped depth level
      *
@@ -220,7 +219,6 @@ class Data implements \ArrayAccess, \Countable, \IteratorAggregate
 
     /**
      * Limits the number of elements per depth level.
-	 * 限制每深度层的元素个数
      *
      * @param int $maxItemsPerDepth The max number of items dumped per depth level
      *
@@ -236,7 +234,6 @@ class Data implements \ArrayAccess, \Countable, \IteratorAggregate
 
     /**
      * Enables/disables objects' identifiers tracking.
-	 * 启用/禁用对象标识符跟踪
      *
      * @param bool $useRefHandles False to hide global ref. handles
      *

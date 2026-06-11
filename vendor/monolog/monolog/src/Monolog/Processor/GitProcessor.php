@@ -18,7 +18,6 @@ use Monolog\Logger;
 
 /**
  * Injects Git branch and Git commit SHA in all records
- * 在所有记录中注入Git分支和Git提交SHA
  *
  * @author Nick Otter
  * @author Jordi Boggiano <j.boggiano@seld.be>

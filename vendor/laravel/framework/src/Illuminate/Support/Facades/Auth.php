@@ -47,12 +47,13 @@ class Auth extends Facade
 
     /**
      * Register the typical authentication routes for an application.
-	 * 注册应用程序的典型身份验证路由
+	 * 为应用程序注册典型的身份验证路由
      *
+     * @param  array  $options
      * @return void
      */
-    public static function routes()
+    public static function routes(array $options = [])
     {
-        static::$app->make('router')->auth();
+        static::$app->make('router')->auth($options);
     }
 }

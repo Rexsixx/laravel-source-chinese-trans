@@ -51,9 +51,10 @@ class Input extends Facade
 {
     /**
      * Get an item from the input data.
-	 * 从输入数据中获取一个项目。
+	 * 从输入数据中获取一个项
      *
      * This method is used for all request verbs (GET, POST, PUT, and DELETE)
+	 * 此方法用于所有请求动词（GET、POST、PUT和DELETE）
      *
      * @param  string  $key
      * @param  mixed   $default

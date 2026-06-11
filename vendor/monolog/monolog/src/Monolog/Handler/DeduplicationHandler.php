@@ -1,7 +1,4 @@
 <?php
-/**
- * Monolog，处理程序，重复数据删除处理程序
- */
 
 /*
  * This file is part of the Monolog package.
@@ -18,7 +15,6 @@ use Monolog\Logger;
 
 /**
  * Simple handler wrapper that deduplicates log records across multiple requests
- * 跨多个请求删除重复日志记录的简单处理程序包装器。
  *
  * It also includes the BufferHandler functionality and will buffer
  * all messages until the end of the request or flush() is called.

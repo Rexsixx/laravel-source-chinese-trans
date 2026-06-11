@@ -1,6 +1,6 @@
 <?php
 /**
- * App，Http，控制台，授权，登录控制器
+ * App，Http，控制器，认证，登录控制器
  */
 
 namespace App\Http\Controllers\Auth;
@@ -18,7 +18,6 @@ class LoginController extends Controller
     | This controller handles authenticating users for the application and
     | redirecting them to your home screen. The controller uses a trait
     | to conveniently provide its functionality to your applications.
-	| 此控制器负责对应用程序的用户进行身份验证，并将他们重定向至您的主界面。
     |
     */
 

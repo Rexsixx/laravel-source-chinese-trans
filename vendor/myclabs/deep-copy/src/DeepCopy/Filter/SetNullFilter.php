@@ -1,6 +1,6 @@
 <?php
 /**
- * DeepCopy，过滤器，设置空过滤器
+ * DeepCopy，过滤器，零过滤器
  */
 
 namespace DeepCopy\Filter;
@@ -14,7 +14,6 @@ class SetNullFilter implements Filter
 {
     /**
      * Sets the object property to null.
-	 * 将对象属性设置为空
      *
      * {@inheritdoc}
      */

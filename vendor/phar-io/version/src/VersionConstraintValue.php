@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Version，版本约束值
+ * PharIo，版本，版本约束值
  */
 
 namespace PharIo\Version;

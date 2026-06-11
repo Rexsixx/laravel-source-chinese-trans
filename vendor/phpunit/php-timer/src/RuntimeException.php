@@ -1,9 +1,4 @@
 <?php declare(strict_types=1);
-
-/**
- * SebastianBergmann，计时，运行时异常
- */
-
 /*
  * This file is part of phpunit/php-timer.
  *

@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，节点反射器
- */
-
 namespace PhpParser;
 
 class NodeTraverser implements NodeTraverserInterface
@@ -55,7 +51,6 @@ class NodeTraverser implements NodeTraverserInterface
 
     /**
      * Adds a visitor.
-	 * 添加一个访问者
      *
      * @param NodeVisitor $visitor Visitor to add
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，VarDumper，服务，转储服务器
+ * Symfony，组件，Var Dumper，服务器，转储文件服务器
  */
 
 /*
@@ -20,7 +20,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * A server collecting Data clones sent by a ServerDumper.
- * 一个服务器收集由一个ServerDumper发送的数据克隆
+ * 收集ServerDumper发送的数据克隆的服务器。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  *
@@ -59,6 +59,7 @@ class DumpServer
             $payload = @unserialize(base64_decode($message), ['allowed_classes' => [Data::class, Stub::class]]);
 
             // Impossible to decode the message, give up.
+			// 无法破译的信息，放弃吧。
             if (false === $payload) {
                 if ($this->logger) {
                     $this->logger->warning('Unable to decode a message from {clientId} client.', ['clientId' => $clientId]);

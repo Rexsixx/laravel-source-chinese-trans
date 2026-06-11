@@ -36,7 +36,7 @@ trait ManagesLayouts
 
     /**
      * Start injecting content into a section.
-	 * 开始向一个部分注入内容
+	 * 开始向部分注入内容
      *
      * @param  string  $section
      * @param  string|null  $content
@@ -55,7 +55,7 @@ trait ManagesLayouts
 
     /**
      * Inject inline content into a section.
-	 * 将内联内容注入一个部分
+	 * 将内联内容注入节中
      *
      * @param  string  $section
      * @param  string  $content
@@ -68,7 +68,7 @@ trait ManagesLayouts
 
     /**
      * Stop injecting content into a section and return its contents.
-	 * 停止将内容注入到一个部分,并返回其内容。
+	 * 停止向节中注入内容，并返回其内容。
      *
      * @return string
      */
@@ -83,10 +83,11 @@ trait ManagesLayouts
 
     /**
      * Stop injecting content into a section.
-	 * 停止将内容注入到一个部分
+	 * 停止向节中注入内容
      *
      * @param  bool  $overwrite
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     public function stopSection($overwrite = false)
@@ -108,9 +109,10 @@ trait ManagesLayouts
 
     /**
      * Stop injecting content into a section and append it.
-	 * 停止将内容注入到一个部分,并附加它。
+	 * 停止向节中注入内容，并将其追加。
      *
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     public function appendSection()
@@ -132,7 +134,7 @@ trait ManagesLayouts
 
     /**
      * Append content to a given section.
-	 * 将内容附加到给定的部分
+	 * 向给定的部分追加内容
      *
      * @param  string  $section
      * @param  string  $content
@@ -149,7 +151,7 @@ trait ManagesLayouts
 
     /**
      * Get the string contents of a section.
-	 * 获取一个部分的字符串内容
+	 * 获取节的字符串内容
      *
      * @param  string  $section
      * @param  string  $default
@@ -188,7 +190,7 @@ trait ManagesLayouts
 
     /**
      * Check if section exists.
-	 * 检查部分是否存在
+	 * 检查section是否存在
      *
      * @param  string  $name
      * @return bool
@@ -200,7 +202,7 @@ trait ManagesLayouts
 
     /**
      * Get the contents of a section.
-	 * 获取部分内容
+	 * 获取一个节的内容
      *
      * @param  string  $name
      * @param  string  $default
@@ -213,7 +215,7 @@ trait ManagesLayouts
 
     /**
      * Get the entire array of sections.
-	 * 获取整个部分
+	 * 获取整个section数组
      *
      * @return array
      */
@@ -224,7 +226,7 @@ trait ManagesLayouts
 
     /**
      * Flush all of the sections.
-	 * 刷新所有的节段
+	 * 刷新所有的部分
      *
      * @return void
      */

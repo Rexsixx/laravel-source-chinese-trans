@@ -1,6 +1,6 @@
 <?php
 /**
- * Cron，测试，抽象领域试验
+ * Cron，测试，抽象字段测试
  */
 
 namespace Cron\Tests;
@@ -116,7 +116,7 @@ class AbstractFieldTest extends TestCase
 
     /**
      * Allows ranges and lists to coexist in the same expression
-	 * 允许范围和列表在同一表达式中共存
+	 * 允许范围和列表以相同的表达式共存
      *
      * @see https://github.com/dragonmantank/cron-expression/issues/5
      */
@@ -129,7 +129,7 @@ class AbstractFieldTest extends TestCase
 
     /**
      * Makes sure that various types of ranges expand out properly
-	 * 确保各种类型的范围适当地展开
+	 * 确保各种类型的范围正常扩展
      *
      * @see https://github.com/dragonmantank/cron-expression/issues/5
      */

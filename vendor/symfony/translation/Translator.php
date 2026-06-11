@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，翻译器
+ * Symfony，组件，翻译，翻译机
  */
 
 /*
@@ -117,6 +117,7 @@ class Translator implements LegacyTranslatorInterface, TranslatorInterface, Tran
 
     /**
      * Adds a Loader.
+	 * 添加加载器
      *
      * @param string $format The name of the loader (@see addResource())
      */
@@ -127,6 +128,7 @@ class Translator implements LegacyTranslatorInterface, TranslatorInterface, Tran
 
     /**
      * Adds a Resource.
+	 * 添加资源
      *
      * @param string $format   The name of the loader (@see addLoader())
      * @param mixed  $resource The resource name
@@ -180,6 +182,7 @@ class Translator implements LegacyTranslatorInterface, TranslatorInterface, Tran
 
     /**
      * Sets the fallback locales.
+	 * 设置回退区域设置
      *
      * @throws InvalidArgumentException If a locale contains invalid characters
      */
@@ -200,6 +203,7 @@ class Translator implements LegacyTranslatorInterface, TranslatorInterface, Tran
 
     /**
      * Gets the fallback locales.
+	 * 获取备用区域设置
      *
      * @internal since Symfony 4.2
      *

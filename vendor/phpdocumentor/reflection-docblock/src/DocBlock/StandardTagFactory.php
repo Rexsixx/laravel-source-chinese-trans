@@ -1,7 +1,4 @@
 <?php
-/**
- * phpDocumentor，Reflection，Doc Block，标准标签工厂
- */
 
 declare(strict_types=1);
 
@@ -54,7 +51,6 @@ use function trim;
 
 /**
  * Creates a Tag object given the contents of a tag.
- * 创建一个标记对象,给定标签的内容。
  *
  * This Factory is capable of determining the appropriate class for a tag and instantiate it using its `create`
  * factory method. The `create` factory method of a Tag can have a variable number of arguments; this way you can

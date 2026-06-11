@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，HTTP客户端，响应流接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Contracts\HttpClient;
 
 /**
  * Yields response chunks, returned by HttpClientInterface::stream().
+ * 产生响应块，由HttpClientInterface::stream（）返回。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *

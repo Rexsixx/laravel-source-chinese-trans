@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，约束条件，数据库软删除
+ * Illuminate，基础，测试，约束，数据库软删除
  */
 
 namespace Illuminate\Foundation\Testing\Constraints;
@@ -64,7 +64,7 @@ class SoftDeletedInDatabase extends Constraint
 
     /**
      * Get the description of the failure.
-	 * 获取失败的描述
+	 * 获取故障的描述
      *
      * @param  string  $table
      * @return string

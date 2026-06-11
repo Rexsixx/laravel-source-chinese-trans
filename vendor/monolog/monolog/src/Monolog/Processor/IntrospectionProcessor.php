@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，处理器，内省处理器
+ * Monolog，处理器，Introspection 处理器
  */
 
 /*
@@ -18,7 +18,6 @@ use Monolog\Logger;
 
 /**
  * Injects line/file:class/function where the log message came from
- * 注入日志消息来源的行/文件：类/函数
  *
  * Warning: This only works if the handler processes the logs directly.
  * If you put the processor on a handler that is behind a FingersCrossedHandler

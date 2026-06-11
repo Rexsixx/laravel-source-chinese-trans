@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，Str
+ * Illuminate，支持，字符串
  */
 
 namespace Illuminate\Support;
@@ -17,7 +17,7 @@ class Str
 
     /**
      * The cache of snake-cased words.
-	 * 蛇形字的缓存
+	 * 蛇形大小写单词的缓存
      *
      * @var array
      */
@@ -25,7 +25,7 @@ class Str
 
     /**
      * The cache of camel-cased words.
-	 * 用凸轮的文字缓存
+	 * 驼峰式大小写单词的缓存
      *
      * @var array
      */
@@ -33,7 +33,7 @@ class Str
 
     /**
      * The cache of studly-cased words.
-	 * 用套筒的文字缓存
+	 * 隐藏的刻意区分大小写的单词
      *
      * @var array
      */
@@ -41,7 +41,7 @@ class Str
 
     /**
      * Return the remainder of a string after a given value.
-	 * 返回给定值后的字符串的其余部分
+	 * 返回给定值后字符串的剩余部分
      *
      * @param  string  $subject
      * @param  string  $search
@@ -54,7 +54,7 @@ class Str
 
     /**
      * Transliterate a UTF-8 value to ASCII.
-	 * 将UTF-8值转换为ASCII
+	 * 将UTF-8值音译为ASCII
      *
      * @param  string  $value
      * @param  string  $language
@@ -77,7 +77,7 @@ class Str
 
     /**
      * Get the portion of a string before a given value.
-	 * 在给定值之前获取字符串的部分
+	 * 获取给定值之前的字符串部分
      *
      * @param  string  $subject
      * @param  string  $search
@@ -90,7 +90,7 @@ class Str
 
     /**
      * Convert a value to camel case.
-	 * 将价值转化为camel案
+	 * 将值转换为驼峰形式
      *
      * @param  string  $value
      * @return string
@@ -106,7 +106,7 @@ class Str
 
     /**
      * Determine if a given string contains a given substring.
-	 * 确定给定字符串是否包含给定的子字符串
+	 * 确定给定字符串是否包含给定子字符串
      *
      * @param  string  $haystack
      * @param  string|array  $needles
@@ -125,7 +125,7 @@ class Str
 
     /**
      * Determine if a given string ends with a given substring.
-	 * 确定给定字符串是否以给定的子字符串结束
+	 * 确定给定字符串是否以给定子字符串结束
      *
      * @param  string  $haystack
      * @param  string|array  $needles
@@ -144,7 +144,7 @@ class Str
 
     /**
      * Cap a string with a single instance of a given value.
-	 * 用给定值的单个实例来盖一个字符串
+	 * 用给定值的单个实例给字符串盖上盖子
      *
      * @param  string  $value
      * @param  string  $cap
@@ -159,7 +159,7 @@ class Str
 
     /**
      * Determine if a given string matches a given pattern.
-	 * 确定给定字符串是否匹配给定的模式
+	 * 确定给定字符串是否与给定模式匹配
      *
      * @param  string|array  $pattern
      * @param  string  $value
@@ -177,7 +177,7 @@ class Str
             // If the given value is an exact match we can of course return true right
             // from the beginning. Otherwise, we will translate asterisks and do an
             // actual pattern match against the two strings to see if they match.
-			// 如果给定的值是精确匹配的，从开始返会true。
+			// 如果给定的值与目标值完全一致，那么我们当然可以从一开始就返回“真”这一结果。
             if ($pattern == $value) {
                 return true;
             }
@@ -187,6 +187,7 @@ class Str
             // Asterisks are translated into zero-or-more regular expression wildcards
             // to make it convenient to check if the strings starts with the given
             // pattern such as "library/*", making any string check convenient.
+			// 星号会被转换为零个或多个正则表达式的通配符，这样就能方便地检查字符串是否以给定的模式（例如“library/*”）开头，从而使得任何字符串的检查都变得便捷。
             $pattern = str_replace('\*', '.*', $pattern);
 
             if (preg_match('#^'.$pattern.'\z#u', $value) === 1) {
@@ -199,7 +200,7 @@ class Str
 
     /**
      * Convert a string to kebab case.
-	 * 将字符串转换为kebab
+	 * 将字符串转换为kebab case
      *
      * @param  string  $value
      * @return string
@@ -258,7 +259,7 @@ class Str
 
     /**
      * Limit the number of words in a string.
-	 * 在字符串中限制单词的数量
+	 * 限制字符串中的单词数
      *
      * @param  string  $value
      * @param  int     $words
@@ -278,7 +279,7 @@ class Str
 
     /**
      * Parse a Class@method style callback into class and method.
-	 * 解析类@ method样式回调到类和方法
+	 * 将Class@method样式的回调解析为类和方法
      *
      * @param  string  $callback
      * @param  string|null  $default
@@ -291,7 +292,7 @@ class Str
 
     /**
      * Get the plural form of an English word.
-	 * 取一个英语单词的复数形式
+	 * 了解英语单词的复数形式
      *
      * @param  string  $value
      * @param  int     $count
@@ -304,7 +305,7 @@ class Str
 
     /**
      * Generate a more truly "random" alpha-numeric string.
-	 * 生成一个更真正的“随机”字母数字字符串
+	 * 生成一个更真正“随机”的字母数字字符串
      *
      * @param  int  $length
      * @return string
@@ -326,7 +327,7 @@ class Str
 
     /**
      * Replace a given value in the string sequentially with an array.
-	 * 用数组以序列顺序替换给定的值
+	 * 将字符串中的给定值依次替换为数组
      *
      * @param  string  $search
      * @param  array   $replace
@@ -344,7 +345,7 @@ class Str
 
     /**
      * Replace the first occurrence of a given value in the string.
-	 * 替换字符串中给定值的第一个出现
+	 * 替换字符串中第一次出现的给定值
      *
      * @param  string  $search
      * @param  string  $replace
@@ -368,7 +369,7 @@ class Str
 
     /**
      * Replace the last occurrence of a given value in the string.
-	 * 在字符串中替换给定值的最后一个出现
+	 * 替换字符串中最后出现的给定值
      *
      * @param  string  $search
      * @param  string  $replace
@@ -388,7 +389,7 @@ class Str
 
     /**
      * Begin a string with a single instance of a given value.
-	 * 用给定值的单个实例开始一个字符串
+	 * 以给定值的单个实例开始字符串
      *
      * @param  string  $value
      * @param  string  $prefix
@@ -403,7 +404,7 @@ class Str
 
     /**
      * Convert the given string to upper-case.
-	 * 将给定字符串转换为上端例
+	 * 将给定的字符串转换为大写
      *
      * @param  string  $value
      * @return string
@@ -415,7 +416,7 @@ class Str
 
     /**
      * Convert the given string to title case.
-	 * 将给定字符串转换为标题例
+	 * 将给定的字符串转换为标题大小写
      *
      * @param  string  $value
      * @return string
@@ -427,7 +428,7 @@ class Str
 
     /**
      * Get the singular form of an English word.
-	 * 取一个英语单词的单数形式
+	 * 获取英语单词的单数形式
      *
      * @param  string  $value
      * @return string
@@ -439,19 +440,19 @@ class Str
 
     /**
      * Generate a URL friendly "slug" from a given string.
-	 * 从给定的字符串生成一个URL友好的“间隙”
+	 * 从给定的字符串生成一个URL友好的“slug”
      *
      * @param  string  $title
      * @param  string  $separator
-     * @param  string  $language
+     * @param  string|null  $language
      * @return string
      */
     public static function slug($title, $separator = '-', $language = 'en')
     {
-        $title = static::ascii($title, $language);
+        $title = $language ? static::ascii($title, $language) : $title;
 
         // Convert all dashes/underscores into separator
-        $flip = $separator == '-' ? '_' : '-';
+        $flip = $separator === '-' ? '_' : '-';
 
         $title = preg_replace('!['.preg_quote($flip).']+!u', $separator, $title);
 
@@ -459,7 +460,7 @@ class Str
         $title = str_replace('@', $separator.'at'.$separator, $title);
 
         // Remove all characters that are not the separator, letters, numbers, or whitespace.
-        $title = preg_replace('![^'.preg_quote($separator).'\pL\pN\s]+!u', '', mb_strtolower($title));
+        $title = preg_replace('![^'.preg_quote($separator).'\pL\pN\s]+!u', '', static::lower($title));
 
         // Replace all separator characters and whitespace by a single separator
         $title = preg_replace('!['.preg_quote($separator).'\s]+!u', $separator, $title);
@@ -469,7 +470,7 @@ class Str
 
     /**
      * Convert a string to snake case.
-	 * 把绳子变成蛇的箱子
+	 * 将字符串转换为蛇形
      *
      * @param  string  $value
      * @param  string  $delimiter
@@ -494,7 +495,7 @@ class Str
 
     /**
      * Determine if a given string starts with a given substring.
-	 * 确定给定字符串是否以给定的子字符串开头
+	 * 确定给定字符串是否以给定子字符串开始
      *
      * @param  string  $haystack
      * @param  string|array  $needles
@@ -513,7 +514,7 @@ class Str
 
     /**
      * Convert a value to studly caps case.
-	 * 将一个值转换为严格的大写字母
+	 * 将值转换为大写大小写
      *
      * @param  string  $value
      * @return string
@@ -533,7 +534,7 @@ class Str
 
     /**
      * Returns the portion of string specified by the start and length parameters.
-	 * 返回由开始和长度参数指定的字符串的部分
+	 * 返回由start和length参数指定的字符串部分
      *
      * @param  string  $string
      * @param  int  $start
@@ -547,7 +548,7 @@ class Str
 
     /**
      * Make a string's first character uppercase.
-	 * 创建字符串的第一个字符大写
+	 * 使字符串的第一个字符大写
      *
      * @param  string  $string
      * @return string
@@ -559,7 +560,7 @@ class Str
 
     /**
      * Generate a UUID (version 4).
-	 * 生成UUID(版本4)
+	 * 生成UUID（版本4）
      *
      * @return \Ramsey\Uuid\UuidInterface
      */
@@ -570,7 +571,7 @@ class Str
 
     /**
      * Generate a time-ordered UUID (version 4).
-	 * 生成一个时延的UUID(版本4)
+	 * 生成一个按时间排序的UUID（版本4）
      *
      * @return \Ramsey\Uuid\UuidInterface
      */
@@ -592,7 +593,7 @@ class Str
 
     /**
      * Returns the replacements for the ascii method.
-	 * 返回ascii方法的替换。
+	 * 返回ascii方法的替换项
      *
      * Note: Adapted from Stringy\Stringy.
      *
@@ -727,7 +728,7 @@ class Str
 
     /**
      * Returns the language specific replacements for the ascii method.
-	 * 返回ascii方法的语言特定替换。
+	 * 返回ascii方法的特定于语言的替换。
      *
      * Note: Adapted from Stringy\Stringy.
      *

@@ -1,13 +1,10 @@
 <?php
-/**
- * Laravel，Tinker，配置
- */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Console Commands	控制台命令
+    | Console Commands
     |--------------------------------------------------------------------------
     |
     | This option allows you to add additional Artisan commands that should
@@ -22,7 +19,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Alias Blacklist	别名黑名单
+    | Alias Blacklist
     |--------------------------------------------------------------------------
     |
     | Typically, Tinker automatically aliases classes as you require them in

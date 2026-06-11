@@ -1,7 +1,4 @@
 <?php
-/**
- * NunoMaduro，Collision，契约，适配器，Php单元，倾听器
- */
 
 /**
  * This file is part of Collision.
@@ -18,7 +15,6 @@ use PHPUnit\Framework\TestListener;
 
 /**
  * This is an Collision Phpunit Adapter contract.
- * 这是一个碰撞Phpunit适配器合同
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
@@ -27,7 +23,6 @@ interface Listener extends TestListener
     /**
      * Renders the provided error
      * on the console.
-	 * 呈现控制台上提供的错误
      *
      * @param  \Throwable $t
      *

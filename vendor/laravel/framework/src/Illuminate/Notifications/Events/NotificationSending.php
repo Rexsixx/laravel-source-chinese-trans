@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，事件，控制台，广播通知正在发送
+ * Illuminate，通知，事件，通知发送中
  */
 
 namespace Illuminate\Notifications\Events;
@@ -38,7 +38,7 @@ class NotificationSending
 
     /**
      * Create a new event instance.
-	 * 创建新的事件实例
+	 * 创建一个新的事件实例
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification

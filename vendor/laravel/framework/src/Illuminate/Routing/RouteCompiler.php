@@ -11,7 +11,7 @@ class RouteCompiler
 {
     /**
      * The route instance.
-	 * 路线实例
+	 * 路由实例
      *
      * @var \Illuminate\Routing\Route
      */

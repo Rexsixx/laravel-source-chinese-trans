@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，供应者
+ * NunoMaduro，冲突，提供商
  */
 
 /**
@@ -21,7 +21,6 @@ use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
 
 /**
  * This is an Collision Provider implementation.
- * 这是一个Collision提供者实现
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
@@ -29,7 +28,6 @@ class Provider implements ProviderContract
 {
     /**
      * Holds an instance of the Run.
-	 * 保存Run的实例
      *
      * @var \Whoops\RunInterface
      */
@@ -37,7 +35,6 @@ class Provider implements ProviderContract
 
     /**
      * Holds an instance of the handler.
-	 * 保存处理程序的一个实例
      *
      * @var \NunoMaduro\Collision\Contracts\Handler
      */
@@ -45,7 +42,6 @@ class Provider implements ProviderContract
 
     /**
      * Creates a new instance of the Provider.
-	 * 创建提供者的新实例
      *
      * @param \Whoops\RunInterface|null $run
      * @param \NunoMaduro\Collision\Contracts\Handler|null $handler

@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，匹配程序，任何参数
+ * Mockery，匹配程序，任何Args
  */
 
 /**

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，依赖注入，路由解析器通过
+ */
 
 /*
  * This file is part of the Symfony package.

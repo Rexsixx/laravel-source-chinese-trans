@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，传送管理器
+ * Illuminate，电子邮件，运送管理器
  */
 
 namespace Illuminate\Mail;
@@ -8,13 +8,13 @@ namespace Illuminate\Mail;
 use Aws\Ses\SesClient;
 use Illuminate\Support\Arr;
 use Psr\Log\LoggerInterface;
+use Illuminate\Log\LogManager;
 use Illuminate\Support\Manager;
 use GuzzleHttp\Client as HttpClient;
 use Swift_SmtpTransport as SmtpTransport;
 use Illuminate\Mail\Transport\LogTransport;
 use Illuminate\Mail\Transport\SesTransport;
 use Illuminate\Mail\Transport\ArrayTransport;
-use Swift_SendmailTransport as MailTransport;
 use Illuminate\Mail\Transport\MailgunTransport;
 use Illuminate\Mail\Transport\MandrillTransport;
 use Illuminate\Mail\Transport\SparkPostTransport;
@@ -35,8 +35,8 @@ class TransportManager extends Manager
         // The Swift SMTP transport instance will allow us to use any SMTP backend
         // for delivering mail such as Sendgrid, Amazon SES, or a custom server
         // a developer has available. We will just pass this configured host.
-		// Swift SMTP传输实例将允许我们使用任何SMTP后端发送邮件,
-		// 如Sendgrid、Amazon SES或开发人员可用的定制服务器。我们将通过这个配置的主机。
+		// Swift 的 SMTP 传输实例将使我们能够使用任何 SMTP 后端来发送邮件，
+		// 比如 Sendgrid、亚马逊 SES 或者开发人员可用的任何自定义服务器。
         $transport = new SmtpTransport($config['host'], $config['port']);
 
         if (isset($config['encryption'])) {
@@ -47,6 +47,7 @@ class TransportManager extends Manager
         // and password. If we have it we will set the credentials on the Swift
         // transporter instance so that we'll properly authenticate delivery.
 		// 一旦我们有了运输,我们将检查用户名和密码的存在。
+		// 如果我们有它,我们将在Swift传输器实例上设置凭据,这样我们就可以正确地验证交付。
         if (isset($config['username'])) {
             $transport->setUsername($config['username']);
 
@@ -57,6 +58,7 @@ class TransportManager extends Manager
         // and then return it. The option is not required any may not be inside
         // the configuration array at all so we'll verify that before adding.
 		// 接下来,我们将设置用于传输的任何流上下文选项,然后返回它。
+		// 选项不需要任何可能不在配置数组内,所以我们将在添加之前验证这一点。
         if (isset($config['stream'])) {
             $transport->setStreamOptions($config['stream']);
         }
@@ -87,9 +89,10 @@ class TransportManager extends Manager
             'version' => 'latest', 'service' => 'email',
         ]);
 
-        return new SesTransport(new SesClient(
-            $this->addSesCredentials($config)
-        ));
+        return new SesTransport(
+            new SesClient($this->addSesCredentials($config)),
+            $config['options'] ?? []
+        );
     }
 
     /**
@@ -116,7 +119,7 @@ class TransportManager extends Manager
      */
     protected function createMailDriver()
     {
-        return new MailTransport;
+        return new SendmailTransport;
     }
 
     /**
@@ -131,7 +134,9 @@ class TransportManager extends Manager
 
         return new MailgunTransport(
             $this->guzzle($config),
-            $config['secret'], $config['domain']
+            $config['secret'],
+            $config['domain'],
+            $config['endpoint'] ?? null
         );
     }
 
@@ -152,7 +157,7 @@ class TransportManager extends Manager
 
     /**
      * Create an instance of the SparkPost Swift Transport driver.
-	 * 创建SparkPost Swift运输驱动程序的实例
+	 * 创建一个SparkPost Swift Transport驱动程序的实例
      *
      * @return \Illuminate\Mail\Transport\SparkPostTransport
      */
@@ -167,13 +172,19 @@ class TransportManager extends Manager
 
     /**
      * Create an instance of the Log Swift Transport driver.
-	 * 创建一个日志快速传输驱动程序的实例。
+	 * 创建Log Swift Transport驱动程序的实例
      *
      * @return \Illuminate\Mail\Transport\LogTransport
      */
     protected function createLogDriver()
     {
-        return new LogTransport($this->app->make(LoggerInterface::class));
+        $logger = $this->app->make(LoggerInterface::class);
+
+        if ($logger instanceof LogManager) {
+            $logger = $logger->channel($this->app['config']['mail.log_channel']);
+        }
+
+        return new LogTransport($logger);
     }
 
     /**
@@ -203,7 +214,7 @@ class TransportManager extends Manager
 
     /**
      * Get the default mail driver name.
-	 * 获取默认邮件驱动程序名称
+	 * 获取默认的邮件驱动程序名称
      *
      * @return string
      */

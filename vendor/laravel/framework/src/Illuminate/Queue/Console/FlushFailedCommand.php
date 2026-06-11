@@ -11,7 +11,7 @@ class FlushFailedCommand extends Command
 {
     /**
      * The console command name.
-	 * 连接名称
+	 * 控制台命令名
      *
      * @var string
      */

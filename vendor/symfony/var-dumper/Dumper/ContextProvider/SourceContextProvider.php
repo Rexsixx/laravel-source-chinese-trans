@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，转储器，内容提供器，源上下文提供程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Twig\Template;
 
 /**
  * Tries to provide context from sources (class name, file, line, code excerpt, ...).
+ * 尝试从源（类名、文件、行、代码摘录等）提供上下文。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>

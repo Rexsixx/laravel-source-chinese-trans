@@ -5,6 +5,7 @@
 
 namespace Illuminate\Database\Schema\Grammars;
 
+use RuntimeException;
 use Illuminate\Support\Fluent;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Schema\Blueprint;
@@ -43,7 +44,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile the query to determine the list of columns.
-	 * 编译查询以确定列列表
+	 * 编译查询以确定列列表。
      *
      * @return string
      */
@@ -901,6 +902,20 @@ class MySqlGrammar extends Grammar
     public function typeMultiPolygon(Fluent $column)
     {
         return 'multipolygon';
+    }
+
+    /**
+     * Create the column definition for a generated, computed column type.
+	 * 为生成的、计算的列类型创建列定义。
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return void
+     *
+     * @throws \RuntimeException
+     */
+    protected function typeComputed(Fluent $column)
+    {
+        throw new RuntimeException('This database driver requires a type, see the virtualAs / storedAs modifiers.');
     }
 
     /**

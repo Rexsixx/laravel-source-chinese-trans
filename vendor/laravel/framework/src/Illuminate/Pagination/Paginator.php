@@ -37,6 +37,8 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
      */
     public function __construct($items, $perPage, $currentPage = null, array $options = [])
     {
+        $this->options = $options;
+
         foreach ($options as $key => $value) {
             $this->{$key} = $value;
         }
@@ -169,7 +171,7 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
 
     /**
      * Convert the object into something JSON serializable.
-	 * 将对象转换为JSON序列化
+	 * 将对象转换为JSON可序列化的对象
      *
      * @return array
      */
@@ -180,7 +182,7 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
 
     /**
      * Convert the object to its JSON representation.
-	 * 将对象转换为JSON表示
+	 * 将对象转换为其JSON表示形式
      *
      * @param  int  $options
      * @return string

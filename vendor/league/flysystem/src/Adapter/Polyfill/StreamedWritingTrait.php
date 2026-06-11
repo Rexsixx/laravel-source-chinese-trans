@@ -47,7 +47,6 @@ trait StreamedWritingTrait
 
     /**
      * Update a file using a stream.
-	 * 使用流更新文件
      *
      * @param string   $path
      * @param resource $resource

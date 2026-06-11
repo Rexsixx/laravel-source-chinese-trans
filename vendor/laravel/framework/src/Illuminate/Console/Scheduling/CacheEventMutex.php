@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，调度，缓存事件互斥锁
+ * Illuminate，控制台，线程调度，缓存事件互斥锁
  */
 
 namespace Illuminate\Console\Scheduling;

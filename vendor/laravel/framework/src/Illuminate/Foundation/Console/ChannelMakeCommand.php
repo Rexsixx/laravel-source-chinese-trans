@@ -11,7 +11,7 @@ class ChannelMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
@@ -44,7 +44,7 @@ class ChannelMakeCommand extends GeneratorCommand
     {
         return str_replace(
             'DummyUser',
-            class_basename(config('auth.providers.users.model')),
+            class_basename($this->userProviderModel()),
             parent::buildClass($name)
         );
     }

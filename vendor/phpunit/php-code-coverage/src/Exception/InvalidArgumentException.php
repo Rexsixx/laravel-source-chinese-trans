@@ -1,8 +1,4 @@
 <?php
-/**
- * SebastianBergmann，CodeCoverage，无效参数异常
- */
-
 /*
  * This file is part of the php-code-coverage package.
  *

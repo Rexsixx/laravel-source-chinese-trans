@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，VarDumper，异常，抛出Caster异常
+ * Symfony，组件，Var Dumper，异常，抛出Caster异常
  */
 
 /*

@@ -52,7 +52,6 @@ use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * An Application is the container for a collection of commands.
- * 应用程序是命令集合的容器。
  *
  * It is the main entry point of a Console application.
  *
@@ -111,7 +110,6 @@ class Application implements ResetInterface
 
     /**
      * Runs the current application.
-	 * 运行当前应用程序
      *
      * @return int 0 if everything went fine, or an error code
      *
@@ -197,7 +195,6 @@ class Application implements ResetInterface
 
     /**
      * Runs the current application.
-	 * 运行当前应用程序
      *
      * @return int 0 if everything went fine, or an error code
      */
@@ -298,7 +295,6 @@ class Application implements ResetInterface
 
     /**
      * Get the helper set associated with the command.
-	 * 获取与命令关联的助手集合
      *
      * @return HelperSet The HelperSet instance associated with this command
      */
@@ -318,7 +314,6 @@ class Application implements ResetInterface
 
     /**
      * Gets the InputDefinition related to this Application.
-	 * 获取与此应用程序相关的InputDefinition
      *
      * @return InputDefinition The InputDefinition instance
      */

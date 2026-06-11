@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，EmailValidator，结果，无效电子邮件
+ * Egulias，电子邮件验证器，结果，无效电子邮件
  */
 
 namespace Egulias\EmailValidator\Result;

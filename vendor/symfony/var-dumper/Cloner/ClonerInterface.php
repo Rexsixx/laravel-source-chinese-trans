@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，VarDumper，克隆，克隆接口
+ * Symfony，组件，Var Dumper，克隆，克隆接口
  */
 
 /*

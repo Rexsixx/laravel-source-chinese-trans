@@ -1,7 +1,4 @@
 <?php
-/**
- * Doctrine，Inflector，规则，英语，Inflectible
- */
 
 declare(strict_types=1);
 

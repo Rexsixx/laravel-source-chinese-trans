@@ -1,6 +1,6 @@
 <?php
 /**
- * phpDocumentor，Reflection，类型，聚合类型
+ * phpDocumentor，反射，类型，聚集类型
  */
 
 /**
@@ -25,7 +25,6 @@ use function implode;
 
 /**
  * Base class for aggregated types like Compound and Intersection
- * 类型的基类,如复合和交集。
  *
  * A Aggregated Type is not so much a special keyword or object reference but is a series of Types that are separated
  * using separator.
@@ -58,7 +57,6 @@ abstract class AggregatedType implements Type, IteratorAggregate
 
     /**
      * Returns the type at the given index.
-	 * 返回给定索引的类型
      */
     public function get(int $index): ?Type
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，适配器，Polyfill，不支持可见性
+ * League，Flysystem，适配器，Polyfill，不支持可见性特性
  */
 
 namespace League\Flysystem\Adapter\Polyfill;

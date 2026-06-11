@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Mime，密码，SMime
+ */
 
 /*
  * This file is part of the Symfony package.

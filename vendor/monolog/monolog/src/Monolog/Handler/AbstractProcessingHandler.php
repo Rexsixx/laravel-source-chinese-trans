@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，处理程序，抽象处理处理程序
+ * Monolog，处理程序，抽象处理器处理程序
  */
 
 /*
@@ -18,7 +18,6 @@ use Monolog\ResettableInterface;
 
 /**
  * Base Handler class providing the Handler structure
- * 提供Handler结构的基Handler类。
  *
  * Classes extending it should (in most cases) only implement write($record)
  *
@@ -47,7 +46,6 @@ abstract class AbstractProcessingHandler extends AbstractHandler
 
     /**
      * Writes the record down to the log of the implementing handler
-	 * 将记录写入实现处理程序的日志
      *
      * @param  array $record
      * @return void
@@ -56,7 +54,6 @@ abstract class AbstractProcessingHandler extends AbstractHandler
 
     /**
      * Processes a record.
-	 * 处理记录
      *
      * @param  array $record
      * @return array

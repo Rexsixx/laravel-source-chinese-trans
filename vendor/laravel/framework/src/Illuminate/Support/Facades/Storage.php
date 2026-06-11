@@ -16,7 +16,7 @@ class Storage extends Facade
 {
     /**
      * Replace the given disk with a local testing disk.
-	 * 用本地测试磁盘替换给定的磁盘
+	 * 将给定磁盘替换为本地测试磁盘
      *
      * @param  string|null  $disk
      *
@@ -35,7 +35,7 @@ class Storage extends Facade
 
     /**
      * Replace the given disk with a persistent local testing disk.
-	 * 用持久的本地测试磁盘替换给定的磁盘
+	 * 将给定磁盘替换为持久的本地测试磁盘
      *
      * @param  string|null  $disk
      * @return void

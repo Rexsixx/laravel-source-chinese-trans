@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，VarDumper，克隆，转储接口
+ * Symfony，组件，Var Dumper，克隆，转储机接口
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\VarDumper\Cloner;
 
 /**
  * DumperInterface used by Data objects.
- * 数据对象使用的DumperInterface
+ * DumperInterface对象使用的接口。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -24,7 +24,7 @@ interface DumperInterface
 {
     /**
      * Dumps a scalar value.
-	 * 转储一个标量值
+	 * 转储标量值
      *
      * @param string                $type  The PHP type of the value being dumped
      * @param string|int|float|bool $value The scalar value being dumped
@@ -33,7 +33,7 @@ interface DumperInterface
 
     /**
      * Dumps a string.
-	 * 将字符串转储
+	 * 转储字符串
      *
      * @param string $str The string being dumped
      * @param bool   $bin Whether $str is UTF-8 or binary encoded

@@ -1,7 +1,4 @@
 <?php
-/**
- * Psy，命令，清除命令
- */
 
 /*
  * This file is part of Psy Shell.
@@ -19,7 +16,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Clear the Psy Shell.
- * 清除Psy Shell。
  *
  * Just what it says on the tin.
  */

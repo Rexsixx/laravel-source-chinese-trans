@@ -18,6 +18,7 @@ use RuntimeException;
  * due to run, the next run date and previous run date of a CRON expression.
  * The determinations made by this class are accurate if checked run once per
  * minute (seconds are dropped from date time comparisons).
+ * CRON表达式解析器可以确定CRON表达式是否将运行,下一个运行日期和之前的CRON表达式的运行日期。
  *
  * Schedule parts must map to:
  * minute [0-59], hour [0-23], day of month, month [1-12|JAN-DEC], day of week
@@ -56,7 +57,7 @@ class CronExpression
 
     /**
      * Factory method to create a new CronExpression.
-	 * 工厂方法创建新的CronExpression。
+	 * 工厂方法创建一个新的CronExpression。
      *
      * @param string $expression The CRON expression to create.  There are
      *                           several special predefined values which can be used to substitute the
@@ -91,7 +92,6 @@ class CronExpression
 
     /**
      * Validate a CronExpression.
-	 * 验证CronExpression
      *
      * @param string $expression The CRON expression to validate.
      *
@@ -111,7 +111,6 @@ class CronExpression
 
     /**
      * Parse a CRON expression
-	 * 解析CRON表达式
      *
      * @param string       $expression   CRON expression (e.g. '8 * * * *')
      * @param FieldFactory|null $fieldFactory Factory to create cron fields
@@ -124,7 +123,6 @@ class CronExpression
 
     /**
      * Set or change the CRON expression
-	 * 设置或更改CRON表达式
      *
      * @param string $value CRON expression (e.g. 8 * * * *)
      *

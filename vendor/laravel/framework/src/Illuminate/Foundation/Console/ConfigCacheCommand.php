@@ -15,7 +15,7 @@ class ConfigCacheCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -56,12 +56,15 @@ class ConfigCacheCommand extends Command
 	 * 执行控制台命令
      *
      * @return void
+     *
+     * @throws \LogicException
      */
     public function handle()
     {
         $this->call('config:clear');
 
         $config = $this->getFreshConfiguration();
+
         $configPath = $this->laravel->getCachedConfigPath();
 
         $this->files->put(

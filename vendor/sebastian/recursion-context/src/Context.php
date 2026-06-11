@@ -1,8 +1,4 @@
 <?php
-/**
- * SebastianBergmann，RecursionContext，上下文
- */
-
 /*
  * This file is part of the Recursion Context package.
  *

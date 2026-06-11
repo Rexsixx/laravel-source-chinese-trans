@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，高级订单收集代理
+ * Illuminate，支持，高阶集合代理
  */
 
 namespace Illuminate\Support;
@@ -12,7 +12,7 @@ class HigherOrderCollectionProxy
 {
     /**
      * The collection being operated on.
-	 * 收集的集合正在进行
+	 * 正在操作的集合
      *
      * @var \Illuminate\Support\Collection
      */
@@ -20,7 +20,7 @@ class HigherOrderCollectionProxy
 
     /**
      * The method being proxied.
-	 * 这种方法正在被证实
+	 * 被代理的方法
      *
      * @var string
      */
@@ -56,7 +56,7 @@ class HigherOrderCollectionProxy
 
     /**
      * Proxy a method call onto the collection items.
-	 * 代理一个方法调用集合项
+	 * 将方法调用代理到集合项上
      *
      * @param  string  $method
      * @param  array  $parameters

@@ -19,7 +19,7 @@ trait ManagesComponents
 
     /**
      * The original data passed to the component.
-	 * 传递给组件的原始数据
+	 * 原始数据传递给组件
      *
      * @var array
      */
@@ -43,7 +43,7 @@ trait ManagesComponents
 
     /**
      * Start a component rendering process.
-	 * 开始一个组件渲染过程
+	 * 启动一个组件呈现过程
      *
      * @param  string  $name
      * @param  array  $data
@@ -91,7 +91,7 @@ trait ManagesComponents
 
     /**
      * Start the slot rendering process.
-	 * 启动slot呈现过程
+	 * 启动槽呈现过程
      *
      * @param  string  $name
      * @param  string|null  $content
@@ -112,7 +112,7 @@ trait ManagesComponents
 
     /**
      * Save the slot content for rendering.
-	 * 保存呈现的slot内容
+	 * 保存槽内容以供呈现
      *
      * @return void
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，DummyNamespace，动态类，存根，根据实际修改
+ * Illuminate，路由，控制台，存根，动态类，根据实际需要修改
  */
 
 namespace DummyNamespace;
@@ -11,7 +11,7 @@ class DummyClass
 {
     /**
      * Handle an incoming request.
-	 * 处理传入的请求
+	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next

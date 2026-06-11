@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，提供者，节点提供者接口
+ * Ramsey，Uuid，提供商，节点提供程序接口
  */
 
 /**
@@ -28,6 +28,7 @@ interface NodeProviderInterface
 {
     /**
      * Returns the system node ID
+	 * 返回系统节点ID
      *
      * @return string System node ID as a hexadecimal string
      * @throws Exception if it was not possible to gather sufficient entropy

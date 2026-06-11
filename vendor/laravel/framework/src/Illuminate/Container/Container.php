@@ -6,10 +6,12 @@
 namespace Illuminate\Container;
 
 use Closure;
+use Exception;
 use ArrayAccess;
 use LogicException;
 use ReflectionClass;
 use ReflectionParameter;
+use Illuminate\Support\Arr;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container as ContainerContract;
 
@@ -89,7 +91,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * The stack of concretions currently being built.
-	 * 目前正在建造的混凝土堆
+	 * 目前正在建造的混凝堆栈
      *
      * @var array
      */
@@ -155,12 +157,18 @@ class Container implements ArrayAccess, ContainerContract
      * Define a contextual binding.
 	 * 定义上下文绑定
      *
-     * @param  string  $concrete
+     * @param  array|string  $concrete
      * @return \Illuminate\Contracts\Container\ContextualBindingBuilder
      */
     public function when($concrete)
     {
-        return new ContextualBindingBuilder($this, $this->getAlias($concrete));
+        $aliases = [];
+
+        foreach (Arr::wrap($concrete) as $c) {
+            $aliases[] = $this->getAlias($c);
+        }
+
+        return new ContextualBindingBuilder($this, $aliases);
     }
 
     /**
@@ -212,7 +220,7 @@ class Container implements ArrayAccess, ContainerContract
     public function isShared($abstract)
     {
         return isset($this->instances[$abstract]) ||
-              (isset($this->bindings[$abstract]['shared']) &&
+               (isset($this->bindings[$abstract]['shared']) &&
                $this->bindings[$abstract]['shared'] === true);
     }
 
@@ -239,12 +247,13 @@ class Container implements ArrayAccess, ContainerContract
      */
     public function bind($abstract, $concrete = null, $shared = false)
     {
+        $this->dropStaleInstances($abstract);
+
         // If no concrete type was given, we will simply set the concrete type to the
         // abstract type. After that, the concrete type to be registered as shared
         // without being forced to state their classes in both of the parameters.
-		// 如果未给出具体的类型，我们将直接将具体类型设置为抽象类型。
-        $this->dropStaleInstances($abstract);
-
+		// 如果没有具体的类型,我们将简单地将具体类型设置为抽象类型。
+		// 在此之后,具体类型将被注册为共享,而不被迫在两个参数中陈述它们的类。
         if (is_null($concrete)) {
             $concrete = $abstract;
         }
@@ -252,8 +261,8 @@ class Container implements ArrayAccess, ContainerContract
         // If the factory is not a Closure, it means it is just a class name which is
         // bound into this container to the abstract type and we will just wrap it
         // up inside its own Closure to give us more convenience when extending.
-		// 如果该工厂并非一个“闭包”，这意味着它只是一个类名，它被绑定到这个容器中的抽象类型上。
-		// 我们只需将它封装在自己的“闭包”中，以便在扩展时能提供更大的便利性。
+		// 如果工厂不是闭包，那就意味着它只是一个类名，被绑定到此容器中作为抽象类型，
+		// 我们将直接将其封装在自己的闭包内，以便在扩展时更加方便。
         if (! $concrete instanceof Closure) {
             $concrete = $this->getClosure($abstract, $concrete);
         }
@@ -263,8 +272,8 @@ class Container implements ArrayAccess, ContainerContract
         // If the abstract type was already resolved in this container we'll fire the
         // rebound listener so that any objects which have already gotten resolved
         // can have their copy of the object updated via the listener callbacks.
-		// 如果该抽象类型已在当前容器中已确定，则我们将触发回弹监听器，
-		// 以便任何已确定的对象都能通过监听器回调来更新其对象副本。
+		// 如果摘要类型已在该容器中被解析，我们将触发回退监听器，
+		// 以便任何已解析的对象可以通过监听器回调来更新其对象的副本。
         if ($this->resolved($abstract)) {
             $this->rebound($abstract);
         }
@@ -415,7 +424,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Register an existing instance as shared in the container.
-	 * 将现有实例注册为容器中的共享实例
+	 * 将现有实例注册为容器中的共享实例。
      *
      * @param  string  $abstract
      * @param  mixed   $instance
@@ -432,7 +441,8 @@ class Container implements ArrayAccess, ContainerContract
         // We'll check to determine if this type has been bound before, and if it has
         // we will fire the rebound callbacks registered with the container and it
         // can be updated with consuming classes that have gotten resolved here.
-		// 我们将检查这种类型是否已经被绑定,如果它有我们将在容器中注册的反弹回调,它可以通过在这里解决的消费类进行更新。
+		// 我们将检查这种类型是否已经被绑定,如果它有我们将在容器中注册的反弹回调,
+		// 它可以通过在这里解决的消费类进行更新。
         $this->instances[$abstract] = $instance;
 
         if ($isBound) {
@@ -604,7 +614,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * Call the given Closure / class@method and inject its dependencies.
-	 * 调用给定的Closure / class@method并注入它的依赖项。
+	 * 调用给定的Closure / class@method并注入它的依赖项
      *
      * @param  callable|string  $callback
      * @param  array  $parameters
@@ -632,7 +642,7 @@ class Container implements ArrayAccess, ContainerContract
 
     /**
      * An alias function name for make().
-	 * make（）的别名函数名
+	 * make()的别名函数名
      *
      * @param  string  $abstract
      * @param  array  $parameters
@@ -661,11 +671,15 @@ class Container implements ArrayAccess, ContainerContract
      */
     public function get($id)
     {
-        if ($this->has($id)) {
+        try {
             return $this->resolve($id);
-        }
+        } catch (Exception $e) {
+            if ($this->has($id)) {
+                throw $e;
+            }
 
-        throw new EntryNotFoundException;
+            throw new EntryNotFoundException;
+        }
     }
 
     /**
@@ -687,8 +701,8 @@ class Container implements ArrayAccess, ContainerContract
         // If an instance of the type is currently being managed as a singleton we'll
         // just return an existing instance instead of instantiating new instances
         // so the developer can keep using the same objects instance every time.
-		// 如果一个类型的实例目前被管理为单例,我们将返回一个现有实例,而不是实例化新实例,
-		// 因此开发人员可以随时使用相同的对象实例。
+		// 如果类型的实例目前被管理为单例,我们将会返回现有实例,而不是实例化新实例。
+		// 因此开发人员每次都可以使用相同的对象实例。
         if (isset($this->instances[$abstract]) && ! $needsContextualBuild) {
             return $this->instances[$abstract];
         }
@@ -700,7 +714,8 @@ class Container implements ArrayAccess, ContainerContract
         // We're ready to instantiate an instance of the concrete type registered for
         // the binding. This will instantiate the types, as well as resolve any of
         // its "nested" dependencies recursively until all have gotten resolved.
-		// 我们已准备好实例化与该绑定所关联的具体类型的实例。
+		// 我们准备实例化一个注册的具体类型的实例绑定。
+		// 这将实例化类型，并递归地解决其中的任何“嵌套”依赖，直到所有依赖都被解决为止。
         if ($this->isBuildable($concrete, $abstract)) {
             $object = $this->build($concrete);
         } else {
@@ -710,7 +725,8 @@ class Container implements ArrayAccess, ContainerContract
         // If we defined any extenders for this type, we'll need to spin through them
         // and apply them to the object being built. This allows for the extension
         // of services, such as changing configuration or decorating the object.
-		// 如果我们定义了这种类型的任何extenders,我们需要通过它们进行旋转,并将它们应用到正在构建的对象中。
+		// 如果我们为该类型定义了任何扩展器，就需要遍历这些扩展器，并将它们应用于正在构建的对象。
+		// 这使得我们能够扩展服务，例如修改配置或装饰对象。
         foreach ($this->getExtenders($abstract) as $extender) {
             $object = $extender($object, $this);
         }
@@ -718,6 +734,8 @@ class Container implements ArrayAccess, ContainerContract
         // If the requested type is registered as a singleton we'll want to cache off
         // the instances in "memory" so we can return it later without creating an
         // entirely new instance of an object on each subsequent request for it.
+		// 如果所请求的类型被注册为单例，我们希望将实例缓存在“内存”中，
+		// 以便在后续每次请求时无需创建新的对象实例即可返回。
         if ($this->isShared($abstract) && ! $needsContextualBuild) {
             $this->instances[$abstract] = $object;
         }
@@ -727,6 +745,8 @@ class Container implements ArrayAccess, ContainerContract
         // Before returning, we will also set the resolved flag to "true" and pop off
         // the parameter overrides for this build. After those two things are done
         // we will be ready to return back the fully constructed class instance.
+		// 在返回之前，我们还会将已解决的标志设为“true”，并移除此构建的参数覆盖。
+		// 完成这两件事后，我们就可以准备返回完全构造好的类实例了。
         $this->resolved[$abstract] = true;
 
         array_pop($this->with);
@@ -750,6 +770,8 @@ class Container implements ArrayAccess, ContainerContract
         // If we don't have a registered resolver or concrete for the type, we'll just
         // assume each type is a concrete name and will attempt to resolve it as is
         // since the container should be able to resolve concretes automatically.
+		// 如果我们没有为该类型注册解析器或具体实现，我们将假设每种类型都是一个具体的名称，
+		// 并尝试按原样进行解析，因为容器应能自动解析具体实现。
         if (isset($this->bindings[$abstract])) {
             return $this->bindings[$abstract]['concrete'];
         }
@@ -773,7 +795,8 @@ class Container implements ArrayAccess, ContainerContract
         // Next we need to see if a contextual binding might be bound under an alias of the
         // given abstract type. So, we will need to check if any aliases exist with this
         // type and then spin through them and check for contextual bindings on these.
-		// 接下来，我们需要查看是否有可能将一个上下文绑定操作绑定到给定抽象类型的别名上。
+		// 接下来我们需要检查给定抽象类型是否可能通过其别名进行上下文绑定。
+		// 因此，我们需要先检查是否存在与该类型相关的别名，然后遍历这些别名，检查它们是否有上下文绑定。
         if (empty($this->abstractAliases[$abstract])) {
             return;
         }
@@ -826,8 +849,8 @@ class Container implements ArrayAccess, ContainerContract
         // If the concrete type is actually a Closure, we will just execute it and
         // hand back the results of the functions, which allows functions to be
         // used as resolvers for more fine-tuned resolution of these objects.
-		// 如果具体的类型实际上是闭包，我们就会直接执行它，并将函数的结果返回给用户，
-		// 这样就使得函数能够作为这些对象更精确解析的解析器被使用。
+		// 如果混凝土类型实际上是一个闭包，我们只需执行它并返回函数的结果，
+		// 这使得函数可以作为解析器，用于对这些对象进行更精细的解析。
         if ($concrete instanceof Closure) {
             return $concrete($this, $this->getLastParameterOverride());
         }
@@ -835,8 +858,10 @@ class Container implements ArrayAccess, ContainerContract
         $reflector = new ReflectionClass($concrete);
 
         // If the type is not instantiable, the developer is attempting to resolve
-        // an abstract type such as an Interface of Abstract Class and there is
+        // an abstract type such as an Interface or Abstract Class and there is
         // no binding registered for the abstractions so we need to bail out.
+		// 如果类型无法实例化，说明开发者正尝试解析一个抽象类型（如接口或抽象类），
+		// 而该抽象类型没有注册任何绑定，因此我们需要退出。
         if (! $reflector->isInstantiable()) {
             return $this->notInstantiable($concrete);
         }
@@ -848,6 +873,8 @@ class Container implements ArrayAccess, ContainerContract
         // If there are no constructors, that means there are no dependencies then
         // we can just resolve the instances of the objects right away, without
         // resolving any other types or dependencies out of these containers.
+		// 如果没有构造函数，那就意味着没有依赖关系，我们可以直接解析对象的实例，
+		// 而无需解析这些容器中的其他类型或依赖。
         if (is_null($constructor)) {
             array_pop($this->buildStack);
 
@@ -859,6 +886,8 @@ class Container implements ArrayAccess, ContainerContract
         // Once we have all the constructor's parameters we can create each of the
         // dependency instances and then use the reflection instances to make a
         // new instance of this class, injecting the created dependencies in.
+		// 一旦我们获取了所有构造函数的参数，就可以创建每个依赖项的实例，
+		// 然后使用反射实例来创建该类的新实例，并注入已创建的依赖项。
         $instances = $this->resolveDependencies(
             $dependencies
         );
@@ -883,6 +912,8 @@ class Container implements ArrayAccess, ContainerContract
             // If this dependency has a override for this particular build we will use
             // that instead as the value. Otherwise, we will continue with this run
             // of resolutions and let reflection attempt to determine the result.
+			// 如果此依赖项对该特定构建有覆盖值，我们将使用该值。
+			// 否则，将继续执行当前的解析流程，并让反射尝试确定结果。
             if ($this->hasParameterOverride($dependency)) {
                 $results[] = $this->getParameterOverride($dependency);
 
@@ -892,6 +923,8 @@ class Container implements ArrayAccess, ContainerContract
             // If the class is null, it means the dependency is a string or some other
             // primitive type which we can not resolve since it is not a class and
             // we will just bomb out with an error since we have no-where to go.
+			// 如果类为空，则表示依赖项是一个字符串或其他基本类型，由于它不是类，我们无法解析。
+			// 由于没有可追溯的对象，我们最终将报错崩溃。
             $results[] = is_null($dependency->getClass())
                             ? $this->resolvePrimitive($dependency)
                             : $this->resolveClass($dependency);
@@ -977,7 +1010,8 @@ class Container implements ArrayAccess, ContainerContract
         // If we can not resolve the class instance, we will check to see if the value
         // is optional, and if it is we will return the optional parameter value as
         // the value of the dependency, similarly to how we do this with scalars.
-		// 如果无法解析类实例，我们将检查该值是否为可选值，如果是，则将可选参数的值作为依赖项的值返回，其方式与处理标量值时相同。
+		// 如果我们不能解决类实例,我们将检查值是可选的,
+		// 如果它是我们将返回可选的参数值作为依赖项的值,类似于我们如何用标量做这个。
         catch (BindingResolutionException $e) {
             if ($parameter->isOptional()) {
                 return $parameter->getDefaultValue();

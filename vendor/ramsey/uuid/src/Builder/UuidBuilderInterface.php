@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，构建器，Uuid 生成器接口
+ * Ramsey，Uuid，构建器，Uuid生成器接口
  */
 
 /**
@@ -23,13 +23,11 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * UuidBuilderInterface builds instances UuidInterface
- * UuidBuilderInterface构建实例uidinterface
  */
 interface UuidBuilderInterface
 {
     /**
      * Builds an instance of a UuidInterface
-	 * 构建UuidInterface的实例
      *
      * @param CodecInterface $codec The codec to use for building this UuidInterface instance
      * @param array $fields An array of fields from which to construct a UuidInterface instance;

@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，节点抽象
- */
-
 namespace PhpParser;
 
 abstract class NodeAbstract implements Node, \JsonSerializable
@@ -12,7 +8,6 @@ abstract class NodeAbstract implements Node, \JsonSerializable
 
     /**
      * Creates a Node.
-	 * 创建一个节点
      *
      * @param array $attributes Array of attributes
      */
@@ -22,7 +17,6 @@ abstract class NodeAbstract implements Node, \JsonSerializable
 
     /**
      * Gets line the node started in (alias of getStartLine).
-	 * 获取节点开始于(getStartLine别名)的行
      *
      * @return int Start line (or -1 if not available)
      */
@@ -32,7 +26,6 @@ abstract class NodeAbstract implements Node, \JsonSerializable
 
     /**
      * Gets line the node started in.
-	 * 获取节点开始的行。
      *
      * Requires the 'startLine' attribute to be enabled in the lexer (enabled by default).
      *
@@ -44,7 +37,6 @@ abstract class NodeAbstract implements Node, \JsonSerializable
 
     /**
      * Gets the line the node ended in.
-	 * 获取节点结束的行。
      *
      * Requires the 'endLine' attribute to be enabled in the lexer (enabled by default).
      *
@@ -56,7 +48,6 @@ abstract class NodeAbstract implements Node, \JsonSerializable
 
     /**
      * Gets the token offset of the first token that is part of this node.
-	 * 获取第一个标记的令牌偏移,这是该节点的一部分。
      *
      * The offset is an index into the array returned by Lexer::getTokens().
      *
@@ -70,7 +61,6 @@ abstract class NodeAbstract implements Node, \JsonSerializable
 
     /**
      * Gets the token offset of the last token that is part of this node.
-	 * 获取最后一个标记的令牌偏移,这是该节点的一部分。
      *
      * The offset is an index into the array returned by Lexer::getTokens().
      *
@@ -84,7 +74,6 @@ abstract class NodeAbstract implements Node, \JsonSerializable
 
     /**
      * Gets the file offset of the first character that is part of this node.
-	 * 获取第一个字符的文件偏移量,它是这个节点的一部分。
      *
      * Requires the 'startFilePos' attribute to be enabled in the lexer (DISABLED by default).
      *
@@ -96,7 +85,6 @@ abstract class NodeAbstract implements Node, \JsonSerializable
 
     /**
      * Gets the file offset of the last character that is part of this node.
-	 * 获取该节点的最后一个字符的文件偏移量
      *
      * Requires the 'endFilePos' attribute to be enabled in the lexer (DISABLED by default).
      *
@@ -108,7 +96,6 @@ abstract class NodeAbstract implements Node, \JsonSerializable
 
     /**
      * Gets all comments directly preceding this node.
-	 * 所有的注释直接在这个节点前面。
      *
      * The comments are also available through the "comments" attribute.
      *
@@ -120,7 +107,6 @@ abstract class NodeAbstract implements Node, \JsonSerializable
 
     /**
      * Gets the doc comment of the node.
-	 * 获取节点的doc注释
      *
      * @return null|Comment\Doc Doc comment object or null
      */
@@ -138,7 +124,6 @@ abstract class NodeAbstract implements Node, \JsonSerializable
 
     /**
      * Sets the doc comment of the node.
-	 * 设置节点的doc注释。
      *
      * This will either replace an existing doc comment or add it to the comments array.
      *

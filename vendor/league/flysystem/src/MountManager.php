@@ -11,7 +11,7 @@ use League\Flysystem\Plugin\PluginNotFoundException;
 
 /**
  * Class MountManager.
- * MountManager类
+ * 类 MountManager
  *
  * Proxies methods to Filesystem (@see __call):
  *
@@ -49,7 +49,6 @@ class MountManager implements FilesystemInterface
 
     /**
      * Mount filesystems.
-	 * 挂载文件系统
      *
      * @param FilesystemInterface[] $filesystems [:prefix => Filesystem,]
      *
@@ -68,7 +67,6 @@ class MountManager implements FilesystemInterface
 
     /**
      * Mount filesystems.
-	 * 挂载文件系统
      *
      * @param string              $prefix
      * @param FilesystemInterface $filesystem
@@ -90,7 +88,6 @@ class MountManager implements FilesystemInterface
 
     /**
      * Get the filesystem with the corresponding prefix.
-	 * 获取具有相应前缀的文件系统
      *
      * @param string $prefix
      *
@@ -109,7 +106,6 @@ class MountManager implements FilesystemInterface
 
     /**
      * Retrieve the prefix from an arguments array.
-	 * 从参数数组中检索前缀
      *
      * @param array $arguments
      *
@@ -159,7 +155,6 @@ class MountManager implements FilesystemInterface
 
     /**
      * Call forwarder.
-	 * 调取转接
      *
      * @param string $method
      * @param array  $arguments
@@ -210,7 +205,6 @@ class MountManager implements FilesystemInterface
 
     /**
      * List with plugin adapter.
-	 * 带有插件适配器的列表
      *
      * @param array  $keys
      * @param string $directory
@@ -231,7 +225,6 @@ class MountManager implements FilesystemInterface
 
     /**
      * Move a file.
-	 * 移动一个文件
      *
      * @param string $from
      * @param string $to

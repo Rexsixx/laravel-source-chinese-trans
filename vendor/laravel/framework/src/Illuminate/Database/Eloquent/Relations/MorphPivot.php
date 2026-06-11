@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，变形支点
+ * Illuminate，数据库，Eloquent，关系，形态转变
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -136,7 +136,7 @@ class MorphPivot extends Pivot
      * Get a new query to restore multiple models by their queueable IDs.
 	 * 获取一个新查询，根据可排队id恢复多个模型。
      *
-     * @param  array|int  $ids
+     * @param  array<int>  $ids
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function newQueryForCollectionRestoration(array $ids)

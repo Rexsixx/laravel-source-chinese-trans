@@ -17,6 +17,7 @@ class SetCacheHeaders
      * @param  \Closure  $next
      * @param  string|array  $options
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \InvalidArgumentException
      */
     public function handle($request, Closure $next, $options = [])
@@ -43,7 +44,7 @@ class SetCacheHeaders
 
     /**
      * Parse the given header options.
-	 * 解析给定的标头选项
+	 * 添加与缓存相关的HTTP头
      *
      * @param  string  $options
      * @return array

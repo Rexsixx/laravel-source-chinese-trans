@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，适配器，本地的
+ * League，Flysystem，适配器，局部
  */
 
 namespace League\Flysystem\Adapter;

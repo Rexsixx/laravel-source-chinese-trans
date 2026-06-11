@@ -8,8 +8,8 @@ namespace Illuminate\Contracts\Routing;
 interface ResponseFactory
 {
     /**
-     * Return a new response from the application.
-	 * 从应用程序返回一个新的响应
+     * Create a new response instance.
+	 * 创建一个新的响应实例
      *
      * @param  string  $content
      * @param  int  $status
@@ -19,8 +19,18 @@ interface ResponseFactory
     public function make($content = '', $status = 200, array $headers = []);
 
     /**
-     * Return a new view response from the application.
-	 * 从应用程序返回一个新的视图响应
+     * Create a new "no content" response.
+	 * 创建一个新的“无内容”响应
+     *
+     * @param  int  $status
+     * @param  array  $headers
+     * @return \Illuminate\Http\Response
+     */
+    public function noContent($status = 204, array $headers = []);
+
+    /**
+     * Create a new response for a given view.
+	 * 为给定视图创建一个新的响应
      *
      * @param  string  $view
      * @param  array  $data
@@ -31,8 +41,8 @@ interface ResponseFactory
     public function view($view, $data = [], $status = 200, array $headers = []);
 
     /**
-     * Return a new JSON response from the application.
-	 * 从应用程序返回一个新的JSON响应
+     * Create a new JSON response instance.
+	 * 创建一个新的JSON响应实例
      *
      * @param  string|array  $data
      * @param  int  $status
@@ -43,8 +53,8 @@ interface ResponseFactory
     public function json($data = [], $status = 200, array $headers = [], $options = 0);
 
     /**
-     * Return a new JSONP response from the application.
-	 * 从应用程序返回一个新的JSONP响应
+     * Create a new JSONP response instance.
+	 * 创建一个新的JSONP响应实例
      *
      * @param  string  $callback
      * @param  string|array  $data
@@ -56,8 +66,8 @@ interface ResponseFactory
     public function jsonp($callback, $data = [], $status = 200, array $headers = [], $options = 0);
 
     /**
-     * Return a new streamed response from the application.
-	 * 从应用程序返回一个新的流响应
+     * Create a new streamed response instance.
+	 * 创建一个新的流响应实例
      *
      * @param  \Closure  $callback
      * @param  int  $status
@@ -67,8 +77,8 @@ interface ResponseFactory
     public function stream($callback, $status = 200, array $headers = []);
 
     /**
-     * Return a new streamed response as a file download from the application.
-	 * 返回一个新的流响应，作为从应用程序下载的文件。
+     * Create a new streamed response instance as a file download.
+	 * 创建一个新的流响应实例作为文件下载
      *
      * @param  \Closure  $callback
      * @param  string|null  $name

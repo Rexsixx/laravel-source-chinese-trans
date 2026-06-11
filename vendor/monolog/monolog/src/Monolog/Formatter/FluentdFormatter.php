@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，格式器，Fluentd 格式化器
+ * Monolog，格式化程序，Fluentd 格式化程序
  */
 
 /*
@@ -18,7 +18,6 @@ use Monolog\Utils;
 
 /**
  * Class FluentdFormatter
- * 类FluentdFormatter
  *
  * Serializes a log message to Fluentd unix socket protocol
  *

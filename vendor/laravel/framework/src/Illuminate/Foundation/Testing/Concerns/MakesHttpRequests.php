@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，问题，发出Http请求
+ * Illuminate，基础，测试，问题，发出 Http请求
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;
@@ -465,7 +465,7 @@ trait MakesHttpRequests
 	 * 遵循重定向链，直到接收到非重定向。
      *
      * @param  \Illuminate\Http\Response  $response
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Foundation\Testing\TestResponse
      */
     protected function followRedirects($response)
     {

@@ -49,13 +49,17 @@ class SqlServerConnector extends Connector implements ConnectorInterface
         // First we will create the basic DSN setup as well as the port if it is in
         // in the configuration options. This will give us the basic DSN we will
         // need to establish the PDO connections and return them back for use.
-        if (in_array('dblib', $this->getAvailableDrivers())) {
-            return $this->getDblibDsn($config);
-        } elseif ($this->prefersOdbc($config)) {
+		// 首先，我们将创建基本的DSN设置和端口，如果在配置选项中。
+		// 这将给我们基本的DSN,我们需要建立PDO连接并返回它们使用。
+        if ($this->prefersOdbc($config)) {
             return $this->getOdbcDsn($config);
         }
 
-        return $this->getSqlSrvDsn($config);
+        if (in_array('sqlsrv', $this->getAvailableDrivers())) {
+            return $this->getSqlSrvDsn($config);
+        } else {
+            return $this->getDblibDsn($config);
+        }
     }
 
     /**

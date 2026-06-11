@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译器，问题，编译布局
+ * Illuminate，视图，编译器，问题，编译的布局
  */
 
 namespace Illuminate\View\Compilers\Concerns;
@@ -28,7 +28,7 @@ trait CompilesLayouts
     {
         $expression = $this->stripParentheses($expression);
 
-        $echo = "<?php echo \$__env->make({$expression}, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>";
+        $echo = "<?php echo \$__env->make({$expression}, \Illuminate\Support\Arr::except(get_defined_vars(), array('__data', '__path')))->render(); ?>";
 
         $this->footer[] = $echo;
 
@@ -51,7 +51,7 @@ trait CompilesLayouts
 
     /**
      * Replace the @parent directive to a placeholder.
-	 * 将@父指令替换为占位符
+	 * 将@parent指令替换为占位符
      *
      * @return string
      */
@@ -62,7 +62,7 @@ trait CompilesLayouts
 
     /**
      * Compile the yield statements into valid PHP.
-	 * 将输出语句编译成有效的PHP
+	 * 将yield语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -74,7 +74,7 @@ trait CompilesLayouts
 
     /**
      * Compile the show statements into valid PHP.
-	 * 将显示语句编译成有效的PHP
+	 * 将show语句编译成有效的PHP
      *
      * @return string
      */
@@ -85,7 +85,7 @@ trait CompilesLayouts
 
     /**
      * Compile the append statements into valid PHP.
-	 * 将append语句编译为有效的PHP
+	 * 将追加语句编译成有效的PHP
      *
      * @return string
      */
@@ -96,7 +96,7 @@ trait CompilesLayouts
 
     /**
      * Compile the overwrite statements into valid PHP.
-	 * 将overwrite语句编译成有效的PHP
+	 * 将覆盖语句编译成有效的PHP
      *
      * @return string
      */

@@ -30,7 +30,7 @@ class Class_ extends Declaration
 
     /**
      * Creates a class builder.
-	 * 创建一个类构建器
+	 * 创建类构建器
      *
      * @param string $name Name of the class
      */
@@ -54,7 +54,6 @@ class Class_ extends Declaration
 
     /**
      * Implements one or more interfaces.
-	 * 实现一个或多个接口
      *
      * @param Name|string ...$interfaces Names of interfaces to implement
      *

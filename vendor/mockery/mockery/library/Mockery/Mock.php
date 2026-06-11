@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，Mock
+ * Mockery，模拟
  */
 
 /**
@@ -35,7 +35,6 @@ class Mock implements MockInterface
 {
     /**
      * Stores an array of all expectation directors for this mock
-	 * 存储此模拟的所有期望董事的数组
      *
      * @var array
      */
@@ -52,7 +51,6 @@ class Mock implements MockInterface
     /**
      * Flag to indicate whether we can ignore method calls missing from our
      * expectations
-	 * 标记，以指示是否可以忽略从控件中丢失的方法调用。
      *
      * @var bool
      */

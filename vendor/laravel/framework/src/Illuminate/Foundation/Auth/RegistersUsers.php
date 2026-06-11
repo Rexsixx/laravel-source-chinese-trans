@@ -15,7 +15,7 @@ trait RegistersUsers
 
     /**
      * Show the application registration form.
-	 * 出示应用注册表格
+	 * 出示报名表格
      *
      * @return \Illuminate\Http\Response
      */

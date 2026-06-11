@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，提供者，时间提供者接口
+ * Ramsey，Uuid，提供商，时间提供者接口
  */
 
 /**
@@ -21,11 +21,13 @@ namespace Ramsey\Uuid\Provider;
 /**
  * TimeProviderInterface provides functionality to get the time from a specific
  * type of time provider
+ * TimeProviderInterface 提供了从特定类型的计时器获取时间的功能。
  */
 interface TimeProviderInterface
 {
     /**
      * Returns a timestamp array
+	 * 返回时间戳数组
      *
      * @return int[] Array guaranteed to contain `sec` and `usec` components of a timestamp
      */

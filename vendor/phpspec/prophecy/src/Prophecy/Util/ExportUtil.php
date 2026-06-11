@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，工具，导出工具
+ */
 
 namespace Prophecy\Util;
 

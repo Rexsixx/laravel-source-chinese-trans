@@ -20,7 +20,7 @@ trait HasDatabaseNotifications
 
     /**
      * Get the entity's read notifications.
-	 * 获取实体的读取通知
+	 * 获取实体的已读通知
      *
      * @return \Illuminate\Database\Query\Builder
      */

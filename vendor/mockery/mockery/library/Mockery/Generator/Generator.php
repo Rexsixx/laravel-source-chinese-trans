@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，生成器，Generator
+ * Mockery，发生器，Generator
  */
 
 /**

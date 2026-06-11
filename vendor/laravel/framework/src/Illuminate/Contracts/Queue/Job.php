@@ -9,7 +9,7 @@ interface Job
 {
     /**
      * Get the job identifier.
-	 * 获取作业标识符
+	 * 获取工作标识符
      *
      * @return string
      */
@@ -25,7 +25,7 @@ interface Job
 
     /**
      * Fire the job.
-	 * 启动作业
+	 * 触发这个作业
      *
      * @return void
      */
@@ -33,10 +33,12 @@ interface Job
 
     /**
      * Release the job back into the queue.
-	 * 将作业释放回队列
+	 * 将作业释放回队列。
+     *
+     * Accepts a delay specified in seconds.
      *
      * @param  int   $delay
-     * @return mixed
+     * @return void
      */
     public function release($delay = 0);
 
@@ -115,7 +117,7 @@ interface Job
 
     /**
      * Get the resolved name of the queued job class.
-	 * 获取排队作业类的解析名称
+	 * 获取排队作业类的解析名称。
      *
      * Resolves the name of "wrapped" jobs such as class-based handlers.
      *

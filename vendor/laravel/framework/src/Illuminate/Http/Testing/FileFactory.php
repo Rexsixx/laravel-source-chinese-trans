@@ -42,7 +42,7 @@ class FileFactory
 
     /**
      * Generate a dummy image of the given width and height.
-	 * 生成给定宽度和高度的虚拟图像
+	 * 生成给定宽度和高度的虚拟图像。
      *
      * @param  int  $width
      * @param  int  $height

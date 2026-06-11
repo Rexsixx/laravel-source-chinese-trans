@@ -14,7 +14,7 @@ class RouteAction
 {
     /**
      * Parse the given action into an array.
-	 * 将给定的动作解析为一个数组
+	 * 将给定的动作解析为数组
      *
      * @param  string  $uri
      * @param  mixed  $action
@@ -33,6 +33,8 @@ class RouteAction
         // If the action is already a Closure instance, we will just set that instance
         // as the "uses" property, because there is nothing else we need to do when
         // it is available. Otherwise we will need to find it in the action list.
+		// 如果该操作已经是 Closure 类型的实例，我们就会将该实例设置为“使用”属性的值，
+		// 因为一旦该实例可用，我们就无需再做其他任何处理了。
         if (is_callable($action)) {
             return ! is_array($action) ? ['uses' => $action] : [
                 'uses' => $action[0].'@'.$action[1],
@@ -43,6 +45,7 @@ class RouteAction
         // If no "uses" property has been set, we will dig through the array to find a
         // Closure instance within this list. We will set the first Closure we come
         // across into the "uses" property that will get fired off by this route.
+		// 如果尚未设置“使用”属性，我们将遍历该数组，以在其中查找一个 Closure 实例。
         elseif (! isset($action['uses'])) {
             $action['uses'] = static::findCallable($action);
         }
@@ -56,7 +59,7 @@ class RouteAction
 
     /**
      * Get an action for a route that has no action.
-	 * 为一条没有行动的路线采取行动
+	 * 为没有动作的路由获取一个动作
      *
      * @param  string  $uri
      * @return array
@@ -70,7 +73,7 @@ class RouteAction
 
     /**
      * Find the callable in an action array.
-	 * 在操作数组中找到可调用的
+	 * 在动作数组中查找可调用对象
      *
      * @param  array  $action
      * @return callable
@@ -84,7 +87,7 @@ class RouteAction
 
     /**
      * Make an action for an invokable controller.
-	 * 为一个可调用的控制器做一个动作
+	 * 为可调用控制器创建一个操作
      *
      * @param  string $action
      * @return string

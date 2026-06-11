@@ -1,7 +1,4 @@
 <?php
-/**
- * phpDocumentor，Reflection，Doc Block，串行化器
- */
 
 declare(strict_types=1);
 
@@ -28,7 +25,6 @@ use function wordwrap;
 
 /**
  * Converts a DocBlock back from an object to a complete DocComment including Asterisks.
- * 将一个DocBlock从一个对象转换为一个完整的doc注释,包括星号。
  */
 class Serializer
 {

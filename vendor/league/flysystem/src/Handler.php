@@ -24,7 +24,7 @@ abstract class Handler
 
     /**
      * Constructor.
-	 * 构造方法
+	 * 构造函数
      *
      * @param FilesystemInterface $filesystem
      * @param string              $path
@@ -37,7 +37,6 @@ abstract class Handler
 
     /**
      * Check whether the entree is a directory.
-	 * 检查entree是否为目录
      *
      * @return bool
      */
@@ -48,7 +47,6 @@ abstract class Handler
 
     /**
      * Check whether the entree is a file.
-	 * 检查主菜是否为文件
      *
      * @return bool
      */
@@ -59,7 +57,6 @@ abstract class Handler
 
     /**
      * Retrieve the entree type (file|dir).
-	 * 检索条目类型（文件|dir）
      *
      * @return string file or dir
      */
@@ -72,7 +69,6 @@ abstract class Handler
 
     /**
      * Set the Filesystem object.
-	 * 设置文件系统对象
      *
      * @param FilesystemInterface $filesystem
      *
@@ -87,7 +83,6 @@ abstract class Handler
     
     /**
      * Retrieve the Filesystem object.
-	 * 检索Filesystem对象
      *
      * @return FilesystemInterface
      */
@@ -98,7 +93,6 @@ abstract class Handler
 
     /**
      * Set the entree path.
-	 * 设置入口路径
      *
      * @param string $path
      *
@@ -113,7 +107,6 @@ abstract class Handler
 
     /**
      * Retrieve the entree path.
-	 * 检索入口路径
      *
      * @return string path
      */
@@ -124,7 +117,6 @@ abstract class Handler
 
     /**
      * Plugins pass-through.
-	 * 插件pass-through
      *
      * @param string $method
      * @param array  $arguments

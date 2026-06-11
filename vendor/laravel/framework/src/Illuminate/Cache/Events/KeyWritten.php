@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，事件，主键写入
+ * Illuminate，缓存，事件，密钥写入
  */
 
 namespace Illuminate\Cache\Events;

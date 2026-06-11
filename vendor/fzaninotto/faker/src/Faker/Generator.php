@@ -253,7 +253,6 @@ class Generator
 
     /**
      * Replaces tokens ('{{ tokenName }}') with the result from the token method call
-	 * 用令牌方法调用替换令牌({ tokenName } })
      *
      * @param  string $string String that needs to bet parsed
      * @return string

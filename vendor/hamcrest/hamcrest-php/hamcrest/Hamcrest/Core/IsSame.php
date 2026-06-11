@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，Is Same
+ */
+
 namespace Hamcrest\Core;
 
 /*

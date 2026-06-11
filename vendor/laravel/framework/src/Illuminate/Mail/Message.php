@@ -1,18 +1,21 @@
 <?php
 /**
- * Illuminate，电子邮件，信息
+ * Illuminate，电子邮件，消息
  */
 
 namespace Illuminate\Mail;
 
 use Swift_Image;
 use Swift_Attachment;
+use Illuminate\Support\Traits\ForwardsCalls;
 
 /**
  * @mixin \Swift_Message
  */
 class Message
 {
+    use ForwardsCalls;
+
     /**
      * The Swift Message instance.
 	 * Swift Message实例
@@ -23,7 +26,7 @@ class Message
 
     /**
      * CIDs of files embedded in the message.
-	 * 嵌入在消息中的文件的CIDs
+	 * 消息中嵌入文件的cid
      *
      * @var array
      */
@@ -43,7 +46,7 @@ class Message
 
     /**
      * Add a "from" address to the message.
-	 * 在消息中添加一个“from”地址
+	 * 在消息中添加“发件人”地址
      *
      * @param  string|array  $address
      * @param  string|null  $name
@@ -58,7 +61,7 @@ class Message
 
     /**
      * Set the "sender" of the message.
-	 * 设置消息的“发送方”
+	 * 设置消息的“发送者”
      *
      * @param  string|array  $address
      * @param  string|null  $name
@@ -223,7 +226,7 @@ class Message
 
     /**
      * Create a Swift Attachment instance.
-	 * 创建一个Swift Attachment实例。
+	 * 创建一个Swift Attachment实例
      *
      * @param  string  $file
      * @return \Swift_Mime_Attachment
@@ -235,7 +238,7 @@ class Message
 
     /**
      * Attach in-memory data as an attachment.
-	 * 将内存数据附加为附件
+	 * 将内存中的数据作为附件附加
      *
      * @param  string  $data
      * @param  string  $name
@@ -346,8 +349,6 @@ class Message
      */
     public function __call($method, $parameters)
     {
-        $callable = [$this->swift, $method];
-
-        return call_user_func_array($callable, $parameters);
+        return $this->forwardCallTo($this->swift, $method, $parameters);
     }
 }

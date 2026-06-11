@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，适配器，单元测试，Mockery 测试用例
+ * Mockery，适配器，Php单元，Mockery 测试用例
  */
 
 /**

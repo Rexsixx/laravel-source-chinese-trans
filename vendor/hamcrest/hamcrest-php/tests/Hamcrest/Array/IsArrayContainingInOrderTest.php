@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，数组，是否包含在任何订单测试中的数组
- */
-
 namespace Hamcrest\Arrays;
 
 use Hamcrest\AbstractMatcherTest;

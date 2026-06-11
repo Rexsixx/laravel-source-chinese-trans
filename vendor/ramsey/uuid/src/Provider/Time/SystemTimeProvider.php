@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，提供者，时间，系统时间提供者
+ * Ramsey，Uuid，提供商，时间，系统时间提供程序
  */
 
 /**
@@ -22,11 +22,13 @@ use Ramsey\Uuid\Provider\TimeProviderInterface;
 
 /**
  * SystemTimeProvider uses built-in PHP functions to provide the time
+ * SystemTimeProvider使用内置的PHP函数来提供时间
  */
 class SystemTimeProvider implements TimeProviderInterface
 {
     /**
      * Returns a timestamp array
+	 * 返回时间戳数组
      *
      * @return int[] Array containing `sec` and `usec` components of a timestamp
      */

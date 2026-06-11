@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，加载器，Mo 文件加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,6 +24,7 @@ class MoFileLoader extends FileLoader
     /**
      * Magic used for validating the format of an MO file as well as
      * detecting if the machine used to create that file was little endian.
+	 * 用于验证MO文件格式，以及检测创建该文件所用的机器是否为小端序。
      */
     public const MO_LITTLE_ENDIAN_MAGIC = 0x950412DE;
 

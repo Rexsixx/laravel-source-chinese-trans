@@ -81,7 +81,7 @@ class SqsQueue extends Queue implements QueueContract
      */
     public function push($job, $data = '', $queue = null)
     {
-        return $this->pushRaw($this->createPayload($job, $data), $queue);
+        return $this->pushRaw($this->createPayload($job, $queue ?: $this->default, $data), $queue);
     }
 
     /**
@@ -114,14 +114,14 @@ class SqsQueue extends Queue implements QueueContract
     {
         return $this->sqs->sendMessage([
             'QueueUrl' => $this->getQueue($queue),
-            'MessageBody' => $this->createPayload($job, $data),
+            'MessageBody' => $this->createPayload($job, $queue ?: $this->default, $data),
             'DelaySeconds' => $this->secondsUntil($delay),
         ])->get('MessageId');
     }
 
     /**
      * Pop the next job off of the queue.
-	 * 从队列中启动下一个作业
+	 * 将下一个作业从队列中弹出
      *
      * @param  string  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
@@ -158,7 +158,7 @@ class SqsQueue extends Queue implements QueueContract
 
     /**
      * Get the underlying SQS instance.
-	 * 获取底层的SQS实例
+	 * 获取底层SQS实例
      *
      * @return \Aws\Sqs\SqsClient
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，服务，服务订阅者接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Contracts\Service;
 
 /**
  * A ServiceSubscriber exposes its dependencies via the static {@link getSubscribedServices} method.
+ * servicessubscriber通过静态方式公开它的依赖关系
  *
  * The getSubscribedServices method returns an array of service types required by such instances,
  * optionally keyed by the service names used internally. Service types that start with an interrogation

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Css选择器，Css选择器转换器
+ * Symfony，组件，调试，Css 选择器，Css 选择器转换器
  */
 
 /*

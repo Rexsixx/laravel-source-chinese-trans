@@ -1,9 +1,5 @@
 <?php
 /**
- * Mockery，生成器，目标类接口
- */
-
-/**
  * Mockery
  *
  * LICENSE

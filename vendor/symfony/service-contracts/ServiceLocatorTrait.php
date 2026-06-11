@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，服务，服务定位器特征
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ class_exists(NotFoundExceptionInterface::class);
 
 /**
  * A trait to help implement ServiceProviderInterface.
+ * 帮助实现ServiceProviderInterface的trait。
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  * @author Nicolas Grekas <p@tchwork.com>

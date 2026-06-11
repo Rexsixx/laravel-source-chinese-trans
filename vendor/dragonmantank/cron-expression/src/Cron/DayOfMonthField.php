@@ -1,6 +1,6 @@
 <?php
 /**
- * Cron，月日字段
+ * Cron，实例化器，月天字段
  */
 
 namespace Cron;
@@ -10,6 +10,7 @@ use DateTimeInterface;
 
 /**
  * Day of month field.  Allows: * , / - ? L W
+ * 月天字段。
  *
  * 'L' stands for "last" and specifies the last day of the month.
  *
@@ -40,7 +41,7 @@ class DayOfMonthField extends AbstractField
 
     /**
      * Get the nearest day of the week for a given day in a month
-	 * 在一个月的给定天里得到一个星期的最近的一天
+	 * 在一个月的一个月里度过一个星期的最近的一天
      *
      * @param int $currentYear  Current year
      * @param int $currentMonth Current month
@@ -127,6 +128,7 @@ class DayOfMonthField extends AbstractField
         $basicChecks = parent::validate($value);
 
         // Validate that a list don't have W or L
+		// 验证列表没有W或L
         if (strpos($value, ',') !== false && (strpos($value, 'W') !== false || strpos($value, 'L') !== false)) {
             return false;
         }

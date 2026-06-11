@@ -1,9 +1,5 @@
 <?php
 /**
- * Mockery，生成器，参数
- */
-
-/**
  * Mockery
  *
  * LICENSE
@@ -46,7 +42,6 @@ class Parameter
 
     /**
      * Get the reflection class for the parameter type, if it exists.
-	 * 获取参数类型的反射类（如果存在）。
      *
      * This will be null if there was no type, or it was a scalar or a union.
      *
@@ -63,7 +58,6 @@ class Parameter
 
     /**
      * Get the string representation for the paramater type.
-	 * 获取paramater表的字符串表示
      *
      * @return string|null
      */
@@ -74,7 +68,6 @@ class Parameter
 
     /**
      * Get the string representation for the paramater type.
-	 * 获取paramater表的字符串表示
      *
      * @return string
      *

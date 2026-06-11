@@ -1,7 +1,7 @@
 <?php declare(strict_types = 1);
 
 /**
- * TheSeer，Tokenizer，异常
+ * TheSeer，词法分析器，异常
  */
 
 namespace TheSeer\Tokenizer;

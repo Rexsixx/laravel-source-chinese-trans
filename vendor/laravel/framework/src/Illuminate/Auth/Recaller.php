@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，重调用
+ * Illuminate，认证，重调用
  */
 
 namespace Illuminate\Auth;
@@ -11,7 +11,7 @@ class Recaller
 {
     /**
      * The "recaller" / "remember me" cookie string.
-	 * “recaller”/“记住我”的cookie字符串
+	 * “回忆者”/“记住我”cookie字符串
      *
      * @var string
      */
@@ -94,6 +94,6 @@ class Recaller
     {
         $segments = explode('|', $this->recaller);
 
-        return count($segments) == 3 && trim($segments[0]) !== '' && trim($segments[1]) !== '';
+        return count($segments) === 3 && trim($segments[0]) !== '' && trim($segments[1]) !== '';
     }
 }

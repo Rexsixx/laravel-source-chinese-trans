@@ -1,7 +1,4 @@
 <?php
-/**
- * Laravel，Tinker，类别名自动加载器
- */
 
 namespace Laravel\Tinker;
 
@@ -12,7 +9,6 @@ class ClassAliasAutoloader
 {
     /**
      * The shell instance.
-	 * shell实例
      *
      * @var \Psy\Shell
      */
@@ -20,7 +16,6 @@ class ClassAliasAutoloader
 
     /**
      * All of the discovered classes.
-	 * 所有已发现的类
      *
      * @var array
      */
@@ -28,7 +23,6 @@ class ClassAliasAutoloader
 
     /**
      * Register a new alias loader instance.
-	 * 注册一个新的别名加载器实例
      *
      * @param  \Psy\Shell  $shell
      * @param  string  $classMapPath
@@ -43,7 +37,6 @@ class ClassAliasAutoloader
 
     /**
      * Create a new alias loader instance.
-	 * 创建一个新的别名装入程序实例
      *
      * @param  \Psy\Shell  $shell
      * @param  string  $classMapPath
@@ -80,7 +73,6 @@ class ClassAliasAutoloader
 
     /**
      * Find the closest class by name.
-	 * 按名称查找最近的类
      *
      * @param  string  $class
      * @return void
@@ -104,7 +96,6 @@ class ClassAliasAutoloader
 
     /**
      * Unregister the alias loader instance.
-	 * 注销别名加载器实例
      *
      * @return void
      */
@@ -115,7 +106,6 @@ class ClassAliasAutoloader
 
     /**
      * Handle the destruction of the instance.
-	 * 处理实例的销毁
      *
      * @return void
      */

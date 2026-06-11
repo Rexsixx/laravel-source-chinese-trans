@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，CodeCoverage，驱动程序，Driver
+ * SebastianBergmann，代码覆盖率，驱动程序，Driver
  */
 
 /*
@@ -15,7 +15,6 @@ namespace SebastianBergmann\CodeCoverage\Driver;
 
 /**
  * Interface for code coverage drivers.
- * 代码覆盖驱动程序的接口
  */
 interface Driver
 {
@@ -42,7 +41,6 @@ interface Driver
 
     /**
      * Start collection of code coverage information.
-	 * 开始收集代码覆盖率信息
      */
     public function start(bool $determineUnusedAndDead = true): void;
 

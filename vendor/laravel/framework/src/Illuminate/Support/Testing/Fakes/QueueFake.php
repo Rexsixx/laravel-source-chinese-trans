@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，Fake，队列 Fake
+ * Illuminate，支持，测试，假装，队列 Fake
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -13,7 +13,7 @@ class QueueFake extends QueueManager implements Queue
 {
     /**
      * All of the jobs that have been pushed.
-	 * 所有的工作都被推动了
+	 * 所有的作业都被推迟了
      *
      * @var array
      */
@@ -21,7 +21,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Assert if a job was pushed based on a truth-test callback.
-	 * 断言如果工作是基于trutest callback的
+	 * 断言作业是否基于真值测试回调被推送
      *
      * @param  string  $job
      * @param  callable|int|null  $callback
@@ -41,7 +41,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Assert if a job was pushed a number of times.
-	 * 断言是否作业被推了很多次
+	 * 判断一个作业是否被推送了多次
      *
      * @param  string  $job
      * @param  int  $times
@@ -57,7 +57,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Assert if a job was pushed based on a truth-test callback.
-	 * 断言如果工作是基于trutest callback的
+	 * 断言作业是否基于真值测试回调被推送
      *
      * @param  string  $queue
      * @param  string  $job
@@ -77,7 +77,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Assert if a job was pushed with chained jobs based on a truth-test callback.
-	 * 断言如果基于一个tru- test回调,工作就会被链接的工作所推动。
+	 * 判断一个作业是否被基于真值测试回调的链式作业推送
      *
      * @param  string $job
      * @param  array $expectedChain
@@ -103,7 +103,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Assert if a job was pushed with chained jobs based on a truth-test callback.
-	 * 断言如果基于一个tru- test回调,工作就会被链接的工作所推动。
+	 * 判断一个作业是否被基于真值测试回调的链式作业推送
      *
      * @param  string $job
      * @param  array $expectedChain
@@ -126,7 +126,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Assert if a job was pushed with chained jobs based on a truth-test callback.
-	 * 断言如果基于一个tru- test回调,工作就会被链接的工作所推动。
+	 * 判断一个作业是否被基于真值测试回调的链式作业推送
      *
      * @param  string $job
      * @param  array $expectedChain
@@ -150,22 +150,21 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Determine if the given chain is entirely composed of objects.
-	 * 确定给定的链是否完全由对象组成
+	 * 确定给定链是否完全由对象组成
      *
      * @param  array  $chain
      * @return bool
      */
     protected function isChainOfObjects($chain)
     {
-        return collect($chain)->count() == collect($chain)
-                    ->filter(function ($job) {
-                        return is_object($job);
-                    })->count();
+        return ! collect($chain)->contains(function ($job) {
+            return ! is_object($job);
+        });
     }
 
     /**
      * Determine if a job was pushed based on a truth-test callback.
-	 * 确定是否基于实际测试回调工作
+	 * 根据true -test回调确定作业是否被推送
      *
      * @param  string  $job
      * @param  callable|null  $callback
@@ -181,7 +180,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Assert that no jobs were pushed.
-	 * 断言没有任何工作被推动
+	 * 断言没有工作被推送
      *
      * @return void
      */
@@ -192,7 +191,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Get all of the jobs matching a truth-test callback.
-	 * 让所有的工作都匹配一个truand测试回调
+	 * 获取所有符合真实测试回调的工作
      *
      * @param  string  $job
      * @param  callable|null  $callback
@@ -215,7 +214,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Determine if there are any stored jobs for a given class.
-	 * 用“点”符号从数组中获取一个项目
+	 * 确定给定类是否有任何存储的作业
      *
      * @param  string  $job
      * @return bool
@@ -227,7 +226,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Resolve a queue connection instance.
-	 * 解决队列连接实例
+	 * 解析队列连接实例
      *
      * @param  mixed  $value
      * @return \Illuminate\Contracts\Queue\Queue
@@ -251,7 +250,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Push a new job onto the queue.
-	 * 将新工作推到队列上
+	 * 将新作业推送到队列中
      *
      * @param  string  $job
      * @param  mixed   $data
@@ -268,7 +267,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Push a raw payload onto the queue.
-	 * 将原始有效负载推到队列上
+	 * 将原始有效负载推入队列
      *
      * @param  string  $payload
      * @param  string  $queue
@@ -282,7 +281,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Push a new job onto the queue after a delay.
-	 * 延迟后将新工作推到队列上
+	 * 在延迟后将新作业推入队列
      *
      * @param  \DateTime|int  $delay
      * @param  string  $job
@@ -297,7 +296,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Push a new job onto the queue.
-	 * 将新工作推到队列上
+	 * 将新作业推送到队列中
      *
      * @param  string  $queue
      * @param  string  $job
@@ -311,7 +310,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Push a new job onto the queue after a delay.
-	 * 延迟后将新工作推到队列上
+	 * 在延迟后将新作业推入队列
      *
      * @param  string  $queue
      * @param  \DateTime|int  $delay
@@ -326,7 +325,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Pop the next job off of the queue.
-	 * 从队列中启动下一个工作
+	 * 将下一个作业从队列中弹出
      *
      * @param  string  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
@@ -338,7 +337,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Push an array of jobs onto the queue.
-	 * 将一系列工作推到队列上
+	 * 将一组作业推入队列
      *
      * @param  array $jobs
      * @param  mixed $data
@@ -353,8 +352,19 @@ class QueueFake extends QueueManager implements Queue
     }
 
     /**
+     * Get the jobs that have been pushed.
+	 * 争取那些被推迟的工作
+     *
+     * @return array
+     */
+    public function pushedJobs()
+    {
+        return $this->jobs;
+    }
+
+    /**
      * Get the connection name for the queue.
-	 * 获取队列的连接名
+	 * 获取队列的连接名称
      *
      * @return string
      */
@@ -365,7 +375,7 @@ class QueueFake extends QueueManager implements Queue
 
     /**
      * Set the connection name for the queue.
-	 * 设置队列的连接名
+	 * 设置队列的连接名称
      *
      * @param  string $name
      * @return $this

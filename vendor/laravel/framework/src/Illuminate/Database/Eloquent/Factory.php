@@ -45,7 +45,7 @@ class Factory implements ArrayAccess
 
     /**
      * The Faker instance for the builder.
-	 * 生成器的Faker实例
+	 * 生成器的Faker实例。
      *
      * @var \Faker\Generator
      */
@@ -110,7 +110,7 @@ class Factory implements ArrayAccess
 
     /**
      * Define a state with a given set of attributes.
-	 * 用一组给定的属性定义一个状态。
+	 * 用一组给定的属性定义一个状态
      *
      * @param  string  $class
      * @param  string  $state
@@ -254,7 +254,7 @@ class Factory implements ArrayAccess
 
     /**
      * Get the raw attribute array for a given model.
-	 * 获取给定模型的原始属性数组。
+	 * 获取给定模型的原始属性数组
      *
      * @param  string  $class
      * @param  array  $attributes

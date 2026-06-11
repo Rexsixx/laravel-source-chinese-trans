@@ -29,7 +29,7 @@ class FilesystemManager implements FactoryContract
 {
     /**
      * The application instance.
-	 * 应用实例
+	 * 程序实例
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */

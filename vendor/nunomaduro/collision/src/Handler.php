@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，处理程序
+ * NunoMaduro，冲突，处理程序
  */
 
 /**
@@ -29,7 +29,7 @@ class Handler extends AbstractHandler implements HandlerContract
 {
     /**
      * Holds an instance of the writer.
-	 * 持有作者的实例
+	 * 保存写入器的实例
      *
      * @var \NunoMaduro\Collision\Contracts\Writer
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，构建器，默认Uuid生成器
+ * Ramsey，Uuid，构建器，默认 Uuid生成器
  */
 
 /**
@@ -35,7 +35,6 @@ class DefaultUuidBuilder implements UuidBuilderInterface
 
     /**
      * Constructs the DefaultUuidBuilder
-	 * 构造DefaultUuidBuilder
      *
      * @param NumberConverterInterface $converter The number converter to use when constructing the Uuid
      */

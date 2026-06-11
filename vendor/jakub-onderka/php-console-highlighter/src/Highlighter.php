@@ -1,6 +1,6 @@
 <?php
 /**
- * JakubOnderka，PhpConsoleHighlighter，高光色
+ * JakubOnderka，Php控制台颜色，高光色
  */
 
 namespace JakubOnderka\PhpConsoleHighlighter;

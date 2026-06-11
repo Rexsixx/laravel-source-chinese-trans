@@ -70,7 +70,7 @@ interface PasswordBroker
 
     /**
      * Set a custom password validator.
-	 * 设置自定义密码验证器
+	 * 设置自定义密码验证器。
      *
      * @param  \Closure  $callback
      * @return void

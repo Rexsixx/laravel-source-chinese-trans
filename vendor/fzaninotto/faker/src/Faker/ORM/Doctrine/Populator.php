@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，学说，Populator
+ */
 
 namespace Faker\ORM\Doctrine;
 

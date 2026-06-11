@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，认证，重置密码
+ * Illuminate，基础，认证，重设密码
  */
 
 namespace Illuminate\Foundation\Auth;
@@ -21,7 +21,6 @@ trait ResetsPasswords
 	 * 显示给定令牌的密码重置视图。
      *
      * If no token is present, display the link request form.
-	 * 如果没有标记,显示链接请求表单。
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string|null  $token
@@ -43,12 +42,12 @@ trait ResetsPasswords
      */
     public function reset(Request $request)
     {
-        $this->validate($request, $this->rules(), $this->validationErrorMessages());
+        $request->validate($this->rules(), $this->validationErrorMessages());
 
         // Here we will attempt to reset the user's password. If it is successful we
         // will update the password on an actual user model and persist it to the
         // database. Otherwise we will parse the error and return the response.
-		// 在这里,我们将尝试重置用户的密码。
+		// 这里我们将尝试重置用户的密码。
         $response = $this->broker()->reset(
             $this->credentials($request), function ($user, $password) {
                 $this->resetPassword($user, $password);
@@ -58,9 +57,8 @@ trait ResetsPasswords
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
-		// 如果密码成功地重置,我们将重定向到应用程序的home身份验证视图。
         return $response == Password::PASSWORD_RESET
-                    ? $this->sendResetResponse($response)
+                    ? $this->sendResetResponse($request, $response)
                     : $this->sendResetFailedResponse($request, $response);
     }
 
@@ -129,10 +127,11 @@ trait ResetsPasswords
      * Get the response for a successful password reset.
 	 * 获取成功重置密码的响应
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  string  $response
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-    protected function sendResetResponse($response)
+    protected function sendResetResponse(Request $request, $response)
     {
         return redirect($this->redirectPath())
                             ->with('status', trans($response));

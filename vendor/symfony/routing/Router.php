@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，路由器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -37,6 +40,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 /**
  * The Router class is an example of the integration of all pieces of the
  * routing system for easier use.
+ * 路由器类是路由系统各组件集成的示例，便于使用。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

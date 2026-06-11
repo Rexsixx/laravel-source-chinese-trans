@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，特性，宏观的
+ * Illuminate，支持，特性，Macroable
  */
 
 namespace Illuminate\Support\Traits;
@@ -40,6 +40,7 @@ trait Macroable
      *
      * @param  object  $mixin
      * @return void
+     *
      * @throws \ReflectionException
      */
     public static function mixin($mixin)
@@ -57,7 +58,7 @@ trait Macroable
 
     /**
      * Checks if macro is registered.
-	 * 检查宏是否注册
+	 * 检查是否注册了宏
      *
      * @param  string  $name
      * @return bool
@@ -69,7 +70,7 @@ trait Macroable
 
     /**
      * Dynamically handle calls to the class.
-	 * 动态地处理对类的调用
+	 * 动态处理对类的调用
      *
      * @param  string  $method
      * @param  array   $parameters
@@ -94,7 +95,7 @@ trait Macroable
 
     /**
      * Dynamically handle calls to the class.
-	 * 动态地处理对类的调用
+	 * 动态处理对类的调用
      *
      * @param  string  $method
      * @param  array   $parameters

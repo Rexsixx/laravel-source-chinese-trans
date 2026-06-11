@@ -1,7 +1,4 @@
 <?php
-/**
- * Illuminate，基础，控制台，存根，动态类，根据实际修改
- */
 
 namespace DummyNamespace;
 
@@ -13,7 +10,6 @@ class DummyClass
 {
     /**
      * Create the event handler.
-	 * 创建事件处理程序
      *
      * @return void
      */
@@ -24,7 +20,6 @@ class DummyClass
 
     /**
      * Handle the event.
-	 * 处理事件
      *
      * @param  DummyEvent  $event
      * @return void

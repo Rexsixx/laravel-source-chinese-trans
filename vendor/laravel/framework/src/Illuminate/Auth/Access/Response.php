@@ -42,10 +42,10 @@ class Response
      * Get the string representation of the message.
 	 * 获取消息的字符串表示形式
      *
-     * @return string|null
+     * @return string
      */
     public function __toString()
     {
-        return $this->message();
+        return (string) $this->message();
     }
 }

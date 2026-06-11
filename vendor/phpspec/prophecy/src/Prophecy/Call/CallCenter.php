@@ -1,7 +1,4 @@
 <?php
-/**
- * Prophecy，调取，调取中心
- */
 
 /*
  * This file is part of the Prophecy.
@@ -24,7 +21,6 @@ use SplObjectStorage;
 
 /**
  * Calls receiver & manager.
- * 呼叫接收者和管理器
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */

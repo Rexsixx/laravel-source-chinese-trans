@@ -1,6 +1,6 @@
 <?php
 /**
- * phpDocumentor，Reflection，元素
+ * phpDocumentor，反射，元素
  */
 
 declare(strict_types=1);
@@ -24,7 +24,6 @@ interface Element
 {
     /**
      * Returns the Fqsen of the element.
-	 * 返回元素的初始值
      */
     public function getFqsen() : Fqsen;
 

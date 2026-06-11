@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，构建器，Enum
- */
-
 namespace PhpParser\Builder;
 
 use PhpParser;
@@ -30,7 +26,6 @@ class Enum_ extends Declaration
 
     /**
      * Creates an enum builder.
-	 * 创建枚举生成器
      *
      * @param string $name Name of the enum
      */
@@ -40,7 +35,6 @@ class Enum_ extends Declaration
 
     /**
      * Sets the scalar type.
-	 * 设置标量类型
      *
      * @param string|Identifier $type
      *
@@ -54,7 +48,6 @@ class Enum_ extends Declaration
 
     /**
      * Implements one or more interfaces.
-	 * 实现一个或多个接口
      *
      * @param Name|string ...$interfaces Names of interfaces to implement
      *
@@ -70,7 +63,6 @@ class Enum_ extends Declaration
 
     /**
      * Adds a statement.
-	 * 添加语句
      *
      * @param Stmt|PhpParser\Builder $stmt The statement to add
      *

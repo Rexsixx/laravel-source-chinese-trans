@@ -13,7 +13,6 @@
 if (!function_exists('assertThat')) {
     /**
      * Make an assertion and throw {@link Hamcrest_AssertionError} if it fails.
-	 * 做一个断言，如果失败就抛出{@link Hamcrest_AssertionError}。
      *
      * Example:
      * <pre>

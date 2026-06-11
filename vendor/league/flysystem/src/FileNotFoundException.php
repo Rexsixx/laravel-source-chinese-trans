@@ -31,7 +31,6 @@ class FileNotFoundException extends Exception
 
     /**
      * Get the path which was not found.
-	 * 获取未找到的路径
      *
      * @return string
      */

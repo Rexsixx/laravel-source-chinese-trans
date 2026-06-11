@@ -9,8 +9,7 @@ abstract class CacheEvent
 {
     /**
      * The key of the event.
-	 * 事件的主键
-	 * 
+	 * 事件的关键
      *
      * @var string
      */

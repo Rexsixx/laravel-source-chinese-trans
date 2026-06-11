@@ -27,7 +27,6 @@ class NotSupportedException extends RuntimeException implements FilesystemExcept
 
     /**
      * Create a new exception for a link.
-	 * 为链接创建一个新的异常
      *
      * @param string $systemType
      *

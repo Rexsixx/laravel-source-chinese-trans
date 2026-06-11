@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，HTTP客户端，Http 客户端接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Contracts\HttpClient\Test\HttpClientTestCase;
 
 /**
  * Provides flexible methods for requesting HTTP resources synchronously or asynchronously.
+ * 为同步或异步请求HTTP资源提供灵活的方法。
  *
  * @see HttpClientTestCase for a reference test suite
  *

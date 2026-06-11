@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，发生器，默认时间发生器
+ * Ramsey，Uuid，生成器，默认时间发生器
  */
 
 /**

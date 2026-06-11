@@ -10,7 +10,7 @@ interface Builder
 {
     /**
      * Returns the built node.
-	 * 返回构建节点
+	 * 返回构建的节点
      *
      * @return Node The built node
      */

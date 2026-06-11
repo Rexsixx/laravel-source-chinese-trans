@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，Mock 接口
+ * Mockery，模拟接口
  */
 
 /**

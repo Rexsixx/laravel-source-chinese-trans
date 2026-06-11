@@ -1,6 +1,6 @@
 <?php
 /**
- * Prophecy，论证，令牌，任何值令牌
+ * Prophecy，参数，任意值令牌
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Prophecy\Argument\Token;
 
 /**
  * Any values token.
- * 任何值令牌
+ * 任意值令牌
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -24,7 +24,6 @@ class AnyValuesToken implements TokenInterface
 {
     /**
      * Always scores 2 for any argument.
-	 * 对于任何论点,总是得分2。
      *
      * @param $argument
      *

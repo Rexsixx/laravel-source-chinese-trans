@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，目录，抽象操作
+ * Symfony，组件，翻译，数据采集器，抽象操作
  */
 
 /*
@@ -21,7 +21,7 @@ use Symfony\Component\Translation\MessageCatalogueInterface;
 
 /**
  * Base catalogues binary operation class.
- * 基本目录二进制操作类。
+ * 基目录二进制操作类。
  *
  * A catalogue binary operation performs operation on
  * source (the left argument) and target (the right argument) catalogues.

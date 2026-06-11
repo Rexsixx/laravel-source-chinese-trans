@@ -1,8 +1,4 @@
 <?php
-/**
- * PharIo，Manifest，无效 Url异常
- */
-
 /*
  * This file is part of PharIo\Manifest.
  *

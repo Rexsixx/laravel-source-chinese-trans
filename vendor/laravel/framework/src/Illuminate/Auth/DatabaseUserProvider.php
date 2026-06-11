@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，数据库用户提供商
+ * Illuminate，认证，数据库用户提供商
  */
 
 namespace Illuminate\Auth;
@@ -16,7 +16,7 @@ class DatabaseUserProvider implements UserProvider
 {
     /**
      * The active database connection.
-	 * 活动数据库连接
+	 * 活动的数据库连接
      *
      * @var \Illuminate\Database\ConnectionInterface
      */
@@ -120,6 +120,7 @@ class DatabaseUserProvider implements UserProvider
         // Then we can execute the query and, if we found a user, return it in a
         // generic "user" object that will be utilized by the Guard instances.
 		// 首先,我们将将每个凭据元素添加到查询中,作为where子句。
+		// 然后我们可以执行查询,如果我们找到了一个用户,就在一个通用的“用户”对象中返回它,这些对象将被保护实例使用。
         $query = $this->conn->table($this->table);
 
         foreach ($credentials as $key => $value) {
@@ -138,6 +139,7 @@ class DatabaseUserProvider implements UserProvider
         // the given credentials. If not, we will just return nulls and indicate
         // that there are no matching users for these given credential arrays.
 		// 现在我们已经准备好执行查询,看看是否有一个用户匹配给定的凭证。
+		// 如果不是,我们将返回nulls,并表明对于这些给定的凭证数组,没有匹配的用户。
         $user = $query->first();
 
         return $this->getGenericUser($user);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，适配器，单元测试，针对 V7 及更早版本的 Mockery 测试用例设置
+ * Mockery，适配器，Php单元，Mockery 为V7设置的测试用例
  */
 
 /**

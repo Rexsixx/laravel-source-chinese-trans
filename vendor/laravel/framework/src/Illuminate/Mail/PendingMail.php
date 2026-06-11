@@ -1,11 +1,12 @@
 <?php
 /**
- * Illuminate，电子邮件，等待邮件
+ * Illuminate，电子邮件，待定的邮件
  */
 
 namespace Illuminate\Mail;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 
 class PendingMail
 {
@@ -21,7 +22,7 @@ class PendingMail
      * The locale of the message.
 	 * 消息的区域设置
      *
-     * @var array
+     * @var string
      */
     protected $locale;
 
@@ -86,6 +87,10 @@ class PendingMail
     {
         $this->to = $users;
 
+        if (! $this->locale && $users instanceof HasLocalePreference) {
+            $this->locale($users->preferredLocale());
+        }
+
         return $this;
     }
 
@@ -147,7 +152,7 @@ class PendingMail
 
     /**
      * Push the given mailable onto the queue.
-	 * 将给定的mailable推到队列上
+	 * 将给定的可邮件推送到队列中
      *
      * @param  \Illuminate\Mail\Mailable  $mailable
      * @return mixed
@@ -165,7 +170,7 @@ class PendingMail
 
     /**
      * Deliver the queued message after the given delay.
-	 * 在给定延迟后发送队列消息
+	 * 在给定的延迟之后交付排队消息
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  \Illuminate\Mail\Mailable  $mailable

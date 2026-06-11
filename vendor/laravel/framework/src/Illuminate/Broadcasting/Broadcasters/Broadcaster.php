@@ -29,7 +29,7 @@ abstract class Broadcaster implements BroadcasterContract
      * The binding registrar instance.
 	 * 绑定注册商实例
      *
-     * @var BindingRegistrar
+     * @var \Illuminate\Contracts\Routing\BindingRegistrar
      */
     protected $bindingRegistrar;
 
@@ -55,6 +55,7 @@ abstract class Broadcaster implements BroadcasterContract
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $channel
      * @return mixed
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
      */
     protected function verifyUserCanAccessChannel($request, $channel)
@@ -102,6 +103,7 @@ abstract class Broadcaster implements BroadcasterContract
      *
      * @param  callable|string  $callback
      * @return \ReflectionParameter[]
+     *
      * @throws \Exception
      */
     protected function extractParameters($callback)
@@ -121,6 +123,7 @@ abstract class Broadcaster implements BroadcasterContract
      *
      * @param  string  $callback
      * @return \ReflectionParameter[]
+     *
      * @throws \Exception
      */
     protected function extractParametersFromClass($callback)
@@ -194,6 +197,7 @@ abstract class Broadcaster implements BroadcasterContract
      * @param  mixed  $value
      * @param  array  $callbackParameters
      * @return mixed
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
      */
     protected function resolveImplicitBindingIfPossible($key, $value, $callbackParameters)
@@ -245,7 +249,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Get the model binding registrar instance.
-	 * 获取模型绑定注册器实例。
+	 * 获取模型绑定注册器实例
      *
      * @return \Illuminate\Contracts\Routing\BindingRegistrar
      */

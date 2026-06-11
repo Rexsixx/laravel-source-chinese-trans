@@ -30,7 +30,7 @@ class Markdown
 
     /**
      * The registered component paths.
-	 * 已注册的组件路径
+	 * 注册组件路径
      *
      * @var array
      */

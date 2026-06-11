@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，调用队列处理程序
+ * Illuminate，行列，调用队列处理程序
  */
 
 namespace Illuminate\Queue;
@@ -85,7 +85,7 @@ class CallQueuedHandler
 
     /**
      * Set the job instance of the given class if necessary.
-	 * 如果需要，设置给定类的作业实例
+	 * 如果需要，设置给定类的作业实例。
      *
      * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  mixed  $instance
@@ -102,7 +102,7 @@ class CallQueuedHandler
 
     /**
      * Ensure the next job in the chain is dispatched if applicable.
-	 * 确保链中的下一个作业被调度（如果适用
+	 * 确保链中的下一个作业被调度（如果适用）
      *
      * @param  mixed  $command
      * @return void
@@ -147,7 +147,6 @@ class CallQueuedHandler
 	 * 在作业实例上调用失败的方法。
      *
      * The exception that caused the failure will be passed.
-	 * 导致失败的异常将被传递。
      *
      * @param  array  $data
      * @param  \Exception  $e

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，调度，Schedule
+ * Illuminate，控制台，线程调度，调度
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -61,7 +61,7 @@ class Schedule
 	 * 向计划添加一个新的回调事件
      *
      * @param  string|callable  $callback
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return \Illuminate\Console\Scheduling\CallbackEvent
      */
     public function call($callback, array $parameters = [])
@@ -98,15 +98,18 @@ class Schedule
      *
      * @param  object|string  $job
      * @param  string|null  $queue
+     * @param  string|null  $connection
      * @return \Illuminate\Console\Scheduling\CallbackEvent
      */
-    public function job($job, $queue = null)
+    public function job($job, $queue = null, $connection = null)
     {
-        return $this->call(function () use ($job, $queue) {
+        return $this->call(function () use ($job, $queue, $connection) {
             $job = is_string($job) ? resolve($job) : $job;
 
             if ($job instanceof ShouldQueue) {
-                dispatch($job)->onQueue($queue);
+                dispatch($job)
+                    ->onConnection($connection ?? $job->connection)
+                    ->onQueue($queue ?? $job->queue);
             } else {
                 dispatch_now($job);
             }

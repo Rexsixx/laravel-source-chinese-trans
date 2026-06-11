@@ -1,7 +1,4 @@
 <?php
-/**
- * Laravel，Tinker，控制台，Tinker 命令
- */
 
 namespace Laravel\Tinker\Console;
 
@@ -15,7 +12,6 @@ class TinkerCommand extends Command
 {
     /**
      * Artisan commands to include in the tinker shell.
-	 * 要包含在修补器外壳中的工匠命令
      *
      * @var array
      */
@@ -25,7 +21,6 @@ class TinkerCommand extends Command
 
     /**
      * The console command name.
-	 * 控制台命令名
      *
      * @var string
      */
@@ -33,7 +28,6 @@ class TinkerCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
      *
      * @var string
      */

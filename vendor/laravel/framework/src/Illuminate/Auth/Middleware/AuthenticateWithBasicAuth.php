@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，中间件，使用基本认证进行身份验证
+ * Illuminate，认证，中间件，使用基本认证进行身份验证
  */
 
 namespace Illuminate\Auth\Middleware;
@@ -37,10 +37,15 @@ class AuthenticateWithBasicAuth
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @param  string|null  $guard
+     * @param  string|null  $field
      * @return mixed
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
      */
-    public function handle($request, Closure $next, $guard = null)
+    public function handle($request, Closure $next, $guard = null, $field = null)
     {
-        return $this->auth->guard($guard)->basic() ?: $next($request);
+        $this->auth->guard($guard)->basic($field ?: 'email');
+
+        return $next($request);
     }
 }

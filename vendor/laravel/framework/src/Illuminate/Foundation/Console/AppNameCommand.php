@@ -23,7 +23,7 @@ class AppNameCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命描述
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -71,7 +71,7 @@ class AppNameCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */
@@ -89,7 +89,7 @@ class AppNameCommand extends Command
 
         $this->composer->dumpAutoloads();
 
-        $this->call('clear-compiled');
+        $this->call('optimize:clear');
     }
 
     /**
@@ -157,7 +157,7 @@ class AppNameCommand extends Command
 
     /**
      * Set the namespace in the appropriate configuration files.
-	 * 在适当的配置文件中设置名称空间
+	 * 在适当的配置文件中设置命名空间
      *
      * @return void
      */
@@ -170,7 +170,7 @@ class AppNameCommand extends Command
 
     /**
      * Set the application provider namespaces.
-	 * 设置应用程序提供程序名称空间
+	 * 设置应用程序提供程序命名空间
      *
      * @return void
      */
@@ -221,7 +221,7 @@ class AppNameCommand extends Command
 
     /**
      * Set the PSR-4 namespace in the Composer file.
-	 * 在Composer文件中设置PSR-4命名空间
+	 * 在Composer文件中设置PSR-4名称空间
      *
      * @return void
      */
@@ -284,7 +284,7 @@ class AppNameCommand extends Command
 
     /**
      * Get the path to the Composer.json file.
-	 * 获取到Composer的路径。json文件。
+	 * 获取到Composer文件的路径
      *
      * @return string
      */
@@ -314,7 +314,7 @@ class AppNameCommand extends Command
     protected function getArguments()
     {
         return [
-            ['name', InputArgument::REQUIRED, 'The desired namespace.'],
+            ['name', InputArgument::REQUIRED, 'The desired namespace'],
         ];
     }
 }

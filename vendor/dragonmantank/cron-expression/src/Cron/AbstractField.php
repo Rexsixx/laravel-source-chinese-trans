@@ -1,42 +1,47 @@
 <?php
 /**
- * Cron，抽象域
+ * Cron，抽象字段
  */
 
 namespace Cron;
 
 /**
  * Abstract CRON expression field
+ * 抽象的CRON表达式字段
  */
 abstract class AbstractField implements FieldInterface
 {
     /**
      * Full range of values that are allowed for this field type
-	 * 此字段类型允许的全部值范围
+	 * 适用于此字段类型的全部值
      * @var array
      */
     protected $fullRange = [];
 
     /**
      * Literal values we need to convert to integers
+	 * 我们需要转换成整数的文字值
      * @var array
      */
     protected $literals = [];
 
     /**
      * Start value of the full range
+	 * 开始值的全范围
      * @var integer
      */
     protected $rangeStart;
 
     /**
      * End value of the full range
+	 * 全范围的端值
      * @var integer
      */
     protected $rangeEnd;
 
     /**
      * Constructor
+	 * 构造函数
      */
     public function __construct()
     {
@@ -45,7 +50,7 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Check to see if a field is satisfied by a value
-	 * 检查某个字段是否满足某个值
+	 * 检查一个字段是否满足值
      *
      * @param string $dateValue Date value to check
      * @param string $value     Value to test
@@ -91,7 +96,7 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Test if a value is within a range
-	 * 如果值在一个范围内,测试。
+	 * 如果值在一个范围内测试
      *
      * @param string $dateValue Set date value
      * @param string $value     Value to test

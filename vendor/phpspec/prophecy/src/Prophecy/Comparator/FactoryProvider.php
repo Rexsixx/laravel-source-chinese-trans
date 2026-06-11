@@ -1,7 +1,4 @@
 <?php
-/**
- * Prophecy，比较器，工厂供应商
- */
 
 /*
  * This file is part of the Prophecy.
@@ -18,7 +15,6 @@ use SebastianBergmann\Comparator\Factory;
 
 /**
  * Prophecy comparator factory.
- * 预言比较工厂
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */

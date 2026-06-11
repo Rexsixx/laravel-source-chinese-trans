@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，框架，Assert
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -64,6 +68,7 @@ use Traversable;
 
 /**
  * A set of assertion methods.
+ * 一组断言方法。
  */
 abstract class Assert
 {

@@ -1,8 +1,4 @@
 <?php
-/**
- * SebastianBergmann，CodeCoverage，异常
- */
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -15,7 +11,6 @@ namespace SebastianBergmann\CodeCoverage;
 
 /**
  * Exception interface for php-code-coverage component.
- * php-code-coverage覆盖率组件的异常接口
  */
 interface Exception
 {

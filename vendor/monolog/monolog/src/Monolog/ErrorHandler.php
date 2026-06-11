@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，错误处理器
+ * Monolog，错误处理程序
  */
 
 /*
@@ -52,7 +52,6 @@ class ErrorHandler
 
     /**
      * Registers a new ErrorHandler for a given Logger
-	 * 为给定的日志记录器注册新的ErrorHandler
      *
      * By default it will handle errors, exceptions and fatal errors
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Cron，测试，每月一天字段测试
+ * Cron，测试，月天字段测试
  */
 
 namespace Cron\Tests;
@@ -69,6 +69,7 @@ class DayOfMonthFieldTest extends TestCase
     /**
      * Day of the month cannot accept a 0 value, it must be between 1 and 31
      * See Github issue #120
+	 * 这个月不能接受一个0值,必须在1到31之间见Github120号
      *
      * @since 2017-01-22
      */

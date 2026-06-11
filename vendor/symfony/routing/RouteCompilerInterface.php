@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，路由编译器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Routing;
 
 /**
  * RouteCompilerInterface is the interface that all RouteCompiler classes must implement.
+ * RouteCompilerInterface是所有RouteCompiler类必须实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

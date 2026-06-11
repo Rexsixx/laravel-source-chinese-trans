@@ -1,9 +1,5 @@
 <?php
 /**
- * Mockery，匹配程序，不
- */
-
-/**
  * Mockery
  *
  * LICENSE
@@ -29,7 +25,6 @@ class Not extends MatcherAbstract
     /**
      * Check if the actual value does not match the expected (in this
      * case it's specifically NOT expected).
-	 * 检查实际值是否与预期值不匹配(在这个用例里这是特别不被期望的)
      *
      * @param mixed $actual
      * @return bool
@@ -41,7 +36,6 @@ class Not extends MatcherAbstract
 
     /**
      * Return a string representation of this Matcher
-	 * 返回此匹配器的字符串表示形式
      *
      * @return string
      */

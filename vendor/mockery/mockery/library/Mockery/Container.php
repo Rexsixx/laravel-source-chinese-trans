@@ -34,7 +34,6 @@ class Container
 
     /**
      * Store of mock objects
-	 * 模拟对象的存储
      *
      * @var array
      */
@@ -42,7 +41,6 @@ class Container
 
     /**
      * Order number of allocation
-	 * 分配顺序
      *
      * @var int
      */
@@ -50,7 +48,6 @@ class Container
 
     /**
      * Current ordered number
-	 * 当前顺序数
      *
      * @var int
      */
@@ -58,7 +55,6 @@ class Container
 
     /**
      * Ordered groups
-	 * 有序群
      *
      * @var array
      */
@@ -87,7 +83,6 @@ class Container
 
     /**
      * Generates a new mock object for this container
-	 * 为这个容器生成一个新的模拟对象。
      *
      * I apologies in advance for this. A God Method just fits the API which
      * doesn't require differentiating between classes, interfaces, abstracts,
@@ -284,8 +279,7 @@ class Container
     }
 
     /**
-     * Tear down tasks for this container
-	 * 拆下此容器的任务
+     *  Tear down tasks for this container
      *
      * @throws \Exception
      * @return void
@@ -302,7 +296,6 @@ class Container
 
     /**
      * Verify the container mocks
-	 * 验证容器模拟
      *
      * @return void
      */
@@ -315,7 +308,6 @@ class Container
 
     /**
      * Retrieves all exceptions thrown by mocks
-	 * 检索模拟抛出的所有异常
      *
      * @return array
      */
@@ -332,7 +324,6 @@ class Container
 
     /**
      * Reset the container to its original state
-	 * 将容器重置为其原始状态
      *
      * @return void
      */
@@ -346,7 +337,6 @@ class Container
 
     /**
      * Fetch the next available allocation order number
-	 * 获取下一个可用的分配订单号
      *
      * @return int
      */
@@ -358,7 +348,6 @@ class Container
 
     /**
      * Set ordering for a group
-	 * 为组设置排序
      *
      * @param mixed $group
      * @param int $order
@@ -370,7 +359,6 @@ class Container
 
     /**
      * Fetch array of ordered groups
-	 * 获取有序组的数组
      *
      * @return array
      */
@@ -381,7 +369,6 @@ class Container
 
     /**
      * Set current ordered number
-	 * 设置当前有序数
      *
      * @param int $order
      * @return int The current order number that was set
@@ -394,7 +381,6 @@ class Container
 
     /**
      * Get current ordered number
-	 * 获取当前订购编号
      *
      * @return int
      */
@@ -405,7 +391,6 @@ class Container
 
     /**
      * Validate the current mock's ordering
-	 * 验证当前mock的顺序
      *
      * @param string $method
      * @param int $order
@@ -430,7 +415,6 @@ class Container
 
     /**
      * Gets the count of expectations on the mocks
-	 * 获取模拟上的期望计数
      *
      * @return int
      */

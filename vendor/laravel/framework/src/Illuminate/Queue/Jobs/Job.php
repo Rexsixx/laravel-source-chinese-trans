@@ -13,7 +13,7 @@ abstract class Job
 
     /**
      * The job handler instance.
-	 * 作业处理程序实例
+	 * 工作处理程序实例
      *
      * @var mixed
      */
@@ -53,13 +53,13 @@ abstract class Job
 
     /**
      * The name of the connection the job belongs to.
-	 * 该工作所属的连接名称
+	 * 作业所属的连接的名称
      */
     protected $connectionName;
 
     /**
      * The name of the queue the job belongs to.
-	 * 工作所属的队列的名称
+	 * 作业所属队列的名称
      *
      * @var string
      */
@@ -83,7 +83,7 @@ abstract class Job
 
     /**
      * Fire the job.
-	 * 解雇工作
+	 * 启动这个作业
      *
      * @return void
      */
@@ -98,7 +98,7 @@ abstract class Job
 
     /**
      * Delete the job from the queue.
-	 * 从队列中删除工作
+	 * 从队列中删除作业
      *
      * @return void
      */
@@ -143,7 +143,7 @@ abstract class Job
 
     /**
      * Determine if the job has been deleted or released.
-	 * 确定工作是否已被删除或发布
+	 * 确定作业是否已被删除或释放
      *
      * @return bool
      */
@@ -154,7 +154,7 @@ abstract class Job
 
     /**
      * Determine if the job has been marked as a failure.
-	 * 确定工作是否被标记为失败
+	 * 确定作业是否已被标记为失败
      *
      * @return bool
      */
@@ -165,7 +165,7 @@ abstract class Job
 
     /**
      * Mark the job as "failed".
-	 * 标记作业为“失败”
+	 * 把这项工作标记为“失败”
      *
      * @return void
      */
@@ -176,7 +176,7 @@ abstract class Job
 
     /**
      * Process an exception that caused the job to fail.
-	 * 流程一个导致作业失败的异常
+	 * 处理导致作业失败的异常
      *
      * @param  \Exception  $e
      * @return void
@@ -208,7 +208,7 @@ abstract class Job
 
     /**
      * Get the decoded body of the job.
-	 * 获得作业的解码体
+	 * 拿到解码后的文件
      *
      * @return array
      */
@@ -219,7 +219,7 @@ abstract class Job
 
     /**
      * Get the number of times to attempt a job.
-	 * 获得作业的次数
+	 * 获取尝试某项工作的次数
      *
      * @return int|null
      */
@@ -230,7 +230,7 @@ abstract class Job
 
     /**
      * Get the number of seconds the job can run.
-	 * 得到作业的数量
+	 * 获取作业可以运行的秒数
      *
      * @return int|null
      */
@@ -241,7 +241,7 @@ abstract class Job
 
     /**
      * Get the timestamp indicating when the job should timeout.
-	 * 获取指示何时应该超时的时间戳
+	 * 获取指示作业何时应该超时的时间戳
      *
      * @return int|null
      */
@@ -263,9 +263,10 @@ abstract class Job
 
     /**
      * Get the resolved name of the queued job class.
-	 * 获取排队工作类的解析名称。
+	 * 获取排队作业类的解析名称。
      *
      * Resolves the name of "wrapped" jobs such as class-based handlers.
+	 * 解析“包”工作的名称,如基于类的处理程序。
      *
      * @return string
      */
@@ -276,7 +277,7 @@ abstract class Job
 
     /**
      * Get the name of the connection the job belongs to.
-	 * 获取该工作所属的连接的名称
+	 * 获取作业所属的连接的名称
      *
      * @return string
      */
@@ -287,7 +288,7 @@ abstract class Job
 
     /**
      * Get the name of the queue the job belongs to.
-	 * 获取该作业所属队列的名称
+	 * 获取作业所属队列的名称
      *
      * @return string
      */

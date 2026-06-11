@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Mime，密码，Dkim 选项
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Mime\Crypto;
 
 /**
  * A helper providing autocompletion for available DkimSigner options.
+ * 一个帮助器，为可用的DkimSigner选项提供自动完成功能。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

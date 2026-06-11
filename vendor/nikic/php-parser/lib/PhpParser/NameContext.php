@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，名称上下文
- */
-
 namespace PhpParser;
 
 use PhpParser\Node\Name;
@@ -26,7 +22,6 @@ class NameContext
 
     /**
      * Create a name context.
-	 * 创建一个名称上下文
      *
      * @param ErrorHandler $errorHandler Error handling used to report errors
      */
@@ -36,7 +31,6 @@ class NameContext
 
     /**
      * Start a new namespace.
-	 * 启动一个新的名称空间。
      *
      * This also resets the alias table.
      *
@@ -53,7 +47,6 @@ class NameContext
 
     /**
      * Add an alias / import.
-	 * 添加别名/导入
      *
      * @param Name   $name        Original name
      * @param string $aliasName   Aliased name
@@ -91,7 +84,6 @@ class NameContext
 
     /**
      * Get current namespace.
-	 * 获取当前命名空间
      *
      * @return null|Name Namespace (or null if global namespace)
      */
@@ -101,7 +93,6 @@ class NameContext
 
     /**
      * Get resolved name.
-	 * 得到解析的名称
      *
      * @param Name $name Name to resolve
      * @param int  $type One of Stmt\Use_::TYPE_{FUNCTION|CONSTANT}
@@ -146,7 +137,6 @@ class NameContext
 
     /**
      * Get resolved class name.
-	 * 获取解析类名
      *
      * @param Name $name Class ame to resolve
      *
@@ -158,7 +148,6 @@ class NameContext
 
     /**
      * Get possible ways of writing a fully qualified name (e.g., by making use of aliases).
-	 * 有可能写一个完全合格的名字的方法。通过使用别名。
      *
      * @param string $name Fully-qualified name (without leading namespace separator)
      * @param int    $type One of Stmt\Use_::TYPE_*

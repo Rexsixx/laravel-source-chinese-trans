@@ -6,6 +6,7 @@
 namespace Illuminate\Database\Schema\Grammars;
 
 use RuntimeException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
 use Doctrine\DBAL\Schema\Index;
 use Illuminate\Database\Connection;
@@ -86,6 +87,8 @@ class SQLiteGrammar extends Grammar
             // Once we have all the foreign key commands for the table creation statement
             // we'll loop through each of them and add them to the create table SQL we
             // are building, since SQLite needs foreign keys on the tables creation.
+			// 一旦我们有了表创建语句的所有外键命令,我们将循环通过每个语句并将它们添加到我们正在构建的create表SQL中,
+			// 因为SQLite需要在表创建上的外键。
             $sql .= $this->getForeignKey($foreign);
 
             if (! is_null($foreign->onDelete)) {
@@ -95,6 +98,8 @@ class SQLiteGrammar extends Grammar
             // If this foreign key specifies the action to be taken on update we will add
             // that to the statement here. We'll append it to this SQL and then return
             // the SQL so we can keep adding any other foreign constraints onto this.
+			// 如果这个外键指定在更新时采取的行动,我们将在这里添加到声明。
+			// 我们将附加到这个SQL,然后返回SQL,这样我们就可以继续添加任何其他的外部约束。
             if (! is_null($foreign->onUpdate)) {
                 $sql .= " on update {$foreign->onUpdate}";
             }
@@ -115,6 +120,8 @@ class SQLiteGrammar extends Grammar
         // We need to columnize the columns that the foreign key is being defined for
         // so that it is a properly formatted list. Once we have done this, we can
         // return the foreign key SQL declaration to the calling method for use.
+		// 我们需要在指定的列上列出外键,以便它是一个格式化的列表。
+		// 一旦我们这样做了,我们就可以将外国密钥SQL声明返回给调用方法。
         return sprintf(', foreign key(%s) references %s(%s)',
             $this->columnize($foreign->columns),
             $this->wrapTable($foreign->on),
@@ -193,6 +200,7 @@ class SQLiteGrammar extends Grammar
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
+     *
      * @throws \RuntimeException
      */
     public function compileSpatialIndex(Blueprint $blueprint, Fluent $command)
@@ -262,6 +270,17 @@ class SQLiteGrammar extends Grammar
     }
 
     /**
+     * Compile the SQL needed to rebuild the database.
+	 * 编译重建数据库所需的SQL
+     *
+     * @return string
+     */
+    public function compileRebuild()
+    {
+        return 'vacuum';
+    }
+
+    /**
      * Compile a drop column command.
 	 * 编译删除列命令
      *
@@ -321,6 +340,7 @@ class SQLiteGrammar extends Grammar
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
+     *
      * @throws \RuntimeException
      */
     public function compileDropSpatialIndex(Blueprint $blueprint, Fluent $command)
@@ -358,7 +378,7 @@ class SQLiteGrammar extends Grammar
 
         $indexes = $schemaManager->listTableIndexes($this->getTablePrefix().$blueprint->getTable());
 
-        $index = array_get($indexes, $command->from);
+        $index = Arr::get($indexes, $command->from);
 
         if (! $index) {
             throw new RuntimeException("Index [{$command->from}] does not exist.");

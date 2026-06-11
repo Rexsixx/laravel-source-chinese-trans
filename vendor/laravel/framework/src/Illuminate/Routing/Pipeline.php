@@ -15,7 +15,7 @@ use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 /**
  * This extended pipeline catches any exceptions that occur during each slice.
- * 这个扩展的管道捕获每个切片中发生的任何异常。
+ * 这个扩展的管道捕获每个切片期间发生的任何异常。
  *
  * The exceptions are converted to HTTP responses for proper middleware handling.
  */
@@ -23,7 +23,7 @@ class Pipeline extends BasePipeline
 {
     /**
      * Get the final piece of the Closure onion.
-	 * 得到最后的Closure片
+	 * 获取Closure onion的最后一部分
      *
      * @param  \Closure  $destination
      * @return \Closure
@@ -43,7 +43,7 @@ class Pipeline extends BasePipeline
 
     /**
      * Get a Closure that represents a slice of the application onion.
-	 * 得到一个表示应用闭包的切片的闭包
+	 * 获取一个表示应用程序洋葱部分的Closure
      *
      * @return \Closure
      */

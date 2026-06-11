@@ -1,18 +1,19 @@
 <?php
 /**
- * Illuminate，Cookie，Cookie Jar
+ * Illuminate，Cookie，Cookie 压缩
  */
 
 namespace Illuminate\Cookie;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Traits\Macroable;
 use Illuminate\Support\InteractsWithTime;
 use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Contracts\Cookie\QueueingFactory as JarContract;
 
 class CookieJar implements JarContract
 {
-    use InteractsWithTime;
+    use InteractsWithTime, Macroable;
 
     /**
      * The default path (if specified).

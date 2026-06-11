@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Version，版本
+ * PharIo，版本，Version
  */
 
 /*

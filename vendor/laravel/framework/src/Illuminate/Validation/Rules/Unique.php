@@ -29,7 +29,7 @@ class Unique
 
     /**
      * Ignore the given ID during the unique check.
-	 * 在唯一的检查中忽略给定的ID
+	 * 在唯一性检查期间忽略给定的ID
      *
      * @param  mixed  $id
      * @param  string|null  $idColumn
@@ -49,7 +49,7 @@ class Unique
 
     /**
      * Ignore the given model during the unique check.
-	 * 在唯一的检查过程中忽略给定的模型
+	 * 在惟一检查期间忽略给定的模型。
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string|null  $idColumn

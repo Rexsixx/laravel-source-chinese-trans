@@ -17,7 +17,7 @@ class Logger implements LoggerInterface
 {
     /**
      * The underlying logger implementation.
-	 * 底层日志记录器实现
+	 * 底层的logger实现
      *
      * @var \Psr\Log\LoggerInterface
      */
@@ -225,7 +225,8 @@ class Logger implements LoggerInterface
         // If the event dispatcher is set, we will pass along the parameters to the
         // log listeners. These are useful for building profilers or other tools
         // that aggregate all of the log messages for a given "request" cycle.
-		// 如果设置事件调度器,我们将沿着参数传递给日志侦听器。
+		// 如果事件调度器已设置好，我们将把参数传递给日志监听器。
+		// 这些用于构建profilers或其他工具,将所有的日志消息聚合到给定的“请求”周期。
         if (isset($this->dispatcher)) {
             $this->dispatcher->dispatch(new MessageLogged($level, $message, $context));
         }

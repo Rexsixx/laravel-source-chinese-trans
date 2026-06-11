@@ -11,7 +11,7 @@ class Processor
 {
     /**
      * Process the results of a "select" query.
-	 * 处理“选择”查询的结果。
+	 * 处理“选择”查询的结果
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $results

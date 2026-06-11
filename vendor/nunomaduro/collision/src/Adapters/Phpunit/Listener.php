@@ -1,7 +1,4 @@
 <?php
-/**
- * NunoMaduro，Collision，适配器，Php单元，监听器
- */
 
 /**
  * This file is part of Collision.
@@ -31,7 +28,6 @@ if (class_exists(\PHPUnit\Runner\Version::class) && substr(\PHPUnit\Runner\Versi
 
     /**
      * This is an Collision Phpunit Adapter implementation.
-	 * 这是一个碰撞Phpunit适配器实现
      *
      * @author Nuno Maduro <enunomaduro@gmail.com>
      */
@@ -39,7 +35,6 @@ if (class_exists(\PHPUnit\Runner\Version::class) && substr(\PHPUnit\Runner\Versi
     {
         /**
          * Holds an instance of the writer.
-		 * 持有作者的实例
          *
          * @var \NunoMaduro\Collision\Contracts\Writer
          */
@@ -47,7 +42,6 @@ if (class_exists(\PHPUnit\Runner\Version::class) && substr(\PHPUnit\Runner\Versi
 
         /**
          * Holds the exception found, if any.
-		 * 如果有例外,就会出现异常。
          *
          * @var \Throwable|null
          */
@@ -55,7 +49,6 @@ if (class_exists(\PHPUnit\Runner\Version::class) && substr(\PHPUnit\Runner\Versi
 
         /**
          * Creates a new instance of the class.
-		 * 说明是否应该出现跟踪
          *
          * @param \NunoMaduro\Collision\Contracts\Writer|null $writer
          */
@@ -165,7 +158,6 @@ if (class_exists(\PHPUnit\Runner\Version::class) && substr(\PHPUnit\Runner\Versi
 
         /**
          * Builds an Writer.
-		 * 建立一个作家
          *
          * @return \NunoMaduro\Collision\Contracts\Writer
          */

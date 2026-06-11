@@ -31,7 +31,7 @@ trait CompilesConditionals
 
     /**
      * Compile the else-auth statements into valid PHP.
-	 * 将else-auth语句编译为有效的PHP
+	 * 将else-auth语句编译成有效的PHP
      *
      * @param  string|null  $guard
      * @return string
@@ -45,7 +45,7 @@ trait CompilesConditionals
 
     /**
      * Compile the end-auth statements into valid PHP.
-	 * 将最后的auth语句编译为有效的PHP
+	 * 将end-auth语句编译成有效的PHP
      *
      * @return string
      */
@@ -70,7 +70,7 @@ trait CompilesConditionals
 
     /**
      * Compile the else-guest statements into valid PHP.
-	 * 将其他客户语句编译成有效的PHP
+	 * 将else-guest语句编译成有效的PHP
      *
      * @param  string|null  $guard
      * @return string

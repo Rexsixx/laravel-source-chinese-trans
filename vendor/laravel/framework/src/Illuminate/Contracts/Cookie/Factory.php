@@ -16,13 +16,13 @@ interface Factory
      * @param  int     $minutes
      * @param  string  $path
      * @param  string  $domain
-     * @param  bool    $secure
+     * @param  bool|null    $secure
      * @param  bool    $httpOnly
      * @param  bool         $raw
      * @param  string|null  $sameSite
      * @return \Symfony\Component\HttpFoundation\Cookie
      */
-    public function make($name, $value, $minutes = 0, $path = null, $domain = null, $secure = false, $httpOnly = true, $raw = false, $sameSite = null);
+    public function make($name, $value, $minutes = 0, $path = null, $domain = null, $secure = null, $httpOnly = true, $raw = false, $sameSite = null);
 
     /**
      * Create a cookie that lasts "forever" (five years).
@@ -32,13 +32,13 @@ interface Factory
      * @param  string  $value
      * @param  string  $path
      * @param  string  $domain
-     * @param  bool    $secure
+     * @param  bool|null    $secure
      * @param  bool    $httpOnly
      * @param  bool         $raw
      * @param  string|null  $sameSite
      * @return \Symfony\Component\HttpFoundation\Cookie
      */
-    public function forever($name, $value, $path = null, $domain = null, $secure = false, $httpOnly = true, $raw = false, $sameSite = null);
+    public function forever($name, $value, $path = null, $domain = null, $secure = null, $httpOnly = true, $raw = false, $sameSite = null);
 
     /**
      * Expire the given cookie.

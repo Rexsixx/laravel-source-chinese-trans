@@ -1,7 +1,4 @@
 <?php
-/**
- * Monolog，处理程序，浏览器控制台处理器
- */
 
 /*
  * This file is part of the Monolog package.
@@ -18,7 +15,6 @@ use Monolog\Formatter\LineFormatter;
 
 /**
  * Handler sending logs to browser's javascript console with no browser extension required
- * 处理程序发送日志到浏览器的javascript控制台，不需要浏览器扩展。
  *
  * @author Olivier Poitrey <rs@dailymotion.com>
  */

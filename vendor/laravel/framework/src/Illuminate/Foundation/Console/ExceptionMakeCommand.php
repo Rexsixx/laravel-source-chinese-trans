@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，异常排除命令
+ * Illuminate，基础，控制台，异常制作命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -55,7 +55,7 @@ class ExceptionMakeCommand extends GeneratorCommand
 
     /**
      * Determine if the class already exists.
-	 * 确定类是否已经存在
+	 * 确定类是否已经存在。
      *
      * @param  string  $rawName
      * @return bool
@@ -67,7 +67,7 @@ class ExceptionMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认名称空间
+	 * 获取类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -86,9 +86,9 @@ class ExceptionMakeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['render', null, InputOption::VALUE_NONE, 'Create the exception with an empty render method.'],
+            ['render', null, InputOption::VALUE_NONE, 'Create the exception with an empty render method'],
 
-            ['report', null, InputOption::VALUE_NONE, 'Create the exception with an empty report method.'],
+            ['report', null, InputOption::VALUE_NONE, 'Create the exception with an empty report method'],
         ];
     }
 }

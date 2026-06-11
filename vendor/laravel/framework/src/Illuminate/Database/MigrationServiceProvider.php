@@ -61,6 +61,8 @@ class MigrationServiceProvider extends ServiceProvider
         // The migrator is responsible for actually running and rollback the migration
         // files in the application. We'll pass in our database connection resolver
         // so the migrator can resolve any of these connections when it needs to.
+		// 迁移器负责实际运行和回滚应用程序中的迁移文件。
+		// 我们将通过我们的数据库连接解析器,这样迁移器就可以在需要时解决这些连接中的任何一个。
         $this->app->singleton('migrator', function ($app) {
             $repository = $app['migration.repository'];
 

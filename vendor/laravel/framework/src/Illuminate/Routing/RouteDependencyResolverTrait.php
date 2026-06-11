@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由依赖分解器特性
+ * Illuminate，路由，路由依赖解析器特性
  */
 
 namespace Illuminate\Routing;
@@ -14,7 +14,7 @@ trait RouteDependencyResolverTrait
 {
     /**
      * Resolve the object method's type-hinted dependencies.
-	 * 解决对象方法的类型暗示依赖关系
+	 * 解析对象方法的类型暗示依赖项
      *
      * @param  array  $parameters
      * @param  object  $instance
@@ -34,7 +34,7 @@ trait RouteDependencyResolverTrait
 
     /**
      * Resolve the given method's type-hinted dependencies.
-	 * 解析给定方法的类型-暗示依赖项
+	 * 解析给定方法的类型提示依赖项
      *
      * @param  array  $parameters
      * @param  \ReflectionFunctionAbstract  $reflector
@@ -79,6 +79,7 @@ trait RouteDependencyResolverTrait
         // If the parameter has a type-hinted class, we will check to see if it is already in
         // the list of parameters. If it is we will just skip it as it is probably a model
         // binding and we do not want to mess with those; otherwise, we resolve it here.
+		// 如果该参数具有类型提示的类，则我们将检查它是否已经在参数列表中。
         if ($class && ! $this->alreadyInParameters($class->name, $parameters)) {
             return $parameter->isDefaultValueAvailable()
                 ? $parameter->getDefaultValue()

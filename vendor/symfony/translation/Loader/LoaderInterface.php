@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，加载器，加载器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * LoaderInterface is the interface implemented by all translation loaders.
+ * LoaderInterface是由所有翻译加载器实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -24,6 +28,7 @@ interface LoaderInterface
 {
     /**
      * Loads a locale.
+	 * 加载区域设置
      *
      * @param mixed  $resource A resource
      * @param string $locale   A locale

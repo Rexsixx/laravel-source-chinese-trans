@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，HTTP客户端，Chunk 接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
  * The interface of chunks returned by ResponseStreamInterface::current().
+ * ResponseStreamInterface::current（）返回的块接口。
  *
  * When the chunk is first, last or timeout, the content MUST be empty.
  * When an unchecked timeout or a network error occurs, a TransportExceptionInterface

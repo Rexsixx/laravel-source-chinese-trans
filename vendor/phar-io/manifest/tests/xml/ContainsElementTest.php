@@ -1,7 +1,4 @@
 <?php
-/**
- * NunoMaduro，Manifest，包含元素测试
- */
 
 namespace PharIo\Manifest;
 

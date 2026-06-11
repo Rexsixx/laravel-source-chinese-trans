@@ -1,7 +1,4 @@
 <?php
-/**
- * phpDocumentor，Reflection，伪类型，Numeric
- */
 
 declare(strict_types=1);
 

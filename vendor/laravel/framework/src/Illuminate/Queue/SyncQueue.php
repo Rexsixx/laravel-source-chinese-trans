@@ -39,7 +39,7 @@ class SyncQueue extends Queue implements QueueContract
      */
     public function push($job, $data = '', $queue = null)
     {
-        $queueJob = $this->resolveJob($this->createPayload($job, $data), $queue);
+        $queueJob = $this->resolveJob($this->createPayload($job, $queue, $data), $queue);
 
         try {
             $this->raiseBeforeJobEvent($queueJob);
@@ -147,7 +147,7 @@ class SyncQueue extends Queue implements QueueContract
 
     /**
      * Push a new job onto the queue after a delay.
-	 * 延迟后将新工作推到队列上
+	 * 在延迟后将新作业推入队列
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job
@@ -162,7 +162,7 @@ class SyncQueue extends Queue implements QueueContract
 
     /**
      * Pop the next job off of the queue.
-	 * 从队列中启动下一个作业
+	 * 将下一个作业从队列中弹出
      *
      * @param  string  $queue
      * @return \Illuminate\Contracts\Queue\Job|null

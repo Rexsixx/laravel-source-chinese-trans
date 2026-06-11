@@ -109,7 +109,7 @@ class Kernel implements KernelContract
      */
     protected function defineConsoleSchedule()
     {
-        $this->app->singleton(Schedule::class, function ($app) {
+        $this->app->singleton(Schedule::class, function () {
             return new Schedule;
         });
 
@@ -151,7 +151,7 @@ class Kernel implements KernelContract
 
     /**
      * Terminate the application.
-	 * 终止应用
+	 * 终止应用程序
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  int  $status
@@ -381,8 +381,8 @@ class Kernel implements KernelContract
     }
 
     /**
-     * Report the exception to the exception handler.
-	 * 向异常处理程序报告异常
+     * Render the given exception.
+	 * 呈现给定的异常
      *
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
      * @param  \Exception  $e

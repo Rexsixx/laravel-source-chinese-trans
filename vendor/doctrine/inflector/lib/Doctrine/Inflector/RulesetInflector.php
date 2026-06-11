@@ -1,7 +1,4 @@
 <?php
-/**
- * Doctrine，Inflector，规则设置偏转器
- */
 
 declare(strict_types=1);
 
@@ -13,7 +10,6 @@ use function array_merge;
 
 /**
  * Inflects based on multiple rulesets.
- * 基于多个规则集的屈折。
  *
  * Rules:
  * - If the word matches any uninflected word pattern, it is not inflected

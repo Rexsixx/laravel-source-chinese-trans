@@ -1,6 +1,6 @@
 <?php
 /**
- * 引导，app
+ * 启动，app
  */
 
 /*
@@ -11,13 +11,13 @@
 | The first thing we will do is create a new Laravel application instance
 | which serves as the "glue" for all the components of Laravel, and is
 | the IoC container for the system binding all of the various parts.
-| 我们首先要做的就是创建一个新的 Laravel 应用实例，这个实例将作为 Laravel 所有组件的“连接器”，
-| 并且是系统中的依赖注入容器，用于将系统中的各个部分进行绑定。
+| 我们首先要做的就是创建一个新的 Laravel 应用实例，
+| 这个实例将作为 Laravel 所有组件的“连接器”，并且是系统中用于绑定各种部分的依赖注入容器。
 |
 */
 
 $app = new Illuminate\Foundation\Application(
-    realpath(__DIR__.'/../')
+    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
 /*
@@ -55,7 +55,8 @@ $app->singleton(
 | This script returns the application instance. The instance is given to
 | the calling script so we can separate the building of the instances
 | from the actual running of the application and sending responses.
-| 该脚本返回应用程序实例。
+| 此脚本会返回应用程序实例。
+| 该实例会传递给调用脚本，这样我们就能将实例的构建与应用程序的实际运行以及响应的发送分离开来。
 |
 */
 

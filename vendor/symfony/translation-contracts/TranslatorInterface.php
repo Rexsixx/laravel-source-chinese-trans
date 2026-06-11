@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，翻译，翻译接口
+ * Symfony，契约，翻译，翻译机接口
  */
 
 /*
@@ -23,7 +23,7 @@ interface TranslatorInterface
 {
     /**
      * Translates the given message.
-	 * 翻译给定的信息。
+	 * 翻译给定的消息。
      *
      * When a number is provided as a parameter named "%count%", the message is parsed for plural
      * forms and a translation is chosen according to this number using the following rules:

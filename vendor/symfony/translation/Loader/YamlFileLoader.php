@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，加载器，Yaml 文件加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * YamlFileLoader loads translations from Yaml files.
+ * YamlFileLoader从Yaml文件加载翻译。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

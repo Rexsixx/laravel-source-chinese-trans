@@ -1,8 +1,13 @@
 <?php
+/**
+ * Hamcrest，数组，是否包含关键值对的数组
+ */
+
 namespace Hamcrest\Arrays;
 
 /**
  * Tests for the presence of both a key and value inside an array.
+ * 测试在数组中存在一个键和值。
  */
 use Hamcrest\Description;
 use Hamcrest\Matcher;

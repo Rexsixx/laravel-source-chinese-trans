@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，Has To String
+ */
+
 namespace Hamcrest\Core;
 
 /*
@@ -11,6 +15,7 @@ use Hamcrest\Util;
 
 /**
  * Matches if array size satisfies a nested matcher.
+ * 匹配如果数组大小满足一个嵌套matcher。
  */
 class HasToString extends FeatureMatcher
 {

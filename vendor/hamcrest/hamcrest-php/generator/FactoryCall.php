@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，工厂调取
+ * 工厂呼叫
  */
 
 /*
@@ -11,7 +11,7 @@ class FactoryCall
 {
     /**
      * Hamcrest standard is two spaces for each level of indentation.
-	 * Hamcrest标准是每一级缩进两个空格
+	 * Hamcrest标准是每一个压痕的两个空间
      *
      * @var string
      */

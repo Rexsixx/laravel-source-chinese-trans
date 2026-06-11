@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，警卫助手
+ * Illuminate，认证，警卫助手
  */
 
 namespace Illuminate\Auth;
@@ -31,8 +31,8 @@ trait GuardHelpers
     protected $provider;
 
     /**
-     * Determine if the current user is authenticated.
-	 * 确定当前用户是否经过身份验证
+     * Determine if current user is authenticated. If not, throw an exception.
+	 * 确定当前用户是否经过身份验证。如果不是，则抛出异常。
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable
      *

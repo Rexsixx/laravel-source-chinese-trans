@@ -29,7 +29,7 @@ class CreateSessionsTable extends Migration
 
     /**
      * Reverse the migrations.
-	 * 扭转迁移
+	 * 逆转迁移
      *
      * @return void
      */

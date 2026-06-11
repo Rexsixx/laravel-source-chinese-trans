@@ -56,7 +56,7 @@ class ControllerDispatcher implements ControllerDispatcherContract
 
     /**
      * Get the middleware for the controller instance.
-	 * 为控制器实例获取中间件
+	 * 获取控制器实例的中间件
      *
      * @param  \Illuminate\Routing\Controller  $controller
      * @param  string  $method
@@ -75,7 +75,7 @@ class ControllerDispatcher implements ControllerDispatcherContract
 
     /**
      * Determine if the given options exclude a particular method.
-	 * 确定给定的选项是否排除特定的方法
+	 * 确定给定选项是否排除特定方法
      *
      * @param  string  $method
      * @param  array  $options

@@ -76,7 +76,7 @@ interface Session
 
     /**
      * Get an item from the session.
-	 * 从会话中获取一个项目。
+	 * 从会话中获取一个项目
      *
      * @param  string  $key
      * @param  mixed  $default

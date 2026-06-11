@@ -13,18 +13,18 @@ use Illuminate\Contracts\Support\Arrayable;
 class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 {
     /**
-     * All of the attributes set on the container.
-	 * 在容器上设置的所有属性
+     * All of the attributes set on the fluent instance.
+	 * 在流畅实例上设置的所有属性
      *
      * @var array
      */
     protected $attributes = [];
 
     /**
-     * Create a new fluent container instance.
-	 * 创建一个新的流畅容器实例
+     * Create a new fluent instance.
+	 * 创建一个新的流畅实例
      *
-     * @param  array|object    $attributes
+     * @param  array|object  $attributes
      * @return void
      */
     public function __construct($attributes = [])
@@ -35,8 +35,8 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
     }
 
     /**
-     * Get an attribute from the container.
-	 * 从容器中获取属性
+     * Get an attribute from the fluent instance.
+	 * 从流畅实例获取属性
      *
      * @param  string  $key
      * @param  mixed   $default
@@ -52,8 +52,8 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
     }
 
     /**
-     * Get the attributes from the container.
-	 * 从容器中获取属性
+     * Get the attributes from the fluent instance.
+	 * 从流畅实例获取属性
      *
      * @return array
      */
@@ -63,8 +63,8 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
     }
 
     /**
-     * Convert the Fluent instance to an array.
-	 * 将流畅的实例转换为数组
+     * Convert the fluent instance to an array.
+	 * 将fluent实例转换为数组
      *
      * @return array
      */
@@ -75,7 +75,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Convert the object into something JSON serializable.
-	 * 将对象转换为JSON序列化
+	 * 将对象转换为JSON可序列化的对象
      *
      * @return array
      */
@@ -85,8 +85,8 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
     }
 
     /**
-     * Convert the Fluent instance to JSON.
-	 * 将流畅的实例转换为JSON
+     * Convert the fluent instance to JSON.
+	 * 将fluent实例转换为JSON
      *
      * @param  int  $options
      * @return string
@@ -98,7 +98,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Determine if the given offset exists.
-	 * 确定给定偏移量是否存在
+	 * 确定给定的偏移量是否存在
      *
      * @param  string  $offset
      * @return bool
@@ -122,7 +122,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Set the value at the given offset.
-	 * 在给定偏移量上设置值
+	 * 在给定的偏移量处设置值
      *
      * @param  string  $offset
      * @param  mixed   $value
@@ -135,7 +135,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Unset the value at the given offset.
-	 * 在给定偏移量上解开值
+	 * 在给定偏移量处取消值的设置
      *
      * @param  string  $offset
      * @return void
@@ -146,8 +146,8 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
     }
 
     /**
-     * Handle dynamic calls to the container to set attributes.
-	 * 处理设置属性的动态调用
+     * Handle dynamic calls to the fluent instance to set attributes.
+	 * 处理对fluent实例的动态调用以设置属性
      *
      * @param  string  $method
      * @param  array   $parameters
@@ -187,7 +187,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Dynamically check if an attribute is set.
-	 * 动态检查属性是否设置
+	 * 动态检查是否设置了属性
      *
      * @param  string  $key
      * @return bool
@@ -199,7 +199,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Dynamically unset an attribute.
-	 * 动态不设置属性
+	 * 动态取消设置属性
      *
      * @param  string  $key
      * @return void

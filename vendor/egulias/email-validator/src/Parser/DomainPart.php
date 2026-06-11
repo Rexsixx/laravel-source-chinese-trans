@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，EmailValidator，分析程序，域部分
+ * Egulias，电子邮件验证器，分析程序，域部分
  */
 
 namespace Egulias\EmailValidator\Parser;
@@ -165,6 +165,7 @@ class DomainPart extends PartParser
                 $commentsResult = $this->parseComments();
 
                 //Invalid comment parsing
+				// 无效的注释解析
                 if($commentsResult->isInvalid()) {
                     return $commentsResult;
                 }

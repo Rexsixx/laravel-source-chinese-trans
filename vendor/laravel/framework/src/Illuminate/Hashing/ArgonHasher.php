@@ -12,7 +12,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 {
     /**
      * The default memory cost factor.
-	 * 默认内存成本因子
+	 * 默认成本因子
      *
      * @var int
      */
@@ -35,6 +35,14 @@ class ArgonHasher extends AbstractHasher implements HasherContract
     protected $threads = 2;
 
     /**
+     * Indicates whether to perform an algorithm check.
+	 * 是否进行算法检查
+     *
+     * @var bool
+     */
+    protected $verifyAlgorithm = false;
+
+    /**
      * Create a new hasher instance.
 	 * 创建一个新的散列实例
      *
@@ -46,6 +54,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
         $this->time = $options['time'] ?? $this->time;
         $this->memory = $options['memory'] ?? $this->memory;
         $this->threads = $options['threads'] ?? $this->threads;
+        $this->verifyAlgorithm = $options['verify'] ?? $this->verifyAlgorithm;
     }
 
     /**
@@ -60,7 +69,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
      */
     public function make($value, array $options = [])
     {
-        $hash = password_hash($value, PASSWORD_ARGON2I, [
+        $hash = password_hash($value, $this->algorithm(), [
             'memory_cost' => $this->memory($options),
             'time_cost' => $this->time($options),
             'threads' => $this->threads($options),
@@ -74,6 +83,35 @@ class ArgonHasher extends AbstractHasher implements HasherContract
     }
 
     /**
+     * Get the algorithm that should be used for hashing.
+	 * 获取应该用于散列的算法
+     *
+     * @return int
+     */
+    protected function algorithm()
+    {
+        return PASSWORD_ARGON2I;
+    }
+
+    /**
+     * Check the given plain value against a hash.
+	 * 根据散列检查给定的普通值
+     *
+     * @param  string  $value
+     * @param  string  $hashedValue
+     * @param  array  $options
+     * @return bool
+     */
+    public function check($value, $hashedValue, array $options = [])
+    {
+        if ($this->verifyAlgorithm && $this->info($hashedValue)['algoName'] !== 'argon2i') {
+            throw new RuntimeException('This password does not use the Argon2i algorithm.');
+        }
+
+        return parent::check($value, $hashedValue, $options);
+    }
+
+    /**
      * Check if the given hash has been hashed using the given options.
 	 * 检查给定的散列是否已经使用给定的选项进行了散列
      *
@@ -83,7 +121,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
      */
     public function needsRehash($hashedValue, array $options = [])
     {
-        return password_needs_rehash($hashedValue, PASSWORD_ARGON2I, [
+        return password_needs_rehash($hashedValue, $this->algorithm(), [
             'memory_cost' => $this->memory($options),
             'time_cost' => $this->time($options),
             'threads' => $this->threads($options),

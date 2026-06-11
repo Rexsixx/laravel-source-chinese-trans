@@ -1,6 +1,6 @@
 <?php
 /**
- * phpDocumentor，Reflection，伪类型，True
+ * phpDocumentor，反射，伪类型，True_
  */
 
 declare(strict_types=1);
@@ -24,7 +24,6 @@ use function class_alias;
 
 /**
  * Value Object representing the PseudoType 'False', which is a Boolean type.
- * 表示伪类型“False”的值对象,它是一个布尔类型。
  *
  * @psalm-immutable
  */

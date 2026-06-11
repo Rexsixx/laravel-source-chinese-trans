@@ -30,7 +30,7 @@ class RestartCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */

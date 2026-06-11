@@ -1,9 +1,4 @@
 <?php declare(strict_types=1);
-
-/**
- * SebastianBergmann，Diff，Diff
- */
-
 /*
  * This file is part of sebastian/diff.
  *

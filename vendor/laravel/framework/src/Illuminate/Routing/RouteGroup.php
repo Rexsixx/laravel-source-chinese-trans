@@ -11,7 +11,7 @@ class RouteGroup
 {
     /**
      * Merge route groups into a new array.
-	 * 将路由组合并成一个新的数组
+	 * 将路由组合并到一个新的数组中
      *
      * @param  array  $new
      * @param  array  $old
@@ -36,7 +36,7 @@ class RouteGroup
 
     /**
      * Format the namespace for the new group attributes.
-	 * 为新组属性格式化名称空间
+	 * 为新组属性格式化命名空间
      *
      * @param  array  $new
      * @param  array  $old
@@ -45,7 +45,7 @@ class RouteGroup
     protected static function formatNamespace($new, $old)
     {
         if (isset($new['namespace'])) {
-            return isset($old['namespace'])
+            return isset($old['namespace']) && strpos($new['namespace'], '\\') !== 0
                     ? trim($old['namespace'], '\\').'\\'.trim($new['namespace'], '\\')
                     : trim($new['namespace'], '\\');
         }
@@ -55,7 +55,7 @@ class RouteGroup
 
     /**
      * Format the prefix for the new group attributes.
-	 * 为新组属性格式化前缀
+	 * 格式化新组属性的前缀
      *
      * @param  array  $new
      * @param  array  $old
@@ -70,7 +70,7 @@ class RouteGroup
 
     /**
      * Format the "wheres" for the new group attributes.
-	 * 为新组属性格式化“哪里”
+	 * 为新组属性设置“where”的格式
      *
      * @param  array  $new
      * @param  array  $old

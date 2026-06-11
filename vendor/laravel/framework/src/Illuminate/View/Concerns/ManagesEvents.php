@@ -13,7 +13,7 @@ trait ManagesEvents
 {
     /**
      * Register a view creator event.
-	 * 注册一个视图创建者事件
+	 * 注册视图创建者事件
      *
      * @param  array|string     $views
      * @param  \Closure|string  $callback
@@ -105,6 +105,8 @@ trait ManagesEvents
         // When registering a class based view "composer", we will simply resolve the
         // classes from the application IoC container then call the compose method
         // on the instance. This allows for convenient, testable view composers.
+		// 在注册基于类的视图“composer”时，我们只需从应用程序的依赖注入容器中解析这些类，然后对实例调用“compose”方法。
+		// 这允许方便,可测试的视图composers。
         $callback = $this->buildClassEventCallback(
             $class, $prefix
         );
@@ -116,7 +118,7 @@ trait ManagesEvents
 
     /**
      * Build a class based container callback Closure.
-	 * 构建基于类的容器回调关闭
+	 * 构建一个基于类的容器回调闭包
      *
      * @param  string  $class
      * @param  string  $prefix
@@ -129,7 +131,8 @@ trait ManagesEvents
         // Once we have the class and method name, we can build the Closure to resolve
         // the instance out of the IoC container and call the method on it with the
         // given arguments that are passed to the Closure as the composer's data.
-		// 一旦有了类和方法名，我们可以构建闭包来解决从IoC容器中取出的实例。
+		// 一旦我们确定了类名和方法名，就可以构建一个闭包来从依赖注入容器中获取实例，
+		// 并使用作为闭包参数传递给它的给定参数（即作为构建器的数据）来调用该方法。
         return function () use ($class, $method) {
             return call_user_func_array(
                 [$this->container->make($class), $method], func_get_args()
@@ -139,7 +142,7 @@ trait ManagesEvents
 
     /**
      * Parse a class based composer name.
-	 * 解析基于类的作曲家的名字
+	 * 解析基于编写器名称的类
      *
      * @param  string  $class
      * @param  string  $prefix
@@ -164,7 +167,7 @@ trait ManagesEvents
 
     /**
      * Add a listener to the event dispatcher.
-	 * 在事件调度器中添加一个侦听器
+	 * 向事件调度程序添加侦听器
      *
      * @param  string    $name
      * @param  \Closure  $callback
@@ -183,7 +186,7 @@ trait ManagesEvents
 
     /**
      * Call the composer for a given view.
-	 * 为给定的视图调用作曲家
+	 * 调用给定视图的编写器
      *
      * @param  \Illuminate\Contracts\View\View  $view
      * @return void
@@ -195,7 +198,7 @@ trait ManagesEvents
 
     /**
      * Call the creator for a given view.
-	 * 调用创建者的给定视图
+	 * 调用给定视图的创建者
      *
      * @param  \Illuminate\Contracts\View\View  $view
      * @return void

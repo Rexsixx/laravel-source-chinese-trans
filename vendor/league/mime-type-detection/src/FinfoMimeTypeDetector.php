@@ -1,6 +1,6 @@
 <?php
 /**
- * League，MimeTypeDetection，Finfo Mime 类型检测器
+ * League，Mime类型检测，Finfo Mime 类型检测器
  */
 
 declare(strict_types=1);

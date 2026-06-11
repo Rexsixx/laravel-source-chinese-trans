@@ -17,7 +17,7 @@ class Password extends Facade
 {
     /**
      * Constant representing a successfully sent reminder.
-	 * 代表一个成功发送提醒的常量
+	 * 表示成功发送提醒的常量
      *
      * @var string
      */
@@ -25,7 +25,6 @@ class Password extends Facade
 
     /**
      * Constant representing a successfully reset password.
-	 * 表示成功重置密码的常量
      *
      * @var string
      */
@@ -33,7 +32,6 @@ class Password extends Facade
 
     /**
      * Constant representing the user not found response.
-	 * 代表用户未找到响应的常量
      *
      * @var string
      */
@@ -41,7 +39,6 @@ class Password extends Facade
 
     /**
      * Constant representing an invalid password.
-	 * 表示无效密码的常量
      *
      * @var string
      */
@@ -49,7 +46,6 @@ class Password extends Facade
 
     /**
      * Constant representing an invalid token.
-	 * 表示无效令牌的常量
      *
      * @var string
      */

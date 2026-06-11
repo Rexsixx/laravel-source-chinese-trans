@@ -1,6 +1,6 @@
 <?php
 /**
- * Psr，Container，容器异常接口
+ * Psr，容器，容器异常接口
  */
 
 namespace Psr\Container;

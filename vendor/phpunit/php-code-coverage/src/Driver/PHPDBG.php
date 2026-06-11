@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，CodeCoverage，驱动程序，PHPDBG
+ * SebastianBergmann，代码覆盖率，驱动程序，PHPDBG
  */
 
 /*
@@ -17,7 +17,7 @@ use SebastianBergmann\CodeCoverage\RuntimeException;
 
 /**
  * Driver for PHPDBG's code coverage functionality.
- * PHPDBG的代码覆盖功能驱动程序
+ * PHPDBG代码覆盖功能的驱动程序。
  *
  * @codeCoverageIgnore
  */
@@ -43,7 +43,6 @@ final class PHPDBG implements Driver
 
     /**
      * Start collection of code coverage information.
-	 * 开始收集代码覆盖率信息
      */
     public function start(bool $determineUnusedAndDead = true): void
     {

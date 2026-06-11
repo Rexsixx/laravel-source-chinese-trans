@@ -33,7 +33,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @var string
      */
-    const VERSION = '5.6.40';
+    const VERSION = '5.7.29';
 
     /**
      * The base path for the Laravel installation.
@@ -63,7 +63,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * The array of booting callbacks.
 	 * 启动回调函数数组
      *
-     * @var array
+     * @var callable[]
      */
     protected $bootingCallbacks = [];
 
@@ -71,15 +71,15 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * The array of booted callbacks.
 	 * 启动回调函数的数组
      *
-     * @var array
+     * @var callable[]
      */
     protected $bootedCallbacks = [];
 
     /**
      * The array of terminating callbacks.
-	 * 终止回调的数组
+	 * 终止回调的数组。
      *
-     * @var array
+     * @var callable[]
      */
     protected $terminatingCallbacks = [];
 
@@ -87,7 +87,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * All of the registered service providers.
 	 * 所有已注册的服务提供者
      *
-     * @var array
+     * @var \Illuminate\Support\ServiceProvider[]
      */
     protected $serviceProviders = [];
 
@@ -101,11 +101,19 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * The deferred services and their providers.
-	 * 延迟的服务及其提供者
+	 * 延迟的服务及其提供者。
      *
      * @var array
      */
     protected $deferredServices = [];
+
+    /**
+     * The custom application path defined by the developer.
+	 * 开发人员定义的自定义应用程序路径
+     *
+     * @var string
+     */
+    protected $appPath;
 
     /**
      * The custom database path defined by the developer.
@@ -141,7 +149,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * The application namespace.
-	 * 应用命名空间
+	 * 应用的命名空间
      *
      * @var string
      */
@@ -149,7 +157,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Create a new Illuminate application instance.
-	 * 创建一个新的Illuminate应用实例
+	 * 创建一个新的照亮应用实例
      *
      * @param  string|null  $basePath
      * @return void
@@ -199,16 +207,14 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Register all of the base service providers.
-	 * 注册所有的基本服务提供者。
+	 * 注册所有的基本服务提供者
      *
      * @return void
      */
     protected function registerBaseServiceProviders()
     {
         $this->register(new EventServiceProvider($this));
-
         $this->register(new LogServiceProvider($this));
-
         $this->register(new RoutingServiceProvider($this));
     }
 
@@ -216,7 +222,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Run the given array of bootstrap classes.
 	 * 运行给定的引导类数组
      *
-     * @param  array  $bootstrappers
+     * @param  string[]  $bootstrappers
      * @return void
      */
     public function bootstrapWith(array $bootstrappers)
@@ -224,11 +230,11 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $this->hasBeenBootstrapped = true;
 
         foreach ($bootstrappers as $bootstrapper) {
-            $this['events']->fire('bootstrapping: '.$bootstrapper, [$this]);
+            $this['events']->dispatch('bootstrapping: '.$bootstrapper, [$this]);
 
             $this->make($bootstrapper)->bootstrap($this);
 
-            $this['events']->fire('bootstrapped: '.$bootstrapper, [$this]);
+            $this['events']->dispatch('bootstrapped: '.$bootstrapper, [$this]);
         }
     }
 
@@ -322,17 +328,35 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Get the path to the application "app" directory.
 	 * 获取应用程序“app”目录的路径
      *
-     * @param  string  $path Optionally, a path to append to the app path
+     * @param  string  $path
      * @return string
      */
     public function path($path = '')
     {
-        return $this->basePath.DIRECTORY_SEPARATOR.'app'.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        $appPath = $this->appPath ?: $this->basePath.DIRECTORY_SEPARATOR.'app';
+
+        return $appPath.($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Set the application directory.
+	 * 设置应用程序目录
+     *
+     * @param  string  $path
+     * @return $this
+     */
+    public function useAppPath($path)
+    {
+        $this->appPath = $path;
+
+        $this->instance('path', $path);
+
+        return $this;
     }
 
     /**
      * Get the base path of the Laravel installation.
-	 * 获取Laravel安装的基本路径
+	 * 获取Laravel安装的基本路径。
      *
      * @param  string  $path Optionally, a path to append to the base path
      * @return string
@@ -356,7 +380,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Get the path to the application configuration files.
-	 * 获取应用程序配置文件的路径
+	 * 获取应用程序配置文件的路径。
      *
      * @param  string  $path Optionally, a path to append to the config path
      * @return string
@@ -541,7 +565,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function isLocal()
     {
-        return $this['env'] == 'local';
+        return $this['env'] === 'local';
     }
 
     /**
@@ -566,6 +590,10 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function runningInConsole()
     {
+        if (isset($_ENV['APP_RUNNING_IN_CONSOLE'])) {
+            return $_ENV['APP_RUNNING_IN_CONSOLE'] === 'true';
+        }
+
         return php_sapi_name() === 'cli' || php_sapi_name() === 'phpdbg';
     }
 
@@ -604,11 +632,10 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 	 * 向应用程序注册一个服务提供者
      *
      * @param  \Illuminate\Support\ServiceProvider|string  $provider
-     * @param  array  $options
      * @param  bool   $force
      * @return \Illuminate\Support\ServiceProvider
      */
-    public function register($provider, $options = [], $force = false)
+    public function register($provider, $force = false)
     {
         if (($registered = $this->getProvider($provider)) && ! $force) {
             return $registered;
@@ -617,7 +644,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         // If the given "provider" is a string, we will resolve it, passing in the
         // application instance automatically for the developer. This is simply
         // a more convenient way of specifying your service provider classes.
-		// 如果给定的“提供者”是一个字符串，我们将对其进行解析，并自动将应用程序实例传递给开发人员。
         if (is_string($provider)) {
             $provider = $this->resolveProvider($provider);
         }
@@ -629,8 +655,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         // If there are bindings / singletons set as properties on the provider we
         // will spin through them and register them with the application, which
         // serves as a convenience layer while registering a lot of bindings.
-		// 如果在提供者中设置了绑定/单例作为属性，我们将遍历这些设置并将其与应用程序进行关联，
-		// 这样在注册大量绑定时就提供了一个便利的中间层。
         if (property_exists($provider, 'bindings')) {
             foreach ($provider->bindings as $key => $value) {
                 $this->bind($key, $value);
@@ -648,8 +672,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         // If the application has already booted, we will call this boot method on
         // the provider class so it has an opportunity to do its boot logic and
         // will be ready for any usage by this developer's application logic.
-		// 如果应用程序已经启动，我们将在这个提供者类上调用此启动方法，
-		// 以便它有机会执行其启动逻辑，并为该开发者的应用程序逻辑做好准备，使其能够随时被使用。
         if ($this->booted) {
             $this->bootProvider($provider);
         }
@@ -699,7 +721,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Mark the given provider as registered.
-	 * 给定的提供程序标记为已注册
+	 * 将给定的提供程序标记为已注册
      *
      * @param  \Illuminate\Support\ServiceProvider  $provider
      * @return void
@@ -722,7 +744,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         // We will simply spin through each of the deferred providers and register each
         // one and boot them if the application has booted. This should make each of
         // the remaining services available to this application for immediate use.
-		// 我们将逐一检查每个延迟启动的提供者，并为其注册信息，然后在应用程序启动时启动它们。
         foreach ($this->deferredServices as $service => $provider) {
             $this->loadDeferredProvider($service);
         }
@@ -748,8 +769,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         // If the service provider has not already been loaded and registered we can
         // register it with the application and remove the service from this list
         // of deferred services, since it will already be loaded on subsequent.
-		// 如果服务提供者尚未被加载并注册，我们可以将其与应用程序进行关联，
-		// 并从这列待处理服务中移除该服务，因为它会在后续步骤中被加载。
         if (! isset($this->loadedProviders[$provider])) {
             $this->registerDeferredProvider($provider, $service);
         }
@@ -768,7 +787,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         // Once the provider that provides the deferred service has been registered we
         // will remove it from our local list of the deferred services with related
         // providers so that this container does not try to resolve it out again.
-		// 一旦提供了延迟服务的供应商已完成注册，我们将将其从我们本地的延迟服务及相关供应商列表中移除，以防止该容器再次尝试解析该服务。
         if ($service) {
             unset($this->deferredServices[$service]);
         }
@@ -843,7 +861,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         // Once the application has booted we will also fire some "booted" callbacks
         // for any listeners that need to do work after this initial booting gets
         // finished. This is useful when ordering the boot-up processes we run.
-		// 一旦应用程序启动完成，我们还会为任何需要在初始启动完成后继续执行工作的监听者触发一些“启动完成”回调。
         $this->fireAppCallbacks($this->bootingCallbacks);
 
         array_walk($this->serviceProviders, function ($p) {
@@ -873,7 +890,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Register a new boot listener.
 	 * 注册一个新的引导侦听器
      *
-     * @param  mixed  $callback
+     * @param  callable  $callback
      * @return void
      */
     public function booting($callback)
@@ -885,7 +902,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Register a new "booted" listener.
 	 * 注册一个新的“已启动”侦听器
      *
-     * @param  mixed  $callback
+     * @param  callable  $callback
      * @return void
      */
     public function booted($callback)
@@ -901,7 +918,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Call the booting callbacks for the application.
 	 * 调用应用程序的引导回调
      *
-     * @param  array  $callbacks
+     * @param  callable[]  $callbacks
      * @return void
      */
     protected function fireAppCallbacks(array $callbacks)
@@ -939,7 +956,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function getCachedServicesPath()
     {
-        return $this->bootstrapPath().'/cache/services.php';
+        return $_ENV['APP_SERVICES_CACHE'] ?? $this->bootstrapPath().'/cache/services.php';
     }
 
     /**
@@ -950,7 +967,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function getCachedPackagesPath()
     {
-        return $this->bootstrapPath().'/cache/packages.php';
+        return $_ENV['APP_PACKAGES_CACHE'] ?? $this->bootstrapPath().'/cache/packages.php';
     }
 
     /**
@@ -972,7 +989,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function getCachedConfigPath()
     {
-        return $this->bootstrapPath().'/cache/config.php';
+        return $_ENV['APP_CONFIG_CACHE'] ?? $this->bootstrapPath().'/cache/config.php';
     }
 
     /**
@@ -994,7 +1011,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function getCachedRoutesPath()
     {
-        return $this->bootstrapPath().'/cache/routes.php';
+        return $_ENV['APP_ROUTES_CACHE'] ?? $this->bootstrapPath().'/cache/routes.php';
     }
 
     /**
@@ -1044,7 +1061,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Terminate the application.
-	 * 终止应用
+	 * 终止应用程序
      *
      * @return void
      */
@@ -1239,7 +1256,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Get the application namespace.
-	 * 获取应用程序名称空间
+	 * 获取应用程序命名空间
      *
      * @return string
      *

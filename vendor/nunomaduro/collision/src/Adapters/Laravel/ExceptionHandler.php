@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，适配器，Laravel，异常处理程序
+ * NunoMaduro，冲突，适配器，Laravel，异常处理程序
  */
 
 /**
@@ -22,7 +22,7 @@ use Symfony\Component\Console\Exception\ExceptionInterface as SymfonyConsoleExce
 
 /**
  * This is an Collision Laravel Adapter ExceptionHandler implementation.
- * 这是一个碰撞后的适配器异常处理程序实现。
+ * 这是一个Collision Laravel Adapter ExceptionHandler实现。
  *
  * Registers the Error Handler on Laravel.
  *
@@ -32,7 +32,6 @@ class ExceptionHandler implements ExceptionHandlerContract
 {
     /**
      * Holds an instance of the application exception handler.
-	 * 保存应用程序异常处理程序的实例
      *
      * @var \Illuminate\Contracts\Debug\ExceptionHandler
      */
@@ -40,7 +39,6 @@ class ExceptionHandler implements ExceptionHandlerContract
 
     /**
      * Holds an instance of the application.
-	 * 保存应用程序的一个实例
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -48,7 +46,6 @@ class ExceptionHandler implements ExceptionHandlerContract
 
     /**
      * Creates a new instance of the ExceptionHandler.
-	 * 创建异常处理程序的新实例
      *
      * @param \Illuminate\Contracts\Foundation\Application $app
      * @param \Illuminate\Contracts\Debug\ExceptionHandler $appExceptionHandler
@@ -96,7 +93,6 @@ class ExceptionHandler implements ExceptionHandlerContract
 
     /**
      * Determine if the exception should be reported.
-	 * 确定是否应该报告异常
      *
      * @param  \Exception  $e
      * @return bool

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，通道，电子邮件通道
+ * Illuminate，通知，通道，Mail 通道
  */
 
 namespace Illuminate\Notifications\Channels;
@@ -11,6 +11,7 @@ use Illuminate\Mail\Markdown;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class MailChannel
 {
@@ -67,14 +68,14 @@ class MailChannel
 
         $this->mailer->send(
             $this->buildView($message),
-            $message->data(),
+            array_merge($message->data(), $this->additionalMessageData($notification)),
             $this->messageBuilder($notifiable, $notification, $message)
         );
     }
 
     /**
      * Get the mailer Closure for the message.
-	 * 获取消息的mailer闭包
+	 * 获取邮件的邮件封包
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -108,6 +109,23 @@ class MailChannel
     }
 
     /**
+     * Get additional meta-data to pass along with the view data.
+	 * 获取与视图数据一起传递的附加元数据
+     *
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return array
+     */
+    protected function additionalMessageData($notification)
+    {
+        return [
+            '__laravel_notification' => get_class($notification),
+            '__laravel_notification_queued' => in_array(
+                ShouldQueue::class, class_implements($notification)
+            ),
+        ];
+    }
+
+    /**
      * Build the mail message.
 	 * 构建邮件消息
      *
@@ -134,7 +152,7 @@ class MailChannel
 
     /**
      * Address the mail message.
-	 * 处理邮件信息
+	 * 邮件消息的地址
      *
      * @param  \Illuminate\Mail\Message  $mailMessage
      * @param  mixed  $notifiable

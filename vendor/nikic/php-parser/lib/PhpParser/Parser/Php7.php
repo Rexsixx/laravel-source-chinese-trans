@@ -1,7 +1,4 @@
 <?php
-/**
- * PhpParser，分析程序，Php7
- */
 
 namespace PhpParser\Parser;
 

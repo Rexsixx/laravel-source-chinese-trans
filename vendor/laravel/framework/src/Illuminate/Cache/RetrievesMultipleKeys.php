@@ -12,6 +12,7 @@ trait RetrievesMultipleKeys
 	 * 按键从缓存中检索多个项。
      *
      * Items not found in the cache will have a null value.
+	 * 在缓存中找不到的项将具有空值。
      *
      * @param  array  $keys
      * @return array
@@ -29,7 +30,7 @@ trait RetrievesMultipleKeys
 
     /**
      * Store multiple items in the cache for a given number of minutes.
-	 * 在给定的分钟数内将多个项存储在缓存中。
+	 * 在给定的分钟数内将多个项存储在缓存中
      *
      * @param  array  $values
      * @param  float|int  $minutes

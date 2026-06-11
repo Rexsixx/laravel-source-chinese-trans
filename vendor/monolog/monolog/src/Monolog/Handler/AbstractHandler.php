@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，处理程序，抽象处理器
+ * Monolog，处理程序，抽象处理程序
  */
 
 /*
@@ -21,7 +21,7 @@ use Monolog\ResettableInterface;
 
 /**
  * Base Handler class providing the Handler structure
- * 提供Handler结构的基Handler类
+ * 提供处理程序结构的基本处理程序类
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
@@ -66,7 +66,6 @@ abstract class AbstractHandler implements HandlerInterface, ResettableInterface
 
     /**
      * Closes the handler.
-	 * 关闭处理程序
      *
      * This will be called automatically when the object is destroyed
      */
@@ -123,7 +122,6 @@ abstract class AbstractHandler implements HandlerInterface, ResettableInterface
 
     /**
      * Sets minimum logging level at which this handler will be triggered.
-	 * 设置触发此处理程序的最低日志级别
      *
      * @param  int|string $level Level or level name
      * @return self
@@ -137,7 +135,6 @@ abstract class AbstractHandler implements HandlerInterface, ResettableInterface
 
     /**
      * Gets minimum logging level at which this handler will be triggered.
-	 * 获取将触发此处理程序的最低日志记录级别
      *
      * @return int
      */
@@ -148,7 +145,6 @@ abstract class AbstractHandler implements HandlerInterface, ResettableInterface
 
     /**
      * Sets the bubbling behavior.
-	 * 设置bubbling行为
      *
      * @param  bool $bubble true means that this handler allows bubbling.
      *                      false means that bubbling is not permitted.
@@ -163,7 +159,6 @@ abstract class AbstractHandler implements HandlerInterface, ResettableInterface
 
     /**
      * Gets the bubbling behavior.
-	 * 获取冒泡的行为
      *
      * @return bool true means that this handler allows bubbling.
      *              false means that bubbling is not permitted.

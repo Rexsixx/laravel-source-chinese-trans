@@ -1,7 +1,4 @@
 <?php
-/**
- * Prophecy，调取，Call
- */
 
 /*
  * This file is part of the Prophecy.
@@ -19,7 +16,6 @@ use Prophecy\Argument\ArgumentsWildcard;
 
 /**
  * Call object.
- * Call对象
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -44,7 +40,6 @@ class Call
 
     /**
      * Initializes call.
-	 * 初始化调用
      *
      * @param string      $methodName
      * @param array<mixed> $arguments

@@ -107,7 +107,7 @@ trait BuildsQueries
      * Pass the query to a given callback.
 	 * 将查询传递给给定的回调
      *
-     * @param  \Closure  $callback
+     * @param  callable  $callback
      * @return \Illuminate\Database\Query\Builder
      */
     public function tap($callback)

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，发送队列可邮寄
+ * Illuminate，电子邮件，发送队列可发送
  */
 
 namespace Illuminate\Mail;
@@ -14,7 +14,7 @@ class SendQueuedMailable
      * The mailable message instance.
 	 * 可邮件消息实例
      *
-     * @var Mailable
+     * @var \Illuminate\Mail\Mailable
      */
     public $mailable;
 
@@ -73,7 +73,7 @@ class SendQueuedMailable
 
     /**
      * Call the failed method on the mailable instance.
-	 * 在可邮寄的实例上调用失败的方法
+	 * 在可邮件实例上调用失败的方法
      *
      * @param  \Exception  $e
      * @return void

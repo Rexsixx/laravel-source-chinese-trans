@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，预置，React
+ * Illuminate，基础，控制台，预设，React
  */
 
 namespace Illuminate\Foundation\Console\Presets;
@@ -36,7 +36,7 @@ class React extends Preset
     protected static function updatePackageArray(array $packages)
     {
         return [
-            'babel-preset-react' => '^6.23.0',
+            '@babel/preset-react' => '^7.0.0',
             'react' => '^16.2.0',
             'react-dom' => '^16.2.0',
         ] + Arr::except($packages, ['vue']);
@@ -62,12 +62,12 @@ class React extends Preset
     protected static function updateComponent()
     {
         (new Filesystem)->delete(
-            resource_path('assets/js/components/ExampleComponent.vue')
+            resource_path('js/components/ExampleComponent.vue')
         );
 
         copy(
             __DIR__.'/react-stubs/Example.js',
-            resource_path('assets/js/components/Example.js')
+            resource_path('js/components/Example.js')
         );
     }
 
@@ -79,6 +79,6 @@ class React extends Preset
      */
     protected static function updateBootstrapping()
     {
-        copy(__DIR__.'/react-stubs/app.js', resource_path('assets/js/app.js'));
+        copy(__DIR__.'/react-stubs/app.js', resource_path('js/app.js'));
     }
 }

@@ -1,8 +1,4 @@
 <?php
-/**
- * SebastianBergmann，GlobalState，恢复器
- */
-
 /*
  * This file is part of sebastian/global-state.
  *

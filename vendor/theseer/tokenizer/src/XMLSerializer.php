@@ -1,7 +1,7 @@
 <?php declare(strict_types = 1);
 
 /**
- * TheSeer，Tokenizer，XML 序列化器
+ * TheSeer，词法分析器，XML 序列化器
  */
 
 namespace TheSeer\Tokenizer;
@@ -15,7 +15,7 @@ class XMLSerializer {
 
     /**
      * XMLSerializer constructor.
-	 * XMLSerializer构造器
+	 * XMLSerializer构造函数
      *
      * @param NamespaceUri $xmlns
      */

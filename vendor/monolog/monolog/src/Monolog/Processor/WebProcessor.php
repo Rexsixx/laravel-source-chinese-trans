@@ -16,7 +16,6 @@ namespace Monolog\Processor;
 
 /**
  * Injects url/method and remote IP of the current web request in all records
- * 在所有记录中注入当前web请求的url/方法和远程IP
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
@@ -29,7 +28,6 @@ class WebProcessor implements ProcessorInterface
 
     /**
      * Default fields
-	 * 默认字段
      *
      * Array is structured as [key in record.extra => key in $serverData]
      *

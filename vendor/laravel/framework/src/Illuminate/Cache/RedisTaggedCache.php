@@ -14,7 +14,6 @@ class RedisTaggedCache extends TaggedCache
      * @var string
      */
     const REFERENCE_KEY_FOREVER = 'forever_ref';
-	
     /**
      * Standard reference key.
 	 * 标准参考键
@@ -88,14 +87,14 @@ class RedisTaggedCache extends TaggedCache
      * Remove all items from the cache.
 	 * 从缓存中删除所有项
      *
-     * @return void
+     * @return bool
      */
     public function flush()
     {
         $this->deleteForeverKeys();
         $this->deleteStandardKeys();
 
-        parent::flush();
+        return parent::flush();
     }
 
     /**

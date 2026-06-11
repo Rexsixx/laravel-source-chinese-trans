@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，确认，多次验证
+ */
 
 namespace Egulias\EmailValidator\Validation;
 
@@ -12,6 +15,8 @@ class MultipleValidationWithAnd implements EmailValidation
     /**
      * If one of validations fails, the remaining validations will be skipped.
      * This means MultipleErrors will only contain a single error, the first found.
+	 * 如果一个验证失败,则将跳过剩下的验证。
+	 * 这意味着多路错误只会包含一个错误,第一个发现。
      */
     public const STOP_ON_ERROR = 0;
 

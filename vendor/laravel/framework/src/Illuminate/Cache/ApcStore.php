@@ -29,7 +29,7 @@ class ApcStore extends TaggableStore implements Store
 
     /**
      * Create a new APC store.
-	 * 创建一个新的APC商店
+	 * 创建一个新的APC存储
      *
      * @param  \Illuminate\Cache\ApcWrapper  $apc
      * @param  string  $prefix

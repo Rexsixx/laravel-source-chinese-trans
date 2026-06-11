@@ -22,7 +22,7 @@ class Bus extends Facade
 {
     /**
      * Replace the bound instance with a fake.
-	 * 用假的方式替换绑定的实例
+	 * 将绑定实例替换为伪实例
      *
      * @return void
      */

@@ -57,6 +57,7 @@ class TemplateHelper
 
     /**
      * Escapes a string for output in an HTML document
+	 * 在HTML文档中从字符串中Escapes
      *
      * @param  string $raw
      * @return string

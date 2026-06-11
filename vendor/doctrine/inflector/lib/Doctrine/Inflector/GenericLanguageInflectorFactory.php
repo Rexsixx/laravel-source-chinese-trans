@@ -1,7 +1,4 @@
 <?php
-/**
- * Doctrine，Inflector，通用语言影响器工厂
- */
 
 declare(strict_types=1);
 

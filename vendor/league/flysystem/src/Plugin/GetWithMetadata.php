@@ -12,7 +12,7 @@ class GetWithMetadata extends AbstractPlugin
 {
     /**
      * Get the method name.
-	 * 获取方法名
+	 * 获取方法名称
      *
      * @return string
      */
@@ -23,7 +23,6 @@ class GetWithMetadata extends AbstractPlugin
 
     /**
      * Get metadata for an object with required metadata.
-	 * 以需要的元数据为对象获取元数据
      *
      * @param string   $path     path to file
      * @param string[] $metadata metadata keys

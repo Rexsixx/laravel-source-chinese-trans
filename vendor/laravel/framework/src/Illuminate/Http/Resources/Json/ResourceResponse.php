@@ -92,7 +92,7 @@ class ResourceResponse implements Responsable
 
     /**
      * Determine if "with" data has been added and our data is unwrapped.
-	 * 确定是否添加了“with”数据以及是否打开了数据包装。
+	 * 确定是否添加了“with”数据以及是否打开了数据包装
      *
      * @param  array  $data
      * @param  array  $with

@@ -40,6 +40,6 @@ trait Dispatchable
      */
     public static function withChain($chain)
     {
-        return new PendingChain(get_called_class(), $chain);
+        return new PendingChain(static::class, $chain);
     }
 }

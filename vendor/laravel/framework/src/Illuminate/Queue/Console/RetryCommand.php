@@ -16,7 +16,7 @@ class RetryCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'queue:retry {id* : The ID of the failed job or "all" to retry all jobs.}';
+    protected $signature = 'queue:retry {id* : The ID of the failed job or "all" to retry all jobs}';
 
     /**
      * The console command description.
@@ -28,7 +28,7 @@ class RetryCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */
@@ -82,9 +82,10 @@ class RetryCommand extends Command
 
     /**
      * Reset the payload attempts.
-	 * 重置负载尝试
+	 * 重置负载尝试。
      *
      * Applicable to Redis jobs which store attempts in their payload.
+	 * 适用于Redis的工作,在他们的有效负载中存储尝试。
      *
      * @param  string  $payload
      * @return string

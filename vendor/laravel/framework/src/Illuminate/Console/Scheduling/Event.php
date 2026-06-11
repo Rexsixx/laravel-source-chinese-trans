@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，调度，事件
+ * Illuminate，控制台，线程调度，事件
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -186,7 +186,7 @@ class Event
      */
     public function getDefaultOutput()
     {
-        return (DIRECTORY_SEPARATOR == '\\') ? 'NUL' : '/dev/null';
+        return (DIRECTORY_SEPARATOR === '\\') ? 'NUL' : '/dev/null';
     }
 
     /**
@@ -255,7 +255,7 @@ class Event
 
     /**
      * Call all of the "before" callbacks for the event.
-	 * 调用事件的所有“before”回调
+	 * 调用事件的所有“before”回调。
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
@@ -374,6 +374,19 @@ class Event
     }
 
     /**
+     * Ensure that the output is stored on disk in a log file.
+	 * 确保输出以日志文件的形式存储在磁盘上
+     *
+     * @return $this
+     */
+    public function storeOutput()
+    {
+        $this->ensureOutputIsBeingCaptured();
+
+        return $this;
+    }
+
+    /**
      * Send the output of the command to a given location.
 	 * 将命令的输出发送到给定位置
      *
@@ -442,8 +455,21 @@ class Event
 	 * 确保为电子邮件捕获输出
      *
      * @return void
+     *
+     * @deprecated See ensureOutputIsBeingCaptured.
      */
     protected function ensureOutputIsBeingCapturedForEmail()
+    {
+        $this->ensureOutputIsBeingCaptured();
+    }
+
+    /**
+     * Ensure that the command output is being captured.
+	 * 确保正在捕获命令输出
+     *
+     * @return void
+     */
+    protected function ensureOutputIsBeingCaptured()
     {
         if (is_null($this->output) || $this->output == $this->getDefaultOutput()) {
             $this->sendOutputTo(storage_path('logs/schedule-'.sha1($this->mutexName()).'.log'));
@@ -754,7 +780,7 @@ class Event
     {
         return Carbon::instance(CronExpression::factory(
             $this->getExpression()
-        )->getNextRunDate($currentTime, $nth, $allowCurrentDate));
+        )->getNextRunDate($currentTime, $nth, $allowCurrentDate, $this->timezone));
     }
 
     /**

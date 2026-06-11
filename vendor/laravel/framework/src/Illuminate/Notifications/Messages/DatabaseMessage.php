@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，信息，数据库消息
+ * Illuminate，通知，消息，数据库消息
  */
 
 namespace Illuminate\Notifications\Messages;

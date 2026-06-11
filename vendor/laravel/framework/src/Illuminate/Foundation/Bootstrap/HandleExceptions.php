@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，引导程序，处理异常
+ * Illuminate，基础，引导程序，处理程序异常
  */
 
 namespace Illuminate\Foundation\Bootstrap;

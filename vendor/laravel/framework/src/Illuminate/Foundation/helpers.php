@@ -1,13 +1,15 @@
 <?php
 /**
- * Illuminate，基础，辅助函数
+ * Illuminate，基础，辅助
  */
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\HtmlString;
 use Illuminate\Container\Container;
+use Illuminate\Queue\CallQueuedClosure;
 use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Queue\SerializableClosure;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Contracts\Routing\UrlGenerator;
@@ -29,7 +31,7 @@ if (! function_exists('abort')) {
      * Throw an HttpException with the given data.
 	 * 用给定的数据抛出一个HttpException
      *
-     * @param  \Symfony\Component\HttpFoundation\Response|int     $code
+     * @param  \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Support\Responsable|int     $code
      * @param  string  $message
      * @param  array   $headers
      * @return void
@@ -98,7 +100,7 @@ if (! function_exists('action')) {
      * Generate the URL to a controller action.
 	 * 生成一个控制器动作的URL
      *
-     * @param  string  $name
+     * @param  string|array  $name
      * @param  mixed   $parameters
      * @param  bool    $absolute
      * @return string
@@ -194,7 +196,7 @@ if (! function_exists('back')) {
 if (! function_exists('base_path')) {
     /**
      * Get the path to the base of the install.
-	 * 获取到安装基础的路径。
+	 * 获取到安装基础的路径
      *
      * @param  string  $path
      * @return string
@@ -255,7 +257,7 @@ if (! function_exists('cache')) {
         }
 
         if (is_string($arguments[0])) {
-            return app('cache')->get($arguments[0], $arguments[1] ?? null);
+            return app('cache')->get(...$arguments);
         }
 
         if (! is_array($arguments[0])) {
@@ -414,6 +416,10 @@ if (! function_exists('dispatch')) {
      */
     function dispatch($job)
     {
+        if ($job instanceof Closure) {
+            $job = new CallQueuedClosure(new SerializableClosure($job));
+        }
+
         return new PendingDispatch($job);
     }
 }
@@ -547,7 +553,7 @@ if (! function_exists('info')) {
 if (! function_exists('logger')) {
     /**
      * Log a debug message to the logs.
-	 * 将调试消息写入日志
+	 * 将调试消息记录到日志中
      *
      * @param  string  $message
      * @param  array  $context
@@ -580,7 +586,7 @@ if (! function_exists('logs')) {
 if (! function_exists('method_field')) {
     /**
      * Generate a form field to spoof the HTTP verb used by forms.
-	 * 生成一个表单字段来spoto使用表单使用的HTTP谓词
+	 * 生成一个表单字段来欺骗表单使用的HTTP谓词
      *
      * @param  string  $method
      * @return \Illuminate\Support\HtmlString
@@ -615,7 +621,7 @@ if (! function_exists('mix')) {
         }
 
         if (file_exists(public_path($manifestDirectory.'/hot'))) {
-            $url = file_get_contents(public_path($manifestDirectory.'/hot'));
+            $url = rtrim(file_get_contents(public_path($manifestDirectory.'/hot')));
 
             if (Str::startsWith($url, ['http://', 'https://'])) {
                 return new HtmlString(Str::after($url, ':').$path);
@@ -637,10 +643,14 @@ if (! function_exists('mix')) {
         $manifest = $manifests[$manifestPath];
 
         if (! isset($manifest[$path])) {
-            report(new Exception("Unable to locate Mix file: {$path}."));
+            $exception = new Exception("Unable to locate Mix file: {$path}.");
 
             if (! app('config')->get('app.debug')) {
+                report($exception);
+
                 return $path;
+            } else {
+                throw $exception;
             }
         }
 
@@ -894,7 +904,6 @@ if (! function_exists('session')) {
 	 * 获取/设置指定的会话值。
      *
      * If an array is passed as the key, we will assume you want to set an array of values.
-	 * 接下来，我们将注册相关事件，以加载它所请求的每个事件的提供者。
      *
      * @param  array|string  $key
      * @param  mixed  $default
@@ -917,7 +926,7 @@ if (! function_exists('session')) {
 if (! function_exists('storage_path')) {
     /**
      * Get the path to the storage folder.
-	 * 获取到存储文件夹的路径
+	 * 获取存储文件夹的路径
      *
      * @param  string  $path
      * @return string
@@ -931,7 +940,7 @@ if (! function_exists('storage_path')) {
 if (! function_exists('today')) {
     /**
      * Create a new Carbon instance for the current date.
-	 * 为当前日期创建一个新的碳实例
+	 * 为当前日期创建一个新的Carbon实例
      *
      * @param  \DateTimeZone|string|null $tz
      * @return \Illuminate\Support\Carbon
@@ -965,7 +974,7 @@ if (! function_exists('trans')) {
 if (! function_exists('trans_choice')) {
     /**
      * Translates the given message based on a count.
-	 * 根据计数来翻译给定的消息
+	 * 根据计数翻译给定的消息
      *
      * @param  string  $key
      * @param  int|array|\Countable  $number
@@ -1024,7 +1033,7 @@ if (! function_exists('validator')) {
      * @param  array  $rules
      * @param  array  $messages
      * @param  array  $customAttributes
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @return \Illuminate\Contracts\Validation\Validator|\Illuminate\Contracts\Validation\Factory
      */
     function validator(array $data = [], array $rules = [], array $messages = [], array $customAttributes = [])
     {

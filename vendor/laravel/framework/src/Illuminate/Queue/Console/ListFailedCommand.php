@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，控制台，错误列表命令
+ * Illuminate，队列，控制台，列表失败命令
  */
 
 namespace Illuminate\Queue\Console;
@@ -42,7 +42,7 @@ class ListFailedCommand extends Command
      */
     public function handle()
     {
-        if (count($jobs = $this->getFailedJobs()) == 0) {
+        if (count($jobs = $this->getFailedJobs()) === 0) {
             return $this->info('No failed jobs!');
         }
 
@@ -51,7 +51,7 @@ class ListFailedCommand extends Command
 
     /**
      * Compile the failed jobs into a displayable format.
-	 * 将失败的工作编译成可显示的格式
+	 * 将失败的作业编译为可显示的格式
      *
      * @return array
      */

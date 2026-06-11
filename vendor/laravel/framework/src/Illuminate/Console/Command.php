@@ -64,7 +64,7 @@ class Command extends SymfonyCommand
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -112,6 +112,7 @@ class Command extends SymfonyCommand
         // commands just to make things a little easier on the developer. This is
         // so they don't have to all be manually specified in the constructors.
 		// 我们将继续在控制台命令上设置名称、描述和参数,以便使开发人员更容易。
+		// 这是因此,它们不需要在构造函数中手动指定。
         if (isset($this->signature)) {
             $this->configureUsingFluentDefinition();
         } else {
@@ -122,9 +123,10 @@ class Command extends SymfonyCommand
         // related properties of the command. If a signature wasn't used to build
         // the command we'll set the arguments and the options on this command.
 		// 一旦我们构建了命令,我们将设置命令的描述和其他相关属性。
+		// 如果签名不用于构建命令,我们将设置参数和选项的选项。
         $this->setDescription($this->description);
 
-        $this->setHidden($this->hidden);
+        $this->setHidden($this->isHidden());
 
         if (! isset($this->signature)) {
             $this->specifyParameters();
@@ -146,6 +148,8 @@ class Command extends SymfonyCommand
         // After parsing the signature we will spin through the arguments and options
         // and set them on this command. These will already be changed into proper
         // instances of these "InputArgument" and "InputOption" Symfony classes.
+		// 解析签名后,我们将通过参数和选项进行旋转,并在此命令中设置为它们。
+		// 这些将被改变为这些“InputArgument”和“InputOption”的适当实例。
         $this->getDefinition()->addArguments($arguments);
         $this->getDefinition()->addOptions($options);
     }
@@ -162,6 +166,7 @@ class Command extends SymfonyCommand
         // set them all on the base command instance. This specifies what can get
         // passed into these commands as "parameters" to control the execution.
 		// 我们将通过所有的参数和选项来循环,并将它们设置为基本命令实例。
+		// 这说明了什么可以被传递到这些命令中作为“参数”来控制执行。
         foreach ($this->getArguments() as $arguments) {
             call_user_func_array([$this, 'addArgument'], $arguments);
         }
@@ -181,8 +186,12 @@ class Command extends SymfonyCommand
      */
     public function run(InputInterface $input, OutputInterface $output)
     {
+        $this->output = $this->laravel->make(
+            OutputStyle::class, ['input' => $input, 'output' => $output]
+        );
+
         return parent::run(
-            $this->input = $input, $this->output = new OutputStyle($input, $output)
+            $this->input = $input, $this->output
         );
     }
 
@@ -242,11 +251,30 @@ class Command extends SymfonyCommand
      */
     protected function createInputFromArguments(array $arguments)
     {
-        return tap(new ArrayInput($arguments), function ($input) {
+        return tap(new ArrayInput(array_merge($this->context(), $arguments)), function ($input) {
             if ($input->hasParameterOption(['--no-interaction'], true)) {
                 $input->setInteractive(false);
             }
         });
+    }
+
+    /**
+     * Get all of the context passed to the command.
+	 * 获取传递给命令的所有上下文
+     *
+     * @return array
+     */
+    protected function context()
+    {
+        return collect($this->option())->only([
+            'ansi',
+            'no-ansi',
+            'no-interaction',
+            'quiet',
+            'verbose',
+        ])->filter()->mapWithKeys(function ($value, $key) {
+            return ["--{$key}" => $value];
+        })->all();
     }
 
     /**
@@ -305,7 +333,7 @@ class Command extends SymfonyCommand
 	 * 获取命令选项的值
      *
      * @param  string|null  $key
-     * @return string|array|null
+     * @return string|array|bool|null
      */
     public function option($key = null)
     {
@@ -585,6 +613,24 @@ class Command extends SymfonyCommand
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function isHidden()
+    {
+        return $this->hidden;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setHidden($hidden)
+    {
+        parent::setHidden($this->hidden = $hidden);
+
+        return $this;
+    }
+
+    /**
      * Get the console command arguments.
 	 * 获取控制台命令参数
      *
@@ -610,7 +656,7 @@ class Command extends SymfonyCommand
      * Get the output implementation.
 	 * 获取输出实现
      *
-     * @return \Symfony\Component\Console\Output\OutputInterface
+     * @return \Illuminate\Console\OutputStyle
      */
     public function getOutput()
     {

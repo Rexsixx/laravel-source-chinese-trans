@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，异常，无效的Uuid字符串异常
+ * Ramsey，Uuid，生成器，无效Uuid字符串异常
  */
 
 /**

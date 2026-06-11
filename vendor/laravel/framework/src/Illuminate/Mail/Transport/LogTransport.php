@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，传输，日志传输
+ * Illuminate，电子邮件，传送，日志传送
  */
 
 namespace Illuminate\Mail\Transport;
@@ -13,7 +13,7 @@ class LogTransport extends Transport
 {
     /**
      * The Logger instance.
-	 * 日志实例
+	 * Logger实例
      *
      * @var \Psr\Log\LoggerInterface
      */

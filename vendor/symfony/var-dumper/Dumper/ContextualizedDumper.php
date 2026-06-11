@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，VarDumper，转储，上下文转储器
+ * Symfony，组件，Var Dumper，转储器，更符合实际的转储器
  */
 
 /*

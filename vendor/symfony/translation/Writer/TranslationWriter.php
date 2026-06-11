@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，作者，翻译器作者
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * TranslationWriter writes translation messages.
+ * TranslationWriter编写翻译消息。
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
@@ -27,6 +31,7 @@ class TranslationWriter implements TranslationWriterInterface
 
     /**
      * Adds a dumper to the writer.
+	 * 向写入器添加一个转储器
      *
      * @param string $format The format of the dumper
      */

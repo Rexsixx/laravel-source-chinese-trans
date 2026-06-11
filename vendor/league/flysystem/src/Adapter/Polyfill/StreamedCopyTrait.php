@@ -36,7 +36,6 @@ trait StreamedCopyTrait
     }
 
     // Required abstract method
-	// 要求抽象法
 
     /**
      * @param string $path

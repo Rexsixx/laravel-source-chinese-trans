@@ -133,6 +133,32 @@ class Filesystem
     }
 
     /**
+     * Write the contents of a file, replacing it atomically if it already exists.
+	 * 写入文件的内容，如果它已经存在，则自动替换它。
+     *
+     * @param  string  $path
+     * @param  string  $content
+     * @return void
+     */
+    public function replace($path, $content)
+    {
+        // If the path already exists and is a symlink, get the real path...
+		// 如果路径已经存在并且是一个符号链接，则获取真实路径…
+        clearstatcache(true, $path);
+
+        $path = realpath($path) ?: $path;
+
+        $tempPath = tempnam(dirname($path), basename($path));
+
+        // Fix permissions of tempPath because `tempnam()` creates it with permissions set to 0600...
+        chmod($tempPath, 0777 - umask());
+
+        file_put_contents($tempPath, $content);
+
+        rename($tempPath, $path);
+    }
+
+    /**
      * Prepend to a file.
 	 * 添加到文件中
      *
@@ -348,7 +374,7 @@ class Filesystem
 
     /**
      * Determine if the given path is a directory.
-	 * 确定给定的路径是否是一个目录
+	 * 确定给定的路径是否是一个目录。
      *
      * @param  string  $directory
      * @return bool
@@ -514,7 +540,8 @@ class Filesystem
         // If the destination directory does not actually exist, we will go ahead and
         // create it recursively, which just gets the destination prepared to copy
         // the files over. Once we make the directory we'll proceed the copying.
-		// 如果目标目录实际上并不存在，我们将继续递归地创建它，这样就能提前准备好目标目录以便将文件复制过去。
+		// 如果目标目录实际上不存在,我们将继续进行递归地创建它,这就得到了准备复制文件的目的地。
+		// 一旦我们制作了目录,我们就会进行复制。
         if (! $this->isDirectory($destination)) {
             $this->makeDirectory($destination, 0777, true);
         }
@@ -526,6 +553,7 @@ class Filesystem
             // a directory or a file. When it is actually a directory we will need to call
             // back into this function recursively to keep copying these nested folders.
 			// 当我们在项目中旋转时,我们将检查当前文件是否实际上是一个目录或文件。
+			// 当它实际上是一个目录时,我们需要返回到这个函数递归地继续复制这些嵌套文件夹。
             $target = $destination.'/'.$item->getBasename();
 
             if ($item->isDir()) {
@@ -540,6 +568,7 @@ class Filesystem
             // location and keep looping. If for some reason the copy fails we'll bail out
             // and return false, so the developer is aware that the copy process failed.
 			// 如果当前项目只是一个常规文件,我们将把它复制到新的位置并保持循环。
+			// 如果由于某些原因,副本失败了,我们将重新启动并返回false,因此开发人员意识到复制过程失败了。
             else {
                 if (! $this->copy($item->getPathname(), $target)) {
                     return false;
@@ -552,10 +581,9 @@ class Filesystem
 
     /**
      * Recursively delete a directory.
-	 * 递归删除目录
+	 * 递归删除目录。
      *
      * The directory itself may be optionally preserved.
-	 * 目录本身可以选择保存。
      *
      * @param  string  $directory
      * @param  bool    $preserve

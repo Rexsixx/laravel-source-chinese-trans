@@ -6,6 +6,7 @@
 namespace Illuminate\Database\Query\Grammars;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JsonExpression;
 
@@ -48,6 +49,10 @@ class MySqlGrammar extends Grammar
      */
     public function compileSelect(Builder $query)
     {
+        if ($query->unions && $query->aggregate) {
+            return $this->compileUnionAggregate($query);
+        }
+
         $sql = parent::compileSelect($query);
 
         if ($query->unions) {
@@ -68,6 +73,22 @@ class MySqlGrammar extends Grammar
     protected function compileJsonContains($column, $value)
     {
         return 'json_contains('.$this->wrap($column).', '.$value.')';
+    }
+
+    /**
+     * Compile a "JSON length" statement into SQL.
+	 * 将“JSON长度”语句编译成SQL
+     *
+     * @param  string  $column
+     * @param  string  $operator
+     * @param  string  $value
+     * @return string
+     */
+    protected function compileJsonLength($column, $operator, $value)
+    {
+        [$field, $path] = $this->wrapJsonFieldAndPath($column);
+
+        return 'json_length('.$field.$path.') '.$operator.' '.$value;
     }
 
     /**
@@ -128,8 +149,7 @@ class MySqlGrammar extends Grammar
         // Each one of the columns in the update statements needs to be wrapped in the
         // keyword identifiers, also a place-holder needs to be created for each of
         // the values in the list of bindings so we can make the sets statements.
-		// 更新语句中的每一个列都需要被包在关键字标识中,
-		// 也需要为绑定列表中的每个值创建一个place-holder,这样我们就可以进行集合语句。
+		// 更新语句中的每一个列都需要被包在关键字标识中,也需要为绑定列表中的每个值创建一个place-holder,这样我们就可以进行集合语句。
         $columns = $this->compileUpdateColumns($values);
 
         // If the query has any "join" clauses, we will setup the joins on the builder
@@ -146,6 +166,8 @@ class MySqlGrammar extends Grammar
         // Of course, update queries may also be constrained by where clauses so we'll
         // need to compile the where clauses and attach it to the query so only the
         // intended records are updated by the SQL statements we generate to run.
+		// 当然，更新查询也可能受到“where”子句的限制，因此我们需要编译这些“where”子句，
+		// 并将其附加到查询中，这样我们生成的 SQL 语句就能仅更新预期的记录。
         $where = $this->compileWheres($query);
 
         $sql = rtrim("update {$table}{$joins} set $columns $where");
@@ -153,6 +175,8 @@ class MySqlGrammar extends Grammar
         // If the query has an order by clause we will compile it since MySQL supports
         // order bys on update statements. We'll compile them using the typical way
         // of compiling order bys. Then they will be appended to the SQL queries.
+		// 如果查询中包含“按顺序排列”子句，我们将对其进行编译，因为 MySQL 支持在更新语句中使用“按顺序排列”功能。
+		// 我们将用典型的顺序编译它们来编译它们。然后,它们将被附加到SQL查询。
         if (! empty($query->orders)) {
             $sql .= ' '.$this->compileOrders($query, $query->orders);
         }
@@ -160,6 +184,8 @@ class MySqlGrammar extends Grammar
         // Updates on MySQL also supports "limits", which allow you to easily update a
         // single record very easily. This is not supported by all database engines
         // so we have customized this update compiler here in order to add it in.
+		// MySQL的更新也支持“限制”,允许您很容易地轻松地更新一个记录。
+		// 这不是所有数据库引擎支持的,所以我们已经定制了这个更新编译器来添加它。
         if (isset($query->limit)) {
             $sql .= ' '.$this->compileLimit($query, $query->limit);
         }
@@ -195,13 +221,9 @@ class MySqlGrammar extends Grammar
      */
     protected function compileJsonUpdateColumn($key, JsonExpression $value)
     {
-        $path = explode('->', $key);
+        [$field, $path] = $this->wrapJsonFieldAndPath($key);
 
-        $field = $this->wrapValue(array_shift($path));
-
-        $accessor = "'$.\"".implode('"."', $path)."\"'";
-
-        return "{$field} = json_set({$field}, {$accessor}, {$value->getValue()})";
+        return "{$field} = json_set({$field}{$path}, {$value->getValue()})";
     }
 
     /**
@@ -209,6 +231,7 @@ class MySqlGrammar extends Grammar
 	 * 为更新语句准备绑定。
      *
      * Booleans, integers, and doubles are inserted into JSON updates as raw values.
+	 * Booleans、整数和double被插入到JSON更新中,作为原始值。
      *
      * @param  array  $bindings
      * @param  array  $values
@@ -217,8 +240,7 @@ class MySqlGrammar extends Grammar
     public function prepareBindingsForUpdate(array $bindings, array $values)
     {
         $values = collect($values)->reject(function ($value, $column) {
-            return $this->isJsonSelector($column) &&
-                in_array(gettype($value), ['boolean', 'integer', 'double']);
+            return $this->isJsonSelector($column) && is_bool($value);
         })->all();
 
         return parent::prepareBindingsForUpdate($bindings, $values);
@@ -274,6 +296,8 @@ class MySqlGrammar extends Grammar
         // When using MySQL, delete statements may contain order by statements and limits
         // so we will compile both of those here. Once we have finished compiling this
         // we will return the completed SQL statement so it will be executed for us.
+		// 在使用MySQL时,删除语句可能包含语句和限制的顺序,所以我们将在这里编译这两个。
+		// 一旦我们完成了编译,我们将返回已完成的SQL语句,这样它就会为我们执行。
         if (! empty($query->orders)) {
             $sql .= ' '.$this->compileOrders($query, $query->orders);
         }
@@ -325,7 +349,7 @@ class MySqlGrammar extends Grammar
      */
     protected function wrapJsonSelector($value)
     {
-        $delimiter = str_contains($value, '->>')
+        $delimiter = Str::contains($value, '->>')
             ? '->>'
             : '->';
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，EmailValidator，电子邮件辞典
+ * Egulias，电子邮件验证器，电子邮件词典
  */
 
 namespace Egulias\EmailValidator;
@@ -238,7 +238,7 @@ class EmailLexer extends AbstractLexer
 
     /**
      * Retrieve token type. Also processes the token value if necessary.
-	 * 输入中的下一个令牌
+	 * 检索令牌类型。如果需要,也处理令牌值
      *
      * @param string $value
      * @throws \InvalidArgumentException
@@ -306,7 +306,6 @@ class EmailLexer extends AbstractLexer
 
     /**
      * Lexical catchable patterns.
-	 * 词汇集集模式
      *
      * @return string[]
      */
@@ -317,7 +316,6 @@ class EmailLexer extends AbstractLexer
 
     /**
      * Lexical non-catchable patterns.
-	 * 词汇非可捕模式
      *
      * @return string[]
      */

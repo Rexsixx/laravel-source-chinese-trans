@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，多态一对多
+ * Illuminate，数据库，Eloquent，关系，多态多个
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -17,7 +17,9 @@ class MorphMany extends MorphOneOrMany
      */
     public function getResults()
     {
-        return $this->query->get();
+        return ! is_null($this->getParentKey())
+                ? $this->query->get()
+                : $this->related->newCollection();
     }
 
     /**

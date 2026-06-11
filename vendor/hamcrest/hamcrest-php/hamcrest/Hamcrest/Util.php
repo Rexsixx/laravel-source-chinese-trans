@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，工具
+ */
+
 namespace Hamcrest;
 
 /*
@@ -7,6 +11,7 @@ namespace Hamcrest;
 
 /**
  * Contains utility methods for handling Hamcrest matchers.
+ * 包含处理锤头器的实用方法。
  *
  * @see Hamcrest\Matcher
  */
@@ -19,6 +24,7 @@ class Util
 
     /**
      * Wraps the item with an IsEqual matcher if it isn't a matcher already.
+	 * 如果它已经不是一个matcher,就把这个项目包装成IsEqual matcher。
      *
      * @param mixed $item matcher or any value
      * @return \Hamcrest\Matcher

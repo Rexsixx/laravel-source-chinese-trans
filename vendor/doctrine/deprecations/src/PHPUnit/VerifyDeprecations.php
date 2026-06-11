@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，Deprecation，单元测试，验证的用法
+ * Doctrine，Deprecations，PHP单元，验证 Deprecations
  */
 
 declare(strict_types=1);

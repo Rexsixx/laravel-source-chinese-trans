@@ -1,7 +1,4 @@
 <?php
-/**
- * Monolog，处理程序，缓冲区处理器
- */
 
 /*
  * This file is part of the Monolog package.
@@ -20,7 +17,6 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Buffers all records until closing the handler and then pass them as batch.
- * 缓冲所有记录，直到关闭处理程序，然后将它们作为批处理传递。
  *
  * This is useful for a MailHandler to send only one mail per request instead of
  * sending one per log message.

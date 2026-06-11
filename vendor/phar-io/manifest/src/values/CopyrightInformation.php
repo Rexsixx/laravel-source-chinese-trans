@@ -1,8 +1,4 @@
 <?php
-/**
- * PharIo，Manifest，版权信息
- */
-
 /*
  * This file is part of PharIo\Manifest.
  *

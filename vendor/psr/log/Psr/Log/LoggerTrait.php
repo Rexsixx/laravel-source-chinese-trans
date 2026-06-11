@@ -1,7 +1,4 @@
 <?php
-/**
- * Psr，Log，记录器特性
- */
 
 namespace Psr\Log;
 
@@ -17,7 +14,6 @@ trait LoggerTrait
 {
     /**
      * System is unusable.
-	 * 系统是不可用的
      *
      * @param string $message
      * @param array  $context
@@ -31,7 +27,6 @@ trait LoggerTrait
 
     /**
      * Action must be taken immediately.
-	 * 必须立即采取行动。
      *
      * Example: Entire website down, database unavailable, etc. This should
      * trigger the SMS alerts and wake you up.

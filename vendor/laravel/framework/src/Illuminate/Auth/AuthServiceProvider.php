@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，Auth 服务提供商
+ * Illuminate，认证，认证服务提供商
  */
 
 namespace Illuminate\Auth;
@@ -41,6 +41,8 @@ class AuthServiceProvider extends ServiceProvider
             // Once the authentication service has actually been requested by the developer
             // we will set a variable in the application indicating such. This helps us
             // know that we need to set any queued cookies in the after event later.
+			// 一旦验证服务实际上被开发人员要求,我们将在应用程序中设置一个变量。
+			// 这帮助我们知道,我们需要在以后的事件中设置任何排队的cookie。
             $app['auth.loaded'] = true;
 
             return new AuthManager($app);

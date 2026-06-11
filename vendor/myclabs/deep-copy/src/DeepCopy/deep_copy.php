@@ -1,6 +1,6 @@
 <?php
 /**
- * DeepCopy，深拷贝
+ * DeepCopy，deep copy
  */
 
 namespace DeepCopy;

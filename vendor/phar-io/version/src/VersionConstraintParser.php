@@ -1,8 +1,7 @@
 <?php
 /**
- * PharIo，Version，版本约束解析器
+ * PharIo，版本，版本约束解析器
  */
-
 /*
  * This file is part of PharIo\Version.
  *

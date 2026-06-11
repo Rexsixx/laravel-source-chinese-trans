@@ -1,6 +1,6 @@
 <?php
 /**
- * Psr，Container，容器接口
+ * Psr，容器，容器接口
  */
 
 declare(strict_types=1);

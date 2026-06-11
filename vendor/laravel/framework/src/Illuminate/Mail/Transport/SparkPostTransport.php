@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，传输，SparkPost 传输
+ * Illuminate，电子邮件，传送，SparkPost 传送
  */
 
 namespace Illuminate\Mail\Transport;
@@ -27,8 +27,8 @@ class SparkPostTransport extends Transport
     protected $key;
 
     /**
-     * Transmission options.
-	 * 传输选项
+     * The SparkPost transmission options.
+	 * SparkPost传输选项
      *
      * @var array
      */
@@ -61,7 +61,7 @@ class SparkPostTransport extends Transport
 
         $message->setBcc([]);
 
-        $response = $this->client->post($this->getEndpoint(), [
+        $response = $this->client->request('POST', $this->getEndpoint(), [
             'headers' => [
                 'Authorization' => $this->key,
             ],
@@ -87,6 +87,7 @@ class SparkPostTransport extends Transport
 	 * 获取此消息应发送到的所有地址。
      *
      * Note that SparkPost still respects CC, BCC headers in raw message itself.
+	 * 注意,SparkPost仍然尊重原始消息本身的CC、BCC头。
      *
      * @param  \Swift_Mime_SimpleMessage $message
      * @return array
@@ -137,7 +138,7 @@ class SparkPostTransport extends Transport
 
     /**
      * Set the API key being used by the transport.
-	 * 设置传输所使用的API密钥。
+	 * 设置传输所使用的API密钥
      *
      * @param  string  $key
      * @return string
@@ -171,7 +172,7 @@ class SparkPostTransport extends Transport
 
     /**
      * Set the transmission options being used by the transport.
-	 * 设置运输使用的传输选项
+	 * 设置传输所使用的传输选项
      *
      * @param  array  $options
      * @return array

@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，升级
+ * Carbon，Upgrade
  */
 
 namespace Carbon;

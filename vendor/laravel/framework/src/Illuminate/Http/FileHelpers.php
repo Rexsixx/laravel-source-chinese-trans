@@ -30,7 +30,7 @@ trait FileHelpers
 
     /**
      * Get the file's extension.
-	 * 获取文件的扩展名
+	 * 获取文件的扩展
      *
      * @return string
      */
@@ -65,6 +65,10 @@ trait FileHelpers
 
         $hash = $this->hashName ?: $this->hashName = Str::random(40);
 
-        return $path.$hash.'.'.$this->guessExtension();
+        if ($extension = $this->guessExtension()) {
+            $extension = '.'.$extension;
+        }
+
+        return $path.$hash.$extension;
     }
 }

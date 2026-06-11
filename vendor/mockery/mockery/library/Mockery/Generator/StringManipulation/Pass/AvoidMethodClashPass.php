@@ -1,9 +1,5 @@
 <?php
 /**
- * Mockery，生成器，字符串操作，传递，避免方法冲突传递
- */
-
-/**
  * Mockery
  *
  * LICENSE

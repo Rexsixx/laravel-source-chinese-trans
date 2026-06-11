@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，HttpFoundation，请求匹配程序
- */
 
 /*
  * This file is part of the Symfony package.

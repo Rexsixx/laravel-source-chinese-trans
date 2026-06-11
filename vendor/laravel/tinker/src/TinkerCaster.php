@@ -1,7 +1,4 @@
 <?php
-/**
- * Laravel，Tinker，Tinker Caster
- */
 
 namespace Laravel\Tinker;
 
@@ -12,7 +9,6 @@ class TinkerCaster
 {
     /**
      * Application methods to include in the presenter.
-	 * 在主持人中包括的应用程序
      *
      * @var array
      */

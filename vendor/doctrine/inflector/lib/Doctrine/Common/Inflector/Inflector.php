@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，公共，反射，Inflector
+ * Doctrine，共同，偏转器，Inflector
  */
 
 /*
@@ -76,7 +76,6 @@ class Inflector
 
     /**
      * Converts a word into the format for a Doctrine table name. Converts 'ModelName' to 'model_name'.
-	 * 将单词转换为Doctrine表名的格式。将‘ModelName’转换为‘model_name’。
      *
      * @deprecated
      */
@@ -89,7 +88,6 @@ class Inflector
 
     /**
      * Converts a word into the format for a Doctrine class name. Converts 'table_name' to 'TableName'.
-	 * 将单词转换为Doctrine类名的格式。将‘table_name’转换为‘table_name’。
      */
     public static function classify(string $word) : string
     {
@@ -100,7 +98,6 @@ class Inflector
 
     /**
      * Camelizes a word. This uses the classify() method and turns the first character to lowercase.
-	 * 骆驼化一个词。这将使用classifier（）方法并将第一个字符变为小写。
      *
      * @deprecated
      */
@@ -148,7 +145,6 @@ class Inflector
     /**
      * Clears Inflectors inflected value caches, and resets the inflection
      * rules to the initial values.
-	 * 清除词缀器的词缀值缓存，并将词缀规则重置为初始值。
      *
      * @deprecated
      */

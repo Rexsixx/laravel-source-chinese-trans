@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，HttpKernel，Bundle，Bundle
+ * Symfony，组件，Http内核，Bundle，Bundle
  */
 
 /*
@@ -22,7 +22,6 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
 /**
  * An implementation of BundleInterface that adds a few conventions for DependencyInjection extensions.
- * BundleInterface的实现，它为DependencyInjection扩展添加了一些约定。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -61,7 +60,6 @@ abstract class Bundle implements BundleInterface
 
     /**
      * Returns the bundle's container extension.
-	 * 返回bundle的容器扩展名
      *
      * @return ExtensionInterface|null The container extension
      *

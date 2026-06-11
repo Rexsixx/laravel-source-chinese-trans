@@ -20,7 +20,7 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
 
     /**
      * The number of minutes to store the data in the cache.
-	 * 将数据存储在缓存中的分钟数
+	 * 将数据存储在缓存中的时间数
      *
      * @var int
      */

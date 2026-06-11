@@ -1,6 +1,6 @@
 <?php
 /**
- * UpdateHelper，更新辅助
+ * UpdateHelper，更新助手
  */
 
 namespace UpdateHelper;

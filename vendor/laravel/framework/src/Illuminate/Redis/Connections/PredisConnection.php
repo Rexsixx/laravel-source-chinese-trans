@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Redis，连接，Predis 连接
+ * Illuminate，Redis，连接器，Predis 连接
  */
 
 namespace Illuminate\Redis\Connections;

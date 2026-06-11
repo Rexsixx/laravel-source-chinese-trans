@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，一对一（关联）
+ * Illuminate，数据库，Eloquent，关系，有一个
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -21,6 +21,10 @@ class HasOne extends HasOneOrMany
      */
     public function getResults()
     {
+        if (is_null($this->getParentKey())) {
+            return $this->getDefaultFor($this->parent);
+        }
+
         return $this->query->first() ?: $this->getDefaultFor($this->parent);
     }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，失败作业
+ * Illuminate，行列，失败作业
  */
 
 namespace Illuminate\Queue;
@@ -32,7 +32,6 @@ class FailingJob
             // If the job has failed, we will delete it, call the "failed" method and then call
             // an event indicating the job has failed so it can be logged if needed. This is
             // to allow every developer to better keep monitor of their failed queue jobs.
-			// 如果任务执行失败，我们将删除该任务，调用“失败”方法，然后调用一个事件来表明任务已失败，以便在需要时进行记录。
             $job->delete();
 
             $job->failed($e);

@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，节点访问者，寻找访客
- */
-
 namespace PhpParser\NodeVisitor;
 
 use PhpParser\Node;

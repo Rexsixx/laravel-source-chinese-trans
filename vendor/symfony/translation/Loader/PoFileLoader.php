@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，加载器，Po 文件加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ class PoFileLoader extends FileLoader
 {
     /**
      * Parses portable object (PO) format.
+	 * 解析可移植对象（PO）格式。
      *
      * From https://www.gnu.org/software/gettext/manual/gettext.html#PO-Files
      * we should be able to parse files having:

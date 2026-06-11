@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，方法调用
+ * Mockery，方法呼叫
  */
 
 /**

@@ -1,7 +1,4 @@
 <?php
-/**
- * Doctrine，Inflector，影响器工厂
- */
 
 declare(strict_types=1);
 

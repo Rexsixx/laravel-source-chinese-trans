@@ -1,7 +1,4 @@
 <?php
-/**
- * PharIo，Manifest，Manifest 序列化测试
- */
 
 namespace PharIo\Manifest;
 

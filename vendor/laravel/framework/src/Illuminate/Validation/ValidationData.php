@@ -106,7 +106,7 @@ class ValidationData
 
     /**
      * Get the explicit part of the attribute name.
-	 * 获取属性名的显式部分。
+	 * 获取属性名称的显式部分。
      *
      * E.g. 'foo.bar.*.baz' -> 'foo.bar'
      *

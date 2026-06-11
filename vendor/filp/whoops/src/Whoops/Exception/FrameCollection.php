@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，异常，错误异常
+ * Whoops，异常，框架集合
  */
 
 /**
@@ -21,6 +21,7 @@ use UnexpectedValueException;
 /**
  * Exposes a fluent interface for dealing with an ordered list
  * of stack-trace frames.
+ * 公开一个流畅的接口,用于处理一个有序的堆栈跟踪帧列表。
  */
 class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, Countable
 {
@@ -38,6 +39,7 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
 
     /**
      * Filters frames using a callable, returns the same FrameCollection
+	 * 使用可调用的过滤帧,返回相同的框架。
      *
      * @param  callable        $callable
      * @return FrameCollection
@@ -50,6 +52,7 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
 
     /**
      * Map the collection of frames
+	 * 映射帧的集合
      *
      * @param  callable        $callable
      * @return FrameCollection

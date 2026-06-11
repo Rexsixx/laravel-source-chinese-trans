@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，匹配，验证接口
+ * Illuminate，路由，匹配，验证器接口
  */
 
 namespace Illuminate\Routing\Matching;
@@ -12,7 +12,7 @@ interface ValidatorInterface
 {
     /**
      * Validate a given rule against a route and request.
-	 * 通过路由和请求验证给定的规则
+	 * 针对路由和请求验证给定的规则
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  \Illuminate\Http\Request  $request

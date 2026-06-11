@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Manifest，Manifest 串行化器
+ * PharIo，Manifest，Manifest 序列化器
  */
 
 /*

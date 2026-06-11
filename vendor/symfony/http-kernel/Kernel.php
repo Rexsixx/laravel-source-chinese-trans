@@ -1,8 +1,4 @@
 <?php
-/**
- * Symfony，组件，HttpKernel，内核
- */
-
 
 /*
  * This file is part of the Symfony package.

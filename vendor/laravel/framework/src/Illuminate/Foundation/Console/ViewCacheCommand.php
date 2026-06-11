@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，查看缓存命令
+ * Illuminate，基础，控制台，视图缓存命令
  */
 
 namespace Illuminate\Foundation\Console;

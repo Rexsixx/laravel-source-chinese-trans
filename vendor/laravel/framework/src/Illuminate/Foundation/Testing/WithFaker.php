@@ -11,7 +11,7 @@ trait WithFaker
 {
     /**
      * The Faker instance.
-	 * Faker实例
+	 * Faker的例子
      *
      * @var \Faker\Generator
      */

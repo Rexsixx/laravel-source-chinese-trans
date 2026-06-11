@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，控制台，存根，动态类，根据实际需要修改
+ */
 
 namespace DummyNamespace;
 
@@ -9,12 +12,15 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class DummyClass extends TestCase
 {
     /**
-     * A basic test example.
+     * A basic feature test example.
+	 * 一个基本的特性测试示例
      *
      * @return void
      */
     public function testExample()
     {
-        $this->assertTrue(true);
+        $response = $this->get('/');
+
+        $response->assertStatus(200);
     }
 }

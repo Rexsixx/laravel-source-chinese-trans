@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，数组，串联匹配一次
+ */
+
 namespace Hamcrest\Arrays;
 
 /*

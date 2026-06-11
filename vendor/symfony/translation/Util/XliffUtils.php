@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，工具，Xliff 工具包
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Translation\Exception\InvalidResourceException;
 /**
  * Provides some utility methods for XLIFF translation files, such as validating
  * their contents according to the XSD schema.
+ * 提供了一些用于XLIFF翻译文件的实用方法，例如根据XSD模式验证其内容。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -24,6 +28,7 @@ class XliffUtils
 {
     /**
      * Gets xliff file version based on the root "version" attribute.
+	 * 基于根“version”属性获取xliff文件版本。
      *
      * Defaults to 1.2 for backwards compatibility.
      *
@@ -54,6 +59,7 @@ class XliffUtils
 
     /**
      * Validates and parses the given file into a DOMDocument.
+	 * 验证给定文件并将其解析为DOMDocument
      *
      * @throws InvalidResourceException
      */
@@ -148,6 +154,7 @@ class XliffUtils
 
     /**
      * Internally changes the URI of a dependent xsd to be loaded locally.
+	 * 在内部将依赖xsd的URI更改为本地加载
      */
     private static function fixXmlLocation(string $schemaSource, string $xmlUri): string
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，广播，广播员，Pusher 广播员
+ * Illuminate，广播，广播员，Pusher 广播机
  */
 
 namespace Illuminate\Broadcasting\Broadcasters;
@@ -39,6 +39,7 @@ class PusherBroadcaster extends Broadcaster
      *
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
      */
     public function auth($request)

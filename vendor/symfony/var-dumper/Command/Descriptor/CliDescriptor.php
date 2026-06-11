@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，命令，描述符，Cli 描述符
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ use Symfony\Component\VarDumper\Dumper\CliDumper;
 
 /**
  * Describe collected data clones for cli output.
+ * 描述收集到的数据克隆，用于cli输出。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  *

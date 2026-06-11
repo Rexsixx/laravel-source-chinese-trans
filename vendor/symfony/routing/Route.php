@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，Route
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Routing;
 
 /**
  * A Route describes a route and its parameters.
+ * Route描述了一条路由及其参数。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
@@ -35,6 +39,7 @@ class Route implements \Serializable
 
     /**
      * Constructor.
+	 * 构造方法。
      *
      * Available options:
      *

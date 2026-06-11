@@ -88,7 +88,7 @@ class Application extends SymfonyApplication implements ApplicationContract
             $input = $input ?: new ArgvInput
         );
 
-        $this->events->fire(
+        $this->events->dispatch(
             new Events\CommandStarting(
                 $commandName, $input, $output = $output ?: new ConsoleOutput
             )
@@ -96,7 +96,7 @@ class Application extends SymfonyApplication implements ApplicationContract
 
         $exitCode = parent::run($input, $output);
 
-        $this->events->fire(
+        $this->events->dispatch(
             new Events\CommandFinished($commandName, $input, $output, $exitCode)
         );
 
@@ -279,10 +279,11 @@ class Application extends SymfonyApplication implements ApplicationContract
     }
 
     /**
-     * Get the default input definitions for the applications.
+     * Get the default input definition for the application.
 	 * 获取应用程序的默认输入定义。
      *
      * This is used to add the --env option to every available command.
+	 * 这用于向每个可用命令添加--env选项。
      *
      * @return \Symfony\Component\Console\Input\InputDefinition
      */

@@ -70,7 +70,7 @@ trait CompilesLoops
 
     /**
      * Compile the end-empty statements into valid PHP.
-	 * 将最终空语句编译成有效的PHP
+	 * 将end-empty语句编译成有效的PHP
      *
      * @return string
      */
@@ -81,7 +81,7 @@ trait CompilesLoops
 
     /**
      * Compile the for statements into valid PHP.
-	 * 将语句编译成有效的PHP
+	 * 将for语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -93,7 +93,7 @@ trait CompilesLoops
 
     /**
      * Compile the for-each statements into valid PHP.
-	 * 将每个语句编译成有效的PHP
+	 * 将for-each语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -133,7 +133,7 @@ trait CompilesLoops
 
     /**
      * Compile the continue statements into valid PHP.
-	 * 将继续语句编译成有效的PHP
+	 * 将continue语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -151,7 +151,7 @@ trait CompilesLoops
 
     /**
      * Compile the end-for statements into valid PHP.
-	 * 将语句编译成有效的PHP
+	 * 将end-for语句编译成有效的PHP
      *
      * @return string
      */
@@ -162,7 +162,7 @@ trait CompilesLoops
 
     /**
      * Compile the end-for-each statements into valid PHP.
-	 * 在有效的PHP中编译最终的每个语句
+	 * 将end-for-each语句编译成有效的PHP
      *
      * @return string
      */
@@ -185,7 +185,7 @@ trait CompilesLoops
 
     /**
      * Compile the end-while statements into valid PHP.
-	 * 将最终语句编译成有效的PHP
+	 * 将结束while语句编译成有效的PHP
      *
      * @return string
      */

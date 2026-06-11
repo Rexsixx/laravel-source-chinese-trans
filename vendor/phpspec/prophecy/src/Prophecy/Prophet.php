@@ -1,6 +1,6 @@
 <?php
 /**
- * Prophecy，Reflection，Prophet
+ * Prophecy，Prophet
  */
 
 /*
@@ -29,7 +29,7 @@ use Prophecy\Exception\Prediction\AggregateException;
 
 /**
  * Prophet creates prophecies.
- * 先知创造预言
+ * 先知创造预言。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -71,7 +71,7 @@ class Prophet
 
     /**
      * Creates new object prophecy.
-	 * 创造新的目标预言
+	 * 创建新的对象预言
      *
      * @param null|string $classOrInterface Class or interface name
      *

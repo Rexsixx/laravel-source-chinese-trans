@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，匹配程序，Url 匹配器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,6 +26,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * UrlMatcher matches URL based on a set of routes.
+ * UrlMatcher基于一组路由匹配URL。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

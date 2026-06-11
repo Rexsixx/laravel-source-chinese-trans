@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，Fake，通知 Fake
+ * Illuminate，支持，测试，假装，通知 Fake
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -8,6 +8,7 @@ namespace Illuminate\Support\Testing\Fakes;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\Assert as PHPUnit;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Contracts\Notifications\Factory as NotificationFactory;
 use Illuminate\Contracts\Notifications\Dispatcher as NotificationDispatcher;
 
@@ -15,15 +16,23 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 {
     /**
      * All of the notifications that have been sent.
-	 * 所有被发送的通知
+	 * 所有已发送的通知
      *
      * @var array
      */
     protected $notifications = [];
 
     /**
+     * Locale used when sending notifications.
+	 * 发送通知时使用的区域设置
+     *
+     * @var string|null
+     */
+    public $locale;
+
+    /**
      * Assert if a notification was sent based on a truth-test callback.
-	 * 断言如果基于trutest callback发送通知
+	 * 判断通知是否基于真值测试回调发送
      *
      * @param  mixed  $notifiable
      * @param  string  $notification
@@ -52,7 +61,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Assert if a notification was sent a number of times.
-	 * 断言是否发送了许多次通知
+	 * 判断是否发送了多次通知
      *
      * @param  mixed  $notifiable
      * @param  string  $notification
@@ -69,7 +78,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Determine if a notification was sent based on a truth-test callback.
-	 * 确定是否基于trutest callback发送通知
+	 * 确定是否根据真值测试回调发送了通知
      *
      * @param  mixed  $notifiable
      * @param  string  $notification
@@ -127,7 +136,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Get all of the notifications matching a truth-test callback.
-	 * 获取与一个trutest callback匹配的所有通知
+	 * 获取所有与true -test回调匹配的通知
      *
      * @param  mixed  $notifiable
      * @param  string  $notification
@@ -153,7 +162,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Determine if there are more notifications left to inspect.
-	 * 确定是否有更多通知留给检查
+	 * 确定是否还有更多通知需要检查
      *
      * @param  mixed  $notifiable
      * @param  string  $notification
@@ -166,7 +175,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Get all of the notifications for a notifiable entity by type.
-	 * 通过类型获取通知对象的所有通知
+	 * 按类型获取可通知实体的所有通知
      *
      * @param  mixed  $notifiable
      * @param  string  $notification
@@ -183,7 +192,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Send the given notification to the given notifiable entities.
-	 * 将给定的通知发送给已通知的实体
+	 * 将给定的通知发送到给定的可通知实体
      *
      * @param  \Illuminate\Support\Collection|array|mixed  $notifiables
      * @param  mixed  $notification
@@ -196,7 +205,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Send the given notification immediately.
-	 * 立即发送通知
+	 * 立即发送给定的通知
      *
      * @param  \Illuminate\Support\Collection|array|mixed  $notifiables
      * @param  mixed  $notification
@@ -217,13 +226,18 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
                 'notification' => $notification,
                 'channels' => $notification->via($notifiable),
                 'notifiable' => $notifiable,
+                'locale' => $notification->locale ?? $this->locale ?? value(function () use ($notifiable) {
+                    if ($notifiable instanceof HasLocalePreference) {
+                        return $notifiable->preferredLocale();
+                    }
+                }),
             ];
         }
     }
 
     /**
      * Get a channel instance by name.
-	 * 通过名称获取通道实例
+	 * 按名称获取通道实例
      *
      * @param  string|null  $name
      * @return mixed
@@ -231,5 +245,19 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
     public function channel($name = null)
     {
         //
+    }
+
+    /**
+     * Set the locale of notifications.
+	 * 设置通知的区域设置
+     *
+     * @param  string  $locale
+     * @return $this
+     */
+    public function locale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
     }
 }

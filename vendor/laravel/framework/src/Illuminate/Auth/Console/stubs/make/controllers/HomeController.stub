@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，存根，Home 控制器，根据实际修改
+ * Illuminate，Auth，存根，主页控制器，根据实际修改
  */
 
 namespace {{namespace}}Http\Controllers;
@@ -24,7 +24,7 @@ class HomeController extends Controller
      * Show the application dashboard.
 	 * 显示应用程序仪表板
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {

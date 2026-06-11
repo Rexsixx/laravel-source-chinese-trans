@@ -120,7 +120,6 @@ class CallQueuedListener implements ShouldQueue
 	 * 在作业实例上调用失败的方法。
      *
      * The event instance and the exception will be passed.
-	 * 将传递事件实例和异常。
      *
      * @param  \Exception  $e
      * @return void

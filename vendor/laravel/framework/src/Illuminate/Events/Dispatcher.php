@@ -159,7 +159,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Resolve the subscriber instance.
-	 * 解析订阅者实例
+	 * 解析订户实例
      *
      * @param  object|string  $subscriber
      * @return mixed
@@ -214,6 +214,8 @@ class Dispatcher implements DispatcherContract
         // When the given "event" is actually an object we will assume it is an event
         // object and use the class as the event name and this event itself as the
         // payload to the handler, which makes object based events quite simple.
+		// 当给定的“事件”实际上是一个对象时,我们将假定它是一个事件对象,
+		// 并将类作为事件名称和这个事件本身作为处理程序的负载,这使得对象的事件非常简单。
         [$event, $payload] = $this->parseEventAndPayload(
             $event, $payload
         );
@@ -230,6 +232,8 @@ class Dispatcher implements DispatcherContract
             // If a response is returned from the listener and event halting is enabled
             // we will just return this response, and not call the rest of the event
             // listeners. Otherwise we will add the response on the response list.
+			// 如果响应从侦听器返回,事件停止,我们将返回响应,而不是调用其他事件侦听器。
+			// 否则,我们将在响应列表中添加响应。
             if ($halt && ! is_null($response)) {
                 return $response;
             }
@@ -237,6 +241,8 @@ class Dispatcher implements DispatcherContract
             // If a boolean false is returned from a listener, we will stop propagating
             // the event to any further listeners down in the chain, else we keep on
             // looping through the listeners and firing every one in our sequence.
+			// 如果一个布尔错误从一个侦听器返回,我们将停止将事件传播到在链中的任何进一步的侦听器,
+			// 否则我们继续通过侦听器,并在我们的序列中发射每一个。
             if ($response === false) {
                 break;
             }

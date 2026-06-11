@@ -36,7 +36,7 @@ class HashServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
-	 * 获取提供者提供的服务
+	 * 获取提供者提供的服务。
      *
      * @return array
      */

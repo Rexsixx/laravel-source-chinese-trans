@@ -1,4 +1,8 @@
 <?php
+/**
+ * Monolog，处理程序，Zend Monitor 处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *

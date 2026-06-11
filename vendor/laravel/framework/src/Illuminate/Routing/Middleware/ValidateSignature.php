@@ -12,7 +12,7 @@ class ValidateSignature
 {
     /**
      * Handle an incoming request.
-	 * 处理传入的请求
+	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next

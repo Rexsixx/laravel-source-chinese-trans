@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，提取器，Php提取器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * PhpExtractor extracts translation messages from a PHP template.
+ * PhpExtractor从PHP模板中提取翻译消息。
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */

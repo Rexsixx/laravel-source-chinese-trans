@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，总线，等待调度
+ * Illuminate，基础，总线，待处理的调度
  */
 
 namespace Illuminate\Foundation\Bus;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，会话，中间件，认证会话
+ * Illuminate，会话，中间件，身份验证会话
  */
 
 namespace Illuminate\Session\Middleware;
@@ -13,7 +13,7 @@ class AuthenticateSession
 {
     /**
      * The authentication factory implementation.
-	 * 认证工厂的实现
+	 * 身份验证工厂实现
      *
      * @var \Illuminate\Contracts\Auth\Factory
      */
@@ -33,7 +33,7 @@ class AuthenticateSession
 
     /**
      * Handle an incoming request.
-	 * 处理传入的请求
+	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -68,7 +68,7 @@ class AuthenticateSession
 
     /**
      * Store the user's current password hash in the session.
-	 * 在会话中存储用户当前的密码散列
+	 * 将用户的当前密码散列存储在会话中
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void

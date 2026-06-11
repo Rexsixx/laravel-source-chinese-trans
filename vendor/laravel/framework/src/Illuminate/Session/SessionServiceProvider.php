@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，会话，会话服务提供者
+ * Illuminate，会话，会话服务提供商
  */
 
 namespace Illuminate\Session;
@@ -50,8 +50,7 @@ class SessionServiceProvider extends ServiceProvider
             // First, we will create the session manager which is responsible for the
             // creation of the various session drivers when they are needed by the
             // application instance, and will resolve them on a lazy load basis.
-			// 首先，我们将创建会话管理器，它负责在应用程序实例需要时创建各种会话驱动程序，
-			// 并在需要时按需加载来解析它们。
+			// 首先，我们将创建会话管理器，该管理器会在应用程序实例需要时负责创建各种会话驱动程序，并以延迟加载的方式对其进行处理。
             return $app->make('session')->driver();
         });
     }

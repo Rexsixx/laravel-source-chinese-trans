@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，节点，属性组
- */
-
 namespace PhpParser\Node;
 
 use PhpParser\Node;

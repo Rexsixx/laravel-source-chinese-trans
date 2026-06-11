@@ -154,7 +154,7 @@ class ValidationRuleParser
 
     /**
      * Merge additional rules into a given attribute(s).
-	 * 将附加规则合并为给定属性(s)
+	 * 将其他规则合并到给定的属性中
      *
      * @param  array  $results
      * @param  string|array  $attribute
@@ -178,7 +178,7 @@ class ValidationRuleParser
 
     /**
      * Merge additional rules into a given attribute.
-	 * 将附加规则合并为给定属性
+	 * 将其他规则合并到给定的属性中
      *
      * @param  array  $results
      * @param  string  $attribute
@@ -222,7 +222,7 @@ class ValidationRuleParser
 
     /**
      * Parse an array based rule.
-	 * 解析基于数组的规则
+	 * 解析一个基于数组的规则
      *
      * @param  array  $rules
      * @return array
@@ -246,6 +246,7 @@ class ValidationRuleParser
         // The format for specifying validation rules and parameters follows an
         // easy {rule}:{parameters} formatting convention. For instance the
         // rule "Max:3" states that the value may only be three letters.
+		// 指定验证规则和参数的格式遵循一种简单的“规则：参数”的格式规范。
         if (strpos($rules, ':') !== false) {
             [$rules, $parameter] = explode(':', $rules, 2);
 

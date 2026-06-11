@@ -49,8 +49,8 @@ class ResponseFactory implements FactoryContract
     }
 
     /**
-     * Return a new response from the application.
-	 * 返回应用程序的新响应
+     * Create a new response instance.
+	 * 创建一个新的响应实例
      *
      * @param  string  $content
      * @param  int  $status
@@ -63,8 +63,21 @@ class ResponseFactory implements FactoryContract
     }
 
     /**
-     * Return a new view response from the application.
-	 * 返回应用程序的新视图响应
+     * Create a new "no content" response.
+	 * 创建一个新的“无内容”响应
+     *
+     * @param  int  $status
+     * @param  array  $headers
+     * @return \Illuminate\Http\Response
+     */
+    public function noContent($status = 204, array $headers = [])
+    {
+        return $this->make('', $status, $headers);
+    }
+
+    /**
+     * Create a new response for a given view.
+	 * 为给定视图创建一个新的响应
      *
      * @param  string  $view
      * @param  array  $data
@@ -78,8 +91,8 @@ class ResponseFactory implements FactoryContract
     }
 
     /**
-     * Return a new JSON response from the application.
-	 * 从应用程序返回一个新的JSON响应
+     * Create a new JSON response instance.
+	 * 创建一个新的JSON响应实例
      *
      * @param  mixed  $data
      * @param  int  $status
@@ -93,8 +106,8 @@ class ResponseFactory implements FactoryContract
     }
 
     /**
-     * Return a new JSONP response from the application.
-	 * 从应用程序返回一个新的JSONP响应
+     * Create a new JSONP response instance.
+	 * 创建一个新的JSONP响应实例
      *
      * @param  string  $callback
      * @param  mixed  $data
@@ -109,8 +122,8 @@ class ResponseFactory implements FactoryContract
     }
 
     /**
-     * Return a new streamed response from the application.
-	 * 返回应用程序的新流响应
+     * Create a new streamed response instance.
+	 * 创建一个新的流响应实例
      *
      * @param  \Closure  $callback
      * @param  int  $status
@@ -123,8 +136,8 @@ class ResponseFactory implements FactoryContract
     }
 
     /**
-     * Return a new streamed response as a file download from the application.
-	 * 从应用程序中返回新的流响应作为文件下载
+     * Create a new streamed response instance as a file download.
+	 * 创建一个新的流响应实例作为文件下载
      *
      * @param  \Closure  $callback
      * @param  string|null  $name
@@ -170,7 +183,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Convert the string to ASCII characters that are equivalent to the given name.
-	 * 将字符串转换为相当于给定名称的ASCII字符
+	 * 将字符串转换为与给定名称等效的ASCII字符
      *
      * @param  string  $name
      * @return string
@@ -210,7 +223,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new redirect response to a named route.
-	 * 创建一个新的重定向响应来响应指定的路由
+	 * 为命名路由创建一个新的重定向响应
      *
      * @param  string  $route
      * @param  array  $parameters
@@ -225,7 +238,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new redirect response to a controller action.
-	 * 创建一个新的重定向响应来响应控制器的操作
+	 * 为控制器动作创建一个新的重定向响应
      *
      * @param  string  $action
      * @param  array  $parameters
@@ -240,7 +253,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new redirect response, while putting the current URL in the session.
-	 * 创建一个新的重定向响应,同时在会话中放置当前URL。
+	 * 创建一个新的重定向响应，同时将当前URL放在会话中。
      *
      * @param  string  $path
      * @param  int  $status
@@ -255,7 +268,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new redirect response to the previously intended location.
-	 * 创建一个新的重定向响应,以响应先前预定的位置。
+	 * 创建到先前预期位置的新重定向响应
      *
      * @param  string  $default
      * @param  int  $status

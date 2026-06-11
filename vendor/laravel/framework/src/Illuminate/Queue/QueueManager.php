@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，队列管理器
+ * Illuminate，队列，队列管理程序
  */
 
 namespace Illuminate\Queue;
@@ -17,7 +17,7 @@ class QueueManager implements FactoryContract, MonitorContract
 {
     /**
      * The application instance.
-	 * 应用实例
+	 * 程序实例
      *
      * @var \Illuminate\Foundation\Application
      */
@@ -77,7 +77,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Register an event listener for the exception occurred job event.
-	 * 在工作事件中注册一个事件侦听器
+	 * 为异常发生的作业事件注册事件侦听器
      *
      * @param  mixed  $callback
      * @return void
@@ -89,7 +89,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Register an event listener for the daemon queue loop.
-	 * 在工作事件中注册一个事件侦听器
+	 * 为守护进程队列循环注册一个事件侦听器
      *
      * @param  mixed  $callback
      * @return void
@@ -101,7 +101,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Register an event listener for the failed job event.
-	 * 为失败的工作事件注册一个事件监听器
+	 * 为失败的作业事件注册一个事件侦听器
      *
      * @param  mixed  $callback
      * @return void
@@ -113,7 +113,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Register an event listener for the daemon queue stopping.
-	 * 为守护进程队列停止注册事件侦听器
+	 * 为守护进程队列停止注册一个事件侦听器
      *
      * @param  mixed  $callback
      * @return void
@@ -137,7 +137,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Resolve a queue connection instance.
-	 * 解决队列连接实例
+	 * 解析队列连接实例
      *
      * @param  string  $name
      * @return \Illuminate\Contracts\Queue\Queue
@@ -178,7 +178,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Get the connector for a given driver.
-	 * 为给定的驱动程序获取连接器
+	 * 获取给定驱动程序的连接器
      *
      * @param  string  $driver
      * @return \Illuminate\Queue\Connectors\ConnectorInterface
@@ -250,7 +250,6 @@ class QueueManager implements FactoryContract, MonitorContract
     /**
      * Set the name of the default queue connection.
 	 * 设置默认队列连接的名称
-	 * 
      *
      * @param  string  $name
      * @return void
@@ -274,7 +273,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Determine if the application is in maintenance mode.
-	 * 确定应用程序是否在维护模式中
+	 * 确定应用程序是否处于维护模式
      *
      * @return bool
      */
@@ -285,7 +284,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Dynamically pass calls to the default connection.
-	 * 动态传递对默认连接的调用
+	 * 动态地将调用传递给默认连接
      *
      * @param  string  $method
      * @param  array   $parameters

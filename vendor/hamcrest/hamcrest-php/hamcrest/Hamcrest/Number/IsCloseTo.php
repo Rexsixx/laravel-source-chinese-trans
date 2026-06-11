@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，数字，Is Close To
+ */
+
 namespace Hamcrest\Number;
 
 /*

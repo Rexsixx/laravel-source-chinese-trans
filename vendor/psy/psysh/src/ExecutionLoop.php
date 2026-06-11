@@ -1,6 +1,6 @@
 <?php
 /**
- * Psy，执行循环
+ * Psy，循环执行
  */
 
 /*
@@ -18,13 +18,11 @@ use Psy\Exception\ErrorException;
 
 /**
  * The Psy Shell execution loop.
- * Psy Shell执行循环
  */
 class ExecutionLoop
 {
     /**
      * Run the execution loop.
-	 * 运行执行循环
      *
      * @throws ThrowUpException if thrown by the `throw-up` command
      *
@@ -40,7 +38,6 @@ class ExecutionLoop
 
     /**
      * Load user-defined includes.
-	 * 用户定义包括
      *
      * @param Shell $shell
      */

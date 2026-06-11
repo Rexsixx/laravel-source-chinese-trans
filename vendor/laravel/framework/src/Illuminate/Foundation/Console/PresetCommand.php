@@ -16,7 +16,9 @@ class PresetCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'preset { type : The preset type (none, bootstrap, vue, react) }';
+    protected $signature = 'preset
+                            { type : The preset type (none, bootstrap, vue, react) }
+                            { --option=* : Pass an option to the preset command }';
 
     /**
      * The console command description.
@@ -28,9 +30,11 @@ class PresetCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
+     *
+     * @throws \InvalidArgumentException
      */
     public function handle()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Fideloper，Proxy，信任代理
+ * Fideloper，代理人，可信代理
  */
 
 namespace Fideloper\Proxy;
@@ -67,7 +67,6 @@ class TrustProxies
 
     /**
      * Sets the trusted proxies on the request to the value of trustedproxy.proxies
-	 * 将请求上的可信代理设置为trustedproxy.proxies的值
      *
      * @param \Illuminate\Http\Request $request
      */
@@ -92,7 +91,6 @@ class TrustProxies
 
     /**
      * Specify the IP addresses to trust explicitly.
-	 * 明确指定要信任的IP地址
      *
      * @param \Illuminate\Http\Request $request
      * @param array                    $trustedIps
@@ -104,7 +102,6 @@ class TrustProxies
 
     /**
      * Set the trusted proxy to be the IP address calling this servers
-	 * 将可信代理设置为调用这些服务器的IP地址
      *
      * @param \Illuminate\Http\Request $request
      */
@@ -115,7 +112,6 @@ class TrustProxies
 
     /**
      * Retrieve trusted header name(s), falling back to defaults if config not set.
-	 * 检索可信的报头名称，如果未设置配置，则返回默认值。
      *
      * @return int A bit field of Request::HEADER_*, to set which headers to trust from your proxies.
      */

@@ -28,7 +28,7 @@ abstract class CountValidatorAbstract
 {
     /**
      * Expectation for which this validator is assigned
-	 * 分配此验证器的期望
+	 * 该验证器被分配的期望
      *
      * @var \Mockery\Expectation
      */
@@ -36,7 +36,6 @@ abstract class CountValidatorAbstract
 
     /**
      * Call count limit
-	 * 呼叫计数限制
      *
      * @var int
      */
@@ -44,7 +43,6 @@ abstract class CountValidatorAbstract
 
     /**
      * Set Expectation object and upper call limit
-	 * 设置期望对象和呼出上限
      *
      * @param \Mockery\Expectation $expectation
      * @param int $limit
@@ -57,7 +55,6 @@ abstract class CountValidatorAbstract
 
     /**
      * Checks if the validator can accept an additional nth call
-	 * 检查验证器是否可以接受额外的第n个调用
      *
      * @param int $n
      * @return bool
@@ -69,7 +66,6 @@ abstract class CountValidatorAbstract
 
     /**
      * Validate the call count against this validator
-	 * 根据此验证器验证调用计数
      *
      * @param int $n
      * @return bool

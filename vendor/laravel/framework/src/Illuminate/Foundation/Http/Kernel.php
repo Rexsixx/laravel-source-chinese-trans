@@ -27,7 +27,7 @@ class Kernel implements KernelContract
 
     /**
      * The router instance.
-	 * 路由实例
+	 * 路由器实例
      *
      * @var \Illuminate\Routing\Router
      */
@@ -74,9 +74,9 @@ class Kernel implements KernelContract
 
     /**
      * The priority-sorted list of middleware.
-	 * 中间件的优先级排序列表
+	 * 中间件的优先级排序列表。
      *
-     * Forces the listed middleware to always be in the given order.
+     * Forces non-global middleware to always be in the given order.
      *
      * @var array
      */
@@ -349,6 +349,17 @@ class Kernel implements KernelContract
     protected function renderException($request, Exception $e)
     {
         return $this->app[ExceptionHandler::class]->render($request, $e);
+    }
+
+    /**
+     * Get the application's route middleware groups.
+	 * 获取应用程序的路由中间件组
+     *
+     * @return array
+     */
+    public function getMiddlewareGroups()
+    {
+        return $this->middlewareGroups;
     }
 
     /**

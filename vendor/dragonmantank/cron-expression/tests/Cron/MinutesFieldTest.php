@@ -62,7 +62,7 @@ class MinutesFieldTest extends TestCase
 
     /**
      * Various bad syntaxes that are reported to work, but shouldn't.
-	 * 各种错误的语法，据说可以工作，但不应该。
+	 * 报告工作的各种坏关口,但不应该。
      *
      * @author Chris Tankersley
      * @since 2017-08-18

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，VarDumper，转储，抽象转储器
+ * Symfony，组件，Var Dumper，转储器，抽象转储器
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\VarDumper\Cloner\DumperInterface;
 
 /**
  * Abstract mechanism for dumping a Data object.
- * 用于转储数据对象的抽象机制
+ * 转储数据对象的抽象机制。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

@@ -24,7 +24,7 @@ use XdgBaseDir\Xdg;
 if (!\function_exists('Psy\sh')) {
     /**
      * Command to return the eval-able code to startup PsySH.
-	 * 命令将可获得的代码返回启动PsySH
+	 * 命令返回可执行的代码以启动PsySH。
      *
      *     eval(\Psy\sh());
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，VarDumper，服务，连接
+ * Symfony，组件，Var Dumper，服务器，连接
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\VarDumper\Dumper\ContextProvider\ContextProviderInterface;
 
 /**
  * Forwards serialized Data clones to a server.
- * 将序列化的数据克隆转发给服务器
+ * 将序列化的数据克隆转发到服务器。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */

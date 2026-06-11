@@ -1,6 +1,6 @@
 <?php
 /**
- * TijsVerkoyen，CssToInlineStyles，Css，规则，处理器
+ * TijsVerkoyen，Css到内联样式，Css，规则，处理器
  */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css\Rule;
@@ -12,7 +12,7 @@ class Processor
 {
     /**
      * Splits a string into separate rules
-	 * 将字符串分割成单独的规则
+	 * 将字符串拆分为单独的规则
      *
      * @param string $rulesString
      *
@@ -147,7 +147,6 @@ class Processor
     /**
      * Sorts an array on the specificity element in an ascending way
      * Lower specificity will be sorted to the beginning of the array
-	 * 在一种提升方式上对特异性元素进行排序,将对数组的开始排序。
      *
      * @param Rule $e1 The first element.
      * @param Rule $e2 The second element.

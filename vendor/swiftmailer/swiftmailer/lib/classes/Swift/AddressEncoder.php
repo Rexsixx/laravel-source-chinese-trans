@@ -1,6 +1,6 @@
 <?php
 /**
- * Swift，Swift 地址编码器
+ * swiftmailer，地址编码
  */
 
 /*
@@ -13,7 +13,6 @@
 
 /**
  * Email address encoder.
- * 电子邮件地址编码器
  *
  * @author Christian Schmidt
  */
@@ -21,7 +20,6 @@ interface Swift_AddressEncoder
 {
     /**
      * Encodes an email address.
-	 * 编码电子邮件地址
      *
      * @throws Swift_AddressEncoderException if the email cannot be represented in
      *                                       the encoding implemented by this class

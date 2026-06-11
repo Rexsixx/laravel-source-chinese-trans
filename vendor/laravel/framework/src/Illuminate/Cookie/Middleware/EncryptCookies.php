@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Cookie，中间件，加密 Cookie
+ * Illuminate，Cookie，中间件，加密 cookie
  */
 
 namespace Illuminate\Cookie\Middleware;
@@ -101,7 +101,7 @@ class EncryptCookies
 
     /**
      * Decrypt the given cookie and return the value.
-	 * 解密给定的cookie并返回值。
+	 * 解密给定的cookie并返回值
      *
      * @param  string  $name
      * @param  string|array  $cookie
@@ -136,7 +136,7 @@ class EncryptCookies
 
     /**
      * Encrypt the cookies on an outgoing response.
-	 * 对传出响应的cookie进行加密
+	 * 对传出响应的cookie进行加密。
      *
      * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @return \Symfony\Component\HttpFoundation\Response

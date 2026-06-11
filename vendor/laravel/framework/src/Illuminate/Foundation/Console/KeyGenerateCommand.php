@@ -33,7 +33,7 @@ class KeyGenerateCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */
@@ -54,7 +54,7 @@ class KeyGenerateCommand extends Command
 
         $this->laravel['config']['app.key'] = $key;
 
-        $this->info("Application key [$key] set successfully.");
+        $this->info('Application key set successfully.');
     }
 
     /**

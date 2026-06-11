@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，邮件编译命令
+ * Illuminate，基础，控制台，邮件生成命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -101,7 +101,7 @@ class MailMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认名称空间
+	 * 获取类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -120,9 +120,9 @@ class MailMakeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the mailable already exists.'],
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the mailable already exists'],
 
-            ['markdown', 'm', InputOption::VALUE_OPTIONAL, 'Create a new Markdown template for the mailable.'],
+            ['markdown', 'm', InputOption::VALUE_OPTIONAL, 'Create a new Markdown template for the mailable'],
         ];
     }
 }

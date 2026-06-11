@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，契约，控制器调度程序
+ * Illuminate，路由，契约，控制器调度台
  */
 
 namespace Illuminate\Routing\Contracts;
@@ -11,7 +11,7 @@ interface ControllerDispatcher
 {
     /**
      * Dispatch a request to a given controller and method.
-	 * 向给定的控制器和方法发送请求
+	 * 将请求分派给给定的控制器和方法
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  mixed  $controller
@@ -22,7 +22,7 @@ interface ControllerDispatcher
 
     /**
      * Get the middleware for the controller instance.
-	 * 为控制器实例获取中间件
+	 * 获取控制器实例的中间件
      *
      * @param  \Illuminate\Routing\Controller  $controller
      * @param  string  $method

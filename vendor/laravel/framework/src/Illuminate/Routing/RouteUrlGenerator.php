@@ -37,7 +37,7 @@ class RouteUrlGenerator
 
     /**
      * Characters that should not be URL encoded.
-	 * 不应该是URL编码的字符
+	 * 不应该被URL编码的字符
      *
      * @var array
      */
@@ -74,7 +74,7 @@ class RouteUrlGenerator
 
     /**
      * Generate a URL for the given route.
-	 * 生成给定路由的URL
+	 * 为给定的路由生成URL
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  array  $parameters
@@ -90,10 +90,12 @@ class RouteUrlGenerator
         // First we will construct the entire URI including the root and query string. Once it
         // has been constructed, we'll make sure we don't have any missing parameters or we
         // will need to throw the exception to let the developers know one was not given.
-		// 首先，我们将构造整个URI，包括根和查询字符串。
+		// 首先,我们将构造完整的URI,包括根和查询字符串。
+		// 一旦它被构建,我们将确保我们没有任何缺失的参数,否则我们将需要抛出异常,让开发人员知道一个没有得到。
         $uri = $this->addQueryString($this->url->format(
-            $this->replaceRootParameters($route, $domain, $parameters),
-            $this->replaceRouteParameters($route->uri(), $parameters)
+            $root = $this->replaceRootParameters($route, $domain, $parameters),
+            $this->replaceRouteParameters($route->uri(), $parameters),
+            $route
         ), $parameters);
 
         if (preg_match('/\{.*?\}/', $uri)) {
@@ -103,7 +105,8 @@ class RouteUrlGenerator
         // Once we have ensured that there are no missing parameters in the URI we will encode
         // the URI and prepare it for returning to the developer. If the URI is supposed to
         // be absolute, we will return it as-is. Otherwise we will remove the URL's root.
-		// 一旦我们确保URI中没有缺失参数，我们将编码URI并准备返回给开发人员。
+		// 一旦我们确保URI中没有丢失的参数,我们将对URI进行编码,并为返回到开发人员做准备。
+		// 如果URI应该是绝对的,我们就会返回它。否则我们将删除URL的根。
         $uri = strtr(rawurlencode($uri), $this->dontEncode);
 
         if (! $absolute) {
@@ -134,7 +137,7 @@ class RouteUrlGenerator
 
     /**
      * Format the domain and port for the route and request.
-	 * 为路由和请求格式化域和端口
+	 * 格式化路由和请求的域和端口
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  array  $parameters
@@ -149,7 +152,7 @@ class RouteUrlGenerator
 
     /**
      * Get the scheme for the given route.
-	 * 获得给定路线的计划
+	 * 获取给定路线的方案
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return string
@@ -162,12 +165,12 @@ class RouteUrlGenerator
             return 'https://';
         }
 
-        return $this->url->formatScheme(null);
+        return $this->url->formatScheme();
     }
 
     /**
      * Add the port to the domain if necessary.
-	 * 如有必要,将端口添加到域。
+	 * 根据需要将端口加入域
      *
      * @param  string  $domain
      * @return string
@@ -184,7 +187,7 @@ class RouteUrlGenerator
 
     /**
      * Replace the parameters on the root path.
-	 * 在根路径上替换参数
+	 * 替换根路径上的参数
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  string  $domain
@@ -202,7 +205,7 @@ class RouteUrlGenerator
 
     /**
      * Replace all of the wildcard parameters for a route path.
-	 * 将所有的通配符参数替换为路由路径
+	 * 替换路由路径的所有通配符参数
      *
      * @param  string  $path
      * @param  array  $parameters
@@ -223,7 +226,7 @@ class RouteUrlGenerator
 
     /**
      * Replace all of the named parameters in the path.
-	 * 在路径中替换所有命名参数
+	 * 替换路径中的所有命名参数
      *
      * @param  string  $path
      * @param  array  $parameters
@@ -244,7 +247,7 @@ class RouteUrlGenerator
 
     /**
      * Add a query string to the URI.
-	 * 在URI中添加一个查询字符串
+	 * 向URI添加查询字符串
      *
      * @param  string  $uri
      * @param  array  $parameters
@@ -255,8 +258,8 @@ class RouteUrlGenerator
         // If the URI has a fragment we will move it to the end of this URI since it will
         // need to come after any query string that may be added to the URL else it is
         // not going to be available. We will remove it then append it back on here.
-		// 如果该统一资源标识符（URI）包含片段部分，我们将将其移到该 URI 的末尾，
-		// 因为它需要在任何可能添加到 URL 中的查询字符串之后出现，否则它将无法被使用。
+		// 如果URI有一个片段,我们将把它移动到这个URI的末尾,因为它需要在任何可能被添加到URL的查询字符串之后,它将不会可用。
+		// 我们将删除它,然后在这里添加。
         if (! is_null($fragment = parse_url($uri, PHP_URL_FRAGMENT))) {
             $uri = preg_replace('/#.*/', '', $uri);
         }
@@ -278,20 +281,21 @@ class RouteUrlGenerator
         // First we will get all of the string parameters that are remaining after we
         // have replaced the route wildcards. We'll then build a query string from
         // these string parameters then use it as a starting point for the rest.
-		// 首先，我们将获取在替换路由通配符后剩余的所有字符串参数。
-        if (count($parameters) == 0) {
+		// 首先,我们将得到所有在我们替换了通配符后剩下的字符串参数。
+		// 然后,我们将从这些字符串参数构建一个查询字符串,然后将其作为rest的起点。
+        if (count($parameters) === 0) {
             return '';
         }
 
-        $query = http_build_query(
+        $query = Arr::query(
             $keyed = $this->getStringParameters($parameters)
         );
 
         // Lastly, if there are still parameters remaining, we will fetch the numeric
         // parameters that are in the array and add them to the query string or we
         // will make the initial query string if it wasn't started with strings.
-		// 最后，如果仍有参数未处理，我们将从数组中获取数值型参数，并将其添加到查询字符串中；
-		// 或者，如果初始查询字符串未以字符串形式开始，我们将创建一个新的查询字符串。
+		// 最后,如果还有剩下的参数,我们将获取数组中的数字参数,并将它们添加到查询字符串中,
+		// 或者如果不是基于字符串,我们将生成初始查询字符串。
         if (count($keyed) < count($parameters)) {
             $query .= '&'.implode(
                 '&', $this->getNumericParameters($parameters)
@@ -303,7 +307,7 @@ class RouteUrlGenerator
 
     /**
      * Get the string parameters from a given list.
-	 * 从给定的列表中获取字符串参数
+	 * 从给定列表中获取字符串参数
      *
      * @param  array  $parameters
      * @return array
@@ -315,7 +319,7 @@ class RouteUrlGenerator
 
     /**
      * Get the numeric parameters from a given list.
-	 * 从给定的列表中获取数字参数
+	 * 从给定列表中获取数值参数
      *
      * @param  array  $parameters
      * @return array
@@ -327,7 +331,7 @@ class RouteUrlGenerator
 
     /**
      * Set the default named parameters used by the URL generator.
-	 * 设置URL生成器使用的默认参数
+	 * 设置URL生成器使用的默认命名参数
      *
      * @param  array  $defaults
      * @return void

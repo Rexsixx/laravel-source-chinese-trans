@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，引擎，引擎解析器
+ * Illuminate，引擎，引擎解析器
  */
 
 namespace Illuminate\View\Engines;
@@ -50,6 +50,7 @@ class EngineResolver
      *
      * @param  string  $engine
      * @return \Illuminate\Contracts\View\Engine
+     *
      * @throws \InvalidArgumentException
      */
     public function resolve($engine)

@@ -1,7 +1,4 @@
 <?php
-/**
- * Psr，Log，日志级别
- */
 
 namespace Psr\Log;
 

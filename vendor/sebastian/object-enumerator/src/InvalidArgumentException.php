@@ -1,8 +1,4 @@
 <?php
-/**
- * SebastianBergmann，ObjectEnumerator，无效参数异常
- */
-
 /*
  * This file is part of Object Enumerator.
  *

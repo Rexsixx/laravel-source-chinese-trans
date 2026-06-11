@@ -34,23 +34,23 @@ class UrlWindow
 	 * 创建一个新的URL窗口实例
      *
      * @param  \Illuminate\Contracts\Pagination\LengthAwarePaginator  $paginator
-     * @param  int  $onEachSide
      * @return array
      */
-    public static function make(PaginatorContract $paginator, $onEachSide = 3)
+    public static function make(PaginatorContract $paginator)
     {
-        return (new static($paginator))->get($onEachSide);
+        return (new static($paginator))->get();
     }
 
     /**
      * Get the window of URLs to be shown.
 	 * 获取要显示的url窗口
      *
-     * @param  int  $onEachSide
      * @return array
      */
-    public function get($onEachSide = 3)
+    public function get()
     {
+        $onEachSide = $this->paginator->onEachSide;
+
         if ($this->paginator->lastPage() < ($onEachSide * 2) + 6) {
             return $this->getSmallSlider();
         }
@@ -109,6 +109,8 @@ class UrlWindow
         // If we have enough room on both sides of the current page to build a slider we
         // will surround it with both the beginning and ending caps, with this window
         // of pages in the middle providing a Google style sliding paginator setup.
+		// 如果我们在当前页面的两边有足够的空间来构建一个滑块,我们将用一个开始和结束的大写来围绕它,
+		// 在中间的这个窗口中提供一个谷歌风格的滑动paginator设置。
         return $this->getFullSlider($onEachSide);
     }
 
@@ -229,7 +231,7 @@ class UrlWindow
 
     /**
      * Get the last page from the paginator.
-	 * 从分页器中获取最后一页
+	 * 从分页器获取最后一页
      *
      * @return int
      */

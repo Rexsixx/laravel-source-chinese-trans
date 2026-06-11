@@ -4,6 +4,7 @@
  */
 
 use Monolog\Handler\StreamHandler;
+use Monolog\Handler\SyslogUdpHandler;
 
 return [
 
@@ -15,7 +16,7 @@ return [
     | This option defines the default log channel that gets used when writing
     | messages to the logs. The name specified in this option should match
     | one of the channels defined in the "channels" configuration array.
-	| 此选项定义了在向日志中写入消息时所使用的默认日志通道。
+	| 该选项定义在向日志写入消息时使用的默认日志通道。
     |
     */
 
@@ -23,13 +24,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Log Channels	Log通道
+    | Log Channels	日志通道
     |--------------------------------------------------------------------------
     |
     | Here you may configure the log channels for your application. Out of
     | the box, Laravel uses the Monolog PHP logging library. This gives
     | you a variety of powerful log handlers / formatters to utilize.
-	| 在这里，您可以为您的应用程序配置日志通道。
+	| 在这里,您可以为应用程序配置日志通道。在这个盒子里,Laravel使用了“独白PHP日志库”。
     |
     | Available Drivers: "single", "daily", "slack", "syslog",
     |                    "errorlog", "monolog",
@@ -40,7 +41,8 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['daily'],
+            'ignore_exceptions' => false,
         ],
 
         'single' => [
@@ -53,7 +55,7 @@ return [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
             'level' => 'debug',
-            'days' => 7,
+            'days' => 14,
         ],
 
         'slack' => [
@@ -64,9 +66,20 @@ return [
             'level' => 'critical',
         ],
 
+        'papertrail' => [
+            'driver' => 'monolog',
+            'level' => 'debug',
+            'handler' => SyslogUdpHandler::class,
+            'handler_with' => [
+                'host' => env('PAPERTRAIL_URL'),
+                'port' => env('PAPERTRAIL_PORT'),
+            ],
+        ],
+
         'stderr' => [
             'driver' => 'monolog',
             'handler' => StreamHandler::class,
+            'formatter' => env('LOG_STDERR_FORMATTER'),
             'with' => [
                 'stream' => 'php://stderr',
             ],

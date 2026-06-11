@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，Eloquent 用户提供者
+ * Illuminate，认证， Eloquent 用户提供商
  */
 
 namespace Illuminate\Auth;
@@ -86,7 +86,7 @@ class EloquentUserProvider implements UserProvider
      * Update the "remember me" token for the given user in storage.
 	 * 更新存储中给定用户的“记住我”令牌
      *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @param  \Illuminate\Contracts\Auth\Authenticatable|\Illuminate\Database\Eloquent\Model  $user
      * @param  string  $token
      * @return void
      */
@@ -121,6 +121,8 @@ class EloquentUserProvider implements UserProvider
         // First we will add each credential element to the query as a where clause.
         // Then we can execute the query and, if we found a user, return it in a
         // Eloquent User "model" that will be utilized by the Guard instances.
+		// 首先,我们将将每个凭据元素添加到查询中,作为where子句。
+		// 然后我们可以执行查询,如果我们找到了一个用户,请将它返回到一个具有代表性的用户“模型”中,这将被保护实例使用。
         $query = $this->createModel()->newQuery();
 
         foreach ($credentials as $key => $value) {

@@ -22,6 +22,19 @@ class FoundationServiceProvider extends AggregateServiceProvider
     ];
 
     /**
+     * Boot the service provider.
+	 * 启动服务提供程序
+     */
+    public function boot()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../Exceptions/views' => $this->app->resourcePath('views/errors/'),
+            ], 'laravel-errors');
+        }
+    }
+
+    /**
      * Register the service provider.
 	 * 注册服务提供者
      *
@@ -56,8 +69,8 @@ class FoundationServiceProvider extends AggregateServiceProvider
      */
     public function registerRequestSignatureValidation()
     {
-        Request::macro('hasValidSignature', function () {
-            return URL::hasValidSignature($this);
+        Request::macro('hasValidSignature', function ($absolute = true) {
+            return URL::hasValidSignature($this, $absolute);
         });
     }
 }

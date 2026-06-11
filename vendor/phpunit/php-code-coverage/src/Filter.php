@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，CodeCoverage，过滤器
+ * SebastianBergmann，代码覆盖率，过滤器
  */
 
 /*
@@ -17,7 +17,7 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 /**
  * Filter for whitelisting of code coverage information.
- * 筛选代码覆盖信息的白名单
+ * 筛选代码覆盖信息的白名单。
  */
 final class Filter
 {
@@ -31,7 +31,6 @@ final class Filter
 
     /**
      * Remembers the result of the `is_file()` calls.
-	 * 记得“is_file()”的结果“打电话。
      *
      * @var bool[]
      */

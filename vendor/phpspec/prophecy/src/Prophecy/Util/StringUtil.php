@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，工具，字符串工具
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -15,6 +18,7 @@ use Prophecy\Call\Call;
 
 /**
  * String utility.
+ * 字符串工具
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */

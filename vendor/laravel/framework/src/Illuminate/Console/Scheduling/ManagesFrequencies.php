@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，调度，管理频率
+ * Illuminate，控制台，线程调度，管理频率
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -182,7 +182,7 @@ trait ManagesFrequencies
         $segments = explode(':', $time);
 
         return $this->spliceIntoPosition(2, (int) $segments[0])
-                    ->spliceIntoPosition(1, count($segments) == 2 ? (int) $segments[1] : '0');
+                    ->spliceIntoPosition(1, count($segments) === 2 ? (int) $segments[1] : '0');
     }
 
     /**

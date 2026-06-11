@@ -1,7 +1,4 @@
 <?php
-/**
- * Monolog，处理程序，Amqp 处理器
- */
 
 /*
  * This file is part of the Monolog package.

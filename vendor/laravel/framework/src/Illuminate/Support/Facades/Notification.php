@@ -13,6 +13,7 @@ use Illuminate\Support\Testing\Fakes\NotificationFake;
  * @method static void send(\Illuminate\Support\Collection|array|mixed $notifiables, $notification)
  * @method static void sendNow(\Illuminate\Support\Collection|array|mixed $notifiables, $notification)
  * @method static mixed channel(string|null $name = null)
+ * @method static \Illuminate\Notifications\ChannelManager locale(string|null $locale)
  *
  * @see \Illuminate\Notifications\ChannelManager
  */
@@ -20,7 +21,7 @@ class Notification extends Facade
 {
     /**
      * Replace the bound instance with a fake.
-	 * 用假的方式替换绑定的实例
+	 * 将绑定实例替换为伪实例
      *
      * @return \Illuminate\Support\Testing\Fakes\NotificationFake
      */
@@ -33,7 +34,7 @@ class Notification extends Facade
 
     /**
      * Begin sending a notification to an anonymous notifiable.
-	 * 开始向匿名通知发送通知
+	 * 开始向匿名通知对象发送通知
      *
      * @param  string  $channel
      * @param  mixed  $route

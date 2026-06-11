@@ -7,7 +7,6 @@ namespace Illuminate\Http\Resources\Json;
 
 use ArrayAccess;
 use JsonSerializable;
-use Illuminate\Support\Collection;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Routing\UrlRoutable;
@@ -40,6 +39,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
 	 * 应该添加到资源响应中的其他元数据。
      *
      * Added during response construction by the developer.
+	 * 在响应构建期间由开发人员添加。
      *
      * @var array
      */
@@ -69,7 +69,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
      * Create a new resource instance.
 	 * 创建一个新的资源实例
      *
-     * @param  mixed  $parameters
+     * @param  mixed  ...$parameters
      * @return static
      */
     public static function make(...$parameters)
@@ -86,12 +86,12 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
      */
     public static function collection($resource)
     {
-        return new AnonymousResourceCollection($resource, get_called_class());
+        return new AnonymousResourceCollection($resource, static::class);
     }
 
     /**
      * Resolve the resource to an array.
-	 * 将资源解析为数组。
+	 * 将资源解析为数组
      *
      * @param  \Illuminate\Http\Request|null  $request
      * @return array
@@ -102,9 +102,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
             $request = $request ?: Container::getInstance()->make('request')
         );
 
-        if (is_array($data)) {
-            $data = $data;
-        } elseif ($data instanceof Arrayable || $data instanceof Collection) {
+        if ($data instanceof Arrayable) {
             $data = $data->toArray();
         } elseif ($data instanceof JsonSerializable) {
             $data = $data->jsonSerialize();
@@ -122,6 +120,10 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
      */
     public function toArray($request)
     {
+        if (is_null($this->resource)) {
+            return [];
+        }
+
         return is_array($this->resource)
             ? $this->resource
             : $this->resource->toArray();

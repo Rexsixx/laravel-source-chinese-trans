@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，阅读器，翻译阅读器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * TranslationReader reads translation messages from translation files.
+ * TranslationReader从翻译文件中读取翻译消息。
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
@@ -24,6 +28,7 @@ class TranslationReader implements TranslationReaderInterface
 {
     /**
      * Loaders used for import.
+	 * 用于导入的加载器
      *
      * @var array
      */

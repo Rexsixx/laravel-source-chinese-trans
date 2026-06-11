@@ -6,21 +6,25 @@
 namespace Illuminate\Database\Eloquent;
 
 use Closure;
+use Exception;
 use BadMethodCallException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Database\Concerns\BuildsQueries;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
+ * @property-read HigherOrderBuilderProxy $orWhere
+ *
  * @mixin \Illuminate\Database\Query\Builder
  */
 class Builder
 {
-    use BuildsQueries, Concerns\QueriesRelationships;
+    use BuildsQueries, Concerns\QueriesRelationships, ForwardsCalls;
 
     /**
      * The base query builder instance.
@@ -111,7 +115,7 @@ class Builder
 
     /**
      * Create and return an un-saved model instance.
-	 * 创建并返回一个未保存的模型实例
+	 * 创建并返回一个未保存的模型实例。
      *
      * @param  array  $attributes
      * @return \Illuminate\Database\Eloquent\Model
@@ -269,6 +273,42 @@ class Builder
     }
 
     /**
+     * Add an "order by" clause for a timestamp to the query.
+	 * 在查询中为时间戳添加“order by”子句
+     *
+     * @param  string  $column
+     * @return $this
+     */
+    public function latest($column = null)
+    {
+        if (is_null($column)) {
+            $column = $this->model->getCreatedAtColumn() ?? 'created_at';
+        }
+
+        $this->query->latest($column);
+
+        return $this;
+    }
+
+    /**
+     * Add an "order by" clause for a timestamp to the query.
+	 * 在查询中为时间戳添加“order by”子句
+     *
+     * @param  string  $column
+     * @return $this
+     */
+    public function oldest($column = null)
+    {
+        if (is_null($column)) {
+            $column = $this->model->getCreatedAtColumn() ?? 'created_at';
+        }
+
+        $this->query->oldest($column);
+
+        return $this;
+    }
+
+    /**
      * Create a collection of models from plain arrays.
 	 * 从普通数组创建模型集合
      *
@@ -366,7 +406,7 @@ class Builder
      *
      * @param  mixed  $id
      * @param  array  $columns
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|static
      */
     public function findOrNew($id, $columns = ['*'])
     {
@@ -383,7 +423,7 @@ class Builder
      *
      * @param  array  $attributes
      * @param  array  $values
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|static
      */
     public function firstOrNew(array $attributes, array $values = [])
     {
@@ -400,7 +440,7 @@ class Builder
      *
      * @param  array  $attributes
      * @param  array  $values
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|static
      */
     public function firstOrCreate(array $attributes, array $values = [])
     {
@@ -419,7 +459,7 @@ class Builder
      *
      * @param  array  $attributes
      * @param  array  $values
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|static
      */
     public function updateOrCreate(array $attributes, array $values = [])
     {
@@ -509,7 +549,7 @@ class Builder
 	 * 得到水合模型，没有急切加载。
      *
      * @param  array  $columns
-     * @return \Illuminate\Database\Eloquent\Model[]
+     * @return \Illuminate\Database\Eloquent\Model[]|static[]
      */
     public function getModels($columns = ['*'])
     {
@@ -926,7 +966,7 @@ class Builder
 	 * 调用给定的局部模型范围
      *
      * @param  array  $scopes
-     * @return mixed
+     * @return static|mixed
      */
     public function scopes(array $scopes)
     {
@@ -956,7 +996,7 @@ class Builder
      * Apply the scopes to the Eloquent builder instance and return it.
 	 * 将作用域应用于Eloquent构建器实例并返回它
      *
-     * @return \Illuminate\Database\Eloquent\Builder|static
+     * @return static
      */
     public function applyScopes()
     {
@@ -1124,7 +1164,7 @@ class Builder
 	 * 创建正在查询的模型的新实例
      *
      * @param  array  $attributes
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|static
      */
     public function newModelInstance($attributes = [])
     {
@@ -1145,9 +1185,9 @@ class Builder
         $results = [];
 
         foreach ($relations as $name => $constraints) {
-            // If the "relation" value is actually a numeric key, we can assume that no
-            // constraints have been specified for the eager load and we'll just put
-            // an empty Closure with the loader so that we can treat all the same.
+            // If the "name" value is a numeric key, we can assume that no
+            // constraints have been specified. We'll just put an empty
+            // Closure there, so that we can treat them all the same.
             if (is_numeric($name)) {
                 $name = $constraints;
 
@@ -1158,9 +1198,9 @@ class Builder
                             }];
             }
 
-            // We need to separate out any nested includes. Which allows the developers
+            // We need to separate out any nested includes, which allows the developers
             // to load deep relationships using "dots" without stating each level of
-            // the relationship with its own key in the array of eager load names.
+            // the relationship with its own key in the array of eager-load names.
             $results = $this->addNestedWiths($name, $results);
 
             $results[$name] = $constraints;
@@ -1276,7 +1316,7 @@ class Builder
      * Get the model instance being queried.
 	 * 获取正在查询的模型实例
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|static
      */
     public function getModel()
     {
@@ -1324,6 +1364,24 @@ class Builder
     }
 
     /**
+     * Dynamically access builder proxies.
+	 * 动态访问构建器代理
+     *
+     * @param  string  $key
+     * @return mixed
+     *
+     * @throws \Exception
+     */
+    public function __get($key)
+    {
+        if ($key === 'orWhere') {
+            return new HigherOrderBuilderProxy($this, $key);
+        }
+
+        throw new Exception("Property [{$key}] does not exist on the Eloquent builder instance.");
+    }
+
+    /**
      * Dynamically handle calls into the query instance.
 	 * 动态处理对查询实例的调用
      *
@@ -1361,7 +1419,7 @@ class Builder
             return $this->toBase()->{$method}(...$parameters);
         }
 
-        $this->query->{$method}(...$parameters);
+        $this->forwardCallTo($this->query, $method, $parameters);
 
         return $this;
     }
@@ -1385,9 +1443,7 @@ class Builder
         }
 
         if (! isset(static::$macros[$method])) {
-            throw new BadMethodCallException(sprintf(
-                'Method %s::%s does not exist.', static::class, $method
-            ));
+            static::throwBadMethodCallException($method);
         }
 
         if (static::$macros[$method] instanceof Closure) {

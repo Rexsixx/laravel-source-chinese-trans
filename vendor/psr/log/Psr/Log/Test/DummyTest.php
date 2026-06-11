@@ -1,7 +1,4 @@
 <?php
-/**
- * Psr，Log，测试，虚拟测试
- */
 
 namespace Psr\Log\Test;
 

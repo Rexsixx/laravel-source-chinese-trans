@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，HttpKernel，Http 客户端内核
+ * Symfony，组件，Http内核，Http 客户端内核
  */
 
 /*
@@ -29,7 +29,6 @@ class_exists(ResponseHeaderBag::class);
 
 /**
  * An implementation of a Symfony HTTP kernel using a "real" HTTP client.
- * 使用“真正的”HTTP客户端的Symfony HTTP内核的实现。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

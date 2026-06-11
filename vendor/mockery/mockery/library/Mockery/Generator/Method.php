@@ -1,9 +1,5 @@
 <?php
 /**
- * Mockery，生成器，方法
- */
-
-/**
  * Mockery
  *
  * LICENSE

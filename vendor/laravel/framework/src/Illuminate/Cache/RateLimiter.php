@@ -80,7 +80,7 @@ class RateLimiter
 
     /**
      * Get the number of attempts for the given key.
-	 * 获取给定键的尝试次数
+	 * 获取给定键的尝试次数。
      *
      * @param  string  $key
      * @return mixed

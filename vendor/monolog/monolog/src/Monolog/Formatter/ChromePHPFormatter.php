@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，格式器，Chrome PHP 格式化器
+ * Monolog，格式化程序，Chrome PHP 格式化程序
  */
 
 /*
@@ -26,7 +26,6 @@ class ChromePHPFormatter implements FormatterInterface
 {
     /**
      * Translates Monolog log levels to Wildfire levels.
-	 * 把Monolog的级别转化为Wildfire的级别
      */
     private $logLevels = array(
         Logger::DEBUG     => 'log',

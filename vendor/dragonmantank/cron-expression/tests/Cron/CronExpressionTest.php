@@ -1,6 +1,6 @@
 <?php
 /**
- * Cron，测试，Cron 表达式测试
+ * Cron，测试，Cron 表达测试
  */
 
 namespace Cron\Tests;
@@ -77,6 +77,7 @@ class CronExpressionTest extends TestCase
 
     /**
      * Data provider for testParsesCronScheduleWithAnySpaceCharsAsSeparators
+	 * 数据提供者testParsesCronScheduleWithAnySpaceCharsAsSeparators
      *
      * @return array
      */
@@ -117,6 +118,7 @@ class CronExpressionTest extends TestCase
 
     /**
      * Data provider for cron schedule
+	 * cron计划的数据提供程序
      *
      * @return array
      */

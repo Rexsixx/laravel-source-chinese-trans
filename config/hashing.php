@@ -15,7 +15,7 @@ return [
     | used; however, you remain free to modify this option if you wish.
 	| 此选项用于控制将用于对您的应用程序的密码进行哈希处理的默认哈希驱动程序。
     |
-    | Supported: "bcrypt", "argon"
+    | Supported: "bcrypt", "argon", "argon2id"
     |
     */
 
@@ -45,7 +45,7 @@ return [
     | Here you may specify the configuration options that should be used when
     | passwords are hashed using the Argon algorithm. These will allow you
     | to control the amount of time it takes to hash the given password.
-	| 在此您可以指定在使用阿贡算法对密码进行哈希处理时应采用的配置选项。
+	| 在这里，您可以指定在使用阿贡算法对密码进行哈希处理时应采用的配置选项。
     |
     */
 

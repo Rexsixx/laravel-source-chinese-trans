@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，预置，Preset
+ * Illuminate，基础，控制台，预设，Preset
  */
 
 namespace Illuminate\Foundation\Console\Presets;
@@ -19,14 +19,14 @@ class Preset
     {
         $filesystem = new Filesystem;
 
-        if (! $filesystem->isDirectory($directory = resource_path('assets/js/components'))) {
+        if (! $filesystem->isDirectory($directory = resource_path('js/components'))) {
             $filesystem->makeDirectory($directory, 0755, true);
         }
     }
 
     /**
      * Update the "package.json" file.
-	 * 更新"package.json"文件
+	 * 更新"package.json"文件。
      *
      * @param  bool  $dev
      * @return void
@@ -42,7 +42,8 @@ class Preset
         $packages = json_decode(file_get_contents(base_path('package.json')), true);
 
         $packages[$configurationKey] = static::updatePackageArray(
-            array_key_exists($configurationKey, $packages) ? $packages[$configurationKey] : []
+            array_key_exists($configurationKey, $packages) ? $packages[$configurationKey] : [],
+            $configurationKey
         );
 
         ksort($packages[$configurationKey]);

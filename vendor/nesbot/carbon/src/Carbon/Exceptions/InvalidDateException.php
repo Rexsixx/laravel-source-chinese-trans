@@ -37,7 +37,6 @@ class InvalidDateException extends InvalidArgumentException
 
     /**
      * Constructor.
-	 * 构造函数
      *
      * @param string          $field
      * @param mixed           $value
@@ -53,7 +52,6 @@ class InvalidDateException extends InvalidArgumentException
 
     /**
      * Get the invalid field.
-	 * 获取无效字段
      *
      * @return string
      */
@@ -64,7 +62,6 @@ class InvalidDateException extends InvalidArgumentException
 
     /**
      * Get the invalid value.
-	 * 获取无效值
      *
      * @return mixed
      */

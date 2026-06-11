@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，控制器制造命令
+ * Illuminate，路由，控制台，控制器设置命令
  */
 
 namespace Illuminate\Routing\Console;
@@ -112,7 +112,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * Build the replacements for a parent controller.
-	 * 构建父控制器的替换
+	 * 构建父控制器的替代品
      *
      * @return array
      */
@@ -163,6 +163,8 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * @param  string  $model
      * @return string
+     *
+     * @throws \InvalidArgumentException
      */
     protected function parseModel($model)
     {

@@ -1,8 +1,4 @@
 <?php
-/**
- * NunoMaduro，Manifest，作者测试
- */
-
 /*
  * This file is part of PharIo\Manifest.
  *

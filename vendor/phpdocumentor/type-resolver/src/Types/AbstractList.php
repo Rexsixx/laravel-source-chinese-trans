@@ -1,6 +1,6 @@
 <?php
 /**
- * phpDocumentor，Reflection，类型，抽象列表
+ * phpDocumentor，反射，类型，抽象列表
  */
 
 declare(strict_types=1);
@@ -20,7 +20,6 @@ use phpDocumentor\Reflection\Type;
 
 /**
  * Represents a list of values. This is an abstract class for Array_ and Collection.
- * 表示值的列表。这是Array_和Collection的抽象类。
  *
  * @psalm-immutable
  */
@@ -37,7 +36,6 @@ abstract class AbstractList implements Type
 
     /**
      * Initializes this representation of an array with the given Type.
-	 * 初始化数组和给定类型的数组
      */
     public function __construct(?Type $valueType = null, ?Type $keyType = null)
     {

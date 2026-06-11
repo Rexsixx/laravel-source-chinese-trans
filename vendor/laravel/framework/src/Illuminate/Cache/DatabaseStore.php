@@ -7,8 +7,10 @@ namespace Illuminate\Cache;
 
 use Closure;
 use Exception;
+use Illuminate\Support\Str;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Support\InteractsWithTime;
+use Illuminate\Database\PostgresConnection;
 use Illuminate\Database\ConnectionInterface;
 
 class DatabaseStore implements Store
@@ -71,6 +73,8 @@ class DatabaseStore implements Store
         // If we have a cache record we will check the expiration time against current
         // time on the system and see if the record has expired. If it has, we will
         // remove the records from the database table so it isn't returned again.
+		// 如果我们有一个缓存记录,我们将检查在系统上的过期时间,并查看记录是否已经过期。
+		// 如果有,我们将从数据库表中删除记录,因此不会再次返回。
         if (is_null($cache)) {
             return;
         }
@@ -80,13 +84,14 @@ class DatabaseStore implements Store
         // If this cache expiration date is past the current time, we will remove this
         // item from the cache. Then we will return a null value since the cache is
         // expired. We will use "Carbon" to make this comparison with the column.
+		// 如果这个缓存过期日期已经过去,我们将从缓存中删除这个项目。
         if ($this->currentTime() >= $cache->expiration) {
             $this->forget($key);
 
             return;
         }
 
-        return unserialize($cache->value);
+        return $this->unserialize($cache->value);
     }
 
     /**
@@ -102,7 +107,7 @@ class DatabaseStore implements Store
     {
         $key = $this->prefix.$key;
 
-        $value = serialize($value);
+        $value = $this->serialize($value);
 
         $expiration = $this->getTime() + (int) ($minutes * 60);
 
@@ -163,17 +168,21 @@ class DatabaseStore implements Store
             // If there is no value in the cache, we will return false here. Otherwise the
             // value will be decrypted and we will proceed with this function to either
             // increment or decrement this value based on the given action callbacks.
+			// 如果缓存中没有值,我们将返回false。
+			// 否则,值将被解密,我们将继续使用这个函数,以根据给定的动作回调增量或衰减此值。
             if (is_null($cache)) {
                 return false;
             }
 
             $cache = is_array($cache) ? (object) $cache : $cache;
 
-            $current = unserialize($cache->value);
+            $current = $this->unserialize($cache->value);
 
             // Here we'll call this callback function that was given to the function which
             // is used to either increment or decrement the function. We use a callback
             // so we do not have to recreate all this logic in each of the functions.
+			// 在这里,我们将调用这个回调函数,它被赋予了函数的增量或衰减。
+			// 我们使用回调,所以我们不必在每个函数中重新创建所有这个逻辑。
             $new = $callback((int) $current, $value);
 
             if (! is_numeric($current)) {
@@ -184,7 +193,7 @@ class DatabaseStore implements Store
             // since database cache values are encrypted by default with secure storage
             // that can't be easily read. We will return the new value after storing.
             $this->table()->where('key', $prefixed)->update([
-                'value' => serialize($new),
+                'value' => $this->serialize($new),
             ]);
 
             return $new;
@@ -237,7 +246,9 @@ class DatabaseStore implements Store
      */
     public function flush()
     {
-        return (bool) $this->table()->delete();
+        $this->table()->delete();
+
+        return true;
     }
 
     /**
@@ -271,5 +282,39 @@ class DatabaseStore implements Store
     public function getPrefix()
     {
         return $this->prefix;
+    }
+
+    /**
+     * Serialize the given value.
+	 * 序列化给定的值
+     *
+     * @param  mixed  $value
+     * @return string
+     */
+    protected function serialize($value)
+    {
+        $result = serialize($value);
+
+        if ($this->connection instanceof PostgresConnection && Str::contains($result, "\0")) {
+            $result = base64_encode($result);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Unserialize the given value.
+	 * 反序列化给定的值
+     *
+     * @param  string  $value
+     * @return mixed
+     */
+    protected function unserialize($value)
+    {
+        if ($this->connection instanceof PostgresConnection && ! Str::contains($value, [':', ';'])) {
+            $value = base64_decode($value);
+        }
+
+        return unserialize($value);
     }
 }

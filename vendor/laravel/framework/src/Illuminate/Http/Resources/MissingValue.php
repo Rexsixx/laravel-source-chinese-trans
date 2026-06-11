@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，资源，缺失值
+ * Illuminate，Http，资源，缺值
  */
 
 namespace Illuminate\Http\Resources;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，格式器，Flowdock 格式化器
+ * Monolog，格式化程序，Flowdock 格式化程序
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Monolog\Formatter;
 
 /**
  * formats the record to be used in the FlowdockHandler
- * 格式化要在FlowdockHandler中使用的记录
  *
  * @author Dominik Liebler <liebler.dominik@gmail.com>
  */

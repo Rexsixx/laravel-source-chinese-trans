@@ -1,7 +1,4 @@
 <?php
-/**
- * Monolog，处理程序，DynamoDb 处理器
- */
 
 /*
  * This file is part of the Monolog package.
@@ -22,7 +19,6 @@ use Monolog\Logger;
 
 /**
  * Amazon DynamoDB handler (http://aws.amazon.com/dynamodb/)
- * Amazon DynamoDB处理程序
  *
  * @link https://github.com/aws/aws-sdk-php/
  * @author Andrew Lawson <adlawson@gmail.com>

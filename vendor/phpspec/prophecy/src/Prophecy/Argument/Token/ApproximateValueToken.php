@@ -1,7 +1,4 @@
 <?php
-/**
- * Prophecy，论证，令牌，近似值令牌
- */
 
 /*
  * This file is part of the Prophecy.

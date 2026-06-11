@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，验证管理
+ * Mockery，验证主管
  */
 
 /**

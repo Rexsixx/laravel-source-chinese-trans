@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，Serve 命令
+ * Illuminate，基础，控制台，服务命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -30,7 +30,7 @@ class ServeCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return int
      *
@@ -94,9 +94,9 @@ class ServeCommand extends Command
     protected function getOptions()
     {
         return [
-            ['host', null, InputOption::VALUE_OPTIONAL, 'The host address to serve the application on.', '127.0.0.1'],
+            ['host', null, InputOption::VALUE_OPTIONAL, 'The host address to serve the application on', '127.0.0.1'],
 
-            ['port', null, InputOption::VALUE_OPTIONAL, 'The port to serve the application on.', 8000],
+            ['port', null, InputOption::VALUE_OPTIONAL, 'The port to serve the application on', 8000],
         ];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，控制台，授权制作命令 make:auth
+ * Illuminate，Auth，控制台，认证编译命令
  */
 
 namespace Illuminate\Auth\Console;
@@ -14,7 +14,7 @@ class AuthMakeCommand extends Command
 
     /**
      * The name and signature of the console command.
-	 * console命令的名称和签名
+	 * 控制台命令的名称和签名
      *
      * @var string
      */
@@ -24,7 +24,7 @@ class AuthMakeCommand extends Command
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -39,6 +39,7 @@ class AuthMakeCommand extends Command
     protected $views = [
         'auth/login.stub' => 'auth/login.blade.php',
         'auth/register.stub' => 'auth/register.blade.php',
+        'auth/verify.stub' => 'auth/verify.blade.php',
         'auth/passwords/email.stub' => 'auth/passwords/email.blade.php',
         'auth/passwords/reset.stub' => 'auth/passwords/reset.blade.php',
         'layouts/app.stub' => 'layouts/app.blade.php',
@@ -47,7 +48,7 @@ class AuthMakeCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */

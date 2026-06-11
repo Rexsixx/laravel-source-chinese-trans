@@ -49,6 +49,7 @@ trait MocksApplicationServices
 	 * 指定应该为给定操作触发的事件列表。
      *
      * These events will be mocked, so that handlers will not actually be executed.
+	 * 这些事件将被嘲笑,这样处理程序就不会被执行。
      *
      * @param  array|string  $events
      * @return $this
@@ -78,6 +79,7 @@ trait MocksApplicationServices
 	 * 指定不应为给定操作触发的事件列表。
      *
      * These events will be mocked, so that handlers will not actually be executed.
+	 * 这些事件将被嘲笑,这样处理程序就不会被执行。
      *
      * @param  array|string  $events
      * @return $this
@@ -108,7 +110,7 @@ trait MocksApplicationServices
     {
         $mock = Mockery::mock(EventsDispatcherContract::class)->shouldIgnoreMissing();
 
-        $mock->shouldReceive('fire', 'dispatch')->andReturnUsing(function ($called) {
+        $mock->shouldReceive('dispatch')->andReturnUsing(function ($called) {
             $this->firedEvents[] = $called;
         });
 
@@ -134,6 +136,7 @@ trait MocksApplicationServices
 	 * 指定应该为给定操作分派的作业列表。
      *
      * These jobs will be mocked, so that handlers will not actually be executed.
+	 * 这些工作将被嘲笑,这样处理程序就不会被执行。
      *
      * @param  array|string  $jobs
      * @return $this
@@ -158,9 +161,10 @@ trait MocksApplicationServices
 
     /**
      * Specify a list of jobs that should not be dispatched for the given operation.
-	 * 指定不应为给定操作分派的作业列表
+	 * 指定不应为给定操作分派的作业列表。
      *
      * These jobs will be mocked, so that handlers will not actually be executed.
+	 * 这些工作将被嘲笑,这样处理程序就不会被执行。
      *
      * @param  array|string  $jobs
      * @return $this
@@ -189,7 +193,7 @@ trait MocksApplicationServices
      */
     protected function withoutJobs()
     {
-        $mock = Mockery::mock(BusDispatcherContract::class);
+        $mock = Mockery::mock(BusDispatcherContract::class)->shouldIgnoreMissing();
 
         $mock->shouldReceive('dispatch', 'dispatchNow')->andReturnUsing(function ($dispatched) {
             $this->dispatchedJobs[] = $dispatched;

@@ -1,8 +1,4 @@
 <?php
-/**
- * PharIo，Version，和版本约束组
- */
-
 /*
  * This file is part of PharIo\Version.
  *

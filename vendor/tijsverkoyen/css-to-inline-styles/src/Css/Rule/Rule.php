@@ -1,6 +1,6 @@
 <?php
 /**
- * TijsVerkoyen，CssToInlineStyles，Css，规则，Rule
+ * TijsVerkoyen，Css到内联样式，Css，规则，Rule
  */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css\Rule;
@@ -32,7 +32,7 @@ final class Rule
 
     /**
      * Rule constructor.
-	 * 规则构造函数
+	 * 规则的构造函数
      *
      * @param string      $selector
      * @param Property[]  $properties
@@ -49,7 +49,7 @@ final class Rule
 
     /**
      * Get selector
-	 * 获取选择器
+	 * 得到选择器
      *
      * @return string
      */
@@ -60,7 +60,6 @@ final class Rule
 
     /**
      * Get properties
-	 * 获得属性
      *
      * @return Property[]
      */
@@ -71,7 +70,6 @@ final class Rule
 
     /**
      * Get specificity
-	 * 获得特征
      *
      * @return Specificity
      */
@@ -82,7 +80,6 @@ final class Rule
 
     /**
      * Get order
-	 * 得到顺序
      *
      * @return int
      */

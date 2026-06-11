@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，监听器的选项
+ * Illuminate，行列，侦听器的选项
  */
 
 namespace Illuminate\Queue;
@@ -9,7 +9,7 @@ class ListenerOptions extends WorkerOptions
 {
     /**
      * The environment the worker should run in.
-	 * 进程应该运行的环境
+	 * 工作线程应该运行的环境
      *
      * @var string
      */

@@ -1,7 +1,4 @@
 <?php
-/**
- * Monolog，处理程序，抽象 Syslog 处理器
- */
 
 /*
  * This file is part of the Monolog package.
@@ -19,7 +16,6 @@ use Monolog\Formatter\LineFormatter;
 
 /**
  * Common syslog functionality
- * 常用syslog功能
  */
 abstract class AbstractSyslogHandler extends AbstractProcessingHandler
 {
@@ -27,7 +23,6 @@ abstract class AbstractSyslogHandler extends AbstractProcessingHandler
 
     /**
      * Translates Monolog log levels to syslog log priorities.
-	 * 将Monolog日志级别转换为syslog日志优先级
      */
     protected $logLevels = array(
         Logger::DEBUG     => LOG_DEBUG,
@@ -42,7 +37,6 @@ abstract class AbstractSyslogHandler extends AbstractProcessingHandler
 
     /**
      * List of valid log facility names.
-	 * 有效的日志设施名称列表
      */
     protected $facilities = array(
         'auth'     => LOG_AUTH,

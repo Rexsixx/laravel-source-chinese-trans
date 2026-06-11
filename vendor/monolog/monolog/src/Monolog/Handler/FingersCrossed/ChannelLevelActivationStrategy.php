@@ -1,7 +1,4 @@
 <?php
-/**
- * Monolog，处理程序，手指交叉，通道级激活策略
- */
 
 /*
  * This file is part of the Monolog package.

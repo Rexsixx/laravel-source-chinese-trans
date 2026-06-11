@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，HTTP客户端，响应接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
  * A (lazily retrieved) HTTP response.
+ * 一个（延迟检索的）HTTP响应。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

@@ -48,6 +48,7 @@ trait ThrottlesLogins
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void
+     *
      * @throws \Illuminate\Validation\ValidationException
      */
     protected function sendLockoutResponse(Request $request)
@@ -87,7 +88,7 @@ trait ThrottlesLogins
 
     /**
      * Get the throttle key for the given request.
-	 * 获取给定请求的节流阀键
+	 * 获取给定请求的throttle键
      *
      * @param  \Illuminate\Http\Request  $request
      * @return string

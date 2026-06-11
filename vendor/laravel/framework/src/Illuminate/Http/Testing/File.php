@@ -48,7 +48,7 @@ class File extends UploadedFile
 
         parent::__construct(
             $this->tempFilePath(), $name, $this->getMimeType(),
-            filesize($this->tempFilePath()), null, true
+            null, true
         );
     }
 

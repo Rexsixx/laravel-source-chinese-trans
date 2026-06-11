@@ -1,6 +1,6 @@
 <?php
 /**
- * phpDocumentor，Reflection，类型分解器
+ * phpDocumentor，反射，类型解析器
  */
 
 declare(strict_types=1);
@@ -130,7 +130,6 @@ final class TypeResolver
 
     /**
      * Initializes this TypeResolver with the means to create and resolve Fqsen objects.
-	 * 初始化这个TypeResolver,以创建和解决Fqsen对象。
      */
     public function __construct(?FqsenResolver $fqsenResolver = null)
     {
@@ -139,7 +138,6 @@ final class TypeResolver
 
     /**
      * Analyzes the given type and returns the FQCN variant.
-	 * 分析给定类型并返回FQCN变体。
      *
      * When a type is provided this method checks whether it is not a keyword or
      * Fully Qualified Class Name. If so it will use the given namespace and

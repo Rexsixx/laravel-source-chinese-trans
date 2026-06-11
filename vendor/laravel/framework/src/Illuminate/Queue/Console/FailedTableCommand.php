@@ -22,7 +22,7 @@ class FailedTableCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令名
      *
      * @var string
      */

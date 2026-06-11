@@ -20,7 +20,7 @@ class SubstituteBindings
 
     /**
      * Create a new bindings substitutor.
-	 * 创建一个新的绑定替换器
+	 * 创建一个新的绑定替代器
      *
      * @param  \Illuminate\Contracts\Routing\Registrar  $router
      * @return void
@@ -32,7 +32,7 @@ class SubstituteBindings
 
     /**
      * Handle an incoming request.
-	 * 处理传入的请求
+	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next

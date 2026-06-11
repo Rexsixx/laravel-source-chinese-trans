@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，认证，支持基本验证
+ * Illuminate，契约，认证，支持基本授权
  */
 
 namespace Illuminate\Contracts\Auth;

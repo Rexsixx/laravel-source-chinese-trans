@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，VarDumper，转储，Html 转储器
+ * Symfony，组件，Var Dumper，转储器，Html 转储器
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\VarDumper\Cloner\Data;
 
 /**
  * HtmlDumper dumps variables as HTML.
- * HtmlDumper转储变量作为HTML
+ * HtmlDumper将变量转储为HTML。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -121,7 +121,7 @@ class HtmlDumper extends CliDumper
 
     /**
      * Sets an HTML header that will be dumped once in the output stream.
-	 * 设置将在输出流中转储一次的HTML头
+	 * 设置一个HTML头，它将在输出流中转储一次。
      *
      * @param string $header An HTML string
      */
@@ -132,6 +132,7 @@ class HtmlDumper extends CliDumper
 
     /**
      * Sets an HTML prefix and suffix that will encapse every single dump.
+	 * 设置一个HTML前缀和后缀，用于封装每个转储文件。
      *
      * @param string $prefix The prepended HTML string
      * @param string $suffix The appended HTML string

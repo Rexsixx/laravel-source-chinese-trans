@@ -1,8 +1,4 @@
 <?php
-/**
- * NunoMaduro，Manifest，应用名称测试
- */
-
 /*
  * This file is part of PharIo\Manifest.
  *

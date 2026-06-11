@@ -1,7 +1,7 @@
 <?php declare(strict_types = 1);
 
 /**
- * TheSeer，Tokenizer，Tokenizer
+ * TheSeer，词法分析器，Tokenizer
  */
 
 namespace TheSeer\Tokenizer;

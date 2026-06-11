@@ -71,7 +71,7 @@ trait GuardsAttributes
 
     /**
      * Set the guarded attributes for the model.
-	 * 模型设置受保护的属性
+	 * 为模型设置受保护的属性
      *
      * @param  array  $guarded
      * @return $this
@@ -190,7 +190,7 @@ trait GuardsAttributes
      */
     public function totallyGuarded()
     {
-        return count($this->getFillable()) == 0 && $this->getGuarded() == ['*'];
+        return count($this->getFillable()) === 0 && $this->getGuarded() == ['*'];
     }
 
     /**

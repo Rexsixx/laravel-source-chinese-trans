@@ -30,7 +30,7 @@ class FileSessionHandler implements SessionHandlerInterface
 
     /**
      * The number of minutes the session should be valid.
-	 * 会话记录的数量应该是有效的
+	 * 会话有效的分钟数
      *
      * @var int
      */

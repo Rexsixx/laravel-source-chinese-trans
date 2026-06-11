@@ -1,6 +1,6 @@
 <?php
 /**
- * Psy，执行循环闭合
+ * Psy，执行循环闭包
  */
 
 /*
@@ -21,7 +21,7 @@ use Psy\Exception\TypeErrorException;
 
 /**
  * The Psy Shell's execution loop scope.
- * Psy Shell的执行循环范围
+ * Psy Shell的执行循环范围。
  *
  * @todo Once we're on PHP 5.5, we can switch ExecutionClosure to a generator
  * and get rid of the duplicate closure implementations :)

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，问题，与数据透视表交互
+ * Illuminate，数据库，Eloquent，关联，问题，与数据透视表交互
  */
 
 namespace Illuminate\Database\Eloquent\Relations\Concerns;
@@ -70,7 +70,7 @@ trait InteractsWithPivotTable
      * Sync the intermediate tables with a list of IDs without detaching.
 	 * 同步中间表与id列表，而不分离。
      *
-     * @param  \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|array  $ids
+     * @param  \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model|array  $ids
      * @return array
      */
     public function syncWithoutDetaching($ids)
@@ -82,7 +82,7 @@ trait InteractsWithPivotTable
      * Sync the intermediate tables with a list of IDs or collection of models.
 	 * 将中间表与id列表或模型集合同步
      *
-     * @param  \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|array  $ids
+     * @param  \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model|array  $ids
      * @param  bool   $detaching
      * @return array
      */
@@ -449,7 +449,7 @@ trait InteractsWithPivotTable
      */
     public function newPivotStatementForId($id)
     {
-        return $this->newPivotQuery()->where($this->relatedPivotKey, $id);
+        return $this->newPivotQuery()->whereIn($this->relatedPivotKey, $this->parseIds($id));
     }
 
     /**
@@ -534,21 +534,24 @@ trait InteractsWithPivotTable
      */
     protected function castKeys(array $keys)
     {
-        return (array) array_map(function ($v) {
+        return array_map(function ($v) {
             return $this->castKey($v);
         }, $keys);
     }
 
     /**
-     * Cast the given key to an integer if it is numeric.
-	 * 如果给定的键是数字，则将其转换为整数。
+     * Cast the given key to convert to primary key type.
+	 * 强制转换给定的键以转换为主键类型
      *
      * @param  mixed  $key
      * @return mixed
      */
     protected function castKey($key)
     {
-        return is_numeric($key) ? (int) $key : (string) $key;
+        return $this->getTypeSwapValue(
+            $this->related->getKeyType(),
+            $key
+        );
     }
 
     /**
@@ -563,5 +566,30 @@ trait InteractsWithPivotTable
         return $this->using
                     ? $this->newPivot()->fill($attributes)->getAttributes()
                     : $attributes;
+    }
+
+    /**
+     * Converts a given value to a given type value.
+	 * 将给定值转换为给定类型值
+     *
+     * @param  string $type
+     * @param  mixed  $value
+     * @return mixed
+     */
+    protected function getTypeSwapValue($type, $value)
+    {
+        switch (strtolower($type)) {
+            case 'int':
+            case 'integer':
+                return (int) $value;
+            case 'real':
+            case 'float':
+            case 'double':
+                return (float) $value;
+            case 'string':
+                return (string) $value;
+            default:
+                return $value;
+        }
     }
 }

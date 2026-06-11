@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Version，抽象版本约束
+ * PharIo，版本，抽象版本约束
  */
 
 /*

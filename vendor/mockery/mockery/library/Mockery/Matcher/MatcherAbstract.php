@@ -1,9 +1,5 @@
 <?php
 /**
- * Mockery，匹配程序，匹配器抽象
- */
-
-/**
  * Mockery
  *
  * LICENSE
@@ -28,7 +24,6 @@ abstract class MatcherAbstract
 {
     /**
      * The expected value (or part thereof)
-	 * 期望值（或其中的一部分）
      *
      * @var mixed
      */
@@ -36,7 +31,6 @@ abstract class MatcherAbstract
 
     /**
      * Set the expected value
-	 * 设置期望值
      *
      * @param mixed $expected
      */

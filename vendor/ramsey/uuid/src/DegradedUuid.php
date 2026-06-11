@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，Degraded Uuid
+ * Ramsey，Uuid，退化的 Uuid
  */
 
 /**

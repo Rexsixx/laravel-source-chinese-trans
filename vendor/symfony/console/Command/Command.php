@@ -27,7 +27,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Base class for all commands.
- * 所有命令的基类
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -83,7 +82,6 @@ class Command
 
     /**
      * Ignores validation errors.
-	 * 忽略验证错误
      *
      * This is mainly useful for the help command.
      */

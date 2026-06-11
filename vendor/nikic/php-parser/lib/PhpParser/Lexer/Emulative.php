@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，Lexer，竞争性的
- */
-
 namespace PhpParser\Lexer;
 
 use PhpParser\Error;
@@ -220,7 +216,6 @@ class Emulative extends Lexer
 
     /**
      * Fixup line and position information in errors.
-	 * 修复线路和位置信息错误
      *
      * @param Error[] $errors
      */

@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，基本匹配程序测试
- */
-
 namespace Hamcrest;
 
 /* Test-specific subclass only */

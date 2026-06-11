@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Manifest，清单文件映射
+ * PharIo，Manifest，Manifest 文件映射器
  */
 
 /*

@@ -1,7 +1,4 @@
 <?php
-/**
- * Monolog，处理程序，手指交叉，错误激活策略
- */
 
 /*
  * This file is part of the Monolog package.
@@ -18,7 +15,6 @@ use Monolog\Logger;
 
 /**
  * Error level based activation strategy.
- * 基于错误的激活策略
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */

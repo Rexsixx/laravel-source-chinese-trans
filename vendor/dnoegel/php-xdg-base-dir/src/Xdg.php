@@ -7,6 +7,7 @@ namespace XdgBaseDir;
 
 /**
  * Simple implementation of the XDG standard http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+ * XDG标准的简单实现
  *
  * Based on the python implementation https://github.com/takluyver/pyxdg/blob/master/xdg/BaseDirectory.py
  */

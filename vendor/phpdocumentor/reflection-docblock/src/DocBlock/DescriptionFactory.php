@@ -1,7 +1,4 @@
 <?php
-/**
- * phpDocumentor，Reflection，Doc Block，描述工厂
- */
 
 declare(strict_types=1);
 
@@ -33,7 +30,6 @@ use const PREG_SPLIT_DELIM_CAPTURE;
 
 /**
  * Creates a new Description object given a body of text.
- * 创建一个新的描述对象,给定一个正文。
  *
  * Descriptions in phpDocumentor are somewhat complex entities as they can contain one or more tags inside their
  * body that can be replaced with a readable output. The replacing is done by passing a Formatter object to the
@@ -56,7 +52,6 @@ class DescriptionFactory
 
     /**
      * Initializes this factory with the means to construct (inline) tags.
-	 * 初始化这个工厂以构造(内联)标记
      */
     public function __construct(TagFactory $tagFactory)
     {
@@ -65,7 +60,6 @@ class DescriptionFactory
 
     /**
      * Returns the parsed text of this description.
-	 * 返回这个描述的解析文本
      */
     public function create(string $contents, ?TypeContext $context = null): Description
     {

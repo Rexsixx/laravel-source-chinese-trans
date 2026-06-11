@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，CodeCoverage，版本
+ * SebastianBergmann，代码覆盖率，版本
  */
 
 /*

@@ -1,8 +1,4 @@
 <?php
-/**
- * SebastianBergmann，ObjectEnumerator，计数器
- */
-
 /*
  * This file is part of Object Enumerator.
  *

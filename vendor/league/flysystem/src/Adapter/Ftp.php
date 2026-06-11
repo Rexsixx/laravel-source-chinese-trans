@@ -84,7 +84,7 @@ class Ftp extends AbstractFtpAdapter
 
     /**
      * Set if Ssl is enabled.
-	 * 设置是否启用Ssl
+	 * 设置Ssl启用
      *
      * @param bool $ssl
      *
@@ -99,7 +99,7 @@ class Ftp extends AbstractFtpAdapter
 
     /**
      * Set if passive mode should be used.
-	 * 设置是否使用被动模式
+	 * 如果应该使用被动模式。
      *
      * @param bool $passive
      */
@@ -134,7 +134,6 @@ class Ftp extends AbstractFtpAdapter
 
     /**
      * Connect to the FTP server.
-	 * 连接到FTP服务器
      */
     public function connect()
     {

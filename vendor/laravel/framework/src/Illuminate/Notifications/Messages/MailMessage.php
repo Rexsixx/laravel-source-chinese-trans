@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，信息，Mail 消息
+ * Illuminate，通知，消息，邮件消息
  */
 
 namespace Illuminate\Notifications\Messages;
@@ -28,7 +28,7 @@ class MailMessage extends SimpleMessage
 
     /**
      * The Markdown template to render (if applicable).
-	 * 要呈现的Markdown模板（如果适用
+	 * 要呈现的Markdown模板（如果适用）
      *
      * @var string|null
      */
@@ -60,6 +60,7 @@ class MailMessage extends SimpleMessage
 
     /**
      * The "bcc" information for the message.
+	 * 消息的“密件”信息
      *
      * @var array
      */
@@ -156,7 +157,7 @@ class MailMessage extends SimpleMessage
 
     /**
      * Set the "reply to" address of the message.
-	 * 设置“回复”消息地址
+	 * 设置邮件的“回复”地址
      *
      * @param  array|string  $address
      * @param  string|null  $name

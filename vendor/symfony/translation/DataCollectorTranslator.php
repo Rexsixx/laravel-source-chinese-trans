@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，翻译，数据收集器转换器
+ * Symfony，组件，翻译，数据采集器翻译
  */
 
 /*
@@ -116,6 +116,7 @@ class DataCollectorTranslator implements LegacyTranslatorInterface, TranslatorIn
 
     /**
      * Gets the fallback locales.
+	 * 获取备用区域设置
      *
      * @return array The fallback locales
      */

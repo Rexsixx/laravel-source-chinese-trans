@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，加载器，Xliff 文件加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ use Symfony\Component\Translation\Util\XliffUtils;
 
 /**
  * XliffFileLoader loads translations from XLIFF files.
+ * XliffFileLoader从XLIFF文件加载翻译。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -72,6 +76,7 @@ class XliffFileLoader implements LoaderInterface
 
     /**
      * Extract messages and metadata from DOMDocument into a MessageCatalogue.
+	 * 从DOMDocument中提取消息和元数据到MessageCatalogue中
      */
     private function extractXliff1(\DOMDocument $dom, MessageCatalogue $catalogue, string $domain)
     {

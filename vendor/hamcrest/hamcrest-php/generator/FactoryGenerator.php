@@ -1,4 +1,7 @@
 <?php
+/**
+ * 工厂生成器
+ */
 
 /*
  Copyright (c) 2009 hamcrest.org

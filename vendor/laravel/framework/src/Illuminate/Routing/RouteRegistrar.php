@@ -38,7 +38,7 @@ class RouteRegistrar
 
     /**
      * The attributes to pass on to the router.
-	 * 将属性传递到路由器的属性
+	 * 要传递给路由器的属性
      *
      * @var array
      */
@@ -46,7 +46,7 @@ class RouteRegistrar
 
     /**
      * The methods to dynamically pass through to the router.
-	 * 动态传递到路由器的方法
+	 * 动态传递给路由器的方法
      *
      * @var array
      */
@@ -56,7 +56,7 @@ class RouteRegistrar
 
     /**
      * The attributes that can be set through this class.
-	 * 可以通过这个类设置的属性
+	 * 可以通过该类设置的属性
      *
      * @var array
      */
@@ -66,7 +66,7 @@ class RouteRegistrar
 
     /**
      * The attributes that are aliased.
-	 * 被别名的属性
+	 * 使用别名的属性
      *
      * @var array
      */
@@ -76,7 +76,7 @@ class RouteRegistrar
 
     /**
      * Create a new route registrar instance.
-	 * 创建一个新的路由注册实例
+	 * 创建一个新的路由注册器实例
      *
      * @param  \Illuminate\Routing\Router  $router
      * @return void
@@ -123,7 +123,7 @@ class RouteRegistrar
 
     /**
      * Create a route group with shared attributes.
-	 * 创建一个具有共享属性的路由组
+	 * 创建具有共享属性的路由组
      *
      * @param  \Closure|string  $callback
      * @return void
@@ -149,7 +149,7 @@ class RouteRegistrar
 
     /**
      * Register a new route with the router.
-	 * 用路由器注册一条新路线
+	 * 向路由器注册一条新路由
      *
      * @param  string  $method
      * @param  string  $uri
@@ -167,7 +167,7 @@ class RouteRegistrar
 
     /**
      * Compile the action into an array including the attributes.
-	 * 将操作编译成包括属性在内的数组
+	 * 将动作编译成包含属性的数组
      *
      * @param  \Closure|array|string|null  $action
      * @return array
@@ -187,7 +187,7 @@ class RouteRegistrar
 
     /**
      * Dynamically handle calls into the route registrar.
-	 * 动态地将电话接通路线注册者
+	 * 动态处理对路由注册器的调用
      *
      * @param  string  $method
      * @param  array  $parameters
@@ -202,7 +202,7 @@ class RouteRegistrar
         }
 
         if (in_array($method, $this->allowedAttributes)) {
-            if ($method == 'middleware') {
+            if ($method === 'middleware') {
                 return $this->attribute($method, is_array($parameters[0]) ? $parameters[0] : $parameters);
             }
 

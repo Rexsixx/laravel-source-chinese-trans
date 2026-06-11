@@ -22,14 +22,25 @@ class HashManager extends Manager implements Hasher
     }
 
     /**
-     * Create an instance of the Argon2 hash Driver.
-	 * 创建Argon2哈希驱动程序的实例
+     * Create an instance of the Argon2i hash Driver.
+	 * 创建Argon2i哈希驱动程序的实例
      *
      * @return \Illuminate\Hashing\ArgonHasher
      */
     public function createArgonDriver()
     {
         return new ArgonHasher($this->app['config']['hashing.argon'] ?? []);
+    }
+
+    /**
+     * Create an instance of the Argon2id hash Driver.
+	 * 创建Argon2id哈希驱动程序的实例
+     *
+     * @return \Illuminate\Hashing\Argon2IdHasher
+     */
+    public function createArgon2idDriver()
+    {
+        return new Argon2IdHasher($this->app['config']['hashing.argon'] ?? []);
     }
 
     /**

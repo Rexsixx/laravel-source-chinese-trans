@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，参数格式化程序
+ * NunoMaduro，冲突，参数格式化程序
  */
 
 /**

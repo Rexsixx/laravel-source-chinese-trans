@@ -17,7 +17,6 @@ abstract class Declaration implements PhpParser\Builder
 
     /**
      * Adds multiple statements.
-	 * 添加多个语句
      *
      * @param array $stmts The statements to add
      *
@@ -33,7 +32,6 @@ abstract class Declaration implements PhpParser\Builder
 
     /**
      * Sets doc comment for the declaration.
-	 * 为声明设置文档注释
      *
      * @param PhpParser\Comment\Doc|string $docComment Doc comment to set
      *

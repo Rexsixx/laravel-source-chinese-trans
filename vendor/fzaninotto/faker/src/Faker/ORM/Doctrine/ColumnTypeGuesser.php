@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，学说，列式猜测器
+ */
 
 namespace Faker\ORM\Doctrine;
 

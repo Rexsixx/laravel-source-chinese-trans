@@ -28,7 +28,7 @@ trait ConfigAwareTrait
 
     /**
      * Get the Config.
-	 * 得到配置
+	 * 获取配置
      *
      * @return Config config object
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，Fake，事件 Fake
+ * Illuminate，支持，测试，假装，事件 Fake
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -14,7 +14,7 @@ class EventFake implements Dispatcher
 {
     /**
      * The original event dispatcher.
-	 * 原始事件调度员
+	 * 原始事件调度程序
      *
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
@@ -22,7 +22,7 @@ class EventFake implements Dispatcher
 
     /**
      * The event types that should be intercepted instead of dispatched.
-	 * 应该拦截的事件类型而不是发送
+	 * 应该拦截而不是分派的事件类型
      *
      * @var array
      */
@@ -30,7 +30,7 @@ class EventFake implements Dispatcher
 
     /**
      * All of the events that have been intercepted keyed by type.
-	 * 所有被拦截的事件都被键入了
+	 * 所有被截获的事件都是按类型键入的
      *
      * @var array
      */
@@ -38,7 +38,7 @@ class EventFake implements Dispatcher
 
     /**
      * Create a new event fake instance.
-	 * 创建一个新的事件假实例
+	 * 创建一个新的事件伪实例
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $dispatcher
      * @param  array|string  $eventsToFake
@@ -53,7 +53,7 @@ class EventFake implements Dispatcher
 
     /**
      * Assert if an event was dispatched based on a truth-test callback.
-	 * 断言如果一个事件是基于trutest callback发送的
+	 * 判断事件是否基于真值测试回调分派
      *
      * @param  string  $event
      * @param  callable|int|null  $callback
@@ -73,7 +73,7 @@ class EventFake implements Dispatcher
 
     /**
      * Assert if a event was dispatched a number of times.
-	 * 断言是否事件被发送了很多次
+	 * 如果事件被多次调度，则断言。
      *
      * @param  string  $event
      * @param  int  $times
@@ -89,7 +89,7 @@ class EventFake implements Dispatcher
 
     /**
      * Determine if an event was dispatched based on a truth-test callback.
-	 * 确定是否根据trutest callback发送一个事件
+	 * 确定是否根据真值测试回调分派事件
      *
      * @param  string  $event
      * @param  callable|null  $callback
@@ -105,7 +105,7 @@ class EventFake implements Dispatcher
 
     /**
      * Get all of the events matching a truth-test callback.
-	 * 获取匹配一个trutest callback的所有事件
+	 * 获取与true -test回调匹配的所有事件
      *
      * @param  string  $event
      * @param  callable|null  $callback
@@ -128,7 +128,7 @@ class EventFake implements Dispatcher
 
     /**
      * Determine if the given event has been dispatched.
-	 * 确定是否已发送给定事件
+	 * 确定是否已分派给定的事件
      *
      * @param  string  $event
      * @return bool
@@ -140,7 +140,7 @@ class EventFake implements Dispatcher
 
     /**
      * Register an event listener with the dispatcher.
-	 * 用dispatcher注册一个事件侦听器
+	 * 向调度程序注册事件侦听器
      *
      * @param  string|array  $events
      * @param  mixed  $listener
@@ -165,7 +165,7 @@ class EventFake implements Dispatcher
 
     /**
      * Register an event and payload to be dispatched later.
-	 * 稍后注册一个事件和有效负载
+	 * 注册以后要分派的事件和有效负载
      *
      * @param  string  $event
      * @param  array  $payload
@@ -178,7 +178,7 @@ class EventFake implements Dispatcher
 
     /**
      * Register an event subscriber with the dispatcher.
-	 * 向调度员注册一个事件订阅者
+	 * 向调度程序注册事件订阅者
      *
      * @param  object|string  $subscriber
      * @return void
@@ -190,7 +190,7 @@ class EventFake implements Dispatcher
 
     /**
      * Flush a set of pushed events.
-	 * 刷新一组推送事件
+	 * 刷新一组推送的事件 
      *
      * @param  string  $event
      * @return void
@@ -202,7 +202,7 @@ class EventFake implements Dispatcher
 
     /**
      * Fire an event and call the listeners.
-	 * 启动一个事件并调用侦听器
+	 * 触发一个事件并调用侦听器
      *
      * @param  string|object  $event
      * @param  mixed  $payload
@@ -216,7 +216,7 @@ class EventFake implements Dispatcher
 
     /**
      * Fire an event and call the listeners.
-	 * 启动一个事件并调用侦听器
+	 * 触发一个事件并调用侦听器
      *
      * @param  string|object  $event
      * @param  mixed  $payload
@@ -230,13 +230,13 @@ class EventFake implements Dispatcher
         if ($this->shouldFakeEvent($name, $payload)) {
             $this->events[$name][] = func_get_args();
         } else {
-            $this->dispatcher->dispatch($event, $payload, $halt);
+            return $this->dispatcher->dispatch($event, $payload, $halt);
         }
     }
 
     /**
      * Determine if an event should be faked or actually dispatched.
-	 * 确定事件是否应该被伪造或被发送
+	 * 确定是否应该伪造或实际分派事件
      *
      * @param  string  $eventName
      * @param  mixed  $payload
@@ -259,7 +259,7 @@ class EventFake implements Dispatcher
 
     /**
      * Remove a set of listeners from the dispatcher.
-	 * 从dispatcher中删除一组侦听器
+	 * 从调度程序中删除一组侦听器
      *
      * @param  string  $event
      * @return void
@@ -282,7 +282,7 @@ class EventFake implements Dispatcher
 
     /**
      * Dispatch an event and call the listeners.
-	 * 发送一个事件并调用侦听器
+	 * 分派事件并调用侦听器
      *
      * @param  string|object $event
      * @param  mixed $payload

@@ -51,7 +51,7 @@ class Parser
 
     /**
      * Parse the given quoted value.
-	 * 解析给定的引用值
+	 * 解析给定的引号值
      *
      * @param string $value
      *
@@ -111,7 +111,6 @@ class Parser
 
     /**
      * Parse the given unquoted value.
-	 * 解析给定的未引用值
      *
      * @param string $value
      *

@@ -1,7 +1,4 @@
 <?php
-/**
- * Monolog，格式器，MongoDB 格式化器
- */
 
 /*
  * This file is part of the Monolog package.
@@ -18,7 +15,6 @@ use Monolog\Utils;
 
 /**
  * Formats a record for use with the MongoDBHandler.
- * 格式化一条记录，以便与MongoDBHandler一起使用。
  *
  * @author Florian Plattner <me@florianplattner.de>
  */

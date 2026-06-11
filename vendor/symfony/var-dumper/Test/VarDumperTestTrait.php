@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，VarDumper，测试，Var Dumper Test特性
+ * Symfony，组件，Var Dumper，测试，VarDumper 测试特征
  */
 
 /*

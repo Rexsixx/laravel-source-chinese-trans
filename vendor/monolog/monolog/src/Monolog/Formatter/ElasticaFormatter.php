@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，格式器，Elastica 格式化器
+ * Monolog，格式化程序，Elastica 格式化程序
  */
 
 /*
@@ -18,7 +18,6 @@ use Elastica\Document;
 
 /**
  * Format a log message into an Elastica Document
- * 将日志信息格式化为Elastica文档
  *
  * @author Jelle Vink <jelle.vink@gmail.com>
  */
@@ -77,7 +76,6 @@ class ElasticaFormatter extends NormalizerFormatter
 
     /**
      * Convert a log message into an Elastica Document
-	 * 将日志信息转换为Elastica文档
      *
      * @param  array    $record Log message
      * @return Document

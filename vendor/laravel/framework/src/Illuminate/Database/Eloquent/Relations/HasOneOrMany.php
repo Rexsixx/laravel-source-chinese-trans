@@ -91,7 +91,9 @@ abstract class HasOneOrMany extends Relation
      */
     public function addEagerConstraints(array $models)
     {
-        $this->query->whereIn(
+        $whereIn = $this->whereInMethod($this->parent, $this->localKey);
+
+        $this->query->{$whereIn}(
             $this->foreignKey, $this->getKeys($models, $this->localKey)
         );
     }
@@ -141,6 +143,8 @@ abstract class HasOneOrMany extends Relation
         // Once we have the dictionary we can simply spin through the parent models to
         // link them up with their children using the keyed dictionary to make the
         // matching very convenient and easy work. Then we'll just return them.
+		// 一旦我们有了这个字典，我们就可以直接遍历父模型，利用带键的字典将它们与子模型关联起来，
+		// 这样就能使匹配操作变得非常便捷和容易。然后我们再将它们返回即可。
         foreach ($models as $model) {
             if (isset($dictionary[$key = $model->getAttribute($this->localKey)])) {
                 $model->setRelation(
@@ -165,7 +169,7 @@ abstract class HasOneOrMany extends Relation
     {
         $value = $dictionary[$key];
 
-        return $type == 'one' ? reset($value) : $this->related->newCollection($value);
+        return $type === 'one' ? reset($value) : $this->related->newCollection($value);
     }
 
     /**
@@ -274,8 +278,8 @@ abstract class HasOneOrMany extends Relation
      * Attach a collection of models to the parent instance.
 	 * 将模型集合附加到父实例
      *
-     * @param  \Traversable|array  $models
-     * @return \Traversable|array
+     * @param  iterable  $models
+     * @return iterable
      */
     public function saveMany($models)
     {
@@ -330,22 +334,6 @@ abstract class HasOneOrMany extends Relation
     protected function setForeignAttributesForCreate(Model $model)
     {
         $model->setAttribute($this->getForeignKeyName(), $this->getParentKey());
-    }
-
-    /**
-     * Perform an update on all the related models.
-	 * 对所有相关模型执行更新
-     *
-     * @param  array  $attributes
-     * @return int
-     */
-    public function update(array $attributes)
-    {
-        if ($this->related->usesTimestamps() && ! is_null($this->relatedUpdatedAt())) {
-            $attributes[$this->relatedUpdatedAt()] = $this->related->freshTimestampString();
-        }
-
-        return $this->query->update($attributes);
     }
 
     /**
@@ -452,5 +440,16 @@ abstract class HasOneOrMany extends Relation
     public function getQualifiedForeignKeyName()
     {
         return $this->foreignKey;
+    }
+
+    /**
+     * Get the local key for the relationship.
+	 * 获取关系的本地键
+     *
+     * @return string
+     */
+    public function getLocalKeyName()
+    {
+        return $this->localKey;
     }
 }

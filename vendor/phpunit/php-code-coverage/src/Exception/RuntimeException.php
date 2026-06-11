@@ -1,8 +1,4 @@
 <?php
-/**
- * SebastianBergmann，CodeCoverage，运行时异常
- */
-
 /*
  * This file is part of the php-code-coverage package.
  *

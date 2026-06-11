@@ -27,7 +27,6 @@ class ReplaceFilter implements Filter
 
     /**
      * Replaces the object property by the result of the callback called with the object property.
-	 * 用用对象属性调用的回调的结果替换对象属性
      *
      * {@inheritdoc}
      */

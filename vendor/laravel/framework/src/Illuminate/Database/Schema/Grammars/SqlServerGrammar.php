@@ -24,7 +24,7 @@ class SqlServerGrammar extends Grammar
      *
      * @var array
      */
-    protected $modifiers = ['Increment', 'Collate', 'Nullable', 'Default'];
+    protected $modifiers = ['Increment', 'Collate', 'Nullable', 'Default', 'Persisted'];
 
     /**
      * The columns available as serials.
@@ -798,6 +798,18 @@ class SqlServerGrammar extends Grammar
     }
 
     /**
+     * Create the column definition for a generated, computed column type.
+	 * 为生成的、计算的列类型创建列定义。
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string|null
+     */
+    protected function typeComputed(Fluent $column)
+    {
+        return "as ({$column->expression})";
+    }
+
+    /**
      * Get the SQL for a collation column modifier.
 	 * 获取排序列修饰符的SQL
      *
@@ -822,12 +834,14 @@ class SqlServerGrammar extends Grammar
      */
     protected function modifyNullable(Blueprint $blueprint, Fluent $column)
     {
-        return $column->nullable ? ' null' : ' not null';
+        if ($column->type !== 'computed') {
+            return $column->nullable ? ' null' : ' not null';
+        }
     }
 
     /**
      * Get the SQL for a default column modifier.
-	 * 获取默认列修饰符的SQL。
+	 * 获取默认列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -852,6 +866,21 @@ class SqlServerGrammar extends Grammar
     {
         if (in_array($column->type, $this->serials) && $column->autoIncrement) {
             return ' identity primary key';
+        }
+    }
+
+    /**
+     * Get the SQL for a generated stored column modifier.
+	 * 获取生成的存储列修饰符的SQL
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string|null
+     */
+    protected function modifyPersisted(Blueprint $blueprint, Fluent $column)
+    {
+        if ($column->persisted) {
+            return ' persisted';
         }
     }
 

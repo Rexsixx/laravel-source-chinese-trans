@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，侦听器生成命令
+ * Illuminate，基础，控制台，侦听器制作命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -96,7 +96,7 @@ class ListenerMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认名称空间
+	 * 获取类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -115,9 +115,9 @@ class ListenerMakeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['event', 'e', InputOption::VALUE_OPTIONAL, 'The event class being listened for.'],
+            ['event', 'e', InputOption::VALUE_OPTIONAL, 'The event class being listened for'],
 
-            ['queued', null, InputOption::VALUE_NONE, 'Indicates the event listener should be queued.'],
+            ['queued', null, InputOption::VALUE_NONE, 'Indicates the event listener should be queued'],
         ];
     }
 }

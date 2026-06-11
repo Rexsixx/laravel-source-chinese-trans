@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，密码，数据库令牌存储库
+ * Illuminate，认证，密码，数据库令牌存储库
  */
 
 namespace Illuminate\Auth\Passwords;
@@ -91,6 +91,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
         // a safe link to the password reset form. Then we will insert a record in
         // the database so that we can verify the token within the actual reset.
 		// 我们将为用户创建一个新的、随机的令牌,这样我们就可以将它们发送到密码重置表单的安全链接。
+		// 然后我们将在数据库中插入一个记录,这样我们就可以在实际的重置中验证令牌。
         $token = $this->createNewToken();
 
         $this->getTable()->insert($this->getPayload($email, $token));

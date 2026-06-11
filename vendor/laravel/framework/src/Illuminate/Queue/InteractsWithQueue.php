@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，与队列交互
+ * Illuminate，行列，与队列交互
  */
 
 namespace Illuminate\Queue;
@@ -43,7 +43,7 @@ trait InteractsWithQueue
 
     /**
      * Fail the job from the queue.
-	 * 从队列中失败
+	 * 从队列中失败作业
      *
      * @param  \Throwable  $exception
      * @return void
@@ -57,7 +57,7 @@ trait InteractsWithQueue
 
     /**
      * Release the job back into the queue.
-	 * 把工作放回队列中
+	 * 将作业释放回队列
      *
      * @param  int   $delay
      * @return void

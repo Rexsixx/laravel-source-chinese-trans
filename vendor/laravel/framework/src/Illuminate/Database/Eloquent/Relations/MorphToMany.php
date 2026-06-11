@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，形态多样
+ * Illuminate，数据库，Eloquent，关系，多态多对多关系
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -197,5 +197,16 @@ class MorphToMany extends BelongsToMany
     public function getMorphClass()
     {
         return $this->morphClass;
+    }
+
+    /**
+     * Get the indicator for a reverse relationship.
+	 * 获取反向关系的指示符
+     *
+     * @return bool
+     */
+    public function getInverse()
+    {
+        return $this->inverse;
     }
 }

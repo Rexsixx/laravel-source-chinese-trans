@@ -1,6 +1,6 @@
 <?php
 /**
- * phpDocumentor，Reflection，文件
+ * phpDocumentor，反射，文件
  */
 
 declare(strict_types=1);
@@ -18,19 +18,16 @@ namespace phpDocumentor\Reflection;
 
 /**
  * Interface for files processed by the ProjectFactory
- * 由ProjectFactory处理的文件的接口
  */
 interface File
 {
     /**
      * Returns the content of the file as a string.
-	 * 以字符串形式返回文件的内容
      */
     public function getContents() : string;
 
     /**
      * Returns md5 hash of the file.
-	 * 返回文件的md5哈希
      */
     public function md5() : string;
 

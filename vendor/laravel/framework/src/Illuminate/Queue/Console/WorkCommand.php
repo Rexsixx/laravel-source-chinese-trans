@@ -27,6 +27,7 @@ class WorkCommand extends Command
                             {--queue= : The names of the queues to work}
                             {--daemon : Run the worker in daemon mode (Deprecated)}
                             {--once : Only process the next job on the queue}
+                            {--stop-when-empty : Stop when the queue is empty}
                             {--delay=0 : The number of seconds to delay failed jobs}
                             {--force : Force the worker to run even in maintenance mode}
                             {--memory=128 : The memory limit in megabytes}
@@ -44,7 +45,7 @@ class WorkCommand extends Command
 
     /**
      * The queue worker instance.
-	 * 队列工作程序实例
+	 * 队列工作线程实例
      *
      * @var \Illuminate\Queue\Worker
      */
@@ -90,6 +91,7 @@ class WorkCommand extends Command
         // configuration file for the application. We will pull it based on the set
         // connection being run for the queue operation currently being executed.
 		// 我们需要为应用程序的队列配置文件设置连接的正确队列。
+		// 我们将根据目前正在执行的队列操作的设置连接来拉它。
         $queue = $this->getQueue($connection);
 
         $this->runWorker(
@@ -125,7 +127,8 @@ class WorkCommand extends Command
         return new WorkerOptions(
             $this->option('delay'), $this->option('memory'),
             $this->option('timeout'), $this->option('sleep'),
-            $this->option('tries'), $this->option('force')
+            $this->option('tries'), $this->option('force'),
+            $this->option('stop-when-empty')
         );
     }
 
@@ -222,7 +225,7 @@ class WorkCommand extends Command
 
     /**
      * Determine if the worker should run in maintenance mode.
-	 * 确定工人是否应在维护模式下运行
+	 * 确定工作线程是否应该在维护模式下运行
      *
      * @return bool
      */

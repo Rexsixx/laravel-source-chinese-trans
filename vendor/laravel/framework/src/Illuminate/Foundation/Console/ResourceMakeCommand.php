@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，资源创建命令
+ * Illuminate，基础，控制台，资源生成命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -37,9 +37,9 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
-     * @return bool|null
+     * @return void
      */
     public function handle()
     {
@@ -96,7 +96,7 @@ class ResourceMakeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['collection', 'c', InputOption::VALUE_NONE, 'Create a resource collection.'],
+            ['collection', 'c', InputOption::VALUE_NONE, 'Create a resource collection'],
         ];
     }
 }

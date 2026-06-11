@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，CodeCoverage，代码覆盖率
+ * SebastianBergmann，代码覆盖率，Code Coverage
  */
 
 /*
@@ -92,7 +92,7 @@ final class CodeCoverage
 
     /**
      * Code coverage data.
-	 * 代码覆盖数据
+	 * 代码覆盖率数据
      *
      * @var array
      */
@@ -110,7 +110,6 @@ final class CodeCoverage
 
     /**
      * Test data.
-	 * 测试数据
      *
      * @var array
      */
@@ -123,7 +122,6 @@ final class CodeCoverage
 
     /**
      * Determine if the data has been initialized or not
-	 * 确定数据是否已初始化
      *
      * @var bool
      */
@@ -131,7 +129,6 @@ final class CodeCoverage
 
     /**
      * Determine whether we need to check for dead and unused code on each test
-	 * 确定我们是否需要检查每个测试中死亡和未使用的代码
      *
      * @var bool
      */

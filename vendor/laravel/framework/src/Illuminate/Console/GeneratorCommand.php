@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，指令生成器
+ * Illuminate，控制台，生成器命令
  */
 
 namespace Illuminate\Console;
@@ -54,6 +54,7 @@ abstract class GeneratorCommand extends Command
 	 * 执行console命令
      *
      * @return bool|null
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function handle()
     {
@@ -64,7 +65,8 @@ abstract class GeneratorCommand extends Command
         // First we will check to see if the class already exists. If it does, we don't want
         // to create the class and overwrite the user's code. So, we will bail out so the
         // code is untouched. Otherwise, we will continue generating this class' files.
-		// 首先,我们将检查是否已经存在这个类。
+		// 首先,我们将检查是否已经存在这个类。如果它这样做,我们就不希望创建类并覆盖用户的代码。
+		// 所以,我们将保释出来,这样代码就不受影响了。否则,我们将继续生成这个类的文件。
         if ((! $this->hasOption('force') ||
              ! $this->option('force')) &&
              $this->alreadyExists($this->getNameInput())) {
@@ -77,6 +79,7 @@ abstract class GeneratorCommand extends Command
         // written. Then, we will build the class and make the proper replacements on the
         // stub files so that it gets the correctly formatted namespace and class name.
 		// 接下来,我们将生成该类文件应该写入的位置的路径。
+		// 然后，我们将创建该类，并在模板文件中进行适当的替换，以确保命名空间和类名格式正确。
         $this->makeDirectory($path);
 
         $this->files->put($path, $this->buildClass($name));
@@ -168,6 +171,7 @@ abstract class GeneratorCommand extends Command
      *
      * @param  string  $name
      * @return string
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function buildClass($name)
     {
@@ -188,7 +192,7 @@ abstract class GeneratorCommand extends Command
     {
         $stub = str_replace(
             ['DummyNamespace', 'DummyRootNamespace', 'NamespacedDummyUserModel'],
-            [$this->getNamespace($name), $this->rootNamespace(), config('auth.providers.users.model')],
+            [$this->getNamespace($name), $this->rootNamespace(), $this->userProviderModel()],
             $stub
         );
 
@@ -242,6 +246,21 @@ abstract class GeneratorCommand extends Command
     protected function rootNamespace()
     {
         return $this->laravel->getNamespace();
+    }
+
+    /**
+     * Get the model for the default guard's user provider.
+	 * 获取默认保护的用户提供程序的模型
+     *
+     * @return string|null
+     */
+    protected function userProviderModel()
+    {
+        $guard = config('auth.defaults.guard');
+
+        $provider = config("auth.guards.{$guard}.provider");
+
+        return config("auth.providers.{$provider}.model");
     }
 
     /**

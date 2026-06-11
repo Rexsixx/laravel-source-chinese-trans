@@ -47,7 +47,7 @@ interface Gate
 
     /**
      * Register a callback to run after all Gate checks.
-	 * 注册一个回调，在所有Gate检查之后运行。
+	 * 注册一个回调，在所有Gate检查之后运行
      *
      * @param  callable  $callback
      * @return $this
@@ -105,6 +105,16 @@ interface Gate
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function authorize($ability, $arguments = []);
+
+    /**
+     * Get the raw result from the authorization callback.
+	 * 从授权回调获取原始结果
+     *
+     * @param  string  $ability
+     * @param  array|mixed  $arguments
+     * @return mixed
+     */
+    public function raw($ability, $arguments = []);
 
     /**
      * Get a policy instance for a given class.

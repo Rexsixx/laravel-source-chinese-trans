@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，传输，Ses 传输
+ * Illuminate，电子邮件，传送，Ses 传送
  */
 
 namespace Illuminate\Mail\Transport;
@@ -19,15 +19,25 @@ class SesTransport extends Transport
     protected $ses;
 
     /**
+     * The Amazon SES transmission options.
+	 * 亚马逊SES传输选项
+     *
+     * @var array
+     */
+    protected $options = [];
+
+    /**
      * Create a new SES transport instance.
 	 * 创建一个新的SES传输实例
      *
      * @param  \Aws\Ses\SesClient  $ses
+     * @param  array  $options
      * @return void
      */
-    public function __construct(SesClient $ses)
+    public function __construct(SesClient $ses, $options = [])
     {
         $this->ses = $ses;
+        $this->options = $options;
     }
 
     /**
@@ -37,17 +47,44 @@ class SesTransport extends Transport
     {
         $this->beforeSendPerformed($message);
 
-        $headers = $message->getHeaders();
+        $result = $this->ses->sendRawEmail(
+            array_merge(
+                $this->options, [
+                    'Source' => key($message->getSender() ?: $message->getFrom()),
+                    'RawMessage' => [
+                        'Data' => $message->toString(),
+                    ],
+                ]
+            )
+        );
 
-        $headers->addTextHeader('X-SES-Message-ID', $this->ses->sendRawEmail([
-            'Source' => key($message->getSender() ?: $message->getFrom()),
-            'RawMessage' => [
-                'Data' => $message->toString(),
-            ],
-        ])->get('MessageId'));
+        $message->getHeaders()->addTextHeader('X-SES-Message-ID', $result->get('MessageId'));
 
         $this->sendPerformed($message);
 
         return $this->numberOfRecipients($message);
+    }
+
+    /**
+     * Get the transmission options being used by the transport.
+	 * 获取传输所使用的传输选项
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Set the transmission options being used by the transport.
+	 * 设置传输所使用的传输选项
+     *
+     * @param  array  $options
+     * @return array
+     */
+    public function setOptions(array $options)
+    {
+        return $this->options = $options;
     }
 }

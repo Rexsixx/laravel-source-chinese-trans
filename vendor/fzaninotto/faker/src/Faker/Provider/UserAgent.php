@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，供应者，用户代理
+ */
 
 namespace Faker\Provider;
 
@@ -14,6 +17,7 @@ class UserAgent extends Base
 
     /**
      * Possible processors on Linux
+	 * Linux上可能的处理器
      */
     protected static $linuxProcessor = array('i686', 'x86_64');
 

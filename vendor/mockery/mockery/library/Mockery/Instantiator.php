@@ -50,7 +50,6 @@ final class Instantiator
     /**
      * Builds a {@see \Closure} capable of instantiating the given $className without
      * invoking its constructor.
-	 * 构建一个{@see \Closure}，能够实例化给定的$className，而不调用它的构造函数。
      *
      * @param string $className
      *
@@ -149,7 +148,6 @@ final class Instantiator
 
     /**
      * Verifies whether the given class is to be considered internal
-	 * 验证是否将给定的类视为内部类
      *
      * @param ReflectionClass $reflectionClass
      *

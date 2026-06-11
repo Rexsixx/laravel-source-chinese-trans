@@ -5,8 +5,8 @@
 
 namespace Illuminate\Validation;
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
+use Illuminate\Contracts\Support\Arrayable;
 
 class Rule
 {
@@ -39,14 +39,14 @@ class Rule
 
     /**
      * Get an in constraint builder instance.
-	 * 在约束生成器实例中获得一个
+	 * 获取一个已存在的约束生成器实例
      *
-     * @param  array|string|\Illuminate\Support\Collection  $values
+     * @param  \Illuminate\Contracts\Support\Arrayable|array|string  $values
      * @return \Illuminate\Validation\Rules\In
      */
     public static function in($values)
     {
-        if ($values instanceof Collection) {
+        if ($values instanceof Arrayable) {
             $values = $values->toArray();
         }
 
@@ -55,14 +55,14 @@ class Rule
 
     /**
      * Get a not_in constraint builder instance.
-	 * 在约束生成器实例中获得一个not_in
+	 * 获取一个not_in约束生成器实例
      *
-     * @param  array|string|\Illuminate\Support\Collection  $values
+     * @param  \Illuminate\Contracts\Support\Arrayable|array|string  $values
      * @return \Illuminate\Validation\Rules\NotIn
      */
     public static function notIn($values)
     {
-        if ($values instanceof Collection) {
+        if ($values instanceof Arrayable) {
             $values = $values->toArray();
         }
 

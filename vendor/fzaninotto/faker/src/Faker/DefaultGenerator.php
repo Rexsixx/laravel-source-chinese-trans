@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，默认生成器
+ * Faker，默认发生器
  */
 
 namespace Faker;
@@ -8,7 +8,7 @@ namespace Faker;
 /**
  * This generator returns a default value for all called properties
  * and methods. It works with Faker\Generator\Base->optional().
- * 此生成器为所有调用的属性和方法返回默认值。
+ * 这个生成器返回所有被称为属性的默认值和方法
  */
 class DefaultGenerator
 {

@@ -20,7 +20,7 @@ class ForcedRename extends AbstractPlugin
 
     /**
      * Renames a file, overwriting the destination if it exists.
-	 * 重命名文件，如果目标存在，则覆盖目标。
+	 * 重新命名文件,如果存在的话,将目的地重写。
      *
      * @param string $path    Path to the existing file.
      * @param string $newpath The new path of the file.
@@ -36,6 +36,7 @@ class ForcedRename extends AbstractPlugin
             $deleted = $this->filesystem->delete($newpath);
         } catch (FileNotFoundException $e) {
             // The destination path does not exist. That's ok.
+			// 目标路径不存在。没关系。
             $deleted = true;
         }
 

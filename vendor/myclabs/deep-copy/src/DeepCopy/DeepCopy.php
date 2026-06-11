@@ -37,7 +37,7 @@ class DeepCopy
 
     /**
      * Filters to apply.
-	 * 请求过滤器
+	 * 使用过滤器
      *
      * @var array Array of ['filter' => Filter, 'matcher' => Matcher] pairs.
      */
@@ -45,7 +45,7 @@ class DeepCopy
 
     /**
      * Type Filters to apply.
-	 * 申请的类型筛选器
+	 * 类型过滤器应用
      *
      * @var array Array of ['filter' => Filter, 'matcher' => Matcher] pairs.
      */
@@ -77,7 +77,6 @@ class DeepCopy
 
     /**
      * If enabled, will not throw an exception when coming across an uncloneable property.
-	 * 如果启用，将不会在遇到不可克隆属性时抛出异常。
      *
      * @param $skipUncloneable
      *
@@ -92,7 +91,6 @@ class DeepCopy
 
     /**
      * Deep copies the given object.
-	 * 深度复制给定对象
      *
      * @template TObject
      *
@@ -186,7 +184,6 @@ class DeepCopy
 
     /**
      * Copies an object.
-	 * 复制一个对象
      *
      * @param object $object
      *
@@ -292,7 +289,6 @@ class DeepCopy
 
     /**
      * Returns first filter that matches variable, `null` if no such filter found.
-	 * 返回第一个匹配变量的过滤器,如果没有这样的过滤器。
      *
      * @param array $filterRecords Associative array with 2 members: 'filter' with value of type {@see TypeFilter} and
      *                             'matcher' with value of type {@see TypeMatcher}

@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Version，预释放后缀
+ * PharIo，版本，Pre Release后缀
  */
 
 namespace PharIo\Version;

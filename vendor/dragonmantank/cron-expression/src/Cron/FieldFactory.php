@@ -9,6 +9,7 @@ use InvalidArgumentException;
 
 /**
  * CRON field factory implementing a flyweight factory
+ * CRON字段工厂实施flyweight工厂
  * @link http://en.wikipedia.org/wiki/Cron
  */
 class FieldFactory
@@ -20,7 +21,7 @@ class FieldFactory
 
     /**
      * Get an instance of a field object for a cron expression position
-	 * 获取cron表达式位置的字段对象实例
+	 * 为cron表达式位置获取字段对象的实例
      *
      * @param int $position CRON expression position value to retrieve
      *

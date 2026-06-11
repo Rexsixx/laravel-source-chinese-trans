@@ -9,7 +9,6 @@ use RuntimeException;
 
 /**
  * This is the validation exception class.
- * 这是验证异常类
  */
 class ValidationException extends RuntimeException implements ExceptionInterface
 {

@@ -90,6 +90,7 @@ abstract class Grammar
         // as well in order to generate proper syntax. If this is a column of course
         // no prefix is necessary. The condition will be true when from wrapTable.
 		// 如果我们正在包装一个表,我们需要用表前缀来前缀别名,以生成适当的语法。
+		// 如果这是一列当然没有前缀是必要的。从包到的情况下,情况将是正确的。
         if ($prefixAlias) {
             $segments[1] = $this->tablePrefix.$segments[1];
         }

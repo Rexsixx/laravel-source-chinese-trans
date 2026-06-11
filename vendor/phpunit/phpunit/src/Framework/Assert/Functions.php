@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，框架，函数
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -64,6 +68,7 @@ use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
 
 /**
  * Asserts that an array has a specified key.
+ * 断言数组是否具有指定的键
  *
  * @param int|string        $key
  * @param array|ArrayAccess $array

@@ -14,6 +14,7 @@ class Misc
 {
     /**
      * Can we at this point in time send HTTP headers?
+	 * 在这个时候,我们能发送HTTP头吗?
      *
      * Currently this checks if we are even serving an HTTP request,
      * as opposed to running from a command line.
@@ -36,6 +37,7 @@ class Misc
 
     /**
      * Check, if possible, that this execution was triggered by a command line.
+	 * 如果可能的话,检查这个执行是由命令行触发的。
      * @return bool
      */
     public static function isCommandLine()
@@ -45,6 +47,7 @@ class Misc
 
     /**
      * Translate ErrorException code into the represented constant.
+	 * 将ErrorException代码转换为代表常量
      *
      * @param int $error_code
      * @return string

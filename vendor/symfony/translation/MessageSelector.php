@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，信息选择器
+ * Symfony，组件，翻译，消息选择器
  */
 
 /*
@@ -20,6 +20,7 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
 
 /**
  * MessageSelector.
+ * 消息选择器
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Bernhard Schussek <bschussek@gmail.com>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，数据库，模型标识符
+ * Illuminate，契约，数据库，模型识别码
  */
 
 namespace Illuminate\Contracts\Database;

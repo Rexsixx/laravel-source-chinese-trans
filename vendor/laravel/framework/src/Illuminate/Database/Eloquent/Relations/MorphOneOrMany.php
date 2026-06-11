@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，变形一个或多个
+ * Illuminate，数据库，Eloquent，关系，形态单一或多种多样
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -73,20 +73,6 @@ abstract class MorphOneOrMany extends HasOneOrMany
         parent::addEagerConstraints($models);
 
         $this->query->where($this->morphType, $this->morphClass);
-    }
-
-    /**
-     * Attach a model instance to the parent model.
-	 * 将模型实例附加到父模型上
-     *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    public function save(Model $model)
-    {
-        $model->setAttribute($this->getMorphType(), $this->morphClass);
-
-        return parent::save($model);
     }
 
     /**

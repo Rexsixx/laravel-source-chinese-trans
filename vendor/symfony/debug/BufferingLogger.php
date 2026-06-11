@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，缓冲日志记录器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Psr\Log\AbstractLogger;
 
 /**
  * A buffering logger that stacks logs for later.
+ * 一个缓冲日志记录器，将日志堆叠起来供以后使用。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *

@@ -1,8 +1,4 @@
 <?php
-/**
- * SebastianBergmann，CodeCoverage，未执行的覆盖代码
- */
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -15,7 +11,6 @@ namespace SebastianBergmann\CodeCoverage;
 
 /**
  * Exception that is raised when code is unintentionally covered.
- * 当代码没有故意覆盖时,就会提高
  */
 final class UnintentionallyCoveredCodeException extends RuntimeException
 {

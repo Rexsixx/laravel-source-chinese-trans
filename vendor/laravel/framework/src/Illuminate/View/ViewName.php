@@ -9,7 +9,7 @@ class ViewName
 {
     /**
      * Normalize the given event name.
-	 * 规范化给定的事件名称
+	 * 将给定事件名称规范化
      *
      * @param  string  $name
      * @return string

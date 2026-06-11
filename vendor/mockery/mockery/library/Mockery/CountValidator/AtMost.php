@@ -30,7 +30,6 @@ class AtMost extends CountValidatorAbstract
 {
     /**
      * Validate the call count against this validator
-	 * 根据此验证器验证调用计数
      *
      * @param int $n
      * @return bool

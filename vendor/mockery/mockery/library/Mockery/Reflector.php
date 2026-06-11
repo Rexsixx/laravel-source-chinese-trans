@@ -31,7 +31,7 @@ class Reflector
 {
     /**
      * Determine if the parameter is typed as an array.
-	 * 确定参数的类型是否为数组
+	 * 确定参数是否被输入为数组
      *
      * @param \ReflectionParameter $param
      *
@@ -50,7 +50,6 @@ class Reflector
 
     /**
      * Compute the string representation for the paramater type.
-	 * 计算参数类型的字符串表示形式
      *
      * @param \ReflectionParameter $param
      * @param bool $withoutNullable
@@ -80,7 +79,6 @@ class Reflector
 
     /**
      * Compute the string representation for the return type.
-	 * 计算返回类型的字符串表示形式
      *
      * @param \ReflectionParameter $param
      * @param bool $withoutNullable
@@ -112,7 +110,6 @@ class Reflector
 
     /**
      * Compute the string representation for the simplest return type.
-	 * 计算最简单返回类型的字符串表示形式
      *
      * @param \ReflectionParameter $param
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，工具，流哈希计算器
+ * League，Flysystem，工具，流哈希
  */
 
 namespace League\Flysystem\Util;

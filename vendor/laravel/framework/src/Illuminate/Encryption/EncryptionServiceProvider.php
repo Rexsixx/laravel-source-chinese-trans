@@ -26,6 +26,7 @@ class EncryptionServiceProvider extends ServiceProvider
             // it off to the encrypter. Keys may be base-64 encoded for presentation and we
             // want to make sure to convert them back to the raw bytes before encrypting.
 			// 如果关键从“base64”开始,那么我们就需要在将密钥解码到加密器之前需要解码密钥。
+			// 密钥可能是base-64编码的表示,我们想要确保在加密之前将它们转换回原始字节。
             if (Str::startsWith($key = $this->key($config), 'base64:')) {
                 $key = base64_decode(substr($key, 7));
             }
@@ -40,6 +41,8 @@ class EncryptionServiceProvider extends ServiceProvider
      *
      * @param  array  $config
      * @return string
+     *
+     * @throws \RuntimeException
      */
     protected function key(array $config)
     {

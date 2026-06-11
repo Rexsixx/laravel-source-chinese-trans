@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，根违规异常
+ * League，Flysystem，根违反异常
  */
 
 namespace League\Flysystem;

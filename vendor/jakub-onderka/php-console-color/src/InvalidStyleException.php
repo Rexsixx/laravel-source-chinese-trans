@@ -1,6 +1,6 @@
 <?php
 /**
- * JakubOnderka，PhpConsoleColor，无效样式异常
+ * JakubOnderka，Php控制台颜色，无效样式异常
  */
 
 namespace JakubOnderka\PhpConsoleColor;

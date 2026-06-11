@@ -42,17 +42,21 @@ trait QueriesRelationships
         // If we only need to check for the existence of the relation, then we can optimize
         // the subquery to only run a "where exists" clause instead of this full "count"
         // clause. This will make these queries run much faster compared with a count.
+		// 如果我们只需要检查关系的存在,那么我们就可以优化子查询,只运行一个“存在的”子句,
+		// 而不是这个完整的“count”子句。这将使这些查询比计数更快地运行。
         $method = $this->canUseExistsForExistenceCheck($operator, $count)
                         ? 'getRelationExistenceQuery'
                         : 'getRelationExistenceCountQuery';
 
         $hasQuery = $relation->{$method}(
-            $relation->getRelated()->newQuery(), $this
+            $relation->getRelated()->newQueryWithoutRelationships(), $this
         );
 
         // Next we will call any given callback as an "anonymous" scope so they can get the
         // proper logical grouping of the where clauses if needed by this Eloquent query
         // builder. Then, we will be ready to finalize and return this query instance.
+		// 接下来,我们将调用任何给定的回调作为一个“匿名”范围,这样他们就可以得到这个有说服力的查询生成器所需要的where子句的正确逻辑分组。
+		// 然后,我们将准备完成并返回这个查询实例。
         if ($callback) {
             $hasQuery->callScope($callback);
         }
@@ -79,16 +83,25 @@ trait QueriesRelationships
     {
         $relations = explode('.', $relations);
 
+        $doesntHave = $operator === '<' && $count === 1;
+
+        if ($doesntHave) {
+            $operator = '>=';
+            $count = 1;
+        }
+
         $closure = function ($q) use (&$closure, &$relations, $operator, $count, $callback) {
             // In order to nest "has", we need to add count relation constraints on the
             // callback Closure. We'll do this by simply passing the Closure its own
             // reference to itself so it calls itself recursively on each segment.
+			// 为了“有”,我们需要在回调关闭中添加计数关系约束。
+			// 我们将通过简单地通过关闭自己的引用来做到这一点,所以它在每个部分上递归地调用自己。
             count($relations) > 1
                 ? $q->whereHas(array_shift($relations), $closure)
                 : $q->has(array_shift($relations), $operator, $count, 'and', $callback);
         };
 
-        return $this->has(array_shift($relations), '>=', 1, $boolean, $closure);
+        return $this->has(array_shift($relations), $doesntHave ? '<' : '>=', 1, $boolean, $closure);
     }
 
     /**
@@ -210,11 +223,13 @@ trait QueriesRelationships
             // First we will determine if the name has been aliased using an "as" clause on the name
             // and if it has we will extract the actual relationship name and the desired name of
             // the resulting column. This allows multiple counts on the same relationship name.
+			// 首先,我们将确定名称是否被使用“as”子句在名称上使用,如果它有我们将提取实际的关系名称和结果列的名称。
+			// 这允许在相同的关系名称上有多个计数。
             $segments = explode(' ', $name);
 
             unset($alias);
 
-            if (count($segments) == 3 && Str::lower($segments[1]) == 'as') {
+            if (count($segments) === 3 && Str::lower($segments[1]) === 'as') {
                 [$name, $alias] = [$segments[0], $segments[2]];
             }
 
@@ -223,6 +238,8 @@ trait QueriesRelationships
             // Here we will get the relationship count query and prepare to add it to the main query
             // as a sub-select. First, we'll get the "has" query and use that to get the relation
             // count query. We will normalize the relation name then append _count as the name.
+			// 在这里,我们将得到关系计数查询,并准备将其添加到主查询中作为子选择。
+			// 首先,我们将得到“have”查询,并使用它获得关系计数查询。我们将使关系名称正常化,然后将_count作为名称。
             $query = $relation->getRelationExistenceCountQuery(
                 $relation->getRelated()->newQuery(), $this
             );
@@ -238,6 +255,8 @@ trait QueriesRelationships
             // Finally we will add the proper result column alias to the query and run the subselect
             // statement against the query builder. Then we will return the builder instance back
             // to the developer for further constraint chaining that needs to take place on it.
+			// 最后,我们将在查询中添加适当的结果列别名,并对查询生成器运行子选择语句。
+			// 然后,我们将将构建实例返回给开发人员,以进一步限制需要在它上进行的约束链接。
             $column = $alias ?? Str::snake($name.'_count');
 
             $this->selectSub($query, $column);
@@ -280,6 +299,9 @@ trait QueriesRelationships
         // Here we have some other query that we want to merge the where constraints from. We will
         // copy over any where constraints on the query as well as remove any global scopes the
         // query might have removed. Then we will return ourselves with the finished merging.
+		// 这里我们有一些其他的查询我们想要合并where约束。
+		// 我们将对查询中的任何限制进行复制,并删除查询可能删除的任何全局范围。
+		// 然后我们将以最终的合并回来。
         return $this->withoutGlobalScopes(
             $from->removedScopes()
         )->mergeWheres(
@@ -325,7 +347,7 @@ trait QueriesRelationships
 
     /**
      * Check if we can run an "exists" query to optimize performance.
-	 * 检查我们是否可以运行“exists”查询来优化性能
+	 * 检查我们是否可以运行“exists”查询来优化性能。
      *
      * @param  string  $operator
      * @param  int  $count

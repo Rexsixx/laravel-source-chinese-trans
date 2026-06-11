@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，验证，规则，In
+ * Illuminate，验证，规则，包含
  */
 
 namespace Illuminate\Validation\Rules;
@@ -15,7 +15,7 @@ class In
 
     /**
      * The accepted values.
-	 * 被接受的值
+	 * 接受的值
      *
      * @var array
      */

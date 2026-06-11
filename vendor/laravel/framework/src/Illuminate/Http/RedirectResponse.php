@@ -5,11 +5,11 @@
 
 namespace Illuminate\Http;
 
-use BadMethodCallException;
 use Illuminate\Support\Str;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
 use Illuminate\Support\Traits\Macroable;
+use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Session\Store as SessionStore;
 use Illuminate\Contracts\Support\MessageProvider;
 use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse as BaseRedirectResponse;
 
 class RedirectResponse extends BaseRedirectResponse
 {
-    use ResponseTrait, Macroable {
+    use ForwardsCalls, ResponseTrait, Macroable {
         Macroable::__call as macroCall;
     }
 
@@ -250,8 +250,6 @@ class RedirectResponse extends BaseRedirectResponse
             return $this->with(Str::snake(substr($method, 4)), $parameters[0]);
         }
 
-        throw new BadMethodCallException(sprintf(
-            'Method %s::%s does not exist.', static::class, $method
-        ));
+        static::throwBadMethodCallException($method);
     }
 }

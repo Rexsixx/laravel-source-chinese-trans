@@ -1,13 +1,13 @@
 <?php
 /**
- * Fideloper，Proxy，配置
+ * Fideloper，可信的代理
  */
 
 return [
 
     /*
      * Set trusted proxy IP addresses.
-	 * 设置可信代理IP地址。
+	 * 设置可信的代理IP地址。
      *
      * Both IPv4 and IPv6 addresses are
      * supported, along with CIDR notation.

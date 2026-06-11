@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，EmailValidator，结果，原因，Atext After CFWS
+ * Egulias，电子邮件验证器，结果，理由，CFWS 后的Atext
  */
 
 namespace Egulias\EmailValidator\Result\Reason;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，调度，Schedule 运行命令
+ * Illuminate，控制台，线程调度，调度运行命令 schedule:run
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -20,7 +20,7 @@ class ScheduleRunCommand extends Command
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -68,7 +68,7 @@ class ScheduleRunCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */

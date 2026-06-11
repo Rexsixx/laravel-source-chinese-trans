@@ -21,7 +21,7 @@ interface Rule
      * Get the validation error message.
 	 * 获取验证错误消息
      *
-     * @return string
+     * @return string|array
      */
     public function message();
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Prophecy，论证，通配符参数
+ * Prophecy，参数，参数通配符
  */
 
 /*

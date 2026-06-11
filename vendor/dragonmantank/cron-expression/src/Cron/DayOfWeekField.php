@@ -1,6 +1,6 @@
 <?php
 /**
- * Cron，星期几字段
+ * Cron，周日字段
  */
 
 namespace Cron;
@@ -11,7 +11,7 @@ use InvalidArgumentException;
 
 /**
  * Day of week field.  Allows: * / , - ? L #
- * 一周中的一天。允许：* /，- ？L #
+ * 周天的时间。
  *
  * Days of the week can be represented as a number 0-7 (0|7 = Sunday)
  * or as a three letter string: SUN, MON, TUE, WED, THU, FRI, SAT.
@@ -137,6 +137,7 @@ class DayOfWeekField extends AbstractField
         }
 
         // Handle day of the week values
+		// 周天的价值
         if (strpos($value, '-')) {
             $parts = explode('-', $value);
             if ($parts[0] == '7') {

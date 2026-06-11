@@ -1,6 +1,6 @@
 <?php
 /**
- * Fideloper，Proxy，可信代理服务提供商
+ * Fideloper，代理人，可信代理服务提供者
  */
 
 namespace Fideloper\Proxy;
@@ -13,7 +13,7 @@ class TrustedProxyServiceProvider extends ServiceProvider
 {
     /**
      * Boot the service provider.
-	 * 启动服务提供程序
+	 * 引导服务提供者
      *
      * @return void
      */

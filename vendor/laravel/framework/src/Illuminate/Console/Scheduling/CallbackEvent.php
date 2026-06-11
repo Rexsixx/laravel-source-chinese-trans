@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，调度，回调事件
+ * Illuminate，控制台，线程调度，回调事件
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -78,7 +78,9 @@ class CallbackEvent extends Event
         parent::callBeforeCallbacks($container);
 
         try {
-            $response = $container->call($this->callback, $this->parameters);
+            $response = is_object($this->callback)
+                        ? $container->call([$this->callback, '__invoke'], $this->parameters)
+                        : $container->call($this->callback, $this->parameters);
         } finally {
             $this->removeMutex();
 

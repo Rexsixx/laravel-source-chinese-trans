@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，观察者制造命令
+ * Illuminate，基础，控制台，观察者编译命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -99,7 +99,7 @@ class ObserverMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认名称空间
+	 * 获取类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string

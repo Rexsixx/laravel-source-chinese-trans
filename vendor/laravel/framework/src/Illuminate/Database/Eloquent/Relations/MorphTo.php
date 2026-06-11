@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，多态
+ * Illuminate，数据库，Eloquent，关系，Morph To
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -10,9 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
-/**
- * @mixin \Illuminate\Database\Eloquent\Builder
- */
 class MorphTo extends BelongsTo
 {
     /**
@@ -96,21 +93,9 @@ class MorphTo extends BelongsTo
 
     /**
      * Get the results of the relationship.
-	 * 得到关系的结果
-     *
-     * @return mixed
-     */
-    public function getResults()
-    {
-        return $this->ownerKey ? parent::getResults() : null;
-    }
-
-    /**
-     * Get the results of the relationship.
 	 * 得到关系的结果。
      *
      * Called via eager load method of Eloquent query builder.
-	 * 通过Eloquent查询生成器的急切加载方法调用。
      *
      * @return mixed
      */
@@ -251,28 +236,9 @@ class MorphTo extends BelongsTo
      */
     public function touch()
     {
-        if (! is_null($this->ownerKey)) {
+        if (! is_null($this->child->{$this->foreignKey})) {
             parent::touch();
         }
-    }
-
-    /**
-     * Remove all or passed registered global scopes.
-	 * 删除所有或传递的已注册全局作用域
-     *
-     * @param  array|null  $scopes
-     * @return $this
-     */
-    public function withoutGlobalScopes(array $scopes = null)
-    {
-        $this->getQuery()->withoutGlobalScopes($scopes);
-
-        $this->macroBuffer[] = [
-            'method' => __FUNCTION__,
-            'parameters' => [$scopes],
-        ];
-
-        return $this;
     }
 
     /**
@@ -299,7 +265,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Replay stored macro calls on the actual related instance.
-	 * 在实际相关实例上重播存储的宏调用。
+	 * 在实际相关实例上重播存储的宏调用
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
@@ -324,13 +290,19 @@ class MorphTo extends BelongsTo
     public function __call($method, $parameters)
     {
         try {
-            return parent::__call($method, $parameters);
+            $result = parent::__call($method, $parameters);
+
+            if (in_array($method, ['select', 'selectRaw', 'selectSub', 'addSelect', 'withoutGlobalScopes'])) {
+                $this->macroBuffer[] = compact('method', 'parameters');
+            }
+
+            return $result;
         }
 
         // If we tried to call a method that does not exist on the parent Builder instance,
         // we'll assume that we want to call a query macro (e.g. withTrashed) that only
         // exists on related models. We will just store the call and replay it later.
-		// 如果我们试图调用父Builder实例上不存在的方法，我们假设我们只需要调用一个查询宏（例如withTrashed）。
+		// 如果尝试调用父类构建器实例中不存在的方法，我们将假定是要调用只存在于相关模型中的查询宏（例如 withTrashed）。
         catch (BadMethodCallException $e) {
             $this->macroBuffer[] = compact('method', 'parameters');
 

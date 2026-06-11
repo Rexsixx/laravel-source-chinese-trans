@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，控制台，清除命令 cache:clear
+ * Illuminate，缓存，控制台，清除命令
  */
 
 namespace Illuminate\Cache\Console;
@@ -15,7 +15,7 @@ class ClearCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
@@ -63,21 +63,25 @@ class ClearCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
     public function handle()
     {
-        $this->laravel['events']->fire(
+        $this->laravel['events']->dispatch(
             'cache:clearing', [$this->argument('store'), $this->tags()]
         );
 
-        $this->cache()->flush();
+        $successful = $this->cache()->flush();
 
         $this->flushFacades();
 
-        $this->laravel['events']->fire(
+        if (! $successful) {
+            return $this->error('Failed to clear cache. Make sure you have the appropriate permissions.');
+        }
+
+        $this->laravel['events']->dispatch(
             'cache:cleared', [$this->argument('store'), $this->tags()]
         );
 
@@ -118,7 +122,7 @@ class ClearCommand extends Command
 
     /**
      * Get the tags passed to the command.
-	 * 获取传递给命令的标记。
+	 * 获取传递给命令的标记
      *
      * @return array
      */
@@ -136,7 +140,7 @@ class ClearCommand extends Command
     protected function getArguments()
     {
         return [
-            ['store', InputArgument::OPTIONAL, 'The name of the store you would like to clear.'],
+            ['store', InputArgument::OPTIONAL, 'The name of the store you would like to clear'],
         ];
     }
 
@@ -149,7 +153,7 @@ class ClearCommand extends Command
     protected function getOptions()
     {
         return [
-            ['tags', null, InputOption::VALUE_OPTIONAL, 'The cache tags you would like to clear.', null],
+            ['tags', null, InputOption::VALUE_OPTIONAL, 'The cache tags you would like to clear', null],
         ];
     }
 }

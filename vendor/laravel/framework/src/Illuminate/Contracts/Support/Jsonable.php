@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，支持，可 Json
+ * Illuminate，契约，支持，Jsonable
  */
 
 namespace Illuminate\Contracts\Support;

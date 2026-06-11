@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，密码，密码重置服务提供商
+ * Illuminate，认证，密码，密码重置服务提供商
  */
 
 namespace Illuminate\Auth\Passwords;

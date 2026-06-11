@@ -17,7 +17,7 @@ trait InteractsWithExceptionHandling
      * The original exception handler.
 	 * 原始异常处理程序
      *
-     * @var ExceptionHandler|null
+     * @var \Illuminate\Contracts\Debug\ExceptionHandler|null
      */
     protected $originalExceptionHandler;
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，插件，可插拔的特征
+ * League，Flysystem，插件，可插入特性
  */
 
 namespace League\Flysystem\Plugin;
@@ -59,7 +59,6 @@ trait PluggableTrait
 
     /**
      * Invoke a plugin by method name.
-	 * 通过方法名称调用一个插件
      *
      * @param string              $method
      * @param array               $arguments
@@ -80,7 +79,6 @@ trait PluggableTrait
 
     /**
      * Plugins pass-through.
-	 * 插件通过
      *
      * @param string $method
      * @param array  $arguments

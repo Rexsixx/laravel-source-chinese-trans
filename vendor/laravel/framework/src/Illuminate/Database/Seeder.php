@@ -119,7 +119,7 @@ abstract class Seeder
      * Run the database seeds.
 	 * 运行数据库种子
      *
-     * @return void
+     * @return dynamic
      *
      * @throws \InvalidArgumentException
      */

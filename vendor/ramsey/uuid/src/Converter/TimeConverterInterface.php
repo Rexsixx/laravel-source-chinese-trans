@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，转化器，时间变换器接口
+ * Ramsey，Uuid，转换器，时间转换器接口
  */
 
 /**

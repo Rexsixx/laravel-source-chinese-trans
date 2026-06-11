@@ -1,13 +1,13 @@
 <?php
 /**
- * DeepCopy，过滤器，证明过滤器
+ * DeepCopy，过滤器，可链过滤器
  */
 
 namespace DeepCopy\Filter;
 
 /**
  * Defines a decorator filter that will not stop the chain of filters.
- * 定义一个不会停止过滤器链的装饰器过滤器
+ * 定义一个装饰器过滤器,它不会停止过滤器的链。
  */
 class ChainableFilter implements Filter
 {

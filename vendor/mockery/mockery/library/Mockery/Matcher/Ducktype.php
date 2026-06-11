@@ -1,9 +1,5 @@
 <?php
 /**
- * Mockery，匹配程序，管道类型
- */
-
-/**
  * Mockery
  *
  * LICENSE
@@ -28,7 +24,6 @@ class Ducktype extends MatcherAbstract
 {
     /**
      * Check if the actual value matches the expected.
-	 * 检查实际值是否与预期值匹配
      *
      * @param mixed $actual
      * @return bool
@@ -48,7 +43,6 @@ class Ducktype extends MatcherAbstract
 
     /**
      * Return a string representation of this Matcher
-	 * 返回此匹配器的字符串表示形式
      *
      * @return string
      */

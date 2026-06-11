@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，构建器，特征使用适应
- */
-
 namespace PhpParser\Builder;
 
 use PhpParser\Builder;
@@ -30,7 +26,6 @@ class TraitUseAdaptation implements Builder
 
     /**
      * Creates a trait use adaptation builder.
-	 * 创建一个特性使用适应性构建器
      *
      * @param Node\Name|string|null  $trait  Name of adaptated trait
      * @param Node\Identifier|string $method Name of adaptated method
@@ -44,7 +39,6 @@ class TraitUseAdaptation implements Builder
 
     /**
      * Sets alias of method.
-	 * 设置方法的别名
      *
      * @param Node\Identifier|string $alias Alias for adaptated method
      *
@@ -65,7 +59,6 @@ class TraitUseAdaptation implements Builder
 
     /**
      * Sets adaptated method public.
-	 * 设置可修改的方法公开
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -76,7 +69,6 @@ class TraitUseAdaptation implements Builder
 
     /**
      * Sets adaptated method protected.
-	 * 设置可修改的方法保护
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -87,7 +79,6 @@ class TraitUseAdaptation implements Builder
 
     /**
      * Sets adaptated method private.
-	 * 设置可修改的方法私有
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -98,7 +89,6 @@ class TraitUseAdaptation implements Builder
 
     /**
      * Adds overwritten traits.
-	 * 增加超写特征
      *
      * @param Node\Name|string ...$traits Traits for overwrite
      *
@@ -142,7 +132,6 @@ class TraitUseAdaptation implements Builder
 
     /**
      * Returns the built node.
-	 * 返回构建节点
      *
      * @return Node The built node
      */

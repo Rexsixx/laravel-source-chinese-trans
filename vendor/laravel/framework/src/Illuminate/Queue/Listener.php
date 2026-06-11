@@ -1,12 +1,11 @@
 <?php
 /**
- * Illuminate，队列，监听器
+ * Illuminate，行列，监听器
  */
 
 namespace Illuminate\Queue;
 
 use Closure;
-use Illuminate\Support\ProcessUtils;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\PhpExecutableFinder;
 
@@ -22,7 +21,7 @@ class Listener
 
     /**
      * The environment the workers should run under.
-	 * 工作线程的环境
+	 * 工作线程的工作环境
      *
      * @var string
      */
@@ -38,19 +37,11 @@ class Listener
 
     /**
      * The amount of times to try a job before logging it failed.
-	 * 在日志记录失败之前,尝试工作的次数。
+	 * 在记录作业失败之前尝试该作业的次数
      *
      * @var int
      */
     protected $maxTries = 0;
-
-    /**
-     * The queue worker command line.
-	 * 队列线程命令行
-     *
-     * @var string
-     */
-    protected $workerCommand;
 
     /**
      * The output handler callback.
@@ -70,51 +61,33 @@ class Listener
     public function __construct($commandPath)
     {
         $this->commandPath = $commandPath;
-        $this->workerCommand = $this->buildCommandTemplate();
-    }
-
-    /**
-     * Build the environment specific worker command.
-	 * 构建环境特定的worker命令
-     *
-     * @return string
-     */
-    protected function buildCommandTemplate()
-    {
-        $command = 'queue:work %s --once --queue=%s --delay=%s --memory=%s --sleep=%s --tries=%s';
-
-        return "{$this->phpBinary()} {$this->artisanBinary()} {$command}";
     }
 
     /**
      * Get the PHP binary.
-	 * 获取PHP二进制
+	 * 获取PHP二进制文件
      *
      * @return string
      */
     protected function phpBinary()
     {
-        return ProcessUtils::escapeArgument(
-            (new PhpExecutableFinder)->find(false)
-        );
+        return (new PhpExecutableFinder)->find(false);
     }
 
     /**
      * Get the Artisan binary.
-	 * 获得Artisan二进制
+	 * 获取Artisan二进制文件
      *
      * @return string
      */
     protected function artisanBinary()
     {
-        return defined('ARTISAN_BINARY')
-                        ? ProcessUtils::escapeArgument(ARTISAN_BINARY)
-                        : ProcessUtils::escapeArgument('artisan');
+        return defined('ARTISAN_BINARY') ? ARTISAN_BINARY : 'artisan';
     }
 
     /**
      * Listen to the given queue connection.
-	 * 侦听给定的队列连接
+	 * 监听给定的队列连接
      *
      * @param  string  $connection
      * @param  string  $queue
@@ -132,7 +105,7 @@ class Listener
 
     /**
      * Create a new Symfony process for the worker.
-	 * 为工人创造一个新的Symfony过程
+	 * 为工作者创建一个新的Symfony进程
      *
      * @param  string  $connection
      * @param  string  $queue
@@ -141,66 +114,73 @@ class Listener
      */
     public function makeProcess($connection, $queue, ListenerOptions $options)
     {
-        $command = $this->workerCommand;
+        $command = $this->createCommand(
+            $connection,
+            $queue,
+            $options
+        );
 
-        // If the environment is set, we will append it to the command string so the
+        // If the environment is set, we will append it to the command array so the
         // workers will run under the specified environment. Otherwise, they will
         // just run under the production environment which is not always right.
-		// 如果环境已设置好，我们将将其添加到命令字符串中，以便工作进程能够在指定的环境中运行。
+		// 如果设置了环境,我们将将它附加到命令数组,这样工人就会在指定的环境下运行。
+		// 否则,他们就会在生产环境下运行,这并不总是正确的。
         if (isset($options->environment)) {
             $command = $this->addEnvironment($command, $options);
         }
 
-        // Next, we will just format out the worker commands with all of the various
-        // options available for the command. This will produce the final command
-        // line that we will pass into a Symfony process object for processing.
-		// 接下来，我们将对这些工作指令进行格式化处理，同时涵盖该指令所具备的所有可用选项。
-        $command = $this->formatCommand(
-            $command, $connection, $queue, $options
-        );
-
         return new Process(
-            $command, $this->commandPath, null, null, $options->timeout
+            $command,
+            $this->commandPath,
+            null,
+            null,
+            $options->timeout
         );
     }
 
     /**
      * Add the environment option to the given command.
-	 * 将环境选项添加到给定的命令
+	 * 将环境选项添加到给定命令中
      *
      * @param  string  $command
      * @param  \Illuminate\Queue\ListenerOptions  $options
-     * @return string
+     * @return array
      */
     protected function addEnvironment($command, ListenerOptions $options)
     {
-        return $command.' --env='.ProcessUtils::escapeArgument($options->environment);
+        return array_merge($command, ["--env={$options->environment}"]);
     }
 
     /**
-     * Format the given command with the listener options.
-	 * 使用侦听器选项格式化给定的命令
+     * Create the command with the listener options.
+	 * 使用侦听器选项创建命令
      *
-     * @param  string  $command
      * @param  string  $connection
      * @param  string  $queue
      * @param  \Illuminate\Queue\ListenerOptions  $options
-     * @return string
+     * @return array
      */
-    protected function formatCommand($command, $connection, $queue, ListenerOptions $options)
+    protected function createCommand($connection, $queue, ListenerOptions $options)
     {
-        return sprintf(
-            $command,
-            ProcessUtils::escapeArgument($connection),
-            ProcessUtils::escapeArgument($queue),
-            $options->delay, $options->memory,
-            $options->sleep, $options->maxTries
-        );
+        return array_filter([
+            $this->phpBinary(),
+            $this->artisanBinary(),
+            'queue:work',
+            $connection,
+            '--once',
+            "--queue={$queue}",
+            "--delay={$options->delay}",
+            "--memory={$options->memory}",
+            "--sleep={$options->sleep}",
+            "--tries={$options->maxTries}",
+        ], function ($value) {
+            return ! is_null($value);
+        });
     }
 
     /**
      * Run the given process.
-	 * 运行给定的过程
+	 * 运行给定的进程
      *
      * @param  \Symfony\Component\Process\Process  $process
      * @param  int  $memory
@@ -215,7 +195,8 @@ class Listener
         // Once we have run the job we'll go check if the memory limit has been exceeded
         // for the script. If it has, we will kill this script so the process manager
         // will restart this with a clean slate of memory automatically on exiting.
-		// 一旦我们完成了这项任务，就会去检查一下该脚本的内存使用量是否已超过限制。
+		// 一旦我们运行了这个工作,我们就会检查是否已经超过了脚本的内存限制。
+		// 如果它有,我们将杀死这个脚本,这样过程管理器将自动在退出时自动重新启动这个内存。
         if ($this->memoryExceeded($memory)) {
             $this->stop();
         }
@@ -223,7 +204,7 @@ class Listener
 
     /**
      * Handle output from the worker process.
-	 * 处理员工流程中的输出
+	 * 处理工作进程的输出
      *
      * @param  int  $type
      * @param  string  $line
@@ -238,7 +219,7 @@ class Listener
 
     /**
      * Determine if the memory limit has been exceeded.
-	 * 确定是否已经超过了内存限制
+	 * 确定是否已超过内存限制
      *
      * @param  int  $memoryLimit
      * @return bool
@@ -250,7 +231,7 @@ class Listener
 
     /**
      * Stop listening and bail out of the script.
-	 * 停止监听并从脚本中获得保释
+	 * 别再听了，跳出剧本。
      *
      * @return void
      */

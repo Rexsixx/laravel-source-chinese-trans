@@ -20,7 +20,7 @@ class TransformsRequest
 
     /**
      * Handle an incoming request.
-	 * 处理传入的请求
+	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -49,7 +49,7 @@ class TransformsRequest
 
         if ($request->isJson()) {
             $this->cleanParameterBag($request->json());
-        } else {
+        } elseif ($request->request !== $request->query) {
             $this->cleanParameterBag($request->request);
         }
     }

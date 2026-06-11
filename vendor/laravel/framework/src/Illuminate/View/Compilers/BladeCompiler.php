@@ -51,7 +51,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * The file currently being compiled.
-	 * 目前正在编译的文件
+	 * 当前正在编译的文件
      *
      * @var string
      */
@@ -72,7 +72,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Array of opening and closing tags for raw echos.
-	 * 对原始回声的打开和关闭标记的数组
+	 * 原始回声的开始和结束标记数组
      *
      * @var array
      */
@@ -80,7 +80,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Array of opening and closing tags for regular echos.
-	 * 定期回音的打开和关闭标签的数组
+	 * 常规回显的开始和结束标记数组
      *
      * @var array
      */
@@ -88,7 +88,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Array of opening and closing tags for escaped echos.
-	 * 开封和关闭标签的数组
+	 * 转义回显的开始和结束标记数组
      *
      * @var array
      */
@@ -96,7 +96,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * The "regular" / legacy echo string format.
-	 * “常规”/遗留回波字符串格式
+	 * “常规”/遗留回显字符串格式
      *
      * @var string
      */
@@ -104,7 +104,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Array of footer lines to be added to template.
-	 * 将页脚线数组添加到模板中
+	 * 要添加到模板中的页脚行数组
      *
      * @var array
      */
@@ -112,7 +112,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Array to temporary store the raw blocks found in the template.
-	 * 数组到临时存储模板中发现的原始块
+	 * 数组来临时存储在模板中找到的原始块
      *
      * @var array
      */
@@ -120,7 +120,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Compile the view at the given path.
-	 * 在给定路径上编译视图
+	 * 在给定路径编译视图
      *
      * @param  string  $path
      * @return void
@@ -185,6 +185,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
         // Here we will loop through all of the tokens returned by the Zend lexer and
         // parse each one into the corresponding valid PHP. We will then have this
         // template as the correctly rendered PHP that can be rendered natively.
+		// 接下来，我们将遍历 Zend 解析器返回的所有标记，并将每个标记解析为相应的有效的 PHP 代码。
         foreach (token_get_all($value) as $token) {
             $result .= is_array($token) ? $this->parseToken($token) : $token;
         }
@@ -196,6 +197,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
         // If there are any footer lines that need to get added to a template we will
         // add them here at the end of the template. This gets used mainly for the
         // template inheritance via the extends keyword that should be appended.
+		// 如果需要在模板中添加任何页脚内容，我们将把这些内容添加到模板的末尾这里。
         if (count($this->footer) > 0) {
             $result = $this->addFooters($result);
         }
@@ -290,7 +292,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Parse the tokens from the template.
-	 * 从模板解析标记
+	 * 解析模板中的令牌
      *
      * @param  array  $token
      * @return string
@@ -326,7 +328,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Compile Blade statements that start with "@".
-	 * 用“@”开始编译刀片语句
+	 * 编译以“@”开头的Blade语句
      *
      * @param  string  $value
      * @return string
@@ -342,7 +344,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Compile a single Blade @ statement.
-	 * 编译单个刀片@语句
+	 * 编译一条Blade @语句
      *
      * @param  array  $match
      * @return string
@@ -379,7 +381,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Strip the parentheses from the given expression.
-	 * 从给定的表达式中删除括号
+	 * 从给定表达式中去掉括号
      *
      * @param  string  $expression
      * @return string
@@ -407,7 +409,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Get the extensions used by the compiler.
-	 * 获取编译器使用的扩展
+	 * 获取编译器使用的扩展名
      *
      * @return array
      */
@@ -468,7 +470,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     public function component($path, $alias = null)
     {
-        $alias = $alias ?: array_last(explode('.', $path));
+        $alias = $alias ?: Arr::last(explode('.', $path));
 
         $this->directive($alias, function ($expression) use ($path) {
             return $expression
@@ -491,12 +493,12 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     public function include($path, $alias = null)
     {
-        $alias = $alias ?: array_last(explode('.', $path));
+        $alias = $alias ?: Arr::last(explode('.', $path));
 
         $this->directive($alias, function ($expression) use ($path) {
             $expression = $this->stripParentheses($expression) ?: '[]';
 
-            return "<?php echo \$__env->make('{$path}', {$expression}, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>";
+            return "<?php echo \$__env->make('{$path}', {$expression}, \Illuminate\Support\Arr::except(get_defined_vars(), array('__data', '__path')))->render(); ?>";
         });
     }
 

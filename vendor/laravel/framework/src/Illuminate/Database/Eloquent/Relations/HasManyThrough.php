@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，多对多关联（通过关联表）
+ * Illuminate，数据库，Eloquent，关系，具有多种样式
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -162,7 +162,9 @@ class HasManyThrough extends Relation
      */
     public function addEagerConstraints(array $models)
     {
-        $this->query->whereIn(
+        $whereIn = $this->whereInMethod($this->farParent, $this->localKey);
+
+        $this->query->{$whereIn}(
             $this->getQualifiedFirstKeyName(), $this->getKeys($models, $this->localKey)
         );
     }
@@ -200,6 +202,8 @@ class HasManyThrough extends Relation
         // Once we have the dictionary we can simply spin through the parent models to
         // link them up with their children using the keyed dictionary to make the
         // matching very convenient and easy work. Then we'll just return them.
+		// 一旦我们有了字典,我们就可以简单地通过父模型将它们与他们的孩子连接起来,
+		// 使用字母字典,使匹配非常方便和容易工作。然后我们就返回它们。
         foreach ($models as $model) {
             if (isset($dictionary[$key = $model->getAttribute($this->localKey)])) {
                 $model->setRelation(
@@ -225,6 +229,8 @@ class HasManyThrough extends Relation
         // First we will create a dictionary of models keyed by the foreign key of the
         // relationship as this will allow us to quickly access all of the related
         // models without having to do nested looping which will be quite slow.
+		// 首先,我们将创建一个由关系的外键键键入的模型字典,这将允许我们快速访问所有相关模型,
+		// 而不必做嵌套的循环,这将会非常缓慢。
         foreach ($results as $result) {
             $dictionary[$result->{$this->firstKey}][] = $result;
         }
@@ -357,7 +363,7 @@ class HasManyThrough extends Relation
             return $result;
         }
 
-        throw (new ModelNotFoundException)->setModel(get_class($this->related));
+        throw (new ModelNotFoundException)->setModel(get_class($this->related), $id);
     }
 
     /**
@@ -368,7 +374,9 @@ class HasManyThrough extends Relation
      */
     public function getResults()
     {
-        return $this->get();
+        return ! is_null($this->farParent->{$this->localKey})
+                ? $this->get()
+                : $this->related->newCollection();
     }
 
     /**
@@ -387,6 +395,8 @@ class HasManyThrough extends Relation
         // If we actually found models we will also eager load any relationships that
         // have been specified as needing to be eager loaded. This will solve the
         // n + 1 query problem for the developer and also increase performance.
+		// 如果我们真正找到了模型,我们也会急切地加载任何被指定为需要被加载的关系。
+		// 这将解决开发人员的n + 1查询问题,并提高性能。
         if (count($models) > 0) {
             $models = $builder->eagerLoadRelations($models);
         }
@@ -458,6 +468,25 @@ class HasManyThrough extends Relation
     }
 
     /**
+     * Chunk the results of a query by comparing numeric IDs.
+	 * 通过比较数字id对查询结果进行分组
+     *
+     * @param  int  $count
+     * @param  callable  $callback
+     * @param  string|null  $column
+     * @param  string|null  $alias
+     * @return bool
+     */
+    public function chunkById($count, callable $callback, $column = null, $alias = null)
+    {
+        $column = $column ?? $this->getRelated()->getQualifiedKeyName();
+
+        $alias = $alias ?? $this->getRelated()->getKeyName();
+
+        return $this->prepareQueryBuilder()->chunkById($count, $callback, $column, $alias);
+    }
+
+    /**
      * Get a generator for the given query.
 	 * 获取给定查询的生成器
      *
@@ -514,8 +543,12 @@ class HasManyThrough extends Relation
      */
     public function getRelationExistenceQuery(Builder $query, Builder $parentQuery, $columns = ['*'])
     {
-        if ($parentQuery->getQuery()->from == $query->getQuery()->from) {
+        if ($parentQuery->getQuery()->from === $query->getQuery()->from) {
             return $this->getRelationExistenceQueryForSelfRelation($query, $parentQuery, $columns);
+        }
+
+        if ($parentQuery->getQuery()->from === $this->throughParent->getTable()) {
+            return $this->getRelationExistenceQueryForThroughSelfRelation($query, $parentQuery, $columns);
         }
 
         $this->performJoin($query);
@@ -538,7 +571,7 @@ class HasManyThrough extends Relation
     {
         $query->from($query->getModel()->getTable().' as '.$hash = $this->getRelationCountHash());
 
-        $query->join($this->throughParent->getTable(), $this->getQualifiedParentKeyName(), '=', $hash.'.'.$this->secondLocalKey);
+        $query->join($this->throughParent->getTable(), $this->getQualifiedParentKeyName(), '=', $hash.'.'.$this->secondKey);
 
         if ($this->throughParentSoftDeletes()) {
             $query->whereNull($this->throughParent->getQualifiedDeletedAtColumn());
@@ -548,6 +581,30 @@ class HasManyThrough extends Relation
 
         return $query->select($columns)->whereColumn(
             $parentQuery->getQuery()->from.'.'.$this->localKey, '=', $this->getQualifiedFirstKeyName()
+        );
+    }
+
+    /**
+     * Add the constraints for a relationship query on the same table as the through parent.
+	 * 在与through父表相同的表上为关系查询添加约束
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
+     * @param  array|mixed  $columns
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function getRelationExistenceQueryForThroughSelfRelation(Builder $query, Builder $parentQuery, $columns = ['*'])
+    {
+        $table = $this->throughParent->getTable().' as '.$hash = $this->getRelationCountHash();
+
+        $query->join($table, $hash.'.'.$this->secondLocalKey, '=', $this->getQualifiedFarKeyName());
+
+        if ($this->throughParentSoftDeletes()) {
+            $query->whereNull($hash.'.'.$this->throughParent->getDeletedAtColumn());
+        }
+
+        return $query->select($columns)->whereColumn(
+            $parentQuery->getQuery()->from.'.'.$this->localKey, '=', $hash.'.'.$this->firstKey
         );
     }
 
@@ -574,6 +631,17 @@ class HasManyThrough extends Relation
     }
 
     /**
+     * Get the foreign key on the "through" model.
+	 * 获取“直通”模式上的外键
+     *
+     * @return string
+     */
+    public function getFirstKeyName()
+    {
+        return $this->firstKey;
+    }
+
+    /**
      * Get the qualified foreign key on the "through" model.
 	 * 获取“through”模型上的合格外键
      *
@@ -582,6 +650,17 @@ class HasManyThrough extends Relation
     public function getQualifiedFirstKeyName()
     {
         return $this->throughParent->qualifyColumn($this->firstKey);
+    }
+
+    /**
+     * Get the foreign key on the related model.
+	 * 获取相关模型上的外键
+     *
+     * @return string
+     */
+    public function getForeignKeyName()
+    {
+        return $this->secondKey;
     }
 
     /**
@@ -596,6 +675,17 @@ class HasManyThrough extends Relation
     }
 
     /**
+     * Get the local key on the far parent model.
+	 * 获取远父模型上的本地键
+     *
+     * @return string
+     */
+    public function getLocalKeyName()
+    {
+        return $this->localKey;
+    }
+
+    /**
      * Get the qualified local key on the far parent model.
 	 * 获取远父模型上的限定本地键
      *
@@ -604,5 +694,16 @@ class HasManyThrough extends Relation
     public function getQualifiedLocalKeyName()
     {
         return $this->farParent->qualifyColumn($this->localKey);
+    }
+
+    /**
+     * Get the local key on the intermediary model.
+	 * 获取中介模型上的本地键。
+     *
+     * @return string
+     */
+    public function getSecondLocalKeyName()
+    {
+        return $this->secondLocalKey;
     }
 }

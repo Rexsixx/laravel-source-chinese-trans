@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Css选择器，异常，解析异常
+ * Symfony，组件，调试，Css 选择器，异常，解析异常
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\CssSelector\Exception;
 
 /**
  * ParseException is thrown when a CSS selector syntax is not valid.
- * 当CSS选择器语法无效时,会抛出ParseException。
+ * 当CSS选择器语法无效时抛出ParseException。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.

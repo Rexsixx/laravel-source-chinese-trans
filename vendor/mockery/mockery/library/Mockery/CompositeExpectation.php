@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，复合的期望
+ * Mockery，复合期望
  */
 
 /**
@@ -36,7 +36,6 @@ class CompositeExpectation implements ExpectationInterface
 
     /**
      * Add an expectation to the composite
-	 * 对复合材料添加一个期望
      *
      * @param \Mockery\Expectation|\Mockery\CompositeExpectation $expectation
      * @return void
@@ -56,7 +55,6 @@ class CompositeExpectation implements ExpectationInterface
 
     /**
      * Set a return value, or sequential queue of return values
-	 * 设置返回值，或返回值的顺序队列。
      *
      * @param mixed ...$args
      * @return self
@@ -68,7 +66,6 @@ class CompositeExpectation implements ExpectationInterface
 
     /**
      * Intercept any expectation calls and direct against all expectations
-	 * 拦截任何期望调用，并直接反对所有期望。
      *
      * @param string $method
      * @param array $args
@@ -84,7 +81,6 @@ class CompositeExpectation implements ExpectationInterface
 
     /**
      * Return order number of the first expectation
-	 * 第一个期望的返回顺序号
      *
      * @return int
      */
@@ -97,7 +93,6 @@ class CompositeExpectation implements ExpectationInterface
 
     /**
      * Return the parent mock of the first expectation
-	 * 返回第一个期望的父模型
      *
      * @return \Mockery\MockInterface|\Mockery\LegacyMockInterface
      */
@@ -110,7 +105,6 @@ class CompositeExpectation implements ExpectationInterface
 
     /**
      * Mockery API alias to getMock
-	 * 用API别名获取getMock
      *
      * @return \Mockery\LegacyMockInterface|\Mockery\MockInterface
      */
@@ -149,7 +143,6 @@ class CompositeExpectation implements ExpectationInterface
 
     /**
      * Return the string summary of this composite expectation
-	 * 返回此组合期望的字符串摘要
      *
      * @return string
      */

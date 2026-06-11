@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，零队列
+ * Illuminate，队列，空队列
  */
 
 namespace Illuminate\Queue;
@@ -37,7 +37,7 @@ class NullQueue extends Queue implements QueueContract
 
     /**
      * Push a raw payload onto the queue.
-	 * 将原始有效负载推到队列上
+	 * 将原始有效负载推入队列
      *
      * @param  string  $payload
      * @param  string  $queue
@@ -51,7 +51,7 @@ class NullQueue extends Queue implements QueueContract
 
     /**
      * Push a new job onto the queue after a delay.
-	 * 延迟后将新作业推到队列上
+	 * 在延迟后将新作业推入队列
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job
@@ -66,7 +66,7 @@ class NullQueue extends Queue implements QueueContract
 
     /**
      * Pop the next job off of the queue.
-	 * 从队列中启动下一个作业
+	 * 将下一个作业从队列中弹出
      *
      * @param  string  $queue
      * @return \Illuminate\Contracts\Queue\Job|null

@@ -1,6 +1,6 @@
 <?php
 /**
- * phpDocumentor，Reflection，Fqsen
+ * phpDocumentor，反射，Fqsen
  */
 
 declare(strict_types=1);
@@ -27,7 +27,6 @@ use function trim;
 
 /**
  * Value Object for Fqsen.
- * Fqsen的值对象
  *
  * @link https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc-meta.md
  *
@@ -43,7 +42,6 @@ final class Fqsen
 
     /**
      * Initializes the object.
-	 * 初始化对象
      *
      * @throws InvalidArgumentException when $fqsen is not matching the format.
      */
@@ -78,7 +76,6 @@ final class Fqsen
 
     /**
      * converts this class to string.
-	 * 将此类转换为字符串
      */
     public function __toString() : string
     {
@@ -87,7 +84,6 @@ final class Fqsen
 
     /**
      * Returns the name of the element without path.
-	 * 返回没有路径的元素的名称
      */
     public function getName() : string
     {

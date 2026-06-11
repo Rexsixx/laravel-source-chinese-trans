@@ -52,6 +52,10 @@ class Grammar extends BaseGrammar
      */
     public function compileSelect(Builder $query)
     {
+        if ($query->unions && $query->aggregate) {
+            return $this->compileUnionAggregate($query);
+        }
+
         // If the query does not have any columns set, we'll set the columns to the
         // * character to just get all of the columns from the database. Then we
         // can build the query and concatenate all the pieces together as one.
@@ -75,7 +79,7 @@ class Grammar extends BaseGrammar
 
     /**
      * Compile the components necessary for a select clause.
-	 * 编译select子句所需的组件。
+	 * 编译select子句所需的组件
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return array
@@ -88,7 +92,7 @@ class Grammar extends BaseGrammar
             // To compile the query, we'll spin through each component of the query and
             // see if that component exists. If it does we'll just call the compiler
             // function for the component which is responsible for making the SQL.
-            if (! is_null($query->$component)) {
+            if (isset($query->$component) && ! is_null($query->$component)) {
                 $method = 'compile'.ucfirst($component);
 
                 $sql[$component] = $this->$method($query, $query->$component);
@@ -170,7 +174,9 @@ class Grammar extends BaseGrammar
 
             $nestedJoins = is_null($join->joins) ? '' : ' '.$this->compileJoins($query, $join->joins);
 
-            return trim("{$join->type} join {$table}{$nestedJoins} {$this->compileWheres($join)}");
+            $tableAndNestedJoins = is_null($join->joins) ? $table : '('.$table.$nestedJoins.')';
+
+            return trim("{$join->type} join {$tableAndNestedJoins} {$this->compileWheres($join)}");
         })->implode(' ');
     }
 
@@ -292,6 +298,25 @@ class Grammar extends BaseGrammar
     }
 
     /**
+     * Compile a "where not in raw" clause.
+	 * 编译一个“where not in raw”子句。
+     *
+     * For safety, whereIntegerInRaw ensures this method is only used with integer values.
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $where
+     * @return string
+     */
+    protected function whereNotInRaw(Builder $query, $where)
+    {
+        if (! empty($where['values'])) {
+            return $this->wrap($where['column']).' not in ('.implode(', ', $where['values']).')';
+        }
+
+        return '1 = 1';
+    }
+
+    /**
      * Compile a where in sub-select clause.
 	 * 编译where in子选择子句
      *
@@ -315,6 +340,25 @@ class Grammar extends BaseGrammar
     protected function whereNotInSub(Builder $query, $where)
     {
         return $this->wrap($where['column']).' not in ('.$this->compileSelect($where['query']).')';
+    }
+
+    /**
+     * Compile a "where in raw" clause.
+	 * 编译一个“where in raw”子句。
+     *
+     * For safety, whereIntegerInRaw ensures this method is only used with integer values.
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $where
+     * @return string
+     */
+    protected function whereInRaw(Builder $query, $where)
+    {
+        if (! empty($where['values'])) {
+            return $this->wrap($where['column']).' in ('.implode(', ', $where['values']).')';
+        }
+
+        return '0 = 1';
     }
 
     /**
@@ -390,7 +434,7 @@ class Grammar extends BaseGrammar
 
     /**
      * Compile a "where day" clause.
-	 * 编写一个“where day”子句
+	 * 编译一个where day子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -504,7 +548,7 @@ class Grammar extends BaseGrammar
 
     /**
      * Compile a where exists clause.
-	 * 编译where exists子句
+	 * 编译where exists子句。
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -556,6 +600,7 @@ class Grammar extends BaseGrammar
      * @param  string  $column
      * @param  string  $value
      * @return string
+     *
      * @throws \RuntimeException
      */
     protected function compileJsonContains($column, $value)
@@ -573,6 +618,37 @@ class Grammar extends BaseGrammar
     public function prepareBindingForJsonContains($binding)
     {
         return json_encode($binding);
+    }
+
+    /**
+     * Compile a "where JSON length" clause.
+	 * 编译一个“where JSON length”子句
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $where
+     * @return string
+     */
+    protected function whereJsonLength(Builder $query, $where)
+    {
+        return $this->compileJsonLength(
+            $where['column'], $where['operator'], $this->parameter($where['value'])
+        );
+    }
+
+    /**
+     * Compile a "JSON length" statement into SQL.
+	 * 将“JSON长度”语句编译成SQL
+     *
+     * @param  string  $column
+     * @param  string  $operator
+     * @param  string  $value
+     * @return string
+     *
+     * @throws \RuntimeException
+     */
+    protected function compileJsonLength($column, $operator, $value)
+    {
+        throw new RuntimeException('This database engine does not support JSON length operations.');
     }
 
     /**
@@ -617,6 +693,8 @@ class Grammar extends BaseGrammar
         // clause into SQL based on the components that make it up from builder.
         if ($having['type'] === 'Raw') {
             return $having['boolean'].' '.$having['sql'];
+        } elseif ($having['type'] === 'between') {
+            return $this->compileHavingBetween($having);
         }
 
         return $this->compileBasicHaving($having);
@@ -636,6 +714,26 @@ class Grammar extends BaseGrammar
         $parameter = $this->parameter($having['value']);
 
         return $having['boolean'].' '.$column.' '.$having['operator'].' '.$parameter;
+    }
+
+    /**
+     * Compile a "between" having clause.
+	 * 编写一个“between”从句
+     *
+     * @param  array  $having
+     * @return string
+     */
+    protected function compileHavingBetween($having)
+    {
+        $between = $having['not'] ? 'not between' : 'between';
+
+        $column = $this->wrap($having['column']);
+
+        $min = $this->parameter(head($having['values']));
+
+        $max = $this->parameter(last($having['values']));
+
+        return $having['boolean'].' '.$column.' '.$between.' '.$min.' and '.$max;
     }
 
     /**
@@ -755,6 +853,22 @@ class Grammar extends BaseGrammar
     }
 
     /**
+     * Compile a union aggregate query into SQL.
+	 * 将联合聚合查询编译为SQL
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @return string
+     */
+    protected function compileUnionAggregate(Builder $query)
+    {
+        $sql = $this->compileAggregate($query, $query->aggregate);
+
+        $query->aggregate = null;
+
+        return $sql.' from ('.$this->compileSelect($query).') as '.$this->wrapTable('temp_table');
+    }
+
+    /**
      * Compile an exists statement into SQL.
 	 * 将exists语句编译成SQL
      *
@@ -811,6 +925,20 @@ class Grammar extends BaseGrammar
     public function compileInsertGetId(Builder $query, $values, $sequence)
     {
         return $this->compileInsert($query, $values);
+    }
+
+    /**
+     * Compile an insert statement using a subquery into SQL.
+	 * 使用子查询将插入语句编译为SQL
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $columns
+     * @param  string  $sql
+     * @return string
+     */
+    public function compileInsertUsing(Builder $query, array $columns, string $sql)
+    {
+        return "insert into {$this->wrapTable($query->from)} ({$this->columnize($columns)}) $sql";
     }
 
     /**
@@ -993,6 +1121,24 @@ class Grammar extends BaseGrammar
     protected function wrapJsonSelector($value)
     {
         throw new RuntimeException('This database engine does not support JSON operations.');
+    }
+
+    /**
+     * Split the given JSON selector into the field and the optional path and wrap them separately.
+	 * 将给定的JSON选择器拆分为字段和可选路径，并分别包装它们。
+     *
+     * @param  string  $column
+     * @return array
+     */
+    protected function wrapJsonFieldAndPath($column)
+    {
+        $parts = explode('->', $column, 2);
+
+        $field = $this->wrap($parts[0]);
+
+        $path = count($parts) > 1 ? ', '.$this->wrapJsonPath($parts[1]) : '';
+
+        return [$field, $path];
     }
 
     /**

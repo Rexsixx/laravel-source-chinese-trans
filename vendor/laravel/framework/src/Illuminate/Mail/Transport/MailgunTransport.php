@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，传输，Mailgun 传输
+ * Illuminate，电子邮件，传送，Mailgun 传送
  */
 
 namespace Illuminate\Mail\Transport;
@@ -12,7 +12,7 @@ class MailgunTransport extends Transport
 {
     /**
      * Guzzle client instance.
-	 * Guzzle 客户端实例
+	 * Guzzle客户端实例
      *
      * @var \GuzzleHttp\ClientInterface
      */
@@ -27,8 +27,8 @@ class MailgunTransport extends Transport
     protected $key;
 
     /**
-     * The Mailgun domain.
-	 * Mailgun域
+     * The Mailgun email domain.
+	 * Mailgun电子邮件域
      *
      * @var string
      */
@@ -40,7 +40,7 @@ class MailgunTransport extends Transport
      *
      * @var string
      */
-    protected $url;
+    protected $endpoint;
 
     /**
      * Create a new Mailgun transport instance.
@@ -49,12 +49,15 @@ class MailgunTransport extends Transport
      * @param  \GuzzleHttp\ClientInterface  $client
      * @param  string  $key
      * @param  string  $domain
+     * @param  string|null  $endpoint
      * @return void
      */
-    public function __construct(ClientInterface $client, $key, $domain)
+    public function __construct(ClientInterface $client, $key, $domain, $endpoint = null)
     {
         $this->key = $key;
         $this->client = $client;
+        $this->endpoint = $endpoint ?? 'api.mailgun.net';
+
         $this->setDomain($domain);
     }
 
@@ -69,7 +72,11 @@ class MailgunTransport extends Transport
 
         $message->setBcc([]);
 
-        $this->client->post($this->url, $this->payload($message, $to));
+        $this->client->request(
+            'POST',
+            "https://{$this->endpoint}/v3/{$this->domain}/messages.mime",
+            $this->payload($message, $to)
+        );
 
         $this->sendPerformed($message);
 
@@ -146,7 +153,7 @@ class MailgunTransport extends Transport
 
     /**
      * Set the API key being used by the transport.
-	 * 设置被传输使用的API密钥
+	 * 设置传输所使用的API密钥
      *
      * @param  string  $key
      * @return string
@@ -158,7 +165,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the domain being used by the transport.
-	 * 获取被运输所使用的域
+	 * 获取传输所使用的域
      *
      * @return string
      */
@@ -169,15 +176,13 @@ class MailgunTransport extends Transport
 
     /**
      * Set the domain being used by the transport.
-	 * 设置被传输的域
+	 * 设置传输所使用的域
      *
      * @param  string  $domain
      * @return string
      */
     public function setDomain($domain)
     {
-        $this->url = 'https://api.mailgun.net/v3/'.$domain.'/messages.mime';
-
         return $this->domain = $domain;
     }
 }

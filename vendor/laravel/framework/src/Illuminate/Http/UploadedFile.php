@@ -18,7 +18,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Begin creating a new file fake.
-	 * 开始创建一个新的文件fake
+	 * 开始创建一个新的文件
      *
      * @return \Illuminate\Http\Testing\FileFactory
      */
@@ -114,7 +114,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Create a new file instance from a base instance.
-	 * 从基本实例创建新的文件实例。
+	 * 从基本实例创建新的文件实例
      *
      * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $file
      * @param  bool $test
@@ -126,7 +126,6 @@ class UploadedFile extends SymfonyUploadedFile
             $file->getPathname(),
             $file->getClientOriginalName(),
             $file->getClientMimeType(),
-            $file->getClientSize(),
             $file->getError(),
             $test
         );

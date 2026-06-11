@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，压缩，管理器
+ * Illuminate，数据库，Capsule，管理程序
  */
 
 namespace Illuminate\Database\Capsule;
@@ -27,7 +27,7 @@ class Manager
 
     /**
      * Create a new database capsule manager.
-	 * 创建一个新的数据库胶囊管理器
+	 * 创建一个新的数据库capsule管理器
      *
      * @param  \Illuminate\Container\Container|null  $container
      * @return void
@@ -40,6 +40,7 @@ class Manager
         // options in the container "config" binding. This will make the database
         // manager work correctly out of the box without extreme configuration.
 		// 一旦我们有了容器设置,我们将在容器“config”绑定中设置默认配置选项。
+		// 这将使数据库管理器在没有极端配置的情况下正确地工作。
         $this->setupDefaultConfiguration();
 
         $this->setupManager();
@@ -150,6 +151,8 @@ class Manager
         // If we have an event dispatcher instance, we will go ahead and register it
         // with the Eloquent ORM, allowing for model callbacks while creating and
         // updating "model" instances; however, it is not necessary to operate.
+		// 如果我们有一个事件调度器实例,我们将继续用有技巧的ORM注册它,
+		// 在创建和更新“模型”实例时允许模型回调;然而,没有必要操作。
         if ($dispatcher = $this->getEventDispatcher()) {
             Eloquent::setEventDispatcher($dispatcher);
         }

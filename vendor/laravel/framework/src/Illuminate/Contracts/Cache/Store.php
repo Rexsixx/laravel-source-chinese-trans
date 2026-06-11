@@ -21,6 +21,7 @@ interface Store
 	 * 按键从缓存中检索多个项。
      *
      * Items not found in the cache will have a null value.
+	 * 在缓存中找不到的项将具有空值。
      *
      * @param  array  $keys
      * @return array
@@ -32,7 +33,7 @@ interface Store
 	 * 将项存储在缓存中给定的分钟数
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @param  float|int  $minutes
      * @return void
      */
@@ -53,7 +54,7 @@ interface Store
 	 * 增加缓存中项的值
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return int|bool
      */
     public function increment($key, $value = 1);
@@ -63,7 +64,7 @@ interface Store
 	 * 递减缓存中项的值
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return int|bool
      */
     public function decrement($key, $value = 1);
@@ -73,7 +74,7 @@ interface Store
 	 * 将项无限期地存储在缓存中
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return void
      */
     public function forever($key, $value);

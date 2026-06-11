@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，加载器，配置，特性，路由特征
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,6 +26,7 @@ trait RouteTrait
 
     /**
      * Adds defaults.
+	 * 添加默认
      *
      * @return $this
      */

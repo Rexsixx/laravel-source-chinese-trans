@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，EmailValidator，验证，DNS 获取记录包装器
+ * Egulias，电子邮件验证器，确认，DNS 获取记录包装器
  */
 
 namespace Egulias\EmailValidator\Validation;

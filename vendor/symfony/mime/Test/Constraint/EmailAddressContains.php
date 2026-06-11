@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Mime，邮件地址包含
+ */
 
 /*
  * This file is part of the Symfony package.

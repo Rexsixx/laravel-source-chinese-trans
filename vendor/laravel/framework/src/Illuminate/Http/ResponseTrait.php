@@ -13,7 +13,7 @@ trait ResponseTrait
 {
     /**
      * The original content of the response.
-	 * 回复的原始内容
+	 * 反应的原始内容
      *
      * @var mixed
      */
@@ -21,7 +21,7 @@ trait ResponseTrait
 
     /**
      * The exception that triggered the error response (if applicable).
-	 * 触发错误响应的异常（如果适用）
+	 * 触发错误响应的异常(如果适用)
      *
      * @var \Exception|null
      */
@@ -129,8 +129,19 @@ trait ResponseTrait
     }
 
     /**
+     * Get the callback of the response.
+	 * 获取响应的回调
+     *
+     * @return string|null
+     */
+    public function getCallback()
+    {
+        return $this->callback ?? null;
+    }
+
+    /**
      * Set the exception to attach to the response.
-	 * 将异常设置为附加到响应。
+	 * 将异常设置为附加到响应
      *
      * @param  \Exception  $e
      * @return $this

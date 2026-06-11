@@ -1,6 +1,6 @@
 <?php
 /**
- * phpDocumentor，Reflection，地址
+ * phpDocumentor，反射，地点
  */
 
 declare(strict_types=1);
@@ -18,7 +18,6 @@ namespace phpDocumentor\Reflection;
 
 /**
  * The location where an element occurs within a file.
- * 元素在文件中出现的位置
  *
  * @psalm-immutable
  */
@@ -32,7 +31,6 @@ final class Location
 
     /**
      * Initializes the location for an element using its line number in the file and optionally the column number.
-	 * 初始化元素的位置,使用其行号在文件中,并可选列号。
      */
     public function __construct(int $lineNumber, int $columnNumber = 0)
     {
@@ -42,7 +40,6 @@ final class Location
 
     /**
      * Returns the line number that is covered by this location.
-	 * 返回被这个位置覆盖的行号
      */
     public function getLineNumber() : int
     {
@@ -51,7 +48,6 @@ final class Location
 
     /**
      * Returns the column number (character position on a line) for this location object.
-	 * 返回该位置对象的列号(线的字符位置)
      */
     public function getColumnNumber() : int
     {

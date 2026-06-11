@@ -49,7 +49,7 @@ class SqsJob extends Job implements JobContract
 
     /**
      * Release the job back into the queue.
-	 * 释放作业回队列
+	 * 将作业释放回队列
      *
      * @param  int   $delay
      * @return void
@@ -93,7 +93,7 @@ class SqsJob extends Job implements JobContract
 
     /**
      * Get the job identifier.
-	 * 获取作业标识符
+	 * 获取工作标识符
      *
      * @return string
      */
@@ -126,7 +126,7 @@ class SqsJob extends Job implements JobContract
 
     /**
      * Get the underlying raw SQS job.
-	 * 获取底层原始的SQS工作
+	 * 获取底层原始SQS作业
      *
      * @return array
      */

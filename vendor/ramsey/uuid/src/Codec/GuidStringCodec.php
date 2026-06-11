@@ -1,9 +1,5 @@
 <?php
 /**
- * Ramsey，Uuid，编码解码器，字符串解码器
- */
-
-/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE

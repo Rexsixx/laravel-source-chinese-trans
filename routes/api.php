@@ -13,8 +13,8 @@ use Illuminate\Http\Request;
 | Here is where you can register API routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
-| 这里就是您为您的应用程序注册 API 路由的地方。
-| 这些路由由 RouteServiceProvider 在一个被分配了“api”中间件组的组中加载。尽情构建您的 API 吧！
+| 这里是您可以为应用程序注册API路由的地方。
+| 这些路由由指定“api”中间件组的组内的RouteServiceProvider加载。享受建立你的API !
 |
 */
 

@@ -1,8 +1,4 @@
 <?php
-/**
- * SebastianBergmann，ObjectReflector，无效参数异常
- */
-
 /*
  * This file is part of object-reflector.
  *

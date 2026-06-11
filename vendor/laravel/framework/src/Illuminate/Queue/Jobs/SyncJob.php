@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，作业，同步作业
+ * Illuminate，队列，作业，Sync 作业
  */
 
 namespace Illuminate\Queue\Jobs;
@@ -80,7 +80,7 @@ class SyncJob extends Job implements JobContract
 
     /**
      * Get the raw body string for the job.
-	 * 为工作获得原始的身体字符串
+	 * 获取工作的原始主体字符串
      *
      * @return string
      */
@@ -91,7 +91,7 @@ class SyncJob extends Job implements JobContract
 
     /**
      * Get the name of the queue the job belongs to.
-	 * 获取该工作所属队列的名称
+	 * 获取作业所属队列的名称
      *
      * @return string
      */

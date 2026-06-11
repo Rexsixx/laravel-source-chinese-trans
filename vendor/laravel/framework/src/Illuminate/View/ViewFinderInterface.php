@@ -9,7 +9,7 @@ interface ViewFinderInterface
 {
     /**
      * Hint path delimiter value.
-	 * 提示路径分隔符值
+	 * 提示路径分隔值
      *
      * @var string
      */
@@ -59,7 +59,7 @@ interface ViewFinderInterface
      *
      * @param  string  $namespace
      * @param  string|array  $hints
-     * @return $this
+     * @return void
      */
     public function replaceNamespace($namespace, $hints);
 

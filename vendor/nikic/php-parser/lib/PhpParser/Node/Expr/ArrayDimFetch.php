@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，节点，表达式，Array Dim Fetch
- */
-
 namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
@@ -17,7 +13,6 @@ class ArrayDimFetch extends Expr
 
     /**
      * Constructs an array index fetch node.
-	 * 构造一个数组索引获取节点
      *
      * @param Expr      $var        Variable
      * @param null|Expr $dim        Array index / dim

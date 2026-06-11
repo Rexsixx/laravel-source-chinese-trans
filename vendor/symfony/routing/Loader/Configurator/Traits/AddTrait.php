@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，加载器，配置，特性，添加特征
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -30,6 +33,7 @@ trait AddTrait
 
     /**
      * Adds a route.
+	 * 添加路由
      *
      * @param string|array $path the path, or the localized paths of the route
      */

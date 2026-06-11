@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，引导程序，加载环境变量
+ * Illuminate，基础，引导程序，负载环境变量
  */
 
 namespace Illuminate\Foundation\Bootstrap;
@@ -33,7 +33,8 @@ class LoadEnvironmentVariables
         } catch (InvalidPathException $e) {
             //
         } catch (InvalidFileException $e) {
-            die('The environment file is invalid: '.$e->getMessage());
+            echo 'The environment file is invalid: '.$e->getMessage();
+            die(1);
         }
     }
 

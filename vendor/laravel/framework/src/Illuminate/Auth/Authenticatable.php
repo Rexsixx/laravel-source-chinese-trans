@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，可认证的
+ * Illuminate，认证，可认证的
  */
 
 namespace Illuminate\Auth;

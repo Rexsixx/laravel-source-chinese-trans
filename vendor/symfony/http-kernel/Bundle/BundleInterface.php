@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，Bundle，Bundle 接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
 /**
  * BundleInterface.
+ * Bundle 接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

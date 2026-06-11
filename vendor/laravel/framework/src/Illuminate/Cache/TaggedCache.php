@@ -64,11 +64,13 @@ class TaggedCache extends Repository
      * Remove all items from the cache.
 	 * 从缓存中删除所有项
      *
-     * @return void
+     * @return bool
      */
     public function flush()
     {
         $this->tags->reset();
+
+        return true;
     }
 
     /**
@@ -101,5 +103,16 @@ class TaggedCache extends Repository
     protected function event($event)
     {
         parent::event($event->setTags($this->tags->getNames()));
+    }
+
+    /**
+     * Get the tag set instance.
+	 * 获取标记集实例
+     *
+     * @return \Illuminate\Cache\TagSet
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 }

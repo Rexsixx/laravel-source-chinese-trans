@@ -1,6 +1,6 @@
 <?php
 /**
- * Psy，代码清洁器，代码清洁器通过
+ * Psy，代码清理器，代码清理器通行证
  */
 
 /*
@@ -18,7 +18,6 @@ use PhpParser\NodeVisitorAbstract;
 
 /**
  * A CodeCleaner pass is a PhpParser Node Visitor.
- * CodeCleaner pass是PhpParser节点访问者
  */
 abstract class CodeCleanerPass extends NodeVisitorAbstract
 {

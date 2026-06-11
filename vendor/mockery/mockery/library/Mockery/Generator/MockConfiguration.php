@@ -1,9 +1,5 @@
 <?php
 /**
- * Mockery，生成器，模拟配置
- */
-
-/**
  * Mockery
  *
  * LICENSE
@@ -27,13 +23,11 @@ namespace Mockery\Generator;
 /**
  * This class describes the configuration of mocks and hides away some of the
  * reflection implementation
- * 这个类描述了模拟的配置，并隐藏了一些反射实现。
  */
 class MockConfiguration
 {
     /**
      * A class that we'd like to mock
-	 * 一个我们想要模拟的类
      */
     protected $targetClass;
     protected $targetClassName;
@@ -41,7 +35,6 @@ class MockConfiguration
     /**
      * A number of interfaces we'd like to mock, keyed by name to attempt to
      * keep unique
-	 * 我们想要模拟的许多接口，按名称键入以尝试模拟保持唯一
      */
     protected $targetInterfaces = array();
     protected $targetInterfaceNames = array();

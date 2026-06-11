@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，命令，帮助指令
+ * Symfony，组件，控制台，命令，辅助命令
  */
 
 /*
@@ -22,7 +22,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * HelpCommand displays the help for a given command.
- * HelpCommand显示给定命令的帮助
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

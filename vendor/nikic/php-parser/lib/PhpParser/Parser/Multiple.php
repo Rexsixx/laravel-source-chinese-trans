@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，分析程序，多重的
- */
-
 namespace PhpParser\Parser;
 
 use PhpParser\Error;
@@ -17,7 +13,6 @@ class Multiple implements Parser
 
     /**
      * Create a parser which will try multiple parsers in an order of preference.
-	 * 创建一个解析器,它将以优先顺序尝试多个解析器。
      *
      * Parsers will be invoked in the order they're provided to the constructor. If one of the
      * parsers runs without throwing, it's output is returned. Otherwise the exception that the

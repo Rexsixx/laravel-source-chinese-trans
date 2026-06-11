@@ -15,11 +15,11 @@ trait InteractsWithInput
 {
     /**
      * Retrieve a server variable from the request.
-	 * 从请求中检索服务器变量
+	 * 将紧急消息记录到日志中
      *
      * @param  string  $key
      * @param  string|array|null  $default
-     * @return string|array
+     * @return string|array|null
      */
     public function server($key = null, $default = null)
     {
@@ -44,7 +44,7 @@ trait InteractsWithInput
      *
      * @param  string  $key
      * @param  string|array|null  $default
-     * @return string|array
+     * @return string|array|null
      */
     public function header($key = null, $default = null)
     {
@@ -80,7 +80,7 @@ trait InteractsWithInput
 
     /**
      * Determine if the request contains a given input item key.
-	 * 确定请求是否包含给定的输入项键。
+	 * 确定请求是否包含给定的输入项键
      *
      * @param  string|array  $key
      * @return bool
@@ -276,7 +276,7 @@ trait InteractsWithInput
      *
      * @param  string  $key
      * @param  string|array|null  $default
-     * @return string|array
+     * @return string|array|null
      */
     public function query($key = null, $default = null)
     {
@@ -290,7 +290,7 @@ trait InteractsWithInput
      * @param  string  $key
      * @param  string|array|null  $default
      *
-     * @return string|array
+     * @return string|array|null
      */
     public function post($key = null, $default = null)
     {
@@ -315,7 +315,7 @@ trait InteractsWithInput
      *
      * @param  string  $key
      * @param  string|array|null  $default
-     * @return string|array
+     * @return string|array|null
      */
     public function cookie($key = null, $default = null)
     {
@@ -397,7 +397,7 @@ trait InteractsWithInput
      *
      * @param  string  $key
      * @param  mixed  $default
-     * @return \Illuminate\Http\UploadedFile|array|null
+     * @return \Illuminate\Http\UploadedFile|\Illuminate\Http\UploadedFile[]|array|null
      */
     public function file($key = null, $default = null)
     {
@@ -411,7 +411,7 @@ trait InteractsWithInput
      * @param  string  $source
      * @param  string  $key
      * @param  string|array|null  $default
-     * @return string|array
+     * @return string|array|null
      */
     protected function retrieveItem($source, $key, $default)
     {

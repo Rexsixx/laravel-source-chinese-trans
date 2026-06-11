@@ -52,6 +52,10 @@ class SQLiteGrammar extends Grammar
      */
     public function compileSelect(Builder $query)
     {
+        if ($query->unions && $query->aggregate) {
+            return $this->compileUnionAggregate($query);
+        }
+
         $sql = parent::compileSelect($query);
 
         if ($query->unions) {
@@ -157,6 +161,22 @@ class SQLiteGrammar extends Grammar
     }
 
     /**
+     * Compile a "JSON length" statement into SQL.
+	 * 将“JSON长度”语句编译成SQL
+     *
+     * @param  string  $column
+     * @param  string  $operator
+     * @param  string  $value
+     * @return string
+     */
+    protected function compileJsonLength($column, $operator, $value)
+    {
+        [$field, $path] = $this->wrapJsonFieldAndPath($column);
+
+        return 'json_array_length('.$field.$path.') '.$operator.' '.$value;
+    }
+
+    /**
      * Compile an insert statement into SQL.
 	 * 将插入语句编译成SQL
      *
@@ -169,6 +189,8 @@ class SQLiteGrammar extends Grammar
         // Essentially we will force every insert to be treated as a batch insert which
         // simply makes creating the SQL easier for us since we can utilize the same
         // basic routine regardless of an amount of records given to us to insert.
+		// 从根本上说，我们将强制将每次插入操作都视为批量插入操作，这样做的好处在于，
+		// 对于我们来说，创建 SQL 语句会变得更容易，因为无论要插入的记录数量是多少，我们都可以使用相同的基本流程。
         $table = $this->wrapTable($query->from);
 
         if (! is_array(reset($values))) {
@@ -178,6 +200,8 @@ class SQLiteGrammar extends Grammar
         // If there is only one record being inserted, we will just use the usual query
         // grammar insert builder because no special syntax is needed for the single
         // row inserts in SQLite. However, if there are multiples, we'll continue.
+		// 如果要插入的记录仅有一条，我们就会使用常规的查询语法插入构建器，
+		// 因为在 SQLite 中，对于单行插入操作并不需要特殊的语法。
         if (count($values) === 1) {
             return empty(reset($values))
                     ? "insert into $table default values"
@@ -191,6 +215,8 @@ class SQLiteGrammar extends Grammar
         // SQLite requires us to build the multi-row insert as a listing of select with
         // unions joining them together. So we'll build out this list of columns and
         // then join them all together with select unions to complete the queries.
+		// SQLite 要求我们将多行插入操作以一个包含多个选择语句的列表形式呈现，并通过连接操作将它们组合在一起。
+		// 因此,我们将构建这个列列表,然后加入它们,并与select union一起完成查询。
         foreach (array_keys(reset($values)) as $column) {
             $columns[] = '? as '.$this->wrap($column);
         }
@@ -308,8 +334,6 @@ class SQLiteGrammar extends Grammar
 
         $path = count($parts) > 1 ? ', '.$this->wrapJsonPath($parts[1]) : '';
 
-        $selector = 'json_extract('.$field.$path.')';
-
-        return $selector;
+        return 'json_extract('.$field.$path.')';
     }
 }

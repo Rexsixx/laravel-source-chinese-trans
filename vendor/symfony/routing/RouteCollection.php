@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，路由集合
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Config\Resource\ResourceInterface;
 
 /**
  * A RouteCollection represents a set of Route instances.
+ * RouteCollection表示一组Route实例。
  *
  * When adding a route at the end of the collection, an existing route
  * with the same name is removed first. So there can only be one route

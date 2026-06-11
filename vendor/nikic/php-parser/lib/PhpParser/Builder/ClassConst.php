@@ -1,6 +1,6 @@
 <?php
 /**
- * PhpParser，构建器，类常量
+ * PhpParser，构建器，类Const
  */
 
 declare(strict_types=1);
@@ -27,7 +27,7 @@ class ClassConst implements PhpParser\Builder
 
     /**
      * Creates a class constant builder
-	 * 创建类常量构建器
+	 * 创建类常量生成器
      *
      * @param string|Identifier                          $name  Name
      * @param Node\Expr|bool|null|int|float|string|array|\UnitEnum $value Value
@@ -53,7 +53,7 @@ class ClassConst implements PhpParser\Builder
 
     /**
      * Makes the constant public.
-	 * 让常数公共
+	 * 生成公共常量
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -65,6 +65,7 @@ class ClassConst implements PhpParser\Builder
 
     /**
      * Makes the constant protected.
+	 * 使常数受到保护
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -76,6 +77,7 @@ class ClassConst implements PhpParser\Builder
 
     /**
      * Makes the constant private.
+	 * 将常量设为私有
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -87,6 +89,7 @@ class ClassConst implements PhpParser\Builder
 
     /**
      * Makes the constant final.
+	 * 使常数为终值
      *
      * @return $this The builder instance (for fluid interface)
      */
