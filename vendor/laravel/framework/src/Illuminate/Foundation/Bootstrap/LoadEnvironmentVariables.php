@@ -1,11 +1,12 @@
 <?php
 /**
- * Illuminate，基础，引导，加载环境变量
+ * Illuminate，基础，引导程序，负载环境变量
  */
 
 namespace Illuminate\Foundation\Bootstrap;
 
 use Dotenv\Dotenv;
+use Dotenv\Exception\InvalidFileException;
 use Dotenv\Exception\InvalidPathException;
 use Symfony\Component\Console\Input\ArgvInput;
 use Illuminate\Contracts\Foundation\Application;
@@ -31,6 +32,9 @@ class LoadEnvironmentVariables
             (new Dotenv($app->environmentPath(), $app->environmentFile()))->load();
         } catch (InvalidPathException $e) {
             //
+        } catch (InvalidFileException $e) {
+            echo 'The environment file is invalid: '.$e->getMessage();
+            die(1);
         }
     }
 

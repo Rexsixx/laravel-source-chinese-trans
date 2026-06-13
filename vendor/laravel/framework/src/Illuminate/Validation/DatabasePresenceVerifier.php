@@ -41,7 +41,7 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
 
     /**
      * Count the number of objects in a collection having the given value.
-	 * 计算集合中具有给定值的对象的数量
+	 * 在集合中计算给定值的集合的数量
      *
      * @param  string  $collection
      * @param  string  $column
@@ -76,7 +76,7 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
     {
         $query = $this->table($collection)->whereIn($column, $values);
 
-        return $this->addConditions($query, $extra)->count();
+        return $this->addConditions($query, $extra)->distinct()->count($column);
     }
 
     /**

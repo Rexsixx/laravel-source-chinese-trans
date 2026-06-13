@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，支持，响应的
+ * Illuminate，契约，支持，Responsable
  */
 
 namespace Illuminate\Contracts\Support;

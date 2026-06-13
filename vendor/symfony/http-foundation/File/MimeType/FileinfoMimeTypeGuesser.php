@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，文件，Mime类型，Fileinfo Mime类型猜测器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,11 +16,17 @@ namespace Symfony\Component\HttpFoundation\File\MimeType;
 
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+use Symfony\Component\Mime\FileinfoMimeTypeGuesser as NewFileinfoMimeTypeGuesser;
+
+@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.3, use "%s" instead.', FileinfoMimeTypeGuesser::class, NewFileinfoMimeTypeGuesser::class), \E_USER_DEPRECATED);
 
 /**
  * Guesses the mime type using the PECL extension FileInfo.
+ * 使用PECL扩展名FileInfo猜测mime类型。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
+ *
+ * @deprecated since Symfony 4.3, use {@link NewFileinfoMimeTypeGuesser} instead
  */
 class FileinfoMimeTypeGuesser implements MimeTypeGuesserInterface
 {
@@ -28,13 +37,14 @@ class FileinfoMimeTypeGuesser implements MimeTypeGuesserInterface
      *
      * @see https://php.net/finfo-open
      */
-    public function __construct($magicFile = null)
+    public function __construct(string $magicFile = null)
     {
         $this->magicFile = $magicFile;
     }
 
     /**
      * Returns whether this guesser is supported on the current OS/PHP setup.
+	 * 返回当前OS/PHP设置是否支持此猜测器
      *
      * @return bool
      */

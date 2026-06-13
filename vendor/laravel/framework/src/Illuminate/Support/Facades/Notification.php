@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，通知
+ * Illuminate，支持，门面，Notification
  */
 
 namespace Illuminate\Support\Facades;
@@ -10,6 +10,11 @@ use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Testing\Fakes\NotificationFake;
 
 /**
+ * @method static void send(\Illuminate\Support\Collection|array|mixed $notifiables, $notification)
+ * @method static void sendNow(\Illuminate\Support\Collection|array|mixed $notifiables, $notification)
+ * @method static mixed channel(string|null $name = null)
+ * @method static \Illuminate\Notifications\ChannelManager locale(string|null $locale)
+ *
  * @see \Illuminate\Notifications\ChannelManager
  */
 class Notification extends Facade

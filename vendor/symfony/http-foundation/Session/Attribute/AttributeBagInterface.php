@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，属性，属性包接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -50,15 +53,10 @@ interface AttributeBagInterface extends SessionBagInterface
     /**
      * Returns attributes.
      *
-     * @return array Attributes
+     * @return array
      */
     public function all();
 
-    /**
-     * Sets attributes.
-     *
-     * @param array $attributes Attributes
-     */
     public function replace(array $attributes);
 
     /**

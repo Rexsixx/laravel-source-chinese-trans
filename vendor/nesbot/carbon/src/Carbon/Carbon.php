@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，Carbon
+ */
 
 /*
  * This file is part of the Carbon package.
@@ -24,6 +27,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * A simple API extension for DateTime
+ * DateTime的一个简单的API扩展
  *
  * @property      int $year
  * @property      int $yearIso

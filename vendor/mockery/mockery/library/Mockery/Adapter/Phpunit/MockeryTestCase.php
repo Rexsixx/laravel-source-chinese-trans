@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，适配器，Php单元，Mockery 测试用例
+ */
+
+/**
  * Mockery
  *
  * LICENSE

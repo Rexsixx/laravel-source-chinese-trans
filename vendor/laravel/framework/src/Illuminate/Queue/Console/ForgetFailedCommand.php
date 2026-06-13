@@ -15,11 +15,11 @@ class ForgetFailedCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'queue:forget {id : The ID of the failed job.}';
+    protected $signature = 'queue:forget {id : The ID of the failed job}';
 
     /**
      * The console command description.
-	 * 控制台命令说明
+	 * 控制台命令描述
      *
      * @var string
      */

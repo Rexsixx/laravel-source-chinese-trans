@@ -40,14 +40,15 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
     public function __construct(array $messages = [])
     {
         foreach ($messages as $key => $value) {
-            $this->messages[$key] = $value instanceof Arrayable
-                    ? $value->toArray() : (array) $value;
+            $value = $value instanceof Arrayable ? $value->toArray() : (array) $value;
+
+            $this->messages[$key] = array_unique($value);
         }
     }
 
     /**
      * Get the keys present in the message bag.
-	 * 把钥匙放在留言袋里
+	 * 把密钥放在留言袋里
      *
      * @return array
      */
@@ -57,8 +58,8 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
     }
 
     /**
-     * Add a message to the bag.
-	 * 在包中添加一条消息
+     * Add a message to the message bag.
+	 * 添加消息到消息袋
      *
      * @param  string  $key
      * @param  string  $message
@@ -89,8 +90,8 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
     }
 
     /**
-     * Merge a new array of messages into the bag.
-	 * 将一组新的消息合并到包中
+     * Merge a new array of messages into the message bag.
+	 * 将一个新的消息数组合并到消息包中
      *
      * @param  \Illuminate\Contracts\Support\MessageProvider|array  $messages
      * @return $this
@@ -151,8 +152,8 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
     }
 
     /**
-     * Get the first message from the bag for a given key.
-	 * 从包中获取给定键的第一条消息
+     * Get the first message from the message bag for a given key.
+	 * 从消息包中获取给定键的第一条消息
      *
      * @param  string  $key
      * @param  string  $format
@@ -168,8 +169,8 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
     }
 
     /**
-     * Get all of the messages from the bag for a given key.
-	 * 从包中获取给定键的所有消息
+     * Get all of the messages from the message bag for a given key.
+	 * 从消息包中获取给定键的所有消息
      *
      * @param  string  $key
      * @param  string  $format
@@ -177,9 +178,11 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
      */
     public function get($key, $format = null)
     {
-        // If the message exists in the container, we will transform it and return
-        // the message. Otherwise, we'll check if the key is implicit & collect
-        // all the messages that match a given key and output it as an array.
+        // If the message exists in the message bag, we will transform it and return
+        // the message. Otherwise, we will check if the key is implicit & collect
+        // all the messages that match the given key and output it as an array.
+		// 如果该消息存在于消息袋中，我们将对其进行转换并返回该消息。
+		// 否则,我们将检查密钥是否隐式并收集与给定密钥匹配的所有消息,并将其输出为一个数组。
         if (array_key_exists($key, $this->messages)) {
             return $this->transform(
                 $this->messages[$key], $this->checkFormat($format), $key
@@ -215,8 +218,8 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
     }
 
     /**
-     * Get all of the messages for every key in the bag.
-	 * 找到包里每把密钥的所有信息
+     * Get all of the messages for every key in the message bag.
+	 * 获取消息包中每个键的所有消息
      *
      * @param  string  $format
      * @return array
@@ -235,8 +238,8 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
     }
 
     /**
-     * Get all of the unique messages for every key in the bag.
-	 * 得到包里每把钥匙的唯一信息
+     * Get all of the unique messages for every key in the message bag.
+	 * 获取消息包中每个键的所有唯一消息
      *
      * @param  string  $format
      * @return array
@@ -262,6 +265,8 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
                 // We will simply spin through the given messages and transform each one
                 // replacing the :message place holder with the real message allowing
                 // the messages to be easily formatted to each developer's desires.
+				// 我们将简单地在给定的消息中旋转,并将每个人替换为:消息位置的持有者,
+				// 以真实的消息,允许对每个开发人员的愿望格式化消息。
                 return str_replace([':message', ':key'], [$message, $messageKey], $format);
             })->all();
     }
@@ -279,8 +284,8 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
     }
 
     /**
-     * Get the raw messages in the container.
-	 * 获取容器中的原始消息
+     * Get the raw messages in the message bag.
+	 * 在消息包中获取原始消息
      *
      * @return array
      */
@@ -290,8 +295,8 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
     }
 
     /**
-     * Get the raw messages in the container.
-	 * 获取容器中的原始消息
+     * Get the raw messages in the message bag.
+	 * 在消息包中获取原始消息
      *
      * @return array
      */
@@ -370,8 +375,8 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
     }
 
     /**
-     * Get the number of messages in the container.
-	 * 获取容器中的消息数
+     * Get the number of messages in the message bag.
+	 * 获取消息包中的消息数
      *
      * @return int
      */

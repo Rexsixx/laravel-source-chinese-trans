@@ -13,7 +13,7 @@ class ListenCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
@@ -29,7 +29,7 @@ class ListenCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -68,6 +68,8 @@ class ListenCommand extends Command
         // We need to get the right queue for the connection which is set in the queue
         // configuration file for the application. We will pull it based on the set
         // connection being run for the queue operation currently being executed.
+		// 我们需要为应用程序的队列配置文件设置连接的正确队列。
+		// 我们将根据目前正在执行的队列操作的设置连接来拉它。
         $queue = $this->getQueue(
             $connection = $this->input->getArgument('connection')
         );

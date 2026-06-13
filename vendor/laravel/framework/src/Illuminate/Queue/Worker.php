@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，工作线程
+ * Illuminate，行列，工作线程
  */
 
 namespace Illuminate\Queue;
@@ -95,7 +95,9 @@ class Worker
      */
     public function daemon($connectionName, $queue, WorkerOptions $options)
     {
-        $this->listenForSignals();
+        if ($this->supportsAsyncSignals()) {
+            $this->listenForSignals();
+        }
 
         $lastRestart = $this->getTimestampOfLastQueueRestart();
 
@@ -103,6 +105,8 @@ class Worker
             // Before reserving any jobs, we will make sure this queue is not paused and
             // if it is we will just pause this worker for a given amount of time and
             // make sure we do not need to kill this worker process off completely.
+			// 在保留任何工作之前,我们会确保这个队列没有停顿,如果是我们将暂停这个工人的时间,
+			// 确保我们不需要完全杀死这个工作线程。
             if (! $this->daemonShouldRun($options, $connectionName, $queue)) {
                 $this->pauseWorker($options, $lastRestart);
 
@@ -112,15 +116,22 @@ class Worker
             // First, we will attempt to get the next job off of the queue. We will also
             // register the timeout handler and reset the alarm for this job so it is
             // not stuck in a frozen state forever. Then, we can fire off this job.
+			// 首先,我们将尝试从队列中获得下一个工作。
+			// 我们还将注册超时处理器,并重置这个工作的警报,这样它就不会永远被困在一个冻结的状态。
+			// 然后,我们可以解雇这份工作。
             $job = $this->getNextJob(
                 $this->manager->connection($connectionName), $queue
             );
 
-            $this->registerTimeoutHandler($job, $options);
+            if ($this->supportsAsyncSignals()) {
+                $this->registerTimeoutHandler($job, $options);
+            }
 
             // If the daemon should run (not in maintenance mode, etc.), then we can run
             // fire off this job for processing. Otherwise, we will need to sleep the
             // worker so no more jobs are processed until they should be processed.
+			// 如果守护进程应该运行(而不是维护模式等),那么我们就可以在工作中运行火处理。
+			// 否则,我们将需要睡觉,所以没有更多的工作被处理,直到他们应该被处理。
             if ($job) {
                 $this->runJob($job, $connectionName, $options);
             } else {
@@ -130,13 +141,15 @@ class Worker
             // Finally, we will check to see if we have exceeded our memory limits or if
             // the queue should restart based on other indications. If so, we'll stop
             // this worker and let whatever is "monitoring" it restart the process.
-            $this->stopIfNecessary($options, $lastRestart);
+			// 最后,我们将检查是否已经超过了我们的内存限制,或者如果队列应该基于其他迹象来重新启动。
+			// 如果是这样,我们将停止这个工作人员,让任何“监视”它重新启动这个过程。
+            $this->stopIfNecessary($options, $lastRestart, $job);
         }
     }
 
     /**
-     * Register the worker timeout handler (PHP 7.1+).
-	 * 注册工作者超时处理程序（PHP 7.1+）
+     * Register the worker timeout handler.
+	 * 注册工作超时处理程序
      *
      * @param  \Illuminate\Contracts\Queue\Job|null  $job
      * @param  \Illuminate\Queue\WorkerOptions  $options
@@ -144,18 +157,18 @@ class Worker
      */
     protected function registerTimeoutHandler($job, WorkerOptions $options)
     {
-        if ($this->supportsAsyncSignals()) {
-            // We will register a signal handler for the alarm signal so that we can kill this
-            // process if it is running too long because it has frozen. This uses the async
-            // signals supported in recent versions of PHP to accomplish it conveniently.
-            pcntl_signal(SIGALRM, function () {
-                $this->kill(1);
-            });
+        // We will register a signal handler for the alarm signal so that we can kill this
+        // process if it is running too long because it has frozen. This uses the async
+        // signals supported in recent versions of PHP to accomplish it conveniently.
+		// 我们将为警报信号注册一个信号处理程序,这样我们就可以杀死这个过程,如果它运行太久,因为它已经冻结了。
+		// 这使用了最近版本的PHP支持的异步信号来方便地完成它。
+        pcntl_signal(SIGALRM, function () {
+            $this->kill(1);
+        });
 
-            pcntl_alarm(
-                max($this->timeoutForJob($job, $options), 0)
-            );
-        }
+        pcntl_alarm(
+            max($this->timeoutForJob($job, $options), 0)
+        );
     }
 
     /**
@@ -208,16 +221,17 @@ class Worker
      *
      * @param  \Illuminate\Queue\WorkerOptions  $options
      * @param  int  $lastRestart
+     * @param  mixed  $job
      */
-    protected function stopIfNecessary(WorkerOptions $options, $lastRestart)
+    protected function stopIfNecessary(WorkerOptions $options, $lastRestart, $job = null)
     {
         if ($this->shouldQuit) {
-            $this->kill();
-        }
-
-        if ($this->memoryExceeded($options->memory)) {
+            $this->stop();
+        } elseif ($this->memoryExceeded($options->memory)) {
             $this->stop(12);
         } elseif ($this->queueShouldRestart($lastRestart)) {
+            $this->stop();
+        } elseif ($options->stopWhenEmpty && is_null($job)) {
             $this->stop();
         }
     }
@@ -240,6 +254,8 @@ class Worker
         // If we're able to pull a job off of the stack, we will process it and then return
         // from this method. If there is no job on the queue, we will "sleep" the worker
         // for the specified number of seconds, then keep processing jobs after sleep.
+		// 如果我们能够从堆栈中拉出一个工作,我们将处理它,然后从这个方法返回。
+		// 如果队列中没有工作,我们将“睡觉”工人的指定数秒,然后在睡眠后继续处理工作。
         if ($job) {
             return $this->runJob($job, $connectionName, $options);
         }
@@ -267,10 +283,14 @@ class Worker
             $this->exceptions->report($e);
 
             $this->stopWorkerIfLostConnection($e);
+
+            $this->sleep(1);
         } catch (Throwable $e) {
             $this->exceptions->report($e = new FatalThrowableError($e));
 
             $this->stopWorkerIfLostConnection($e);
+
+            $this->sleep(1);
         }
     }
 
@@ -302,7 +322,7 @@ class Worker
      * Stop the worker if we have lost connection to a database.
 	 * 如果我们失去了与数据库的连接，则停止worker。
      *
-     * @param  \Exception  $e
+     * @param  \Throwable  $e
      * @return void
      */
     protected function stopWorkerIfLostConnection($e)
@@ -329,6 +349,8 @@ class Worker
             // First we will raise the before job event and determine if the job has already ran
             // over its maximum attempt limits, which could primarily happen when this job is
             // continually timing out and not actually throwing any exceptions from itself.
+			// 首先,我们将在工作前提高工作,并确定该工作是否已经超过了其最大的尝试限制,
+			// 这可能主要发生在这个工作不断的时间内,而不是从自己身上抛出任何异常。
             $this->raiseBeforeJobEvent($connectionName, $job);
 
             $this->markJobAsFailedIfAlreadyExceedsMaxAttempts(
@@ -338,6 +360,8 @@ class Worker
             // Here we will fire off the job and let it process. We will catch any exceptions so
             // they can be reported to the developers logs, etc. Once the job is finished the
             // proper events will be fired to let any listeners know this job has finished.
+			// 在这里,我们将解雇这份工作,并让它进程。我们将捕获任何异常,这样它们就可以被报告给开发人员日志,等等。
+			// 一旦工作完成,适当的事件将被解雇,让任何听众知道这份工作已经完成。
             $job->fire();
 
             $this->raiseAfterJobEvent($connectionName, $job);
@@ -368,6 +392,8 @@ class Worker
             // First, we will go ahead and mark the job as failed if it will exceed the maximum
             // attempts it is allowed to run the next time we process it. If so we will just
             // go ahead and mark it as failed now so we do not have to release this again.
+			// 首先,我们将继续做下去,如果它超过了我们在下一次运行时所允许运行的最大尝试,那工作就失败了。
+			// 如果我们把它标记为失败,所以我们不需要再次释放它。
             if (! $job->hasFailed()) {
                 $this->markJobAsFailedIfWillExceedMaxAttempts(
                     $connectionName, $job, (int) $options->maxTries, $e
@@ -381,6 +407,8 @@ class Worker
             // If we catch an exception, we will attempt to release the job back onto the queue
             // so it is not lost entirely. This'll let the job be retried at a later time by
             // another listener (or this same one). We will re-throw this exception after.
+			// 如果我们遇到一个例外,我们将试图将工作释放到队列中,这样它就不会完全丢失。
+			// 这将让这个工作在稍后的时间被另一个侦听器(或者是同样的)重新尝试。我们将在之后重新抛出这个异常。
             if (! $job->isDeleted() && ! $job->isReleased() && ! $job->hasFailed()) {
                 $job->release($options->delay);
             }
@@ -394,6 +422,7 @@ class Worker
 	 * 如果给定的作业超过了允许的最大尝试次数，则将其标记为失败。
      *
      * This will likely be because the job previously exceeded a timeout.
+	 * 这很可能是因为之前的工作超时。
      *
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job
@@ -505,22 +534,6 @@ class Worker
     }
 
     /**
-     * Raise the failed queue job event.
-	 * 引发失败的队列作业事件
-     *
-     * @param  string  $connectionName
-     * @param  \Illuminate\Contracts\Queue\Job  $job
-     * @param  \Exception  $e
-     * @return void
-     */
-    protected function raiseFailedJobEvent($connectionName, $job, $e)
-    {
-        $this->events->dispatch(new Events\JobFailed(
-            $connectionName, $job, $e
-        ));
-    }
-
-    /**
      * Determine if the queue worker should restart.
 	 * 确定队列工作线程是否应该重新启动
      *
@@ -553,21 +566,19 @@ class Worker
      */
     protected function listenForSignals()
     {
-        if ($this->supportsAsyncSignals()) {
-            pcntl_async_signals(true);
+        pcntl_async_signals(true);
 
-            pcntl_signal(SIGTERM, function () {
-                $this->shouldQuit = true;
-            });
+        pcntl_signal(SIGTERM, function () {
+            $this->shouldQuit = true;
+        });
 
-            pcntl_signal(SIGUSR2, function () {
-                $this->paused = true;
-            });
+        pcntl_signal(SIGUSR2, function () {
+            $this->paused = true;
+        });
 
-            pcntl_signal(SIGCONT, function () {
-                $this->paused = false;
-            });
-        }
+        pcntl_signal(SIGCONT, function () {
+            $this->paused = false;
+        });
     }
 
     /**
@@ -578,8 +589,7 @@ class Worker
      */
     protected function supportsAsyncSignals()
     {
-        return version_compare(PHP_VERSION, '7.1.0') >= 0 &&
-               extension_loaded('pcntl');
+        return extension_loaded('pcntl');
     }
 
     /**
@@ -603,7 +613,7 @@ class Worker
      */
     public function stop($status = 0)
     {
-        $this->events->dispatch(new Events\WorkerStopping);
+        $this->events->dispatch(new Events\WorkerStopping($status));
 
         exit($status);
     }
@@ -617,7 +627,7 @@ class Worker
      */
     public function kill($status = 0)
     {
-        $this->events->dispatch(new Events\WorkerStopping);
+        $this->events->dispatch(new Events\WorkerStopping($status));
 
         if (extension_loaded('posix')) {
             posix_kill(getmypid(), SIGKILL);

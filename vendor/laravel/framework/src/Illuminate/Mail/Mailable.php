@@ -7,17 +7,30 @@ namespace Illuminate\Mail;
 
 use ReflectionClass;
 use ReflectionProperty;
-use BadMethodCallException;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use Illuminate\Support\HtmlString;
 use Illuminate\Container\Container;
+use Illuminate\Support\Traits\Localizable;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Contracts\Queue\Factory as Queue;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
+use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
 
 class Mailable implements MailableContract, Renderable
 {
+    use ForwardsCalls, Localizable;
+
+    /**
+     * The locale of the message.
+	 * 消息的区域设置
+     *
+     * @var string
+     */
+    public $locale;
+
     /**
      * The person the message is from.
 	 * 信息来自的人
@@ -75,6 +88,14 @@ class Mailable implements MailableContract, Renderable
     protected $markdown;
 
     /**
+     * The HTML to use for the message.
+	 * 用于消息的HTML
+     *
+     * @var string
+     */
+    protected $html;
+
+    /**
      * The view to use for the message.
 	 * 要用于消息的视图
      *
@@ -115,12 +136,28 @@ class Mailable implements MailableContract, Renderable
     public $rawAttachments = [];
 
     /**
+     * The attachments from a storage disk.
+	 * 来自存储磁盘的附件
+     *
+     * @var array
+     */
+    public $diskAttachments = [];
+
+    /**
      * The callbacks for the message.
 	 * 消息的回调
      *
      * @var array
      */
     public $callbacks = [];
+
+    /**
+     * The callback that should be invoked while building the view data.
+	 * 在构建视图数据时应该调用的回调
+     *
+     * @var callable
+     */
+    public static $viewDataCallback;
 
     /**
      * Send the message using the given mailer.
@@ -131,14 +168,16 @@ class Mailable implements MailableContract, Renderable
      */
     public function send(MailerContract $mailer)
     {
-        Container::getInstance()->call([$this, 'build']);
+        $this->withLocale($this->locale, function () use ($mailer) {
+            Container::getInstance()->call([$this, 'build']);
 
-        $mailer->send($this->buildView(), $this->buildViewData(), function ($message) {
-            $this->buildFrom($message)
-                 ->buildRecipients($message)
-                 ->buildSubject($message)
-                 ->buildAttachments($message)
-                 ->runCallbacks($message);
+            $mailer->send($this->buildView(), $this->buildViewData(), function ($message) {
+                $this->buildFrom($message)
+                     ->buildRecipients($message)
+                     ->buildSubject($message)
+                     ->runCallbacks($message)
+                     ->buildAttachments($message);
+            });
         });
     }
 
@@ -151,7 +190,7 @@ class Mailable implements MailableContract, Renderable
      */
     public function queue(Queue $queue)
     {
-        if (property_exists($this, 'delay')) {
+        if (isset($this->delay)) {
             return $this->later($this->delay, $queue);
         }
 
@@ -187,15 +226,19 @@ class Mailable implements MailableContract, Renderable
      * Render the mailable into a view.
 	 * 将邮件呈现到视图中
      *
-     * @return string
+     * @return \Illuminate\View\View
+     *
+     * @throws \ReflectionException
      */
     public function render()
     {
-        Container::getInstance()->call([$this, 'build']);
+        return $this->withLocale($this->locale, function () {
+            Container::getInstance()->call([$this, 'build']);
 
-        return Container::getInstance()->make('mailer')->render(
-            $this->buildView(), $this->buildViewData()
-        );
+            return Container::getInstance()->make('mailer')->render(
+                $this->buildView(), $this->buildViewData()
+            );
+        });
     }
 
     /**
@@ -203,9 +246,18 @@ class Mailable implements MailableContract, Renderable
 	 * 为消息构建视图
      *
      * @return array|string
+     *
+     * @throws \ReflectionException
      */
     protected function buildView()
     {
+        if (isset($this->html)) {
+            return array_filter([
+                'html' => new HtmlString($this->html),
+                'text' => $this->textView ?? null,
+            ]);
+        }
+
         if (isset($this->markdown)) {
             return $this->buildMarkdownView();
         }
@@ -224,6 +276,8 @@ class Mailable implements MailableContract, Renderable
 	 * 为消息构建Markdown视图
      *
      * @return array
+     *
+     * @throws \ReflectionException
      */
     protected function buildMarkdownView()
     {
@@ -246,13 +300,19 @@ class Mailable implements MailableContract, Renderable
 	 * 为消息构建视图数据
      *
      * @return array
+     *
+     * @throws \ReflectionException
      */
     public function buildViewData()
     {
         $data = $this->viewData;
 
+        if (static::$viewDataCallback) {
+            $data = array_merge($data, call_user_func(static::$viewDataCallback, $this));
+        }
+
         foreach ((new ReflectionClass($this))->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-            if ($property->getDeclaringClass()->getName() != self::class) {
+            if ($property->getDeclaringClass()->getName() !== self::class) {
                 $data[$property->getName()] = $property->getValue($this);
             }
         }
@@ -345,7 +405,31 @@ class Mailable implements MailableContract, Renderable
             );
         }
 
+        $this->buildDiskAttachments($message);
+
         return $this;
+    }
+
+    /**
+     * Add all of the disk attachments to the message.
+	 * 将所有附件添加到消息中
+     *
+     * @param  \Illuminate\Mail\Message  $message
+     * @return void
+     */
+    protected function buildDiskAttachments($message)
+    {
+        foreach ($this->diskAttachments as $attachment) {
+            $storage = Container::getInstance()->make(
+                FilesystemFactory::class
+            )->disk($attachment['disk']);
+
+            $message->attachData(
+                $storage->get($attachment['path']),
+                $attachment['name'] ?? basename($attachment['path']),
+                array_merge(['mime' => $storage->mimeType($attachment['path'])], $attachment['options'])
+            );
+        }
     }
 
     /**
@@ -365,10 +449,25 @@ class Mailable implements MailableContract, Renderable
     }
 
     /**
+     * Set the locale of the message.
+	 * 设置消息的区域设置
+     *
+     * @param  string  $locale
+     * @return $this
+     */
+    public function locale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
      * Set the priority of this message.
 	 * 设置此消息的优先级。
      *
      * The value is an integer where 1 is the highest priority and 5 is the lowest.
+	 * 整数形式，优先级为1最高，优先级为5最低。
      *
      * @param  int  $level
      * @return $this
@@ -500,8 +599,8 @@ class Mailable implements MailableContract, Renderable
     }
 
     /**
-     * Determine if the given recipient is set on the mailable.
-	 * 确定是否在邮件上设置了给定的收件人
+     * Determine if the given replyTo is set on the mailable.
+	 * 确定是否在邮件上设置了给定的replyTo
      *
      * @param  object|array|string  $address
      * @param  string|null  $name
@@ -648,6 +747,20 @@ class Mailable implements MailableContract, Renderable
     }
 
     /**
+     * Set the rendered HTML content for the message.
+	 * 为消息设置呈现的HTML内容
+     *
+     * @param  string  $html
+     * @return $this
+     */
+    public function html($html)
+    {
+        $this->html = $html;
+
+        return $this;
+    }
+
+    /**
      * Set the plain text view for the message.
 	 * 设置消息的纯文本视图
      *
@@ -698,6 +811,42 @@ class Mailable implements MailableContract, Renderable
     }
 
     /**
+     * Attach a file to the message from storage.
+	 * 将文件从存储器附加到消息上
+     *
+     * @param  string  $path
+     * @param  string  $name
+     * @param  array  $options
+     * @return $this
+     */
+    public function attachFromStorage($path, $name = null, array $options = [])
+    {
+        return $this->attachFromStorageDisk(null, $path, $name, $options);
+    }
+
+    /**
+     * Attach a file to the message from storage.
+	 * 将文件从存储器附加到消息上
+     *
+     * @param  string  $disk
+     * @param  string  $path
+     * @param  string  $name
+     * @param  array  $options
+     * @return $this
+     */
+    public function attachFromStorageDisk($disk, $path, $name = null, array $options = [])
+    {
+        $this->diskAttachments[] = [
+            'disk' => $disk,
+            'path' => $path,
+            'name' => $name ?? basename($path),
+            'options' => $options,
+        ];
+
+        return $this;
+    }
+
+    /**
      * Attach in-memory data as an attachment.
 	 * 将内存中的数据作为附件附加
      *
@@ -728,6 +877,18 @@ class Mailable implements MailableContract, Renderable
     }
 
     /**
+     * Register a callback to be called while building the view data.
+	 * 注册一个在构建视图数据时调用的回调
+     *
+     * @param  callable  $callback
+     * @return void
+     */
+    public static function buildViewDataUsing(callable $callback)
+    {
+        static::$viewDataCallback = $callback;
+    }
+
+    /**
      * Dynamically bind parameters to the message.
 	 * 动态地将参数绑定到消息
      *
@@ -740,9 +901,9 @@ class Mailable implements MailableContract, Renderable
     public function __call($method, $parameters)
     {
         if (Str::startsWith($method, 'with')) {
-            return $this->with(Str::snake(substr($method, 4)), $parameters[0]);
+            return $this->with(Str::camel(substr($method, 4)), $parameters[0]);
         }
 
-        throw new BadMethodCallException("Method [$method] does not exist on mailable.");
+        static::throwBadMethodCallException($method);
     }
 }

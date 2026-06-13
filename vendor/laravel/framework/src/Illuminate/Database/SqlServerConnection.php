@@ -29,7 +29,7 @@ class SqlServerConnection extends Connection
     public function transaction(Closure $callback, $attempts = 1)
     {
         for ($a = 1; $a <= $attempts; $a++) {
-            if ($this->getDriverName() == 'sqlsrv') {
+            if ($this->getDriverName() === 'sqlsrv') {
                 return parent::transaction($callback);
             }
 
@@ -38,6 +38,8 @@ class SqlServerConnection extends Connection
             // We'll simply execute the given callback within a try / catch block
             // and if we catch any exception we can rollback the transaction
             // so that none of the changes are persisted to the database.
+			// 我们将直接在“try”/“catch”块中执行给定的回调函数，如果捕获到任何异常，
+			// 我们就可以回滚事务，这样就不会有任何更改被保存到数据库中。
             try {
                 $result = $callback($this);
 
@@ -47,6 +49,8 @@ class SqlServerConnection extends Connection
             // If we catch an exception, we will roll back so nothing gets messed
             // up in the database. Then we'll re-throw the exception so it can
             // be handled how the developer sees fit for their applications.
+			// 如果出现异常情况，我们将进行回滚操作，以确保数据库中的数据不会遭到破坏。
+			// 然后我们将重新抛出异常,这样就可以处理开发人员如何看待它们的应用程序。
             catch (Exception $e) {
                 $this->getPdo()->exec('ROLLBACK TRAN');
 

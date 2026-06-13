@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，加载器，Php 文件加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * PhpFileLoader loads routes from a PHP file.
+ * PhpFileLoader加载来自PHP文件的路由。
  *
  * The file must return a RouteCollection instance.
  *
@@ -46,7 +50,7 @@ class PhpFileLoader extends FileLoader
 
         $result = $load($path);
 
-        if ($result instanceof \Closure) {
+        if (\is_object($result) && \is_callable($result)) {
             $collection = new RouteCollection();
             $result(new RoutingConfigurator($collection, $this, $path, $file));
         } else {

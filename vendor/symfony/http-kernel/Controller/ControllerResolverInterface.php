@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，控制器，控制器解析器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,8 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * A ControllerResolverInterface implementation knows how to determine the
  * controller to execute based on a Request object.
- *
- * It can also determine the arguments to pass to the Controller.
  *
  * A Controller can be any valid PHP callable.
  *
@@ -37,21 +38,7 @@ interface ControllerResolverInterface
      * @return callable|false A PHP callable representing the Controller,
      *                        or false if this resolver is not able to determine the controller
      *
-     * @throws \LogicException If the controller can't be found
+     * @throws \LogicException If a controller was found based on the request but it is not callable
      */
     public function getController(Request $request);
-
-    /**
-     * Returns the arguments to pass to the controller.
-     *
-     * @param Request  $request    A Request instance
-     * @param callable $controller A PHP callable
-     *
-     * @return array An array of arguments to pass to the controller
-     *
-     * @throws \RuntimeException When value for argument given is not provided
-     *
-     * @deprecated This method is deprecated as of 3.1 and will be removed in 4.0. Please use the {@see ArgumentResolverInterface} instead.
-     */
-    public function getArguments(Request $request, $controller);
 }

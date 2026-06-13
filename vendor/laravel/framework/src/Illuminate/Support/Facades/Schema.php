@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，模式
+ * Illuminate，支持，门面，Schema
  */
 
 namespace Illuminate\Support\Facades;
@@ -10,6 +10,7 @@ namespace Illuminate\Support\Facades;
  * @method static \Illuminate\Database\Schema\Builder drop(string $table)
  * @method static \Illuminate\Database\Schema\Builder dropIfExists(string $table)
  * @method static \Illuminate\Database\Schema\Builder table(string $table, \Closure $callback)
+ * @method static void defaultStringLength(int $length)
  *
  * @see \Illuminate\Database\Schema\Builder
  */

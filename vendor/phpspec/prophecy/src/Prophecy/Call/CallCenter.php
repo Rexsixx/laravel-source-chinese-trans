@@ -12,6 +12,7 @@
 namespace Prophecy\Call;
 
 use Prophecy\Exception\Prophecy\MethodProphecyException;
+use Prophecy\Prophecy\MethodProphecy;
 use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\Argument\ArgumentsWildcard;
 use Prophecy\Util\StringUtil;
@@ -33,7 +34,7 @@ class CallCenter
     private $recordedCalls = array();
 
     /**
-     * @var SplObjectStorage
+     * @var SplObjectStorage<Call, ObjectProphecy<object>>
      */
     private $unexpectedCalls;
 
@@ -42,18 +43,18 @@ class CallCenter
      *
      * @param StringUtil $util
      */
-    public function __construct(StringUtil $util = null)
+    public function __construct(?StringUtil $util = null)
     {
-        $this->util = $util ?: new StringUtil;
+        $this->util = $util ?: new StringUtil();
         $this->unexpectedCalls = new SplObjectStorage();
     }
 
     /**
      * Makes and records specific method call for object prophecy.
      *
-     * @param ObjectProphecy $prophecy
+     * @param ObjectProphecy<object> $prophecy
      * @param string         $methodName
-     * @param array          $arguments
+     * @param array<mixed>          $arguments
      *
      * @return mixed Returns null if no promise for prophecy found or promise return value.
      *
@@ -62,19 +63,11 @@ class CallCenter
     public function makeCall(ObjectProphecy $prophecy, $methodName, array $arguments)
     {
         // For efficiency exclude 'args' from the generated backtrace
-        if (PHP_VERSION_ID >= 50400) {
-            // Limit backtrace to last 3 calls as we don't use the rest
-            // Limit argument was introduced in PHP 5.4.0
-            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
-        } elseif (defined('DEBUG_BACKTRACE_IGNORE_ARGS')) {
-            // DEBUG_BACKTRACE_IGNORE_ARGS was introduced in PHP 5.3.6
-            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        } else {
-            $backtrace = debug_backtrace();
-        }
+        // Limit backtrace to last 3 calls as we don't use the rest
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
 
         $file = $line = null;
-        if (isset($backtrace[2]) && isset($backtrace[2]['file'])) {
+        if (isset($backtrace[2]) && isset($backtrace[2]['file']) && isset($backtrace[2]['line'])) {
             $file = $backtrace[2]['file'];
             $line = $backtrace[2]['line'];
         }
@@ -138,7 +131,7 @@ class CallCenter
      * @param string            $methodName
      * @param ArgumentsWildcard $wildcard
      *
-     * @return Call[]
+     * @return list<Call>
      */
     public function findCalls($methodName, ArgumentsWildcard $wildcard)
     {
@@ -154,11 +147,11 @@ class CallCenter
     }
 
     /**
+     * @return void
      * @throws UnexpectedCallException
      */
     public function checkUnexpectedCalls()
     {
-        /** @var Call $call */
         foreach ($this->unexpectedCalls as $call) {
             $prophecy = $this->unexpectedCalls[$call];
 
@@ -169,8 +162,15 @@ class CallCenter
         }
     }
 
+    /**
+     * @param ObjectProphecy<object> $prophecy
+     * @param string                 $methodName
+     * @param array<mixed>           $arguments
+     *
+     * @return UnexpectedCallException
+     */
     private function createUnexpectedCallException(ObjectProphecy $prophecy, $methodName,
-                                                   array $arguments)
+        array $arguments)
     {
         $classname = get_class($prophecy->reveal());
         $indentationLength = 8; // looks good
@@ -184,10 +184,10 @@ class CallCenter
 
         $expected = array();
 
-        foreach (call_user_func_array('array_merge', $prophecy->getMethodProphecies()) as $methodProphecy) {
+        foreach (array_merge(...array_values($prophecy->getMethodProphecies())) as $methodProphecy) {
             $expected[] = sprintf(
-                "  - %s(\n" .
-                "%s\n" .
+                "  - %s(\n".
+                "%s\n".
                 "    )",
                 $methodProphecy->getMethodName(),
                 implode(
@@ -216,6 +216,12 @@ class CallCenter
         );
     }
 
+    /**
+     * @param string[] $arguments
+     * @param int      $indentationLength
+     *
+     * @return string[]
+     */
     private function indentArguments(array $arguments, $indentationLength)
     {
         return preg_replace_callback(
@@ -228,11 +234,13 @@ class CallCenter
     }
 
     /**
-     * @param ObjectProphecy $prophecy
+     * @param ObjectProphecy<object> $prophecy
      * @param string $methodName
-     * @param array $arguments
+     * @param array<mixed> $arguments
      *
      * @return array
+     *
+     * @phpstan-return list<array{int, MethodProphecy}>
      */
     private function findMethodProphecies(ObjectProphecy $prophecy, $methodName, array $arguments)
     {

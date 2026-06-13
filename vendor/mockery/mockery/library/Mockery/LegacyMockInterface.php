@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，Legacy 模拟接口
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -24,6 +28,7 @@ interface LegacyMockInterface
 {
     /**
      * Alternative setup method to constructor
+	 * 向构造函数的替代设置方法
      *
      * @param \Mockery\Container $container
      * @param object $partialObject
@@ -33,6 +38,7 @@ interface LegacyMockInterface
 
     /**
      * Set expected method calls
+	 * 设置预期方法调用
      *
      * @param string|array ...$methodNames one or many methods that are expected to be called in this mock
      *

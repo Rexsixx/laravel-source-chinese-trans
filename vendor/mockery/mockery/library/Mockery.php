@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，Mockery
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -36,6 +40,7 @@ class Mockery
 
     /**
      * Global container to hold all mocks for the current unit test running.
+	 * 全球容器,以控制当前单元测试运行的所有模拟。
      *
      * @var \Mockery\Container|null
      */
@@ -43,6 +48,7 @@ class Mockery
 
     /**
      * Global configuration handler containing configuration options.
+	 * 包含配置选项的全局配置处理程序
      *
      * @var \Mockery\Configuration
      */

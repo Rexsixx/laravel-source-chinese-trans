@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，缓冲记录器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,15 +16,23 @@ namespace Symfony\Component\Debug;
 
 use Psr\Log\AbstractLogger;
 
+@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.4, use "%s" instead.', BufferingLogger::class, \Symfony\Component\ErrorHandler\BufferingLogger::class), \E_USER_DEPRECATED);
+
 /**
  * A buffering logger that stacks logs for later.
+ * 一个缓冲日志记录器，将日志堆叠起来供以后使用。
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ *
+ * @deprecated since Symfony 4.4, use Symfony\Component\ErrorHandler\BufferingLogger instead.
  */
 class BufferingLogger extends AbstractLogger
 {
     private $logs = [];
 
+    /**
+     * @return void
+     */
     public function log($level, $message, array $context = [])
     {
         $this->logs[] = [$level, $message, $context];

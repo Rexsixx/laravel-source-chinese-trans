@@ -92,7 +92,15 @@ class Redirector
      */
     public function guest($path, $status = 302, $headers = [], $secure = null)
     {
-        $this->session->put('url.intended', $this->generator->full());
+        $request = $this->generator->getRequest();
+
+        $intended = $request->method() === 'GET' && $request->route() && ! $request->expectsJson()
+                        ? $this->generator->full()
+                        : $this->generator->previous();
+
+        if ($intended) {
+            $this->setIntendedUrl($intended);
+        }
 
         return $this->to($path, $status, $headers, $secure);
     }
@@ -115,6 +123,18 @@ class Redirector
     }
 
     /**
+     * Set the intended url.
+	 * 设置预期的url
+     *
+     * @param  string  $url
+     * @return void
+     */
+    public function setIntendedUrl($url)
+    {
+        $this->session->put('url.intended', $url);
+    }
+
+    /**
      * Create a new redirect response to the given path.
 	 * 创建对给定路径的新重定向响应
      *
@@ -131,7 +151,7 @@ class Redirector
 
     /**
      * Create a new redirect response to an external URL (no validation).
-	 * 创建一个指向外部URL的新重定向响应（不需要验证
+	 * 创建一个指向外部URL的新重定向响应（不需要验证）
      *
      * @param  string  $path
      * @param  int     $status
@@ -162,7 +182,7 @@ class Redirector
 	 * 为命名路由创建一个新的重定向响应
      *
      * @param  string  $route
-     * @param  array   $parameters
+     * @param  mixed   $parameters
      * @param  int     $status
      * @param  array   $headers
      * @return \Illuminate\Http\RedirectResponse
@@ -176,8 +196,8 @@ class Redirector
      * Create a new redirect response to a controller action.
 	 * 为控制器动作创建一个新的重定向响应
      *
-     * @param  string  $action
-     * @param  array   $parameters
+     * @param  string|array  $action
+     * @param  mixed   $parameters
      * @param  int     $status
      * @param  array   $headers
      * @return \Illuminate\Http\RedirectResponse

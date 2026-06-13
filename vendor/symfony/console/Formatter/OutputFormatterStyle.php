@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，格式化程序，输出格式化程序样式
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 /**
  * Formatter style class for defining styles.
+ * 格式化样式类,用于定义样式。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -52,16 +56,18 @@ class OutputFormatterStyle implements OutputFormatterStyleInterface
 
     private $foreground;
     private $background;
+    private $href;
     private $options = [];
+    private $handlesHrefGracefully;
 
     /**
      * Initializes output formatter style.
+	 * 初始化输出格式化程序样式
      *
      * @param string|null $foreground The style foreground color name
      * @param string|null $background The style background color name
-     * @param array       $options    The style options
      */
-    public function __construct($foreground = null, $background = null, array $options = [])
+    public function __construct(string $foreground = null, string $background = null, array $options = [])
     {
         if (null !== $foreground) {
             $this->setForeground($foreground);
@@ -108,6 +114,11 @@ class OutputFormatterStyle implements OutputFormatterStyleInterface
         }
 
         $this->background = static::$availableBackgroundColors[$color];
+    }
+
+    public function setHref(string $url): void
+    {
+        $this->href = $url;
     }
 
     /**
@@ -159,6 +170,11 @@ class OutputFormatterStyle implements OutputFormatterStyleInterface
         $setCodes = [];
         $unsetCodes = [];
 
+        if (null === $this->handlesHrefGracefully) {
+            $this->handlesHrefGracefully = 'JetBrains-JediTerm' !== getenv('TERMINAL_EMULATOR')
+                && (!getenv('KONSOLE_VERSION') || (int) getenv('KONSOLE_VERSION') > 201100);
+        }
+
         if (null !== $this->foreground) {
             $setCodes[] = $this->foreground['set'];
             $unsetCodes[] = $this->foreground['unset'];
@@ -167,11 +183,14 @@ class OutputFormatterStyle implements OutputFormatterStyleInterface
             $setCodes[] = $this->background['set'];
             $unsetCodes[] = $this->background['unset'];
         }
-        if (\count($this->options)) {
-            foreach ($this->options as $option) {
-                $setCodes[] = $option['set'];
-                $unsetCodes[] = $option['unset'];
-            }
+
+        foreach ($this->options as $option) {
+            $setCodes[] = $option['set'];
+            $unsetCodes[] = $option['unset'];
+        }
+
+        if (null !== $this->href && $this->handlesHrefGracefully) {
+            $text = "\033]8;;$this->href\033\\$text\033]8;;\033\\";
         }
 
         if (0 === \count($setCodes)) {

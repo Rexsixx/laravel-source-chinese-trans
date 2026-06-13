@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，反射，伪类型，可调用的字符串
+ */
 
 declare(strict_types=1);
 

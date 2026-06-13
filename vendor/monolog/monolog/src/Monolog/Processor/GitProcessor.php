@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理器，Git 处理器
+ */
 
 /*
  * This file is part of the Monolog package.

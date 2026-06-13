@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，请求上下文
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Holds information about the current request.
+ * 保存有关当前请求的信息。
  *
  * This class implements a fluent interface.
  *
@@ -33,17 +37,7 @@ class RequestContext
     private $queryString;
     private $parameters = [];
 
-    /**
-     * @param string $baseUrl     The base URL
-     * @param string $method      The HTTP method
-     * @param string $host        The HTTP host name
-     * @param string $scheme      The HTTP scheme
-     * @param int    $httpPort    The HTTP port
-     * @param int    $httpsPort   The HTTPS port
-     * @param string $path        The path
-     * @param string $queryString The query string
-     */
-    public function __construct($baseUrl = '', $method = 'GET', $host = 'localhost', $scheme = 'http', $httpPort = 80, $httpsPort = 443, $path = '/', $queryString = '')
+    public function __construct(string $baseUrl = '', string $method = 'GET', string $host = 'localhost', string $scheme = 'http', int $httpPort = 80, int $httpsPort = 443, string $path = '/', string $queryString = '')
     {
         $this->setBaseUrl($baseUrl);
         $this->setMethod($method);
@@ -57,6 +51,7 @@ class RequestContext
 
     /**
      * Updates the RequestContext information based on a HttpFoundation Request.
+	 * 基于HttpFoundation请求更新RequestContext信息
      *
      * @return $this
      */
@@ -76,6 +71,7 @@ class RequestContext
 
     /**
      * Gets the base URL.
+	 * 获取基础URL
      *
      * @return string The base URL
      */
@@ -86,6 +82,7 @@ class RequestContext
 
     /**
      * Sets the base URL.
+	 * 设置基础URL
      *
      * @param string $baseUrl The base URL
      *
@@ -304,7 +301,7 @@ class RequestContext
      */
     public function getParameter($name)
     {
-        return isset($this->parameters[$name]) ? $this->parameters[$name] : null;
+        return $this->parameters[$name] ?? null;
     }
 
     /**

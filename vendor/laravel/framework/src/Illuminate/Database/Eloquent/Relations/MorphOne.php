@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，改变一个
+ * Illuminate，数据库，Eloquent，关系，多态一对一
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -21,6 +21,10 @@ class MorphOne extends MorphOneOrMany
      */
     public function getResults()
     {
+        if (is_null($this->getParentKey())) {
+            return $this->getDefaultFor($this->parent);
+        }
+
         return $this->query->first() ?: $this->getDefaultFor($this->parent);
     }
 

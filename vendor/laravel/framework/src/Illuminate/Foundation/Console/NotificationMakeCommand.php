@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，控制台，通知制作命令
+ */
 
 namespace Illuminate\Foundation\Console;
 
@@ -9,6 +12,7 @@ class NotificationMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
+	 * 控制台命令名
      *
      * @var string
      */
@@ -16,6 +20,7 @@ class NotificationMakeCommand extends GeneratorCommand
 
     /**
      * The console command description.
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -23,6 +28,7 @@ class NotificationMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
+	 * 生成的类的类型
      *
      * @var string
      */
@@ -30,6 +36,7 @@ class NotificationMakeCommand extends GeneratorCommand
 
     /**
      * Execute the console command.
+	 * 执行console命令
      *
      * @return void
      */
@@ -46,6 +53,7 @@ class NotificationMakeCommand extends GeneratorCommand
 
     /**
      * Write the Markdown template for the mailable.
+	 * 为邮件编写Markdown模板
      *
      * @return void
      */
@@ -62,6 +70,7 @@ class NotificationMakeCommand extends GeneratorCommand
 
     /**
      * Build the class with the given name.
+	 * 用给定的名称构建类
      *
      * @param  string  $name
      * @return string
@@ -79,6 +88,7 @@ class NotificationMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
+	 * 获取生成器的存根文件
      *
      * @return string
      */
@@ -91,6 +101,7 @@ class NotificationMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
+	 * 获取类的默认名称空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -102,15 +113,16 @@ class NotificationMakeCommand extends GeneratorCommand
 
     /**
      * Get the console command options.
+	 * 获取控制台命令选项
      *
      * @return array
      */
     protected function getOptions()
     {
         return [
-            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the notification already exists.'],
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the notification already exists'],
 
-            ['markdown', 'm', InputOption::VALUE_OPTIONAL, 'Create a new Markdown template for the notification.'],
+            ['markdown', 'm', InputOption::VALUE_OPTIONAL, 'Create a new Markdown template for the notification'],
         ];
     }
 }

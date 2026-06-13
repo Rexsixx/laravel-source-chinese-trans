@@ -25,6 +25,7 @@ trait SerializesAndRestoresModelIdentifiers
             return new ModelIdentifier(
                 $value->getQueueableClass(),
                 $value->getQueueableIds(),
+                $value->getQueueableRelations(),
                 $value->getQueueableConnection()
             );
         }
@@ -33,6 +34,7 @@ trait SerializesAndRestoresModelIdentifiers
             return new ModelIdentifier(
                 get_class($value),
                 $value->getQueueableId(),
+                $value->getQueueableRelations(),
                 $value->getQueueableConnection()
             );
         }
@@ -55,8 +57,7 @@ trait SerializesAndRestoresModelIdentifiers
 
         return is_array($value->id)
                 ? $this->restoreCollection($value)
-                : $this->getQueryForModelRestoration((new $value->class)->setConnection($value->connection), $value->id)
-                        ->useWritePdo()->firstOrFail();
+                : $this->restoreModel($value);
     }
 
     /**
@@ -78,11 +79,25 @@ trait SerializesAndRestoresModelIdentifiers
     }
 
     /**
-     * Get the query for restoration.
-	 * 获取恢复的查询
+     * Restore the model from the model identifier instance.
+	 * 从模型标识符实例恢复模型
+     *
+     * @param  \Illuminate\Contracts\Database\ModelIdentifier  $value
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function restoreModel($value)
+    {
+        return $this->getQueryForModelRestoration(
+            (new $value->class)->setConnection($value->connection), $value->id
+        )->useWritePdo()->firstOrFail()->load($value->relations ?? []);
+    }
+
+    /**
+     * Get the query for model restoration.
+	 * 获取模型恢复的查询
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  array|int                            $ids
+     * @param  array|int  $ids
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function getQueryForModelRestoration($model, $ids)

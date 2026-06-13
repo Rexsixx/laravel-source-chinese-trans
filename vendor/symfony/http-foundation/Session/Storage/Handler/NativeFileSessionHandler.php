@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，存储，处理者，Native 文件会话处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,10 +16,11 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 
 /**
  * Native session handler using PHP's built in file storage.
+ * 使用PHP内置文件存储的本机会话处理程序。
  *
  * @author Drak <drak@zikula.org>
  */
-class NativeFileSessionHandler extends NativeSessionHandler
+class NativeFileSessionHandler extends \SessionHandler
 {
     /**
      * @param string $savePath Path of directory to save session files
@@ -28,10 +32,10 @@ class NativeFileSessionHandler extends NativeSessionHandler
      * @throws \InvalidArgumentException On invalid $savePath
      * @throws \RuntimeException         When failing to create the save directory
      */
-    public function __construct($savePath = null)
+    public function __construct(string $savePath = null)
     {
         if (null === $savePath) {
-            $savePath = ini_get('session.save_path');
+            $savePath = \ini_get('session.save_path');
         }
 
         $baseDir = $savePath;

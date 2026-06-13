@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，转储，无文件转储
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -62,7 +65,7 @@ class MoFileDumper extends FileDumper
                .$targetOffsets
                .$sources
                .$targets
-                ;
+        ;
 
         return $output;
     }
@@ -75,7 +78,7 @@ class MoFileDumper extends FileDumper
         return 'mo';
     }
 
-    private function writeLong($str)
+    private function writeLong($str): string
     {
         return pack('V*', $str);
     }

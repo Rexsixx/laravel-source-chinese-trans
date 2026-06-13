@@ -34,12 +34,20 @@ interface Application extends Container
     public function environment();
 
     /**
-     * Determine if we are running in the console.
-	 * 确定我们是否在控制台中运行
+     * Determine if the application is running in the console.
+	 * 确定应用程序是否在控制台中运行
      *
      * @return bool
      */
     public function runningInConsole();
+
+    /**
+     * Determine if the application is running unit tests.
+	 * 确定应用程序是否正在运行单元测试
+     *
+     * @return bool
+     */
+    public function runningUnitTests();
 
     /**
      * Determine if the application is currently down for maintenance.
@@ -62,11 +70,10 @@ interface Application extends Container
 	 * 向应用程序注册一个服务提供者
      *
      * @param  \Illuminate\Support\ServiceProvider|string  $provider
-     * @param  array  $options
      * @param  bool   $force
      * @return \Illuminate\Support\ServiceProvider
      */
-    public function register($provider, $options = [], $force = false);
+    public function register($provider, $force = false);
 
     /**
      * Register a deferred provider and service.
@@ -90,7 +97,7 @@ interface Application extends Container
      * Register a new boot listener.
 	 * 注册一个新的引导侦听器
      *
-     * @param  mixed  $callback
+     * @param  callable  $callback
      * @return void
      */
     public function booting($callback);
@@ -99,7 +106,7 @@ interface Application extends Container
      * Register a new "booted" listener.
 	 * 注册一个新的“已启动”侦听器
      *
-     * @param  mixed  $callback
+     * @param  callable  $callback
      * @return void
      */
     public function booted($callback);

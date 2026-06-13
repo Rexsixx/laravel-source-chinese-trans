@@ -9,7 +9,7 @@ class Looping
 {
     /**
      * The connection name.
-	 * 连接名称。
+	 * 连接名称
      *
      * @var string
      */

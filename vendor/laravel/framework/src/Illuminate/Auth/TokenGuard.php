@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，令牌警卫
+ * Illuminate，认证，令牌警卫
  */
 
 namespace Illuminate\Auth;
@@ -43,14 +43,16 @@ class TokenGuard implements Guard
      *
      * @param  \Illuminate\Contracts\Auth\UserProvider  $provider
      * @param  \Illuminate\Http\Request  $request
+     * @param  string  $inputKey
+     * @param  string  $storageKey
      * @return void
      */
-    public function __construct(UserProvider $provider, Request $request)
+    public function __construct(UserProvider $provider, Request $request, $inputKey = 'api_token', $storageKey = 'api_token')
     {
         $this->request = $request;
         $this->provider = $provider;
-        $this->inputKey = 'api_token';
-        $this->storageKey = 'api_token';
+        $this->inputKey = $inputKey;
+        $this->storageKey = $storageKey;
     }
 
     /**
@@ -64,6 +66,8 @@ class TokenGuard implements Guard
         // If we've already retrieved the user for the current request we can just
         // return it back immediately. We do not want to fetch the user data on
         // every call to this method because that would be tremendously slow.
+		// 如果我们已经检索了当前请求的用户,我们可以立即返回返回。
+		// 我们不希望在每次调用这个方法的每一个调用中获取用户数据,因为这将非常缓慢。
         if (! is_null($this->user)) {
             return $this->user;
         }

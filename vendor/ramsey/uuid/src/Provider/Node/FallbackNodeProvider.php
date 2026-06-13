@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，提供商，节点，回退节点提供程序
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE

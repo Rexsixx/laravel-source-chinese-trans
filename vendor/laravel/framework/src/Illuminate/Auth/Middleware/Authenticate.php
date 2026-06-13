@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，中间件，验证
+ * Illuminate，认证，中间件，验证
  */
 
 namespace Illuminate\Auth\Middleware;
@@ -44,7 +44,7 @@ class Authenticate
      */
     public function handle($request, Closure $next, ...$guards)
     {
-        $this->authenticate($guards);
+        $this->authenticate($request, $guards);
 
         return $next($request);
     }
@@ -53,15 +53,16 @@ class Authenticate
      * Determine if the user is logged in to any of the given guards.
 	 * 确定用户是否登录到任何给定的警卫
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  array  $guards
      * @return void
      *
      * @throws \Illuminate\Auth\AuthenticationException
      */
-    protected function authenticate(array $guards)
+    protected function authenticate($request, array $guards)
     {
         if (empty($guards)) {
-            return $this->auth->authenticate();
+            $guards = [null];
         }
 
         foreach ($guards as $guard) {
@@ -70,6 +71,20 @@ class Authenticate
             }
         }
 
-        throw new AuthenticationException('Unauthenticated.', $guards);
+        throw new AuthenticationException(
+            'Unauthenticated.', $guards, $this->redirectTo($request)
+        );
+    }
+
+    /**
+     * Get the path the user should be redirected to when they are not authenticated.
+	 * 获取用户未经过身份验证时应重定向到的路径
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return string
+     */
+    protected function redirectTo($request)
+    {
+        //
     }
 }

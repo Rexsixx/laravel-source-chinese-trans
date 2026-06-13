@@ -14,7 +14,6 @@ use Illuminate\Database\SQLiteConnection;
 use Illuminate\Database\PostgresConnection;
 use Illuminate\Database\SqlServerConnection;
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Contracts\Debug\ExceptionHandler;
 
 class ConnectionFactory
 {
@@ -142,7 +141,7 @@ class ConnectionFactory
 
     /**
      * Get a read / write level configuration.
-	 * 获取读/写级别配置
+	 * 获取读/写级别配置。
      *
      * @param  array   $config
      * @param  string  $type
@@ -157,7 +156,7 @@ class ConnectionFactory
 
     /**
      * Merge a configuration for a read / write connection.
-	 * 合并读写连接的配置
+	 * 合并读写连接的配置。
      *
      * @param  array  $config
      * @param  array  $merge
@@ -198,9 +197,7 @@ class ConnectionFactory
                 try {
                     return $this->createConnector($config)->connect($config);
                 } catch (PDOException $e) {
-                    if (count($hosts) - 1 === $key && $this->container->bound(ExceptionHandler::class)) {
-                        $this->container->make(ExceptionHandler::class)->report($e);
-                    }
+                    continue;
                 }
             }
 
@@ -303,6 +300,6 @@ class ConnectionFactory
                 return new SqlServerConnection($connection, $database, $prefix, $config);
         }
 
-        throw new InvalidArgumentException("Unsupported driver [$driver]");
+        throw new InvalidArgumentException("Unsupported driver [{$driver}]");
     }
 }

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，运行接口
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -18,6 +22,7 @@ interface RunInterface
 
     /**
      * Pushes a handler to the end of the stack
+	 * 将处理程序推到堆栈的末尾
      *
      * @throws InvalidArgumentException  If argument is not callable or instance of HandlerInterface
      * @param  Callable|HandlerInterface $handler
@@ -28,6 +33,7 @@ interface RunInterface
     /**
      * Removes the last handler in the stack and returns it.
      * Returns null if there"s nothing else to pop.
+	 * 删除堆栈中的最后一个处理程序并返回它。如果没有别的东西,就返回null。
      *
      * @return null|HandlerInterface
      */

@@ -1,0 +1,71 @@
+<?php
+/**
+ * Illuminate，基础，控制台，存根，动态类，根据实际需要修改
+ */
+
+namespace DummyNamespace;
+
+use NamespacedDummyModel;
+
+class DummyClass
+{
+    /**
+     * Handle the DocDummyModel "created" event.
+	 * 处理DocDummyModel “created”事件
+     *
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return void
+     */
+    public function created(DummyModel $dummyModel)
+    {
+        //
+    }
+
+    /**
+     * Handle the DocDummyModel "updated" event.
+	 * 处理DocDummyModel “updated”事件
+     *
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return void
+     */
+    public function updated(DummyModel $dummyModel)
+    {
+        //
+    }
+
+    /**
+     * Handle the DocDummyModel "deleted" event.
+	 * 处理DocDummyModel “deleted”事件
+     *
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return void
+     */
+    public function deleted(DummyModel $dummyModel)
+    {
+        //
+    }
+
+    /**
+     * Handle the DocDummyModel "restored" event.
+	 * 处理DocDummyModel “restored”事件
+     *
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return void
+     */
+    public function restored(DummyModel $dummyModel)
+    {
+        //
+    }
+
+    /**
+     * Handle the DocDummyModel "force deleted" event.
+	 * 处理DocDummyModel “force deleted”事件
+     *
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return void
+     */
+    public function forceDeleted(DummyModel $dummyModel)
+    {
+        //
+    }
+}

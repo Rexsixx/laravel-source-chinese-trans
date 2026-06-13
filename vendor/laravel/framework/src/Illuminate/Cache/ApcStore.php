@@ -21,7 +21,7 @@ class ApcStore extends TaggableStore implements Store
 
     /**
      * A string that should be prepended to keys.
-	 * 一个应该被预先要求的字符串
+	 * 应该加在键前的字符串
      *
      * @var string
      */
@@ -43,7 +43,7 @@ class ApcStore extends TaggableStore implements Store
 
     /**
      * Retrieve an item from the cache by key.
-	 * 通过密钥从缓存中检索一个项目
+	 * 按键从缓存中检索项
      *
      * @param  string|array  $key
      * @return mixed
@@ -59,7 +59,7 @@ class ApcStore extends TaggableStore implements Store
 
     /**
      * Store an item in the cache for a given number of minutes.
-	 * 将一个项目存储在缓存中,给定数分钟
+	 * 将项存储在缓存中给定的分钟数
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -73,7 +73,7 @@ class ApcStore extends TaggableStore implements Store
 
     /**
      * Increment the value of an item in the cache.
-	 * 在缓存中增加一个项目的值
+	 * 增加缓存中项的值
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -86,7 +86,7 @@ class ApcStore extends TaggableStore implements Store
 
     /**
      * Decrement the value of an item in the cache.
-	 * 在缓存中减去一个项目的值
+	 * 递减缓存中项的值
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -99,7 +99,7 @@ class ApcStore extends TaggableStore implements Store
 
     /**
      * Store an item in the cache indefinitely.
-	 * 无限期地在缓存中存储一个项目
+	 * 将项无限期地存储在缓存中
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -112,7 +112,7 @@ class ApcStore extends TaggableStore implements Store
 
     /**
      * Remove an item from the cache.
-	 * 从缓存中删除一个项目
+	 * 从缓存中删除项
      *
      * @param  string  $key
      * @return bool
@@ -124,7 +124,7 @@ class ApcStore extends TaggableStore implements Store
 
     /**
      * Remove all items from the cache.
-	 * 从缓存中删除所有项目
+	 * 从缓存中删除所有项
      *
      * @return bool
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Webmozart，Assert，无效参数异常
+ */
 
 /*
  * This file is part of the webmozart/assert package.

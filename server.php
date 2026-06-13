@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，服务
+ * 服务
  */
 
 /**
@@ -17,7 +17,6 @@ $uri = urldecode(
 // This file allows us to emulate Apache's "mod_rewrite" functionality from the
 // built-in PHP web server. This provides a convenient way to test a Laravel
 // application without having installed a "real" web server software here.
-// 这个文件允许我们众内置PHP web服务器模拟Apache的"mod_rewrite"功能。
 if ($uri !== '/' && file_exists(__DIR__.'/public'.$uri)) {
     return false;
 }

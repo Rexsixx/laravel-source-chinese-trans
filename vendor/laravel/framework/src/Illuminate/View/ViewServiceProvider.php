@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，视图服务提供商
+ * Illuminate，视图，视图服务提供者
  */
 
 namespace Illuminate\View;
@@ -41,6 +41,8 @@ class ViewServiceProvider extends ServiceProvider
             // Next we need to grab the engine resolver instance that will be used by the
             // environment. The resolver will be used by an environment to get each of
             // the various engine implementations such as plain PHP or Blade engine.
+			// 接下来，我们需要获取将被环境所使用的引擎解析器实例。
+			// 解决器将被环境用来获取各种引擎实现,如普通PHP或Blade引擎。
             $resolver = $app['view.engine.resolver'];
 
             $finder = $app['view.finder'];
@@ -50,6 +52,8 @@ class ViewServiceProvider extends ServiceProvider
             // We will also set the container instance on this view environment since the
             // view composers may be classes registered in the container, which allows
             // for great testable, flexible composers for the application developer.
+			// 我们还将在此视图环境中设置容器实例，因为视图编排器可能是已注册在容器中的类，
+			// 这为应用程序开发人员提供了易于测试且灵活的编排器。
             $factory->setContainer($app);
 
             $factory->share('app', $app);
@@ -74,7 +78,7 @@ class ViewServiceProvider extends ServiceProvider
 
     /**
      * Register the view finder implementation.
-	 * 注册取景器实现
+	 * 注册视图查找程序实现
      *
      * @return void
      */
@@ -99,6 +103,8 @@ class ViewServiceProvider extends ServiceProvider
             // Next, we will register the various view engines with the resolver so that the
             // environment will resolve the engines needed for various views based on the
             // extension of view file. We call a method for each of the view's engines.
+			// 接下来，我们将把各种视图引擎与解析器进行关联，以便环境能够根据视图文件的扩展名来确定所需的各种视图引擎。
+			// 我们为每个视图的引擎调用一个方法。
             foreach (['file', 'php', 'blade'] as $engine) {
                 $this->{'register'.ucfirst($engine).'Engine'}($resolver);
             }
@@ -147,6 +153,8 @@ class ViewServiceProvider extends ServiceProvider
         // The Compiler engine requires an instance of the CompilerInterface, which in
         // this case will be the Blade compiler, so we'll first create the compiler
         // instance to pass into the engine so it can compile the views properly.
+		// 编译器引擎需要一个 CompilerInterface 的实例，而在本例中，这个实例将是 Blade 编译器。
+		// 因此，我们首先会创建一个编译器实例，并将其传递给引擎，以便它能够正确地编译视图。
         $this->app->singleton('blade.compiler', function () {
             return new BladeCompiler(
                 $this->app['files'], $this->app['config']['view.compiled']

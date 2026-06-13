@@ -18,8 +18,9 @@ class DownCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'down {--message= : The message for the maintenance mode. }
-                                 {--retry= : The number of seconds after which the request may be retried.}';
+    protected $signature = 'down {--message= : The message for the maintenance mode}
+                                 {--retry= : The number of seconds after which the request may be retried}
+                                 {--allow=* : IP or networks allowed to access the application while in maintenance mode}';
 
     /**
      * The console command description.
@@ -47,6 +48,7 @@ class DownCommand extends Command
 
     /**
      * Get the payload to be placed in the "down" file.
+	 * 获取要放置在“down”文件中的有效负载
      *
      * @return array
      */
@@ -56,6 +58,7 @@ class DownCommand extends Command
             'time' => $this->currentTime(),
             'message' => $this->option('message'),
             'retry' => $this->getRetryTime(),
+            'allowed' => $this->option('allow'),
         ];
     }
 

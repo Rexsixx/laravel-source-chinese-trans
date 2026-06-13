@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，Dotenv
+ */
 
 namespace Dotenv;
 
@@ -6,6 +9,7 @@ use Dotenv\Exception\InvalidPathException;
 
 /**
  * This is the dotenv class.
+ * 这是dotenv类。
  *
  * It's responsible for loading a `.env` file in the given directory and
  * setting the environment vars.
@@ -14,6 +18,7 @@ class Dotenv
 {
     /**
      * The file path.
+	 * 文件路径
      *
      * @var string
      */
@@ -21,6 +26,7 @@ class Dotenv
 
     /**
      * The loader instance.
+	 * 加载器实例
      *
      * @var \Dotenv\Loader|null
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，依赖注入，路由解析器通过
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Adds tagged routing.loader services to routing.resolver service.
+ * 添加标记路由。加载服务到路由。解析器服务。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -28,7 +32,7 @@ class RoutingResolverPass implements CompilerPassInterface
     private $resolverServiceId;
     private $loaderTag;
 
-    public function __construct($resolverServiceId = 'routing.resolver', $loaderTag = 'routing.loader')
+    public function __construct(string $resolverServiceId = 'routing.resolver', string $loaderTag = 'routing.loader')
     {
         $this->resolverServiceId = $resolverServiceId;
         $this->loaderTag = $loaderTag;

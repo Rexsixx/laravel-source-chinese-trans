@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，属性，命名空间属性包
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -25,7 +28,7 @@ class NamespacedAttributeBag extends AttributeBag
      * @param string $storageKey         Session storage key
      * @param string $namespaceCharacter Namespace character to use in keys
      */
-    public function __construct($storageKey = '_sf2_attributes', $namespaceCharacter = '/')
+    public function __construct(string $storageKey = '_sf2_attributes', string $namespaceCharacter = '/')
     {
         $this->namespaceCharacter = $namespaceCharacter;
         parent::__construct($storageKey);
@@ -102,7 +105,7 @@ class NamespacedAttributeBag extends AttributeBag
     protected function &resolveAttributePath($name, $writeContext = false)
     {
         $array = &$this->attributes;
-        $name = (0 === strpos($name, $this->namespaceCharacter)) ? substr($name, 1) : $name;
+        $name = (str_starts_with($name, $this->namespaceCharacter)) ? substr($name, 1) : $name;
 
         // Check if there is anything to do, else return
         if (!$name) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，控制台，迁移，状态命令 migrate:status
+ * Illuminate，数据库，控制台，迁移，状态命令
  */
 
 namespace Illuminate\Database\Console\Migrations;
@@ -13,7 +13,7 @@ class StatusCommand extends BaseCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
@@ -21,7 +21,7 @@ class StatusCommand extends BaseCommand
 
     /**
      * The console command description.
-	 * 控制台命令描述 
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -60,13 +60,15 @@ class StatusCommand extends BaseCommand
         $this->migrator->setConnection($this->option('database'));
 
         if (! $this->migrator->repositoryExists()) {
-            return $this->error('No migrations found.');
+            return $this->error('Migration table not found.');
         }
 
         $ran = $this->migrator->getRepository()->getRan();
 
-        if (count($migrations = $this->getStatusFor($ran)) > 0) {
-            $this->table(['Ran?', 'Migration'], $migrations);
+        $batches = $this->migrator->getRepository()->getMigrationBatches();
+
+        if (count($migrations = $this->getStatusFor($ran, $batches)) > 0) {
+            $this->table(['Ran?', 'Migration', 'Batch'], $migrations);
         } else {
             $this->error('No migrations found');
         }
@@ -77,17 +79,18 @@ class StatusCommand extends BaseCommand
 	 * 获取给定运行迁移的状态
      *
      * @param  array  $ran
+     * @param  array  $batches
      * @return \Illuminate\Support\Collection
      */
-    protected function getStatusFor(array $ran)
+    protected function getStatusFor(array $ran, array $batches)
     {
         return Collection::make($this->getAllMigrationFiles())
-                    ->map(function ($migration) use ($ran) {
+                    ->map(function ($migration) use ($ran, $batches) {
                         $migrationName = $this->migrator->getMigrationName($migration);
 
                         return in_array($migrationName, $ran)
-                                ? ['<info>Y</info>', $migrationName]
-                                : ['<fg=red>N</fg=red>', $migrationName];
+                                ? ['<info>Yes</info>', $migrationName, $batches[$migrationName]]
+                                : ['<fg=red>No</fg=red>', $migrationName];
                     });
     }
 
@@ -111,9 +114,11 @@ class StatusCommand extends BaseCommand
     protected function getOptions()
     {
         return [
-            ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use.'],
+            ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use'],
 
-            ['path', null, InputOption::VALUE_OPTIONAL, 'The path of migrations files to use.'],
+            ['path', null, InputOption::VALUE_OPTIONAL, 'The path to the migrations files to use'],
+
+            ['realpath', null, InputOption::VALUE_NONE, 'Indicate any provided migration file paths are pre-resolved absolute paths'],
         ];
     }
 }

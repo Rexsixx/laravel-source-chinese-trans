@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，缓存，资源库
+ * Illuminate，契约，缓存，版本库
  */
 
 namespace Illuminate\Contracts\Cache;
@@ -92,8 +92,8 @@ interface Repository extends CacheInterface
     public function forever($key, $value);
 
     /**
-     * Get an item from the cache, or store the default value.
-	 * 从缓存中获取项，或存储默认值。
+     * Get an item from the cache, or execute the given Closure and store the result.
+	 * 从缓存中获取一个项，或者执行给定的Closure并存储结果。
      *
      * @param  string  $key
      * @param  \DateTimeInterface|\DateInterval|float|int  $minutes
@@ -103,20 +103,20 @@ interface Repository extends CacheInterface
     public function remember($key, $minutes, Closure $callback);
 
     /**
-     * Get an item from the cache, or store the default value forever.
-	 * 从缓存中获取项，或永久存储默认值。
+     * Get an item from the cache, or execute the given Closure and store the result forever.
+	 * 从缓存中获取一个项，或者执行给定的Closure并永久存储结果。
      *
-     * @param  string   $key
+     * @param  string  $key
      * @param  \Closure  $callback
      * @return mixed
      */
     public function sear($key, Closure $callback);
 
     /**
-     * Get an item from the cache, or store the default value forever.
-	 * 从缓存中获取项，或永久存储默认值。
+     * Get an item from the cache, or execute the given Closure and store the result forever.
+	 * 从缓存中获取一个项，或者执行给定的Closure并永久存储结果。
      *
-     * @param  string   $key
+     * @param  string  $key
      * @param  \Closure  $callback
      * @return mixed
      */

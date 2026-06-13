@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，运送，Mailgun 运送
+ * Illuminate，电子邮件，传送，Mailgun 传送
  */
 
 namespace Illuminate\Mail\Transport;
@@ -27,8 +27,8 @@ class MailgunTransport extends Transport
     protected $key;
 
     /**
-     * The Mailgun domain.
-	 * Mailgun域
+     * The Mailgun email domain.
+	 * Mailgun电子邮件域
      *
      * @var string
      */
@@ -114,6 +114,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the "to" payload field for the API request.
+	 * 获取API请求的“to”有效负载字段
      *
      * @param  \Swift_Mime_SimpleMessage  $message
      * @return string

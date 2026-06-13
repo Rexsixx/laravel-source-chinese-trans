@@ -79,6 +79,7 @@ trait RouteDependencyResolverTrait
         // If the parameter has a type-hinted class, we will check to see if it is already in
         // the list of parameters. If it is we will just skip it as it is probably a model
         // binding and we do not want to mess with those; otherwise, we resolve it here.
+		// 如果该参数具有类型提示的类，则我们将检查它是否已经在参数列表中。
         if ($class && ! $this->alreadyInParameters($class->name, $parameters)) {
             return $parameter->isDefaultValueAvailable()
                 ? $parameter->getDefaultValue()

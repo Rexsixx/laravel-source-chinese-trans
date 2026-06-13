@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，配置感知特性
+ */
 
 namespace League\Flysystem;
 
@@ -14,6 +17,7 @@ trait ConfigAwareTrait
 
     /**
      * Set the config.
+	 * 设置配置
      *
      * @param Config|array|null $config
      */
@@ -24,6 +28,7 @@ trait ConfigAwareTrait
 
     /**
      * Get the Config.
+	 * 获取配置
      *
      * @return Config config object
      */
@@ -34,6 +39,7 @@ trait ConfigAwareTrait
 
     /**
      * Convert a config array to a Config object with the correct fallback.
+	 * 将配置数组转换为具有正确回退的配置对象
      *
      * @param array $config
      *

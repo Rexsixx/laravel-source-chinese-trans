@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，描述符，XML 描述
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * XML descriptor.
+ * XML描述
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  *
@@ -26,10 +30,7 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class XmlDescriptor extends Descriptor
 {
-    /**
-     * @return \DOMDocument
-     */
-    public function getInputDefinitionDocument(InputDefinition $definition)
+    public function getInputDefinitionDocument(InputDefinition $definition): \DOMDocument
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->appendChild($definitionXML = $dom->createElement('definition'));
@@ -47,10 +48,7 @@ class XmlDescriptor extends Descriptor
         return $dom;
     }
 
-    /**
-     * @return \DOMDocument
-     */
-    public function getCommandDocument(Command $command)
+    public function getCommandDocument(Command $command): \DOMDocument
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->appendChild($commandXML = $dom->createElement('command'));
@@ -80,12 +78,7 @@ class XmlDescriptor extends Descriptor
         return $dom;
     }
 
-    /**
-     * @param string|null $namespace
-     *
-     * @return \DOMDocument
-     */
-    public function getApplicationDocument(Application $application, $namespace = null)
+    public function getApplicationDocument(Application $application, string $namespace = null): \DOMDocument
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->appendChild($rootXml = $dom->createElement('symfony'));
@@ -163,7 +156,7 @@ class XmlDescriptor extends Descriptor
      */
     protected function describeApplication(Application $application, array $options = [])
     {
-        $this->writeDocument($this->getApplicationDocument($application, isset($options['namespace']) ? $options['namespace'] : null));
+        $this->writeDocument($this->getApplicationDocument($application, $options['namespace'] ?? null));
     }
 
     /**
@@ -185,10 +178,7 @@ class XmlDescriptor extends Descriptor
         $this->write($dom->saveXML());
     }
 
-    /**
-     * @return \DOMDocument
-     */
-    private function getInputArgumentDocument(InputArgument $argument)
+    private function getInputArgumentDocument(InputArgument $argument): \DOMDocument
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
 
@@ -209,16 +199,13 @@ class XmlDescriptor extends Descriptor
         return $dom;
     }
 
-    /**
-     * @return \DOMDocument
-     */
-    private function getInputOptionDocument(InputOption $option)
+    private function getInputOptionDocument(InputOption $option): \DOMDocument
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
 
         $dom->appendChild($objectXML = $dom->createElement('option'));
         $objectXML->setAttribute('name', '--'.$option->getName());
-        $pos = strpos($option->getShortcut(), '|');
+        $pos = strpos($option->getShortcut() ?? '', '|');
         if (false !== $pos) {
             $objectXML->setAttribute('shortcut', '-'.substr($option->getShortcut(), 0, $pos));
             $objectXML->setAttribute('shortcuts', '-'.str_replace('|', '|-', $option->getShortcut()));

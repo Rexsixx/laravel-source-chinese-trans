@@ -42,7 +42,9 @@ class RouteBinding
             // If the binding has an @ sign, we will assume it's being used to delimit
             // the class name from the bind method name. This allows for bindings
             // to run multiple bind methods in a single class for convenience.
-            list($class, $method) = Str::parseCallback($binding, 'bind');
+			// 如果绑定具有“@”符号，我们将假定它用于将类名与绑定方法名分隔开。
+			// 这使得可以在单个类中方便地运行多个绑定方法。
+            [$class, $method] = Str::parseCallback($binding, 'bind');
 
             $callable = [$container->make($class), $method];
 
@@ -69,6 +71,8 @@ class RouteBinding
             // For model binders, we will attempt to retrieve the models using the first
             // method on the model instance. If we cannot retrieve the models we'll
             // throw a not found exception otherwise we will return the instance.
+			// 对于模型绑定器，我们将尝试使用模型实例上的第一个方法来获取模型。
+			// 如果无法获取模型，我们将抛出“未找到”异常；否则，我们将返回该实例。
             $instance = $container->make($class);
 
             if ($model = $instance->resolveRouteBinding($value)) {
@@ -78,6 +82,8 @@ class RouteBinding
             // If a callback was supplied to the method we will call that to determine
             // what we should do when the model is not found. This just gives these
             // developer a little greater flexibility to decide what will happen.
+			// 如果为该方法提供了回调函数，我们将调用该回调函数以确定在模型未找到的情况下我们应采取何种操作。
+			// 这给了这些开发人员更大的灵活性来决定会发生什么。
             if ($callback instanceof Closure) {
                 return call_user_func($callback, $value);
             }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，广播，等待广播
+ * Illuminate，广播，待处理的广播
  */
 
 namespace Illuminate\Broadcasting;

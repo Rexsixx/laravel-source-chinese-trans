@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，文件，Mime类型，Mime类型扩展猜测器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -11,13 +14,21 @@
 
 namespace Symfony\Component\HttpFoundation\File\MimeType;
 
+use Symfony\Component\Mime\MimeTypes;
+
+@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.3, use "%s" instead.', MimeTypeExtensionGuesser::class, MimeTypes::class), \E_USER_DEPRECATED);
+
 /**
  * Provides a best-guess mapping of mime type to file extension.
+ * 提供mime类型到文件扩展名的最佳猜测映射。
+ *
+ * @deprecated since Symfony 4.3, use {@link MimeTypes} instead
  */
 class MimeTypeExtensionGuesser implements ExtensionGuesserInterface
 {
     /**
      * A map of mime types and their default extensions.
+	 * mime类型及其默认扩展名的映射。
      *
      * This list has been placed under the public domain by the Apache HTTPD project.
      * This list has been updated from upstream on 2019-01-14.
@@ -639,6 +650,7 @@ class MimeTypeExtensionGuesser implements ExtensionGuesserInterface
         'audio/x-aiff' => 'aif',
         'audio/x-caf' => 'caf',
         'audio/x-flac' => 'flac',
+        'audio/x-hx-aac-adts' => 'aac',
         'audio/x-matroska' => 'mka',
         'audio/x-mpegurl' => 'm3u',
         'audio/x-ms-wax' => 'wax',
@@ -814,6 +826,6 @@ class MimeTypeExtensionGuesser implements ExtensionGuesserInterface
 
         $lcMimeType = strtolower($mimeType);
 
-        return isset($this->defaultExtensions[$lcMimeType]) ? $this->defaultExtensions[$lcMimeType] : null;
+        return $this->defaultExtensions[$lcMimeType] ?? null;
     }
 }

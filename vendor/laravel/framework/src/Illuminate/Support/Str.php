@@ -5,7 +5,11 @@
 
 namespace Illuminate\Support;
 
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidFactory;
 use Illuminate\Support\Traits\Macroable;
+use Ramsey\Uuid\Generator\CombGenerator;
+use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 
 class Str
 {
@@ -163,7 +167,7 @@ class Str
      */
     public static function is($pattern, $value)
     {
-        $patterns = is_array($pattern) ? $pattern : (array) $pattern;
+        $patterns = Arr::wrap($pattern);
 
         if (empty($patterns)) {
             return false;
@@ -173,6 +177,7 @@ class Str
             // If the given value is an exact match we can of course return true right
             // from the beginning. Otherwise, we will translate asterisks and do an
             // actual pattern match against the two strings to see if they match.
+			// 如果给定的值与目标值完全一致，那么我们当然可以从一开始就返回“真”这一结果。
             if ($pattern == $value) {
                 return true;
             }
@@ -182,6 +187,7 @@ class Str
             // Asterisks are translated into zero-or-more regular expression wildcards
             // to make it convenient to check if the strings starts with the given
             // pattern such as "library/*", making any string check convenient.
+			// 星号会被转换为零个或多个正则表达式的通配符，这样就能方便地检查字符串是否以给定的模式（例如“library/*”）开头，从而使得任何字符串的检查都变得便捷。
             $pattern = str_replace('\*', '.*', $pattern);
 
             if (preg_match('#^'.$pattern.'\z#u', $value) === 1) {
@@ -438,15 +444,15 @@ class Str
      *
      * @param  string  $title
      * @param  string  $separator
-     * @param  string  $language
+     * @param  string|null  $language
      * @return string
      */
     public static function slug($title, $separator = '-', $language = 'en')
     {
-        $title = static::ascii($title, $language);
+        $title = $language ? static::ascii($title, $language) : $title;
 
         // Convert all dashes/underscores into separator
-        $flip = $separator == '-' ? '_' : '-';
+        $flip = $separator === '-' ? '_' : '-';
 
         $title = preg_replace('!['.preg_quote($flip).']+!u', $separator, $title);
 
@@ -454,7 +460,7 @@ class Str
         $title = str_replace('@', $separator.'at'.$separator, $title);
 
         // Remove all characters that are not the separator, letters, numbers, or whitespace.
-        $title = preg_replace('![^'.preg_quote($separator).'\pL\pN\s]+!u', '', mb_strtolower($title));
+        $title = preg_replace('![^'.preg_quote($separator).'\pL\pN\s]+!u', '', static::lower($title));
 
         // Replace all separator characters and whitespace by a single separator
         $title = preg_replace('!['.preg_quote($separator).'\s]+!u', $separator, $title);
@@ -489,7 +495,7 @@ class Str
 
     /**
      * Determine if a given string starts with a given substring.
-	 * 确定给定字符串是否以给定子字符串开头
+	 * 确定给定字符串是否以给定子字符串开始
      *
      * @param  string  $haystack
      * @param  string|array  $needles
@@ -553,8 +559,41 @@ class Str
     }
 
     /**
+     * Generate a UUID (version 4).
+	 * 生成UUID（版本4）
+     *
+     * @return \Ramsey\Uuid\UuidInterface
+     */
+    public static function uuid()
+    {
+        return Uuid::uuid4();
+    }
+
+    /**
+     * Generate a time-ordered UUID (version 4).
+	 * 生成一个按时间排序的UUID（版本4）
+     *
+     * @return \Ramsey\Uuid\UuidInterface
+     */
+    public static function orderedUuid()
+    {
+        $factory = new UuidFactory;
+
+        $factory->setRandomGenerator(new CombGenerator(
+            $factory->getRandomGenerator(),
+            $factory->getNumberConverter()
+        ));
+
+        $factory->setCodec(new TimestampFirstCombCodec(
+            $factory->getUuidBuilder()
+        ));
+
+        return $factory->uuid4();
+    }
+
+    /**
      * Returns the replacements for the ascii method.
-	 * 返回ascii方法的替换项。
+	 * 返回ascii方法的替换项
      *
      * Note: Adapted from Stringy\Stringy.
      *

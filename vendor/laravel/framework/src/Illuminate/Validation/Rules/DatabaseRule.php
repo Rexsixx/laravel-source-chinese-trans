@@ -26,8 +26,8 @@ trait DatabaseRule
     protected $column;
 
     /**
-     * There extra where clauses for the query.
-	 * 还有额外的where子句用于查询
+     * The extra where clauses for the query.
+	 * 查询的额外where子句
      *
      * @var array
      */
@@ -43,7 +43,7 @@ trait DatabaseRule
 
     /**
      * Create a new rule instance.
-	 * 创建一个新的规则实例
+	 * 创建一个新的规则实例。
      *
      * @param  string  $table
      * @param  string  $column

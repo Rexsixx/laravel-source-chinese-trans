@@ -5,8 +5,13 @@
 
 namespace Illuminate\Notifications\Events;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+
 class NotificationFailed
 {
+    use Queueable, SerializesModels;
+
     /**
      * The notifiable entity who received the notification.
 	 * 收到通知的应通知实体
@@ -25,7 +30,7 @@ class NotificationFailed
 
     /**
      * The channel name.
-	 * 频道名称
+	 * 通道名称
      *
      * @var string
      */

@@ -14,7 +14,7 @@ class SendQueuedMailable
      * The mailable message instance.
 	 * 可邮件消息实例
      *
-     * @var Mailable
+     * @var \Illuminate\Mail\Mailable
      */
     public $mailable;
 

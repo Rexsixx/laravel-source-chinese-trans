@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，预先设置，无
+ * Illuminate，基础，控制台，预设，全无
  */
 
 namespace Illuminate\Foundation\Console\Presets;
@@ -21,8 +21,8 @@ class None extends Preset
         static::updateBootstrapping();
 
         tap(new Filesystem, function ($filesystem) {
-            $filesystem->deleteDirectory(resource_path('assets/js/components'));
-            $filesystem->delete(resource_path('assets/sass/_variables.scss'));
+            $filesystem->deleteDirectory(resource_path('js/components'));
+            $filesystem->delete(resource_path('sass/_variables.scss'));
             $filesystem->deleteDirectory(base_path('node_modules'));
             $filesystem->deleteDirectory(public_path('css'));
             $filesystem->deleteDirectory(public_path('js'));
@@ -39,10 +39,11 @@ class None extends Preset
     protected static function updatePackageArray(array $packages)
     {
         unset(
-            $packages['bootstrap-sass'],
+            $packages['bootstrap'],
             $packages['jquery'],
+            $packages['popper.js'],
             $packages['vue'],
-            $packages['babel-preset-react'],
+            $packages['@babel/preset-react'],
             $packages['react'],
             $packages['react-dom']
         );
@@ -58,7 +59,8 @@ class None extends Preset
      */
     protected static function updateBootstrapping()
     {
-        file_put_contents(resource_path('assets/sass/app.scss'), ''.PHP_EOL);
-        copy(__DIR__.'/none-stubs/app.js', resource_path('assets/js/app.js'));
+        file_put_contents(resource_path('sass/app.scss'), ''.PHP_EOL);
+        copy(__DIR__.'/none-stubs/app.js', resource_path('js/app.js'));
+        copy(__DIR__.'/none-stubs/bootstrap.js', resource_path('js/bootstrap.js'));
     }
 }

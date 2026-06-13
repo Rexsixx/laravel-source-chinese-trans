@@ -1,4 +1,8 @@
 <?php
+/**
+ * JakubOnderka，Php控制台颜色，用强制支持的控制台颜色
+ */
+
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 class ConsoleColorWithForceSupport extends ConsoleColor

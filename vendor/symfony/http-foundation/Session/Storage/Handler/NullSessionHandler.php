@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，存储，处理者，空会话处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,22 +16,25 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 
 /**
  * Can be used in unit testing or in a situations where persisted sessions are not desired.
+ * 可用于单元测试或不需要持续会话的情况。
  *
  * @author Drak <drak@zikula.org>
  */
 class NullSessionHandler extends AbstractSessionHandler
 {
     /**
-     * {@inheritdoc}
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function close()
     {
         return true;
     }
 
     /**
-     * {@inheritdoc}
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function validateId($sessionId)
     {
         return true;
@@ -43,8 +49,9 @@ class NullSessionHandler extends AbstractSessionHandler
     }
 
     /**
-     * {@inheritdoc}
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function updateTimestamp($sessionId, $data)
     {
         return true;
@@ -67,10 +74,11 @@ class NullSessionHandler extends AbstractSessionHandler
     }
 
     /**
-     * @return bool
+     * @return int|false
      */
+    #[\ReturnTypeWillChange]
     public function gc($maxlifetime)
     {
-        return true;
+        return 0;
     }
 }

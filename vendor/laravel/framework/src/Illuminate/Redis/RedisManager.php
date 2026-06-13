@@ -7,12 +7,21 @@ namespace Illuminate\Redis;
 
 use InvalidArgumentException;
 use Illuminate\Contracts\Redis\Factory;
+use Illuminate\Redis\Connections\Connection;
 
 /**
  * @mixin \Illuminate\Redis\Connections\Connection
  */
 class RedisManager implements Factory
 {
+    /**
+     * The application instance.
+	 * 应用实例
+     *
+     * @var \Illuminate\Foundation\Application
+     */
+    protected $app;
+
     /**
      * The name of the default driver.
 	 * 默认驱动程序的名称
@@ -31,22 +40,32 @@ class RedisManager implements Factory
 
     /**
      * The Redis connections.
-	 * Redis连接
+	 * Redis的连接
      *
      * @var mixed
      */
     protected $connections;
 
     /**
+     * Indicates whether event dispatcher is set on connections.
+	 * 指示是否在连接上设置事件调度程序
+     *
+     * @var bool
+     */
+    protected $events = false;
+
+    /**
      * Create a new Redis manager instance.
 	 * 创建一个新的Redis管理器实例
      *
+     * @param  \Illuminate\Foundation\Application  $app
      * @param  string  $driver
      * @param  array  $config
      * @return void
      */
-    public function __construct($driver, array $config)
+    public function __construct($app, $driver, array $config)
     {
+        $this->app = $app;
         $this->driver = $driver;
         $this->config = $config;
     }
@@ -66,7 +85,9 @@ class RedisManager implements Factory
             return $this->connections[$name];
         }
 
-        return $this->connections[$name] = $this->resolve($name);
+        return $this->connections[$name] = $this->configure(
+            $this->resolve($name), $name
+        );
     }
 
     /**
@@ -92,9 +113,7 @@ class RedisManager implements Factory
             return $this->resolveCluster($name);
         }
 
-        throw new InvalidArgumentException(
-            "Redis connection [{$name}] not configured."
-        );
+        throw new InvalidArgumentException("Redis connection [{$name}] not configured.");
     }
 
     /**
@@ -111,6 +130,25 @@ class RedisManager implements Factory
         return $this->connector()->connectToCluster(
             $this->config['clusters'][$name], $clusterOptions, $this->config['options'] ?? []
         );
+    }
+
+    /**
+     * Configure the given connection to prepare it for commands.
+	 * 配置给定的连接，以便为命令做好准备。
+     *
+     * @param  \Illuminate\Redis\Connections\Connection  $connection
+     * @param  string  $name
+     * @return \Illuminate\Redis\Connections\Connection
+     */
+    protected function configure(Connection $connection, $name)
+    {
+        $connection->setName($name);
+
+        if ($this->events && $this->app->bound('events')) {
+            $connection->setEventDispatcher($this->app->make('events'));
+        }
+
+        return $connection;
     }
 
     /**
@@ -138,6 +176,28 @@ class RedisManager implements Factory
     public function connections()
     {
         return $this->connections;
+    }
+
+    /**
+     * Enable the firing of Redis command events.
+	 * 启用Redis命令事件的触发
+     *
+     * @return void
+     */
+    public function enableEvents()
+    {
+        $this->events = true;
+    }
+
+    /**
+     * Disable the firing of Redis command events.
+	 * 禁用Redis命令事件的触发
+     *
+     * @return void
+     */
+    public function disableEvents()
+    {
+        $this->events = false;
     }
 
     /**

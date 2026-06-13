@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，匹配程序，转储，匹配器转储接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,8 +26,6 @@ interface MatcherDumperInterface
     /**
      * Dumps a set of routes to a string representation of executable code
      * that can then be used to match a request against these routes.
-     *
-     * @param array $options An array of options
      *
      * @return string Executable code
      */

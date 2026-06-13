@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Polyfill，Intl，标准化器，Normalizer
+ */
 
 /*
  * This file is part of the Symfony package.

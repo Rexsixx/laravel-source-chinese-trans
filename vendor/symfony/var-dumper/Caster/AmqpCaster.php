@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，Caster，Amqp Caster
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,12 +18,15 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts Amqp related classes to array representation.
+ * 将Amqp相关类强制转换为数组表示。
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
+ *
+ * @final since Symfony 4.4
  */
 class AmqpCaster
 {
-    private static $flags = [
+    private const FLAGS = [
         \AMQP_DURABLE => 'AMQP_DURABLE',
         \AMQP_PASSIVE => 'AMQP_PASSIVE',
         \AMQP_EXCLUSIVE => 'AMQP_EXCLUSIVE',
@@ -37,7 +43,7 @@ class AmqpCaster
         \AMQP_REQUEUE => 'AMQP_REQUEUE',
     ];
 
-    private static $exchangeTypes = [
+    private const EXCHANGE_TYPES = [
         \AMQP_EX_TYPE_DIRECT => 'AMQP_EX_TYPE_DIRECT',
         \AMQP_EX_TYPE_FANOUT => 'AMQP_EX_TYPE_FANOUT',
         \AMQP_EX_TYPE_TOPIC => 'AMQP_EX_TYPE_TOPIC',
@@ -53,11 +59,13 @@ class AmqpCaster
         ];
 
         // Recent version of the extension already expose private properties
+		// 最新版本的扩展已经暴露了私有属性
         if (isset($a["\x00AMQPConnection\x00login"])) {
             return $a;
         }
 
         // BC layer in the amqp lib
+		// 在amqp库中的BC层
         if (method_exists($c, 'getReadTimeout')) {
             $timeout = $c->getReadTimeout();
         } else {
@@ -87,6 +95,7 @@ class AmqpCaster
         ];
 
         // Recent version of the extension already expose private properties
+		// 最新版本的扩展已经暴露了私有属性
         if (isset($a["\x00AMQPChannel\x00connection"])) {
             return $a;
         }
@@ -131,7 +140,7 @@ class AmqpCaster
             $prefix.'flags' => self::extractFlags($c->getFlags()),
         ];
 
-        $type = isset(self::$exchangeTypes[$c->getType()]) ? new ConstStub(self::$exchangeTypes[$c->getType()], $c->getType()) : $c->getType();
+        $type = isset(self::EXCHANGE_TYPES[$c->getType()]) ? new ConstStub(self::EXCHANGE_TYPES[$c->getType()], $c->getType()) : $c->getType();
 
         // Recent version of the extension already expose private properties
         if (isset($a["\x00AMQPExchange\x00name"])) {
@@ -191,11 +200,11 @@ class AmqpCaster
         return $a;
     }
 
-    private static function extractFlags($flags)
+    private static function extractFlags(int $flags): ConstStub
     {
         $flagsArray = [];
 
-        foreach (self::$flags as $value => $name) {
+        foreach (self::FLAGS as $value => $name) {
             if ($flags & $value) {
                 $flagsArray[] = $name;
             }

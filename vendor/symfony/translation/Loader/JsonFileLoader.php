@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，加载器，Json 文件加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Translation\Exception\InvalidResourceException;
 
 /**
  * JsonFileLoader loads translations from an json file.
+ * JsonFileLoader从json文件中加载翻译。
  *
  * @author singles
  */
@@ -30,7 +34,7 @@ class JsonFileLoader extends FileLoader
             $messages = json_decode($data, true);
 
             if (0 < $errorCode = json_last_error()) {
-                throw new InvalidResourceException(sprintf('Error parsing JSON - %s', $this->getJSONErrorMessage($errorCode)));
+                throw new InvalidResourceException('Error parsing JSON: '.$this->getJSONErrorMessage($errorCode));
             }
         }
 
@@ -39,23 +43,20 @@ class JsonFileLoader extends FileLoader
 
     /**
      * Translates JSON_ERROR_* constant into meaningful message.
-     *
-     * @param int $errorCode Error code returned by json_last_error() call
-     *
-     * @return string Message string
+	 * 将JSON_ERROR_*常量转换为有意义的消息
      */
-    private function getJSONErrorMessage($errorCode)
+    private function getJSONErrorMessage(int $errorCode): string
     {
         switch ($errorCode) {
-            case JSON_ERROR_DEPTH:
+            case \JSON_ERROR_DEPTH:
                 return 'Maximum stack depth exceeded';
-            case JSON_ERROR_STATE_MISMATCH:
+            case \JSON_ERROR_STATE_MISMATCH:
                 return 'Underflow or the modes mismatch';
-            case JSON_ERROR_CTRL_CHAR:
+            case \JSON_ERROR_CTRL_CHAR:
                 return 'Unexpected control character found';
-            case JSON_ERROR_SYNTAX:
+            case \JSON_ERROR_SYNTAX:
                 return 'Syntax error, malformed JSON';
-            case JSON_ERROR_UTF8:
+            case \JSON_ERROR_UTF8:
                 return 'Malformed UTF-8 characters, possibly incorrectly encoded';
             default:
                 return 'Unknown error';

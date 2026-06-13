@@ -11,7 +11,7 @@ class File extends UploadedFile
 {
     /**
      * The name of the file.
-	 * 文件名称
+	 * 文件的名称
      *
      * @var string
      */
@@ -27,6 +27,7 @@ class File extends UploadedFile
 
     /**
      * The "size" to report.
+	 * 报告的“大小”
      *
      * @var int
      */
@@ -47,7 +48,7 @@ class File extends UploadedFile
 
         parent::__construct(
             $this->tempFilePath(), $name, $this->getMimeType(),
-            filesize($this->tempFilePath()), null, true
+            null, true
         );
     }
 
@@ -80,6 +81,7 @@ class File extends UploadedFile
 
     /**
      * Set the "size" of the file in kilobytes.
+	 * 设置文件的“大小”，单位为千字节。
      *
      * @param  int  $kilobytes
      * @return $this

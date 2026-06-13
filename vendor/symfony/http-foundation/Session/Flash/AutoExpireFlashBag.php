@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，属性，自动过期FlashBag
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -25,7 +28,7 @@ class AutoExpireFlashBag implements FlashBagInterface
     /**
      * @param string $storageKey The key used to store flashes in the session
      */
-    public function __construct($storageKey = '_symfony_flashes')
+    public function __construct(string $storageKey = '_symfony_flashes')
     {
         $this->storageKey = $storageKey;
     }
@@ -78,7 +81,7 @@ class AutoExpireFlashBag implements FlashBagInterface
      */
     public function peekAll()
     {
-        return \array_key_exists('display', $this->flashes) ? (array) $this->flashes['display'] : [];
+        return \array_key_exists('display', $this->flashes) ? $this->flashes['display'] : [];
     }
 
     /**

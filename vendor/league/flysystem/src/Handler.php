@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，处理者
+ */
 
 namespace League\Flysystem;
 
@@ -21,6 +24,7 @@ abstract class Handler
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * @param FilesystemInterface $filesystem
      * @param string              $path

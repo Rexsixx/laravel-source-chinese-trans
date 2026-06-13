@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，匹配程序，子集
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -57,6 +61,7 @@ class Subset extends MatcherAbstract
 
     /**
      * Check if the actual value matches the expected.
+	 * 检查实际值是否符合预期
      *
      * @param mixed $actual
      * @return bool

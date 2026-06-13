@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，插件，列表路径
+ */
 
 namespace League\Flysystem\Plugin;
 
@@ -6,6 +9,7 @@ class ListPaths extends AbstractPlugin
 {
     /**
      * Get the method name.
+	 * 获取方法名称
      *
      * @return string
      */
@@ -16,6 +20,7 @@ class ListPaths extends AbstractPlugin
 
     /**
      * List all paths.
+	 * 列出所有路径
      *
      * @param string $directory
      * @param bool   $recursive

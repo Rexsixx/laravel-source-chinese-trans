@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，控制器，控制器参考
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -35,7 +38,7 @@ class ControllerReference
      * @param array  $attributes An array of parameters to add to the Request attributes
      * @param array  $query      An array of parameters to add to the Request query string
      */
-    public function __construct($controller, array $attributes = [], array $query = [])
+    public function __construct(string $controller, array $attributes = [], array $query = [])
     {
         $this->controller = $controller;
         $this->attributes = $attributes;

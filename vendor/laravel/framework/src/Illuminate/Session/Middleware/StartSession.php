@@ -18,7 +18,7 @@ class StartSession
 {
     /**
      * The session manager.
-	 * 会话管理
+	 * 会话管理器
      *
      * @var \Illuminate\Session\SessionManager
      */
@@ -59,6 +59,8 @@ class StartSession
         // If a session driver has been configured, we will need to start the session here
         // so that the data is ready for an application. Note that the Laravel sessions
         // do not make use of PHP "native" sessions in any way since they are crappy.
+		// 如果已配置了会话驱动程序，那么我们就需要在此启动会话，以便为应用程序准备好相关数据。
+		// 请注意,Laravel会话并没有从任何方式使用PHP“本机”会话,因为它们很糟糕。
         if ($this->sessionConfigured()) {
             $request->setLaravelSession(
                 $session = $this->startSession($request)
@@ -72,6 +74,8 @@ class StartSession
         // Again, if the session has been configured we will need to close out the session
         // so that the attributes may be persisted to some storage medium. We will also
         // add the session identifier cookie to the application response headers now.
+		// 另外，如果会话已进行配置，我们就需要结束该会话，以便将属性保存到某种存储介质中。
+		// 我们现在还将添加会话标识符cookie到应用程序响应头。
         if ($this->sessionConfigured()) {
             $this->storeCurrentUrl($request, $session);
 
@@ -140,6 +144,8 @@ class StartSession
         // Here we will see if this request hits the garbage collection lottery by hitting
         // the odds needed to perform garbage collection on any given request. If we do
         // hit it, we'll call this handler to let it delete all the expired sessions.
+		// 在这里，我们将检验这一请求是否能成功触发垃圾回收机制，即看其是否满足执行垃圾回收所需的条件。
+		// 如果我们点击它,我们将调用这个处理程序让它删除所有过期会话。
         if ($this->configHitsLottery($config)) {
             $session->getHandler()->gc($this->getSessionLifetimeInSeconds());
         }
@@ -167,7 +173,10 @@ class StartSession
      */
     protected function storeCurrentUrl(Request $request, $session)
     {
-        if ($request->method() === 'GET' && $request->route() && ! $request->ajax()) {
+        if ($request->method() === 'GET' &&
+            $request->route() &&
+            ! $request->ajax() &&
+            ! $request->prefetch()) {
             $session->setPreviousUrl($request->fullUrl());
         }
     }

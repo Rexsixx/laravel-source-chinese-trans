@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，容器，容器
+ * Illuminate，契约，容器，Container
  */
 
 namespace Illuminate\Contracts\Container;
@@ -61,7 +61,7 @@ interface Container extends ContainerInterface
 
     /**
      * Register a binding if it hasn't already been registered.
-	 * 如果绑定尚未注册，请注册它。
+	 * 如果绑定尚未注册，请注册它
      *
      * @param  string  $abstract
      * @param  \Closure|string|null  $concrete
@@ -106,7 +106,7 @@ interface Container extends ContainerInterface
      * Define a contextual binding.
 	 * 定义上下文绑定
      *
-     * @param  string  $concrete
+     * @param  string|array  $concrete
      * @return \Illuminate\Contracts\Container\ContextualBindingBuilder
      */
     public function when($concrete);
@@ -132,7 +132,7 @@ interface Container extends ContainerInterface
 
     /**
      * Call the given Closure / class@method and inject its dependencies.
-	 * 调用给定的Closure / class@method并注入它的依赖项
+	 * 调用给定的Closure/class@method并注入它的依赖项
      *
      * @param  callable|string  $callback
      * @param  array  $parameters

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，克隆，游标
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,15 +16,16 @@ namespace Symfony\Component\VarDumper\Cloner;
 
 /**
  * Represents the current state of a dumper while dumping.
+ * 表示转储程序在转储时的当前状态。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
 class Cursor
 {
-    const HASH_INDEXED = Stub::ARRAY_INDEXED;
-    const HASH_ASSOC = Stub::ARRAY_ASSOC;
-    const HASH_OBJECT = Stub::TYPE_OBJECT;
-    const HASH_RESOURCE = Stub::TYPE_RESOURCE;
+    public const HASH_INDEXED = Stub::ARRAY_INDEXED;
+    public const HASH_ASSOC = Stub::ARRAY_ASSOC;
+    public const HASH_OBJECT = Stub::TYPE_OBJECT;
+    public const HASH_RESOURCE = Stub::TYPE_RESOURCE;
 
     public $depth = 0;
     public $refIndex = 0;

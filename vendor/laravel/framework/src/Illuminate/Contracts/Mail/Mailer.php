@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，电子邮件，邮件程序
+ * Illuminate，契约，Mail，邮件收发机
  */
 
 namespace Illuminate\Contracts\Mail;
@@ -26,8 +26,8 @@ interface Mailer
     public function bcc($users);
 
     /**
-     * Send a new message when only a raw text part.
-	 * 发送一个新的消息时，只有一个原始文本部分。
+     * Send a new message with only a raw text part.
+	 * 发送一个只有原始文本部分的新消息
      *
      * @param  string  $text
      * @param  mixed  $callback
@@ -39,7 +39,7 @@ interface Mailer
      * Send a new message using a view.
 	 * 使用视图发送新消息
      *
-     * @param  string|array|MailableContract  $view
+     * @param  string|array|\Illuminate\Contracts\Mail\Mailable  $view
      * @param  array  $data
      * @param  \Closure|string  $callback
      * @return void

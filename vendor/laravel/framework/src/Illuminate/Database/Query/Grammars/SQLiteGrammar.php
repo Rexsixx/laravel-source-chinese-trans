@@ -5,6 +5,8 @@
 
 namespace Illuminate\Database\Query\Grammars;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Database\Query\Builder;
 
 class SQLiteGrammar extends Grammar
@@ -50,6 +52,10 @@ class SQLiteGrammar extends Grammar
      */
     public function compileSelect(Builder $query)
     {
+        if ($query->unions && $query->aggregate) {
+            return $this->compileUnionAggregate($query);
+        }
+
         $sql = parent::compileSelect($query);
 
         if ($query->unions) {
@@ -68,9 +74,9 @@ class SQLiteGrammar extends Grammar
      */
     protected function compileUnion(array $union)
     {
-        $conjuction = $union['all'] ? ' union all ' : ' union ';
+        $conjunction = $union['all'] ? ' union all ' : ' union ';
 
-        return $conjuction.'select * from ('.$union['query']->toSql().')';
+        return $conjunction.'select * from ('.$union['query']->toSql().')';
     }
 
     /**
@@ -149,11 +155,25 @@ class SQLiteGrammar extends Grammar
      */
     protected function dateBasedWhere($type, Builder $query, $where)
     {
-        $value = str_pad($where['value'], 2, '0', STR_PAD_LEFT);
+        $value = $this->parameter($where['value']);
 
-        $value = $this->parameter($value);
+        return "strftime('{$type}', {$this->wrap($where['column'])}) {$where['operator']} cast({$value} as text)";
+    }
 
-        return "strftime('{$type}', {$this->wrap($where['column'])}) {$where['operator']} {$value}";
+    /**
+     * Compile a "JSON length" statement into SQL.
+	 * 将“JSON长度”语句编译成SQL
+     *
+     * @param  string  $column
+     * @param  string  $operator
+     * @param  string  $value
+     * @return string
+     */
+    protected function compileJsonLength($column, $operator, $value)
+    {
+        [$field, $path] = $this->wrapJsonFieldAndPath($column);
+
+        return 'json_array_length('.$field.$path.') '.$operator.' '.$value;
     }
 
     /**
@@ -169,6 +189,8 @@ class SQLiteGrammar extends Grammar
         // Essentially we will force every insert to be treated as a batch insert which
         // simply makes creating the SQL easier for us since we can utilize the same
         // basic routine regardless of an amount of records given to us to insert.
+		// 从根本上说，我们将强制将每次插入操作都视为批量插入操作，这样做的好处在于，
+		// 对于我们来说，创建 SQL 语句会变得更容易，因为无论要插入的记录数量是多少，我们都可以使用相同的基本流程。
         $table = $this->wrapTable($query->from);
 
         if (! is_array(reset($values))) {
@@ -178,7 +200,9 @@ class SQLiteGrammar extends Grammar
         // If there is only one record being inserted, we will just use the usual query
         // grammar insert builder because no special syntax is needed for the single
         // row inserts in SQLite. However, if there are multiples, we'll continue.
-        if (count($values) == 1) {
+		// 如果要插入的记录仅有一条，我们就会使用常规的查询语法插入构建器，
+		// 因为在 SQLite 中，对于单行插入操作并不需要特殊的语法。
+        if (count($values) === 1) {
             return empty(reset($values))
                     ? "insert into $table default values"
                     : parent::compileInsert($query, reset($values));
@@ -191,6 +215,8 @@ class SQLiteGrammar extends Grammar
         // SQLite requires us to build the multi-row insert as a listing of select with
         // unions joining them together. So we'll build out this list of columns and
         // then join them all together with select unions to complete the queries.
+		// SQLite 要求我们将多行插入操作以一个包含多个选择语句的列表形式呈现，并通过连接操作将它们组合在一起。
+		// 因此,我们将构建这个列列表,然后加入它们,并与select union一起完成查询。
         foreach (array_keys(reset($values)) as $column) {
             $columns[] = '? as '.$this->wrap($column);
         }
@@ -198,6 +224,84 @@ class SQLiteGrammar extends Grammar
         $columns = array_fill(0, count($values), implode(', ', $columns));
 
         return "insert into $table ($names) select ".implode(' union all select ', $columns);
+    }
+
+    /**
+     * Compile an update statement into SQL.
+	 * 将update语句编译成SQL
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $values
+     * @return string
+     */
+    public function compileUpdate(Builder $query, $values)
+    {
+        $table = $this->wrapTable($query->from);
+
+        $columns = collect($values)->map(function ($value, $key) use ($query) {
+            return $this->wrap(Str::after($key, $query->from.'.')).' = '.$this->parameter($value);
+        })->implode(', ');
+
+        if (isset($query->joins) || isset($query->limit)) {
+            $selectSql = parent::compileSelect($query->select("{$query->from}.rowid"));
+
+            return "update {$table} set $columns where {$this->wrap('rowid')} in ({$selectSql})";
+        }
+
+        return trim("update {$table} set {$columns} {$this->compileWheres($query)}");
+    }
+
+    /**
+     * Prepare the bindings for an update statement.
+	 * 为更新语句准备绑定
+     *
+     * @param  array  $bindings
+     * @param  array  $values
+     * @return array
+     */
+    public function prepareBindingsForUpdate(array $bindings, array $values)
+    {
+        $cleanBindings = Arr::except($bindings, ['select', 'join']);
+
+        return array_values(
+            array_merge($values, $bindings['join'], Arr::flatten($cleanBindings))
+        );
+    }
+
+    /**
+     * Compile a delete statement into SQL.
+	 * 将delete语句编译成SQL
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @return string
+     */
+    public function compileDelete(Builder $query)
+    {
+        if (isset($query->joins) || isset($query->limit)) {
+            $selectSql = parent::compileSelect($query->select("{$query->from}.rowid"));
+
+            return "delete from {$this->wrapTable($query->from)} where {$this->wrap('rowid')} in ({$selectSql})";
+        }
+
+        $wheres = is_array($query->wheres) ? $this->compileWheres($query) : '';
+
+        return trim("delete from {$this->wrapTable($query->from)} $wheres");
+    }
+
+    /**
+     * Prepare the bindings for a delete statement.
+	 * 为delete语句准备绑定
+     *
+     * @param  array  $bindings
+     * @return array
+     */
+    public function prepareBindingsForDelete(array $bindings)
+    {
+        $cleanBindings = Arr::except($bindings, ['select', 'join']);
+
+        return array_values(
+            array_merge($bindings['join'], Arr::flatten($cleanBindings))
+        );
     }
 
     /**
@@ -213,5 +317,23 @@ class SQLiteGrammar extends Grammar
             'delete from sqlite_sequence where name = ?' => [$query->from],
             'delete from '.$this->wrapTable($query->from) => [],
         ];
+    }
+
+    /**
+     * Wrap the given JSON selector.
+	 * 包装给定的JSON选择器
+     *
+     * @param  string  $value
+     * @return string
+     */
+    protected function wrapJsonSelector($value)
+    {
+        $parts = explode('->', $value, 2);
+
+        $field = $this->wrap($parts[0]);
+
+        $path = count($parts) > 1 ? ', '.$this->wrapJsonPath($parts[1]) : '';
+
+        return 'json_extract('.$field.$path.')';
     }
 }

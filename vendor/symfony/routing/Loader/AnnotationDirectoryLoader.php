@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，加载器，Annotation 目录加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Routing\RouteCollection;
 /**
  * AnnotationDirectoryLoader loads routing information from annotations set
  * on PHP classes and methods.
+ * AnnotationDirectoryLoader 从 PHP 类和方法上设置的注解中加载路由信息。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -54,7 +58,7 @@ class AnnotationDirectoryLoader extends AnnotationFileLoader
         });
 
         foreach ($files as $file) {
-            if (!$file->isFile() || '.php' !== substr($file->getFilename(), -4)) {
+            if (!$file->isFile() || !str_ends_with($file->getFilename(), '.php')) {
                 continue;
             }
 

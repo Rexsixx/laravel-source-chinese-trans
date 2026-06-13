@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，使用伪造者
+ * Illuminate，基础，测试，与 Faker
  */
 
 namespace Illuminate\Foundation\Testing;
@@ -11,7 +11,7 @@ trait WithFaker
 {
     /**
      * The Faker instance.
-	 * Faker实例
+	 * Faker的例子
      *
      * @var \Faker\Generator
      */

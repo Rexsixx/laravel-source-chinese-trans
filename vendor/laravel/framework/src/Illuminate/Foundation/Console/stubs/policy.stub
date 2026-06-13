@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，控制台，存根，动态类，根据实际需要修改
+ */
 
 namespace DummyNamespace;
 
@@ -11,7 +14,8 @@ class DummyClass
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view the dummyModel.
+     * Determine whether the user can view the DocDummyModel.
+	 * 确定用户是否可以查看DocDummyModel
      *
      * @param  \NamespacedDummyUserModel  $user
      * @param  \NamespacedDummyModel  $dummyModel
@@ -23,7 +27,8 @@ class DummyClass
     }
 
     /**
-     * Determine whether the user can create dummyPluralModel.
+     * Determine whether the user can create DocDummyPluralModel.
+	 * 确定用户是否可以创建DocDummyPluralModel
      *
      * @param  \NamespacedDummyUserModel  $user
      * @return mixed
@@ -34,7 +39,8 @@ class DummyClass
     }
 
     /**
-     * Determine whether the user can update the dummyModel.
+     * Determine whether the user can update the DocDummyModel.
+	 * 确定用户是否可以更新DocDummyModel
      *
      * @param  \NamespacedDummyUserModel  $user
      * @param  \NamespacedDummyModel  $dummyModel
@@ -46,13 +52,40 @@ class DummyClass
     }
 
     /**
-     * Determine whether the user can delete the dummyModel.
+     * Determine whether the user can delete the DocDummyModel.
+	 * 判断用户是否可以删除DocDummyModel
      *
      * @param  \NamespacedDummyUserModel  $user
      * @param  \NamespacedDummyModel  $dummyModel
      * @return mixed
      */
     public function delete(DummyUser $user, DummyModel $dummyModel)
+    {
+        //
+    }
+
+    /**
+     * Determine whether the user can restore the DocDummyModel.
+	 * 判断用户是否可以恢复DocDummyModel
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function restore(DummyUser $user, DummyModel $dummyModel)
+    {
+        //
+    }
+
+    /**
+     * Determine whether the user can permanently delete the DocDummyModel.
+	 * 确定用户是否可以永久删除DocDummyModel
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function forceDelete(DummyUser $user, DummyModel $dummyModel)
     {
         //
     }

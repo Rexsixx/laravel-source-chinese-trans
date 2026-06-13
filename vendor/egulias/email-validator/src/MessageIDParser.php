@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，消息 ID解析器
+ */
 
 namespace Egulias\EmailValidator;
 

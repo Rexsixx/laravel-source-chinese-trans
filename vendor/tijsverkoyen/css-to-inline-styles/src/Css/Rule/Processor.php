@@ -1,4 +1,7 @@
 <?php
+/**
+ * TijsVerkoyen，Css到内联样式，Css，规则，处理器
+ */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css\Rule;
 
@@ -9,6 +12,7 @@ class Processor
 {
     /**
      * Splits a string into separate rules
+	 * 将字符串拆分为单独的规则
      *
      * @param string $rulesString
      *
@@ -42,6 +46,7 @@ class Processor
 
     /**
      * Converts a rule-string into an object
+	 * 将规则字符串转换为对象
      *
      * @param string $rule
      * @param int    $originalOrder

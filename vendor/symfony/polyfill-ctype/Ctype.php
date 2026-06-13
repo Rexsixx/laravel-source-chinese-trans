@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Polyfill，Ctype，Ctype
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Polyfill\Ctype;
 
 /**
  * Ctype implementation through regex.
+ * 通过regex实现Ctype实现。
  *
  * @internal
  *

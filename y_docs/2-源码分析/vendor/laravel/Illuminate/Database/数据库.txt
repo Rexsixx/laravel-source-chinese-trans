@@ -1,0 +1,31 @@
+
+=========================================================================
+说明：Database 数据库分析
+最后更新：2022-05-14
+=========================================================================
+
+一、核心架构组件
+
+Illuminate\Database\Connection：代表一个具体的数据库连接(如MySQL)。它持有PDO实例，
+负责执行原始SQL语句，事务管理以及查询日志记录。
+
+Illuminate\Database\Query\Builder：查询构造器。提供链式调用的API（如where、join、orderyBy），
+用于构建SQL查询的各个部分，但不直接执行SQL。
+
+Illuminate\Database\Query\Grammars\Grammar：语法编译器。
+负责将 Builder 中构建的条件数组编译成特定数据库方言（如MySQL Grammer）所需的SQL字符串。
+
+Illuminate\Database\Query\Processors\Processor：结果处理器。
+在查询执行后，对结果集进行后续处理，例如获取最后插入的ID或处理布尔值转换。
+
+二、连接管理与解析流程
+
+当发起数据库操作时，流程如下：
+
+1、配置读取。DatabaseManager 读取 config/database.php 中的配置。
+2、连接工厂。ConnectionFactory 根据配置创建具体的 Connection 实例。
+3、PDO 封装。Connection 内部维护一个PDO实例。
+4、读取分离。如果配置了read和write节点，Connection会根据查询类型自动选择对应的PDA连接。
+
+三、Eloquent与Query Builder的关系
+继承与代理、模型填充。

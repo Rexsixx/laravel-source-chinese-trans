@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，验证程序
+ */
 
 namespace Dotenv;
 
@@ -7,13 +10,16 @@ use Dotenv\Exception\ValidationException;
 
 /**
  * This is the validator class.
+ * 这是验证器类。
  *
  * It's responsible for applying validations against a number of variables.
+ * 它负责对许多变量应用验证。
  */
 class Validator
 {
     /**
      * The variables to validate.
+	 * 要验证的变量
      *
      * @var array
      */
@@ -21,6 +27,7 @@ class Validator
 
     /**
      * The loader instance.
+	 * 加载器实例
      *
      * @var \Dotenv\Loader
      */

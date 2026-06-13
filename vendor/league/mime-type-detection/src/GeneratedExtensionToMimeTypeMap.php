@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Mime类型检测，生成 Mime类型映射的扩展
+ */
 
 declare(strict_types=1);
 

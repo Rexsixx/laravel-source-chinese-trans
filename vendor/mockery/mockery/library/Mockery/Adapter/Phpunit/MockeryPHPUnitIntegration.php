@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，适配器，Php单元，Mockery PHP单元集成
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -31,6 +35,7 @@ if (class_exists('PHPUnit_Framework_TestCase') || version_compare(\PHPUnit\Runne
 /**
  * Integrates Mockery into PHPUnit. Ensures Mockery expectations are verified
  * for each test and are included by the assertion counter.
+ * 将嘲弄与PHPUnit相结合。确保对每个测试的期望进行了验证,并被断言计数器包含。
  */
 trait MockeryPHPUnitIntegration
 {
@@ -41,6 +46,7 @@ trait MockeryPHPUnitIntegration
     /**
      * Performs assertions shared by all tests of a test case. This method is
      * called before execution of a test ends and before the tearDown method.
+	 * 执行测试用例的所有测试共享的断言。在测试结束和删除方法之前调用该方法。
      */
     protected function mockeryAssertPostConditions()
     {

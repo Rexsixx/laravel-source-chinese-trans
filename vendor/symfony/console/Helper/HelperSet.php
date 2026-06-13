@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，助手，辅助装置
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 /**
  * HelperSet represents a set of helpers to be used with a command.
+ * HelperSet代表一组使用命令的助手。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -39,9 +43,9 @@ class HelperSet implements \IteratorAggregate
 
     /**
      * Sets a helper.
+	 * 设置一个助手
      *
-     * @param HelperInterface $helper The helper instance
-     * @param string          $alias  An alias
+     * @param string $alias An alias
      */
     public function set(HelperInterface $helper, $alias = null)
     {
@@ -99,8 +103,9 @@ class HelperSet implements \IteratorAggregate
     }
 
     /**
-     * @return Helper[]
+     * @return \Traversable<Helper>
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new \ArrayIterator($this->helpers);

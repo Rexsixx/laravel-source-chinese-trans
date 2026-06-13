@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，异常，失去内存异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -11,10 +14,15 @@
 
 namespace Symfony\Component\Debug\Exception;
 
+@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.4, use "%s" instead.', OutOfMemoryException::class, \Symfony\Component\ErrorHandler\Error\OutOfMemoryError::class), \E_USER_DEPRECATED);
+
 /**
  * Out of memory exception.
+ * 在内存异常之外。
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ *
+ * @deprecated since Symfony 4.4, use Symfony\Component\ErrorHandler\Error\OutOfMemoryError instead.
  */
 class OutOfMemoryException extends FatalErrorException
 {

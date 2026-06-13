@@ -21,7 +21,7 @@ class SessionTableCommand extends Command
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -29,7 +29,7 @@ class SessionTableCommand extends Command
 
     /**
      * The filesystem instance.
-	 * 文件系统实例
+	 * 文件系统实例      
      *
      * @var \Illuminate\Filesystem\Filesystem
      */

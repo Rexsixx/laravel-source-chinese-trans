@@ -15,11 +15,11 @@ trait InteractsWithInput
 {
     /**
      * Retrieve a server variable from the request.
-	 * 从请求中检索服务器变量
+	 * 将紧急消息记录到日志中
      *
      * @param  string  $key
      * @param  string|array|null  $default
-     * @return string|array
+     * @return string|array|null
      */
     public function server($key = null, $default = null)
     {
@@ -44,7 +44,7 @@ trait InteractsWithInput
      *
      * @param  string  $key
      * @param  string|array|null  $default
-     * @return string|array
+     * @return string|array|null
      */
     public function header($key = null, $default = null)
     {
@@ -104,11 +104,13 @@ trait InteractsWithInput
      * Determine if the request contains any of the given inputs.
 	 * 确定请求是否包含任何给定的输入
      *
-     * @param  dynamic  $key
+     * @param  string|array  $keys
      * @return bool
      */
-    public function hasAny(...$keys)
+    public function hasAny($keys)
     {
+        $keys = is_array($keys) ? $keys : func_get_args();
+
         $input = $this->all();
 
         foreach ($keys as $key) {
@@ -138,6 +140,26 @@ trait InteractsWithInput
         }
 
         return true;
+    }
+
+    /**
+     * Determine if the request contains a non-empty value for any of the given inputs.
+	 * 确定请求是否包含任何给定输入的非空值
+     *
+     * @param  string|array  $keys
+     * @return bool
+     */
+    public function anyFilled($keys)
+    {
+        $keys = is_array($keys) ? $keys : func_get_args();
+
+        foreach ($keys as $key) {
+            if ($this->filled($key)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -193,9 +215,9 @@ trait InteractsWithInput
      * Retrieve an input item from the request.
 	 * 从请求中检索输入项
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  string|array|null  $default
-     * @return string|array
+     * @return string|array|null
      */
     public function input($key = null, $default = null)
     {
@@ -254,7 +276,7 @@ trait InteractsWithInput
      *
      * @param  string  $key
      * @param  string|array|null  $default
-     * @return string|array
+     * @return string|array|null
      */
     public function query($key = null, $default = null)
     {
@@ -268,7 +290,7 @@ trait InteractsWithInput
      * @param  string  $key
      * @param  string|array|null  $default
      *
-     * @return string|array
+     * @return string|array|null
      */
     public function post($key = null, $default = null)
     {
@@ -293,7 +315,7 @@ trait InteractsWithInput
      *
      * @param  string  $key
      * @param  string|array|null  $default
-     * @return string|array
+     * @return string|array|null
      */
     public function cookie($key = null, $default = null)
     {
@@ -375,7 +397,7 @@ trait InteractsWithInput
      *
      * @param  string  $key
      * @param  mixed  $default
-     * @return \Illuminate\Http\UploadedFile|array|null
+     * @return \Illuminate\Http\UploadedFile|\Illuminate\Http\UploadedFile[]|array|null
      */
     public function file($key = null, $default = null)
     {
@@ -389,7 +411,7 @@ trait InteractsWithInput
      * @param  string  $source
      * @param  string  $key
      * @param  string|array|null  $default
-     * @return string|array
+     * @return string|array|null
      */
     protected function retrieveItem($source, $key, $default)
     {

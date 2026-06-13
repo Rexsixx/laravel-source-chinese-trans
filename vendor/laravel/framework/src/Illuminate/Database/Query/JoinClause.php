@@ -55,7 +55,7 @@ class JoinClause extends Builder
 
     /**
      * Add an "on" clause to the join.
-	 * 向联接添加一个“on”子句
+	 * 向联接添加一个“on”子句。
      *
      * On clauses can be chained, e.g.
      *

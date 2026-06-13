@@ -25,7 +25,7 @@ class Validator implements ValidatorContract
 
     /**
      * The Translator implementation.
-	 * 验证器实现
+	 * 翻译机实现
      *
      * @var \Illuminate\Contracts\Translation\Translator
      */
@@ -102,6 +102,14 @@ class Validator implements ValidatorContract
      * @var array
      */
     protected $implicitAttributes = [];
+
+    /**
+     * The cached data for the "distinct" rule.
+	 * 为“distinct”规则缓存的数据
+     *
+     * @var array
+     */
+    protected $distinctValues = [];
 
     /**
      * All of the registered "after" callbacks.
@@ -190,7 +198,7 @@ class Validator implements ValidatorContract
     protected $dependentRules = [
         'RequiredWith', 'RequiredWithAll', 'RequiredWithout', 'RequiredWithoutAll',
         'RequiredIf', 'RequiredUnless', 'Confirmed', 'Same', 'Different', 'Unique',
-        'Before', 'After', 'BeforeOrEqual', 'AfterOrEqual',
+        'Before', 'After', 'BeforeOrEqual', 'AfterOrEqual', 'Gt', 'Lt', 'Gte', 'Lte',
     ];
 
     /**
@@ -199,7 +207,7 @@ class Validator implements ValidatorContract
      *
      * @var array
      */
-    protected $sizeRules = ['Size', 'Between', 'Min', 'Max'];
+    protected $sizeRules = ['Size', 'Between', 'Min', 'Max', 'Gt', 'Lt', 'Gte', 'Lte'];
 
     /**
      * The numeric related validation rules.
@@ -251,6 +259,8 @@ class Validator implements ValidatorContract
             // If the data key contains a dot, we will replace it with another character
             // sequence so it doesn't interfere with dot processing when working with
             // array based validation rules and array_dot later in the validations.
+			// 如果数据键中包含点符号，我们将用另一个字符序列替换它，
+			// 这样在使用基于数组的验证规则以及在后续验证中处理数组_dot 时，就不会干扰点符号的处理了。
             if (Str::contains($key, '.')) {
                 $newData[str_replace('.', '->', $key)] = $value;
             } else {
@@ -287,9 +297,13 @@ class Validator implements ValidatorContract
     {
         $this->messages = new MessageBag;
 
+        $this->distinctValues = [];
+
         // We'll spin through each rule, validating the attributes attached to that
         // rule. Any error messages will be added to the containers with each of
         // the other error messages, returning true if we don't have messages.
+		// 我们将逐一检查每条规则，并验证与该规则相关的各项属性。
+		// 如果我们没有消息,任何错误消息都将被添加到容器中,每个错误消息都将被添加到容器中。
         foreach ($this->rules as $attribute => $rules) {
             $attribute = str_replace('\.', '->', $attribute);
 
@@ -305,6 +319,8 @@ class Validator implements ValidatorContract
         // Here we will spin through all of the "after" hooks on this validator and
         // fire them off. This gives the callbacks a chance to perform all kinds
         // of other validation that needs to get wrapped up in this operation.
+		// 接下来，我们将逐一执行这个验证器中的所有“后续”操作，并启动这些操作。
+		// 这给回调一个机会执行各种其他的验证,需要在这个操作中完成。
         foreach ($this->after as $after) {
             call_user_func($after);
         }
@@ -325,9 +341,9 @@ class Validator implements ValidatorContract
 
     /**
      * Run the validator's rules against its data.
-	 * 针对其数据运行验证器的规则
+	 * 确定数据是否不符合验证规则
      *
-     * @return void
+     * @return array
      *
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -336,11 +352,42 @@ class Validator implements ValidatorContract
         if ($this->fails()) {
             throw new ValidationException($this);
         }
+
+        return $this->validated();
+    }
+
+    /**
+     * Return validated value.
+	 * 确定数据是否不符合验证规则
+     *
+     * @return array
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function validated()
+    {
+        if ($this->invalid()) {
+            throw new ValidationException($this);
+        }
+
+        $results = [];
+
+        $missingValue = Str::random(10);
+
+        foreach (array_keys($this->getRules()) as $key) {
+            $value = data_get($this->getData(), $key, $missingValue);
+
+            if ($value !== $missingValue) {
+                Arr::set($results, $key, $value);
+            }
+        }
+
+        return $results;
     }
 
     /**
      * Validate a given attribute against a rule.
-	 * 根据规则验证给定的属性
+	 * 确定数据是否不符合验证规则
      *
      * @param  string  $attribute
      * @param  string  $rule
@@ -350,7 +397,7 @@ class Validator implements ValidatorContract
     {
         $this->currentRule = $rule;
 
-        list($rule, $parameters) = ValidationRuleParser::parse($rule);
+        [$rule, $parameters] = ValidationRuleParser::parse($rule);
 
         if ($rule == '') {
             return;
@@ -359,6 +406,9 @@ class Validator implements ValidatorContract
         // First we will get the correct keys for the given attribute in case the field is nested in
         // an array. Then we determine if the given rule accepts other field names as parameters.
         // If so, we will replace any asterisks found in the parameters with the correct keys.
+		// 首先，如果给定的字段嵌套在数组中，我们将获取该属性的正确键。
+		// 然后，我们会检查给定的规则是否允许将其他字段名称作为参数使用。
+		// 如果是这样，我们将把参数中出现的星号替换为正确的键。
         if (($keys = $this->getExplicitKeys($attribute)) &&
             $this->dependsOnOtherFields($rule)) {
             $parameters = $this->replaceAsterisksInParameters($parameters, $keys);
@@ -369,6 +419,8 @@ class Validator implements ValidatorContract
         // If the attribute is a file, we will verify that the file upload was actually successful
         // and if it wasn't we will add a failure for the attribute. Files may not successfully
         // upload if they are too large based on PHP's settings so we will bail in this case.
+		// 如果该属性是文件，我们将验证文件上传是否确实成功了，如果不成功，我们将为该属性添加一个失败记录。
+		// 如果基于PHP的设置,文件可能无法成功上传,所以我们将在这种情况下保释。
         if ($value instanceof UploadedFile && ! $value->isValid() &&
             $this->hasRule($attribute, array_merge($this->fileRules, $this->implicitRules))
         ) {
@@ -378,6 +430,8 @@ class Validator implements ValidatorContract
         // If we have made it this far we will make sure the attribute is validatable and if it is
         // we will call the validation method with the attribute. If a method returns false the
         // attribute is invalid and we will add a failure message for this failing attribute.
+		// 如果我们已经做到了这一点,我们将确保属性是可验证的,如果是,我们将将验证方法称为属性。
+		// 如果方法返回false,属性无效,我们将为这个失败属性添加一个失败消息。
         $validatable = $this->isValidatable($rule, $attribute, $value);
 
         if ($rule instanceof RuleContract) {
@@ -395,7 +449,7 @@ class Validator implements ValidatorContract
 
     /**
      * Determine if the given rule depends on other fields.
-	 * 确定给定的规则是否依赖于其他字段。
+	 * 确定数据是否不符合验证规则
      *
      * @param  string  $rule
      * @return bool
@@ -432,6 +486,7 @@ class Validator implements ValidatorContract
 	 * 获取主属性名称。
      *
      * For example, if "name.0" is given, "name.*" will be returned.
+	 * 例如,如果给"name.0"，"name.*"将会回来。
      *
      * @param  string  $attribute
      * @return string
@@ -468,7 +523,7 @@ class Validator implements ValidatorContract
      *
      * @param  object|string  $rule
      * @param  string  $attribute
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return bool
      */
     protected function isValidatable($rule, $attribute, $value)
@@ -485,7 +540,7 @@ class Validator implements ValidatorContract
      *
      * @param  object|string  $rule
      * @param  string  $attribute
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return bool
      */
     protected function presentOrRuleIsImplicit($rule, $attribute, $value)
@@ -527,7 +582,7 @@ class Validator implements ValidatorContract
         $data = ValidationData::initializeAndGatherData($attribute, $this->data);
 
         return array_key_exists($attribute, $data)
-                    || array_key_exists($attribute, $this->data);
+            || array_key_exists($attribute, $this->data);
     }
 
     /**
@@ -549,7 +604,7 @@ class Validator implements ValidatorContract
 
     /**
      * Determine if it's a necessary presence validation.
-	 * 确定它是否是必要的状态验证。
+	 * 确定它是否是必要的状态验证
      *
      * This is to avoid possible database type comparison errors.
      *
@@ -576,9 +631,13 @@ class Validator implements ValidatorContract
         if (! $rule->passes($attribute, $value)) {
             $this->failedRules[$attribute][get_class($rule)] = [];
 
-            $this->messages->add($attribute, $this->makeReplacements(
-                $rule->message(), $attribute, get_class($rule), []
-            ));
+            $messages = (array) $rule->message();
+
+            foreach ($messages as $message) {
+                $this->messages->add($attribute, $this->makeReplacements(
+                    $message, $attribute, get_class($rule), []
+                ));
+            }
         }
     }
 
@@ -603,6 +662,8 @@ class Validator implements ValidatorContract
         // In case the attribute has any rule that indicates that the field is required
         // and that rule already failed then we should stop validation at this point
         // as now there is no point in calling other rules with this field empty.
+		// 如果该属性有任何表明该字段是必填项的规则，并且该规则已经失败，
+		// 那么此时我们就应该停止验证，因为此时再对这个字段为空的情况调用其他规则已经没有意义了。
         return $this->hasRule($attribute, $this->implicitRules) &&
                isset($this->failedRules[$attribute]) &&
                array_intersect(array_keys($this->failedRules[$attribute]), $this->implicitRules);
@@ -614,11 +675,15 @@ class Validator implements ValidatorContract
      *
      * @param  string  $attribute
      * @param  string  $rule
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return void
      */
-    protected function addFailure($attribute, $rule, $parameters)
+    public function addFailure($attribute, $rule, $parameters = [])
     {
+        if (! $this->messages) {
+            $this->passes();
+        }
+
         $this->messages->add($attribute, $this->makeReplacements(
             $this->getMessage($attribute, $rule), $attribute, $rule, $parameters
         ));
@@ -751,7 +816,7 @@ class Validator implements ValidatorContract
         $rules = (array) $rules;
 
         foreach ($this->rules[$attribute] as $rule) {
-            list($rule, $parameters) = ValidationRuleParser::parse($rule);
+            [$rule, $parameters] = ValidationRuleParser::parse($rule);
 
             if (in_array($rule, $rules)) {
                 return [$rule, $parameters];
@@ -850,6 +915,8 @@ class Validator implements ValidatorContract
         // The primary purpose of this parser is to expand any "*" rules to the all
         // of the explicit rules needed for the given data. For example the rule
         // names.* would get expanded to names.0, names.1, etc. for this data.
+		// 此解析器的主要作用是将任何带有“*”的规则扩展为针对给定数据所需的全部明确规则。
+		// 例如规则名称。*会扩展到名称。0,名字。1等。为了这个数据。
         $response = (new ValidationRuleParser($this->data))
                             ->explode($rules);
 
@@ -951,7 +1018,7 @@ class Validator implements ValidatorContract
      * Register a custom implicit validator extension.
 	 * 注册自定义隐式验证器扩展
      *
-     * @param  string   $rule
+     * @param  string  $rule
      * @param  \Closure|string  $extension
      * @return void
      */
@@ -966,7 +1033,7 @@ class Validator implements ValidatorContract
      * Register a custom dependent validator extension.
 	 * 注册自定义依赖验证器扩展
      *
-     * @param  string   $rule
+     * @param  string  $rule
      * @param  \Closure|string  $extension
      * @return void
      */
@@ -1172,10 +1239,10 @@ class Validator implements ValidatorContract
 
     /**
      * Call a custom validator extension.
-	 * 调用基于类的验证器扩展
+	 * 调用自定义验证器扩展
      *
      * @param  string  $rule
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return bool|null
      */
     protected function callExtension($rule, $parameters)
@@ -1194,12 +1261,12 @@ class Validator implements ValidatorContract
 	 * 调用基于类的验证器扩展
      *
      * @param  string  $callback
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return bool
      */
     protected function callClassBasedExtension($callback, $parameters)
     {
-        list($class, $method) = Str::parseCallback($callback, 'validate');
+        [$class, $method] = Str::parseCallback($callback, 'validate');
 
         return call_user_func_array([$this->container->make($class), $method], $parameters);
     }
@@ -1209,7 +1276,7 @@ class Validator implements ValidatorContract
 	 * 处理对类方法的动态调用
      *
      * @param  string  $method
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return mixed
      *
      * @throws \BadMethodCallException
@@ -1222,6 +1289,8 @@ class Validator implements ValidatorContract
             return $this->callExtension($rule, $parameters);
         }
 
-        throw new BadMethodCallException("Method [$method] does not exist.");
+        throw new BadMethodCallException(sprintf(
+            'Method %s::%s does not exist.', static::class, $method
+        ));
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，佯装，总线 Fake
+ * Illuminate，支持，测试，假装，总线 Fake
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -140,5 +140,41 @@ class BusFake implements Dispatcher
     public function pipeThrough(array $pipes)
     {
         //
+    }
+
+    /**
+     * Determine if the given command has a handler.
+	 * 确定给定命令是否有处理程序
+     *
+     * @param  mixed  $command
+     * @return bool
+     */
+    public function hasCommandHandler($command)
+    {
+        return false;
+    }
+
+    /**
+     * Retrieve the handler for a command.
+	 * 检索命令的处理程序
+     *
+     * @param  mixed  $command
+     * @return mixed
+     */
+    public function getCommandHandler($command)
+    {
+        return false;
+    }
+
+    /**
+     * Map a command to a handler.
+	 * 将命令映射到处理程序
+     *
+     * @param  array  $map
+     * @return $this
+     */
+    public function map(array $map)
+    {
+        return $this;
     }
 }

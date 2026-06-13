@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，存储，处理者，Memcached会话处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -51,12 +54,13 @@ class MemcachedSessionHandler extends AbstractSessionHandler
         }
 
         $this->ttl = isset($options['expiretime']) ? (int) $options['expiretime'] : 86400;
-        $this->prefix = isset($options['prefix']) ? $options['prefix'] : 'sf2s';
+        $this->prefix = $options['prefix'] ?? 'sf2s';
     }
 
     /**
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function close()
     {
         return $this->memcached->quit();
@@ -73,6 +77,7 @@ class MemcachedSessionHandler extends AbstractSessionHandler
     /**
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function updateTimestamp($sessionId, $data)
     {
         $this->memcached->touch($this->prefix.$sessionId, time() + $this->ttl);
@@ -99,12 +104,13 @@ class MemcachedSessionHandler extends AbstractSessionHandler
     }
 
     /**
-     * @return bool
+     * @return int|false
      */
+    #[\ReturnTypeWillChange]
     public function gc($maxlifetime)
     {
         // not required here because memcached will auto expire the records anyhow.
-        return true;
+        return 0;
     }
 
     /**

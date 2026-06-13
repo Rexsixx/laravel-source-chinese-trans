@@ -29,16 +29,16 @@ class CallbackEvent extends Event
 
     /**
      * Create a new event instance.
-	 * 创建新的事件实例
+	 * 创建一个新的事件实例
      *
-     * @param  \Illuminate\Console\Scheduling\Mutex  $mutex
+     * @param  \Illuminate\Console\Scheduling\EventMutex  $mutex
      * @param  string  $callback
      * @param  array  $parameters
      * @return void
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(Mutex $mutex, $callback, array $parameters = [])
+    public function __construct(EventMutex $mutex, $callback, array $parameters = [])
     {
         if (! is_string($callback) && ! is_callable($callback)) {
             throw new InvalidArgumentException(
@@ -78,7 +78,9 @@ class CallbackEvent extends Event
         parent::callBeforeCallbacks($container);
 
         try {
-            $response = $container->call($this->callback, $this->parameters);
+            $response = is_object($this->callback)
+                        ? $container->call([$this->callback, '__invoke'], $this->parameters)
+                        : $container->call($this->callback, $this->parameters);
         } finally {
             $this->removeMutex();
 
@@ -107,6 +109,8 @@ class CallbackEvent extends Event
      *
      * @param  int  $expiresAt
      * @return $this
+     *
+     * @throws \LogicException
      */
     public function withoutOverlapping($expiresAt = 1440)
     {
@@ -123,6 +127,27 @@ class CallbackEvent extends Event
         return $this->skip(function () {
             return $this->mutex->exists($this);
         });
+    }
+
+    /**
+     * Allow the event to only run on one server for each cron expression.
+	 * 对于每个cron表达式，允许事件仅在一台服务器上运行。
+     *
+     * @return $this
+     *
+     * @throws \LogicException
+     */
+    public function onOneServer()
+    {
+        if (! isset($this->description)) {
+            throw new LogicException(
+                "A scheduled event name is required to only run on one server. Use the 'name' method before 'onOneServer'."
+            );
+        }
+
+        $this->onOneServer = true;
+
+        return $this;
     }
 
     /**

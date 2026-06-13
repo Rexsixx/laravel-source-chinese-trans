@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，生成器，转储，生成器转储接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,8 +26,6 @@ interface GeneratorDumperInterface
     /**
      * Dumps a set of routes to a string representation of executable code
      * that can then be used to generate a URL of such a route.
-     *
-     * @param array $options An array of options
      *
      * @return string Executable code
      */

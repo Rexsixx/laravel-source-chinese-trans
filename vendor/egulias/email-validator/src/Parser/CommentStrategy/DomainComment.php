@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，分析程序，评论策略，域名评论
+ */
 
 namespace Egulias\EmailValidator\Parser\CommentStrategy;
 
@@ -22,6 +25,7 @@ class DomainComment implements CommentStrategy
     public function endOfLoopValidations(EmailLexer $lexer) : Result
     {
         //test for end of string
+		// 字符串结束测试
         if (!$lexer->isNextToken(EmailLexer::S_DOT)) {
             return new InvalidEmail(new ExpectingATEXT('DOT not found near CLOSEPARENTHESIS'), ((array) $lexer->token)['value']);
         }

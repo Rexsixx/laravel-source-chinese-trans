@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，查询，处理器，处理器
+ * Illuminate，数据库，查询，处理器，Processor
  */
 
 namespace Illuminate\Database\Query\Processors;

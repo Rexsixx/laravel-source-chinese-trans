@@ -1,4 +1,8 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，分析程序，域文字
+ */
+
 namespace Egulias\EmailValidator\Parser;
 
 use Egulias\EmailValidator\EmailLexer;
@@ -174,6 +178,7 @@ class DomainLiteral extends PartParser
         $IPv4Match = preg_match(self::IPV4_REGEX, $addressLiteral, $matchesIP);
 
         // Extract IPv4 part from the end of the address-literal (if there is one)
+		// 从地址-文字的末尾提取IPv4部分(如果有的话)
 
         if ($IPv4Match > 0) {
             $index = strrpos($addressLiteral, $matchesIP[0]);

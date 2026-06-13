@@ -15,7 +15,7 @@ class Factory implements FactoryContract
 {
     /**
      * The Translator implementation.
-	 * 翻译机实现
+	 * 翻译程序实现
      *
      * @var \Illuminate\Contracts\Translation\Translator
      */
@@ -39,7 +39,7 @@ class Factory implements FactoryContract
 
     /**
      * All of the custom validator extensions.
-	 * 所有自定义验证器扩展
+	 * 所有的自定义验证器扩展
      *
      * @var array
      */
@@ -81,7 +81,7 @@ class Factory implements FactoryContract
      * The Validator resolver instance.
 	 * 验证器解析器实例
      *
-     * @var Closure
+     * @var \Closure
      */
     protected $resolver;
 
@@ -89,7 +89,7 @@ class Factory implements FactoryContract
      * Create a new Validator factory instance.
 	 * 创建一个新的Validator工厂实例
      *
-     * @param  \Illuminate\Contracts\Translation\Translator $translator
+     * @param  \Illuminate\Contracts\Translation\Translator  $translator
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
@@ -111,13 +111,14 @@ class Factory implements FactoryContract
      */
     public function make(array $data, array $rules, array $messages = [], array $customAttributes = [])
     {
-        // The presence verifier is responsible for checking the unique and exists data
-        // for the validator. It is behind an interface so that multiple versions of
-        // it may be written besides database. We'll inject it into the validator.
         $validator = $this->resolve(
             $data, $rules, $messages, $customAttributes
         );
 
+        // The presence verifier is responsible for checking the unique and exists data
+        // for the validator. It is behind an interface so that multiple versions of
+        // it may be written besides database. We'll inject it into the validator.
+		// 验证器的存在性检查程序负责验证验证器所涉及的唯一且存在的数据。
         if (! is_null($this->verifier)) {
             $validator->setPresenceVerifier($this->verifier);
         }
@@ -125,6 +126,7 @@ class Factory implements FactoryContract
         // Next we'll set the IoC container instance of the validator, which is used to
         // resolve out class based validator extensions. If it is not set then these
         // types of extensions will not be possible on these validation instances.
+		// 接下来，我们将设置验证器的 IoC 容器实例，该实例用于解析基于类的验证器扩展。
         if (! is_null($this->container)) {
             $validator->setContainer($this->container);
         }
@@ -142,13 +144,13 @@ class Factory implements FactoryContract
      * @param  array  $rules
      * @param  array  $messages
      * @param  array  $customAttributes
-     * @return void
+     * @return array
      *
      * @throws \Illuminate\Validation\ValidationException
      */
     public function validate(array $data, array $rules, array $messages = [], array $customAttributes = [])
     {
-        $this->make($data, $rules, $messages, $customAttributes)->validate();
+        return $this->make($data, $rules, $messages, $customAttributes)->validate();
     }
 
     /**
@@ -184,6 +186,8 @@ class Factory implements FactoryContract
         // Next, we will add the implicit extensions, which are similar to the required
         // and accepted rule in that they are run even if the attributes is not in a
         // array of data that is given to a validator instances via instantiation.
+		// 接下来，我们将添加隐式扩展规则，这些规则与“必需”和“允许”规则类似，
+		// 即即便属性不在通过实例化方式传递给验证器实例的数据数组中，这些规则也会被执行。
         $validator->addImplicitExtensions($this->implicitExtensions);
 
         $validator->addDependentExtensions($this->dependentExtensions);
@@ -215,7 +219,7 @@ class Factory implements FactoryContract
      * Register a custom implicit validator extension.
 	 * 注册自定义隐式验证器扩展
      *
-     * @param  string   $rule
+     * @param  string  $rule
      * @param  \Closure|string  $extension
      * @param  string  $message
      * @return void
@@ -233,7 +237,7 @@ class Factory implements FactoryContract
      * Register a custom dependent validator extension.
 	 * 注册自定义依赖验证器扩展
      *
-     * @param  string   $rule
+     * @param  string  $rule
      * @param  \Closure|string  $extension
      * @param  string  $message
      * @return void
@@ -251,7 +255,7 @@ class Factory implements FactoryContract
      * Register a custom validator message replacer.
 	 * 注册一个自定义验证器消息替换程序
      *
-     * @param  string   $rule
+     * @param  string  $rule
      * @param  \Closure|string  $replacer
      * @return void
      */

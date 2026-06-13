@@ -1,6 +1,6 @@
 <?php
 /**
- * Fideloper，Proxy，可信代理服务提供商
+ * Fideloper，代理人，可信代理服务提供者
  */
 
 namespace Fideloper\Proxy;
@@ -13,12 +13,13 @@ class TrustedProxyServiceProvider extends ServiceProvider
 {
     /**
      * Boot the service provider.
+	 * 引导服务提供者
      *
      * @return void
      */
     public function boot()
     {
-        $source = realpath(__DIR__.'/../config/trustedproxy.php');
+        $source = realpath($raw = __DIR__.'/../config/trustedproxy.php') ?: $raw;
 
         if ($this->app instanceof LaravelApplication && $this->app->runningInConsole()) {
             $this->publishes([$source => config_path('trustedproxy.php')]);
@@ -26,11 +27,15 @@ class TrustedProxyServiceProvider extends ServiceProvider
             $this->app->configure('trustedproxy');
         }
 
-        $this->mergeConfigFrom($source, 'trustedproxy');
+
+        if ($this->app instanceof LaravelApplication && ! $this->app->configurationIsCached()) {
+            $this->mergeConfigFrom($source, 'trustedproxy');
+        }
     }
 
     /**
      * Register the service provider.
+	 * 注册服务提供者
      *
      * @return void
      */

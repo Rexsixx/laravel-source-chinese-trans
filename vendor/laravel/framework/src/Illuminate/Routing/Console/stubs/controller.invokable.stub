@@ -1,0 +1,24 @@
+<?php
+/**
+ * Illuminate，路由，控制台，存根，动态类，根据实际需要修改
+ */
+
+namespace DummyNamespace;
+
+use Illuminate\Http\Request;
+use DummyRootNamespaceHttp\Controllers\Controller;
+
+class DummyClass extends Controller
+{
+    /**
+     * Handle the incoming request.
+	 * 处理传入请求
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function __invoke(Request $request)
+    {
+        //
+    }
+}

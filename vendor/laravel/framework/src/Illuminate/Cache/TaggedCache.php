@@ -36,7 +36,7 @@ class TaggedCache extends Repository
 
     /**
      * Increment the value of an item in the cache.
-	 * 在缓存中增加一个项目的值
+	 * 增加缓存中项的值
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -48,8 +48,8 @@ class TaggedCache extends Repository
     }
 
     /**
-     * Increment the value of an item in the cache.
-	 * 增加缓存中项的值
+     * Decrement the value of an item in the cache.
+	 * 递减缓存中项的值
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -64,11 +64,13 @@ class TaggedCache extends Repository
      * Remove all items from the cache.
 	 * 从缓存中删除所有项
      *
-     * @return void
+     * @return bool
      */
     public function flush()
     {
         $this->tags->reset();
+
+        return true;
     }
 
     /**
@@ -81,7 +83,7 @@ class TaggedCache extends Repository
 
     /**
      * Get a fully qualified key for a tagged item.
-	 * 在缓存中增加一个项目的值
+	 * 获取标记项的完全限定键
      *
      * @param  string  $key
      * @return string
@@ -101,5 +103,16 @@ class TaggedCache extends Repository
     protected function event($event)
     {
         parent::event($event->setTags($this->tags->getNames()));
+    }
+
+    /**
+     * Get the tag set instance.
+	 * 获取标记集实例
+     *
+     * @return \Illuminate\Cache\TagSet
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 }

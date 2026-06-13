@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，事件调度器，调试，可跟踪事件调度器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -24,6 +27,7 @@ interface TraceableEventDispatcherInterface extends EventDispatcherInterface, Re
 {
     /**
      * Gets the called listeners.
+	 * 获取所谓的侦听器
      *
      * @param Request|null $request The request to get listeners for
      *
@@ -33,6 +37,7 @@ interface TraceableEventDispatcherInterface extends EventDispatcherInterface, Re
 
     /**
      * Gets the not called listeners.
+	 * 获取未调用的侦听器
      *
      * @param Request|null $request The request to get listeners for
      *

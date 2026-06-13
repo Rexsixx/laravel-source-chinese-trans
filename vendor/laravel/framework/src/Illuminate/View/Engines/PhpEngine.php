@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，引擎，Php 引擎
+ * Illuminate，引擎，Php 引擎
  */
 
 namespace Illuminate\View\Engines;
@@ -14,7 +14,7 @@ class PhpEngine implements Engine
 {
     /**
      * Get the evaluated contents of the view.
-	 * 获取视图的求值内容
+	 * 获取视图的评估内容
      *
      * @param  string  $path
      * @param  array   $data
@@ -44,6 +44,8 @@ class PhpEngine implements Engine
         // We'll evaluate the contents of the view inside a try/catch block so we can
         // flush out any stray output that might get out before an error occurs or
         // an exception is thrown. This prevents any partial views from leaking.
+		// 我们将在一个 try/catch 块内对视图的内容进行评估，
+		// 这样就能清除在错误发生或异常抛出之前可能泄漏出来的任何残余输出。这样可以避免部分视图出现泄露的情况。
         try {
             include $__path;
         } catch (Exception $e) {

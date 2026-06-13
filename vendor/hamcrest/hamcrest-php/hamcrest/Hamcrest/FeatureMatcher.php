@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，特性匹配程序
+ */
+
 namespace Hamcrest;
 
 /*
@@ -19,6 +23,7 @@ abstract class FeatureMatcher extends TypeSafeDiagnosingMatcher
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * @param string $type
      * @param string $subtype

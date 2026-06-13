@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，工具，Html Dumper 输出
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -8,6 +12,7 @@ namespace Whoops\Util;
 
 /**
  * Used as output callable for Symfony\Component\VarDumper\Dumper\HtmlDumper::dump()
+ * 用于输出可调用
  *
  * @see TemplateHelper::dump()
  */

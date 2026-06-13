@@ -5,6 +5,8 @@
 
 namespace Illuminate\Foundation\Console;
 
+use Throwable;
+use LogicException;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernelContract;
@@ -37,7 +39,7 @@ class ConfigCacheCommand extends Command
 
     /**
      * Create a new config cache command instance.
-	 * 创建一个新的配置缓存命令实例
+	 * 创建一个新的config cache命令实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void
@@ -54,6 +56,8 @@ class ConfigCacheCommand extends Command
 	 * 执行控制台命令
      *
      * @return void
+     *
+     * @throws \LogicException
      */
     public function handle()
     {
@@ -61,9 +65,19 @@ class ConfigCacheCommand extends Command
 
         $config = $this->getFreshConfiguration();
 
+        $configPath = $this->laravel->getCachedConfigPath();
+
         $this->files->put(
-            $this->laravel->getCachedConfigPath(), '<?php return '.var_export($config, true).';'.PHP_EOL
+            $configPath, '<?php return '.var_export($config, true).';'.PHP_EOL
         );
+
+        try {
+            require $configPath;
+        } catch (Throwable $e) {
+            $this->files->delete($configPath);
+
+            throw new LogicException('Your configuration files are not serializable.', 0, $e);
+        }
 
         $this->info('Configuration cached successfully!');
     }

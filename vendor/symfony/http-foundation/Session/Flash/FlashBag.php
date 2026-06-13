@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，Flash，Flash Bag
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -25,7 +28,7 @@ class FlashBag implements FlashBagInterface
     /**
      * @param string $storageKey The key used to store flashes in the session
      */
-    public function __construct($storageKey = '_symfony_flashes')
+    public function __construct(string $storageKey = '_symfony_flashes')
     {
         $this->storageKey = $storageKey;
     }

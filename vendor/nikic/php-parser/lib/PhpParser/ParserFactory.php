@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，解析器工厂
+ */
+
 namespace PhpParser;
 
 use PhpParser\Lexer\Emulative;
@@ -14,6 +18,7 @@ class ParserFactory
 
     /**
      * Creates a Parser instance, according to the provided kind.
+	 * 根据提供的类型创建一个Parser实例
      *
      * @param int        $kind  One of ::PREFER_PHP7, ::PREFER_PHP5, ::ONLY_PHP7 or ::ONLY_PHP5
      * @param Lexer|null $lexer Lexer to use. Defaults to emulative lexer when not specified

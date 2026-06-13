@@ -1,11 +1,12 @@
 <?php
 /**
- * Illuminate，电子邮件，等待邮件
+ * Illuminate，电子邮件，待定的邮件
  */
 
 namespace Illuminate\Mail;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 
 class PendingMail
 {
@@ -16,6 +17,14 @@ class PendingMail
      * @var \Illuminate\Mail\Mailer
      */
     protected $mailer;
+
+    /**
+     * The locale of the message.
+	 * 消息的区域设置
+     *
+     * @var string
+     */
+    protected $locale;
 
     /**
      * The "to" recipients of the message.
@@ -43,7 +52,7 @@ class PendingMail
 
     /**
      * Create a new mailable mailer instance.
-	 * 创建一个新的可邮件邮件实例。
+	 * 创建一个新的可邮件邮件实例
      *
      * @param  \Illuminate\Mail\Mailer  $mailer
      * @return void
@@ -51,6 +60,20 @@ class PendingMail
     public function __construct(Mailer $mailer)
     {
         $this->mailer = $mailer;
+    }
+
+    /**
+     * Set the locale of the message.
+	 * 设置消息的区域设置
+     *
+     * @param  string  $locale
+     * @return $this
+     */
+    public function locale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
     }
 
     /**
@@ -63,6 +86,10 @@ class PendingMail
     public function to($users)
     {
         $this->to = $users;
+
+        if (! $this->locale && $users instanceof HasLocalePreference) {
+            $this->locale($users->preferredLocale());
+        }
 
         return $this;
     }
@@ -165,6 +192,7 @@ class PendingMail
     {
         return $mailable->to($this->to)
                         ->cc($this->cc)
-                        ->bcc($this->bcc);
+                        ->bcc($this->bcc)
+                        ->locale($this->locale);
     }
 }

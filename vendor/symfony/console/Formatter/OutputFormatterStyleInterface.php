@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，格式化程序，输出格式化程序接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Console\Formatter;
 
 /**
  * Formatter style interface for defining styles.
+ * 定义样式的格式化程序样式接口。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -20,6 +24,7 @@ interface OutputFormatterStyleInterface
 {
     /**
      * Sets style foreground color.
+	 * 设置样式前的颜色
      *
      * @param string|null $color The color name
      */
@@ -27,6 +32,7 @@ interface OutputFormatterStyleInterface
 
     /**
      * Sets style background color.
+	 * 设置风格背景颜色
      *
      * @param string $color The color name
      */
@@ -34,6 +40,7 @@ interface OutputFormatterStyleInterface
 
     /**
      * Sets some specific style option.
+	 * 设置一些特定的样式选项
      *
      * @param string $option The option name
      */
@@ -41,6 +48,7 @@ interface OutputFormatterStyleInterface
 
     /**
      * Unsets some specific style option.
+	 * 打开一些特定的样式选项
      *
      * @param string $option The option name
      */

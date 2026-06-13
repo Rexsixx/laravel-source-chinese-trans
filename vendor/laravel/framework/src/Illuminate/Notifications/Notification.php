@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，通知
+ * Illuminate，通知，应通知的
  */
 
 namespace Illuminate\Notifications;
@@ -20,6 +20,14 @@ class Notification
     public $id;
 
     /**
+     * The locale to be used when sending the notification.
+	 * 发送通知时要使用的区域设置
+     *
+     * @var string|null
+     */
+    public $locale;
+
+    /**
      * Get the channels the event should broadcast on.
 	 * 获取该事件应该播放的频道
      *
@@ -28,5 +36,19 @@ class Notification
     public function broadcastOn()
     {
         return [];
+    }
+
+    /**
+     * Set the locale to send this notification in.
+	 * 设置发送此通知的区域设置
+     *
+     * @param  string  $locale
+     * @return $this
+     */
+    public function locale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，资源库
+ * Illuminate，缓存，版本库
  */
 
 namespace Illuminate\Cache;
@@ -79,8 +79,20 @@ class Repository implements CacheContract, ArrayAccess
     }
 
     /**
+     * Determine if an item doesn't exist in the cache.
+	 * 确定某个项是否在缓存中不存在
+     *
+     * @param  string  $key
+     * @return bool
+     */
+    public function missing($key)
+    {
+        return ! $this->has($key);
+    }
+
+    /**
      * Retrieve an item from the cache by key.
-	 * 按键从缓存中获取项
+	 * 按键从缓存中检索项
      *
      * @param  string  $key
      * @param  mixed   $default
@@ -97,6 +109,8 @@ class Repository implements CacheContract, ArrayAccess
         // If we could not find the cache value, we will fire the missed event and get
         // the default value for this cache value. This default could be a callback
         // so we will execute the value function which will resolve it if needed.
+		// 如果我们找不到缓存值,我们将触发错过的事件并得到此缓存值的默认值。
+		// 这个默认可以是一个回调,所以我们将执行价值函数,如果需要,它将解决它。
         if (is_null($value)) {
             $this->event(new CacheMissed($key));
 
@@ -113,7 +127,7 @@ class Repository implements CacheContract, ArrayAccess
 	 * 按键从缓存中检索多个项。
      *
      * Items not found in the cache will have a null value.
-	 * 在缓存中找不到的项将具有空值。
+	 * 在缓存中未找到的项目将具有空值。
      *
      * @param  array  $keys
      * @return array
@@ -134,18 +148,22 @@ class Repository implements CacheContract, ArrayAccess
      */
     public function getMultiple($keys, $default = null)
     {
-        $defaults = [];
-
-        foreach ($keys as $key) {
-            $defaults[$key] = $default;
+        if (is_null($default)) {
+            return $this->many($keys);
         }
 
-        return $this->many($defaults);
+        foreach ($keys as $key) {
+            if (! isset($default[$key])) {
+                $default[$key] = null;
+            }
+        }
+
+        return $this->many($default);
     }
 
     /**
      * Handle a result for the "many" method.
-	 * 处理“many”方法的结果。
+	 * 处理“many”方法的结果
      *
      * @param  array  $keys
      * @param  string  $key
@@ -157,6 +175,8 @@ class Repository implements CacheContract, ArrayAccess
         // If we could not find the cache value, we will fire the missed event and get
         // the default value for this cache value. This default could be a callback
         // so we will execute the value function which will resolve it if needed.
+		// 如果我们找不到缓存值,我们将触发错过的事件并得到此缓存值的默认值。
+		// 这个默认可以是一个回调,所以我们将执行价值函数,如果需要,它将解决它。
         if (is_null($value)) {
             $this->event(new CacheMissed($key));
 
@@ -181,7 +201,7 @@ class Repository implements CacheContract, ArrayAccess
      */
     public function pull($key, $default = null)
     {
-        return tap($this->get($key, $default), function ($value) use ($key) {
+        return tap($this->get($key, $default), function () use ($key) {
             $this->forget($key);
         });
     }
@@ -192,13 +212,15 @@ class Repository implements CacheContract, ArrayAccess
      *
      * @param  string  $key
      * @param  mixed   $value
-     * @param  \DateTimeInterface|\DateInterval|float|int  $minutes
+     * @param  \DateTimeInterface|\DateInterval|float|int|null  $minutes
      * @return void
      */
     public function put($key, $value, $minutes = null)
     {
         if (is_array($key)) {
-            return $this->putMany($key, $value);
+            $this->putMany($key, $value);
+
+            return;
         }
 
         if (! is_null($minutes = $this->getMinutes($minutes))) {
@@ -213,7 +235,7 @@ class Repository implements CacheContract, ArrayAccess
      */
     public function set($key, $value, $ttl = null)
     {
-        $this->put($key, $value, is_int($ttl) ? $ttl / 60 : null);
+        $this->put($key, $value, $ttl);
     }
 
     /**
@@ -240,7 +262,7 @@ class Repository implements CacheContract, ArrayAccess
      */
     public function setMultiple($values, $ttl = null)
     {
-        $this->putMany(is_array($values) ? $values : iterator_to_array($values), is_int($ttl) ? $ttl / 60 : null);
+        $this->putMany($values, $ttl);
     }
 
     /**
@@ -261,6 +283,8 @@ class Repository implements CacheContract, ArrayAccess
         // If the store has an "add" method we will call the method on the store so it
         // has a chance to override this logic. Some drivers better support the way
         // this operation should work with a total "atomic" implementation of it.
+		// 如果商店有一个“添加”方法,我们将在商店中调用该方法,这样它就有机会重写这个逻辑。
+		// 一些驱动程序更好地支持这个操作应该使用完全“原子”实现的方式。
         if (method_exists($this->store, 'add')) {
             return $this->store->add(
                 $this->itemKey($key), $value, $minutes
@@ -270,6 +294,8 @@ class Repository implements CacheContract, ArrayAccess
         // If the value did not exist in the cache, we will put the value in the cache
         // so it exists for subsequent requests. Then, we will return true so it is
         // easy to know if the value gets added. Otherwise, we will return false.
+		// 如果缓存中不存在值,我们将将值放在缓存中,因此它存在于后续请求。
+		// 然后,我们将返回true,因此很容易知道值是否被添加。否则,我们将返回false。
         if (is_null($this->get($key))) {
             $this->put($key, $value, $minutes);
 
@@ -321,8 +347,8 @@ class Repository implements CacheContract, ArrayAccess
     }
 
     /**
-     * Get an item from the cache, or store the default value.
-	 * 从缓存中获取项，或存储默认值。
+     * Get an item from the cache, or execute the given Closure and store the result.
+	 * 从缓存中获取一个项，或者执行给定的Closure并存储结果。
      *
      * @param  string  $key
      * @param  \DateTimeInterface|\DateInterval|float|int  $minutes
@@ -336,6 +362,8 @@ class Repository implements CacheContract, ArrayAccess
         // If the item exists in the cache we will just return this immediately and if
         // not we will execute the given Closure and cache the result of that for a
         // given number of minutes so it's available for all subsequent requests.
+		// 如果该项目存在于缓存中,我们将立即返回,如果不是我们将执行给定的闭包,
+		// 并将其缓存的结果缓存到给定的数分钟,因此它可以用于所有后续请求。
         if (! is_null($value)) {
             return $value;
         }
@@ -346,10 +374,10 @@ class Repository implements CacheContract, ArrayAccess
     }
 
     /**
-     * Get an item from the cache, or store the default value forever.
-	 * 从缓存中获取项，或永久存储默认值。
+     * Get an item from the cache, or execute the given Closure and store the result forever.
+	 * 从缓存中获取一个项，或者执行给定的Closure并永久存储结果。
      *
-     * @param  string   $key
+     * @param  string  $key
      * @param  \Closure  $callback
      * @return mixed
      */
@@ -359,10 +387,10 @@ class Repository implements CacheContract, ArrayAccess
     }
 
     /**
-     * Get an item from the cache, or store the default value forever.
-	 * 从缓存中获取项，或永久存储默认值。
+     * Get an item from the cache, or execute the given Closure and store the result forever.
+	 * 从缓存中获取一个项，或者执行给定的Closure并永久存储结果。
      *
-     * @param  string   $key
+     * @param  string  $key
      * @param  \Closure  $callback
      * @return mixed
      */
@@ -373,6 +401,8 @@ class Repository implements CacheContract, ArrayAccess
         // If the item exists in the cache we will just return this immediately and if
         // not we will execute the given Closure and cache the result of that for a
         // given number of minutes so it's available for all subsequent requests.
+		// 如果该项目存在于缓存中,我们将立即返回,如果不是我们将执行给定的闭包,
+		// 并将其缓存的结果缓存到给定的数分钟,因此它可以用于所有后续请求。
         if (! is_null($value)) {
             return $value;
         }
@@ -439,7 +469,7 @@ class Repository implements CacheContract, ArrayAccess
             throw new BadMethodCallException('This cache store does not support tagging.');
         }
 
-        $cache = $this->store->tags($names);
+        $cache = $this->store->tags(is_array($names) ? $names : func_get_args());
 
         if (! is_null($this->events)) {
             $cache->setEventDispatcher($this->events);

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，生成器，Comb 发生器
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE

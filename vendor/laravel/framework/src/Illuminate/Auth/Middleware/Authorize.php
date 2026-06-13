@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，中间件，验证
+ * Illuminate，认证，中间件，授权
  */
 
 namespace Illuminate\Auth\Middleware;
@@ -8,21 +8,12 @@ namespace Illuminate\Auth\Middleware;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Access\Gate;
-use Illuminate\Contracts\Auth\Factory as Auth;
 
 class Authorize
 {
     /**
-     * The authentication factory instance.
-	 * 身份验证工厂实例
-     *
-     * @var \Illuminate\Contracts\Auth\Factory
-     */
-    protected $auth;
-
-    /**
      * The gate instance.
-	 * gate实例
+	 * 大门实例
      *
      * @var \Illuminate\Contracts\Auth\Access\Gate
      */
@@ -32,13 +23,11 @@ class Authorize
      * Create a new middleware instance.
 	 * 创建一个新的中间件实例
      *
-     * @param  \Illuminate\Contracts\Auth\Factory  $auth
      * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
      * @return void
      */
-    public function __construct(Auth $auth, Gate $gate)
+    public function __construct(Gate $gate)
     {
-        $this->auth = $auth;
         $this->gate = $gate;
     }
 
@@ -49,7 +38,7 @@ class Authorize
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @param  string  $ability
-     * @param  array|null  $models
+     * @param  array|null  ...$models
      * @return mixed
      *
      * @throws \Illuminate\Auth\AuthenticationException
@@ -57,8 +46,6 @@ class Authorize
      */
     public function handle($request, Closure $next, $ability, ...$models)
     {
-        $this->auth->authenticate();
-
         $this->gate->authorize($ability, $this->getGateArguments($request, $models));
 
         return $next($request);
@@ -93,7 +80,7 @@ class Authorize
      */
     protected function getModel($request, $model)
     {
-        return $this->isClassName($model) ? $model : $request->route($model);
+        return $this->isClassName($model) ? trim($model) : $request->route($model, $model);
     }
 
     /**

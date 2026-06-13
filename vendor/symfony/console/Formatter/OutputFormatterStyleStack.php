@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，格式化程序，输出格式化程序堆栈
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -12,11 +15,12 @@
 namespace Symfony\Component\Console\Formatter;
 
 use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * @author Jean-François Simon <contact@jfsimon.fr>
  */
-class OutputFormatterStyleStack
+class OutputFormatterStyleStack implements ResetInterface
 {
     /**
      * @var OutputFormatterStyleInterface[]
@@ -27,7 +31,7 @@ class OutputFormatterStyleStack
 
     public function __construct(OutputFormatterStyleInterface $emptyStyle = null)
     {
-        $this->emptyStyle = $emptyStyle ?: new OutputFormatterStyle();
+        $this->emptyStyle = $emptyStyle ?? new OutputFormatterStyle();
         $this->reset();
     }
 

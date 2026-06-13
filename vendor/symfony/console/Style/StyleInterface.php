@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，样式，样式接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Console\Style;
 
 /**
  * Output style helpers.
+ * 输出样式助手。
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
@@ -20,6 +24,7 @@ interface StyleInterface
 {
     /**
      * Formats a command title.
+	 * 格式化一个命令标题
      *
      * @param string $message
      */

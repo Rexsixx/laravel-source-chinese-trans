@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，控制器，参数值解析器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -31,7 +34,7 @@ interface ArgumentValueResolverInterface
     /**
      * Returns the possible value(s).
      *
-     * @return \Generator
+     * @return iterable
      */
     public function resolve(Request $request, ArgumentMetadata $argument);
 }

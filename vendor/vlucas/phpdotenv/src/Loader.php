@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，加载器
+ */
 
 namespace Dotenv;
 
@@ -6,6 +9,7 @@ use Dotenv\Exception\InvalidPathException;
 
 /**
  * This is the loaded class.
+ * 这是加载的类。
  *
  * It's responsible for loading variables by reading a file from disk and:
  * - stripping comments beginning with a `#`,
@@ -15,6 +19,7 @@ class Loader
 {
     /**
      * The file path.
+	 * 文件路径
      *
      * @var string
      */

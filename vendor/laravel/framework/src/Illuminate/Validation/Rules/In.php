@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，验证，规则，属于
+ * Illuminate，验证，规则，包含
  */
 
 namespace Illuminate\Validation\Rules;
@@ -9,8 +9,7 @@ class In
 {
     /**
      * The name of the rule.
-	 * 规则名称
-	 * 
+	 * 规则的名称
      */
     protected $rule = 'in';
 

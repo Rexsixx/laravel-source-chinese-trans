@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，反射，元素
+ */
 
 declare(strict_types=1);
 
@@ -15,6 +18,7 @@ namespace phpDocumentor\Reflection;
 
 /**
  * Interface for Api Elements
+ * Api元素接口
  */
 interface Element
 {

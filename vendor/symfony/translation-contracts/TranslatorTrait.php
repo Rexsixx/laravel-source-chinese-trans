@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，翻译，翻译特征
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
 
 /**
  * A trait to help implement TranslatorInterface and LocaleAwareInterface.
+ * 帮助实现TranslatorInterface和LocaleAwareInterface的trait。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -25,13 +29,15 @@ trait TranslatorTrait
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale)
     {
-        $this->locale = (string) $locale;
+        $this->locale = $locale;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return string
      */
     public function getLocale()
     {
@@ -41,9 +47,9 @@ trait TranslatorTrait
     /**
      * {@inheritdoc}
      */
-    public function trans($id, array $parameters = [], $domain = null, $locale = null)
+    public function trans(?string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
-        if ('' === $id = (string) $id) {
+        if (null === $id || '' === $id) {
             return '';
         }
 
@@ -52,7 +58,7 @@ trait TranslatorTrait
         }
 
         $number = (float) $parameters['%count%'];
-        $locale = (string) $locale ?: $this->getLocale();
+        $locale = $locale ?: $this->getLocale();
 
         $parts = [];
         if (preg_match('/^\|++$/', $id)) {

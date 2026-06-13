@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，翻译，翻译机接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,11 +16,14 @@ namespace Symfony\Contracts\Translation;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @method string getLocale() Returns the default locale
  */
 interface TranslatorInterface
 {
     /**
      * Translates the given message.
+	 * 翻译给定的消息。
      *
      * When a number is provided as a parameter named "%count%", the message is parsed for plural
      * forms and a translation is chosen according to this number using the following rules:
@@ -57,9 +63,9 @@ interface TranslatorInterface
      * @param string|null $domain     The domain for the message or null to use the default
      * @param string|null $locale     The locale or null to use the default
      *
-     * @return string The translated string
+     * @return string
      *
      * @throws \InvalidArgumentException If the locale contains invalid characters
      */
-    public function trans($id, array $parameters = [], $domain = null, $locale = null);
+    public function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null);
 }

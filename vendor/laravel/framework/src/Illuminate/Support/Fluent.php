@@ -13,18 +13,18 @@ use Illuminate\Contracts\Support\Arrayable;
 class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 {
     /**
-     * All of the attributes set on the container.
-	 * 在容器上设置的所有属性
+     * All of the attributes set on the fluent instance.
+	 * 在流畅实例上设置的所有属性
      *
      * @var array
      */
     protected $attributes = [];
 
     /**
-     * Create a new fluent container instance.
-	 * 创建一个新的流畅容器实例
+     * Create a new fluent instance.
+	 * 创建一个新的流畅实例
      *
-     * @param  array|object    $attributes
+     * @param  array|object  $attributes
      * @return void
      */
     public function __construct($attributes = [])
@@ -35,8 +35,8 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
     }
 
     /**
-     * Get an attribute from the container.
-	 * 从容器中获取属性
+     * Get an attribute from the fluent instance.
+	 * 从流畅实例获取属性
      *
      * @param  string  $key
      * @param  mixed   $default
@@ -52,8 +52,8 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
     }
 
     /**
-     * Get the attributes from the container.
-	 * 从容器中获取属性
+     * Get the attributes from the fluent instance.
+	 * 从流畅实例获取属性
      *
      * @return array
      */
@@ -63,8 +63,8 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
     }
 
     /**
-     * Convert the Fluent instance to an array.
-	 * 将Fluent实例转换为数组
+     * Convert the fluent instance to an array.
+	 * 将fluent实例转换为数组
      *
      * @return array
      */
@@ -85,8 +85,8 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
     }
 
     /**
-     * Convert the Fluent instance to JSON.
-	 * 将Fluent实例转换为JSON
+     * Convert the fluent instance to JSON.
+	 * 将fluent实例转换为JSON
      *
      * @param  int  $options
      * @return string
@@ -146,8 +146,8 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
     }
 
     /**
-     * Handle dynamic calls to the container to set attributes.
-	 * 处理对容器的动态调用以设置属性
+     * Handle dynamic calls to the fluent instance to set attributes.
+	 * 处理对fluent实例的动态调用以设置属性
      *
      * @param  string  $method
      * @param  array   $parameters

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，上下文感知
+ */
 
 /*
  * This file is part of Psy Shell.

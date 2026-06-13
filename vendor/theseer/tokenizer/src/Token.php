@@ -1,4 +1,9 @@
 <?php declare(strict_types = 1);
+
+/**
+ * TheSeer，词法分析器，令牌
+ */
+
 namespace TheSeer\Tokenizer;
 
 class Token {
@@ -14,6 +19,7 @@ class Token {
 
     /**
      * Token constructor.
+	 * 令牌的构造函数
      */
     public function __construct(int $line, string $name, string $value) {
         $this->line  = $line;

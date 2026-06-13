@@ -1,4 +1,7 @@
 <?php
+/**
+ * swiftmailer，地址编码
+ */
 
 /*
  * This file is part of SwiftMailer.

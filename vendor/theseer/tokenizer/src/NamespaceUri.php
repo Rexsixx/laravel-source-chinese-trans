@@ -1,4 +1,9 @@
 <?php declare(strict_types = 1);
+
+/**
+ * TheSeer，词法分析器，命名空间 URI
+ */
+
 namespace TheSeer\Tokenizer;
 
 class NamespaceUri {

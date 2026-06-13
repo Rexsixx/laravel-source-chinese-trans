@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，异常，资源未找到异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Routing\Exception;
 
 /**
  * The resource was not found.
+ * 找不到资源。
  *
  * This exception should trigger an HTTP 404 response in your application code.
  *

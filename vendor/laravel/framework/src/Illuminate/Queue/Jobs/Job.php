@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，作业，作业
+ * Illuminate，队列，作业，Job
  */
 
 namespace Illuminate\Queue\Jobs;
@@ -13,7 +13,7 @@ abstract class Job
 
     /**
      * The job handler instance.
-	 * 作业处理程序实例
+	 * 工作处理程序实例
      *
      * @var mixed
      */
@@ -66,8 +66,16 @@ abstract class Job
     protected $queue;
 
     /**
+     * Get the job identifier.
+	 * 获取工作标识符
+     *
+     * @return string
+     */
+    abstract public function getJobId();
+
+    /**
      * Get the raw body of the job.
-	 * 得到工作的原始主体
+	 * 得到工作的原始身体
      *
      * @return string
      */
@@ -83,7 +91,7 @@ abstract class Job
     {
         $payload = $this->payload();
 
-        list($class, $method) = JobName::parse($payload['job']);
+        [$class, $method] = JobName::parse($payload['job']);
 
         ($this->instance = $this->resolve($class))->{$method}($this, $payload['data']);
     }
@@ -157,7 +165,7 @@ abstract class Job
 
     /**
      * Mark the job as "failed".
-	 * 把这项作业标记为“失败”
+	 * 把这项工作标记为“失败”
      *
      * @return void
      */
@@ -179,7 +187,7 @@ abstract class Job
 
         $payload = $this->payload();
 
-        list($class, $method) = JobName::parse($payload['job']);
+        [$class, $method] = JobName::parse($payload['job']);
 
         if (method_exists($this->instance = $this->resolve($class), 'failed')) {
             $this->instance->failed($payload['data'], $e);
@@ -200,7 +208,7 @@ abstract class Job
 
     /**
      * Get the decoded body of the job.
-	 * 拿到解码后的主体
+	 * 拿到解码后的文件
      *
      * @return array
      */
@@ -258,6 +266,7 @@ abstract class Job
 	 * 获取排队作业类的解析名称。
      *
      * Resolves the name of "wrapped" jobs such as class-based handlers.
+	 * 解析“包”工作的名称,如基于类的处理程序。
      *
      * @return string
      */

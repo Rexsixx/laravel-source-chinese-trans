@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，反射，Pseudo 类型
+ */
 
 declare(strict_types=1);
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，Deprecations，PHP单元测试，验证的用法
+ * Doctrine，Deprecations，PHP单元，验证 Deprecations
  */
 
 declare(strict_types=1);
@@ -8,6 +8,8 @@ declare(strict_types=1);
 namespace Doctrine\Deprecations\PHPUnit;
 
 use Doctrine\Deprecations\Deprecation;
+use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\Before;
 
 use function sprintf;
 
@@ -30,12 +32,14 @@ trait VerifyDeprecations
     }
 
     /** @before */
+    #[Before]
     public function enableDeprecationTracking(): void
     {
         Deprecation::enableTrackingDeprecations();
     }
 
     /** @after */
+    #[After]
     public function verifyDeprecationsAreTriggered(): void
     {
         foreach ($this->doctrineDeprecationsExpectations as $identifier => $expectation) {
@@ -56,7 +60,7 @@ trait VerifyDeprecations
             $this->assertTrue(
                 $actualCount === $expectation,
                 sprintf(
-                    "Expected deprecation with identifier '%s' was triggered by code executed in test, but expected not to.",
+                    "Deprecation with identifier '%s' was triggered by code executed in test, but expected not to.",
                     $identifier
                 )
             );

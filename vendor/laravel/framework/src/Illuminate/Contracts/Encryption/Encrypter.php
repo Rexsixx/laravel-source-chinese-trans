@@ -11,9 +11,9 @@ interface Encrypter
      * Encrypt the given value.
 	 * 加密给定的值
      *
-     * @param  string  $value
+     * @param  mixed  $value
      * @param  bool  $serialize
-     * @return string
+     * @return mixed
      */
     public function encrypt($value, $serialize = true);
 
@@ -21,9 +21,9 @@ interface Encrypter
      * Decrypt the given value.
 	 * 解密给定的值
      *
-     * @param  string  $payload
+     * @param  mixed  $payload
      * @param  bool  $unserialize
-     * @return string
+     * @return mixed
      */
     public function decrypt($payload, $unserialize = true);
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，异常，逻辑异常
+ */
 
 /*
  * This file is part of the Symfony package.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，插件，列出
+ */
 
 namespace League\Flysystem\Plugin;
 
@@ -6,6 +9,7 @@ class ListWith extends AbstractPlugin
 {
     /**
      * Get the method name.
+	 * 获取方法名称
      *
      * @return string
      */
@@ -16,6 +20,7 @@ class ListWith extends AbstractPlugin
 
     /**
      * List contents with metadata.
+	 * 以元数据列出内容
      *
      * @param string[] $keys
      * @param string   $directory

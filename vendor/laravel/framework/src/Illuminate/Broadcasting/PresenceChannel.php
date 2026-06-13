@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，广播，存在频道
+ * Illuminate，广播，存在通道
  */
 
 namespace Illuminate\Broadcasting;

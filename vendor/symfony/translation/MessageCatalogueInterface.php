@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，消息目录接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,15 +18,17 @@ use Symfony\Component\Config\Resource\ResourceInterface;
 
 /**
  * MessageCatalogueInterface.
+ * 消息目录接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 interface MessageCatalogueInterface
 {
-    const INTL_DOMAIN_SUFFIX = '+intl-icu';
+    public const INTL_DOMAIN_SUFFIX = '+intl-icu';
 
     /**
      * Gets the catalogue locale.
+	 * 获取目录区域设置
      *
      * @return string The locale
      */
@@ -31,6 +36,7 @@ interface MessageCatalogueInterface
 
     /**
      * Gets the domains.
+	 * 获取域
      *
      * @return array An array of domains
      */
@@ -38,6 +44,7 @@ interface MessageCatalogueInterface
 
     /**
      * Gets the messages within a given domain.
+	 * 获取给定域中的消息。
      *
      * If $domain is null, it returns all messages.
      *
@@ -49,6 +56,7 @@ interface MessageCatalogueInterface
 
     /**
      * Sets a message translation.
+	 * 设置消息转换
      *
      * @param string $id          The message id
      * @param string $translation The messages translation

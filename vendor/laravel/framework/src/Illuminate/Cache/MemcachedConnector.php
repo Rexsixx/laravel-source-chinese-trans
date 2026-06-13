@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Memcached 连接
+ * Illuminate，缓存，Memcached 连接器
  */
 
 namespace Illuminate\Cache;
@@ -11,7 +11,7 @@ class MemcachedConnector
 {
     /**
      * Create a new Memcached connection.
-	 * 创建新的Memcached连接。
+	 * 创建一个新的Memcached连接
      *
      * @param  array  $servers
      * @param  string|null  $connectionId
@@ -52,7 +52,7 @@ class MemcachedConnector
     {
         $memcached = $this->createMemcachedInstance($connectionId);
 
-        if (count($credentials) == 2) {
+        if (count($credentials) === 2) {
             $this->setCredentials($memcached, $credentials);
         }
 
@@ -85,7 +85,7 @@ class MemcachedConnector
      */
     protected function setCredentials($memcached, $credentials)
     {
-        list($username, $password) = $credentials;
+        [$username, $password] = $credentials;
 
         $memcached->setOption(Memcached::OPT_BINARY_PROTOCOL, true);
 

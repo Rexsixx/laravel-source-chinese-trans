@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，测试，问题，发出 Http请求
+ */
 
 namespace Illuminate\Foundation\Testing\Concerns;
 
@@ -13,6 +16,7 @@ trait MakesHttpRequests
 {
     /**
      * Additional headers for the request.
+	 * 请求的附加标头
      *
      * @var array
      */
@@ -20,6 +24,7 @@ trait MakesHttpRequests
 
     /**
      * Additional server variables for the request.
+	 * 请求的其他服务器变量
      *
      * @var array
      */
@@ -27,6 +32,7 @@ trait MakesHttpRequests
 
     /**
      * Indicates whether redirects should be followed.
+	 * 指示是否应该遵循重定向
      *
      * @var bool
      */
@@ -34,6 +40,7 @@ trait MakesHttpRequests
 
     /**
      * Define additional headers to be sent with the request.
+	 * 定义要随请求一起发送的附加标头
      *
      * @param  array $headers
      * @return $this
@@ -47,6 +54,7 @@ trait MakesHttpRequests
 
     /**
      * Add a header to be sent with the request.
+	 * 添加与请求一起发送的标头
      *
      * @param  string $name
      * @param  string $value
@@ -61,6 +69,7 @@ trait MakesHttpRequests
 
     /**
      * Flush all the configured headers.
+	 * 刷新所有配置的标头
      *
      * @return $this
      */
@@ -73,6 +82,7 @@ trait MakesHttpRequests
 
     /**
      * Define a set of server variables to be sent with the requests.
+	 * 定义一组要随请求一起发送的服务器变量
      *
      * @param  array  $server
      * @return $this
@@ -86,6 +96,7 @@ trait MakesHttpRequests
 
     /**
      * Disable middleware for the test.
+	 * 禁用测试的中间件
      *
      * @param  string|array  $middleware
      * @return $this
@@ -112,6 +123,7 @@ trait MakesHttpRequests
 
     /**
      * Enable the given middleware for the test.
+	 * 为测试启用给定的中间件
      *
      * @param  string|array  $middleware
      * @return $this
@@ -133,6 +145,7 @@ trait MakesHttpRequests
 
     /**
      * Automatically follow any redirects returned from the response.
+	 * 自动遵循从响应返回的任何重定向
      *
      * @return $this
      */
@@ -145,6 +158,7 @@ trait MakesHttpRequests
 
     /**
      * Set the referer header to simulate a previous request.
+	 * 设置引用头以模拟先前的请求
      *
      * @param  string  $url
      * @return $this
@@ -156,6 +170,7 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a GET request.
+	 * 使用GET请求访问给定的URI
      *
      * @param  string  $uri
      * @param  array  $headers
@@ -170,6 +185,7 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a GET request, expecting a JSON response.
+	 * 使用GET请求访问给定的URI，期望得到JSON响应。
      *
      * @param  string  $uri
      * @param  array  $headers
@@ -182,6 +198,7 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a POST request.
+	 * 使用POST请求访问给定的URI
      *
      * @param  string  $uri
      * @param  array  $data
@@ -197,6 +214,7 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a POST request, expecting a JSON response.
+	 * 使用POST请求访问给定的URI，期望得到JSON响应。
      *
      * @param  string  $uri
      * @param  array  $data
@@ -210,6 +228,7 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a PUT request.
+	 * 使用PUT请求访问给定的URI
      *
      * @param  string  $uri
      * @param  array  $data
@@ -225,6 +244,7 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a PUT request, expecting a JSON response.
+	 * 使用一个PUT请求访问给定的URI，期望得到一个JSON响应。
      *
      * @param  string  $uri
      * @param  array  $data
@@ -238,6 +258,7 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a PATCH request.
+	 * 使用PATCH请求访问给定的URI
      *
      * @param  string  $uri
      * @param  array  $data
@@ -253,6 +274,7 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a PATCH request, expecting a JSON response.
+	 * 使用PATCH请求访问给定的URI，期望得到JSON响应。
      *
      * @param  string  $uri
      * @param  array  $data
@@ -266,6 +288,7 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a DELETE request.
+	 * 使用DELETE请求访问给定的URI
      *
      * @param  string  $uri
      * @param  array  $data
@@ -281,6 +304,7 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a DELETE request, expecting a JSON response.
+	 * 使用DELETE请求访问给定的URI，期望得到JSON响应。
      *
      * @param  string  $uri
      * @param  array  $data
@@ -294,6 +318,7 @@ trait MakesHttpRequests
 
     /**
      * Call the given URI with a JSON request.
+	 * 用JSON请求调用给定的URI
      *
      * @param  string  $method
      * @param  string  $uri
@@ -320,6 +345,7 @@ trait MakesHttpRequests
 
     /**
      * Call the given URI and return the Response.
+	 * 调用给定的URI并返回Response
      *
      * @param  string  $method
      * @param  string  $uri
@@ -356,6 +382,7 @@ trait MakesHttpRequests
 
     /**
      * Turn the given URI into a fully qualified URL.
+	 * 将给定的URI转换为完全限定的URL
      *
      * @param  string  $uri
      * @return string
@@ -375,6 +402,7 @@ trait MakesHttpRequests
 
     /**
      * Transform headers array to array of $_SERVER vars with HTTP_* format.
+	 * 将headers数组转换为HTTP_*格式的$_SERVER变量数组
      *
      * @param  array  $headers
      * @return array
@@ -390,13 +418,14 @@ trait MakesHttpRequests
 
     /**
      * Format the header name for the server array.
+	 * 格式化服务器数组的标头名称
      *
      * @param  string  $name
      * @return string
      */
     protected function formatServerHeaderKey($name)
     {
-        if (! Str::startsWith($name, 'HTTP_') && $name != 'CONTENT_TYPE' && $name != 'REMOTE_ADDR') {
+        if (! Str::startsWith($name, 'HTTP_') && $name !== 'CONTENT_TYPE' && $name !== 'REMOTE_ADDR') {
             return 'HTTP_'.$name;
         }
 
@@ -405,6 +434,7 @@ trait MakesHttpRequests
 
     /**
      * Extract the file uploads from the given data array.
+	 * 从给定的数据数组中提取文件上传
      *
      * @param  array  $data
      * @return array
@@ -432,9 +462,10 @@ trait MakesHttpRequests
 
     /**
      * Follow a redirect chain until a non-redirect is received.
+	 * 遵循重定向链，直到接收到非重定向。
      *
      * @param  \Illuminate\Http\Response  $response
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Foundation\Testing\TestResponse
      */
     protected function followRedirects($response)
     {
@@ -449,6 +480,7 @@ trait MakesHttpRequests
 
     /**
      * Create the test response instance from the given response.
+	 * 根据给定的响应创建测试响应实例
      *
      * @param  \Illuminate\Http\Response  $response
      * @return \Illuminate\Foundation\Testing\TestResponse

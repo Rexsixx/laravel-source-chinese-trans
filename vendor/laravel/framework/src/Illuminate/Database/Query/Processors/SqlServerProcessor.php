@@ -13,7 +13,7 @@ class SqlServerProcessor extends Processor
 {
     /**
      * Process an "insert get ID" query.
-	 * 处理“insert get ID”查询
+	 * 处理“insert get ID”查询。
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $sql
@@ -42,6 +42,7 @@ class SqlServerProcessor extends Processor
      *
      * @param  \Illuminate\Database\Connection  $connection
      * @return int
+     *
      * @throws \Exception
      */
     protected function processInsertGetIdForOdbc(Connection $connection)

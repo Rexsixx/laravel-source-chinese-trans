@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，语法，修改列
+ * Illuminate，数据库，模式，语法，修改字段
  */
 
 namespace Illuminate\Database\Schema\Grammars;
@@ -126,6 +126,12 @@ class ChangeColumn
             $options['length'] = static::calculateDoctrineTextLength($fluent['type']);
         }
 
+        if ($fluent['type'] === 'json') {
+            $options['customSchemaOptions'] = [
+                'collation' => '',
+            ];
+        }
+
         return $options;
     }
 
@@ -212,6 +218,6 @@ class ChangeColumn
      */
     protected static function mapFluentValueToDoctrine($option, $value)
     {
-        return $option == 'notnull' ? ! $value : $value;
+        return $option === 'notnull' ? ! $value : $value;
     }
 }

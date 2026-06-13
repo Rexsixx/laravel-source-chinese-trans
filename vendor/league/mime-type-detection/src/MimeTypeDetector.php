@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Mime类型检测，Mime 类型检测器
+ */
 
 declare(strict_types=1);
 

@@ -1,14 +1,17 @@
 <?php
+/**
+ * 测试，创建应用程序
+ */
 
 namespace Tests;
 
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Console\Kernel;
 
 trait CreatesApplication
 {
     /**
      * Creates the application.
+	 * 创建应用
      *
      * @return \Illuminate\Foundation\Application
      */
@@ -17,8 +20,6 @@ trait CreatesApplication
         $app = require __DIR__.'/../bootstrap/app.php';
 
         $app->make(Kernel::class)->bootstrap();
-
-        Hash::setRounds(4);
 
         return $app;
     }

@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，匹配程序
+ */
+
 namespace Hamcrest;
 
 /*
@@ -25,6 +29,7 @@ interface Matcher extends SelfDescribing
 
     /**
      * Evaluates the matcher for argument <var>$item</var>.
+	 * 评估辩论者
      *
      * @param mixed $item the object against which the matcher is evaluated.
      *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，测试员，命令测试员
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,22 +16,20 @@ namespace Symfony\Component\Console\Tester;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Output\StreamOutput;
 
 /**
  * Eases the testing of console commands.
+ * 减轻对控制台命令的测试。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
 class CommandTester
 {
+    use TesterTrait;
+
     private $command;
     private $input;
-    private $output;
-    private $inputs = [];
     private $statusCode;
 
     public function __construct(Command $command)
@@ -38,12 +39,14 @@ class CommandTester
 
     /**
      * Executes the command.
+	 * 执行命令。
      *
      * Available execution options:
      *
-     *  * interactive: Sets the input interactive flag
-     *  * decorated:   Sets the output decorated flag
-     *  * verbosity:   Sets the output verbosity flag
+     *  * interactive:               Sets the input interactive flag
+     *  * decorated:                 Sets the output decorated flag
+     *  * verbosity:                 Sets the output verbosity flag
+     *  * capture_stderr_separately: Make output of stdOut and stdErr separately available
      *
      * @param array $input   An array of command arguments and options
      * @param array $options An array of execution options
@@ -69,94 +72,12 @@ class CommandTester
             $this->input->setInteractive($options['interactive']);
         }
 
-        $this->output = new StreamOutput(fopen('php://memory', 'w', false));
-        $this->output->setDecorated(isset($options['decorated']) ? $options['decorated'] : false);
-        if (isset($options['verbosity'])) {
-            $this->output->setVerbosity($options['verbosity']);
+        if (!isset($options['decorated'])) {
+            $options['decorated'] = false;
         }
+
+        $this->initOutput($options);
 
         return $this->statusCode = $this->command->run($this->input, $this->output);
-    }
-
-    /**
-     * Gets the display returned by the last execution of the command.
-     *
-     * @param bool $normalize Whether to normalize end of lines to \n or not
-     *
-     * @return string The display
-     */
-    public function getDisplay($normalize = false)
-    {
-        if (null === $this->output) {
-            throw new \RuntimeException('Output not initialized, did you execute the command before requesting the display?');
-        }
-
-        rewind($this->output->getStream());
-
-        $display = stream_get_contents($this->output->getStream());
-
-        if ($normalize) {
-            $display = str_replace(\PHP_EOL, "\n", $display);
-        }
-
-        return $display;
-    }
-
-    /**
-     * Gets the input instance used by the last execution of the command.
-     *
-     * @return InputInterface The current input instance
-     */
-    public function getInput()
-    {
-        return $this->input;
-    }
-
-    /**
-     * Gets the output instance used by the last execution of the command.
-     *
-     * @return OutputInterface The current output instance
-     */
-    public function getOutput()
-    {
-        return $this->output;
-    }
-
-    /**
-     * Gets the status code returned by the last execution of the application.
-     *
-     * @return int The status code
-     */
-    public function getStatusCode()
-    {
-        return $this->statusCode;
-    }
-
-    /**
-     * Sets the user inputs.
-     *
-     * @param array $inputs An array of strings representing each input
-     *                      passed to the command input stream
-     *
-     * @return CommandTester
-     */
-    public function setInputs(array $inputs)
-    {
-        $this->inputs = $inputs;
-
-        return $this;
-    }
-
-    private static function createStream(array $inputs)
-    {
-        $stream = fopen('php://memory', 'r+', false);
-
-        foreach ($inputs as $input) {
-            fwrite($stream, $input.\PHP_EOL);
-        }
-
-        rewind($stream);
-
-        return $stream;
     }
 }

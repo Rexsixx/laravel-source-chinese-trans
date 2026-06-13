@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，存储，代理，抽象代理
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ abstract class AbstractProxy
 {
     /**
      * Flag if handler wraps an internal PHP session handler (using \SessionHandler).
+	 * 标志如果处理程序包装内部PHP会话处理程序（使用\SessionHandler）
      *
      * @var bool
      */

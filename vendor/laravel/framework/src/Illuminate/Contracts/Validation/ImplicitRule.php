@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，验证，潜规则
+ * Illuminate，契约，验证，隐性规则
  */
 
 namespace Illuminate\Contracts\Validation;

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，格式化程序，Intl格式化器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Translation\Formatter;
 
 /**
  * Formats ICU message patterns.
+ * 格式化ICU消息模式。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

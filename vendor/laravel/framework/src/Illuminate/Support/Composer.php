@@ -96,7 +96,7 @@ class Composer
 
     /**
      * Set the working path used by the class.
-	 * 置类使用的工作路径
+	 * 设置类使用的工作路径
      *
      * @param  string  $path
      * @return $this

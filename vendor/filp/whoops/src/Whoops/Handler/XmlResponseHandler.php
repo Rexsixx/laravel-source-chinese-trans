@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，处理者，Xml 响应处理程序
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -13,6 +17,8 @@ use Whoops\Exception\Formatter;
  * Catches an exception and converts it to an XML
  * response. Additionally can also return exception
  * frames for consumption by an API.
+ * 捕获异常并将其转换为XML响应。
+ * 此外,还可以通过API返回异常帧。
  */
 class XmlResponseHandler extends Handler
 {
@@ -93,6 +99,7 @@ class XmlResponseHandler extends Handler
 
     /**
      * The main function for converting to an XML document.
+	 * 转换到XML文档的主要功能
      *
      * @param  array|\Traversable $data
      * @return string            XML

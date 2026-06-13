@@ -32,6 +32,18 @@ trait CompilesAuthorizations
     }
 
     /**
+     * Compile the canany statements into valid PHP.
+	 * 将canany语句编译成有效的PHP
+     *
+     * @param  string  $expression
+     * @return string
+     */
+    protected function compileCanany($expression)
+    {
+        return "<?php if (app(\Illuminate\\Contracts\\Auth\\Access\\Gate::class)->any{$expression}): ?>";
+    }
+
+    /**
      * Compile the else-can statements into valid PHP.
 	 * 将else-can语句编译成有效的PHP
      *
@@ -56,6 +68,18 @@ trait CompilesAuthorizations
     }
 
     /**
+     * Compile the else-canany statements into valid PHP.
+	 * 将else-canany语句编译成有效的PHP
+     *
+     * @param  string  $expression
+     * @return string
+     */
+    protected function compileElsecanany($expression)
+    {
+        return "<?php elseif (app(\Illuminate\\Contracts\\Auth\\Access\\Gate::class)->any{$expression}): ?>";
+    }
+
+    /**
      * Compile the end-can statements into valid PHP.
 	 * 将end-can语句编译成有效的PHP
      *
@@ -73,6 +97,17 @@ trait CompilesAuthorizations
      * @return string
      */
     protected function compileEndcannot()
+    {
+        return '<?php endif; ?>';
+    }
+
+    /**
+     * Compile the end-canany statements into valid PHP.
+	 * 将end-canany语句编译成有效的PHP
+     *
+     * @return string
+     */
+    protected function compileEndcanany()
     {
         return '<?php endif; ?>';
     }

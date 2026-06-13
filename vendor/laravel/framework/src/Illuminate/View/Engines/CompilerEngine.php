@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，引擎，编译器引擎
+ * Illuminate，引擎，编译器引擎
  */
 
 namespace Illuminate\View\Engines;
@@ -54,6 +54,8 @@ class CompilerEngine extends PhpEngine
         // If this given view has expired, which means it has simply been edited since
         // it was last compiled, we will re-compile the views so we can evaluate a
         // fresh copy of the view. We'll pass the compiler the path of the view.
+		// 如果此给定视图已过期（即自上次编译以来已进行了编辑），我们将重新编译这些视图，
+		// 以便能够评估该视图的最新版本。我们将向编译器传递视图的路径。
         if ($this->compiler->isExpired($path)) {
             $this->compiler->compile($path);
         }
@@ -63,6 +65,7 @@ class CompilerEngine extends PhpEngine
         // Once we have the path to the compiled file, we will evaluate the paths with
         // typical PHP just like any other templates. We also keep a stack of views
         // which have been rendered for right exception messages to be generated.
+		// 一旦我们获取到了编译后的文件路径，我们就会像处理其他模板一样，用标准的 PHP 来对这些路径进行评估。
         $results = $this->evaluatePath($compiled, $data);
 
         array_pop($this->lastCompiled);
@@ -89,7 +92,7 @@ class CompilerEngine extends PhpEngine
 
     /**
      * Get the exception message for an exception.
-	 * 获取异常的异常消息
+	 * 获取异常消息
      *
      * @param  \Exception  $e
      * @return string

@@ -29,6 +29,7 @@ use const E_USER_DEPRECATED;
  * 以不同的方式管理弃用日志。
  *
  * By default triggered exceptions are not logged.
+ * 默认的触发异常没有记录。
  *
  * To enable different deprecation logging mechanisms you can call the
  * following methods:
@@ -72,7 +73,7 @@ class Deprecation
 
     /**
      * Trigger a deprecation for the given package and identfier.
-	 * 触发对给定包和标识符的弃用。
+	 * 为给定的包和identfier触发一种折价。
      *
      * The link should point to a Github issue or Wiki entry detailing the
      * deprecation. It is additionally used to de-duplicate the trigger of the

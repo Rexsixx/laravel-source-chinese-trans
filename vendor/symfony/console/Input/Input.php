@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，输入，Input
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Exception\RuntimeException;
 
 /**
  * Input is the base class for all concrete Input classes.
+ * 输入是所有具体输入类的基类。
  *
  * Three concrete classes are provided by default:
  *
@@ -57,6 +61,7 @@ abstract class Input implements InputInterface, StreamableInputInterface
 
     /**
      * Processes command line arguments.
+	 * 处理命令行参数
      */
     abstract protected function parse();
 
@@ -106,11 +111,11 @@ abstract class Input implements InputInterface, StreamableInputInterface
      */
     public function getArgument($name)
     {
-        if (!$this->definition->hasArgument($name)) {
+        if (!$this->definition->hasArgument((string) $name)) {
             throw new InvalidArgumentException(sprintf('The "%s" argument does not exist.', $name));
         }
 
-        return isset($this->arguments[$name]) ? $this->arguments[$name] : $this->definition->getArgument($name)->getDefault();
+        return $this->arguments[$name] ?? $this->definition->getArgument($name)->getDefault();
     }
 
     /**
@@ -118,7 +123,7 @@ abstract class Input implements InputInterface, StreamableInputInterface
      */
     public function setArgument($name, $value)
     {
-        if (!$this->definition->hasArgument($name)) {
+        if (!$this->definition->hasArgument((string) $name)) {
             throw new InvalidArgumentException(sprintf('The "%s" argument does not exist.', $name));
         }
 
@@ -130,7 +135,7 @@ abstract class Input implements InputInterface, StreamableInputInterface
      */
     public function hasArgument($name)
     {
-        return $this->definition->hasArgument($name);
+        return $this->definition->hasArgument((string) $name);
     }
 
     /**

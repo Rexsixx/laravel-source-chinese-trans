@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，探测器，Spl 文件信息
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Finder;
 
 /**
  * Extends \SplFileInfo to support relative paths.
+ * 扩展\SplFileInfo以支持相对路径。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -26,7 +30,7 @@ class SplFileInfo extends \SplFileInfo
      * @param string $relativePath     The relative path
      * @param string $relativePathname The relative path name
      */
-    public function __construct($file, $relativePath, $relativePathname)
+    public function __construct(string $file, string $relativePath, string $relativePathname)
     {
         parent::__construct($file);
         $this->relativePath = $relativePath;
@@ -35,6 +39,7 @@ class SplFileInfo extends \SplFileInfo
 
     /**
      * Returns the relative path.
+	 * 返回相对路径。
      *
      * This path does not contain the file name.
      *
@@ -47,6 +52,7 @@ class SplFileInfo extends \SplFileInfo
 
     /**
      * Returns the relative path name.
+	 * 返回相对路径名。
      *
      * This path contains the file name.
      *
@@ -55,6 +61,13 @@ class SplFileInfo extends \SplFileInfo
     public function getRelativePathname()
     {
         return $this->relativePathname;
+    }
+
+    public function getFilenameWithoutExtension(): string
+    {
+        $filename = $this->getFilename();
+
+        return pathinfo($filename, \PATHINFO_FILENAME);
     }
 
     /**

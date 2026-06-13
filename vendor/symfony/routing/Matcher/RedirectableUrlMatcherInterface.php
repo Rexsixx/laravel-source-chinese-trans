@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，匹配程序，可重定向的 Url匹配器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Routing\Matcher;
 
 /**
  * RedirectableUrlMatcherInterface knows how to redirect the user.
+ * RedirectableUrlMatcherInterface知道如何重定向用户。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -20,6 +24,7 @@ interface RedirectableUrlMatcherInterface
 {
     /**
      * Redirects the user to another URL.
+	 * 将用户重定向到另一个URL
      *
      * @param string      $path   The path info to redirect to
      * @param string      $route  The route name that matched

@@ -14,7 +14,7 @@ class ControllerMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
@@ -22,7 +22,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -44,15 +44,27 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
+        $stub = null;
+
         if ($this->option('parent')) {
-            return __DIR__.'/stubs/controller.nested.stub';
+            $stub = '/stubs/controller.nested.stub';
         } elseif ($this->option('model')) {
-            return __DIR__.'/stubs/controller.model.stub';
+            $stub = '/stubs/controller.model.stub';
+        } elseif ($this->option('invokable')) {
+            $stub = '/stubs/controller.invokable.stub';
         } elseif ($this->option('resource')) {
-            return __DIR__.'/stubs/controller.stub';
+            $stub = '/stubs/controller.stub';
         }
 
-        return __DIR__.'/stubs/controller.plain.stub';
+        if ($this->option('api') && is_null($stub)) {
+            $stub = '/stubs/controller.api.stub';
+        } elseif ($this->option('api') && ! is_null($stub) && ! $this->option('invokable')) {
+            $stub = str_replace('.stub', '.api.stub', $stub);
+        }
+
+        $stub = $stub ?? '/stubs/controller.plain.stub';
+
+        return __DIR__.$stub;
     }
 
     /**
@@ -72,6 +84,7 @@ class ControllerMakeCommand extends GeneratorCommand
 	 * 用给定的名称构建类。
      *
      * Remove the base controller import if we are already in base namespace.
+	 * 如果我们已经在基命名空间中，请删除基控制器导入。
      *
      * @param  string  $name
      * @return string
@@ -150,6 +163,8 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * @param  string  $model
      * @return string
+     *
+     * @throws \InvalidArgumentException
      */
     protected function parseModel($model)
     {
@@ -176,10 +191,10 @@ class ControllerMakeCommand extends GeneratorCommand
     {
         return [
             ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource controller for the given model.'],
-
             ['resource', 'r', InputOption::VALUE_NONE, 'Generate a resource controller class.'],
-
+            ['invokable', 'i', InputOption::VALUE_NONE, 'Generate a single method, invokable controller class.'],
             ['parent', 'p', InputOption::VALUE_OPTIONAL, 'Generate a nested resource controller class.'],
+            ['api', null, InputOption::VALUE_NONE, 'Exclude the create and edit methods from the controller.'],
         ];
     }
 }

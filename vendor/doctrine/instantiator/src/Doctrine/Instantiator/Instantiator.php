@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，实例化器，实例化器
+ * Doctrine，实例化器，Instantiator
  */
 
 namespace Doctrine\Instantiator;
@@ -41,7 +41,6 @@ final class Instantiator implements InstantiatorInterface
 
     /**
      * Used to instantiate specific classes, indexed by class name.
-	 * 用于实例化按类名索引的特定类
      *
      * @var callable[]
      */
@@ -49,7 +48,6 @@ final class Instantiator implements InstantiatorInterface
 
     /**
      * Array of objects that can directly be cloned, indexed by class name.
-	 * 可以直接克隆的对象数组,由类名索引
      *
      * @var object[]
      */

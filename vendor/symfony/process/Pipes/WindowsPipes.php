@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，进程，管道，Windows管道
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Process\Process;
 
 /**
  * WindowsPipes implementation uses temporary files as handles.
+ * WindowsPipes实现使用临时文件作为句柄。
  *
  * @see https://bugs.php.net/51800
  * @see https://bugs.php.net/65650
@@ -35,9 +39,9 @@ class WindowsPipes extends AbstractPipes
     ];
     private $haveReadSupport;
 
-    public function __construct($input, $haveReadSupport)
+    public function __construct($input, bool $haveReadSupport)
     {
-        $this->haveReadSupport = (bool) $haveReadSupport;
+        $this->haveReadSupport = $haveReadSupport;
 
         if ($this->haveReadSupport) {
             // Fix for PHP bug #51800: reading from STDOUT pipe hangs forever on Windows if the output is too big.
@@ -71,7 +75,7 @@ class WindowsPipes extends AbstractPipes
                     }
                     $this->lockHandles[$pipe] = $h;
 
-                    if (!fclose(fopen($file, 'w')) || !$h = fopen($file, 'r')) {
+                    if (!($h = fopen($file, 'w')) || !fclose($h) || !$h = fopen($file, 'r')) {
                         flock($this->lockHandles[$pipe], \LOCK_UN);
                         fclose($this->lockHandles[$pipe]);
                         unset($this->lockHandles[$pipe]);
@@ -88,6 +92,19 @@ class WindowsPipes extends AbstractPipes
         parent::__construct($input);
     }
 
+    /**
+     * @return array
+     */
+    public function __sleep()
+    {
+        throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
+    }
+
+    public function __wakeup()
+    {
+        throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
+    }
+
     public function __destruct()
     {
         $this->close();
@@ -96,7 +113,7 @@ class WindowsPipes extends AbstractPipes
     /**
      * {@inheritdoc}
      */
-    public function getDescriptors()
+    public function getDescriptors(): array
     {
         if (!$this->haveReadSupport) {
             $nullstream = fopen('NUL', 'c');
@@ -121,7 +138,7 @@ class WindowsPipes extends AbstractPipes
     /**
      * {@inheritdoc}
      */
-    public function getFiles()
+    public function getFiles(): array
     {
         return $this->files;
     }
@@ -129,7 +146,7 @@ class WindowsPipes extends AbstractPipes
     /**
      * {@inheritdoc}
      */
-    public function readAndWrite($blocking, $close = false)
+    public function readAndWrite(bool $blocking, bool $close = false): array
     {
         $this->unblock();
         $w = $this->write();
@@ -164,7 +181,7 @@ class WindowsPipes extends AbstractPipes
     /**
      * {@inheritdoc}
      */
-    public function haveReadSupport()
+    public function haveReadSupport(): bool
     {
         return $this->haveReadSupport;
     }
@@ -172,7 +189,7 @@ class WindowsPipes extends AbstractPipes
     /**
      * {@inheritdoc}
      */
-    public function areOpen()
+    public function areOpen(): bool
     {
         return $this->pipes && $this->fileHandles;
     }

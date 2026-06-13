@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Css 选择器，分析程序，处理者，评论处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\CssSelector\Parser\TokenStream;
 
 /**
  * CSS selector comment handler.
+ * CSS选择器注释处理程序。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.

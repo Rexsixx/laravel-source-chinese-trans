@@ -103,7 +103,7 @@ class ValidationRuleParser
 
     /**
      * Prepare the given rule for the Validator.
-	 * 为Validator准备给定的规则
+	 * 为验证器准备给定规则
      *
      * @param  mixed  $rule
      * @return mixed
@@ -246,8 +246,9 @@ class ValidationRuleParser
         // The format for specifying validation rules and parameters follows an
         // easy {rule}:{parameters} formatting convention. For instance the
         // rule "Max:3" states that the value may only be three letters.
+		// 指定验证规则和参数的格式遵循一种简单的“规则：参数”的格式规范。
         if (strpos($rules, ':') !== false) {
-            list($rules, $parameter) = explode(':', $rules, 2);
+            [$rules, $parameter] = explode(':', $rules, 2);
 
             $parameters = static::parseParameters($rules, $parameter);
         }
@@ -265,7 +266,9 @@ class ValidationRuleParser
      */
     protected static function parseParameters($rule, $parameter)
     {
-        if (strtolower($rule) == 'regex') {
+        $rule = strtolower($rule);
+
+        if (in_array($rule, ['regex', 'not_regex', 'notregex'], true)) {
             return [$parameter];
         }
 

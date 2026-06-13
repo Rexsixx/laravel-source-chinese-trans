@@ -33,7 +33,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @var string
      */
-    const VERSION = '5.5.50';
+    const VERSION = '5.7.29';
 
     /**
      * The base path for the Laravel installation.
@@ -63,7 +63,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * The array of booting callbacks.
 	 * 启动回调函数数组
      *
-     * @var array
+     * @var callable[]
      */
     protected $bootingCallbacks = [];
 
@@ -71,23 +71,23 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * The array of booted callbacks.
 	 * 启动回调函数的数组
      *
-     * @var array
+     * @var callable[]
      */
     protected $bootedCallbacks = [];
 
     /**
      * The array of terminating callbacks.
-	 * 终止回调的数组
+	 * 终止回调的数组。
      *
-     * @var array
+     * @var callable[]
      */
     protected $terminatingCallbacks = [];
 
     /**
      * All of the registered service providers.
-	 * 终止回调的数组
+	 * 所有已注册的服务提供者
      *
-     * @var array
+     * @var \Illuminate\Support\ServiceProvider[]
      */
     protected $serviceProviders = [];
 
@@ -101,19 +101,19 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * The deferred services and their providers.
-	 * 延迟的服务及其提供者
+	 * 延迟的服务及其提供者。
      *
      * @var array
      */
     protected $deferredServices = [];
 
     /**
-     * A custom callback used to configure Monolog.
-	 * 用于配置独白的自定义回调
+     * The custom application path defined by the developer.
+	 * 开发人员定义的自定义应用程序路径
      *
-     * @var callable|null
+     * @var string
      */
-    protected $monologConfigurator;
+    protected $appPath;
 
     /**
      * The custom database path defined by the developer.
@@ -214,9 +214,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     protected function registerBaseServiceProviders()
     {
         $this->register(new EventServiceProvider($this));
-
         $this->register(new LogServiceProvider($this));
-
         $this->register(new RoutingServiceProvider($this));
     }
 
@@ -224,7 +222,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Run the given array of bootstrap classes.
 	 * 运行给定的引导类数组
      *
-     * @param  array  $bootstrappers
+     * @param  string[]  $bootstrappers
      * @return void
      */
     public function bootstrapWith(array $bootstrappers)
@@ -232,11 +230,11 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $this->hasBeenBootstrapped = true;
 
         foreach ($bootstrappers as $bootstrapper) {
-            $this['events']->fire('bootstrapping: '.$bootstrapper, [$this]);
+            $this['events']->dispatch('bootstrapping: '.$bootstrapper, [$this]);
 
             $this->make($bootstrapper)->bootstrap($this);
 
-            $this['events']->fire('bootstrapped: '.$bootstrapper, [$this]);
+            $this['events']->dispatch('bootstrapped: '.$bootstrapper, [$this]);
         }
     }
 
@@ -257,7 +255,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Register a callback to run before a bootstrapper.
 	 * 注册一个回调，在引导程序之前运行。
-	 * 
      *
      * @param  string  $bootstrapper
      * @param  \Closure  $callback
@@ -331,17 +328,35 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Get the path to the application "app" directory.
 	 * 获取应用程序“app”目录的路径
      *
-     * @param  string  $path Optionally, a path to append to the app path
+     * @param  string  $path
      * @return string
      */
     public function path($path = '')
     {
-        return $this->basePath.DIRECTORY_SEPARATOR.'app'.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        $appPath = $this->appPath ?: $this->basePath.DIRECTORY_SEPARATOR.'app';
+
+        return $appPath.($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Set the application directory.
+	 * 设置应用程序目录
+     *
+     * @param  string  $path
+     * @return $this
+     */
+    public function useAppPath($path)
+    {
+        $this->appPath = $path;
+
+        $this->instance('path', $path);
+
+        return $this;
     }
 
     /**
      * Get the base path of the Laravel installation.
-	 * 获取Laravel安装的基本路径
+	 * 获取Laravel安装的基本路径。
      *
      * @param  string  $path Optionally, a path to append to the base path
      * @return string
@@ -365,7 +380,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Get the path to the application configuration files.
-	 * 获取应用程序配置文件的路径
+	 * 获取应用程序配置文件的路径。
      *
      * @param  string  $path Optionally, a path to append to the config path
      * @return string
@@ -522,7 +537,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function environmentFilePath()
     {
-        return $this->environmentPath().'/'.$this->environmentFile();
+        return $this->environmentPath().DIRECTORY_SEPARATOR.$this->environmentFile();
     }
 
     /**
@@ -536,13 +551,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         if (func_num_args() > 0) {
             $patterns = is_array(func_get_arg(0)) ? func_get_arg(0) : func_get_args();
 
-            foreach ($patterns as $pattern) {
-                if (Str::is($pattern, $this['env'])) {
-                    return true;
-                }
-            }
-
-            return false;
+            return Str::is($patterns, $this['env']);
         }
 
         return $this['env'];
@@ -556,7 +565,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function isLocal()
     {
-        return $this['env'] == 'local';
+        return $this['env'] === 'local';
     }
 
     /**
@@ -574,25 +583,29 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
-     * Determine if we are running in the console.
-	 * 确定我们是否在控制台中运行
+     * Determine if the application is running in the console.
+	 * 确定应用程序是否在控制台中运行
      *
      * @return bool
      */
     public function runningInConsole()
     {
-        return php_sapi_name() == 'cli' || php_sapi_name() == 'phpdbg';
+        if (isset($_ENV['APP_RUNNING_IN_CONSOLE'])) {
+            return $_ENV['APP_RUNNING_IN_CONSOLE'] === 'true';
+        }
+
+        return php_sapi_name() === 'cli' || php_sapi_name() === 'phpdbg';
     }
 
     /**
-     * Determine if we are running unit tests.
-	 * 确定我们是否正在运行单元测试
+     * Determine if the application is running unit tests.
+	 * 确定应用程序是否正在运行单元测试
      *
      * @return bool
      */
     public function runningUnitTests()
     {
-        return $this['env'] == 'testing';
+        return $this['env'] === 'testing';
     }
 
     /**
@@ -619,11 +632,10 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 	 * 向应用程序注册一个服务提供者
      *
      * @param  \Illuminate\Support\ServiceProvider|string  $provider
-     * @param  array  $options
      * @param  bool   $force
      * @return \Illuminate\Support\ServiceProvider
      */
-    public function register($provider, $options = [], $force = false)
+    public function register($provider, $force = false)
     {
         if (($registered = $this->getProvider($provider)) && ! $force) {
             return $registered;
@@ -638,6 +650,21 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
         if (method_exists($provider, 'register')) {
             $provider->register();
+        }
+
+        // If there are bindings / singletons set as properties on the provider we
+        // will spin through them and register them with the application, which
+        // serves as a convenience layer while registering a lot of bindings.
+        if (property_exists($provider, 'bindings')) {
+            foreach ($provider->bindings as $key => $value) {
+                $this->bind($key, $value);
+            }
+        }
+
+        if (property_exists($provider, 'singletons')) {
+            foreach ($provider->singletons as $key => $value) {
+                $this->singleton($key, $value);
+            }
         }
 
         $this->markAsRegistered($provider);
@@ -863,7 +890,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Register a new boot listener.
 	 * 注册一个新的引导侦听器
      *
-     * @param  mixed  $callback
+     * @param  callable  $callback
      * @return void
      */
     public function booting($callback)
@@ -875,7 +902,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Register a new "booted" listener.
 	 * 注册一个新的“已启动”侦听器
      *
-     * @param  mixed  $callback
+     * @param  callable  $callback
      * @return void
      */
     public function booted($callback)
@@ -891,7 +918,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Call the booting callbacks for the application.
 	 * 调用应用程序的引导回调
      *
-     * @param  array  $callbacks
+     * @param  callable[]  $callbacks
      * @return void
      */
     protected function fireAppCallbacks(array $callbacks)
@@ -923,13 +950,13 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Get the path to the cached services.php file.
-	 * 获取缓存的services.php文件的路径。
+	 * 获取缓存的services.php文件的路径
      *
      * @return string
      */
     public function getCachedServicesPath()
     {
-        return $this->bootstrapPath().'/cache/services.php';
+        return $_ENV['APP_SERVICES_CACHE'] ?? $this->bootstrapPath().'/cache/services.php';
     }
 
     /**
@@ -940,7 +967,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function getCachedPackagesPath()
     {
-        return $this->bootstrapPath().'/cache/packages.php';
+        return $_ENV['APP_PACKAGES_CACHE'] ?? $this->bootstrapPath().'/cache/packages.php';
     }
 
     /**
@@ -962,7 +989,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function getCachedConfigPath()
     {
-        return $this->bootstrapPath().'/cache/config.php';
+        return $_ENV['APP_CONFIG_CACHE'] ?? $this->bootstrapPath().'/cache/config.php';
     }
 
     /**
@@ -984,7 +1011,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function getCachedRoutesPath()
     {
-        return $this->bootstrapPath().'/cache/routes.php';
+        return $_ENV['APP_ROUTES_CACHE'] ?? $this->bootstrapPath().'/cache/routes.php';
     }
 
     /**
@@ -1116,42 +1143,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
-     * Define a callback to be used to configure Monolog.
-	 * 定义一个用于配置Monolog的回调
-     *
-     * @param  callable  $callback
-     * @return $this
-     */
-    public function configureMonologUsing(callable $callback)
-    {
-        $this->monologConfigurator = $callback;
-
-        return $this;
-    }
-
-    /**
-     * Determine if the application has a custom Monolog configurator.
-	 * 确定应用程序是否具有自定义的Monolog配置器
-     *
-     * @return bool
-     */
-    public function hasMonologConfigurator()
-    {
-        return ! is_null($this->monologConfigurator);
-    }
-
-    /**
-     * Get the custom Monolog configurator for the application.
-	 * 获取应用程序的自定义Monolog配置器
-     *
-     * @return callable
-     */
-    public function getMonologConfigurator()
-    {
-        return $this->monologConfigurator;
-    }
-
-    /**
      * Get the current application locale.
 	 * 获取当前应用程序区域设置
      *
@@ -1215,9 +1206,10 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             'filesystem'           => [\Illuminate\Filesystem\FilesystemManager::class, \Illuminate\Contracts\Filesystem\Factory::class],
             'filesystem.disk'      => [\Illuminate\Contracts\Filesystem\Filesystem::class],
             'filesystem.cloud'     => [\Illuminate\Contracts\Filesystem\Cloud::class],
-            'hash'                 => [\Illuminate\Contracts\Hashing\Hasher::class],
+            'hash'                 => [\Illuminate\Hashing\HashManager::class],
+            'hash.driver'          => [\Illuminate\Contracts\Hashing\Hasher::class],
             'translator'           => [\Illuminate\Translation\Translator::class, \Illuminate\Contracts\Translation\Translator::class],
-            'log'                  => [\Illuminate\Log\Writer::class, \Illuminate\Contracts\Logging\Log::class, \Psr\Log\LoggerInterface::class],
+            'log'                  => [\Illuminate\Log\LogManager::class, \Psr\Log\LoggerInterface::class],
             'mailer'               => [\Illuminate\Mail\Mailer::class, \Illuminate\Contracts\Mail\Mailer::class, \Illuminate\Contracts\Mail\MailQueue::class],
             'auth.password'        => [\Illuminate\Auth\Passwords\PasswordBrokerManager::class, \Illuminate\Contracts\Auth\PasswordBrokerFactory::class],
             'auth.password.broker' => [\Illuminate\Auth\Passwords\PasswordBroker::class, \Illuminate\Contracts\Auth\PasswordBroker::class],
@@ -1264,7 +1256,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Get the application namespace.
-	 * 获取应用程序名称空间
+	 * 获取应用程序命名空间
      *
      * @return string
      *

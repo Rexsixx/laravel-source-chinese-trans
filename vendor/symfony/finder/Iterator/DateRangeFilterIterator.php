@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，探测器，迭代器，日期范围过滤迭代器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,10 +18,11 @@ use Symfony\Component\Finder\Comparator\DateComparator;
 
 /**
  * DateRangeFilterIterator filters out files that are not in the given date range (last modified dates).
+ * DateRangeFilterIterator过滤掉不在给定日期范围（最后修改日期）的文件。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class DateRangeFilterIterator extends FilterIterator
+class DateRangeFilterIterator extends \FilterIterator
 {
     private $comparators = [];
 
@@ -35,9 +39,11 @@ class DateRangeFilterIterator extends FilterIterator
 
     /**
      * Filters the iterator values.
+	 * 过滤迭代器值
      *
      * @return bool true if the value should be kept, false otherwise
      */
+    #[\ReturnTypeWillChange]
     public function accept()
     {
         $fileinfo = $this->current();

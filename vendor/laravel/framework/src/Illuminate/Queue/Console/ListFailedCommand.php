@@ -36,13 +36,13 @@ class ListFailedCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */
     public function handle()
     {
-        if (count($jobs = $this->getFailedJobs()) == 0) {
+        if (count($jobs = $this->getFailedJobs()) === 0) {
             return $this->info('No failed jobs!');
         }
 

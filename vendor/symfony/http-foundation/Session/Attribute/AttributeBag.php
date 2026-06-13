@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，属性，属性包
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation\Session\Attribute;
 
 /**
  * This class relates to session attribute storage.
+ * 该类与会话属性存储相关。
  */
 class AttributeBag implements AttributeBagInterface, \IteratorAggregate, \Countable
 {
@@ -24,7 +28,7 @@ class AttributeBag implements AttributeBagInterface, \IteratorAggregate, \Counta
     /**
      * @param string $storageKey The key used to store attributes in the session
      */
-    public function __construct($storageKey = '_sf2_attributes')
+    public function __construct(string $storageKey = '_sf2_attributes')
     {
         $this->storageKey = $storageKey;
     }
@@ -128,9 +132,11 @@ class AttributeBag implements AttributeBagInterface, \IteratorAggregate, \Counta
 
     /**
      * Returns an iterator for attributes.
+	 * 返回属性的迭代器
      *
      * @return \ArrayIterator An \ArrayIterator instance
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new \ArrayIterator($this->attributes);
@@ -138,9 +144,11 @@ class AttributeBag implements AttributeBagInterface, \IteratorAggregate, \Counta
 
     /**
      * Returns the number of attributes.
+	 * 返回属性的数量
      *
      * @return int The number of attributes
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return \count($this->attributes);

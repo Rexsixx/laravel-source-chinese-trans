@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，问题，与数据透视表交互
+ * Illuminate，数据库，Eloquent，关联，问题，与数据透视表交互
  */
 
 namespace Illuminate\Database\Eloquent\Relations\Concerns;
@@ -16,6 +16,7 @@ trait InteractsWithPivotTable
 	 * 从父模型切换一个（或多个）模型。
      *
      * Each existing model is detached, and non existing ones are attached.
+	 * 每个现有的模型是分离的，而不存在的模型是附加的。
      *
      * @param  mixed  $ids
      * @param  bool   $touch
@@ -69,7 +70,7 @@ trait InteractsWithPivotTable
      * Sync the intermediate tables with a list of IDs without detaching.
 	 * 同步中间表与id列表，而不分离。
      *
-     * @param  \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|array  $ids
+     * @param  \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model|array  $ids
      * @return array
      */
     public function syncWithoutDetaching($ids)
@@ -81,7 +82,7 @@ trait InteractsWithPivotTable
      * Sync the intermediate tables with a list of IDs or collection of models.
 	 * 将中间表与id列表或模型集合同步
      *
-     * @param  \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|array  $ids
+     * @param  \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model|array  $ids
      * @param  bool   $detaching
      * @return array
      */
@@ -140,7 +141,7 @@ trait InteractsWithPivotTable
     {
         return collect($records)->mapWithKeys(function ($attributes, $id) {
             if (! is_array($attributes)) {
-                list($id, $attributes) = [$attributes, []];
+                [$id, $attributes] = [$attributes, []];
             }
 
             return [$id => $attributes];
@@ -197,7 +198,7 @@ trait InteractsWithPivotTable
             $attributes = $this->addTimestampsToAttachment($attributes, true);
         }
 
-        $updated = $this->newPivotStatementForId($id)->update(
+        $updated = $this->newPivotStatementForId($this->parseId($id))->update(
             $this->castAttributes($attributes)
         );
 
@@ -270,7 +271,7 @@ trait InteractsWithPivotTable
      */
     protected function formatAttachRecord($key, $value, $attributes, $hasTimestamps)
     {
-        list($id, $attributes) = $this->extractAttachIdAndAttributes($key, $value, $attributes);
+        [$id, $attributes] = $this->extractAttachIdAndAttributes($key, $value, $attributes);
 
         return array_merge(
             $this->baseAttachRecord($id, $hasTimestamps), $this->castAttributes($attributes)
@@ -314,6 +315,10 @@ trait InteractsWithPivotTable
             $record = $this->addTimestampsToAttachment($record);
         }
 
+        foreach ($this->pivotValues as $value) {
+            $record[$value['column']] = $value['value'];
+        }
+
         return $record;
     }
 
@@ -328,6 +333,12 @@ trait InteractsWithPivotTable
     protected function addTimestampsToAttachment(array $record, $exists = false)
     {
         $fresh = $this->parent->freshTimestamp();
+
+        if ($this->using) {
+            $pivotModel = new $this->using;
+
+            $fresh = $fresh->format($pivotModel->getDateFormat());
+        }
 
         if (! $exists && $this->hasPivotColumn($this->createdAt())) {
             $record[$this->createdAt()] = $fresh;
@@ -431,13 +442,14 @@ trait InteractsWithPivotTable
 
     /**
      * Get a new pivot statement for a given "other" ID.
+	 * 获取给定“other”ID的新枢轴语句
      *
      * @param  mixed  $id
      * @return \Illuminate\Database\Query\Builder
      */
     public function newPivotStatementForId($id)
     {
-        return $this->newPivotQuery()->where($this->relatedPivotKey, $id);
+        return $this->newPivotQuery()->whereIn($this->relatedPivotKey, $this->parseIds($id));
     }
 
     /**
@@ -502,6 +514,18 @@ trait InteractsWithPivotTable
     }
 
     /**
+     * Get the ID from the given mixed value.
+	 * 从给定的混合值中获取ID
+     *
+     * @param  mixed  $value
+     * @return mixed
+     */
+    protected function parseId($value)
+    {
+        return $value instanceof Model ? $value->{$this->relatedKey} : $value;
+    }
+
+    /**
      * Cast the given keys to integers if they are numeric and string otherwise.
 	 * 如果给定的键是数字，则将其转换为整数，否则将其转换为字符串。
      *
@@ -510,21 +534,24 @@ trait InteractsWithPivotTable
      */
     protected function castKeys(array $keys)
     {
-        return (array) array_map(function ($v) {
+        return array_map(function ($v) {
             return $this->castKey($v);
         }, $keys);
     }
 
     /**
-     * Cast the given key to an integer if it is numeric.
-	 * 如果给定的键是数字，则将其转换为整数。
+     * Cast the given key to convert to primary key type.
+	 * 强制转换给定的键以转换为主键类型
      *
      * @param  mixed  $key
      * @return mixed
      */
     protected function castKey($key)
     {
-        return is_numeric($key) ? (int) $key : (string) $key;
+        return $this->getTypeSwapValue(
+            $this->related->getKeyType(),
+            $key
+        );
     }
 
     /**
@@ -539,5 +566,30 @@ trait InteractsWithPivotTable
         return $this->using
                     ? $this->newPivot()->fill($attributes)->getAttributes()
                     : $attributes;
+    }
+
+    /**
+     * Converts a given value to a given type value.
+	 * 将给定值转换为给定类型值
+     *
+     * @param  string $type
+     * @param  mixed  $value
+     * @return mixed
+     */
+    protected function getTypeSwapValue($type, $value)
+    {
+        switch (strtolower($type)) {
+            case 'int':
+            case 'integer':
+                return (int) $value;
+            case 'real':
+            case 'float':
+            case 'double':
+                return (float) $value;
+            case 'string':
+                return (string) $value;
+            default:
+                return $value;
+        }
     }
 }

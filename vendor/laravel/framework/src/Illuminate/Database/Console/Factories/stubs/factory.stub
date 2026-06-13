@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，数据库，控制台，工厂，存根，根据实际需要修改
+ */
 
 use Faker\Generator as Faker;
 

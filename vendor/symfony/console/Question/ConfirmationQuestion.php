@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，问题，确认问题
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Console\Question;
 
 /**
  * Represents a yes/no question.
+ * 代表一个是的/毫无疑问。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -25,9 +29,9 @@ class ConfirmationQuestion extends Question
      * @param bool   $default         The default answer to return, true or false
      * @param string $trueAnswerRegex A regex to match the "yes" answer
      */
-    public function __construct($question, $default = true, $trueAnswerRegex = '/^y/i')
+    public function __construct(string $question, bool $default = true, string $trueAnswerRegex = '/^y/i')
     {
-        parent::__construct($question, (bool) $default);
+        parent::__construct($question, $default);
 
         $this->trueAnswerRegex = $trueAnswerRegex;
         $this->setNormalizer($this->getDefaultNormalizer());
@@ -35,10 +39,9 @@ class ConfirmationQuestion extends Question
 
     /**
      * Returns the default answer normalizer.
-     *
-     * @return callable
+	 * 返回默认的答案正常化
      */
-    private function getDefaultNormalizer()
+    private function getDefaultNormalizer(): callable
     {
         $default = $this->getDefault();
         $regex = $this->trueAnswerRegex;

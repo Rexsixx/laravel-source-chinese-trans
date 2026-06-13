@@ -5,6 +5,7 @@
 
 namespace Illuminate\Console;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Support\Arrayable;
 use Symfony\Component\Console\Helper\Table;
@@ -63,7 +64,7 @@ class Command extends SymfonyCommand
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -110,6 +111,8 @@ class Command extends SymfonyCommand
         // We will go ahead and set the name, description, and parameters on console
         // commands just to make things a little easier on the developer. This is
         // so they don't have to all be manually specified in the constructors.
+		// 我们将继续在控制台命令上设置名称、描述和参数,以便使开发人员更容易。
+		// 这是因此,它们不需要在构造函数中手动指定。
         if (isset($this->signature)) {
             $this->configureUsingFluentDefinition();
         } else {
@@ -119,9 +122,11 @@ class Command extends SymfonyCommand
         // Once we have constructed the command, we'll set the description and other
         // related properties of the command. If a signature wasn't used to build
         // the command we'll set the arguments and the options on this command.
+		// 一旦我们构建了命令,我们将设置命令的描述和其他相关属性。
+		// 如果签名不用于构建命令,我们将设置参数和选项的选项。
         $this->setDescription($this->description);
 
-        $this->setHidden($this->hidden);
+        $this->setHidden($this->isHidden());
 
         if (! isset($this->signature)) {
             $this->specifyParameters();
@@ -136,20 +141,17 @@ class Command extends SymfonyCommand
      */
     protected function configureUsingFluentDefinition()
     {
-        list($name, $arguments, $options) = Parser::parse($this->signature);
+        [$name, $arguments, $options] = Parser::parse($this->signature);
 
         parent::__construct($this->name = $name);
 
         // After parsing the signature we will spin through the arguments and options
         // and set them on this command. These will already be changed into proper
         // instances of these "InputArgument" and "InputOption" Symfony classes.
-        foreach ($arguments as $argument) {
-            $this->getDefinition()->addArgument($argument);
-        }
-
-        foreach ($options as $option) {
-            $this->getDefinition()->addOption($option);
-        }
+		// 解析签名后,我们将通过参数和选项进行旋转,并在此命令中设置为它们。
+		// 这些将被改变为这些“InputArgument”和“InputOption”的适当实例。
+        $this->getDefinition()->addArguments($arguments);
+        $this->getDefinition()->addOptions($options);
     }
 
     /**
@@ -163,6 +165,8 @@ class Command extends SymfonyCommand
         // We will loop through all of the arguments and options for the command and
         // set them all on the base command instance. This specifies what can get
         // passed into these commands as "parameters" to control the execution.
+		// 我们将通过所有的参数和选项来循环,并将它们设置为基本命令实例。
+		// 这说明了什么可以被传递到这些命令中作为“参数”来控制执行。
         foreach ($this->getArguments() as $arguments) {
             call_user_func_array([$this, 'addArgument'], $arguments);
         }
@@ -182,8 +186,12 @@ class Command extends SymfonyCommand
      */
     public function run(InputInterface $input, OutputInterface $output)
     {
+        $this->output = $this->laravel->make(
+            OutputStyle::class, ['input' => $input, 'output' => $output]
+        );
+
         return parent::run(
-            $this->input = $input, $this->output = new OutputStyle($input, $output)
+            $this->input = $input, $this->output
         );
     }
 
@@ -258,11 +266,15 @@ class Command extends SymfonyCommand
      */
     protected function context()
     {
-        $options = array_only($this->option(), ['no-interaction', 'ansi', 'no-ansi', 'quiet', 'verbose']);
-
-        return collect($options)->mapWithKeys(function ($value, $key) {
+        return collect($this->option())->only([
+            'ansi',
+            'no-ansi',
+            'no-interaction',
+            'quiet',
+            'verbose',
+        ])->filter()->mapWithKeys(function ($value, $key) {
             return ["--{$key}" => $value];
-        })->filter()->all();
+        })->all();
     }
 
     /**
@@ -282,7 +294,7 @@ class Command extends SymfonyCommand
 	 * 获取命令参数的值
      *
      * @param  string|null  $key
-     * @return string|array
+     * @return string|array|null
      */
     public function argument($key = null)
     {
@@ -320,8 +332,8 @@ class Command extends SymfonyCommand
      * Get the value of a command option.
 	 * 获取命令选项的值
      *
-     * @param  string  $key
-     * @return string|array
+     * @param  string|null  $key
+     * @return string|array|bool|null
      */
     public function option($key = null)
     {
@@ -361,8 +373,8 @@ class Command extends SymfonyCommand
 	 * 提示用户输入
      *
      * @param  string  $question
-     * @param  string  $default
-     * @return string
+     * @param  string|null  $default
+     * @return mixed
      */
     public function ask($question, $default = null)
     {
@@ -375,8 +387,8 @@ class Command extends SymfonyCommand
      *
      * @param  string  $question
      * @param  array   $choices
-     * @param  string  $default
-     * @return string
+     * @param  string|null  $default
+     * @return mixed
      */
     public function anticipate($question, array $choices, $default = null)
     {
@@ -389,8 +401,8 @@ class Command extends SymfonyCommand
      *
      * @param  string  $question
      * @param  array   $choices
-     * @param  string  $default
-     * @return string
+     * @param  string|null  $default
+     * @return mixed
      */
     public function askWithCompletion($question, array $choices, $default = null)
     {
@@ -407,7 +419,7 @@ class Command extends SymfonyCommand
      *
      * @param  string  $question
      * @param  bool    $fallback
-     * @return string
+     * @return mixed
      */
     public function secret($question, $fallback = true)
     {
@@ -424,9 +436,9 @@ class Command extends SymfonyCommand
      *
      * @param  string  $question
      * @param  array   $choices
-     * @param  string  $default
-     * @param  mixed   $attempts
-     * @param  bool    $multiple
+     * @param  string|null  $default
+     * @param  mixed|null   $attempts
+     * @param  bool|null    $multiple
      * @return string
      */
     public function choice($question, array $choices, $default = null, $attempts = null, $multiple = null)
@@ -470,7 +482,7 @@ class Command extends SymfonyCommand
 	 * 写一个字符串作为信息输出
      *
      * @param  string  $string
-     * @param  null|int|string  $verbosity
+     * @param  int|string|null  $verbosity
      * @return void
      */
     public function info($string, $verbosity = null)
@@ -484,7 +496,7 @@ class Command extends SymfonyCommand
      *
      * @param  string  $string
      * @param  string  $style
-     * @param  null|int|string  $verbosity
+     * @param  int|string|null  $verbosity
      * @return void
      */
     public function line($string, $style = null, $verbosity = null)
@@ -499,7 +511,7 @@ class Command extends SymfonyCommand
 	 * 写一个字符串作为注释输出
      *
      * @param  string  $string
-     * @param  null|int|string  $verbosity
+     * @param  int|string|null  $verbosity
      * @return void
      */
     public function comment($string, $verbosity = null)
@@ -512,7 +524,7 @@ class Command extends SymfonyCommand
 	 * 写一个字符串作为问题输出
      *
      * @param  string  $string
-     * @param  null|int|string  $verbosity
+     * @param  int|string|null  $verbosity
      * @return void
      */
     public function question($string, $verbosity = null)
@@ -525,7 +537,7 @@ class Command extends SymfonyCommand
 	 * 写一个字符串作为错误输出
      *
      * @param  string  $string
-     * @param  null|int|string  $verbosity
+     * @param  int|string|null  $verbosity
      * @return void
      */
     public function error($string, $verbosity = null)
@@ -538,7 +550,7 @@ class Command extends SymfonyCommand
 	 * 写一个字符串作为警告输出
      *
      * @param  string  $string
-     * @param  null|int|string  $verbosity
+     * @param  int|string|null  $verbosity
      * @return void
      */
     public function warn($string, $verbosity = null)
@@ -561,9 +573,11 @@ class Command extends SymfonyCommand
      */
     public function alert($string)
     {
-        $this->comment(str_repeat('*', strlen($string) + 12));
+        $length = Str::length(strip_tags($string)) + 12;
+
+        $this->comment(str_repeat('*', $length));
         $this->comment('*     '.$string.'     *');
-        $this->comment(str_repeat('*', strlen($string) + 12));
+        $this->comment(str_repeat('*', $length));
 
         $this->output->newLine();
     }
@@ -584,7 +598,7 @@ class Command extends SymfonyCommand
      * Get the verbosity level in terms of Symfony's OutputInterface level.
 	 * 根据Symfony的OutputInterface级别获取冗长级别
      *
-     * @param  string|int  $level
+     * @param  string|int|null  $level
      * @return int
      */
     protected function parseVerbosity($level = null)
@@ -596,6 +610,24 @@ class Command extends SymfonyCommand
         }
 
         return $level;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isHidden()
+    {
+        return $this->hidden;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setHidden($hidden)
+    {
+        parent::setHidden($this->hidden = $hidden);
+
+        return $this;
     }
 
     /**
@@ -624,7 +656,7 @@ class Command extends SymfonyCommand
      * Get the output implementation.
 	 * 获取输出实现
      *
-     * @return \Symfony\Component\Console\Output\OutputInterface
+     * @return \Illuminate\Console\OutputStyle
      */
     public function getOutput()
     {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，存储，处理者，Strict会话处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -31,8 +34,19 @@ class StrictSessionHandler extends AbstractSessionHandler
     }
 
     /**
-     * {@inheritdoc}
+     * Returns true if this handler wraps an internal PHP session save handler using \SessionHandler.
+     *
+     * @internal
      */
+    public function isWrapper(): bool
+    {
+        return $this->handler instanceof \SessionHandler;
+    }
+
+    /**
+     * @return bool
+     */
+    #[\ReturnTypeWillChange]
     public function open($savePath, $sessionName)
     {
         parent::open($savePath, $sessionName);
@@ -49,8 +63,9 @@ class StrictSessionHandler extends AbstractSessionHandler
     }
 
     /**
-     * {@inheritdoc}
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function updateTimestamp($sessionId, $data)
     {
         return $this->write($sessionId, $data);
@@ -65,8 +80,9 @@ class StrictSessionHandler extends AbstractSessionHandler
     }
 
     /**
-     * {@inheritdoc}
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function destroy($sessionId)
     {
         $this->doDestroy = true;
@@ -86,16 +102,18 @@ class StrictSessionHandler extends AbstractSessionHandler
     }
 
     /**
-     * {@inheritdoc}
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function close()
     {
         return $this->handler->close();
     }
 
     /**
-     * @return bool
+     * @return int|false
      */
+    #[\ReturnTypeWillChange]
     public function gc($maxlifetime)
     {
         return $this->handler->gc($maxlifetime);

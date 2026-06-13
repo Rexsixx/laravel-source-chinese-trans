@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，命令，Command
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -24,6 +27,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Base class for all commands.
+ * 所有命令的基类。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -66,7 +70,7 @@ class Command
      *
      * @throws LogicException When the command name is empty
      */
-    public function __construct($name = null)
+    public function __construct(string $name = null)
     {
         $this->definition = new InputDefinition();
 
@@ -79,8 +83,10 @@ class Command
 
     /**
      * Ignores validation errors.
+	 * 忽略验证错误。
      *
      * This is mainly useful for the help command.
+	 * 这主要是有用的帮助命令。
      */
     public function ignoreValidationErrors()
     {
@@ -104,6 +110,7 @@ class Command
 
     /**
      * Gets the helper set.
+	 * 获取助手集合
      *
      * @return HelperSet|null A HelperSet instance
      */
@@ -114,6 +121,7 @@ class Command
 
     /**
      * Gets the application instance for this command.
+	 * 获取此命令的应用程序实例
      *
      * @return Application|null An Application instance
      */
@@ -150,7 +158,7 @@ class Command
      * execute() method, you set the code to execute by passing
      * a Closure to the setCode() method.
      *
-     * @return int|null null or 0 if everything went fine, or an error code
+     * @return int 0 if everything went fine, or an exit code
      *
      * @throws LogicException When this abstract method is not implemented
      *
@@ -195,7 +203,7 @@ class Command
      *
      * @return int The command exit code
      *
-     * @throws \Exception When binding input fails. Bypass this by calling {@link ignoreValidationErrors()}.
+     * @throws ExceptionInterface When input binding fails. Bypass this by calling {@link ignoreValidationErrors()}.
      *
      * @see setCode()
      * @see execute()
@@ -250,9 +258,13 @@ class Command
         $input->validate();
 
         if ($this->code) {
-            $statusCode = \call_user_func($this->code, $input, $output);
+            $statusCode = ($this->code)($input, $output);
         } else {
             $statusCode = $this->execute($input, $output);
+
+            if (!\is_int($statusCode)) {
+                @trigger_error(sprintf('Return value of "%s::execute()" should always be of the type int since Symfony 4.4, %s returned.', static::class, \gettype($statusCode)), \E_USER_DEPRECATED);
+            }
         }
 
         return is_numeric($statusCode) ? (int) $statusCode : 0;
@@ -277,14 +289,13 @@ class Command
         if ($code instanceof \Closure) {
             $r = new \ReflectionFunction($code);
             if (null === $r->getClosureThis()) {
-                if (\PHP_VERSION_ID < 70000) {
-                    // Bug in PHP5: https://bugs.php.net/64761
-                    // This means that we cannot bind static closures and therefore we must
-                    // ignore any errors here.  There is no way to test if the closure is
-                    // bindable.
-                    $code = @\Closure::bind($code, $this);
-                } else {
-                    $code = \Closure::bind($code, $this);
+                set_error_handler(static function () {});
+                try {
+                    if ($c = \Closure::bind($code, $this)) {
+                        $code = $c;
+                    }
+                } finally {
+                    restore_error_handler();
                 }
             }
         }
@@ -372,10 +383,10 @@ class Command
     /**
      * Adds an argument.
      *
-     * @param string               $name        The argument name
-     * @param int|null             $mode        The argument mode: InputArgument::REQUIRED or InputArgument::OPTIONAL
-     * @param string               $description A description text
-     * @param string|string[]|null $default     The default value (for InputArgument::OPTIONAL mode only)
+     * @param string   $name        The argument name
+     * @param int|null $mode        The argument mode: InputArgument::REQUIRED or InputArgument::OPTIONAL
+     * @param string   $description A description text
+     * @param mixed    $default     The default value (for InputArgument::OPTIONAL mode only)
      *
      * @throws InvalidArgumentException When argument mode is not valid
      *
@@ -391,11 +402,11 @@ class Command
     /**
      * Adds an option.
      *
-     * @param string                        $name        The option name
-     * @param string|array|null             $shortcut    The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
-     * @param int|null                      $mode        The option mode: One of the InputOption::VALUE_* constants
-     * @param string                        $description A description text
-     * @param string|string[]|int|bool|null $default     The default value (must be null for InputOption::VALUE_NONE)
+     * @param string            $name        The option name
+     * @param string|array|null $shortcut    The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
+     * @param int|null          $mode        The option mode: One of the InputOption::VALUE_* constants
+     * @param string            $description A description text
+     * @param mixed             $default     The default value (must be null for InputOption::VALUE_NONE)
      *
      * @throws InvalidArgumentException If option mode is invalid or incompatible
      *
@@ -461,7 +472,7 @@ class Command
     /**
      * @param bool $hidden Whether or not the command should be hidden from the list of commands
      *
-     * @return Command The current instance
+     * @return $this
      */
     public function setHidden($hidden)
     {
@@ -610,7 +621,7 @@ class Command
      */
     public function addUsage($usage)
     {
-        if (0 !== strpos($usage, $this->name)) {
+        if (!str_starts_with($usage, $this->name)) {
             $usage = sprintf('%s %s', $this->name, $usage);
         }
 
@@ -653,11 +664,9 @@ class Command
      *
      * It must be non-empty and parts can optionally be separated by ":".
      *
-     * @param string $name
-     *
      * @throws InvalidArgumentException When the name is invalid
      */
-    private function validateName($name)
+    private function validateName(string $name)
     {
         if (!preg_match('/^[^\:]++(\:[^\:]++)*$/', $name)) {
             throw new InvalidArgumentException(sprintf('Command name "%s" is invalid.', $name));

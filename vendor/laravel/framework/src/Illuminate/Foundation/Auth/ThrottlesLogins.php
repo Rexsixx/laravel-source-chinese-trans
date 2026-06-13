@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，认证，节流阀登录
+ * Illuminate，基础，认证，Throttles 登录
  */
 
 namespace Illuminate\Foundation\Auth;
@@ -24,7 +24,7 @@ trait ThrottlesLogins
     protected function hasTooManyLoginAttempts(Request $request)
     {
         return $this->limiter()->tooManyAttempts(
-            $this->throttleKey($request), $this->maxAttempts(), $this->decayMinutes()
+            $this->throttleKey($request), $this->maxAttempts()
         );
     }
 
@@ -48,6 +48,7 @@ trait ThrottlesLogins
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void
+     *
      * @throws \Illuminate\Validation\ValidationException
      */
     protected function sendLockoutResponse(Request $request)
@@ -58,7 +59,7 @@ trait ThrottlesLogins
 
         throw ValidationException::withMessages([
             $this->username() => [Lang::get('auth.throttle', ['seconds' => $seconds])],
-        ])->status(423);
+        ])->status(429);
     }
 
     /**
@@ -87,7 +88,7 @@ trait ThrottlesLogins
 
     /**
      * Get the throttle key for the given request.
-	 * 获取给定请求的油门键
+	 * 获取给定请求的throttle键
      *
      * @param  \Illuminate\Http\Request  $request
      * @return string

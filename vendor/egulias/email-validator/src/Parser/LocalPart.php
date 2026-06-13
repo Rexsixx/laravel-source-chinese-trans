@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，分析程序，局部部分
+ */
 
 namespace Egulias\EmailValidator\Parser;
 
@@ -45,6 +48,7 @@ class LocalPart extends PartParser
                 $dquoteParsingResult = $this->parseDoubleQuote();
 
                 //Invalid double quote parsing
+				// 无效的双引号解析
                 if($dquoteParsingResult->isInvalid()) {
                     return $dquoteParsingResult;
                 }

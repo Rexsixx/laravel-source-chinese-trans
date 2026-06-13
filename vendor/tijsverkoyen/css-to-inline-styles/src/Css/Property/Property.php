@@ -1,4 +1,7 @@
 <?php
+/**
+ * TijsVerkoyen，Css到内联样式，Css，属性，Property
+ */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css\Property;
 
@@ -36,6 +39,7 @@ final class Property
 
     /**
      * Get name
+	 * 获取名字
      *
      * @return string
      */
@@ -46,6 +50,7 @@ final class Property
 
     /**
      * Get value
+	 * 获取值
      *
      * @return string
      */

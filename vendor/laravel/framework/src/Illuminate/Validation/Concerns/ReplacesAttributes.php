@@ -269,6 +269,82 @@ trait ReplacesAttributes
     }
 
     /**
+     * Replace all place-holders for the gt rule.
+	 * 替换gt规则的所有占位符
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array   $parameters
+     * @return string
+     */
+    protected function replaceGt($message, $attribute, $rule, $parameters)
+    {
+        if (is_null($value = $this->getValue($parameters[0]))) {
+            return str_replace(':value', $parameters[0], $message);
+        }
+
+        return str_replace(':value', $this->getSize($attribute, $value), $message);
+    }
+
+    /**
+     * Replace all place-holders for the lt rule.
+	 * 替换lt规则的所有占位符
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array   $parameters
+     * @return string
+     */
+    protected function replaceLt($message, $attribute, $rule, $parameters)
+    {
+        if (is_null($value = $this->getValue($parameters[0]))) {
+            return str_replace(':value', $parameters[0], $message);
+        }
+
+        return str_replace(':value', $this->getSize($attribute, $value), $message);
+    }
+
+    /**
+     * Replace all place-holders for the gte rule.
+	 * 替换gte规则的所有占位符
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array   $parameters
+     * @return string
+     */
+    protected function replaceGte($message, $attribute, $rule, $parameters)
+    {
+        if (is_null($value = $this->getValue($parameters[0]))) {
+            return str_replace(':value', $parameters[0], $message);
+        }
+
+        return str_replace(':value', $this->getSize($attribute, $value), $message);
+    }
+
+    /**
+     * Replace all place-holders for the lte rule.
+	 * 替换lte规则的所有占位符
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array   $parameters
+     * @return string
+     */
+    protected function replaceLte($message, $attribute, $rule, $parameters)
+    {
+        if (is_null($value = $this->getValue($parameters[0]))) {
+            return str_replace(':value', $parameters[0], $message);
+        }
+
+        return str_replace(':value', $this->getSize($attribute, $value), $message);
+    }
+
+    /**
      * Replace all place-holders for the required_if rule.
 	 * 替换required_if规则的所有占位符
      *
@@ -299,9 +375,15 @@ trait ReplacesAttributes
      */
     protected function replaceRequiredUnless($message, $attribute, $rule, $parameters)
     {
-        $other = $this->getDisplayableAttribute(array_shift($parameters));
+        $other = $this->getDisplayableAttribute($parameters[0]);
 
-        return str_replace([':other', ':values'], [$other, implode(', ', $parameters)], $message);
+        $values = [];
+
+        foreach (array_slice($parameters, 1) as $value) {
+            $values[] = $this->getDisplayableValue($parameters[0], $value);
+        }
+
+        return str_replace([':other', ':values'], [$other, implode(', ', $values)], $message);
     }
 
     /**
@@ -331,11 +413,11 @@ trait ReplacesAttributes
      */
     protected function replaceBefore($message, $attribute, $rule, $parameters)
     {
-        if (! (strtotime($parameters[0]))) {
+        if (! strtotime($parameters[0])) {
             return str_replace(':date', $this->getDisplayableAttribute($parameters[0]), $message);
         }
 
-        return str_replace(':date', $parameters[0], $message);
+        return str_replace(':date', $this->getDisplayableValue($attribute, $parameters[0]), $message);
     }
 
     /**
@@ -384,6 +466,21 @@ trait ReplacesAttributes
     }
 
     /**
+     * Replace all place-holders for the date_equals rule.
+	 * 替换date_equals规则的所有占位符
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array   $parameters
+     * @return string
+     */
+    protected function replaceDateEquals($message, $attribute, $rule, $parameters)
+    {
+        return $this->replaceBefore($message, $attribute, $rule, $parameters);
+    }
+
+    /**
      * Replace all place-holders for the dimensions rule.
 	 * 替换维度规则的所有占位符
      *
@@ -404,5 +501,24 @@ trait ReplacesAttributes
         }
 
         return $message;
+    }
+
+    /**
+     * Replace all place-holders for the starts_with rule.
+	 * 替换starts_with规则的所有占位符
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array   $parameters
+     * @return string
+     */
+    protected function replaceStartsWith($message, $attribute, $rule, $parameters)
+    {
+        foreach ($parameters as &$parameter) {
+            $parameter = $this->getDisplayableValue($attribute, $parameter);
+        }
+
+        return str_replace(':values', implode(', ', $parameters), $message);
     }
 }

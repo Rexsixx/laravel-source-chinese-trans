@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，助手，表式分离器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Console\Helper;
 
 /**
  * Marks a row as being a separator.
+ * 标记一行为分隔符。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

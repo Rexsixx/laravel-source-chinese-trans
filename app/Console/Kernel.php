@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
 {
     /**
      * The Artisan commands provided by your application.
-	 * 应用程序提供的Artisan命令
+	 * 您的应用程序提供的Artisan命令
      *
      * @var array
      */
@@ -22,7 +22,7 @@ class Kernel extends ConsoleKernel
 
     /**
      * Define the application's command schedule.
-	 * 定义应用程序的命令调度
+	 * 定义应用程序的命令时间表
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
@@ -35,7 +35,7 @@ class Kernel extends ConsoleKernel
 
     /**
      * Register the commands for the application.
-	 * 为应用程序注册命令
+	 * 注册应用程序的命令
      *
      * @return void
      */

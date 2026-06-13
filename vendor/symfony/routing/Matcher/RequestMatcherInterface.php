@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，匹配程序，请求匹配器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 /**
  * RequestMatcherInterface is the interface that all request matcher classes must implement.
+ * RequestMatcherInterface是所有请求匹配器类必须实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

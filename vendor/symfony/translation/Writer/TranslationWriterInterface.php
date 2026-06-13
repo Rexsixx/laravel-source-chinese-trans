@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，作者，翻译器作者接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * TranslationWriter writes translation messages.
+ * TranslationWriter编写翻译消息。
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
@@ -23,10 +27,10 @@ interface TranslationWriterInterface
 {
     /**
      * Writes translation from the catalogue according to the selected format.
+	 * 根据选定的格式从目录中编写翻译
      *
-     * @param MessageCatalogue $catalogue The message catalogue to write
-     * @param string           $format    The format to use to dump the messages
-     * @param array            $options   Options that are passed to the dumper
+     * @param string $format  The format to use to dump the messages
+     * @param array  $options Options that are passed to the dumper
      *
      * @throws InvalidArgumentException
      */

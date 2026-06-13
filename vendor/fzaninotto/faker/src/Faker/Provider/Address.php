@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，供应者，地址
+ */
 
 namespace Faker\Provider;
 

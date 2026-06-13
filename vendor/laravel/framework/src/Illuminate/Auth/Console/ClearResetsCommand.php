@@ -11,7 +11,7 @@ class ClearResetsCommand extends Command
 {
     /**
      * The name and signature of the console command.
-	 * console命令的名称和签名
+	 * 控制台命令的名称和签名
      *
      * @var string
      */
@@ -19,7 +19,7 @@ class ClearResetsCommand extends Command
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -27,7 +27,7 @@ class ClearResetsCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */

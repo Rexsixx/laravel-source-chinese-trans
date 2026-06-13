@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，助手，Helper
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
  * Helper is the base class for all helper classes.
+ * Helper是所有助手类的基类。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -40,6 +44,7 @@ abstract class Helper implements HelperInterface
 
     /**
      * Returns the length of a string, using mb_strwidth if it is available.
+	 * 返回字符串的长度,如果可用,使用mb_strwidth。
      *
      * @param string $string The string to check its length
      *
@@ -47,6 +52,8 @@ abstract class Helper implements HelperInterface
      */
     public static function strlen($string)
     {
+        $string = (string) $string;
+
         if (false === $encoding = mb_detect_encoding($string, null, true)) {
             return \strlen($string);
         }
@@ -65,6 +72,8 @@ abstract class Helper implements HelperInterface
      */
     public static function substr($string, $from, $length = null)
     {
+        $string = (string) $string;
+
         if (false === $encoding = mb_detect_encoding($string, null, true)) {
             return substr($string, $from, $length);
         }
@@ -131,6 +140,8 @@ abstract class Helper implements HelperInterface
         $string = $formatter->format($string);
         // remove already formatted characters
         $string = preg_replace("/\033\[[^m]*m/", '', $string);
+        // remove terminal hyperlinks
+        $string = preg_replace('/\\033]8;[^;]*;[^\\033]*\\033\\\\/', '', $string);
         $formatter->setDecorated($isDecorated);
 
         return $string;

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，参数，任意值令牌
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -13,6 +16,7 @@ namespace Prophecy\Argument\Token;
 
 /**
  * Any values token.
+ * 任意值令牌
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */

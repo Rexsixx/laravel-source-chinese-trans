@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，加载器，配置，特性，路由特征
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,10 +26,11 @@ trait RouteTrait
 
     /**
      * Adds defaults.
+	 * 添加默认
      *
      * @return $this
      */
-    final public function defaults(array $defaults)
+    final public function defaults(array $defaults): self
     {
         $this->route->addDefaults($defaults);
 
@@ -38,7 +42,7 @@ trait RouteTrait
      *
      * @return $this
      */
-    final public function requirements(array $requirements)
+    final public function requirements(array $requirements): self
     {
         $this->route->addRequirements($requirements);
 
@@ -50,7 +54,7 @@ trait RouteTrait
      *
      * @return $this
      */
-    final public function options(array $options)
+    final public function options(array $options): self
     {
         $this->route->addOptions($options);
 
@@ -58,13 +62,23 @@ trait RouteTrait
     }
 
     /**
-     * Sets the condition.
-     *
-     * @param string $condition
+     * Whether paths should accept utf8 encoding.
      *
      * @return $this
      */
-    final public function condition($condition)
+    final public function utf8(bool $utf8 = true): self
+    {
+        $this->route->addOptions(['utf8' => $utf8]);
+
+        return $this;
+    }
+
+    /**
+     * Sets the condition.
+     *
+     * @return $this
+     */
+    final public function condition(string $condition): self
     {
         $this->route->setCondition($condition);
 
@@ -74,11 +88,9 @@ trait RouteTrait
     /**
      * Sets the pattern for the host.
      *
-     * @param string $pattern
-     *
      * @return $this
      */
-    final public function host($pattern)
+    final public function host(string $pattern): self
     {
         $this->route->setHost($pattern);
 
@@ -93,7 +105,7 @@ trait RouteTrait
      *
      * @return $this
      */
-    final public function schemes(array $schemes)
+    final public function schemes(array $schemes): self
     {
         $this->route->setSchemes($schemes);
 
@@ -108,7 +120,7 @@ trait RouteTrait
      *
      * @return $this
      */
-    final public function methods(array $methods)
+    final public function methods(array $methods): self
     {
         $this->route->setMethods($methods);
 
@@ -118,13 +130,37 @@ trait RouteTrait
     /**
      * Adds the "_controller" entry to defaults.
      *
-     * @param callable|string $controller a callable or parseable pseudo-callable
+     * @param callable|string|array $controller a callable or parseable pseudo-callable
      *
      * @return $this
      */
-    final public function controller($controller)
+    final public function controller($controller): self
     {
         $this->route->addDefaults(['_controller' => $controller]);
+
+        return $this;
+    }
+
+    /**
+     * Adds the "_locale" entry to defaults.
+     *
+     * @return $this
+     */
+    final public function locale(string $locale): self
+    {
+        $this->route->addDefaults(['_locale' => $locale]);
+
+        return $this;
+    }
+
+    /**
+     * Adds the "_format" entry to defaults.
+     *
+     * @return $this
+     */
+    final public function format(string $format): self
+    {
+        $this->route->addDefaults(['_format' => $format]);
 
         return $this;
     }

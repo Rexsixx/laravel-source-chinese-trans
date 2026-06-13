@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，文件，File
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,11 +16,11 @@ namespace Symfony\Component\HttpFoundation\File;
 
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
-use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
+use Symfony\Component\Mime\MimeTypes;
 
 /**
  * A file in the file system.
+ * 文件系统中的文件。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
@@ -25,13 +28,14 @@ class File extends \SplFileInfo
 {
     /**
      * Constructs a new file from the given path.
+	 * 从给定路径构造一个新文件
      *
      * @param string $path      The path to the file
      * @param bool   $checkPath Whether to check the path or not
      *
      * @throws FileNotFoundException If the given path is not a file
      */
-    public function __construct($path, $checkPath = true)
+    public function __construct(string $path, bool $checkPath = true)
     {
         if ($checkPath && !is_file($path)) {
             throw new FileNotFoundException($path);
@@ -50,33 +54,28 @@ class File extends \SplFileInfo
      *
      * @return string|null The guessed extension or null if it cannot be guessed
      *
-     * @see ExtensionGuesser
+     * @see MimeTypes
      * @see getMimeType()
      */
     public function guessExtension()
     {
-        $type = $this->getMimeType();
-        $guesser = ExtensionGuesser::getInstance();
-
-        return $guesser->guess($type);
+        return MimeTypes::getDefault()->getExtensions($this->getMimeType())[0] ?? null;
     }
 
     /**
      * Returns the mime type of the file.
      *
-     * The mime type is guessed using a MimeTypeGuesser instance, which uses finfo(),
-     * mime_content_type() and the system binary "file" (in this order), depending on
-     * which of those are available.
+     * The mime type is guessed using a MimeTypeGuesserInterface instance,
+     * which uses finfo_file() then the "file" system binary,
+     * depending on which of those are available.
      *
      * @return string|null The guessed mime type (e.g. "application/pdf")
      *
-     * @see MimeTypeGuesser
+     * @see MimeTypes
      */
     public function getMimeType()
     {
-        $guesser = MimeTypeGuesser::getInstance();
-
-        return $guesser->guess($this->getPathname());
+        return MimeTypes::getDefault()->guessMimeType($this->getPathname());
     }
 
     /**
@@ -105,6 +104,9 @@ class File extends \SplFileInfo
         return $target;
     }
 
+    /**
+     * @return self
+     */
     protected function getTargetFile($directory, $name = null)
     {
         if (!is_dir($directory)) {
@@ -125,7 +127,7 @@ class File extends \SplFileInfo
      *
      * @param string $name The new file name
      *
-     * @return string containing
+     * @return string
      */
     protected function getName($name)
     {

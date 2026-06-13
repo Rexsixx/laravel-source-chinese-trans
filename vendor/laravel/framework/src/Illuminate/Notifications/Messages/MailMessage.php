@@ -1,9 +1,12 @@
 <?php
 /**
- * Illuminate，通知，信息，邮件信息
+ * Illuminate，通知，消息，邮件消息
  */
 
 namespace Illuminate\Notifications\Messages;
+
+use Traversable;
+use Illuminate\Contracts\Support\Arrayable;
 
 class MailMessage extends SimpleMessage
 {
@@ -57,7 +60,7 @@ class MailMessage extends SimpleMessage
 
     /**
      * The "bcc" information for the message.
-	 * 消息的“密件”信息。
+	 * 消息的“密件”信息
      *
      * @var array
      */
@@ -162,7 +165,11 @@ class MailMessage extends SimpleMessage
      */
     public function replyTo($address, $name = null)
     {
-        $this->replyTo = [$address, $name];
+        if ($this->arrayOfAddresses($address)) {
+            $this->replyTo += $this->parseAddresses($address);
+        } else {
+            $this->replyTo[] = [$address, $name];
+        }
 
         return $this;
     }
@@ -171,13 +178,17 @@ class MailMessage extends SimpleMessage
      * Set the cc address for the mail message.
 	 * 设置邮件的抄送地址
      *
-     * @param  string  $address
+     * @param  array|string  $address
      * @param  string|null  $name
      * @return $this
      */
     public function cc($address, $name = null)
     {
-        $this->cc = [$address, $name];
+        if ($this->arrayOfAddresses($address)) {
+            $this->cc += $this->parseAddresses($address);
+        } else {
+            $this->cc[] = [$address, $name];
+        }
 
         return $this;
     }
@@ -186,13 +197,17 @@ class MailMessage extends SimpleMessage
      * Set the bcc address for the mail message.
 	 * 设置邮件的密件抄送地址
      *
-     * @param  string  $address
+     * @param  array|string  $address
      * @param  string|null  $name
      * @return $this
      */
     public function bcc($address, $name = null)
     {
-        $this->bcc = [$address, $name];
+        if ($this->arrayOfAddresses($address)) {
+            $this->bcc += $this->parseAddresses($address);
+        } else {
+            $this->bcc[] = [$address, $name];
+        }
 
         return $this;
     }
@@ -230,9 +245,10 @@ class MailMessage extends SimpleMessage
 
     /**
      * Set the priority of this message.
-	 * 设置此消息的优先级
+	 * 设置此消息的优先级。
      *
      * The value is an integer where 1 is the highest priority and 5 is the lowest.
+	 * 整数形式，优先级为1最高，优先级为5最低。
      *
      * @param  int  $level
      * @return $this
@@ -253,5 +269,33 @@ class MailMessage extends SimpleMessage
     public function data()
     {
         return array_merge($this->toArray(), $this->viewData);
+    }
+
+    /**
+     * Parse the multi-address array into the necessary format.
+	 * 将多地址数组解析为必要的格式
+     *
+     * @param  array  $value
+     * @return array
+     */
+    protected function parseAddresses($value)
+    {
+        return collect($value)->map(function ($address, $name) {
+            return [$address, is_numeric($name) ? null : $name];
+        })->values()->all();
+    }
+
+    /**
+     * Determine if the given "address" is actually an array of addresses.
+	 * 确定给定的“address”是否实际上是一个地址数组
+     *
+     * @param  mixed  $address
+     * @return bool
+     */
+    protected function arrayOfAddresses($address)
+    {
+        return is_array($address) ||
+               $address instanceof Arrayable ||
+               $address instanceof Traversable;
     }
 }

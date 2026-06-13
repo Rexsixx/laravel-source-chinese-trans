@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，运送，运送
+ * Illuminate，电子邮件，传送，Transport
  */
 
 namespace Illuminate\Mail\Transport;
@@ -14,7 +14,7 @@ abstract class Transport implements Swift_Transport
 {
     /**
      * The plug-ins registered with the transport.
-	 * 使用传输注册的插件
+	 * 插件注册的运输
      *
      * @var array
      */
@@ -54,7 +54,7 @@ abstract class Transport implements Swift_Transport
 
     /**
      * Register a plug-in with the transport.
-	 * 向传输注册插件
+	 * 注册一个插件与运输
      *
      * @param  \Swift_Events_EventListener  $plugin
      * @return void

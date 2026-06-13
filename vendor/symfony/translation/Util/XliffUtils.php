@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，工具，Xliff 工具包
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Translation\Exception\InvalidResourceException;
 /**
  * Provides some utility methods for XLIFF translation files, such as validating
  * their contents according to the XSD schema.
+ * 提供了一些用于XLIFF翻译文件的实用方法，例如根据XSD模式验证其内容。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -24,6 +28,7 @@ class XliffUtils
 {
     /**
      * Gets xliff file version based on the root "version" attribute.
+	 * 基于根“version”属性获取xliff文件版本。
      *
      * Defaults to 1.2 for backwards compatibility.
      *
@@ -41,7 +46,7 @@ class XliffUtils
             $namespace = $xliff->attributes->getNamedItem('xmlns');
             if ($namespace) {
                 if (0 !== substr_compare('urn:oasis:names:tc:xliff:document:', $namespace->nodeValue, 0, 34)) {
-                    throw new InvalidArgumentException(sprintf('Not a valid XLIFF namespace "%s"', $namespace));
+                    throw new InvalidArgumentException(sprintf('Not a valid XLIFF namespace "%s".', $namespace));
                 }
 
                 return substr($namespace, 34);
@@ -54,6 +59,7 @@ class XliffUtils
 
     /**
      * Validates and parses the given file into a DOMDocument.
+	 * 验证给定文件并将其解析为DOMDocument
      *
      * @throws InvalidResourceException
      */
@@ -61,16 +67,19 @@ class XliffUtils
     {
         $xliffVersion = static::getVersionNumber($dom);
         $internalErrors = libxml_use_internal_errors(true);
-        $disableEntities = libxml_disable_entity_loader(false);
-
-        $isValid = @$dom->schemaValidateSource(self::getSchema($xliffVersion));
-        if (!$isValid) {
-            libxml_disable_entity_loader($disableEntities);
-
-            return self::getXmlErrors($internalErrors);
+        if ($shouldEnable = self::shouldEnableEntityLoader()) {
+            $disableEntities = libxml_disable_entity_loader(false);
         }
-
-        libxml_disable_entity_loader($disableEntities);
+        try {
+            $isValid = @$dom->schemaValidateSource(self::getSchema($xliffVersion));
+            if (!$isValid) {
+                return self::getXmlErrors($internalErrors);
+            }
+        } finally {
+            if ($shouldEnable) {
+                libxml_disable_entity_loader($disableEntities);
+            }
+        }
 
         $dom->normalizeDocument();
 
@@ -80,13 +89,43 @@ class XliffUtils
         return [];
     }
 
+    private static function shouldEnableEntityLoader(): bool
+    {
+        // Version prior to 8.0 can be enabled without deprecation
+        if (\PHP_VERSION_ID < 80000) {
+            return true;
+        }
+
+        static $dom, $schema;
+        if (null === $dom) {
+            $dom = new \DOMDocument();
+            $dom->loadXML('<?xml version="1.0"?><test/>');
+
+            $tmpfile = tempnam(sys_get_temp_dir(), 'symfony');
+            register_shutdown_function(static function () use ($tmpfile) {
+                @unlink($tmpfile);
+            });
+            $schema = '<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:include schemaLocation="file:///'.str_replace('\\', '/', $tmpfile).'" />
+</xsd:schema>';
+            file_put_contents($tmpfile, '<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="test" type="testType" />
+  <xsd:complexType name="testType"/>
+</xsd:schema>');
+        }
+
+        return !@$dom->schemaValidateSource($schema);
+    }
+
     public static function getErrorsAsString(array $xmlErrors): string
     {
         $errorsAsString = '';
 
         foreach ($xmlErrors as $error) {
             $errorsAsString .= sprintf("[%s %s] %s (in %s - line %d, column %d)\n",
-                LIBXML_ERR_WARNING === $error['level'] ? 'WARNING' : 'ERROR',
+                \LIBXML_ERR_WARNING === $error['level'] ? 'WARNING' : 'ERROR',
                 $error['code'],
                 $error['message'],
                 $error['file'],
@@ -115,6 +154,7 @@ class XliffUtils
 
     /**
      * Internally changes the URI of a dependent xsd to be loaded locally.
+	 * 在内部将依赖xsd的URI更改为本地加载
      */
     private static function fixXmlLocation(string $schemaSource, string $xmlUri): string
     {
@@ -146,7 +186,7 @@ class XliffUtils
         $errors = [];
         foreach (libxml_get_errors() as $error) {
             $errors[] = [
-                'level' => LIBXML_ERR_WARNING == $error->level ? 'WARNING' : 'ERROR',
+                'level' => \LIBXML_ERR_WARNING == $error->level ? 'WARNING' : 'ERROR',
                 'code' => $error->code,
                 'message' => trim($error->message),
                 'file' => $error->file ?: 'n/a',

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，事件，广播通知创建
+ * Illuminate，通知，事件，广播通知已创建
  */
 
 namespace Illuminate\Notifications\Events;
@@ -72,20 +72,6 @@ class BroadcastNotificationCreated implements ShouldBroadcast
     }
 
     /**
-     * Get the data that should be sent with the broadcasted event.
-	 * 获取应该随广播事件一起发送的数据
-     *
-     * @return array
-     */
-    public function broadcastWith()
-    {
-        return array_merge($this->data, [
-            'id' => $this->notification->id,
-            'type' => get_class($this->notification),
-        ]);
-    }
-
-    /**
      * Get the broadcast channel name for the event.
 	 * 获取事件的广播频道名称
      *
@@ -100,5 +86,32 @@ class BroadcastNotificationCreated implements ShouldBroadcast
         $class = str_replace('\\', '.', get_class($this->notifiable));
 
         return $class.'.'.$this->notifiable->getKey();
+    }
+
+    /**
+     * Get the data that should be sent with the broadcasted event.
+	 * 获取应该通过广播事件发送的数据
+     *
+     * @return array
+     */
+    public function broadcastWith()
+    {
+        return array_merge($this->data, [
+            'id' => $this->notification->id,
+            'type' => $this->broadcastType(),
+        ]);
+    }
+
+    /**
+     * Get the type of the notification being broadcast.
+	 * 获取正在播放的通知的类型
+     *
+     * @return string
+     */
+    public function broadcastType()
+    {
+        return method_exists($this->notification, 'broadcastType')
+                    ? $this->notification->broadcastType()
+                    : get_class($this->notification);
     }
 }

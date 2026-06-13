@@ -11,11 +11,13 @@ class Inspiring
 {
     /**
      * Get an inspiring quote.
-	 * 引用一句鼓舞人心的话。
+	 * 引用一句鼓舞人心的话
      *
      * Taylor & Dayle made this commit from Jungfraujoch. (11,333 ft.)
      *
      * May McGinnis always control the board. #LaraconUS2015
+     *
+     * RIP Charlie - Feb 6, 2018
      *
      * @return string
      */
@@ -33,6 +35,8 @@ class Inspiring
             'It is quality rather than quantity that matters. - Lucius Annaeus Seneca',
             'Genius is one percent inspiration and ninety-nine percent perspiration. - Thomas Edison',
             'Computer science is no more about computers than astronomy is about telescopes. - Edsger Dijkstra',
+            'It always seems impossible until it is done. - Nelson Mandela',
+            'Act only according to that maxim whereby you can, at the same time, will that it should become a universal law. - Immanuel Kant',
         ])->random();
     }
 }

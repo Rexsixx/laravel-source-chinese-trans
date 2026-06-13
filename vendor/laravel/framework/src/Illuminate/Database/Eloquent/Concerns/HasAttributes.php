@@ -51,7 +51,7 @@ trait HasAttributes
 
     /**
      * The attributes that should be mutated to dates.
-	 * 应该被更改为日期的属性
+	 * 应该被更改为日期的属性。
      *
      * @var array
      */
@@ -100,6 +100,8 @@ trait HasAttributes
         // If an attribute is a date, we will cast it to a string after converting it
         // to a DateTime / Carbon instance. This is so we will get some consistent
         // formatting while accessing attributes vs. arraying / JSONing a model.
+		// 如果一个属性是一个日期,那么我们将它将其转换为一个字符串,然后将其转换为DateTime / Carbon实例。
+		// 这是因此,我们将获得一些一致的格式,同时访问属性和排列/ JSONing模型。
         $attributes = $this->addDateAttributesToArray(
             $attributes = $this->getArrayableAttributes()
         );
@@ -111,6 +113,8 @@ trait HasAttributes
         // Next we will handle any casts that have been setup for this model and cast
         // the values to their appropriate type. If the attribute has a mutator we
         // will not perform the cast on those attributes to avoid any confusion.
+		// 接下来,我们将处理为该模型设置的任何版本,并将值分配给适当的类型。
+		// 如果属性有一个mutator,我们将不会在这些属性上执行cast,以避免任何混淆。
         $attributes = $this->addCastAttributesToArray(
             $attributes, $mutatedAttributes
         );
@@ -118,6 +122,8 @@ trait HasAttributes
         // Here we will grab all of the appended, calculated attributes to this model
         // as these attributes are not really in the attributes array, but are run
         // when we need to array or JSON the model for convenience to the coder.
+		// 在这里,我们将抓取所有的append,为这个模型计算属性,因为这些属性在属性数组中不是真的,
+		// 但当我们需要数组或JSON时,就会运行,以方便向编码器发送。
         foreach ($this->getArrayableAppends() as $key) {
             $attributes[$key] = $this->mutateAttributeForArray($key, null);
         }
@@ -161,6 +167,8 @@ trait HasAttributes
             // We want to spin through all the mutated attributes for this model and call
             // the mutator for the attribute. We cache off every mutated attributes so
             // we don't have to constantly check on attributes that actually change.
+			// 我们想要旋转这个模型的所有突变属性,并调用该属性的mutator。
+			// 我们缓存所有突变的属性,这样我们就不必经常检查实际更改的属性。
             if (! array_key_exists($key, $attributes)) {
                 continue;
             }
@@ -168,6 +176,8 @@ trait HasAttributes
             // Next, we will call the mutator for this attribute so that we can get these
             // mutated attribute's actual values. After we finish mutating each of the
             // attributes we will return this final array of the mutated attributes.
+			// 接下来,我们将调用这个属性的mutator,这样我们就可以得到这些突变的属性的实际值。
+			// 在我们完成对每个属性的修改之后,我们将返回突变属性的最后一个数组。
             $attributes[$key] = $this->mutateAttributeForArray(
                 $key, $attributes[$key]
             );
@@ -194,6 +204,8 @@ trait HasAttributes
             // Here we will cast the attribute. Then, if the cast is a date or datetime cast
             // then we will serialize the date for the array. This will convert the dates
             // to strings based on the date format specified for these Eloquent models.
+			// 接下来我们将进行属性的转换。然后，如果转换的是日期或日期时间类型的转换，那么我们将为数组中的日期进行序列化处理。
+			// 这将根据这些有说服力的模型指定的日期格式将日期转换为字符串。
             $attributes[$key] = $this->castAttribute(
                 $key, $attributes[$key]
             );
@@ -201,9 +213,15 @@ trait HasAttributes
             // If the attribute cast was a date or a datetime, we will serialize the date as
             // a string. This allows the developers to customize how dates are serialized
             // into an array without affecting how they are persisted into the storage.
+			// 如果属性“cast”是日期或日期时间类型，我们将把该日期序列化为字符串形式。
+			// 这允许开发人员自定义如何将日期序列化为数组,而不影响它们如何被持久化到存储中。
             if ($attributes[$key] &&
                 ($value === 'date' || $value === 'datetime')) {
                 $attributes[$key] = $this->serializeDate($attributes[$key]);
+            }
+
+            if ($attributes[$key] && $this->isCustomDateTimeCast($value)) {
+                $attributes[$key] = $attributes[$key]->format(explode(':', $value, 2)[1]);
             }
         }
 
@@ -252,6 +270,8 @@ trait HasAttributes
             // If the values implements the Arrayable interface we can just call this
             // toArray method on the instances which will convert both models and
             // collections to their proper array form and we'll set the values.
+			// 如果这些值实现了“可数组化”接口，我们就可以直接在这些实例上调用“toArray”方法，
+			// 该方法会将模型和集合转换为正确的数组形式，并且还会设置这些值。
             if ($value instanceof Arrayable) {
                 $relation = $value->toArray();
             }
@@ -259,6 +279,8 @@ trait HasAttributes
             // If the value is null, we'll still go ahead and set it in this list of
             // attributes since null is used to represent empty relationships if
             // if it a has one or belongs to type relationships on the models.
+			// 如果值为null,我们仍然会继续在这个属性列表中设置它,
+			// 因为null被用来表示空的关系,如果它是a,或者属于在模型上的类型关系。
             elseif (is_null($value)) {
                 $relation = $value;
             }
@@ -266,6 +288,8 @@ trait HasAttributes
             // If the relationships snake-casing is enabled, we will snake case this
             // key so that the relation attribute is snake cased in this returned
             // array to the developers, making this consistent with attributes.
+			// 如果启用了耦合外壳的关系,我们将会用这个键来处理这个键,
+			// 使关系属性是在这个返回的数组中给开发人员引入的蛇,使其与属性一致。
             if (static::$snakeAttributes) {
                 $key = Str::snake($key);
             }
@@ -273,6 +297,8 @@ trait HasAttributes
             // If the relation value has been set, we will set it on this attributes
             // list for returning. If it was not arrayable or null, we'll not set
             // the value on the array because it is some type of invalid value.
+			// 如果已经设置了关系值,我们将在这个属性列表中设置返回。
+			// 如果它不是arrayable或null,我们将不会在数组上设置值,因为它是一些无效值的类型。
             if (isset($relation) || is_null($value)) {
                 $attributes[$key] = $relation;
             }
@@ -330,6 +356,8 @@ trait HasAttributes
         // If the attribute exists in the attribute array or has a "get" mutator we will
         // get the attribute's value. Otherwise, we will proceed as if the developers
         // are asking for a relationship's value. This covers both types of values.
+		// 如果属性在属性数组中存在,或者有一个“get”mutator,我们将得到属性的值。
+		// 否则,我们将继续进行,就像开发人员要求一个关系的价值一样。这涵盖了两种类型的值。
         if (array_key_exists($key, $this->attributes) ||
             $this->hasGetMutator($key)) {
             return $this->getAttributeValue($key);
@@ -338,6 +366,8 @@ trait HasAttributes
         // Here we will determine if the model base class itself contains this given key
         // since we don't want to treat any of those methods as relationships because
         // they are all intended as helper methods and none of these are relations.
+		// 在这里,我们将确定模型基类本身是否包含这个给定的关键,因为我们不想将任何方法作为关系,
+		// 因为它们都是作为助手的方法,而这些都不是关系。
         if (method_exists(self::class, $key)) {
             return;
         }
@@ -359,6 +389,8 @@ trait HasAttributes
         // If the attribute has a get mutator, we will call that then return what
         // it returns as the value, which is useful for transforming values on
         // retrieval from the model to a form that is more useful for usage.
+		// 如果属性有一个get mutator,那么我们将调用它返回它返回的值作为值,
+		// 这对于将模型的检索转换为一个更有用的表单,这是很有用的。
         if ($this->hasGetMutator($key)) {
             return $this->mutateAttribute($key, $value);
         }
@@ -366,6 +398,8 @@ trait HasAttributes
         // If the attribute exists within the cast array, we will convert it to
         // an appropriate native PHP type dependant upon the associated value
         // given with the key in the pair. Dayle made this comment line up.
+		// 如果该属性存在于cast数组中,我们将将其转换为一个适当的本地PHP类型依赖于对配对的键所给出的关联值。
+		// Dayle把这条评论线做了。
         if ($this->hasCast($key)) {
             return $this->castAttribute($key, $value);
         }
@@ -373,6 +407,8 @@ trait HasAttributes
         // If the attribute is listed as a date, we will convert it to a DateTime
         // instance on retrieval, which makes it quite convenient to work with
         // date fields without having to create a mutator for each property.
+		// 如果将属性作为一个日期列出,我们将将其转换为一个DateTime实例来检索,
+		// 这使得在不需要为每个属性创建mutator的情况下与日期字段一起工作非常方便。
         if (in_array($key, $this->getDates()) &&
             ! is_null($value)) {
             return $this->asDateTime($value);
@@ -407,6 +443,8 @@ trait HasAttributes
         // If the key already exists in the relationships array, it just means the
         // relationship has already been loaded, so we'll just return it out of
         // here because there is no need to query within the relations twice.
+		// 如果密钥已经存在于关系数组中,它只是意味着已经加载了关系,
+		// 所以我们将返回它,因为在关系中不需要两次查询。
         if ($this->relationLoaded($key)) {
             return $this->relations[$key];
         }
@@ -414,6 +452,8 @@ trait HasAttributes
         // If the "attribute" exists as a method on the model, we will just assume
         // it is a relationship and will load and return results from the query
         // and hydrate the relationship's value on the "relationships" array.
+		// 如果“属性”作为模型的一种方法存在,我们就会假设它是一种关系,
+		// 并将从查询中加载和返回结果,并在“关系”数组上添加关系的值。
         if (method_exists($this, $key)) {
             return $this->getRelationshipFromMethod($key);
         }
@@ -433,7 +473,9 @@ trait HasAttributes
         $relation = $this->$method();
 
         if (! $relation instanceof Relation) {
-            throw new LogicException(get_class($this).'::'.$method.' must return a relationship instance.');
+            throw new LogicException(sprintf(
+                '%s::%s must return a relationship instance.', static::class, $method
+            ));
         }
 
         return tap($relation->getResults(), function ($results) use ($method) {
@@ -502,7 +544,9 @@ trait HasAttributes
             case 'real':
             case 'float':
             case 'double':
-                return (float) $value;
+                return $this->fromFloat($value);
+            case 'decimal':
+                return $this->asDecimal($value, explode(':', $this->getCasts()[$key], 2)[1]);
             case 'string':
                 return (string) $value;
             case 'bool':
@@ -518,6 +562,7 @@ trait HasAttributes
             case 'date':
                 return $this->asDate($value);
             case 'datetime':
+            case 'custom_datetime':
                 return $this->asDateTime($value);
             case 'timestamp':
                 return $this->asTimestamp($value);
@@ -528,14 +573,47 @@ trait HasAttributes
 
     /**
      * Get the type of cast for a model attribute.
-	 * 获取模型属性的强制转换类型
+	 * 获取模型属性的强制转换类型。
      *
      * @param  string  $key
      * @return string
      */
     protected function getCastType($key)
     {
+        if ($this->isCustomDateTimeCast($this->getCasts()[$key])) {
+            return 'custom_datetime';
+        }
+
+        if ($this->isDecimalCast($this->getCasts()[$key])) {
+            return 'decimal';
+        }
+
         return trim(strtolower($this->getCasts()[$key]));
+    }
+
+    /**
+     * Determine if the cast type is a custom date time cast.
+	 * 确定转换类型是否为自定义日期时间转换
+     *
+     * @param  string  $cast
+     * @return bool
+     */
+    protected function isCustomDateTimeCast($cast)
+    {
+        return strncmp($cast, 'date:', 5) === 0 ||
+               strncmp($cast, 'datetime:', 9) === 0;
+    }
+
+    /**
+     * Determine if the cast type is a decimal cast.
+	 * 确定转换类型是否为小数类型转换
+     *
+     * @param  string  $cast
+     * @return bool
+     */
+    protected function isDecimalCast($cast)
+    {
+        return strncmp($cast, 'decimal:', 8) === 0;
     }
 
     /**
@@ -544,22 +622,22 @@ trait HasAttributes
      *
      * @param  string  $key
      * @param  mixed  $value
-     * @return $this
+     * @return mixed
      */
     public function setAttribute($key, $value)
     {
         // First we will check for the presence of a mutator for the set operation
         // which simply lets the developers tweak the attribute as it is set on
         // the model, such as "json_encoding" an listing of data for storage.
+		// 首先,我们将检查设置操作的mutator的存在,这简单地让开发人员在模型上设置属性,比如“json_编码”数据的存储。
         if ($this->hasSetMutator($key)) {
-            $method = 'set'.Str::studly($key).'Attribute';
-
-            return $this->{$method}($value);
+            return $this->setMutatedAttributeValue($key, $value);
         }
 
         // If an attribute is listed as a "date", we'll convert it from a DateTime
         // instance into a form proper for storage on the database tables using
         // the connection grammar's date format. We will auto set the values.
+		// 如果将属性列为“date”,我们将将其从DateTime实例转换为使用连接语法日期格式存储在数据库表上的表单。我们将自动设置值。
         elseif ($value && $this->isDateAttribute($key)) {
             $value = $this->fromDateTime($value);
         }
@@ -571,6 +649,8 @@ trait HasAttributes
         // If this attribute contains a JSON ->, we'll set the proper value in the
         // attribute's underlying array. This takes care of properly nesting an
         // attribute in the array's value in the case of deeply nested items.
+		// 如果这个属性包含一个JSON - >,我们将在属性的底层数组中设置适当的值。
+		// 这需要在深嵌套项的情况下,在数组值中适当地嵌套一个属性。
         if (Str::contains($key, '->')) {
             return $this->fillJsonAttribute($key, $value);
         }
@@ -590,6 +670,19 @@ trait HasAttributes
     public function hasSetMutator($key)
     {
         return method_exists($this, 'set'.Str::studly($key).'Attribute');
+    }
+
+    /**
+     * Set the value of an attribute using its mutator.
+	 * 使用属性的赋值器设置属性的值
+     *
+     * @param  string  $key
+     * @param  mixed  $value
+     * @return mixed
+     */
+    protected function setMutatedAttributeValue($key, $value)
+    {
+        return $this->{'set'.Str::studly($key).'Attribute'}($value);
     }
 
     /**
@@ -615,7 +708,7 @@ trait HasAttributes
      */
     public function fillJsonAttribute($key, $value)
     {
-        list($key, $path) = explode('->', $key, 2);
+        [$key, $path] = explode('->', $key, 2);
 
         $this->attributes[$key] = $this->asJson($this->getArrayAttributeWithValue(
             $path, $key, $value
@@ -688,6 +781,7 @@ trait HasAttributes
 
     /**
      * Decode the given JSON back into an array or object.
+	 * 将给定的JSON解码回数组或对象
      *
      * @param  string  $value
      * @param  bool  $asObject
@@ -699,7 +793,42 @@ trait HasAttributes
     }
 
     /**
+     * Decode the given float.
+	 * 解码给定的浮点数
+     *
+     * @param  mixed  $value
+     * @return mixed
+     */
+    public function fromFloat($value)
+    {
+        switch ((string) $value) {
+            case 'Infinity':
+                return INF;
+            case '-Infinity':
+                return -INF;
+            case 'NaN':
+                return NAN;
+            default:
+                return (float) $value;
+        }
+    }
+
+    /**
+     * Return a decimal as string.
+	 * 返回一个小数作为字符串
+     *
+     * @param  float  $value
+     * @param  int  $decimals
+     * @return string
+     */
+    protected function asDecimal($value, $decimals)
+    {
+        return number_format($value, $decimals, '.', '');
+    }
+
+    /**
      * Return a timestamp as DateTime object with time set to 00:00:00.
+	 * 返回一个时间戳作为DateTime对象，时间设置为00:00:00。
      *
      * @param  mixed  $value
      * @return \Illuminate\Support\Carbon
@@ -711,6 +840,7 @@ trait HasAttributes
 
     /**
      * Return a timestamp as DateTime object.
+	 * 返回时间戳作为DateTime对象
      *
      * @param  mixed  $value
      * @return \Illuminate\Support\Carbon
@@ -720,6 +850,8 @@ trait HasAttributes
         // If this value is already a Carbon instance, we shall just return it as is.
         // This prevents us having to re-instantiate a Carbon instance when we know
         // it already is one, which wouldn't be fulfilled by the DateTime check.
+		// 如果这个值已经是一个碳实例,我们就会像这样返回它。
+		// 这可以防止我们重新实例化一个碳实例,当我们知道它已经是一个的时候,它不会被DateTime检查完成。
         if ($value instanceof Carbon) {
             return $value;
         }
@@ -736,6 +868,8 @@ trait HasAttributes
         // If this value is an integer, we will assume it is a UNIX timestamp's value
         // and format a Carbon object from this timestamp. This allows flexibility
         // when defining your date fields as they might be UNIX timestamps here.
+		// 如果这个值是一个整数,我们将假定它是UNIX时间戳的值,并从这个时间戳格式化一个碳物体。
+		// 这允许在定义您的日期字段时灵活性,因为它们可能是UNIX时间戳。
         if (is_numeric($value)) {
             return Carbon::createFromTimestamp($value);
         }
@@ -743,6 +877,8 @@ trait HasAttributes
         // If the value is in simply year, month, day format, we will instantiate the
         // Carbon instances from that format. Again, this provides for simple date
         // fields on the database, while still supporting Carbonized conversion.
+		// 如果价值仅仅是一年、月、日格式,我们将从这种格式实例化碳实例。
+		// 同样,这提供了数据库上简单的日期字段,同时还支持碳化转换。
         if ($this->isStandardDateFormat($value)) {
             return Carbon::createFromFormat('Y-m-d', $value)->startOfDay();
         }
@@ -750,6 +886,8 @@ trait HasAttributes
         // Finally, we will just assume this date is in the format used by default on
         // the database connection and use that format to create the Carbon object
         // that is returned back out to the developers after we convert it here.
+		// 最后,我们将假设这个日期是在数据库连接上默认使用的格式,并使用这种格式来创建碳对象,
+		// 在我们将其转换为在这里后返回给开发人员。
         return Carbon::createFromFormat(
             str_replace('.v', '.u', $this->getDateFormat()), $value
         );
@@ -757,6 +895,7 @@ trait HasAttributes
 
     /**
      * Determine if the given value is a standard date format.
+	 * 确定给定的值是否为标准日期格式
      *
      * @param  string  $value
      * @return bool
@@ -768,10 +907,10 @@ trait HasAttributes
 
     /**
      * Convert a DateTime to a storable string.
-	 * 将DateTime转换为可存储字符串
+	 * 将DateTime转换为可保存的字符串
      *
-     * @param  \DateTime|int  $value
-     * @return string
+     * @param  mixed  $value
+     * @return string|null
      */
     public function fromDateTime($value)
     {
@@ -782,7 +921,7 @@ trait HasAttributes
 
     /**
      * Return a timestamp as unix timestamp.
-	 * 返回unix时间戳
+	 * 将时间戳返回为unix时间戳
      *
      * @param  mixed  $value
      * @return int
@@ -825,7 +964,7 @@ trait HasAttributes
      *
      * @return string
      */
-    protected function getDateFormat()
+    public function getDateFormat()
     {
         return $this->dateFormat ?: $this->getConnection()->getQueryGrammar()->getDateFormat();
     }
@@ -983,13 +1122,30 @@ trait HasAttributes
      */
     public function syncOriginalAttribute($attribute)
     {
-        $this->original[$attribute] = $this->attributes[$attribute];
+        return $this->syncOriginalAttributes($attribute);
+    }
+
+    /**
+     * Sync multiple original attribute with their current values.
+	 * 将多个原始属性与其当前值同步
+     *
+     * @param  array|string  $attributes
+     * @return $this
+     */
+    public function syncOriginalAttributes($attributes)
+    {
+        $attributes = is_array($attributes) ? $attributes : func_get_args();
+
+        foreach ($attributes as $attribute) {
+            $this->original[$attribute] = $this->attributes[$attribute];
+        }
 
         return $this;
     }
 
     /**
      * Sync the changed attributes.
+	 * 同步更改的属性
      *
      * @return $this
      */
@@ -1001,7 +1157,8 @@ trait HasAttributes
     }
 
     /**
-     * Determine if the model or given attribute(s) have been modified.
+     * Determine if the model or any of the given attribute(s) have been modified.
+	 * 确定模型或任何给定属性是否已被修改
      *
      * @param  array|string|null  $attributes
      * @return bool
@@ -1014,7 +1171,8 @@ trait HasAttributes
     }
 
     /**
-     * Determine if the model or given attribute(s) have remained the same.
+     * Determine if the model and all the given attribute(s) have remained the same.
+	 * 确定模型和所有给定属性是否保持不变
      *
      * @param  array|string|null  $attributes
      * @return bool
@@ -1025,7 +1183,8 @@ trait HasAttributes
     }
 
     /**
-     * Determine if the model or given attribute(s) have been modified.
+     * Determine if the model or any of the given attribute(s) have been modified.
+	 * 确定模型或任何给定属性是否已被修改
      *
      * @param  array|string|null  $attributes
      * @return bool
@@ -1038,7 +1197,8 @@ trait HasAttributes
     }
 
     /**
-     * Determine if the given attributes were changed.
+     * Determine if any of the given attributes were changed.
+	 * 确定是否更改了任何给定属性
      *
      * @param  array  $changes
      * @param  array|string|null  $attributes
@@ -1049,6 +1209,8 @@ trait HasAttributes
         // If no specific attributes were provided, we will just see if the dirty array
         // already contains any attributes. If it does we will just return that this
         // count is greater than zero. Else, we need to check specific attributes.
+		// 如果未提供具体的属性，则我们将检查脏数组中是否已经包含任何属性。
+		// 如果它能返回,这个计数大于0。另外,我们需要检查特定的属性。
         if (empty($attributes)) {
             return count($changes) > 0;
         }
@@ -1056,6 +1218,8 @@ trait HasAttributes
         // Here we will spin through every attribute and see if this is in the array of
         // dirty attributes. If it is, we will return true and if we make it through
         // all of the attributes for the entire array we will return false at end.
+		// 接下来我们将逐一检查每一个属性，看看其中是否有属于“脏属性”的。
+		// 如果是,我们将返回true,如果我们通过整个数组的所有属性来实现它,我们将在最后返回false。
         foreach (Arr::wrap($attributes) as $attribute) {
             if (array_key_exists($attribute, $changes)) {
                 return true;
@@ -1067,6 +1231,7 @@ trait HasAttributes
 
     /**
      * Get the attributes that have been changed since last sync.
+	 * 获取自上次同步以来已更改的属性
      *
      * @return array
      */
@@ -1085,6 +1250,7 @@ trait HasAttributes
 
     /**
      * Get the attributes that were changed.
+	 * 获取已更改的属性
      *
      * @return array
      */
@@ -1095,6 +1261,7 @@ trait HasAttributes
 
     /**
      * Determine if the new and old values for a given key are equivalent.
+	 * 确定给定键的新旧值是否相等
      *
      * @param  string $key
      * @param  mixed  $current
@@ -1126,6 +1293,7 @@ trait HasAttributes
 
     /**
      * Append attributes to query when building a query.
+	 * 在构建查询时向查询追加属性
      *
      * @param  array|string  $attributes
      * @return $this
@@ -1141,6 +1309,7 @@ trait HasAttributes
 
     /**
      * Set the accessors to append to model arrays.
+	 * 将访问器设置为追加到模型数组
      *
      * @param  array  $appends
      * @return $this
@@ -1154,6 +1323,7 @@ trait HasAttributes
 
     /**
      * Get the mutated attributes for a given instance.
+	 * 获取给定实例的突变属性
      *
      * @return array
      */
@@ -1170,6 +1340,7 @@ trait HasAttributes
 
     /**
      * Extract and cache all the mutated attributes of a class.
+	 * 提取并缓存类的所有变异属性
      *
      * @param  string  $class
      * @return void
@@ -1183,6 +1354,7 @@ trait HasAttributes
 
     /**
      * Get all of the attribute mutator methods.
+	 * 获取所有属性变异器方法
      *
      * @param  mixed  $class
      * @return array

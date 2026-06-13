@@ -34,7 +34,7 @@ class ControllerDispatcher implements ControllerDispatcherContract
 
     /**
      * Dispatch a request to a given controller and method.
-	 * 将请求分派给给定的控制器和方法
+	 * 向给定的控制器和方法发送请求
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  mixed  $controller

@@ -87,6 +87,7 @@ trait ManagesLayouts
      *
      * @param  bool  $overwrite
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     public function stopSection($overwrite = false)
@@ -111,6 +112,7 @@ trait ManagesLayouts
 	 * 停止向节中注入内容，并将其追加。
      *
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     public function appendSection()

@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，数组，是否数组包含
+ */
+
 namespace Hamcrest\Arrays;
 
 /*
@@ -11,6 +15,7 @@ use Hamcrest\Util;
 
 /**
  * Matches if an array contains an item satisfying a nested matcher.
+ * 匹配如果一个数组包含一个项目,满足一个嵌套的matcher。
  */
 class IsArrayContaining extends TypeSafeMatcher
 {

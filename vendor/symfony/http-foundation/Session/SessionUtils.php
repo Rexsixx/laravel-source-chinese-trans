@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，会话工具包
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -22,10 +25,10 @@ namespace Symfony\Component\HttpFoundation\Session;
 final class SessionUtils
 {
     /**
-     * Find the session header amongst the headers that are to be sent, remove it, and return
+     * Finds the session header amongst the headers that are to be sent, removes it, and returns
      * it so the caller can process it further.
      */
-    public static function popSessionCookie($sessionName, $sessionId)
+    public static function popSessionCookie(string $sessionName, string $sessionId): ?string
     {
         $sessionCookie = null;
         $sessionCookiePrefix = sprintf(' %s=', urlencode($sessionName));

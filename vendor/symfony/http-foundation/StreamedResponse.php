@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http基础，流响应
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * StreamedResponse represents a streamed HTTP response.
+ * StreamedResponse表示一个流HTTP响应。
  *
  * A StreamedResponse uses a callback for its content.
  *
@@ -35,7 +39,7 @@ class StreamedResponse extends Response
      * @param int           $status   The response status code
      * @param array         $headers  An array of response headers
      */
-    public function __construct(callable $callback = null, $status = 200, $headers = [])
+    public function __construct(callable $callback = null, int $status = 200, array $headers = [])
     {
         parent::__construct(null, $status, $headers);
 
@@ -62,8 +66,6 @@ class StreamedResponse extends Response
 
     /**
      * Sets the PHP callback associated with this Response.
-     *
-     * @param callable $callback A valid PHP callback
      *
      * @return $this
      */
@@ -111,7 +113,7 @@ class StreamedResponse extends Response
             throw new \LogicException('The Response callback must not be null.');
         }
 
-        \call_user_func($this->callback);
+        ($this->callback)();
 
         return $this;
     }

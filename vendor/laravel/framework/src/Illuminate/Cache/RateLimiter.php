@@ -38,10 +38,9 @@ class RateLimiter
      *
      * @param  string  $key
      * @param  int  $maxAttempts
-     * @param  float|int  $decayMinutes
      * @return bool
      */
-    public function tooManyAttempts($key, $maxAttempts, $decayMinutes = 1)
+    public function tooManyAttempts($key, $maxAttempts)
     {
         if ($this->attempts($key) >= $maxAttempts) {
             if ($this->cache->has($key.':timer')) {
@@ -81,7 +80,7 @@ class RateLimiter
 
     /**
      * Get the number of attempts for the given key.
-	 * 获取给定键的尝试次数
+	 * 获取给定键的尝试次数。
      *
      * @param  string  $key
      * @return mixed

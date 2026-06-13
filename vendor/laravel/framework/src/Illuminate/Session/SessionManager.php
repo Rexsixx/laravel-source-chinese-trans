@@ -103,7 +103,7 @@ class SessionManager extends Manager
 
     /**
      * Create an instance of the APC session driver.
-	 * 创建APC会话驱动程序的实例。
+	 * 创建APC会话驱动程序的实例
      *
      * @return \Illuminate\Session\Store
      */

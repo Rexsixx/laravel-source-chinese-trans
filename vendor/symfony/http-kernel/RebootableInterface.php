@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，Rebootable 接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpKernel;
 
 /**
  * Allows the Kernel to be rebooted using a temporary cache directory.
+ * 允许使用临时缓存目录重新引导内核。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

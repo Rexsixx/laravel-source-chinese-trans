@@ -5,11 +5,15 @@
 
 namespace Illuminate\Routing;
 
+use Illuminate\Support\Traits\Macroable;
+
 class PendingResourceRegistration
 {
+    use Macroable;
+
     /**
      * The resource registrar.
-	 * 资源注册商
+	 * 资源注册员
      *
      * @var \Illuminate\Routing\ResourceRegistrar
      */
@@ -38,6 +42,14 @@ class PendingResourceRegistration
      * @var array
      */
     protected $options = [];
+
+    /**
+     * The resource's registration status.
+	 * 资源的注册状态
+     *
+     * @var bool
+     */
+    protected $registered = false;
 
     /**
      * Create a new pending resource registration instance.
@@ -158,6 +170,21 @@ class PendingResourceRegistration
     }
 
     /**
+     * Register the resource route.
+	 * 注册资源路由
+     *
+     * @return \Illuminate\Routing\RouteCollection
+     */
+    public function register()
+    {
+        $this->registered = true;
+
+        return $this->registrar->register(
+            $this->name, $this->controller, $this->options
+        );
+    }
+
+    /**
      * Handle the object's destruction.
 	 * 处理对象的销毁
      *
@@ -165,6 +192,8 @@ class PendingResourceRegistration
      */
     public function __destruct()
     {
-        $this->registrar->register($this->name, $this->controller, $this->options);
+        if (! $this->registered) {
+            $this->register();
+        }
     }
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，异常，抛出Caster异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,9 +20,9 @@ namespace Symfony\Component\VarDumper\Exception;
 class ThrowingCasterException extends \Exception
 {
     /**
-     * @param \Exception $prev The exception thrown from the caster
+     * @param \Throwable $prev The exception thrown from the caster
      */
-    public function __construct(\Exception $prev)
+    public function __construct(\Throwable $prev)
     {
         parent::__construct('Unexpected '.\get_class($prev).' thrown from a caster: '.$prev->getMessage(), 0, $prev);
     }

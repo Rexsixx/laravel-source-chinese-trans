@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，请求窗体
+ * Illuminate，基础，Http，表格请求
  */
 
 namespace Illuminate\Foundation\Http;
@@ -68,6 +68,14 @@ class FormRequest extends Request implements ValidatesWhenResolved
     protected $errorBag = 'default';
 
     /**
+     * The validator instance.
+	 * 验证器实例
+     *
+     * @var \Illuminate\Contracts\Validation\Validator
+     */
+    protected $validator;
+
+    /**
      * Get the validator instance for the request.
 	 * 获取请求的验证器实例
      *
@@ -87,7 +95,9 @@ class FormRequest extends Request implements ValidatesWhenResolved
             $this->withValidator($validator);
         }
 
-        return $validator;
+        $this->setValidator($validator);
+
+        return $this->validator;
     }
 
     /**
@@ -165,7 +175,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
             return $this->container->call([$this, 'authorize']);
         }
 
-        return false;
+        return true;
     }
 
     /**
@@ -189,11 +199,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
      */
     public function validated()
     {
-        $rules = $this->container->call([$this, 'rules']);
-
-        return $this->only(collect($rules)->keys()->map(function ($rule) {
-            return str_contains($rule, '.') ? explode('.', $rule)[0] : $rule;
-        })->unique()->toArray());
+        return $this->validator->validated();
     }
 
     /**
@@ -216,6 +222,20 @@ class FormRequest extends Request implements ValidatesWhenResolved
     public function attributes()
     {
         return [];
+    }
+
+    /**
+     * Set the Validator instance.
+	 * 设置Validator实例
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return $this
+     */
+    public function setValidator(Validator $validator)
+    {
+        $this->validator = $validator;
+
+        return $this;
     }
 
     /**

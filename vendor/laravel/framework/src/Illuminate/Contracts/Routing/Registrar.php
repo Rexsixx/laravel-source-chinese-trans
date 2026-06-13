@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，路由，登记员
+ * Illuminate，契约，路由，注册
  */
 
 namespace Illuminate\Contracts\Routing;
@@ -12,7 +12,7 @@ interface Registrar
 	 * 向路由器注册一个新的GET路由
      *
      * @param  string  $uri
-     * @param  \Closure|array|string  $action
+     * @param  \Closure|array|string|callable  $action
      * @return \Illuminate\Routing\Route
      */
     public function get($uri, $action);
@@ -22,7 +22,7 @@ interface Registrar
 	 * 向路由器注册一个新的POST路由
      *
      * @param  string  $uri
-     * @param  \Closure|array|string  $action
+     * @param  \Closure|array|string|callable  $action
      * @return \Illuminate\Routing\Route
      */
     public function post($uri, $action);
@@ -32,7 +32,7 @@ interface Registrar
 	 * 向路由器注册一条新的PUT路由
      *
      * @param  string  $uri
-     * @param  \Closure|array|string  $action
+     * @param  \Closure|array|string|callable  $action
      * @return \Illuminate\Routing\Route
      */
     public function put($uri, $action);
@@ -42,7 +42,7 @@ interface Registrar
 	 * 向路由器注册一条新的DELETE路由
      *
      * @param  string  $uri
-     * @param  \Closure|array|string  $action
+     * @param  \Closure|array|string|callable  $action
      * @return \Illuminate\Routing\Route
      */
     public function delete($uri, $action);
@@ -52,7 +52,7 @@ interface Registrar
 	 * 向路由器注册一条新的PATCH路由
      *
      * @param  string  $uri
-     * @param  \Closure|array|string  $action
+     * @param  \Closure|array|string|callable  $action
      * @return \Illuminate\Routing\Route
      */
     public function patch($uri, $action);
@@ -62,7 +62,7 @@ interface Registrar
 	 * 向路由器注册一个新的OPTIONS路由
      *
      * @param  string  $uri
-     * @param  \Closure|array|string  $action
+     * @param  \Closure|array|string|callable  $action
      * @return \Illuminate\Routing\Route
      */
     public function options($uri, $action);
@@ -73,7 +73,7 @@ interface Registrar
      *
      * @param  array|string  $methods
      * @param  string  $uri
-     * @param  \Closure|array|string  $action
+     * @param  \Closure|array|string|callable  $action
      * @return \Illuminate\Routing\Route
      */
     public function match($methods, $uri, $action);

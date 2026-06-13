@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，匹配程序，转储，匹配器转储
+ */
 
 /*
  * This file is part of the Symfony package.

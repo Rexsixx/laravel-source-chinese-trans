@@ -1,16 +1,17 @@
 <?php
 /**
- * Illuminate，Redis，连接，Predis 连接
+ * Illuminate，Redis，连接器，Predis 连接
  */
 
 namespace Illuminate\Redis\Connections;
 
 use Closure;
+use Illuminate\Contracts\Redis\Connection as ConnectionContract;
 
 /**
  * @mixin \Predis\Client
  */
-class PredisConnection extends Connection
+class PredisConnection extends Connection implements ConnectionContract
 {
     /**
      * Create a new Predis connection.

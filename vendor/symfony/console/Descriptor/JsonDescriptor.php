@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，描述符，JSON 描述
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * JSON descriptor.
+ * JSON描述
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  *
@@ -63,7 +67,7 @@ class JsonDescriptor extends Descriptor
      */
     protected function describeApplication(Application $application, array $options = [])
     {
-        $describedNamespace = isset($options['namespace']) ? $options['namespace'] : null;
+        $describedNamespace = $options['namespace'] ?? null;
         $description = new ApplicationDescription($application, $describedNamespace, true);
         $commands = [];
 
@@ -95,15 +99,12 @@ class JsonDescriptor extends Descriptor
      */
     private function writeData(array $data, array $options)
     {
-        $flags = isset($options['json_encoding']) ? $options['json_encoding'] : 0;
+        $flags = $options['json_encoding'] ?? 0;
 
         $this->write(json_encode($data, $flags));
     }
 
-    /**
-     * @return array
-     */
-    private function getInputArgumentData(InputArgument $argument)
+    private function getInputArgumentData(InputArgument $argument): array
     {
         return [
             'name' => $argument->getName(),
@@ -114,10 +115,7 @@ class JsonDescriptor extends Descriptor
         ];
     }
 
-    /**
-     * @return array
-     */
-    private function getInputOptionData(InputOption $option)
+    private function getInputOptionData(InputOption $option): array
     {
         return [
             'name' => '--'.$option->getName(),
@@ -130,10 +128,7 @@ class JsonDescriptor extends Descriptor
         ];
     }
 
-    /**
-     * @return array
-     */
-    private function getInputDefinitionData(InputDefinition $definition)
+    private function getInputDefinitionData(InputDefinition $definition): array
     {
         $inputArguments = [];
         foreach ($definition->getArguments() as $name => $argument) {
@@ -148,10 +143,7 @@ class JsonDescriptor extends Descriptor
         return ['arguments' => $inputArguments, 'options' => $inputOptions];
     }
 
-    /**
-     * @return array
-     */
-    private function getCommandData(Command $command)
+    private function getCommandData(Command $command): array
     {
         $command->getSynopsis();
         $command->mergeApplicationDefinition(false);

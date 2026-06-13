@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，文件，Mime类型，扩展猜测
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -11,8 +14,13 @@
 
 namespace Symfony\Component\HttpFoundation\File\MimeType;
 
+use Symfony\Component\Mime\MimeTypes;
+
+@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.3, use "%s" instead.', ExtensionGuesser::class, MimeTypes::class), \E_USER_DEPRECATED);
+
 /**
  * A singleton mime type to file extension guesser.
+ * 一个单例mime类型,用于文件扩展猜测。
  *
  * A default guesser is provided.
  * You can register custom guessers by calling the register()
@@ -22,11 +30,14 @@ namespace Symfony\Component\HttpFoundation\File\MimeType;
  *     $guesser->register(new MyCustomExtensionGuesser());
  *
  * The last registered guesser is preferred over previously registered ones.
+ *
+ * @deprecated since Symfony 4.3, use {@link MimeTypes} instead
  */
 class ExtensionGuesser implements ExtensionGuesserInterface
 {
     /**
      * The singleton instance.
+	 * 单例实例
      *
      * @var ExtensionGuesser
      */

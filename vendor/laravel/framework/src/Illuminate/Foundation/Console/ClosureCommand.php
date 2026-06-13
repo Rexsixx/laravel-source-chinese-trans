@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，应用名称命令
+ * Illuminate，基础，控制台，闭包命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -23,6 +23,7 @@ class ClosureCommand extends Command
 
     /**
      * Create a new command instance.
+	 * 创建一个新的命令实例
      *
      * @param  string  $signature
      * @param  \Closure  $callback
@@ -38,6 +39,7 @@ class ClosureCommand extends Command
 
     /**
      * Execute the console command.
+	 * 执行console命令
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
@@ -62,6 +64,7 @@ class ClosureCommand extends Command
 
     /**
      * Set the description for the command.
+	 * 设置命令的描述信息
      *
      * @param  string  $description
      * @return $this

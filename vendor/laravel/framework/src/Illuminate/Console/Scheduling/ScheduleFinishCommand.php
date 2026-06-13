@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，线程调度，Schedule完成命令 schedule:finish
+ * Illuminate，控制台，线程调度，Schedule 完成命令
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -19,7 +19,7 @@ class ScheduleFinishCommand extends Command
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -57,7 +57,7 @@ class ScheduleFinishCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */

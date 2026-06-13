@@ -1,4 +1,8 @@
 <?php
+/**
+ * PharIo，版本，版本号
+ */
+
 /*
  * This file is part of PharIo\Version.
  *

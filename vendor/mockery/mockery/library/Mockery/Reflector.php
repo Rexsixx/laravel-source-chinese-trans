@@ -1,4 +1,7 @@
 <?php
+/**
+ * Mockery，反射器
+ */
 
 /**
  * Mockery
@@ -28,6 +31,7 @@ class Reflector
 {
     /**
      * Determine if the parameter is typed as an array.
+	 * 确定参数是否被输入为数组
      *
      * @param \ReflectionParameter $param
      *

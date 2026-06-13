@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，重调
+ * Illuminate，认证，重调用
  */
 
 namespace Illuminate\Auth;
@@ -94,6 +94,6 @@ class Recaller
     {
         $segments = explode('|', $this->recaller);
 
-        return count($segments) == 3 && trim($segments[0]) !== '' && trim($segments[1]) !== '';
+        return count($segments) === 3 && trim($segments[0]) !== '' && trim($segments[1]) !== '';
     }
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，助手，描述符助手
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * This class adds helper method to describe objects in various formats.
+ * 这个类添加辅助方法来描述各种格式的对象。
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  */
@@ -43,6 +47,7 @@ class DescriptorHelper extends Helper
 
     /**
      * Describes an object if supported.
+	 * 如果支持,描述一个对象。
      *
      * Available options are:
      * * format: string, the output format name

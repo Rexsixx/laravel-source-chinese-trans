@@ -1,10 +1,11 @@
 <?php
 /**
- * Illuminate，支持，门面，Facade，抽象基类
+ * Illuminate，支持，门面，Facade
  */
 
 namespace Illuminate\Support\Facades;
 
+use Closure;
 use Mockery;
 use RuntimeException;
 use Mockery\MockInterface;
@@ -28,17 +29,33 @@ abstract class Facade
     protected static $resolvedInstance;
 
     /**
+     * Run a Closure when the facade has been resolved.
+	 * 在解决facade时运行Closure
+     *
+     * @param  \Closure  $callback
+     * @return void
+     */
+    public static function resolved(Closure $callback)
+    {
+        static::$app->afterResolving(static::getFacadeAccessor(), function ($service) use ($callback) {
+            $callback($service);
+        });
+    }
+
+    /**
      * Convert the facade into a Mockery spy.
 	 * 把门面变成一个嘲弄间谍
      *
-     * @return void
+     * @return \Mockery\MockInterface
      */
     public static function spy()
     {
         if (! static::isMock()) {
             $class = static::getMockableClass();
 
-            static::swap($class ? Mockery::spy($class) : Mockery::spy());
+            return tap($class ? Mockery::spy($class) : Mockery::spy(), function ($spy) {
+                static::swap($spy);
+            });
         }
     }
 
@@ -132,7 +149,6 @@ abstract class Facade
 
     /**
      * Get the root object behind the facade.
-	 * 获取facade后面的根对象
      *
      * @return mixed
      */
@@ -143,7 +159,6 @@ abstract class Facade
 
     /**
      * Get the registered name of the component.
-	 * 获取组件的注册名称
      *
      * @return string
      *
@@ -156,7 +171,6 @@ abstract class Facade
 
     /**
      * Resolve the facade root instance from the container.
-	 * 从容器中解析facade根实例
      *
      * @param  string|object  $name
      * @return mixed
@@ -176,7 +190,6 @@ abstract class Facade
 
     /**
      * Clear a resolved facade instance.
-	 * 清除已解析的facade实例
      *
      * @param  string  $name
      * @return void
@@ -188,7 +201,6 @@ abstract class Facade
 
     /**
      * Clear all of the resolved instances.
-	 * 清除所有已解析的实例
      *
      * @return void
      */
@@ -199,7 +211,6 @@ abstract class Facade
 
     /**
      * Get the application instance behind the facade.
-	 * 获取facade后面的应用程序实例
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */
@@ -210,7 +221,6 @@ abstract class Facade
 
     /**
      * Set the application instance.
-	 * 设置应用实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void

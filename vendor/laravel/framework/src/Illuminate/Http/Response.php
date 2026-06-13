@@ -21,7 +21,7 @@ class Response extends BaseResponse
 
     /**
      * Set the content on the response.
-	 * 设置响应的内容
+	 * 向响应添加一个cookie
      *
      * @param  mixed  $content
      * @return $this
@@ -33,6 +33,7 @@ class Response extends BaseResponse
         // If the content is "JSONable" we will set the appropriate header and convert
         // the content to JSON. This is useful when returning something like models
         // from routes that will be automatically transformed to their JSON form.
+		// 如果内容是“可转换为 JSON 格式”的，我们将设置相应的标头，并将内容转换为 JSON 格式。
         if ($this->shouldBeJson($content)) {
             $this->header('Content-Type', 'application/json');
 
@@ -53,7 +54,7 @@ class Response extends BaseResponse
 
     /**
      * Determine if the given content should be turned into JSON.
-	 * 确定是否应该将给定的内容转换为JSON
+	 * 确定给定的内容是否应该变成JSON
      *
      * @param  mixed  $content
      * @return bool

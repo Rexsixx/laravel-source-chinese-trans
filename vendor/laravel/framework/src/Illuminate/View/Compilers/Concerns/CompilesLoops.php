@@ -59,7 +59,7 @@ trait CompilesLoops
 
     /**
      * Compile the end-for-else statements into valid PHP.
-	 * end-for-else语句编译成有效的PHP
+	 * 将end-for-else语句编译成有效的PHP
      *
      * @return string
      */

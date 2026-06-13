@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，中间件，验证Csrf令牌
+ * Illuminate，基础，Http，中间件，验证 Csrf令牌
  */
 
 namespace Illuminate\Foundation\Http\Middleware;
@@ -42,8 +42,16 @@ class VerifyCsrfToken
     protected $except = [];
 
     /**
+     * Indicates whether the XSRF-TOKEN cookie should be set on the response.
+	 * 指示是否应该在响应上设置XSRF-TOKEN cookie
+     *
+     * @var bool
+     */
+    protected $addHttpCookie = true;
+
+    /**
      * Create a new middleware instance.
-	 * 创建新的中间件实例
+	 * 创建一个新的中间件实例
      *
      * @param  \Illuminate\Foundation\Application  $app
      * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
@@ -57,7 +65,7 @@ class VerifyCsrfToken
 
     /**
      * Handle an incoming request.
-	 * 处理传入的请求
+	 * 处理传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -73,7 +81,11 @@ class VerifyCsrfToken
             $this->inExceptArray($request) ||
             $this->tokensMatch($request)
         ) {
-            return $this->addCookieToResponse($request, $next($request));
+            return tap($next($request), function ($response) use ($request) {
+                if ($this->shouldAddXsrfTokenCookie()) {
+                    $this->addCookieToResponse($request, $response);
+                }
+            });
         }
 
         throw new TokenMismatchException;
@@ -156,6 +168,17 @@ class VerifyCsrfToken
         }
 
         return $token;
+    }
+
+    /**
+     * Determine if the cookie should be added to the response.
+	 * 确定是否应该将cookie添加到响应中
+     *
+     * @return bool
+     */
+    public function shouldAddXsrfTokenCookie()
+    {
+        return $this->addHttpCookie;
     }
 
     /**

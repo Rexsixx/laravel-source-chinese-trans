@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，视图
+ * Illuminate，视图，View
  */
 
 namespace Illuminate\View;
@@ -12,6 +12,7 @@ use BadMethodCallException;
 use Illuminate\Support\Str;
 use Illuminate\Support\MessageBag;
 use Illuminate\Contracts\View\Engine;
+use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\Support\MessageProvider;
@@ -19,6 +20,10 @@ use Illuminate\Contracts\View\View as ViewContract;
 
 class View implements ArrayAccess, ViewContract
 {
+    use Macroable {
+        __call as macroCall;
+    }
+
     /**
      * The view factory instance.
 	 * 视图工厂实例
@@ -99,6 +104,8 @@ class View implements ArrayAccess, ViewContract
             // Once we have the contents of the view, we will flush the sections if we are
             // done rendering all views so that there is nothing left hanging over when
             // another view gets rendered in the future by the application developer.
+			// 一旦我们获取了视图的内容，如果已经完成了所有视图的渲染工作，
+			// 我们就会刷新各个部分，这样在应用程序开发者未来再次渲染其他视图时就不会有任何内容遗留下来未被处理。
             $this->factory->flushStateIfDoneRendering();
 
             return ! is_null($response) ? $response : $contents;
@@ -124,6 +131,7 @@ class View implements ArrayAccess, ViewContract
         // We will keep track of the amount of views being rendered so we can flush
         // the section after the complete rendering operation is done. This will
         // clear out the sections for any separate views that may be rendered.
+		// 我们将跟踪所呈现的浏览量数据，以便在整个渲染操作完成后清除该部分的内容。
         $this->factory->incrementRender();
 
         $this->factory->callComposer($this);
@@ -133,6 +141,8 @@ class View implements ArrayAccess, ViewContract
         // Once we've finished rendering the view, we'll decrement the render count
         // so that each sections get flushed out next time a view is created and
         // no old sections are staying around in the memory of an environment.
+		// 一旦我们完成了视图的渲染工作，就会减少渲染次数，以便每次创建视图时，
+		// 每个部分都能被完整呈现出来，从而避免在环境的内存中保留旧的视图部分。
         $this->factory->decrementRender();
 
         return $contents;
@@ -173,6 +183,8 @@ class View implements ArrayAccess, ViewContract
 	 * 获取渲染视图的部分
      *
      * @return string
+     *
+     * @throws \Throwable
      */
     public function renderSections()
     {
@@ -382,7 +394,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Set a piece of data on the view.
-	 * 在视图上设置一段数据
+	 * 在视图上设置一段数
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -410,7 +422,7 @@ class View implements ArrayAccess, ViewContract
 	 * 从视图中删除一段绑定数据
      *
      * @param  string  $key
-     * @return bool
+     * @return void
      */
     public function __unset($key)
     {
@@ -429,8 +441,14 @@ class View implements ArrayAccess, ViewContract
      */
     public function __call($method, $parameters)
     {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
         if (! Str::startsWith($method, 'with')) {
-            throw new BadMethodCallException("Method [$method] does not exist on view.");
+            throw new BadMethodCallException(sprintf(
+                'Method %s::%s does not exist.', static::class, $method
+            ));
         }
 
         return $this->with(Str::camel(substr($method, 4)), $parameters[0]);
@@ -441,6 +459,8 @@ class View implements ArrayAccess, ViewContract
 	 * 获取视图的字符串内容
      *
      * @return string
+     *
+     * @throws \Throwable
      */
     public function __toString()
     {

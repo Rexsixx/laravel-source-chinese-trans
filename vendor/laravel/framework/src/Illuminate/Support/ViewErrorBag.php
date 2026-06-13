@@ -47,7 +47,7 @@ class ViewErrorBag implements Countable
 
     /**
      * Get all the bags.
-	 * 拿上所有的包
+	 * 得到所有的包
      *
      * @return array
      */
@@ -73,7 +73,7 @@ class ViewErrorBag implements Countable
 
     /**
      * Determine if the default message bag has any messages.
-	 * 确定默认消息包是否包含任何消息
+	 * 确定默认消息包是否有任何消息
      *
      * @return bool
      */
@@ -84,7 +84,7 @@ class ViewErrorBag implements Countable
 
     /**
      * Get the number of messages in the default bag.
-	 * 获取默认包中的消息数
+	 * 在默认包中获取消息的数量
      *
      * @return int
      */

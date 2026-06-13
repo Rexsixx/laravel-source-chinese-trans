@@ -1,10 +1,14 @@
 <?php
+/**
+ * Faker，有效生成器
+ */
 
 namespace Faker;
 
 /**
  * Proxy for other generators, to return only valid values. Works with
  * Faker\Generator\Base->valid()
+ * 代理其他生成器,只返回有效值。
  */
 class ValidGenerator
 {
@@ -33,6 +37,7 @@ class ValidGenerator
 
     /**
      * Catch and proxy all generator calls but return only valid values
+	 * 捕获和代理所有生成器调用,但只返回有效值。
      * @param string $attribute
      *
      * @return mixed

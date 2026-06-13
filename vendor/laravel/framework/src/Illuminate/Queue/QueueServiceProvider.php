@@ -1,10 +1,12 @@
 <?php
 /**
- * Illuminate，队列，队列服务提供程序
+ * Illuminate，行列，队列服务提供程序
  */
 
 namespace Illuminate\Queue;
 
+use Illuminate\Support\Str;
+use Opis\Closure\SerializableClosure;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Queue\Connectors\SqsConnector;
 use Illuminate\Queue\Connectors\NullConnector;
@@ -35,14 +37,11 @@ class QueueServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerManager();
-
         $this->registerConnection();
-
         $this->registerWorker();
-
         $this->registerListener();
-
         $this->registerFailedJobServices();
+        $this->registerOpisSecurityKey();
     }
 
     /**
@@ -231,6 +230,21 @@ class QueueServiceProvider extends ServiceProvider
         return new DatabaseFailedJobProvider(
             $this->app['db'], $config['database'], $config['table']
         );
+    }
+
+    /**
+     * Configure Opis Closure signing for security.
+	 * 为安全性配置Opis闭包签名
+     *
+     * @return void
+     */
+    protected function registerOpisSecurityKey()
+    {
+        if (Str::startsWith($key = $this->app['config']->get('app.key'), 'base64:')) {
+            $key = base64_decode(substr($key, 7));
+        }
+
+        SerializableClosure::setSecretKey($key);
     }
 
     /**

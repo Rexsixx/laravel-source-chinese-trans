@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，佯装，队列 Fake
+ * Illuminate，支持，测试，假装，队列 Fake
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -13,7 +13,7 @@ class QueueFake extends QueueManager implements Queue
 {
     /**
      * All of the jobs that have been pushed.
-	 * 所有的工作都被推迟了
+	 * 所有的作业都被推迟了
      *
      * @var array
      */
@@ -72,6 +72,93 @@ class QueueFake extends QueueManager implements Queue
             }
 
             return $callback ? $callback(...func_get_args()) : true;
+        });
+    }
+
+    /**
+     * Assert if a job was pushed with chained jobs based on a truth-test callback.
+	 * 判断一个作业是否被基于真值测试回调的链式作业推送
+     *
+     * @param  string $job
+     * @param  array $expectedChain
+     * @param  callable|null $callback
+     * @return void
+     */
+    public function assertPushedWithChain($job, $expectedChain = [], $callback = null)
+    {
+        PHPUnit::assertTrue(
+            $this->pushed($job, $callback)->isNotEmpty(),
+            "The expected [{$job}] job was not pushed."
+        );
+
+        PHPUnit::assertTrue(
+            collect($expectedChain)->isNotEmpty(),
+            'The expected chain can not be empty.'
+        );
+
+        $this->isChainOfObjects($expectedChain)
+                ? $this->assertPushedWithChainOfObjects($job, $expectedChain, $callback)
+                : $this->assertPushedWithChainOfClasses($job, $expectedChain, $callback);
+    }
+
+    /**
+     * Assert if a job was pushed with chained jobs based on a truth-test callback.
+	 * 判断一个作业是否被基于真值测试回调的链式作业推送
+     *
+     * @param  string $job
+     * @param  array $expectedChain
+     * @param  callable|null $callback
+     * @return void
+     */
+    protected function assertPushedWithChainOfObjects($job, $expectedChain, $callback)
+    {
+        $chain = collect($expectedChain)->map(function ($job) {
+            return serialize($job);
+        })->all();
+
+        PHPUnit::assertTrue(
+            $this->pushed($job, $callback)->filter(function ($job) use ($chain) {
+                return $job->chained == $chain;
+            })->isNotEmpty(),
+            'The expected chain was not pushed.'
+        );
+    }
+
+    /**
+     * Assert if a job was pushed with chained jobs based on a truth-test callback.
+	 * 判断一个作业是否被基于真值测试回调的链式作业推送
+     *
+     * @param  string $job
+     * @param  array $expectedChain
+     * @param  callable|null $callback
+     * @return void
+     */
+    protected function assertPushedWithChainOfClasses($job, $expectedChain, $callback)
+    {
+        $matching = $this->pushed($job, $callback)->map->chained->map(function ($chain) {
+            return collect($chain)->map(function ($job) {
+                return get_class(unserialize($job));
+            });
+        })->filter(function ($chain) use ($expectedChain) {
+            return $chain->all() === $expectedChain;
+        });
+
+        PHPUnit::assertTrue(
+            $matching->isNotEmpty(), 'The expected chain was not pushed.'
+        );
+    }
+
+    /**
+     * Determine if the given chain is entirely composed of objects.
+	 * 确定给定链是否完全由对象组成
+     *
+     * @param  array  $chain
+     * @return bool
+     */
+    protected function isChainOfObjects($chain)
+    {
+        return ! collect($chain)->contains(function ($job) {
+            return ! is_object($job);
         });
     }
 
@@ -158,7 +245,7 @@ class QueueFake extends QueueManager implements Queue
      */
     public function size($queue = null)
     {
-        return 0;
+        return count($this->jobs);
     }
 
     /**
@@ -262,6 +349,17 @@ class QueueFake extends QueueManager implements Queue
         foreach ($jobs as $job) {
             $this->push($job, $data, $queue);
         }
+    }
+
+    /**
+     * Get the jobs that have been pushed.
+	 * 争取那些被推迟的工作
+     *
+     * @return array
+     */
+    public function pushedJobs()
+    {
+        return $this->jobs;
     }
 
     /**

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，数据采集装置，Ajax 数据采集装置
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,10 +21,17 @@ use Symfony\Component\HttpFoundation\Response;
  * AjaxDataCollector.
  *
  * @author Bart van den Burg <bart@burgov.nl>
+ *
+ * @final since Symfony 4.4
  */
 class AjaxDataCollector extends DataCollector
 {
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    /**
+     * {@inheritdoc}
+     *
+     * @param \Throwable|null $exception
+     */
+    public function collect(Request $request, Response $response/* , \Throwable $exception = null */)
     {
         // all collecting is done client side
     }

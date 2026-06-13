@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，转储，Json 文件转储
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -25,7 +28,7 @@ class JsonFileDumper extends FileDumper
      */
     public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = [])
     {
-        $flags = $options['json_encoding'] ?? JSON_PRETTY_PRINT;
+        $flags = $options['json_encoding'] ?? \JSON_PRETTY_PRINT;
 
         return json_encode($messages->all($domain), $flags);
     }

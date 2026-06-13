@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，进程，输入流
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Process\Exception\RuntimeException;
 
 /**
  * Provides a way to continuously write to the input of a Process until the InputStream is closed.
+ * 提供一种持续写入进程输入的方法，直到InputStream关闭。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -66,6 +70,10 @@ class InputStream implements \IteratorAggregate
         return !$this->open;
     }
 
+    /**
+     * @return \Traversable
+     */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         $this->open = true;
@@ -78,9 +86,7 @@ class InputStream implements \IteratorAggregate
             $current = array_shift($this->input);
 
             if ($current instanceof \Iterator) {
-                foreach ($current as $cur) {
-                    yield $cur;
-                }
+                yield from $current;
             } else {
                 yield $current;
             }

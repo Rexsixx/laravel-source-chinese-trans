@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由
+ * Illuminate，路由，Route
  */
 
 namespace Illuminate\Routing;
@@ -97,6 +97,14 @@ class Route
     public $parameterNames;
 
     /**
+     * The array of the matched parameters' original values.
+	 * 匹配参数的原始值的数组
+     *
+     * @var array
+     */
+    protected $originalParameters;
+
+    /**
      * The computed gathered middleware.
 	 * 计算集合中间件
      *
@@ -138,7 +146,7 @@ class Route
 
     /**
      * Create a new Route instance.
-	 * 创建新的路由实例
+	 * 创建一个新的Route实例
      *
      * @param  array|string  $methods
      * @param  string  $uri
@@ -329,6 +337,8 @@ class Route
         $this->parameters = (new RouteParameterBinder($this))
                         ->parameters($request);
 
+        $this->originalParameters = $this->parameters;
+
         return $this;
     }
 
@@ -373,6 +383,19 @@ class Route
     }
 
     /**
+     * Get original value of a given parameter from the route.
+	 * 从路由中获取给定参数的原始值
+     *
+     * @param  string  $name
+     * @param  mixed   $default
+     * @return string
+     */
+    public function originalParameter($name, $default = null)
+    {
+        return Arr::get($this->originalParameters(), $name, $default);
+    }
+
+    /**
      * Set a parameter to the given value.
 	 * 将参数设置为给定值
      *
@@ -413,6 +436,23 @@ class Route
     {
         if (isset($this->parameters)) {
             return $this->parameters;
+        }
+
+        throw new LogicException('Route is not bound.');
+    }
+
+    /**
+     * Get the key / value list of original parameters for the route.
+	 * 获取路由原始参数的键/值列表
+     *
+     * @return array
+     *
+     * @throws \LogicException
+     */
+    public function originalParameters()
+    {
+        if (isset($this->originalParameters)) {
+            return $this->originalParameters;
         }
 
         throw new LogicException('Route is not bound.');
@@ -634,7 +674,7 @@ class Route
 
     /**
      * Add a prefix to the route URI.
-	 * 为路由URI添加前缀。
+	 * 为路由URI添加前缀
      *
      * @param  string  $prefix
      * @return $this
@@ -702,7 +742,7 @@ class Route
      * Determine whether the route's name matches the given patterns.
 	 * 确定路由的名称是否与给定的模式匹配
      *
-     * @param  dynamic  $patterns
+     * @param  mixed  ...$patterns
      * @return bool
      */
     public function named(...$patterns)
@@ -791,7 +831,7 @@ class Route
 
     /**
      * Set the action array for the route.
-	 * 设置路由的动作数组
+	 * 设置路由的动作数组。
      *
      * @param  array  $action
      * @return $this
@@ -893,6 +933,8 @@ class Route
         // To match the route, we will use a chain of responsibility pattern with the
         // validator implementations. We will spin through each one making sure it
         // passes and then we will know if the route as a whole matches request.
+		// 为了实现该路线，我们将采用责任链模式，并结合验证器实现来进行操作。
+		// 我们将旋转每一个确保它通过,然后我们将知道路线是一个完整的匹配请求。
         return static::$validators = [
             new UriValidator, new MethodValidator,
             new SchemeValidator, new HostValidator,

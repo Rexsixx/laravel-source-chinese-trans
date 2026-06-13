@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，与队列交互
+ * Illuminate，行列，与队列交互
  */
 
 namespace Illuminate\Queue;

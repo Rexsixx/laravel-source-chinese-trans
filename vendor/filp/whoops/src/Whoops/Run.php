@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，Run
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -64,6 +68,7 @@ final class Run implements RunInterface
 
     /**
      * In certain scenarios, like in shutdown handler, we can not throw exceptions.
+	 * 在某些场景中,如在关机处理程序中,我们不能抛出异常。
      *
      * @var bool
      */
@@ -71,6 +76,7 @@ final class Run implements RunInterface
 
     /**
      * The inspector factory to create inspectors.
+	 * 检查员工厂要制造检查员
      *
      * @var InspectorFactoryInterface
      */
@@ -94,6 +100,7 @@ final class Run implements RunInterface
 
     /**
      * Explicitly request your handler runs as the last of all currently registered handlers.
+	 * 显式地请求您的处理程序运行为当前所有注册处理程序的最后一个
      *
      * @param callable|HandlerInterface $handler
      *
@@ -107,6 +114,7 @@ final class Run implements RunInterface
 
     /**
      * Explicitly request your handler runs as the first of all currently registered handlers.
+	 * 显式地请求您的处理程序作为所有当前注册处理程序中的第一个运行
      *
      * @param callable|HandlerInterface $handler
      *

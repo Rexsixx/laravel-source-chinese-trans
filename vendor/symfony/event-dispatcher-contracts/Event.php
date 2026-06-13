@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，事件调度器，事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Psr\EventDispatcher\StoppableEventInterface;
 if (interface_exists(StoppableEventInterface::class)) {
     /**
      * Event is the base class for classes containing event data.
+	 * Event是包含事件数据的类的基类。
      *
      * This class contains no event data. It is used by events that do not pass
      * state information to an event handler when an event is raised.
@@ -35,6 +39,7 @@ if (interface_exists(StoppableEventInterface::class)) {
 
         /**
          * Returns whether further event listeners should be triggered.
+		 * 返回是否应该触发进一步的事件侦听器
          */
         public function isPropagationStopped(): bool
         {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，再设置接口
+ */
 
 /*
  * This file is part of the Monolog package.

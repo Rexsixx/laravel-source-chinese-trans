@@ -12,12 +12,13 @@ class ResetPasswordController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Password Reset Controller		密码重置控制器
+    | Password Reset Controller		密码复位控制器
     |--------------------------------------------------------------------------
     |
     | This controller is responsible for handling password reset requests
     | and uses a simple trait to include this behavior. You're free to
     | explore this trait and override any methods you wish to tweak.
+	| 该控制器负责处理密码重置请求，并使用一个简单的trait来包含此行为。
     |
     */
 
@@ -25,7 +26,7 @@ class ResetPasswordController extends Controller
 
     /**
      * Where to redirect users after resetting their password.
-	 * 在重新设置密码后重定向用户
+	 * 重置密码后重定向用户的位置
      *
      * @var string
      */
@@ -33,7 +34,7 @@ class ResetPasswordController extends Controller
 
     /**
      * Create a new controller instance.
-	 * 创建新的控制器实例 
+	 * 创建一个新的控制器实例
      *
      * @return void
      */

@@ -1,0 +1,4 @@
+
+http://localhost:9031/
+
+github: https://github.com/rexsixx/laravel-source-chinese-trans

@@ -44,6 +44,8 @@ class ValidationServiceProvider extends ServiceProvider
             // The validation presence verifier is responsible for determining the existence of
             // values in a given data collection which is typically a relational database or
             // other persistent data stores. It is used to check for "uniqueness" as well.
+			// 验证存在性验证器负责确定给定数据集合（通常是关系型数据库或其他持久性数据存储）中是否存在特定的值。
+			// 它还用于检查“唯一性”。
             if (isset($app['db'], $app['validation.presence'])) {
                 $validator->setPresenceVerifier($app['validation.presence']);
             }

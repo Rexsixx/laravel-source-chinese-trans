@@ -1,0 +1,79 @@
+<?php
+/**
+ * Illuminate，路由，控制台，存根，动态类，根据实际需要修改
+ */
+
+namespace DummyNamespace;
+
+use DummyFullModelClass;
+use ParentDummyFullModelClass;
+use Illuminate\Http\Request;
+use DummyRootNamespaceHttp\Controllers\Controller;
+
+class DummyClass extends Controller
+{
+    /**
+     * Display a listing of the resource.
+	 * 显示资源的列表
+     *
+     * @param  \ParentDummyFullModelClass  $ParentDummyModelVariable
+     * @return \Illuminate\Http\Response
+     */
+    public function index(ParentDummyModelClass $ParentDummyModelVariable)
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+	 * 将新创建的资源存储在存储器中
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \ParentDummyFullModelClass  $ParentDummyModelVariable
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request, ParentDummyModelClass $ParentDummyModelVariable)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+	 * 显示指定资源
+     *
+     * @param  \ParentDummyFullModelClass  $ParentDummyModelVariable
+     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @return \Illuminate\Http\Response
+     */
+    public function show(ParentDummyModelClass $ParentDummyModelVariable, DummyModelClass $DummyModelVariable)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+	 * 更新存储中的指定资源
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \ParentDummyFullModelClass  $ParentDummyModelVariable
+     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, ParentDummyModelClass $ParentDummyModelVariable, DummyModelClass $DummyModelVariable)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+	 * 从存储中移除指定的资源
+     *
+     * @param  \ParentDummyFullModelClass  $ParentDummyModelVariable
+     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(ParentDummyModelClass $ParentDummyModelVariable, DummyModelClass $DummyModelVariable)
+    {
+        //
+    }
+}

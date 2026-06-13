@@ -9,7 +9,7 @@ interface Rule
 {
     /**
      * Determine if the validation rule passes.
-	 * 确定验证规则是否通过。
+	 * 确定验证规则是否通过
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -21,7 +21,7 @@ interface Rule
      * Get the validation error message.
 	 * 获取验证错误消息
      *
-     * @return string
+     * @return string|array
      */
     public function message();
 }

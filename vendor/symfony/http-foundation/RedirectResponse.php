@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http基础，重定向响应
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * RedirectResponse represents an HTTP response doing a redirect.
+ * RedirectResponse表示执行重定向的HTTP响应。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -22,6 +26,7 @@ class RedirectResponse extends Response
 
     /**
      * Creates a redirect response so that it conforms to the rules defined for a redirect status code.
+	 * 创建重定向响应，使其符合为重定向状态码定义的规则。
      *
      * @param string $url     The URL to redirect to. The URL should be a full URL, with schema etc.,
      *                        but practically every browser redirects on paths only as well
@@ -32,8 +37,13 @@ class RedirectResponse extends Response
      *
      * @see https://tools.ietf.org/html/rfc2616#section-10.3
      */
-    public function __construct($url, $status = 302, $headers = [])
+    public function __construct(?string $url, int $status = 302, array $headers = [])
     {
+        if (null === $url) {
+            @trigger_error(sprintf('Passing a null url when instantiating a "%s" is deprecated since Symfony 4.4.', __CLASS__), \E_USER_DEPRECATED);
+            $url = '';
+        }
+
         parent::__construct('', $status, $headers);
 
         $this->setTargetUrl($url);
@@ -82,7 +92,7 @@ class RedirectResponse extends Response
      */
     public function setTargetUrl($url)
     {
-        if (empty($url)) {
+        if ('' === ($url ?? '')) {
             throw new \InvalidArgumentException('Cannot redirect to an empty URL.');
         }
 

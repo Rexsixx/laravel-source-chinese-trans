@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，队列
+ * Illuminate，队列，Queue
  */
 
 namespace Illuminate\Queue;
@@ -22,20 +22,20 @@ abstract class Queue
     protected $container;
 
     /**
-     * The encrypter implementation.
-	 * 加密器实现
-     *
-     * @var \Illuminate\Contracts\Encryption\Encrypter
-     */
-    protected $encrypter;
-
-    /**
      * The connection name for the queue.
 	 * 队列的连接名称
      *
      * @var string
      */
     protected $connectionName;
+
+    /**
+     * The create payload callbacks.
+	 * 创建有效负载回调
+     *
+     * @var callable[]
+     */
+    protected static $createPayloadCallbacks = [];
 
     /**
      * Push a new job onto the queue.
@@ -73,7 +73,7 @@ abstract class Queue
      * @param  array   $jobs
      * @param  mixed   $data
      * @param  string  $queue
-     * @return mixed
+     * @return void
      */
     public function bulk($jobs, $data = '', $queue = null)
     {
@@ -87,14 +87,15 @@ abstract class Queue
 	 * 根据给定的作业和数据创建有效负载字符串
      *
      * @param  string  $job
+     * @param  string  $queue
      * @param  mixed   $data
      * @return string
      *
      * @throws \Illuminate\Queue\InvalidPayloadException
      */
-    protected function createPayload($job, $data = '')
+    protected function createPayload($job, $queue, $data = '')
     {
-        $payload = json_encode($this->createPayloadArray($job, $data));
+        $payload = json_encode($this->createPayloadArray($job, $queue, $data));
 
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new InvalidPayloadException(
@@ -109,15 +110,16 @@ abstract class Queue
      * Create a payload array from the given job and data.
 	 * 根据给定的作业和数据创建有效负载数组
      *
-     * @param  string  $job
-     * @param  mixed   $data
+     * @param  mixed  $job
+     * @param  string  $queue
+     * @param  mixed  $data
      * @return array
      */
-    protected function createPayloadArray($job, $data = '')
+    protected function createPayloadArray($job, $queue, $data = '')
     {
         return is_object($job)
-                    ? $this->createObjectPayload($job)
-                    : $this->createStringPayload($job, $data);
+                    ? $this->createObjectPayload($job, $queue)
+                    : $this->createStringPayload($job, $queue, $data);
     }
 
     /**
@@ -125,21 +127,29 @@ abstract class Queue
 	 * 为基于对象的队列处理程序创建有效负载
      *
      * @param  mixed  $job
+     * @param  string  $queue
      * @return array
      */
-    protected function createObjectPayload($job)
+    protected function createObjectPayload($job, $queue)
     {
-        return [
+        $payload = $this->withCreatePayloadHooks($queue, [
             'displayName' => $this->getDisplayName($job),
             'job' => 'Illuminate\Queue\CallQueuedHandler@call',
             'maxTries' => $job->tries ?? null,
             'timeout' => $job->timeout ?? null,
             'timeoutAt' => $this->getJobExpiration($job),
             'data' => [
+                'commandName' => $job,
+                'command' => $job,
+            ],
+        ]);
+
+        return array_merge($payload, [
+            'data' => [
                 'commandName' => get_class($job),
                 'command' => serialize(clone $job),
             ],
-        ];
+        ]);
     }
 
     /**
@@ -179,16 +189,56 @@ abstract class Queue
 	 * 创建一个典型的、基于字符串的队列有效负载数组。
      *
      * @param  string  $job
+     * @param  string  $queue
      * @param  mixed  $data
      * @return array
      */
-    protected function createStringPayload($job, $data)
+    protected function createStringPayload($job, $queue, $data)
     {
-        return [
+        return $this->withCreatePayloadHooks($queue, [
             'displayName' => is_string($job) ? explode('@', $job)[0] : null,
-            'job' => $job, 'maxTries' => null,
-            'timeout' => null, 'data' => $data,
-        ];
+            'job' => $job,
+            'maxTries' => null,
+            'timeout' => null,
+            'data' => $data,
+        ]);
+    }
+
+    /**
+     * Register a callback to be executed when creating job payloads.
+	 * 注册一个回调，以便在创建作业有效负载时执行。
+     *
+     * @param  callable  $callback
+     * @return void
+     */
+    public static function createPayloadUsing($callback)
+    {
+        if (is_null($callback)) {
+            static::$createPayloadCallbacks = [];
+        } else {
+            static::$createPayloadCallbacks[] = $callback;
+        }
+    }
+
+    /**
+     * Create the given payload using any registered payload hooks.
+	 * 使用任何已注册的有效负载钩子创建给定的有效负载
+     *
+     * @param  string  $queue
+     * @param  array  $payload
+     * @return array
+     */
+    protected function withCreatePayloadHooks($queue, array $payload)
+    {
+        if (! empty(static::$createPayloadCallbacks)) {
+            foreach (static::$createPayloadCallbacks as $callback) {
+                $payload = array_merge($payload, call_user_func(
+                    $callback, $this->getConnectionName(), $queue, $payload
+                ));
+            }
+        }
+
+        return $payload;
     }
 
     /**

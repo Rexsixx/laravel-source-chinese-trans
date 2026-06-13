@@ -69,7 +69,7 @@ class OutputStyle extends SymfonyStyle
 
     /**
      * Returns whether verbosity is debug (-vvv).
-	 * 返回verbose是否为debug （-vvv）
+	 * 返回verbose是否为debug（-vvv）
      *
      * @return bool
      */

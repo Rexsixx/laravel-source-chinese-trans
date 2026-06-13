@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，插件，空目录
+ */
 
 namespace League\Flysystem\Plugin;
 
@@ -6,6 +9,7 @@ class EmptyDir extends AbstractPlugin
 {
     /**
      * Get the method name.
+	 * 获取方法名称
      *
      * @return string
      */

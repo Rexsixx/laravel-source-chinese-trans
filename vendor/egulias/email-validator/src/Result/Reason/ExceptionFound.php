@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，结果，理由，异常找到
+ */
 
 namespace Egulias\EmailValidator\Result\Reason;
 

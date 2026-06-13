@@ -1,4 +1,8 @@
 <?php
+/**
+ * Symfony，组件，Http内核，调试，抽象代理
+ */
+
 
 /*
  * This file is part of the Symfony package.
@@ -57,7 +61,7 @@ abstract class AbstractSurrogate implements SurrogateInterface
             return false;
         }
 
-        return false !== strpos($value, sprintf('%s/1.0', strtoupper($this->getName())));
+        return str_contains($value, sprintf('%s/1.0', strtoupper($this->getName())));
     }
 
     /**
@@ -95,7 +99,7 @@ abstract class AbstractSurrogate implements SurrogateInterface
         try {
             $response = $cache->handle($subRequest, HttpKernelInterface::SUB_REQUEST, true);
 
-            if (!$response->isSuccessful()) {
+            if (!$response->isSuccessful() && Response::HTTP_NOT_MODIFIED !== $response->getStatusCode()) {
                 throw new \RuntimeException(sprintf('Error when rendering "%s" (Status code is %d).', $subRequest->getUri(), $response->getStatusCode()));
             }
 

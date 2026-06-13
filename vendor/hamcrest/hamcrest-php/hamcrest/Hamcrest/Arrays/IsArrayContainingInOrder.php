@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，数组，是否数组包含
+ */
+
 namespace Hamcrest\Arrays;
 
 /*
@@ -10,6 +14,7 @@ use Hamcrest\Util;
 
 /**
  * Matches if an array contains a set of items satisfying nested matchers.
+ * 匹配如果一个数组包含一组令人满意的嵌套解码器。
  */
 class IsArrayContainingInOrder extends TypeSafeDiagnosingMatcher
 {

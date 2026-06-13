@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，文件，异常，文件未发现异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,15 +16,13 @@ namespace Symfony\Component\HttpFoundation\File\Exception;
 
 /**
  * Thrown when a file was not found.
+ * 当找不到文件时抛出。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
 class FileNotFoundException extends FileException
 {
-    /**
-     * @param string $path The path to the file that was not found
-     */
-    public function __construct($path)
+    public function __construct(string $path)
     {
         parent::__construct(sprintf('The file "%s" does not exist', $path));
     }

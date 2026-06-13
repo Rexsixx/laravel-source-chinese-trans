@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，异常，未定义方法异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -11,14 +14,19 @@
 
 namespace Symfony\Component\Debug\Exception;
 
+@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.4, use "%s" instead.', UndefinedMethodException::class, \Symfony\Component\ErrorHandler\Error\UndefinedMethodError::class), \E_USER_DEPRECATED);
+
 /**
  * Undefined Method Exception.
+ * 未定义的方法异常。
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
+ *
+ * @deprecated since Symfony 4.4, use Symfony\Component\ErrorHandler\Error\UndefinedMethodError instead.
  */
 class UndefinedMethodException extends FatalErrorException
 {
-    public function __construct($message, \ErrorException $previous)
+    public function __construct(string $message, \ErrorException $previous)
     {
         parent::__construct(
             $message,

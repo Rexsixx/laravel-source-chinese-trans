@@ -63,7 +63,7 @@ interface UrlGenerator
      * Get the URL to a controller action.
 	 * 获取一个控制器动作的URL
      *
-     * @param  string  $action
+     * @param  string|array  $action
      * @param  mixed $parameters
      * @param  bool $absolute
      * @return string

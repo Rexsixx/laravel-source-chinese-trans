@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，探测器，比较器，数字比较器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -14,6 +17,7 @@ namespace Symfony\Component\Finder\Comparator;
 /**
  * NumberComparator compiles a simple comparison to an anonymous
  * subroutine, which you can call with a value to be tested again.
+ * NumberComparator 会编译一个简单的比较函数，该函数可与匿名子程序结合使用，你可以通过传递待测试的值来调用它。
  *
  * Now this would be very pointless, if NumberCompare didn't understand
  * magnitudes.
@@ -39,10 +43,10 @@ class NumberComparator extends Comparator
      *
      * @throws \InvalidArgumentException If the test is not understood
      */
-    public function __construct($test)
+    public function __construct(?string $test)
     {
-        if (!preg_match('#^\s*(==|!=|[<>]=?)?\s*([0-9\.]+)\s*([kmg]i?)?\s*$#i', $test, $matches)) {
-            throw new \InvalidArgumentException(sprintf('Don\'t understand "%s" as a number test.', $test));
+        if (null === $test || !preg_match('#^\s*(==|!=|[<>]=?)?\s*([0-9\.]+)\s*([kmg]i?)?\s*$#i', $test, $matches)) {
+            throw new \InvalidArgumentException(sprintf('Don\'t understand "%s" as a number test.', $test ?? 'null'));
         }
 
         $target = $matches[2];
@@ -74,6 +78,6 @@ class NumberComparator extends Comparator
         }
 
         $this->setTarget($target);
-        $this->setOperator(isset($matches[1]) ? $matches[1] : '==');
+        $this->setOperator($matches[1] ?? '==');
     }
 }

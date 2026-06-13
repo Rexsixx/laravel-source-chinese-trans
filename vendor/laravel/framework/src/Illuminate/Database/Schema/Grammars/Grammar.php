@@ -1,10 +1,11 @@
 <?php
 /**
- * Illuminate，数据库，架构，语法，语法
+ * Illuminate，数据库，模式，语法，Grammar
  */
 
 namespace Illuminate\Database\Schema\Grammars;
 
+use RuntimeException;
 use Illuminate\Support\Fluent;
 use Doctrine\DBAL\Schema\TableDiff;
 use Illuminate\Database\Connection;
@@ -22,6 +23,14 @@ abstract class Grammar extends BaseGrammar
      * @var bool
      */
     protected $transactions = false;
+
+    /**
+     * The commands to be executed outside of create or alter command.
+	 * 要在create或alter命令之外执行的命令
+     *
+     * @var array
+     */
+    protected $fluentCommands = [];
 
     /**
      * Compile a rename column command.
@@ -66,6 +75,8 @@ abstract class Grammar extends BaseGrammar
         // We need to prepare several of the elements of the foreign key definition
         // before we can create the SQL, such as wrapping the tables and convert
         // an array of columns to comma-delimited strings for the SQL queries.
+		// 在我们创建SQL之前,我们需要准备几个外部密钥定义的元素,
+		// 比如包装表,并将一个列的数组转换为SQL查询的逗号分隔的字符串。
         $sql = sprintf('alter table %s add constraint %s ',
             $this->wrapTable($blueprint),
             $this->wrap($command->index)
@@ -74,6 +85,8 @@ abstract class Grammar extends BaseGrammar
         // Once we have the initial portion of the SQL statement we will add on the
         // key name, table name, and referenced columns. These will complete the
         // main portion of the SQL statement and this SQL will almost be done.
+		// 一旦我们有了SQL语句的初始部分,我们将添加密钥名称、表名和引用列。
+		// 这些将完成SQL语句的主要部分,而此SQL将几乎完成。
         $sql .= sprintf('foreign key (%s) references %s (%s)',
             $this->columnize($command->columns),
             $this->wrapTable($command->on),
@@ -83,6 +96,8 @@ abstract class Grammar extends BaseGrammar
         // Once we have the basic foreign key creation statement constructed we can
         // build out the syntax for what should happen on an update or delete of
         // the affected columns, which will get something like "cascade", etc.
+		// 一旦我们有了基本的外键创建语句,我们就可以在对受影响的列的更新或删除中发生的事情构建语法,
+		// 这将得到类似“级联”等的语法。
         if (! is_null($command->onDelete)) {
             $sql .= " on delete {$command->onDelete}";
         }
@@ -109,6 +124,8 @@ abstract class Grammar extends BaseGrammar
             // Each of the column types have their own compiler functions which are tasked
             // with turning the column definition into its SQL format for this platform
             // used by the connection. The column's modifiers are compiled and added.
+			// 每个列类型都有自己的编译函数,任务是将列定义转换为该平台使用的该平台的SQL格式。
+			// 该列的修饰符被编译和添加。
             $sql = $this->wrap($column).' '.$this->getType($column);
 
             $columns[] = $this->addModifiers($sql, $blueprint, $column);
@@ -127,6 +144,20 @@ abstract class Grammar extends BaseGrammar
     protected function getType(Fluent $column)
     {
         return $this->{'type'.ucfirst($column->type)}($column);
+    }
+
+    /**
+     * Create the column definition for a generated, computed column type.
+	 * 为生成的、计算的列类型创建列定义。
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return void
+     *
+     * @throws \RuntimeException
+     */
+    protected function typeComputed(Fluent $column)
+    {
+        throw new RuntimeException('This database driver does not support the computed type.');
     }
 
     /**
@@ -258,6 +289,17 @@ abstract class Grammar extends BaseGrammar
         return tap(new TableDiff($table), function ($tableDiff) use ($schema, $table) {
             $tableDiff->fromTable = $schema->listTableDetails($table);
         });
+    }
+
+    /**
+     * Get the fluent commands for the grammar.
+	 * 获得流利的语法命令
+     *
+     * @return array
+     */
+    public function getFluentCommands()
+    {
+        return $this->fluentCommands;
     }
 
     /**

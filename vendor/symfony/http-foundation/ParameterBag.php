@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http基础，参数包
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,9 +26,6 @@ class ParameterBag implements \IteratorAggregate, \Countable
      */
     protected $parameters;
 
-    /**
-     * @param array $parameters An array of parameters
-     */
     public function __construct(array $parameters = [])
     {
         $this->parameters = $parameters;
@@ -53,8 +53,6 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Replaces the current parameters by a new set.
-     *
-     * @param array $parameters An array of parameters
      */
     public function replace(array $parameters = [])
     {
@@ -63,8 +61,6 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Adds parameters.
-     *
-     * @param array $parameters An array of parameters
      */
     public function add(array $parameters = [])
     {
@@ -217,6 +213,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
      *
      * @return \ArrayIterator An \ArrayIterator instance
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new \ArrayIterator($this->parameters);
@@ -227,6 +224,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
      *
      * @return int The number of parameters
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return \count($this->parameters);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，控制台，种子，播种机制作命令 make:seeder
+ * Illuminate，数据库，控制台，播种，播种机编译命令
  */
 
 namespace Illuminate\Database\Console\Seeds;
@@ -13,7 +13,7 @@ class SeederMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
@@ -21,7 +21,7 @@ class SeederMakeCommand extends GeneratorCommand
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */

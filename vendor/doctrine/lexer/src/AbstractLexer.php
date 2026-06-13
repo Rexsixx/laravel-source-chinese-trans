@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，公共，Lexer，抽象的词法分析程序
+ * Doctrine，Common，Lexer，抽象 Lexer
  */
 
 declare(strict_types=1);
@@ -22,7 +22,7 @@ use const PREG_SPLIT_OFFSET_CAPTURE;
 
 /**
  * Base class for writing simple lexers, i.e. for creating small DSLs.
- * 用于编写简单词法分析器的基类，即用于创建小型DSLs。
+ * 基类编写简单的词典,即创建小dsl。
  *
  * @template T of UnitEnum|string|int
  * @template V of string|int
@@ -31,7 +31,6 @@ abstract class AbstractLexer
 {
     /**
      * Lexer original input string.
-	 * 输入字符串
      *
      * @var string
      */

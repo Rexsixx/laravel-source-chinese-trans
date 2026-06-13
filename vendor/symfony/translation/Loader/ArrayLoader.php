@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，加载器，数组加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * ArrayLoader loads translations from a PHP array.
+ * ArrayLoader从PHP数组中加载翻译。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -25,7 +29,7 @@ class ArrayLoader implements LoaderInterface
      */
     public function load($resource, $locale, $domain = 'messages')
     {
-        $this->flatten($resource);
+        $resource = $this->flatten($resource);
         $catalogue = new MessageCatalogue($locale);
         $catalogue->add($resource, $domain);
 
@@ -34,33 +38,26 @@ class ArrayLoader implements LoaderInterface
 
     /**
      * Flattens an nested array of translations.
+	 * 平坦化一个嵌套的翻译数组
      *
      * The scheme used is:
      *   'key' => ['key2' => ['key3' => 'value']]
      * Becomes:
      *   'key.key2.key3' => 'value'
-     *
-     * This function takes an array by reference and will modify it
-     *
-     * @param array  &$messages The array that will be flattened
-     * @param array  $subnode   Current subnode being parsed, used internally for recursive calls
-     * @param string $path      Current path being parsed, used internally for recursive calls
      */
-    private function flatten(array &$messages, array $subnode = null, $path = null)
+    private function flatten(array $messages): array
     {
-        if (null === $subnode) {
-            $subnode = &$messages;
-        }
-        foreach ($subnode as $key => $value) {
+        $result = [];
+        foreach ($messages as $key => $value) {
             if (\is_array($value)) {
-                $nodePath = $path ? $path.'.'.$key : $key;
-                $this->flatten($messages, $value, $nodePath);
-                if (null === $path) {
-                    unset($messages[$key]);
+                foreach ($this->flatten($value) as $k => $v) {
+                    $result[$key.'.'.$k] = $v;
                 }
-            } elseif (null !== $path) {
-                $messages[$path.'.'.$key] = $value;
+            } else {
+                $result[$key] = $value;
             }
         }
+
+        return $result;
     }
 }

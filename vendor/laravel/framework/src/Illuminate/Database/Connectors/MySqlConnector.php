@@ -25,6 +25,7 @@ class MySqlConnector extends Connector implements ConnectorInterface
         // We need to grab the PDO options that should be used while making the brand
         // new connection instance. The PDO options control various aspects of the
         // connection's behavior, and some might be specified by the developers.
+		// 我们需要抓住PDO选项,在制作品牌时应该使用新连接实例。
         $connection = $this->createConnection($dsn, $config, $options);
 
         if (! empty($config['database'])) {
@@ -91,10 +92,10 @@ class MySqlConnector extends Connector implements ConnectorInterface
 
     /**
      * Create a DSN string from a configuration.
-	 * 从配置中创建DSN字符串。
+	 * 从配置中创建DSN字符串
      *
      * Chooses socket or host/port based on the 'unix_socket' config value.
-	 * 根据‘unix_socket’配置值选择套接字或主机/端口。
+	 * 选择基于“unix_socket”配置值的套接字或主机/端口。
      *
      * @param  array   $config
      * @return string
@@ -187,7 +188,6 @@ class MySqlConnector extends Connector implements ConnectorInterface
 	 * 获取查询以启用严格模式
      *
      * @param  \PDO  $connection
-     *
      * @return string
      */
     protected function strictMode(PDO $connection)

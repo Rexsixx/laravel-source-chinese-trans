@@ -5,11 +5,11 @@
 
 namespace Illuminate\Http;
 
-use BadMethodCallException;
 use Illuminate\Support\Str;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
 use Illuminate\Support\Traits\Macroable;
+use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Session\Store as SessionStore;
 use Illuminate\Contracts\Support\MessageProvider;
 use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse as BaseRedirectResponse;
 
 class RedirectResponse extends BaseRedirectResponse
 {
-    use ResponseTrait, Macroable {
+    use ForwardsCalls, ResponseTrait, Macroable {
         Macroable::__call as macroCall;
     }
 
@@ -30,8 +30,8 @@ class RedirectResponse extends BaseRedirectResponse
     protected $request;
 
     /**
-     * The session store implementation.
-	 * 会话存储实现
+     * The session store instance.
+	 * 会话存储实例
      *
      * @var \Illuminate\Session\Store
      */
@@ -208,8 +208,8 @@ class RedirectResponse extends BaseRedirectResponse
     }
 
     /**
-     * Get the session store implementation.
-	 * 获取会话存储实现
+     * Get the session store instance.
+	 * 获取会话存储实例
      *
      * @return \Illuminate\Session\Store|null
      */
@@ -219,8 +219,8 @@ class RedirectResponse extends BaseRedirectResponse
     }
 
     /**
-     * Set the session store implementation.
-	 * 设置会话存储实现
+     * Set the session store instance.
+	 * 设置会话存储实例
      *
      * @param  \Illuminate\Session\Store  $session
      * @return void
@@ -250,8 +250,6 @@ class RedirectResponse extends BaseRedirectResponse
             return $this->with(Str::snake(substr($method, 4)), $parameters[0]);
         }
 
-        throw new BadMethodCallException(
-            "Method [$method] does not exist on Redirect."
-        );
+        static::throwBadMethodCallException($method);
     }
 }

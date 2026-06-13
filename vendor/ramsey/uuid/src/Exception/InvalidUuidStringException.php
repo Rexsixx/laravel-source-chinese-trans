@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，生成器，无效Uuid字符串异常
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE

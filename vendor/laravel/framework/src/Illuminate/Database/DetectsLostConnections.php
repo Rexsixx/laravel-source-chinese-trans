@@ -5,7 +5,7 @@
 
 namespace Illuminate\Database;
 
-use Exception;
+use Throwable;
 use Illuminate\Support\Str;
 
 trait DetectsLostConnections
@@ -14,10 +14,10 @@ trait DetectsLostConnections
      * Determine if the given exception was caused by a lost connection.
 	 * 确定给定的异常是否由丢失的连接引起
      *
-     * @param  \Exception  $e
+     * @param  \Throwable  $e
      * @return bool
      */
-    protected function causedByLostConnection(Exception $e)
+    protected function causedByLostConnection(Throwable $e)
     {
         $message = $e->getMessage();
 
@@ -38,7 +38,10 @@ trait DetectsLostConnections
             'reset by peer',
             'Physical connection is not usable',
             'TCP Provider: Error code 0x68',
-            'Name or service not known',
+            'ORA-03114',
+            'Packets out of order. Expected',
+            'Adaptive Server connection failed',
+            'Communication link failure',
         ]);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，普通用户
+ * Illuminate，认证，普通用户
  */
 
 namespace Illuminate\Auth;
@@ -11,7 +11,7 @@ class GenericUser implements UserContract
 {
     /**
      * All of the user's attributes.
-	 * 用户的所有属性
+	 * 所有用户的属性
      *
      * @var array
      */

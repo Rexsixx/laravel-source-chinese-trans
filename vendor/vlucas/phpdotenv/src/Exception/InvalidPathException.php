@@ -1,4 +1,7 @@
 <?php
+/**
+ * Dotenv，异常，路径无效异常
+ */
 
 namespace Dotenv\Exception;
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，探测器，Glob
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Finder;
 
 /**
  * Glob matches globbing patterns against text.
+ * Glob匹配反文本的globbing模式。
  *
  *     if match_glob("foo.*", "foo.bar") echo "matched\n";
  *
@@ -37,6 +41,7 @@ class Glob
 {
     /**
      * Returns a regexp which is the equivalent of the glob pattern.
+	 * 返回一个相当于glob模式的regexp
      *
      * @param string $glob                The glob pattern
      * @param bool   $strictLeadingDot

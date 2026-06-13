@@ -6,6 +6,7 @@
 namespace Illuminate\Validation;
 
 use Illuminate\Support\Traits\Macroable;
+use Illuminate\Contracts\Support\Arrayable;
 
 class Rule
 {
@@ -38,13 +39,17 @@ class Rule
 
     /**
      * Get an in constraint builder instance.
-	 * 获取约束生成器实例
+	 * 获取一个已存在的约束生成器实例
      *
-     * @param  array|string  $values
+     * @param  \Illuminate\Contracts\Support\Arrayable|array|string  $values
      * @return \Illuminate\Validation\Rules\In
      */
     public static function in($values)
     {
+        if ($values instanceof Arrayable) {
+            $values = $values->toArray();
+        }
+
         return new Rules\In(is_array($values) ? $values : func_get_args());
     }
 
@@ -52,17 +57,33 @@ class Rule
      * Get a not_in constraint builder instance.
 	 * 获取一个not_in约束生成器实例
      *
-     * @param  array|string  $values
+     * @param  \Illuminate\Contracts\Support\Arrayable|array|string  $values
      * @return \Illuminate\Validation\Rules\NotIn
      */
     public static function notIn($values)
     {
+        if ($values instanceof Arrayable) {
+            $values = $values->toArray();
+        }
+
         return new Rules\NotIn(is_array($values) ? $values : func_get_args());
     }
 
     /**
+     * Get a required_if constraint builder instance.
+	 * 如果约束生成器实例得到一个需求
+     *
+     * @param  callable  $callback
+     * @return \Illuminate\Validation\Rules\RequiredIf
+     */
+    public static function requiredIf($callback)
+    {
+        return new Rules\RequiredIf($callback);
+    }
+
+    /**
      * Get a unique constraint builder instance.
-	 * 获取唯一约束构建器实例
+	 * 获取一个惟一的约束生成器实例
      *
      * @param  string  $table
      * @param  string  $column

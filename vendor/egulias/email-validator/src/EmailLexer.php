@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，EmailValidator，电子邮件词法分析程序
+ * Egulias，电子邮件验证器，电子邮件词典
  */
 
 namespace Egulias\EmailValidator;
@@ -146,7 +146,7 @@ class EmailLexer extends AbstractLexer
 
     /**
      * The last matched/seen token.
-	 * 最后匹配/看到的标记
+	 * 最后一个匹配/见令牌
      *
      * @var array|Token
      *
@@ -157,6 +157,7 @@ class EmailLexer extends AbstractLexer
 
     /**
      * The next token in the input.
+	 * 输入中的下一个令牌
      *
      * @var array|Token|null
      *
@@ -237,6 +238,7 @@ class EmailLexer extends AbstractLexer
 
     /**
      * Retrieve token type. Also processes the token value if necessary.
+	 * 检索令牌类型。如果需要,也处理令牌值
      *
      * @param string $value
      * @throws \InvalidArgumentException

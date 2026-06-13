@@ -14,7 +14,7 @@ class FailedTableCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
@@ -22,7 +22,7 @@ class FailedTableCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令说明
+	 * 控制台命令名
      *
      * @var string
      */

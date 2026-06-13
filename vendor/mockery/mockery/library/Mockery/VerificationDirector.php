@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，验证主管
+ */
+
+/**
  * Mockery
  *
  * LICENSE

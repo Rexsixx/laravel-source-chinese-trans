@@ -93,7 +93,7 @@ class SqsJob extends Job implements JobContract
 
     /**
      * Get the job identifier.
-	 * 得到作业标识符
+	 * 获取工作标识符
      *
      * @return string
      */

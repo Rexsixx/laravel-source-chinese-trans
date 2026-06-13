@@ -7,7 +7,7 @@ namespace Illuminate\Validation;
 
 /**
  * Provides default implementation of ValidatesWhenResolved contract.
- * 提供ValidatesWhenResolved合约的默认实现。
+ * 提供ValidatesWhenResolved合约的默认实现
  */
 trait ValidatesWhenResolvedTrait
 {
@@ -17,15 +17,17 @@ trait ValidatesWhenResolvedTrait
      *
      * @return void
      */
-    public function validate()
+    public function validateResolved()
     {
         $this->prepareForValidation();
 
-        $instance = $this->getValidatorInstance();
-
         if (! $this->passesAuthorization()) {
             $this->failedAuthorization();
-        } elseif (! $instance->passes()) {
+        }
+
+        $instance = $this->getValidatorInstance();
+
+        if ($instance->fails()) {
             $this->failedValidation($instance);
         }
     }

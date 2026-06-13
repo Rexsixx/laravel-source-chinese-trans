@@ -5,6 +5,7 @@
 
 namespace Illuminate\Console\Scheduling;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Console\Command;
 
 class ScheduleRunCommand extends Command
@@ -19,7 +20,7 @@ class ScheduleRunCommand extends Command
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -34,6 +35,22 @@ class ScheduleRunCommand extends Command
     protected $schedule;
 
     /**
+     * The 24 hour timestamp this scheduler command started running.
+	 * 这个调度器命令开始运行的时间戳是24小时
+     *
+     * @var \Illuminate\Support\Carbon;
+     */
+    protected $startedAt;
+
+    /**
+     * Check if any events ran.
+	 * 检查是否运行了任何事件
+     *
+     * @var bool
+     */
+    protected $eventsRan = false;
+
+    /**
      * Create a new command instance.
 	 * 创建一个新的命令实例
      *
@@ -44,33 +61,67 @@ class ScheduleRunCommand extends Command
     {
         $this->schedule = $schedule;
 
+        $this->startedAt = Carbon::now();
+
         parent::__construct();
     }
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
     public function handle()
     {
-        $eventsRan = false;
-
         foreach ($this->schedule->dueEvents($this->laravel) as $event) {
             if (! $event->filtersPass($this->laravel)) {
                 continue;
             }
 
-            $this->line('<info>Running scheduled command:</info> '.$event->getSummaryForDisplay());
+            if ($event->onOneServer) {
+                $this->runSingleServerEvent($event);
+            } else {
+                $this->runEvent($event);
+            }
 
-            $event->run($this->laravel);
-
-            $eventsRan = true;
+            $this->eventsRan = true;
         }
 
-        if (! $eventsRan) {
+        if (! $this->eventsRan) {
             $this->info('No scheduled commands are ready to run.');
         }
+    }
+
+    /**
+     * Run the given single server event.
+	 * 运行给定的单个服务器事件
+     *
+     * @param  \Illuminate\Console\Scheduling\Event  $event
+     * @return void
+     */
+    protected function runSingleServerEvent($event)
+    {
+        if ($this->schedule->serverShouldRun($event, $this->startedAt)) {
+            $this->runEvent($event);
+        } else {
+            $this->line('<info>Skipping command (has already run on another server):</info> '.$event->getSummaryForDisplay());
+        }
+    }
+
+    /**
+     * Run the given event.
+	 * 运行给定的事件
+     *
+     * @param  \Illuminate\Console\Scheduling\Event  $event
+     * @return void
+     */
+    protected function runEvent($event)
+    {
+        $this->line('<info>Running scheduled command:</info> '.$event->getSummaryForDisplay());
+
+        $event->run($this->laravel);
+
+        $this->eventsRan = true;
     }
 }

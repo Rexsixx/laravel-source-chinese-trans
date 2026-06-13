@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，控制台，迁移，安装命令行 migrate:install
+ * Illuminate，数据库，控制台，迁移，安装命令
  */
 
 namespace Illuminate\Database\Console\Migrations;
@@ -21,7 +21,7 @@ class InstallCommand extends Command
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -73,7 +73,7 @@ class InstallCommand extends Command
     protected function getOptions()
     {
         return [
-            ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use.'],
+            ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use'],
         ];
     }
 }

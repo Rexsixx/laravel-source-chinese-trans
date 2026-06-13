@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，漂亮打印机抽象
+ */
+
 namespace PhpParser;
 
 use PhpParser\Internal\DiffElem;
@@ -139,6 +143,7 @@ abstract class PrettyPrinterAbstract
 
     /**
      * Creates a pretty printer instance using the given options.
+	 * 使用给定的选项创建一个漂亮的打印机实例
      *
      * Supported options:
      *  * bool $shortArraySyntax = false: Whether to use [] instead of array() as the default array

@@ -8,6 +8,15 @@ namespace Illuminate\Contracts\Hashing;
 interface Hasher
 {
     /**
+     * Get information about the given hashed value.
+	 * 获取有关给定散列值的信息
+     *
+     * @param  string  $hashedValue
+     * @return array
+     */
+    public function info($hashedValue);
+
+    /**
      * Hash the given value.
 	 * 对给定值进行散列
      *

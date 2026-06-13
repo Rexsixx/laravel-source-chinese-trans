@@ -14,7 +14,7 @@ class BoundMethod
 {
     /**
      * Call the given Closure / class@method and inject its dependencies.
-	 * 调用给定的Closure/class@method并注入它的依赖项
+	 * 调用给定的Closure / class@method并注入它的依赖项
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  callable|string  $callback
@@ -37,7 +37,7 @@ class BoundMethod
 
     /**
      * Call a string reference to a class using Class@method syntax.
-	 * 使用Class@method语法调用对类的字符串引用
+	 *使用Class@method语法调用对类的字符串引用
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  string  $target
@@ -54,7 +54,9 @@ class BoundMethod
         // We will assume an @ sign is used to delimit the class name from the method
         // name. We will split on this @ sign and then build a callable array that
         // we can pass right back into the "call" method for dependency binding.
-        $method = count($segments) == 2
+		// 我们将使用@符号来分隔方法的类名。
+		// 我们将在这个@符号上分割,然后构建一个可调用的数组,我们可以返回到“调用”方法中依赖绑定。
+        $method = count($segments) === 2
                         ? $segments[1] : $defaultMethod;
 
         if (is_null($method)) {
@@ -68,7 +70,7 @@ class BoundMethod
 
     /**
      * Call a method that has been bound to the container.
-	 * 调用已绑定到容器的方法
+	 * 调用一个绑定到容器的方法
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  callable  $callback
@@ -84,6 +86,8 @@ class BoundMethod
         // Here we need to turn the array callable into a Class@method string we can use to
         // examine the container and see if there are any method bindings for this given
         // method. If there are, we can call this method binding callback immediately.
+		// 在这里,我们需要将数组callable转换为一个类@ method字符串,我们可以使用它来检查容器,并查看该给定方法是否有任何方法绑定。
+		// 如果有,我们可以立即调用此方法绑定回调。
         $method = static::normalizeMethod($callback);
 
         if ($container->hasMethodBinding($method)) {
@@ -131,8 +135,10 @@ class BoundMethod
      * Get the proper reflection instance for the given callback.
 	 * 获取给定回调的适当反射实例
      *
-     * @param  callable|string  $callback
+     * @param  callable|string $callback
      * @return \ReflectionFunctionAbstract
+     *
+     * @throws \ReflectionException
      */
     protected static function getCallReflector($callback)
     {
@@ -162,6 +168,10 @@ class BoundMethod
             $dependencies[] = $parameters[$parameter->name];
 
             unset($parameters[$parameter->name]);
+        } elseif ($parameter->getClass() && array_key_exists($parameter->getClass()->name, $parameters)) {
+            $dependencies[] = $parameters[$parameter->getClass()->name];
+
+            unset($parameters[$parameter->getClass()->name]);
         } elseif ($parameter->getClass()) {
             $dependencies[] = $container->make($parameter->getClass()->name);
         } elseif ($parameter->isDefaultValueAvailable()) {

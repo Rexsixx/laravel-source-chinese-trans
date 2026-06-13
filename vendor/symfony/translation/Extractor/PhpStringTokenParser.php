@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，提取器，Php字符串令牌解析器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -106,7 +109,7 @@ class PhpStringTokenParser
         );
     }
 
-    private static function parseCallback($matches)
+    private static function parseCallback(array $matches): string
     {
         $str = $matches[1];
 
@@ -133,7 +136,7 @@ class PhpStringTokenParser
         $str = preg_replace('~(\r\n|\n|\r)$~', '', $str);
 
         // nowdoc string
-        if (false !== strpos($startToken, '\'')) {
+        if (str_contains($startToken, '\'')) {
             return $str;
         }
 

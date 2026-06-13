@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，控制台，种子，种子命令 db:seed
+ * Illuminate，数据库，控制台，播种，种子命令
  */
 
 namespace Illuminate\Database\Console\Seeds;
@@ -17,7 +17,7 @@ class SeedCommand extends Command
 
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
@@ -25,7 +25,7 @@ class SeedCommand extends Command
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -70,6 +70,8 @@ class SeedCommand extends Command
         Model::unguarded(function () {
             $this->getSeeder()->__invoke();
         });
+
+        $this->info('Database seeding completed successfully.');
     }
 
     /**
@@ -111,7 +113,7 @@ class SeedCommand extends Command
 
             ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to seed'],
 
-            ['force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production.'],
+            ['force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production'],
         ];
     }
 }

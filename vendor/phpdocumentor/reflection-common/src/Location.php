@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，反射，地点
+ */
 
 declare(strict_types=1);
 

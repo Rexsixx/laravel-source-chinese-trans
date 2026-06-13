@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Redis，限值器，负载限制器
+ * Illuminate，Redis，限制器，持续限制器
  */
 
 namespace Illuminate\Redis\Limiters;
@@ -82,6 +82,7 @@ class DurationLimiter
      * @param  int $timeout
      * @param  callable|null $callback
      * @return bool
+     *
      * @throws \Illuminate\Contracts\Redis\LimiterTimeoutException
      */
     public function block($timeout, $callback = null)
@@ -111,8 +112,8 @@ class DurationLimiter
      */
     public function acquire()
     {
-        $results = $this->redis->eval($this->luaScript(), 1,
-            $this->name, microtime(true), time(), $this->decay, $this->maxLocks
+        $results = $this->redis->eval(
+            $this->luaScript(), 1, $this->name, microtime(true), time(), $this->decay, $this->maxLocks
         );
 
         $this->decaysAt = $results[1];

@@ -1,8 +1,8 @@
 <?php
 /**
- * Illuminate，契约，支持，可数组化
+ * Illuminate，契约，支持，Arrayable
  */
-
+ 
 namespace Illuminate\Contracts\Support;
 
 interface Arrayable

@@ -17,7 +17,7 @@ class PendingChain
 
     /**
      * The jobs to be chained.
-	 * 这些工作将被链接起来
+	 * 这些作业将被捆绑起来
      *
      * @var array
      */

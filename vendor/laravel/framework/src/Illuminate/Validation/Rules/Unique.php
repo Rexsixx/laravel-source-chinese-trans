@@ -5,6 +5,8 @@
 
 namespace Illuminate\Validation\Rules;
 
+use Illuminate\Database\Eloquent\Model;
+
 class Unique
 {
     use DatabaseRule;
@@ -30,13 +32,33 @@ class Unique
 	 * 在唯一性检查期间忽略给定的ID
      *
      * @param  mixed  $id
-     * @param  string  $idColumn
+     * @param  string|null  $idColumn
      * @return $this
      */
-    public function ignore($id, $idColumn = 'id')
+    public function ignore($id, $idColumn = null)
     {
+        if ($id instanceof Model) {
+            return $this->ignoreModel($id, $idColumn);
+        }
+
         $this->ignore = $id;
-        $this->idColumn = $idColumn;
+        $this->idColumn = $idColumn ?? 'id';
+
+        return $this;
+    }
+
+    /**
+     * Ignore the given model during the unique check.
+	 * 在惟一检查期间忽略给定的模型。
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  string|null  $idColumn
+     * @return $this
+     */
+    public function ignoreModel($model, $idColumn = null)
+    {
+        $this->idColumn = $idColumn ?? $model->getKeyName();
+        $this->ignore = $model->{$this->idColumn};
 
         return $this;
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，存储
+ * Illuminate，支持，门面，Storage
  */
 
 namespace Illuminate\Support\Facades;
@@ -8,6 +8,8 @@ namespace Illuminate\Support\Facades;
 use Illuminate\Filesystem\Filesystem;
 
 /**
+ * @method static \Illuminate\Contracts\Filesystem\Filesystem disk(string $name = null)
+ *
  * @see \Illuminate\Filesystem\FilesystemManager
  */
 class Storage extends Facade

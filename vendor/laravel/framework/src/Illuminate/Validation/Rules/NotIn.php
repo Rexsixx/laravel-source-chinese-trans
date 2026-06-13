@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，验证，规则，不属于
+ * Illuminate，验证，规则，不包含
  */
 
 namespace Illuminate\Validation\Rules;
@@ -23,7 +23,7 @@ class NotIn
 
     /**
      * Create a new "not in" rule instance.
-	 * 创建一个新的“不在”规则实例
+	 * 创建一个新的“不在”规则实例。
      *
      * @param  array  $values
      * @return void

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，计数验证器，计数验证器抽象
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -24,6 +28,7 @@ abstract class CountValidatorAbstract
 {
     /**
      * Expectation for which this validator is assigned
+	 * 该验证器被分配的期望
      *
      * @var \Mockery\Expectation
      */

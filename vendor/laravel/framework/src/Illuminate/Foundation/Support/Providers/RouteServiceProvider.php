@@ -7,6 +7,7 @@ namespace Illuminate\Foundation\Support\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Contracts\Routing\UrlGenerator;
 
 /**
@@ -14,6 +15,8 @@ use Illuminate\Contracts\Routing\UrlGenerator;
  */
 class RouteServiceProvider extends ServiceProvider
 {
+    use ForwardsCalls;
+
     /**
      * The controller namespace for the application.
 	 * 应用程序的控制器名称空间
@@ -104,8 +107,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function __call($method, $parameters)
     {
-        return call_user_func_array(
-            [$this->app->make(Router::class), $method], $parameters
+        return $this->forwardCallTo(
+            $this->app->make(Router::class), $method, $parameters
         );
     }
 }

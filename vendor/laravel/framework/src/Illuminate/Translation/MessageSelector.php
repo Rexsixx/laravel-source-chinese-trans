@@ -11,7 +11,7 @@ class MessageSelector
 {
     /**
      * Select a proper translation string based on the given number.
-	 * 根据给定的数字选择合适的翻译字符串
+	 * 根据给定的数字选择一个合适的翻译字符串
      *
      * @param  string  $line
      * @param  int  $number
@@ -30,7 +30,7 @@ class MessageSelector
 
         $pluralIndex = $this->getPluralIndex($locale, $number);
 
-        if (count($segments) == 1 || ! isset($segments[$pluralIndex])) {
+        if (count($segments) === 1 || ! isset($segments[$pluralIndex])) {
             return $segments[0];
         }
 
@@ -66,7 +66,7 @@ class MessageSelector
     {
         preg_match('/^[\{\[]([^\[\]\{\}]*)[\}\]](.*)/s', $part, $matches);
 
-        if (count($matches) != 3) {
+        if (count($matches) !== 3) {
             return;
         }
 
@@ -75,11 +75,11 @@ class MessageSelector
         $value = $matches[2];
 
         if (Str::contains($condition, ',')) {
-            list($from, $to) = explode(',', $condition, 2);
+            [$from, $to] = explode(',', $condition, 2);
 
-            if ($to == '*' && $number >= $from) {
+            if ($to === '*' && $number >= $from) {
                 return $value;
-            } elseif ($from == '*' && $number <= $to) {
+            } elseif ($from === '*' && $number <= $to) {
                 return $value;
             } elseif ($number >= $from && $number <= $to) {
                 return $value;
@@ -105,7 +105,7 @@ class MessageSelector
 
     /**
      * Get the index to use for pluralization.
-	 * 获取用于复数形式的索引。
+	 * 获取用于复数形式的索引
      *
      * The plural rules are derived from code of the Zend Framework (2010-09-25), which
      * is subject to the new BSD license (http://framework.zend.com/license/new-bsd)

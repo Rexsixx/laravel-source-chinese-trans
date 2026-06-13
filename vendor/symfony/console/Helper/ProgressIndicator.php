@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，助手，进程指示符
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -38,7 +41,7 @@ class ProgressIndicator
      * @param int         $indicatorChangeInterval Change interval in milliseconds
      * @param array|null  $indicatorValues         Animated indicator characters
      */
-    public function __construct(OutputInterface $output, $format = null, $indicatorChangeInterval = 100, $indicatorValues = null)
+    public function __construct(OutputInterface $output, string $format = null, int $indicatorChangeInterval = 100, array $indicatorValues = null)
     {
         $this->output = $output;
 
@@ -64,6 +67,7 @@ class ProgressIndicator
 
     /**
      * Sets the current indicator message.
+	 * 设置当前的指示信息
      *
      * @param string|null $message
      */
@@ -76,6 +80,7 @@ class ProgressIndicator
 
     /**
      * Starts the indicator output.
+	 * 启动指示输出
      *
      * @param $message
      */
@@ -96,6 +101,7 @@ class ProgressIndicator
 
     /**
      * Advances the indicator.
+	 * 推进指示器
      */
     public function advance()
     {
@@ -149,7 +155,7 @@ class ProgressIndicator
             self::$formats = self::initFormats();
         }
 
-        return isset(self::$formats[$name]) ? self::$formats[$name] : null;
+        return self::$formats[$name] ?? null;
     }
 
     /**
@@ -182,7 +188,7 @@ class ProgressIndicator
             self::$formatters = self::initPlaceholderFormatters();
         }
 
-        return isset(self::$formatters[$name]) ? self::$formatters[$name] : null;
+        return self::$formatters[$name] ?? null;
     }
 
     private function display()
@@ -191,18 +197,16 @@ class ProgressIndicator
             return;
         }
 
-        $self = $this;
-
-        $this->overwrite(preg_replace_callback("{%([a-z\-_]+)(?:\:([^%]+))?%}i", function ($matches) use ($self) {
-            if ($formatter = $self::getPlaceholderFormatterDefinition($matches[1])) {
-                return \call_user_func($formatter, $self);
+        $this->overwrite(preg_replace_callback("{%([a-z\-_]+)(?:\:([^%]+))?%}i", function ($matches) {
+            if ($formatter = self::getPlaceholderFormatterDefinition($matches[1])) {
+                return $formatter($this);
             }
 
             return $matches[0];
-        }, $this->format));
+        }, $this->format ?? ''));
     }
 
-    private function determineBestFormat()
+    private function determineBestFormat(): string
     {
         switch ($this->output->getVerbosity()) {
             // OutputInterface::VERBOSITY_QUIET: display is disabled anyway
@@ -218,10 +222,8 @@ class ProgressIndicator
 
     /**
      * Overwrites a previous message to the output.
-     *
-     * @param string $message The message
      */
-    private function overwrite($message)
+    private function overwrite(string $message)
     {
         if ($this->output->isDecorated()) {
             $this->output->write("\x0D\x1B[2K");
@@ -231,12 +233,12 @@ class ProgressIndicator
         }
     }
 
-    private function getCurrentTimeInMilliseconds()
+    private function getCurrentTimeInMilliseconds(): float
     {
         return round(microtime(true) * 1000);
     }
 
-    private static function initPlaceholderFormatters()
+    private static function initPlaceholderFormatters(): array
     {
         return [
             'indicator' => function (self $indicator) {
@@ -254,7 +256,7 @@ class ProgressIndicator
         ];
     }
 
-    private static function initFormats()
+    private static function initFormats(): array
     {
         return [
             'normal' => ' %indicator% %message%',

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，编译后的路由
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Routing;
 
 /**
  * CompiledRoutes are returned by the RouteCompiler class.
+ * CompiledRoutes由RouteCompiler类返回
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -37,9 +41,9 @@ class CompiledRoute implements \Serializable
      * @param array       $hostVariables An array of host variables
      * @param array       $variables     An array of variables (variables defined in the path and in the host patterns)
      */
-    public function __construct($staticPrefix, $regex, array $tokens, array $pathVariables, $hostRegex = null, array $hostTokens = [], array $hostVariables = [], array $variables = [])
+    public function __construct(string $staticPrefix, string $regex, array $tokens, array $pathVariables, string $hostRegex = null, array $hostTokens = [], array $hostVariables = [], array $variables = [])
     {
-        $this->staticPrefix = (string) $staticPrefix;
+        $this->staticPrefix = $staticPrefix;
         $this->regex = $regex;
         $this->tokens = $tokens;
         $this->pathVariables = $pathVariables;
@@ -49,12 +53,9 @@ class CompiledRoute implements \Serializable
         $this->variables = $variables;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function serialize()
+    public function __serialize(): array
     {
-        return serialize([
+        return [
             'vars' => $this->variables,
             'path_prefix' => $this->staticPrefix,
             'path_regex' => $this->regex,
@@ -63,20 +64,22 @@ class CompiledRoute implements \Serializable
             'host_regex' => $this->hostRegex,
             'host_tokens' => $this->hostTokens,
             'host_vars' => $this->hostVariables,
-        ]);
+        ];
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
+     *
+     * @internal since Symfony 4.3
+     * @final since Symfony 4.3
      */
-    public function unserialize($serialized)
+    public function serialize()
     {
-        if (\PHP_VERSION_ID >= 70000) {
-            $data = unserialize($serialized, ['allowed_classes' => false]);
-        } else {
-            $data = unserialize($serialized);
-        }
+        return serialize($this->__serialize());
+    }
 
+    public function __unserialize(array $data): void
+    {
         $this->variables = $data['vars'];
         $this->staticPrefix = $data['path_prefix'];
         $this->regex = $data['path_regex'];
@@ -88,7 +91,17 @@ class CompiledRoute implements \Serializable
     }
 
     /**
+     * @internal since Symfony 4.3
+     * @final since Symfony 4.3
+     */
+    public function unserialize($serialized)
+    {
+        $this->__unserialize(unserialize($serialized, ['allowed_classes' => false]));
+    }
+
+    /**
      * Returns the static prefix.
+	 * 返回静态前缀
      *
      * @return string The static prefix
      */

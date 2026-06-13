@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，期望主管
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -24,6 +28,7 @@ class ExpectationDirector
 {
     /**
      * Method name the director is directing
+	 * 方法名称
      *
      * @var string
      */

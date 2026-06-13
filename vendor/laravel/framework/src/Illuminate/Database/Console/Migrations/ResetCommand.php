@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，控制台，迁移，重置命令 migrate:reset
+ * Illuminate，数据库，控制台，迁移，重置命令
  */
 
 namespace Illuminate\Database\Console\Migrations;
@@ -23,7 +23,7 @@ class ResetCommand extends BaseCommand
 
     /**
      * The console command description.
-	 * 控制台命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -68,20 +68,15 @@ class ResetCommand extends BaseCommand
         // First, we'll make sure that the migration table actually exists before we
         // start trying to rollback and re-run all of the migrations. If it's not
         // present we'll just bail out with an info message for the developers.
+		// 首先,我们将确保迁移表实际上存在,在我们开始尝试回滚并重新运行所有的迁移之前。
+		// 如果不存在,我们将为开发人员提供一个信息信息。
         if (! $this->migrator->repositoryExists()) {
             return $this->comment('Migration table not found.');
         }
 
-        $this->migrator->reset(
+        $this->migrator->setOutput($this->output)->reset(
             $this->getMigrationPaths(), $this->option('pretend')
         );
-
-        // Once the migrator has run we will grab the note output and send it out to
-        // the console screen, since the migrator itself functions without having
-        // any instances of the OutputInterface contract passed into the class.
-        foreach ($this->migrator->getNotes() as $note) {
-            $this->output->writeln($note);
-        }
     }
 
     /**
@@ -93,13 +88,15 @@ class ResetCommand extends BaseCommand
     protected function getOptions()
     {
         return [
-            ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use.'],
+            ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use'],
 
-            ['force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production.'],
+            ['force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production'],
 
-            ['path', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'The path(s) of migrations files to be executed.'],
+            ['path', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'The path(s) to the migrations files to be executed'],
 
-            ['pretend', null, InputOption::VALUE_NONE, 'Dump the SQL queries that would be run.'],
+            ['realpath', null, InputOption::VALUE_NONE, 'Indicate any provided migration file paths are pre-resolved absolute paths'],
+
+            ['pretend', null, InputOption::VALUE_NONE, 'Dump the SQL queries that would be run'],
         ];
     }
 }

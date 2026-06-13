@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，线程的选项
+ * Illuminate，队列，工作线程选项
  */
 
 namespace Illuminate\Queue;
@@ -56,6 +56,14 @@ class WorkerOptions
     public $force;
 
     /**
+     * Indicates if the worker should stop when queue is empty.
+	 * 指示当队列为空时，工作线程是否应该停止。
+     *
+     * @var bool
+     */
+    public $stopWhenEmpty;
+
+    /**
      * Create a new worker options instance.
 	 * 创建一个新的工作者选项实例
      *
@@ -65,9 +73,10 @@ class WorkerOptions
      * @param  int  $sleep
      * @param  int  $maxTries
      * @param  bool  $force
+     * @param  bool  $stopWhenEmpty
      * @return void
      */
-    public function __construct($delay = 0, $memory = 128, $timeout = 60, $sleep = 3, $maxTries = 0, $force = false)
+    public function __construct($delay = 0, $memory = 128, $timeout = 60, $sleep = 3, $maxTries = 0, $force = false, $stopWhenEmpty = false)
     {
         $this->delay = $delay;
         $this->sleep = $sleep;
@@ -75,5 +84,6 @@ class WorkerOptions
         $this->memory = $memory;
         $this->timeout = $timeout;
         $this->maxTries = $maxTries;
+        $this->stopWhenEmpty = $stopWhenEmpty;
     }
 }

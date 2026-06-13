@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，控制台，工厂，工厂制造指令 make:factory
+ * Illuminate，数据库，控制台，工厂，工厂编译指令
  */
 
 namespace Illuminate\Database\Console\Factories;
@@ -20,7 +20,7 @@ class FactoryMakeCommand extends GeneratorCommand
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */

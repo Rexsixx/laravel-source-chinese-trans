@@ -1,4 +1,7 @@
 <?php
+/**
+ * Webmozart，Assert，Mixin
+ */
 
 namespace Webmozart\Assert;
 
@@ -10,6 +13,8 @@ use Throwable;
 /**
  * This trait provides nullOr*, all* and allNullOr* variants of assertion base methods.
  * Do not use this trait directly: it will change, and is not designed for reuse.
+ * 这个特性提供了nullOr *,所有*和allNullOr *断言基本方法的变体。
+ * 不要直接使用这个特性:它会改变,不设计用于重用。
  */
 trait Mixin
 {

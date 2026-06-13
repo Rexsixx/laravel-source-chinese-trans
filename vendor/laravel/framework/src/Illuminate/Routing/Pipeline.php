@@ -18,7 +18,6 @@ use Symfony\Component\Debug\Exception\FatalThrowableError;
  * 这个扩展的管道捕获每个切片期间发生的任何异常。
  *
  * The exceptions are converted to HTTP responses for proper middleware handling.
- * 异常被转换为HTTP响应以进行适当的中间件处理。
  */
 class Pipeline extends BasePipeline
 {

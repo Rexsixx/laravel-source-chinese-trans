@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，控制器元数据，元数据工厂接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,7 +22,7 @@ namespace Symfony\Component\HttpKernel\ControllerMetadata;
 interface ArgumentMetadataFactoryInterface
 {
     /**
-     * @param mixed $controller The controller to resolve the arguments for
+     * @param string|object|array $controller The controller to resolve the arguments for
      *
      * @return ArgumentMetadata[]
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，探测器，迭代器，文件类型过滤迭代器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,13 +16,14 @@ namespace Symfony\Component\Finder\Iterator;
 
 /**
  * FileTypeFilterIterator only keeps files, directories, or both.
+ * FileTypeFilterIterator只保存文件、目录或两者。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class FileTypeFilterIterator extends FilterIterator
+class FileTypeFilterIterator extends \FilterIterator
 {
-    const ONLY_FILES = 1;
-    const ONLY_DIRECTORIES = 2;
+    public const ONLY_FILES = 1;
+    public const ONLY_DIRECTORIES = 2;
 
     private $mode;
 
@@ -27,7 +31,7 @@ class FileTypeFilterIterator extends FilterIterator
      * @param \Iterator $iterator The Iterator to filter
      * @param int       $mode     The mode (self::ONLY_FILES or self::ONLY_DIRECTORIES)
      */
-    public function __construct(\Iterator $iterator, $mode)
+    public function __construct(\Iterator $iterator, int $mode)
     {
         $this->mode = $mode;
 
@@ -36,9 +40,11 @@ class FileTypeFilterIterator extends FilterIterator
 
     /**
      * Filters the iterator values.
+	 * 过滤迭代器值
      *
      * @return bool true if the value should be kept, false otherwise
      */
+    #[\ReturnTypeWillChange]
     public function accept()
     {
         $fileinfo = $this->current();

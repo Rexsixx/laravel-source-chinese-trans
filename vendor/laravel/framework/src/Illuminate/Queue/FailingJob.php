@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，失败作业
+ * Illuminate，行列，失败作业
  */
 
 namespace Illuminate\Queue;

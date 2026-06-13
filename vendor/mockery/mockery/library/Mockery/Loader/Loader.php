@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，装载机，Loader
+ */
+
+/**
  * Mockery
  *
  * LICENSE

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，致命错误处理程序，未定义函数致命错误处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -14,10 +17,15 @@ namespace Symfony\Component\Debug\FatalErrorHandler;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\Debug\Exception\UndefinedFunctionException;
 
+@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.4, use "%s" instead.', UndefinedFunctionFatalErrorHandler::class, \Symfony\Component\ErrorHandler\ErrorEnhancer\UndefinedFunctionErrorEnhancer::class), \E_USER_DEPRECATED);
+
 /**
  * ErrorHandler for undefined functions.
+ * 未定义函数的ErrorHandler。
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @deprecated since Symfony 4.4, use Symfony\Component\ErrorHandler\ErrorEnhancer\UndefinedFunctionErrorEnhancer instead.
  */
 class UndefinedFunctionFatalErrorHandler implements FatalErrorHandlerInterface
 {

@@ -14,6 +14,7 @@ trait ConfirmableTrait
 	 * 在继续操作之前进行确认。
      *
      * This method only asks for confirmation in production.
+	 * 此方法仅在生产中要求确认。
      *
      * @param  string  $warning
      * @param  \Closure|bool|null  $callback
@@ -53,7 +54,7 @@ trait ConfirmableTrait
     protected function getDefaultConfirmCallback()
     {
         return function () {
-            return $this->getLaravel()->environment() == 'production';
+            return $this->getLaravel()->environment() === 'production';
         };
     }
 }

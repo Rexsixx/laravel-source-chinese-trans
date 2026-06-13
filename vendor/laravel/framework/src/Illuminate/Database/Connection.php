@@ -149,7 +149,7 @@ class Connection implements ConnectionInterface
 
     /**
      * Indicates if the connection is in a "dry run".
-	 * 说明如果连接是“干运行”
+	 * 指示连接是否处于“试运行”状态
      *
      * @var bool
      */
@@ -188,6 +188,7 @@ class Connection implements ConnectionInterface
         // First we will setup the default properties. We keep track of the DB
         // name we are connected to since it is needed when some reflective
         // type commands are run such as checking whether a table exists.
+		// 首先，我们将设置默认属性。
         $this->database = $database;
 
         $this->tablePrefix = $tablePrefix;
@@ -518,6 +519,7 @@ class Connection implements ConnectionInterface
             // For update or delete statements, we want to get the number of rows affected
             // by the statement and return that back to the developer. We'll first need
             // to execute the statement and then we'll use PDO to fetch the affected.
+			// 对于更新或删除语句，我们希望获取该语句所影响的行数，并将此结果返回给开发人员。
             $statement = $this->getPdo()->prepare($query);
 
             $this->bindValues($statement, $this->prepareBindings($bindings));
@@ -547,7 +549,7 @@ class Connection implements ConnectionInterface
             }
 
             $this->recordsHaveBeenModified(
-                $change = ($this->getPdo()->exec($query) === false ? false : true)
+                $change = $this->getPdo()->exec($query) !== false
             );
 
             return $change;
@@ -591,13 +593,14 @@ class Connection implements ConnectionInterface
         // First we will back up the value of the logging queries property and then
         // we'll be ready to run callbacks. This query log will also get cleared
         // so we will have a new log of all the queries that are executed now.
+		// 首先，我们将备份“日志查询”属性的值，然后就可以准备执行回调操作了。
         $this->enableQueryLog();
 
         $this->queryLog = [];
 
         // Now we'll execute this callback and capture the result. Once it has been
         // executed we will restore the value of query logging and give back the
-        // value of hte callback so the original callers can have the results.
+        // value of the callback so the original callers can have the results.
         $result = $callback();
 
         $this->loggingQueries = $loggingQueries;
@@ -757,6 +760,7 @@ class Connection implements ConnectionInterface
      * @param  array  $bindings
      * @param  \Closure  $callback
      * @return mixed
+     *
      * @throws \Exception
      */
     protected function handleQueryException($e, $query, $bindings, Closure $callback)
@@ -804,6 +808,8 @@ class Connection implements ConnectionInterface
     public function reconnect()
     {
         if (is_callable($this->reconnector)) {
+            $this->doctrineConnection = null;
+
             return call_user_func($this->reconnector, $this);
         }
 
@@ -996,7 +1002,7 @@ class Connection implements ConnectionInterface
             return $this->getPdo();
         }
 
-        if ($this->getConfig('sticky') && $this->recordsModified) {
+        if ($this->recordsModified && $this->getConfig('sticky')) {
             return $this->getPdo();
         }
 
@@ -1027,7 +1033,7 @@ class Connection implements ConnectionInterface
      * Set the PDO connection used for reading.
 	 * 设置用于读取的PDO连接
      *
-     * @param  \PDO||\Closure|null  $pdo
+     * @param  \PDO|\Closure|null  $pdo
      * @return $this
      */
     public function setReadPdo($pdo)
@@ -1101,11 +1107,13 @@ class Connection implements ConnectionInterface
 	 * 设置连接使用的查询语法
      *
      * @param  \Illuminate\Database\Query\Grammars\Grammar  $grammar
-     * @return void
+     * @return $this
      */
     public function setQueryGrammar(Query\Grammars\Grammar $grammar)
     {
         $this->queryGrammar = $grammar;
+
+        return $this;
     }
 
     /**
@@ -1124,11 +1132,13 @@ class Connection implements ConnectionInterface
 	 * 设置连接使用的模式语法
      *
      * @param  \Illuminate\Database\Schema\Grammars\Grammar  $grammar
-     * @return void
+     * @return $this
      */
     public function setSchemaGrammar(Schema\Grammars\Grammar $grammar)
     {
         $this->schemaGrammar = $grammar;
+
+        return $this;
     }
 
     /**
@@ -1147,11 +1157,13 @@ class Connection implements ConnectionInterface
 	 * 设置连接使用的查询后处理器
      *
      * @param  \Illuminate\Database\Query\Processors\Processor  $processor
-     * @return void
+     * @return $this
      */
     public function setPostProcessor(Processor $processor)
     {
         $this->postProcessor = $processor;
+
+        return $this;
     }
 
     /**
@@ -1170,11 +1182,24 @@ class Connection implements ConnectionInterface
 	 * 在连接上设置事件调度程序实例
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
-     * @return void
+     * @return $this
      */
     public function setEventDispatcher(Dispatcher $events)
     {
         $this->events = $events;
+
+        return $this;
+    }
+
+    /**
+     * Unset the event dispatcher for this connection.
+	 * 取消此连接的事件调度程序的设置
+     *
+     * @return void
+     */
+    public function unsetEventDispatcher()
+    {
+        $this->events = null;
     }
 
     /**
@@ -1259,11 +1284,13 @@ class Connection implements ConnectionInterface
 	 * 设置所连接数据库的名称
      *
      * @param  string  $database
-     * @return string
+     * @return $this
      */
     public function setDatabaseName($database)
     {
         $this->database = $database;
+
+        return $this;
     }
 
     /**
@@ -1282,13 +1309,15 @@ class Connection implements ConnectionInterface
 	 * 设置连接使用的表前缀
      *
      * @param  string  $prefix
-     * @return void
+     * @return $this
      */
     public function setTablePrefix($prefix)
     {
         $this->tablePrefix = $prefix;
 
         $this->getQueryGrammar()->setTablePrefix($prefix);
+
+        return $this;
     }
 
     /**

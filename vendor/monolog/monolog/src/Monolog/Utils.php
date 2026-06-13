@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，工具包
+ */
 
 /*
  * This file is part of the Monolog package.
