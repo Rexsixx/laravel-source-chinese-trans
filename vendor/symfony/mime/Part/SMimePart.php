@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Mime，部分，SMime 部分
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -102,6 +105,7 @@ class SMimePart extends AbstractPart
     public function __sleep(): array
     {
         // convert iterables to strings for serialization
+		// 将可迭代对象转换为字符串以进行序列化
         if (is_iterable($this->body)) {
             $this->body = $this->bodyToString();
         }

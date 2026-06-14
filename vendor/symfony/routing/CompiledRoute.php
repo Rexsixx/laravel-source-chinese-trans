@@ -101,6 +101,7 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the static prefix.
+	 * 返回静态前缀
      *
      * @return string The static prefix
      */
@@ -111,6 +112,7 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the regex.
+	 * 返回正则表达式
      *
      * @return string The regex
      */

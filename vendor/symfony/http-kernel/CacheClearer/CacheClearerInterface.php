@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，缓存清理器，缓存清理器接口
+ */
 
 /*
  * This file is part of the Symfony package.

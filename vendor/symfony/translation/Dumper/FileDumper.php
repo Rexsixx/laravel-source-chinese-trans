@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，转储，文件转储
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * FileDumper is an implementation of DumperInterface that dump a message catalogue to file(s).
+ * FileDumper是DumperInterface的实现，它将消息目录转储到文件中。
  *
  * Options:
  * - path (mandatory): the directory where the files should be saved

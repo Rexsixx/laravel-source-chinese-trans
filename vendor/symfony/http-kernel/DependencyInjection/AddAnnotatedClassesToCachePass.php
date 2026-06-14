@@ -1,4 +1,8 @@
 <?php
+/**
+ * Symfony，组件，Http内核，依赖注入，向缓存传递添加带注释的类
+ */
+
 
 /*
  * This file is part of the Symfony package.

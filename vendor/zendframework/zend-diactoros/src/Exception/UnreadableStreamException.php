@@ -1,6 +1,6 @@
 <?php
 /**
- * Zend，Diactoros，异常，不可靠的流异常
+ * Zend，Diactoros，异常，不可读流异常
  */
 
 /**

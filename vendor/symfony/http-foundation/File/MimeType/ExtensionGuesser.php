@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，文件，Mime类型，扩展猜测
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Mime\MimeTypes;
 
 /**
  * A singleton mime type to file extension guesser.
+ * 一个单例mime类型,用于文件扩展猜测。
  *
  * A default guesser is provided.
  * You can register custom guessers by calling the register()
@@ -33,6 +37,7 @@ class ExtensionGuesser implements ExtensionGuesserInterface
 {
     /**
      * The singleton instance.
+	 * 单例实例
      *
      * @var ExtensionGuesser
      */

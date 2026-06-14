@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，异常，缺失输入异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Console\Exception;
 
 /**
  * Represents failure to read input from stdin.
+ * 表示未能读取stdin的输入。
  *
  * @author Gabriel Ostrolucký <gabriel.ostrolucky@gmail.com>
  */

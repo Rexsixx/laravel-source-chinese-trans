@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，错误处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -27,6 +30,7 @@ use Symfony\Component\Debug\FatalErrorHandler\UndefinedMethodFatalErrorHandler;
 
 /**
  * A generic ErrorHandler for the PHP engine.
+ * PHP引擎的通用ErrorHandler。
  *
  * Provides five bit fields that control how errors are handled:
  * - thrownErrors: errors thrown as \ErrorException
@@ -110,6 +114,7 @@ class ErrorHandler
 
     /**
      * Registers the error handler.
+	 * 注册错误处理程序
      *
      * @param self|null $handler The handler to register
      * @param bool      $replace Whether to replace or not any existing handler
@@ -175,6 +180,7 @@ class ErrorHandler
 
     /**
      * Sets a logger to non assigned errors levels.
+	 * 设置一个记录器到不指定的错误级别
      *
      * @param array|int $levels  An array map of E_* to LogLevel::* or an integer bit field of E_* constants
      * @param bool      $replace Whether to replace or not any existing logger
@@ -206,6 +212,7 @@ class ErrorHandler
 
     /**
      * Sets a logger for each error level.
+	 * 为每个错误级别设置一个记录器
      *
      * @param array $loggers Error levels to [LoggerInterface|null, LogLevel::*] map
      *
@@ -259,6 +266,7 @@ class ErrorHandler
 
     /**
      * Sets a user exception handler.
+	 * 设置一个用户异常处理程序
      *
      * @param callable $handler A handler that will be called on Exception
      *

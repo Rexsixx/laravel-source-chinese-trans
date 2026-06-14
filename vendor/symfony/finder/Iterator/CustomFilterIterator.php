@@ -16,6 +16,7 @@ namespace Symfony\Component\Finder\Iterator;
 
 /**
  * CustomFilterIterator filters files by applying anonymous functions.
+ * CustomFilterIterator通过应用匿名函数来过滤文件。
  *
  * The anonymous function receives a \SplFileInfo and must return false
  * to remove files.
@@ -46,6 +47,7 @@ class CustomFilterIterator extends \FilterIterator
 
     /**
      * Filters the iterator values.
+	 * 过滤迭代器值
      *
      * @return bool true if the value should be kept, false otherwise
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，Caster，Const 存根
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Represents a PHP constant and its value.
+ * 表示一个PHP常量及其值。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

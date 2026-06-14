@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，探测器，迭代器，只限制与目录的匹配
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Finder\Iterator;
 
 /**
  * SortableIterator applies a sort on a given Iterator.
+ * SortableIterator在给定的Iterator上应用排序。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

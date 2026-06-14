@@ -20,6 +20,8 @@ use Symfony\Contracts\Service\Attribute\SubscribedService;
 /**
  * Implementation of ServiceSubscriberInterface that determines subscribed services from
  * method return types. Service ids are available as "ClassName::methodName".
+ * 实现 ServiceSubscriberInterface 接口，通过方法返回类型来确定已订阅的服务。
+ * 服务 ID 可以通过“ClassName：：methodName”的形式获取。
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */

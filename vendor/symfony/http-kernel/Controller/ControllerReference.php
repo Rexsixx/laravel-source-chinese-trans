@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，控制器，控制器参考
+ */
 
 /*
  * This file is part of the Symfony package.

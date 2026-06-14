@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，助手，进程助手
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Process\Process;
 
 /**
  * The ProcessHelper class provides helpers to run external processes.
+ * ProcessHelper类提供帮助来运行外部过程。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -27,6 +31,7 @@ class ProcessHelper extends Helper
 {
     /**
      * Runs an external process.
+	 * 运行一个外部过程
      *
      * @param array|Process $cmd       An instance of Process or an array of the command and arguments
      * @param string|null   $error     An error message that must be displayed if something went wrong
@@ -91,6 +96,7 @@ class ProcessHelper extends Helper
 
     /**
      * Runs the process.
+	 * 运行这个过程。
      *
      * This is identical to run() except that an exception is thrown if the process
      * exits with a non-zero exit code.

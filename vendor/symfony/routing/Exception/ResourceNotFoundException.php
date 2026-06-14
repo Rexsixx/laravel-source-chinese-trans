@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，异常，路由未发现异常
+ * Symfony，组件，路由，异常，资源未找到异常
  */
 
 /*
@@ -16,8 +16,10 @@ namespace Symfony\Component\Routing\Exception;
 
 /**
  * The resource was not found.
+ * 找不到资源。
  *
  * This exception should trigger an HTTP 404 response in your application code.
+ * 此异常应该在应用程序代码中触发HTTP 404响应。
  *
  * @author Kris Wallsmith <kris@symfony.com>
  */

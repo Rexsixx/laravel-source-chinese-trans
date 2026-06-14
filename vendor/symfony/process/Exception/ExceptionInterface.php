@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，进程，异常接口
+ * Symfony，组件，进程，异常，异常接口
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\Process\Exception;
 
 /**
  * Marker Interface for the Process Component.
+ * 流程组件的标记接口。
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */

@@ -31,6 +31,7 @@ trait TesterTrait
 
     /**
      * Gets the display returned by the last execution of the command or application.
+	 * 获取最后执行命令或应用程序返回的显示
      *
      * @param bool $normalize Whether to normalize end of lines to \n or not
      *

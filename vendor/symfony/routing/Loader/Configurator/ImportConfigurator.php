@@ -100,6 +100,7 @@ class ImportConfigurator
 
     /**
      * Sets the prefix to add to the name of all child routes.
+	 * 设置要添加到所有子路由名称的前缀
      *
      * @return $this
      */

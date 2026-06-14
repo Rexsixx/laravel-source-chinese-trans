@@ -16,6 +16,7 @@ namespace Symfony\Contracts\HttpClient\Exception;
 
 /**
  * When a 4xx response is returned.
+ * 当返回4xx响应时。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

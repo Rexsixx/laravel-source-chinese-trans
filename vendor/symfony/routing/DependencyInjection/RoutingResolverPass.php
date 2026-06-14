@@ -21,6 +21,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Adds tagged routing.loader services to routing.resolver service.
+ * 添加标记路由。加载服务到路由。解析器服务。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

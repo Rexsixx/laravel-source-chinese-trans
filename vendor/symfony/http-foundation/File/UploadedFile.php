@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，文件，已上载文件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -24,6 +27,7 @@ use Symfony\Component\Mime\MimeTypes;
 
 /**
  * A file uploaded through a form.
+ * 通过表单上传的文件。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  * @author Florian Eckerstorfer <florian@eckerstorfer.org>
@@ -38,6 +42,7 @@ class UploadedFile extends File
 
     /**
      * Accepts the information of the uploaded file as provided by the PHP global $_FILES.
+	 * 接受PHP全局变量$_FILES提供的上传文件的信息。
      *
      * The file object is only created when the uploaded file is valid (i.e. when the
      * isValid() method returns true). Otherwise the only methods that could be called
@@ -49,6 +54,7 @@ class UploadedFile extends File
      *   * getError.
      *
      * Calling any other method on an non-valid instance will cause an unpredictable result.
+	 * 在无效实例上调用任何其他方法都将导致不可预测的结果。
      *
      * @param string      $path         The full temporary path to the file
      * @param string      $originalName The original file name of the uploaded file

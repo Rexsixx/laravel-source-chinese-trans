@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，错误处理器，误差增强器，没有发现错误增强器的类
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -28,6 +31,7 @@ class ClassNotFoundErrorEnhancer implements ErrorEnhancerInterface
     public function enhance(\Throwable $error): ?\Throwable
     {
         // Some specific versions of PHP produce a fatal error when extending a not found class.
+		// 一些特定版本的PHP在扩展未找到类时产生致命错误
         $message = !$error instanceof FatalError ? $error->getMessage() : $error->getError()['message'];
         if (!preg_match('/^(Class|Interface|Trait) [\'"]([^\'"]+)[\'"] not found$/', $message, $matches)) {
             return null;
@@ -61,6 +65,7 @@ class ClassNotFoundErrorEnhancer implements ErrorEnhancerInterface
 
     /**
      * Tries to guess the full namespace for a given class name.
+	 * 尝试猜测给定类名的完整名称空间。
      *
      * By default, it looks for PSR-0 and PSR-4 classes registered via a Symfony or a Composer
      * autoloader (that should cover all common cases).

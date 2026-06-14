@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，致命错误处理程序，没有发现致命错误处理程序的类
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,6 +24,7 @@ use Symfony\Component\Debug\Exception\FatalErrorException;
 
 /**
  * ErrorHandler for classes that do not exist.
+ * 那些不存在的类的ErrorHandler。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -65,6 +69,7 @@ class ClassNotFoundFatalErrorHandler implements FatalErrorHandlerInterface
 
     /**
      * Tries to guess the full namespace for a given class name.
+	 * 尝试猜测给定类名的完整名称空间。
      *
      * By default, it looks for PSR-0 and PSR-4 classes registered via a Symfony or a Composer
      * autoloader (that should cover all common cases).

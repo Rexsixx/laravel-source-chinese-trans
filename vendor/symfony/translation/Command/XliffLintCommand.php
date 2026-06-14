@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，数据采集器，Xliff Lint 命令
+ * Symfony，组件，翻译，命令，Xliff Lint 命令
  */
 
 /*

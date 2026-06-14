@@ -51,6 +51,7 @@ class RequestContext
 
     /**
      * Updates the RequestContext information based on a HttpFoundation Request.
+	 * 基于HttpFoundation请求更新RequestContext信息
      *
      * @return $this
      */
@@ -70,6 +71,7 @@ class RequestContext
 
     /**
      * Gets the base URL.
+	 * 获取基础URL
      *
      * @return string The base URL
      */
@@ -80,6 +82,7 @@ class RequestContext
 
     /**
      * Sets the base URL.
+	 * 设置基础URL
      *
      * @param string $baseUrl The base URL
      *

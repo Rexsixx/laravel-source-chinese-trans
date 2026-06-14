@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Css 选择器，XPath，扩展，抽象扩展
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\CssSelector\XPath\Extension;
 
 /**
  * XPath expression translator abstract extension.
+ * XPath表达式翻译抽象扩展。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.

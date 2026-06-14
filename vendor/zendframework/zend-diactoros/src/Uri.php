@@ -124,6 +124,7 @@ class Uri implements UriInterface
 
     /**
      * Operations to perform on clone.
+	 * 对克隆执行的操作。
      *
      * Since cloning usually is for purposes of mutation, we reset the
      * $uriString property so it will be re-calculated.
@@ -184,6 +185,7 @@ class Uri implements UriInterface
 
     /**
      * Retrieve the user-info part of the URI.
+	 * 检索URI的用户信息部分。
      *
      * This value is percent-encoded, per RFC 3986 Section 3.2.1.
      *

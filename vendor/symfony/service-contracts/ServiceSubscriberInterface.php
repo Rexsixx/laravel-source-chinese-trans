@@ -34,6 +34,7 @@ interface ServiceSubscriberInterface
 {
     /**
      * Returns an array of service types required by such instances, optionally keyed by the service names used internally.
+	 * 返回此类实例所需的服务类型数组，可选地使用内部使用的服务名称作为键值。
      *
      * For mandatory dependencies:
      *

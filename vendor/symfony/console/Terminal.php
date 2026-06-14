@@ -42,6 +42,7 @@ class Terminal
 
     /**
      * Gets the terminal height.
+	 * 到达终端高度
      *
      * @return int
      */
@@ -112,6 +113,7 @@ class Terminal
 
     /**
      * Initializes dimensions using the output of an stty columns line.
+	 * 使用stty列行的输出初始化维数
      */
     private static function initDimensionsUsingStty()
     {

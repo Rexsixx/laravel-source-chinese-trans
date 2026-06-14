@@ -30,6 +30,7 @@ interface ChunkInterface
 {
     /**
      * Tells when the idle timeout has been reached.
+	 * 告知在空闲超时时
      *
      * @throws TransportExceptionInterface on a network error
      */
@@ -37,6 +38,7 @@ interface ChunkInterface
 
     /**
      * Tells when headers just arrived.
+	 * 告诉头文件何时到达
      *
      * @throws TransportExceptionInterface on a network error or when the idle timeout is reached
      */
@@ -44,6 +46,7 @@ interface ChunkInterface
 
     /**
      * Tells when the body just completed.
+	 * 告知主体何时完成
      *
      * @throws TransportExceptionInterface on a network error or when the idle timeout is reached
      */

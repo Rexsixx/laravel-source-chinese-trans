@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，文件，Mime类型，Mime类型猜测
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Symfony\Component\Mime\MimeTypes;
 
 /**
  * A singleton mime type guesser.
+ * 一个单例mime类型的猜测者。
  *
  * By default, all mime type guessers provided by the framework are installed
  * (if available on the current OS/PHP setup).
@@ -44,6 +48,7 @@ class MimeTypeGuesser implements MimeTypeGuesserInterface
 {
     /**
      * The singleton instance.
+	 * 单例实例
      *
      * @var MimeTypeGuesser
      */

@@ -41,6 +41,7 @@ abstract class AbstractSerializer
      *
      * Retrieves a line from the stream; a line is defined as a sequence of
      * characters ending in a CRLF sequence.
+	 * 从流中读取一行；一行定义为以 CRLFRLF 序列结尾的一串字符。
      *
      * @throws Exception\DeserializationException if the sequence contains a CR
      *     or LF in isolation, or ends in a CR.
@@ -90,6 +91,7 @@ abstract class AbstractSerializer
 	 * 将流分割成标题和正文内容。
      *
      * Returns an array containing two elements
+	 * 返回包含两个元素的数组。
      *
      * - The first is an array of headers
      * - The second is a StreamInterface containing the body content
@@ -130,6 +132,7 @@ abstract class AbstractSerializer
 
     /**
      * Serialize headers to string values.
+	 * 将标头序列化为字符串值
      */
     protected static function serializeHeaders(array $headers) : string
     {
@@ -146,6 +149,7 @@ abstract class AbstractSerializer
 
     /**
      * Filter a header name to wordcase
+	 * 将标题名称过滤为wordcase
      */
     protected static function filterHeader($header) : string
     {

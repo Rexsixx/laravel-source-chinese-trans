@@ -118,6 +118,7 @@ class Router implements RouterInterface, RequestMatcherInterface
 
     /**
      * Sets options.
+	 * 设置选项。
      *
      * Available options:
      *
@@ -168,6 +169,7 @@ class Router implements RouterInterface, RequestMatcherInterface
 
     /**
      * Sets an option.
+	 * 设置一个选项
      *
      * @param string $key   The key
      * @param mixed  $value The value
@@ -187,6 +189,7 @@ class Router implements RouterInterface, RequestMatcherInterface
 
     /**
      * Gets an option value.
+	 * 获取选项值
      *
      * @param string $key The key
      *

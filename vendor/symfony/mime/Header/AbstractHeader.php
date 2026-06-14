@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Mime，数据头，抽象的头
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Mime\Encoder\QpMimeHeaderEncoder;
 
 /**
  * An abstract base MIME Header.
+ * 一个抽象的基本MIME头。
  *
  * @author Chris Corbyn
  */
@@ -46,6 +50,7 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Set the language used in this Header.
+	 * 设置标题中使用的语言。
      *
      * For example, for US English, 'en-us'.
      */
@@ -81,6 +86,7 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Produces a compliant, formatted RFC 2822 'phrase' based on the string given.
+	 * 基于给定的字符串生成一个兼容的、格式化的RFC 2822 ‘phrase’。
      *
      * @param string $string  as displayed
      * @param bool   $shorten the first line to make remove for header name
@@ -121,6 +127,7 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Encode needed word tokens within a string of input.
+	 * 在输入字符串中编码所需的字记号
      */
     protected function encodeWords(HeaderInterface $header, string $input, int $usedLength = -1): string
     {

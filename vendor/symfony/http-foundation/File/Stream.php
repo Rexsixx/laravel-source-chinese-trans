@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，文件，流动
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation\File;
 
 /**
  * A PHP stream of unknown size.
+ * 大小未知的PHP流。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

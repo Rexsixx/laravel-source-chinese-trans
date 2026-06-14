@@ -19,6 +19,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 
 /**
  * Eases the testing of console applications.
+ * 减轻对控制台应用程序的测试。
  *
  * When testing an application, don't forget to disable the auto exit flag:
  *
@@ -42,6 +43,7 @@ class ApplicationTester
 
     /**
      * Executes the application.
+	 * 执行应用程序。
      *
      * Available options:
      *

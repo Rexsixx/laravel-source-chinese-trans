@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Css 选择器，XPath，翻译接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\CssSelector\Node\SelectorNode;
 
 /**
  * XPath expression translator interface.
+ * XPath表达式翻译接口。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -27,6 +31,7 @@ interface TranslatorInterface
 {
     /**
      * Translates a CSS selector to an XPath expression.
+	 * 将CSS选择器翻译成XPath表达式
      */
     public function cssToXPath(string $cssExpr, string $prefix = 'descendant-or-self::'): string;
 

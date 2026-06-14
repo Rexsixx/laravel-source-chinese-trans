@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，事件调度器，Legacy 事件调度程序代理
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as ContractsEvent
 
 /**
  * A helper class to provide BC/FC with the legacy signature of EventDispatcherInterface::dispatch().
+ * 一个帮助类，为BC/FC提供EventDispatcherInterface::dispatch()的遗留签名。
  *
  * This class should be deprecated in Symfony 5.1
  *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，HTTP客户端，异常，重定向异常接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Contracts\HttpClient\Exception;
 
 /**
  * When a 3xx response is returned and the "max_redirects" option has been reached.
+ * 当3xx响应返回时,已经到达了“max_redirector”选项。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

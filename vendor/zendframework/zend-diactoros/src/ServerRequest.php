@@ -28,6 +28,8 @@ use function is_array;
  * Extends the Request definition to add methods for accessing incoming data,
  * specifically server parameters, cookies, matched path parameters, query
  * string arguments, body parameters, and upload file information.
+ * 扩展请求定义，添加用于访问传入数据的方法，
+ * 包括服务器参数、Cookie、匹配的路径参数、查询字符串参数、正文参数以及上传文件信息。
  *
  * "Attributes" are discovered via decomposing the request (and usually
  * specifically the URI path), and typically will be injected by the application.

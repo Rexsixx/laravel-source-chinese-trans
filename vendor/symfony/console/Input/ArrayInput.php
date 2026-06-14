@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，输入，Argv 输入
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Exception\InvalidOptionException;
 
 /**
  * ArrayInput represents an input provided as an array.
+ * ArrayInput表示提供的输入作为数组。
  *
  * Usage:
  *

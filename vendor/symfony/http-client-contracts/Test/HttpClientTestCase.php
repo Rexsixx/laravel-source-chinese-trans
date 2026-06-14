@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，HTTP客户端，测试，Http 客户端测试案例
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * A reference test suite for HttpClientInterface implementations.
+ * HttpClientInterface实现的参考测试套件。
  */
 abstract class HttpClientTestCase extends TestCase
 {

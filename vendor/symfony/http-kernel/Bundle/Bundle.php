@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
 /**
  * An implementation of BundleInterface that adds a few conventions for DependencyInjection extensions.
+ * 一个实现BundleInterface,它增加了一些依赖于依赖的扩展的惯例。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -60,6 +61,7 @@ abstract class Bundle implements BundleInterface
 
     /**
      * Returns the bundle's container extension.
+	 * 返回bundle的容器扩展名
      *
      * @return ExtensionInterface|null The container extension
      *

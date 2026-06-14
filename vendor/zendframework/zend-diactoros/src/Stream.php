@@ -324,6 +324,7 @@ class Stream implements StreamInterface
 
     /**
      * Set the internal stream resource.
+	 * 设置内部流资源
      *
      * @param string|resource $stream String stream target or stream resource.
      * @param string $mode Resource mode for stream target.

@@ -60,6 +60,7 @@ interface TranslatorInterface extends LocaleAwareInterface
 
     /**
      * Sets the current locale.
+	 * 设置当前区域设置
      *
      * @param string $locale The locale
      *
@@ -69,6 +70,7 @@ interface TranslatorInterface extends LocaleAwareInterface
 
     /**
      * Returns the current locale.
+	 * 返回当前语言环境
      *
      * @return string The locale
      */

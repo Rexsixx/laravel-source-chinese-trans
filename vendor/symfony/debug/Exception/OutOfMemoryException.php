@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，异常，失去内存异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ namespace Symfony\Component\Debug\Exception;
 
 /**
  * Out of memory exception.
+ * 在内存异常之外。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *

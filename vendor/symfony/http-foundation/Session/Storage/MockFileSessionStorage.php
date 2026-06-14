@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，存储，模拟文件会话存储
+ */
 
 /*
  * This file is part of the Symfony package.

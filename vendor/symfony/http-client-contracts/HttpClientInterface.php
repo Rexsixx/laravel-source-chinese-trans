@@ -77,6 +77,7 @@ interface HttpClientInterface
 
     /**
      * Requests an HTTP resource.
+	 * 请求HTTP资源。
      *
      * Responses MUST be lazy, but their status code MUST be
      * checked even if none of their public methods are called.
@@ -91,6 +92,7 @@ interface HttpClientInterface
 
     /**
      * Yields responses chunk by chunk as they complete.
+	 * 在响应完成时逐个块地生成响应
      *
      * @param ResponseInterface|iterable<array-key, ResponseInterface> $responses One or more responses created by the current HTTP client
      * @param float|null                                               $timeout   The idle timeout before yielding timeout chunks

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，助手，辅助接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Console\Helper;
 
 /**
  * HelperInterface is the interface all helpers must implement.
+ * HelperInterface是所有助手必须实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -20,6 +24,7 @@ interface HelperInterface
 {
     /**
      * Sets the helper set associated with this helper.
+	 * 设置与此助手关联的助手设置。
      */
     public function setHelperSet(HelperSet $helperSet = null);
 

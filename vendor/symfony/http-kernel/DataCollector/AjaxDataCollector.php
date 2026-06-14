@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，数据采集装置，Ajax 数据采集装置
+ */
 
 /*
  * This file is part of the Symfony package.

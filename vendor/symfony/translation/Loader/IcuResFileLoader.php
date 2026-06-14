@@ -65,6 +65,7 @@ class IcuResFileLoader implements LoaderInterface
 
     /**
      * Flattens an ResourceBundle.
+	 * Flattens ResourceBundle。
      *
      * The scheme used is:
      *   key { key2 { key3 { "value" } } }

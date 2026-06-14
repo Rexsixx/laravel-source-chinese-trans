@@ -180,6 +180,7 @@ class XliffUtils
 
     /**
      * Returns the XML errors of the internal XML parser.
+	 * 返回内部XML解析器的XML错误
      */
     private static function getXmlErrors(bool $internalErrors): array
     {

@@ -1928,6 +1928,7 @@ class Assert
 
     /**
      * Checks if a value is a valid array key (int or string).
+	 * 检查值是否为有效的数组键（int或string）
      *
      * @psalm-pure
      *
@@ -1952,6 +1953,7 @@ class Assert
 
     /**
      * Does not check if $array is countable, this can generate a warning on php versions after 7.2.
+	 * 不检查$array是否可计数，这会在7.2以后的php版本中产生警告。
      *
      * @param Countable|array $array
      * @param int             $number

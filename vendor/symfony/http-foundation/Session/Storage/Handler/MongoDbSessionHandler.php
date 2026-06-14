@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，存储，处理者，Mongo Db会话处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 
 /**
  * Session handler using the mongodb/mongodb package and MongoDB driver extension.
+ * 会话处理程序使用mongodb / mongodb包和mongodb驱动程序扩展。
  *
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
  *

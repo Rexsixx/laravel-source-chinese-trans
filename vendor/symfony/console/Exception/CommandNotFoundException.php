@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，异常，命令未发现异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Console\Exception;
 
 /**
  * Represents an incorrect command name typed in the console.
+ * 表示在控制台输入错误的命令名。
  *
  * @author Jérôme Tamarelle <jerome@tamarelle.net>
  */

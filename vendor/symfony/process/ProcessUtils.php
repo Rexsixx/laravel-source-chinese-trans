@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，进程，过程工具包
+ * Symfony，组件，进程，进程工具包
  */
 
 /*
@@ -18,8 +18,10 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
 
 /**
  * ProcessUtils is a bunch of utility methods.
+ * ProcessUtils是一堆实用程序方法。
  *
  * This class contains static methods only and is not meant to be instantiated.
+ * 这个类只包含静态方法，不打算被实例化。
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */

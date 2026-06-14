@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Mime，编码器，Rfc2231 编码器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ final class Rfc2231Encoder implements EncoderInterface
 {
     /**
      * Takes an unencoded string and produces a string encoded according to RFC 2231 from it.
+	 * 获取一个未编码的字符串，并从中生成一个按照RFC 2231编码的字符串。
      */
     public function encodeString(string $string, ?string $charset = 'utf-8', int $firstLineOffset = 0, int $maxLineLength = 0): string
     {

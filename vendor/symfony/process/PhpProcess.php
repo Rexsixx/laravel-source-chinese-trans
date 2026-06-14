@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，进程，Php进程
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Process\Exception\RuntimeException;
 
 /**
  * PhpProcess runs a PHP script in an independent process.
+ * PhpProcess在一个独立的进程中运行PHP脚本。
  *
  *     $p = new PhpProcess('<?php echo "foo"; ?>');
  *     $p->run();

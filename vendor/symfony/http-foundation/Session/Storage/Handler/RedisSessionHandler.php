@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，存储，处理者，会话处理程序工厂
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Cache\Traits\RedisProxy;
 /**
  * Redis based session storage handler based on the Redis class
  * provided by the PHP redis extension.
+ * 基于 PHP Redis Redis 扩展提供的 Redis 类的 Redis Redis Redis 基础会话存储处理器。
  *
  * @author Dalibor Karlović <dalibor@flexolabs.io>
  */

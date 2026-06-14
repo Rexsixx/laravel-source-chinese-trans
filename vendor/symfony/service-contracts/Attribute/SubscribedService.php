@@ -19,6 +19,7 @@ use Symfony\Contracts\Service\ServiceSubscriberTrait;
 /**
  * Use with {@see ServiceSubscriberTrait} to mark a method's return type
  * as a subscribed service.
+ * 使用 {@see ServiceSubscriberTrait}} 来标记方法的返回类型为已订阅的服务。
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */

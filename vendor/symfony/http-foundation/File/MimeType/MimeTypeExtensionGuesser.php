@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，文件，Mime类型，Mime类型扩展猜测器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Mime\MimeTypes;
 
 /**
  * Provides a best-guess mapping of mime type to file extension.
+ * 提供mime类型到文件扩展名的最佳猜测映射。
  *
  * @deprecated since Symfony 4.3, use {@link MimeTypes} instead
  */
@@ -24,6 +28,7 @@ class MimeTypeExtensionGuesser implements ExtensionGuesserInterface
 {
     /**
      * A map of mime types and their default extensions.
+	 * mime类型及其默认扩展名的映射。
      *
      * This list has been placed under the public domain by the Apache HTTPD project.
      * This list has been updated from upstream on 2019-01-14.

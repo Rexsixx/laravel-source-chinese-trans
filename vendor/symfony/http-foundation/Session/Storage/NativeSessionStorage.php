@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，存储，本地会话存储
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -24,6 +27,7 @@ class_exists(SessionHandlerProxy::class);
 
 /**
  * This provides a base class for session attribute storage.
+ * 这为会话属性存储提供了一个基类。
  *
  * @author Drak <drak@zikula.org>
  */

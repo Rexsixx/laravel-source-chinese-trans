@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，异常，致命错误异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ namespace Symfony\Component\Debug\Exception;
 
 /**
  * Fatal Error Exception.
+ * 致命错误异常
  *
  * @author Konstanton Myakshin <koc-dp@yandex.ru>
  *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，错误处理器，异常，Flatten 异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,8 +22,10 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 /**
  * FlattenException wraps a PHP Error or Exception to be able to serialize it.
+ * FlattenException包装PHP错误或异常，以便能够序列化它。
  *
  * Basically, this class removes all objects from the trace.
+ * 基本上，这个类从跟踪中删除所有对象。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

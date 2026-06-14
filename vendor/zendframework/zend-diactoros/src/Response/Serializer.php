@@ -40,6 +40,7 @@ final class Serializer extends AbstractSerializer
 
     /**
      * Parse a response from a stream.
+	 * 解析来自流的响应
      *
      * @throws Exception\InvalidArgumentException when the stream is not readable.
      * @throws Exception\SerializationException when errors occur parsing the message.
@@ -62,6 +63,7 @@ final class Serializer extends AbstractSerializer
 
     /**
      * Create a string representation of a response.
+	 * 创建响应的字符串表示形式
      */
     public static function toString(ResponseInterface $response) : string
     {
@@ -88,6 +90,7 @@ final class Serializer extends AbstractSerializer
 
     /**
      * Retrieve the status line for the message.
+	 * 检索消息的状态行
      *
      * @return array Array with three elements: 0 => version, 1 => status, 2 => reason
      * @throws Exception\SerializationException if line is malformed

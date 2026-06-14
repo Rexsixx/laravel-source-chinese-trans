@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，生成器，可配置需求接口
+ */
 
 /*
  * This file is part of the Symfony package.

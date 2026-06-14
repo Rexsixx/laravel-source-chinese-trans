@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Mime，部分，多部件的，表格数据部分
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Mime\Part\TextPart;
 
 /**
  * Implements RFC 7578.
+ * 实现RFC 7578。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

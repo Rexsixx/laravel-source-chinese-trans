@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，命令加载器，依赖注入，增加控制台命令通道
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,6 +24,7 @@ use Symfony\Component\DependencyInjection\TypedReference;
 
 /**
  * Registers console commands.
+ * 注册控制台命令。
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */

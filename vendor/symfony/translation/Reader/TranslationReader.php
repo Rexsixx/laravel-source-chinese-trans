@@ -36,6 +36,7 @@ class TranslationReader implements TranslationReaderInterface
 
     /**
      * Adds a loader to the translation extractor.
+	 * 向翻译提取器添加加载器
      *
      * @param string $format The format of the loader
      */

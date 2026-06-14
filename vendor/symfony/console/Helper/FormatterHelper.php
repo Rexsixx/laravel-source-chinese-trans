@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，助手，格式化程序助手
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
  * The Formatter class provides helpers to format messages.
+ * 格式化程序类提供帮助来格式化消息。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -22,6 +26,7 @@ class FormatterHelper extends Helper
 {
     /**
      * Formats a message within a section.
+	 * 在一个部分中格式化一个消息
      *
      * @param string $section The section name
      * @param string $message The message

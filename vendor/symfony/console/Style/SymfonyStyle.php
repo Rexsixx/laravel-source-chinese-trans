@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，样式，Symfony 风格
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -30,6 +33,7 @@ use Symfony\Component\Console\Terminal;
 
 /**
  * Output decorator helpers for the Symfony Style Guide.
+ * 对Symfony风格指南的输出装饰器助手。
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */

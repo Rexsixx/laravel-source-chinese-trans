@@ -30,6 +30,7 @@ use function sprintf;
  *
  * Allows creating a response by passing an XML string to the constructor; by default,
  * sets a status code of 200 and sets the Content-Type header to application/xml.
+ * 允许通过向构造函数传递XML字符串来创建响应；默认情况下，设置状态码为200，并将Content-Type头设置为application/xml。
  */
 class XmlResponse extends Response
 {
@@ -61,6 +62,7 @@ class XmlResponse extends Response
 
     /**
      * Create the message body.
+	 * 创建消息主体
      *
      * @param string|StreamInterface $xml
      * @throws Exception\InvalidArgumentException if $xml is neither a string or stream.

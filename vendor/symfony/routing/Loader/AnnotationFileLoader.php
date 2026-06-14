@@ -42,6 +42,7 @@ class AnnotationFileLoader extends FileLoader
 
     /**
      * Loads from annotations from a file.
+	 * 从文件的注解中加载
      *
      * @param string      $file A PHP file path
      * @param string|null $type The resource type
@@ -80,6 +81,7 @@ class AnnotationFileLoader extends FileLoader
 
     /**
      * Returns the full class name for the first class in the file.
+	 * 返回文件中第一个类的完整类名
      *
      * @param string $file A PHP file path
      *

@@ -16,6 +16,7 @@ namespace Symfony\Component\Translation\Exception;
 
 /**
  * Thrown when a resource does not exist.
+ * 当资源不存在时抛出。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

@@ -26,6 +26,7 @@ use function strtolower;
  * Requests are considered immutable; all methods that might change state are
  * implemented such that they retain the internal state of the current
  * message and return a new instance that contains the changed state.
+ * 请求被视为不可变的；所有可能改变状态的方法都应被实现为保留当前消息的内部状态，并返回一个包含已更改状态的新实例。
  */
 class Request implements RequestInterface
 {

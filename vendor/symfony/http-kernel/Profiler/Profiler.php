@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，分析器，Profiler
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -22,6 +25,7 @@ use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * Profiler.
+ * 分析器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -47,6 +51,7 @@ class Profiler implements ResetInterface
 
     /**
      * Disables the profiler.
+	 * 禁用分析器
      */
     public function disable()
     {
@@ -55,6 +60,7 @@ class Profiler implements ResetInterface
 
     /**
      * Enables the profiler.
+	 * 启用分析器
      */
     public function enable()
     {
@@ -63,6 +69,7 @@ class Profiler implements ResetInterface
 
     /**
      * Loads the Profile for the given Response.
+	 * 加载给定响应的概要文件
      *
      * @return Profile|null A Profile instance
      */

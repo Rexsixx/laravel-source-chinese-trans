@@ -27,6 +27,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Base class for all commands.
+ * 所有命令的基类。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -82,8 +83,10 @@ class Command
 
     /**
      * Ignores validation errors.
+	 * 忽略验证错误。
      *
      * This is mainly useful for the help command.
+	 * 这主要是有用的帮助命令。
      */
     public function ignoreValidationErrors()
     {
@@ -107,6 +110,7 @@ class Command
 
     /**
      * Gets the helper set.
+	 * 获取助手集合
      *
      * @return HelperSet|null A HelperSet instance
      */
@@ -117,6 +121,7 @@ class Command
 
     /**
      * Gets the application instance for this command.
+	 * 获取此命令的应用程序实例
      *
      * @return Application|null An Application instance
      */

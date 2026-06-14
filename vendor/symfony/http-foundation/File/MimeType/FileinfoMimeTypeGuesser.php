@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，文件，Mime类型，Fileinfo Mime类型猜测器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Symfony\Component\Mime\FileinfoMimeTypeGuesser as NewFileinfoMimeTypeGuesser
 
 /**
  * Guesses the mime type using the PECL extension FileInfo.
+ * 使用PECL扩展名FileInfo猜测mime类型。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
@@ -40,6 +44,7 @@ class FileinfoMimeTypeGuesser implements MimeTypeGuesserInterface
 
     /**
      * Returns whether this guesser is supported on the current OS/PHP setup.
+	 * 返回当前OS/PHP设置是否支持此猜测器
      *
      * @return bool
      */

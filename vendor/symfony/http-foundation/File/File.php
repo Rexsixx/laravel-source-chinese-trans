@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，文件，File
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Mime\MimeTypes;
 
 /**
  * A file in the file system.
+ * 文件系统中的文件。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
@@ -24,6 +28,7 @@ class File extends \SplFileInfo
 {
     /**
      * Constructs a new file from the given path.
+	 * 从给定路径构造一个新文件
      *
      * @param string $path      The path to the file
      * @param bool   $checkPath Whether to check the path or not

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，助手，表格
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Provides helpers to display a table.
+ * 提供显示表的助手。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Саша Стаменковић <umpirsky@gmail.com>

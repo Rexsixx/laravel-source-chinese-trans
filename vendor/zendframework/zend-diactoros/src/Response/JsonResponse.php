@@ -40,6 +40,7 @@ class JsonResponse extends Response
 
     /**
      * Default flags for json_encode; value of:
+	 * json_encode的默认标志；的价值:
      *
      * <code>
      * JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES
@@ -61,6 +62,7 @@ class JsonResponse extends Response
 
     /**
      * Create a JSON response with the given data.
+	 * 使用给定的数据创建JSON响应。
      *
      * Default JSON encoding is performed with the following options, which
      * produces RFC4627-compliant JSON, capable of embedding into HTML.
@@ -135,6 +137,7 @@ class JsonResponse extends Response
 
     /**
      * Encode the provided data to JSON.
+	 * 将提供的数据编码为JSON
      *
      * @param mixed $data
      * @throws Exception\InvalidArgumentException if unable to encode the $data to JSON.

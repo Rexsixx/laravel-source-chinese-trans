@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，Caster，Redis Caster
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts Redis class from ext-redis to array representation.
+ * 将Redis类从ext-redis转换为数组表示。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *

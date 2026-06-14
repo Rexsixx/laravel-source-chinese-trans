@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Mime，部分，文本部分
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -91,6 +94,7 @@ class TextPart extends AbstractPart
 
     /**
      * Sets the name of the file (used by FormDataPart).
+	 * 设置文件的名称（由FormDataPart使用）
      *
      * @return $this
      */
@@ -195,6 +199,7 @@ class TextPart extends AbstractPart
     public function __sleep()
     {
         // convert resources to strings for serialization
+		// 将资源转换为字符串以进行序列化
         if (null !== $this->seekable) {
             $this->body = $this->getBody();
             $this->seekable = null;

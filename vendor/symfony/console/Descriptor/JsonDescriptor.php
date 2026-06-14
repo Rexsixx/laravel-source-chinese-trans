@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，描述符，JSON 描述
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * JSON descriptor.
+ * JSON描述
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  *

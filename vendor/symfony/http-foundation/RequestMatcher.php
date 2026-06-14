@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http基础，请求匹配器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -74,6 +77,7 @@ class RequestMatcher implements RequestMatcherInterface
 
     /**
      * Adds a check for the HTTP scheme.
+	 * 添加对HTTP方案的检查
      *
      * @param string|string[]|null $scheme An HTTP scheme or an array of HTTP schemes
      */
@@ -84,6 +88,7 @@ class RequestMatcher implements RequestMatcherInterface
 
     /**
      * Adds a check for the URL host name.
+	 * 添加对URL主机名的检查
      *
      * @param string|null $regexp A Regexp
      */

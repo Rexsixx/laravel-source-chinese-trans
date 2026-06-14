@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Mime，数据头，头接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ interface HeaderInterface
 {
     /**
      * Sets the body.
+	 * 设置主体。
      *
      * The type depends on the Header concrete class.
      *
@@ -29,6 +33,7 @@ interface HeaderInterface
 
     /**
      * Gets the body.
+	 * 得到主体。
      *
      * The return type depends on the Header concrete class.
      *

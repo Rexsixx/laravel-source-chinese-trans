@@ -101,6 +101,7 @@ class XliffFileLoader implements LoaderInterface
                 $source = isset($attributes['resname']) && $attributes['resname'] ? $attributes['resname'] : $translation->source;
                 // If the xlf file has another encoding specified, try to convert it because
                 // simple_xml will always return utf-8 encoded values
+				// 如果 xlf 文件指定了其他编码，请尝试进行转换，因为 simple_xml_xml 总是返回 UTF-88 编码的值。
                 $target = $this->utf8ToCharset((string) ($translation->target ?? $translation->source), $encoding);
 
                 $catalogue->set((string) $source, $target, $domain);
@@ -144,6 +145,7 @@ class XliffFileLoader implements LoaderInterface
 
                 // If the xlf file has another encoding specified, try to convert it because
                 // simple_xml will always return utf-8 encoded values
+				// 如果xlf文件指定了其他编码，请尝试进行转换，因为simple_xml始终会返回utf-8编码的值。
                 $target = $this->utf8ToCharset((string) ($segment->target ?? $source), $encoding);
 
                 $catalogue->set((string) $source, $target, $domain);

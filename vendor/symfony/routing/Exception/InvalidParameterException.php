@@ -16,6 +16,7 @@ namespace Symfony\Component\Routing\Exception;
 
 /**
  * Exception thrown when a parameter is not valid.
+ * 参数无效时引发的异常。
  *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */

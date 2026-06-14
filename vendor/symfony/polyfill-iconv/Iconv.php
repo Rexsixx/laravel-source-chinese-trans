@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Polyfill，Iconv，Iconv
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Polyfill\Iconv;
 
 /**
  * iconv implementation in pure PHP, UTF-8 centric.
+ * iconv的纯PHP实现，以UTF-8为中心。
  *
  * Implemented:
  * - iconv              - Convert string to requested character encoding

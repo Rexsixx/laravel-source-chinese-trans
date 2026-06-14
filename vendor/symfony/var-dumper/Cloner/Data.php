@@ -204,6 +204,7 @@ class Data implements \ArrayAccess, \Countable, \IteratorAggregate
 
     /**
      * Returns a depth limited clone of $this.
+	 * 返回$this的一个有深度限制的克隆
      *
      * @param int $maxDepth The max dumped depth level
      *
@@ -219,6 +220,7 @@ class Data implements \ArrayAccess, \Countable, \IteratorAggregate
 
     /**
      * Limits the number of elements per depth level.
+	 * 限制每个深度级别的元素数量
      *
      * @param int $maxItemsPerDepth The max number of items dumped per depth level
      *

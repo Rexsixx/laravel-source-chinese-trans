@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，事件调度器，依赖注入，注册监听器通过
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,6 +26,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Compiler pass to register tagged services for an event dispatcher.
+ * 编译器传递来为事件分派器注册带标记的服务。
  */
 class RegisterListenersPass implements CompilerPassInterface
 {

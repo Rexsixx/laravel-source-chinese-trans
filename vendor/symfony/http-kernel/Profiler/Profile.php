@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，分析器，Profile
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollectorInterface;
 
 /**
  * Profile.
+ * 档案
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -50,6 +54,7 @@ class Profile
 
     /**
      * Sets the token.
+	 * 设置令牌
      *
      * @param string $token The token
      */
@@ -60,6 +65,7 @@ class Profile
 
     /**
      * Gets the token.
+	 * 获取令牌
      *
      * @return string The token
      */

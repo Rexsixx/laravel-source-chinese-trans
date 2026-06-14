@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，致命错误处理程序，未定义函数致命错误处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Debug\Exception\UndefinedFunctionException;
 
 /**
  * ErrorHandler for undefined functions.
+ * 未定义函数的ErrorHandler。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *

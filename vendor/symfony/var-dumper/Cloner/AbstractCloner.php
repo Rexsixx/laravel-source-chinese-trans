@@ -201,6 +201,7 @@ abstract class AbstractCloner implements ClonerInterface
 
     /**
      * Adds casters for resources and objects.
+	 * 为资源和对象添加施法者。
      *
      * Maps resources or objects types to a callback.
      * Types are in the key, with a callable caster for value.
@@ -218,6 +219,7 @@ abstract class AbstractCloner implements ClonerInterface
 
     /**
      * Sets the maximum number of items to clone past the minimum depth in nested structures.
+	 * 将最大数量的项目设置为通过嵌套结构的最小深度。
      *
      * @param int $maxItems
      */
@@ -228,6 +230,7 @@ abstract class AbstractCloner implements ClonerInterface
 
     /**
      * Sets the maximum cloned length for strings.
+	 * 设置字符串的最大克隆长度。
      *
      * @param int $maxString
      */
@@ -239,6 +242,7 @@ abstract class AbstractCloner implements ClonerInterface
     /**
      * Sets the minimum tree depth where we are guaranteed to clone all the items.  After this
      * depth is reached, only setMaxItems items will be cloned.
+	 * 设置最小树深度，确保在此深度以下的所有项目都会被克隆。达到此深度后，仅会克隆 setMaxItems 个项目。
      *
      * @param int $minDepth
      */
@@ -249,6 +253,7 @@ abstract class AbstractCloner implements ClonerInterface
 
     /**
      * Clones a PHP variable.
+	 * 克隆一个PHP变量
      *
      * @param mixed $var    Any PHP variable
      * @param int   $filter A bit field of Caster::EXCLUDE_* constants
@@ -287,6 +292,7 @@ abstract class AbstractCloner implements ClonerInterface
 
     /**
      * Effectively clones the PHP variable.
+	 * 有效地克隆PHP变量
      *
      * @param mixed $var Any PHP variable
      *
@@ -296,6 +302,7 @@ abstract class AbstractCloner implements ClonerInterface
 
     /**
      * Casts an object to an array representation.
+	 * 将对象投射到数组表示
      *
      * @param bool $isNested True if the object is nested in the dumped structure
      *

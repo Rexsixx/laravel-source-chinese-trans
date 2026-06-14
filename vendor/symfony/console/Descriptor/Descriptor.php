@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，描述符，Descriptor
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -61,6 +64,7 @@ abstract class Descriptor implements DescriptorInterface
 
     /**
      * Writes content to output.
+	 * 写入内容到输出
      *
      * @param string $content
      * @param bool   $decorated
@@ -72,6 +76,7 @@ abstract class Descriptor implements DescriptorInterface
 
     /**
      * Describes an InputArgument instance.
+	 * 描述一个InputArgument实例
      */
     abstract protected function describeInputArgument(InputArgument $argument, array $options = []);
 

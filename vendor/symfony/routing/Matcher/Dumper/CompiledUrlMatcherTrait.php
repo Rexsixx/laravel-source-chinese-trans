@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，匹配程序，转储，编译 Url匹配器特征
+ */
 
 /*
  * This file is part of the Symfony package.

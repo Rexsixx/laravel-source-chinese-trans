@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，助手，输入意识助手
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * An implementation of InputAwareInterface for Helpers.
+ * 为助手实现InputAwareInterface。
  *
  * @author Wouter J <waldio.webdesign@gmail.com>
  */

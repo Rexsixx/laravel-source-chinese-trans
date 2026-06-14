@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，属性，自动过期FlashBag
+ */
 
 /*
  * This file is part of the Symfony package.

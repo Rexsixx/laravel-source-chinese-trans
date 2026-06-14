@@ -34,6 +34,8 @@ class MessageSelector
      * pipe (|), this method returns the correct portion of the message based
      * on the given number, locale and the pluralization rules in the message
      * itself.
+	 * 给定一个由竖线（|）分隔的、具有不同复数形式翻译的消息，
+	 * 此方法将根据指定的数字、区域设置以及消息本身中的复数规则，返回正确部分的消息。
      *
      * The message supports two different types of pluralization rules:
      *
@@ -79,6 +81,7 @@ class MessageSelector
         }
 
         // try to match an explicit rule, then fallback to the standard ones
+		// 尝试匹配显式规则，然后退回到标准规则。
         foreach ($explicitRules as $interval => $m) {
             if (Interval::test($number, $interval)) {
                 return $m;

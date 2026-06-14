@@ -28,6 +28,7 @@ interface BundleInterface extends ContainerAwareInterface
 {
     /**
      * Boots the Bundle.
+	 * 启动Bundle
      */
     public function boot();
 

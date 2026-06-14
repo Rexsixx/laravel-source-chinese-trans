@@ -16,6 +16,7 @@ namespace Symfony\Component\Routing\Exception;
 
 /**
  * ExceptionInterface.
+ * 异常接口
  *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */

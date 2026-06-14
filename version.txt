@@ -1,0 +1,10 @@
+
+Laravel Version: 5.7.29
+Select PHP Version: 7.2
+Require PhP Version: 7.0 - 7.3
+Frame Start Date: 2018-09-04
+Frame End Date: 2019-08-30
+NOT LTS
+
+Start Date: 2024-02-15
+Version2: v1.0.2

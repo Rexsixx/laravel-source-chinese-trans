@@ -130,6 +130,7 @@ class Route implements \Serializable
 
     /**
      * Sets the pattern for the path.
+	 * 为路径设置模式
      *
      * @param string $pattern The path pattern
      *
@@ -168,6 +169,7 @@ class Route implements \Serializable
 
     /**
      * Sets the pattern for the host.
+	 * 为主机设置模式
      *
      * @param string $pattern The host pattern
      *

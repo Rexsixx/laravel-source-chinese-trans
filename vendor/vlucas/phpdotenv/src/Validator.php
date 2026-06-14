@@ -35,6 +35,7 @@ class Validator
 
     /**
      * Create a new validator instance.
+	 * 创建一个新的验证器实例
      *
      * @param array          $variables
      * @param \Dotenv\Loader $loader
@@ -56,6 +57,7 @@ class Validator
 
     /**
      * Assert that each variable is not empty.
+	 * 断言每个变量不为空
      *
      * @return \Dotenv\Validator
      */

@@ -16,6 +16,7 @@ namespace Symfony\Component\Routing\Exception;
 
 /**
  * Exception thrown when a route does not exist.
+ * 当路由不存在时引发的异常。
  *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，Caster，Xml 资源编码器
+ * Symfony，组件，Var Dumper，Caster，Xml 资源Caster
  */
 
 /*

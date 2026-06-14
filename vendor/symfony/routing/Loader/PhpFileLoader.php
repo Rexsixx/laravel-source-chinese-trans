@@ -21,6 +21,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * PhpFileLoader loads routes from a PHP file.
+ * PhpFileLoader加载来自PHP文件的路由。
  *
  * The file must return a RouteCollection instance.
  *

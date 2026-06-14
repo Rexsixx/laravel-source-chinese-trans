@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，属性，命名空间属性包
+ */
 
 /*
  * This file is part of the Symfony package.

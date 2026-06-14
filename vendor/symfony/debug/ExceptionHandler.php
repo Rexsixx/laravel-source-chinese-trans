@@ -65,6 +65,7 @@ class ExceptionHandler
 
     /**
      * Registers the exception handler.
+	 * 注册异常处理程序
      *
      * @param bool        $debug          Enable/disable debug mode, where the stack trace is displayed
      * @param string|null $charset        The charset used by exception messages

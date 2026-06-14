@@ -106,6 +106,7 @@ class YamlFileLoader extends FileLoader
 
     /**
      * Parses a route and adds it to the RouteCollection.
+	 * 解析路由并将其添加到RouteCollection中
      *
      * @param string $name   Route name
      * @param array  $config Route definition

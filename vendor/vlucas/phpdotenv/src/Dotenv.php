@@ -48,6 +48,7 @@ class Dotenv
 
     /**
      * Load environment file in given directory.
+	 * 在给定目录中加载环境文件
      *
      * @throws \Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidFileException
      *
@@ -60,6 +61,7 @@ class Dotenv
 
     /**
      * Load environment file in given directory, suppress InvalidPathException.
+	 * 在给定目录中加载环境文件，抑制InvalidPathException。
      *
      * @throws \Dotenv\Exception\InvalidFileException
      *
@@ -77,6 +79,7 @@ class Dotenv
 
     /**
      * Load environment file in given directory.
+	 * 在给定目录中加载环境文件
      *
      * @throws \Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidFileException
      *
@@ -89,6 +92,7 @@ class Dotenv
 
     /**
      * Returns the full path to the file.
+	 * 返回文件的完整路径
      *
      * @param string $path
      * @param string $file

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Mime，数据头，邮箱列表标头
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Mime\Exception\RfcComplianceException;
 
 /**
  * A Mailbox list MIME Header for something like From, To, Cc, and Bcc (one or more named addresses).
+ * 邮箱列表MIME头，用于发送、发送、抄送和密件抄送（一个或多个指定地址）。
  *
  * @author Chris Corbyn
  */
@@ -55,6 +59,7 @@ final class MailboxListHeader extends AbstractHeader
 
     /**
      * Sets a list of addresses to be shown in this Header.
+	 * 设置要在此报头中显示的地址列表
      *
      * @param Address[] $addresses
      *
@@ -68,6 +73,7 @@ final class MailboxListHeader extends AbstractHeader
 
     /**
      * Sets a list of addresses to be shown in this Header.
+	 * 设置要在此报头中显示的地址列表
      *
      * @param Address[] $addresses
      *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，测试，约束，响应被重定向
+ */
 
 /*
  * This file is part of the Symfony package.

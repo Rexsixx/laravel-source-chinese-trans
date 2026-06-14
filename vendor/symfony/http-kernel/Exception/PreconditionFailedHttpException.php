@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，异常，太多的请求Http异常
+ */
 
 /*
  * This file is part of the Symfony package.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，格式化程序，输出格式化程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 /**
  * Formatter class for console output.
+ * 控制台输出的格式化程序类。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  * @author Roland Franssen <franssen.roland@gmail.com>
@@ -66,6 +70,7 @@ class OutputFormatter implements WrappableOutputFormatterInterface
 
     /**
      * Initializes console output formatter.
+	 * 初始化控制台输出格式化程序
      *
      * @param OutputFormatterStyleInterface[] $styles Array of "name => FormatterStyle" instances
      */

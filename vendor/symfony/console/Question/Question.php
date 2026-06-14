@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，问题，Question
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * Represents a Question.
+ * 代表一个问题。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

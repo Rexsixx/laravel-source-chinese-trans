@@ -16,6 +16,7 @@ namespace Symfony\Component\Finder\Comparator;
 
 /**
  * Comparator.
+ * 比较器
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -26,6 +27,7 @@ class Comparator
 
     /**
      * Gets the target value.
+	 * 获取目标值
      *
      * @return string The target value
      */
@@ -36,6 +38,7 @@ class Comparator
 
     /**
      * Sets the target value.
+	 * 设置目标值
      *
      * @param string $target The target value
      */
@@ -46,6 +49,7 @@ class Comparator
 
     /**
      * Gets the comparison operator.
+	 * 获取比较运算符
      *
      * @return string The operator
      */
@@ -56,6 +60,7 @@ class Comparator
 
     /**
      * Sets the comparison operator.
+	 * 设置比较运算符
      *
      * @param string $operator A valid operator
      *
@@ -76,6 +81,7 @@ class Comparator
 
     /**
      * Tests against the target.
+	 * 对目标进行测试
      *
      * @param mixed $test A test value
      *

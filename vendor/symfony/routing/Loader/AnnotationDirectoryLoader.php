@@ -20,6 +20,7 @@ use Symfony\Component\Routing\RouteCollection;
 /**
  * AnnotationDirectoryLoader loads routing information from annotations set
  * on PHP classes and methods.
+ * AnnotationDirectoryLoader 从 PHP 类和方法上设置的注解中加载路由信息。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

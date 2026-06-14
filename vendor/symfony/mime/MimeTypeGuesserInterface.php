@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Mime，Mime类型猜测器接口
+ */
 
 /*
  * This file is part of the Symfony package.

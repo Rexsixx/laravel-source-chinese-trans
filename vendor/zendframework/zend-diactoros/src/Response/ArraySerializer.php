@@ -1,6 +1,6 @@
 <?php
 /**
- * Zend，Diactoros，响应，数组串行器
+ * Zend，Diactoros，响应，数组序列化器
  */
 
 /**
@@ -48,6 +48,7 @@ final class ArraySerializer
 
     /**
      * Deserialize a response array to a response instance.
+	 * 将响应数组反序列化为响应实例
      *
      * @throws Exception\DeserializationException when cannot deserialize response
      */

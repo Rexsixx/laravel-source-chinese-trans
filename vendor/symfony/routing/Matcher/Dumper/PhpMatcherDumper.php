@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，匹配程序，转储，Php 匹配器转储
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ namespace Symfony\Component\Routing\Matcher\Dumper;
 
 /**
  * PhpMatcherDumper creates a PHP class able to match URLs for a given set of routes.
+ * PhpMatcherDumper创建了一个PHP类，能够匹配给定路由集的url。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>

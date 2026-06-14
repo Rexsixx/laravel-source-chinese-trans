@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由，匹配程序，转储，静态前缀集合
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Prefix tree of routes preserving routes order.
+ * 保持路由顺序的前缀树。
  *
  * @author Frank de Jonge <info@frankdejonge.nl>
  * @author Nicolas Grekas <p@tchwork.com>

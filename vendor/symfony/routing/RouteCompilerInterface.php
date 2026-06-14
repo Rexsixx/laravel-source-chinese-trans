@@ -24,6 +24,7 @@ interface RouteCompilerInterface
 {
     /**
      * Compiles the current route instance.
+	 * 编译当前路由实例
      *
      * @return CompiledRoute A CompiledRoute instance
      *

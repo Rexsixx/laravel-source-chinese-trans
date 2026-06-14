@@ -1,4 +1,8 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件监听器，抽象会话监听器
+ */
+
 
 /*
  * This file is part of the Symfony package.
@@ -23,6 +27,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 /**
  * Sets the session onto the request on the "kernel.request" event and saves
  * it on the "kernel.response" event.
+ * 将会话设置在“kernel.request”事件的请求上，并保存在“kernel.response”事件中。
  *
  * In addition, if the session has been started it overrides the Cache-Control
  * header in such a way that all caching is disabled in that case.

@@ -41,6 +41,7 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Collects HTTP methods that would be allowed for the request.
+	 * 收集请求允许使用的HTTP方法
      */
     protected $allow = [];
 

@@ -17,6 +17,7 @@ namespace Symfony\Component\Finder\Comparator;
 /**
  * NumberComparator compiles a simple comparison to an anonymous
  * subroutine, which you can call with a value to be tested again.
+ * NumberComparator 会编译一个简单的比较函数，该函数可与匿名子程序结合使用，你可以通过传递待测试的值来调用它。
  *
  * Now this would be very pointless, if NumberCompare didn't understand
  * magnitudes.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，事件调度器，EventDispatcher
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Contracts\EventDispatcher\Event as ContractsEvent;
 
 /**
  * The EventDispatcherInterface is the central point of Symfony's event listener system.
+ * EventDispatcherInterface是Symfony事件监听器系统的中心点。
  *
  * Listeners are registered on the manager and events are dispatched through the
  * manager.

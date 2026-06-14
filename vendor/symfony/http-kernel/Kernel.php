@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，内核
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -40,6 +43,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfiguration
 
 /**
  * The Kernel is the heart of the Symfony system.
+ * 内核是Symfony系统的核心。
  *
  * It manages an environment made of bundles.
  *
@@ -206,6 +210,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
 
     /**
      * Gets an HTTP kernel from the container.
+	 * 从容器获取HTTP内核
      *
      * @return HttpKernelInterface
      */

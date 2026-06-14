@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，Caster，Img Stub
+ */
 
 /*
  * This file is part of the Symfony package.

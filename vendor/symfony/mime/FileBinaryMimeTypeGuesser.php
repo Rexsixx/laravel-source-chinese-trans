@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Mime，FileBinary Mime类型猜测器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Mime\Exception\LogicException;
 
 /**
  * Guesses the MIME type with the binary "file" (only available on *nix).
+ * 用二进制“文件”猜测MIME类型（仅在*nix上可用）。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
@@ -26,6 +30,7 @@ class FileBinaryMimeTypeGuesser implements MimeTypeGuesserInterface
     /**
      * The $cmd pattern must contain a "%s" string that will be replaced
      * with the file name to guess.
+	 * $cmdcmd 模式必须包含一个 "%s" 字符串，该字符串将被替换为要猜测的文件名。
      *
      * The command output must start with the MIME type of the file.
      *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Polyfill，Intl，Idn，Idn
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -64,6 +67,7 @@ final class Idn
     /**
      * Contains the numeric value of a basic code point (for use in representing integers) in the
      * range 0 to BASE-1, or -1 if b is does not represent a value.
+	 * 包含基本代码点的数值（用于表示整数），该数值范围为 00 到 BASE-1，如果 b 不表示一个值，则为 -1。
      *
      * @var array<int, int>
      */

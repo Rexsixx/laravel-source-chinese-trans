@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HTTP基础，会话，存储，处理者，会话处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 
 /**
  * Session handler using a PDO connection to read and write data.
+ * 会话处理程序使用PDO连接来读取和写入数据。
  *
  * It works with MySQL, PostgreSQL, Oracle, SQL Server and SQLite and implements
  * different locking strategies to handle concurrent access to the same session.

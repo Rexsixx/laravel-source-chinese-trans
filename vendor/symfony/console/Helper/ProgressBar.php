@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，助手，进度条
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Symfony\Component\Console\Terminal;
 
 /**
  * The ProgressBar provides helpers to display progress output.
+ * ProgressBar提供帮助显示进度输出。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Chris Jones <leeked@gmail.com>
@@ -82,6 +86,7 @@ final class ProgressBar
 
     /**
      * Sets a placeholder formatter for a given name.
+	 * 为给定名称设置一个占位符格式器。
      *
      * This method also allow you to override an existing placeholder.
      *

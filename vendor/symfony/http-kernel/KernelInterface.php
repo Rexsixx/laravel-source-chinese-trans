@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，内核接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
  * The Kernel is the heart of the Symfony system.
+ * 内核是Symfony系统的核心。
  *
  * It manages an environment made of application kernel and bundles.
  *

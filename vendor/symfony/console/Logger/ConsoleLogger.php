@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，记录器，控制台记录器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * PSR-3 compliant console logger.
+ * PSR-3兼容的控制台记录器。
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
  *
@@ -73,6 +77,7 @@ class ConsoleLogger extends AbstractLogger
         $output = $this->output;
 
         // Write to the error output if necessary and available
+		// 如果需要并可用,写入错误输出。
         if (self::ERROR === $this->formatLevelMap[$level]) {
             if ($this->output instanceof ConsoleOutputInterface) {
                 $output = $output->getErrorOutput();
@@ -89,6 +94,7 @@ class ConsoleLogger extends AbstractLogger
 
     /**
      * Returns true when any messages have been logged at error levels.
+	 * 当任何消息被记录在错误级别时返回true
      *
      * @return bool
      */

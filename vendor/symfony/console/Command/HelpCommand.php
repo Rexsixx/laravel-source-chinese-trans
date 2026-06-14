@@ -22,6 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * HelpCommand displays the help for a given command.
+ * HelpCommand显示给定命令的帮助。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

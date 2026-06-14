@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，输出，修整过的缓冲输出
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
  * A BufferedOutput that keeps only the last N chars.
+ * 一个缓冲输出,只保留最后一个N个chars。
  *
  * @author Jérémy Derussé <jeremy@derusse.com>
  */

@@ -60,6 +60,7 @@ final class Rule
 
     /**
      * Get properties
+	 * 获得属性
      *
      * @return Property[]
      */
@@ -70,6 +71,7 @@ final class Rule
 
     /**
      * Get specificity
+	 * 得到特异性
      *
      * @return Specificity
      */
@@ -80,6 +82,7 @@ final class Rule
 
     /**
      * Get order
+	 * 得到顺序
      *
      * @return int
      */

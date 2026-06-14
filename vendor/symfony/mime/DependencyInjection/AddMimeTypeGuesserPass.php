@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Mime，依赖注入，AddMime 类型猜测通过
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Registers custom mime types guessers.
+ * 注册自定义mime类型猜测器
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

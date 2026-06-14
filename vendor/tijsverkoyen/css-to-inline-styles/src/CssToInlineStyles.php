@@ -205,6 +205,7 @@ class CssToInlineStyles
 
     /**
      * Merge the CSS rules to determine the applied properties.
+	 * 合并CSS规则以确定应用的属性
      *
      * @param Css\Property\Property[] $properties
      * @param Css\Property\Property[] $cssProperties existing applied properties indexed by name
@@ -222,6 +223,7 @@ class CssToInlineStyles
                 $existingProperty = $cssProperties[$property->getName()];
 
                 //skip check to overrule if existing property is important and current is not
+				// 如果现有属性重要而当前属性不重要，则跳过检查以否决。
                 if ($existingProperty->isImportant() && !$property->isImportant()) {
                     continue;
                 }

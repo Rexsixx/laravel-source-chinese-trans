@@ -48,6 +48,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Gets the current RouteCollection as an Iterator that includes all routes.
+	 * 获取当前的RouteCollection作为包含所有路由的迭代器。
      *
      * It implements \IteratorAggregate.
      *
