@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，依赖注入，可配置的扩展
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * This extension sub-class provides first-class integration with the
  * Config/Definition Component.
+ * 该扩展子类提供了与配置/定义组件的一流集成。
  *
  * You can use this as base class if
  *

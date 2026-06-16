@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，工具，类型
+ */
+
 /*
  * This file is part of PHPUnit.
  *

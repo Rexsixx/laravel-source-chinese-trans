@@ -44,6 +44,7 @@ final class ConsoleEvents
 
     /**
      * The ERROR event occurs when an uncaught exception or error appears.
+	 * 当出现未捕获的异常或错误时，发生ERROR事件。
      *
      * This event allows you to deal with the exception/error or
      * to modify the thrown exception.

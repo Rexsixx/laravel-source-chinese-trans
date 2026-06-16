@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，运行者，版本
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -13,6 +18,7 @@ use SebastianBergmann\Version as VersionId;
 
 /**
  * This class defines the current version of PHPUnit.
+ * 这个类定义了PHPUnit的当前版本。
  */
 class Version
 {
@@ -22,6 +28,7 @@ class Version
 
     /**
      * Returns the current version of PHPUnit.
+	 * 返回PHPUnit的当前版本
      */
     public static function id(): string
     {

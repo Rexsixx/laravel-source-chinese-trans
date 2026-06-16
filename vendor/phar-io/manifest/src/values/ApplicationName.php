@@ -1,4 +1,8 @@
 <?php
+/**
+ * PharIo，Manifest，应用名称
+ */
+
 /*
  * This file is part of PharIo\Manifest.
  *
@@ -18,6 +22,7 @@ class ApplicationName {
 
     /**
      * ApplicationName constructor.
+	 * ApplicationName构造函数
      *
      * @param string $name
      *

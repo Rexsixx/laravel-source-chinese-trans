@@ -129,6 +129,7 @@ class CodeCleaner
 
     /**
      * "Warm up" code cleaner passes when we're coming from a debug call.
+	 * 当我们来自调试调用时,“预热”代码清理传递。
      *
      * This is useful, for example, for `UseStatementPass` and `NamespacePass`
      * which keep track of state between calls, to maintain the current

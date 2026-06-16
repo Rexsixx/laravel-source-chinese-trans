@@ -60,6 +60,7 @@ class CssSelectorConverter
 
     /**
      * Translates a CSS expression to its XPath equivalent.
+	 * 将CSS表达式转换为等价的XPath表达式
      *
      * Optionally, a prefix can be added to the resulting XPath
      * expression with the $prefix parameter.

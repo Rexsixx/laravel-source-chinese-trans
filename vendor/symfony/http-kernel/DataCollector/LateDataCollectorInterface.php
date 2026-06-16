@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，数据采集装置，后期数据采集器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpKernel\DataCollector;
 
 /**
  * LateDataCollectorInterface.
+ * 后期数据采集器接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，环境，Runtime
+ */
+
 /*
  * This file is part of sebastian/environment.
  *
@@ -22,6 +27,7 @@ final class Runtime
     /**
      * Returns true when Xdebug or PCOV is available or
      * the runtime used is PHPDBG.
+	 * 当Xdebug或PCOV可用时返回true,或者使用的运行时是PHPDBG。
      */
     public function canCollectCodeCoverage(): bool
     {
@@ -30,6 +36,7 @@ final class Runtime
 
     /**
      * Returns true when Zend OPcache is loaded, enabled, and is configured to discard comments.
+	 * 当Zend OPcache被加载、启用并配置为丢弃注释时返回true。
      */
     public function discardsComments(): bool
     {

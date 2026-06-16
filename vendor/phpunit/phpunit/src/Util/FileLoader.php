@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，工具，文件装入程序
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -13,6 +17,7 @@ use PHPUnit\Framework\Exception;
 
 /**
  * Utility methods to load PHP sourcefiles.
+ * 使用实用程序来加载PHP sourcefiles。
  */
 final class FileLoader
 {

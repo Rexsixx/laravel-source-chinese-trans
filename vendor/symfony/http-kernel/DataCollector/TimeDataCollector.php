@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，数据采集装置，时间数据采集器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -79,6 +82,7 @@ class TimeDataCollector extends DataCollector implements LateDataCollectorInterf
 
     /**
      * Sets the request events.
+	 * 设置请求事件
      *
      * @param StopwatchEvent[] $events The request events
      */
@@ -93,6 +97,7 @@ class TimeDataCollector extends DataCollector implements LateDataCollectorInterf
 
     /**
      * Gets the request events.
+	 * 获取请求事件
      *
      * @return StopwatchEvent[] The request events
      */

@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
 
 /**
  * StorageInterface.
+ * 会话存储接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Drak <drak@zikula.org>
@@ -52,6 +53,7 @@ interface SessionStorageInterface
 
     /**
      * Sets the session ID.
+	 * 设置会话ID
      *
      * @param string $id
      */

@@ -37,6 +37,7 @@ class InvalidDateException extends InvalidArgumentException
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * @param string          $field
      * @param mixed           $value

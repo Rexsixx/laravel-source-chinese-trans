@@ -62,6 +62,7 @@ class ValidationData
 
     /**
      * Configures the id
+	 * 配置id
      *
      * @param string $id
      */

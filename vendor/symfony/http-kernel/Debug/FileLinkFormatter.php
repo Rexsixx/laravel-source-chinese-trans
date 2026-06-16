@@ -20,6 +20,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Formats debug file links.
+ * 格式调试文件链接。
  *
  * @author Jérémy Romey <jeremy@free-agent.fr>
  *

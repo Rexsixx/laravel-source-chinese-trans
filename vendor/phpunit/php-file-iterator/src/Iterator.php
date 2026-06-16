@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，文件迭代器，Iterator
+ */
+
 /*
  * This file is part of php-file-iterator.
  *
@@ -70,6 +74,7 @@ class Iterator extends \FilterIterator
     private function acceptPath(string $path): bool
     {
         // Filter files in hidden directories by checking path that is relative to the base path.
+		// 通过检查相对于基本路径的路径,在隐藏的目录中过滤文件。
         if (\preg_match('=/\.[^/]*/=', \str_replace($this->basePath, '', $path))) {
             return false;
         }

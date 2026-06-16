@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，环境，控制台
+ */
+
 /*
  * This file is part of sebastian/environment.
  *
@@ -28,6 +33,7 @@ final class Console
 
     /**
      * Returns true if STDOUT supports colorization.
+	 * 如果STDOUT支持着色，则返回true。
      *
      * This code has been copied and adapted from
      * Symfony\Component\Console\Output\StreamOutput.
@@ -58,6 +64,7 @@ final class Console
 
     /**
      * Returns the number of columns of the terminal.
+	 * 返回终端的列数
      *
      * @codeCoverageIgnore
      */
@@ -76,6 +83,7 @@ final class Console
 
     /**
      * Returns if the file descriptor is an interactive terminal or not.
+	 * 如果文件描述符是一个交互终端,则返回返回。
      *
      * Normally, we want to use a resource as a parameter, yet sadly it's not always awailable,
      * eg when running code in interactive console (`php -a`), STDIN/STDOUT/STDERR constants are not defined.

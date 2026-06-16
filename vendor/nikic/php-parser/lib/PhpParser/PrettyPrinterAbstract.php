@@ -160,6 +160,7 @@ abstract class PrettyPrinterAbstract
 
     /**
      * Reset pretty printing state.
+	 * 重置漂亮的打印状态
      */
     protected function resetState() {
         $this->indentLevel = 0;

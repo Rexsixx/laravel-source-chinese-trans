@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件监听器，保存会话监听器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -40,6 +43,7 @@ class SaveSessionListener implements EventSubscriberInterface
     {
         return [
             // low priority but higher than StreamedResponseListener
+			// 低优先级，但高于streamedresponsellistener。
             KernelEvents::RESPONSE => [['onKernelResponse', -1000]],
         ];
     }

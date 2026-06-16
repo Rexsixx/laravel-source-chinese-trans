@@ -1,4 +1,7 @@
 <?php
+/**
+ * PharIo，Manifest，Manifest元素异常
+ */
 
 namespace PharIo\Manifest;
 

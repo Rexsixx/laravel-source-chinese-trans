@@ -3,7 +3,6 @@
  * Symfony，组件，Http内核，事件监听器，抽象会话监听器
  */
 
-
 /*
  * This file is part of the Symfony package.
  *
@@ -77,6 +76,7 @@ abstract class AbstractSessionListener implements EventSubscriberInterface
         $response = $event->getResponse();
         $autoCacheControl = !$response->headers->has(self::NO_AUTO_CACHE_CONTROL_HEADER);
         // Always remove the internal header if present
+		// 总是删除内部标头（如果存在）
         $response->headers->remove(self::NO_AUTO_CACHE_CONTROL_HEADER);
 
         if (!$session = $this->container && $this->container->has('initialized_session') ? $this->container->get('initialized_session') : ($event->getRequest()->hasSession() ? $event->getRequest()->getSession() : null)) {
@@ -145,6 +145,7 @@ abstract class AbstractSessionListener implements EventSubscriberInterface
 
     /**
      * Gets the session object.
+	 * 获取会话对象
      *
      * @return SessionInterface|null A SessionInterface instance or null if no session is available
      */

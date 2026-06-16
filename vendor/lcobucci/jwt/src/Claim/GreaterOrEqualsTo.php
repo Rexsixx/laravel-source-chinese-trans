@@ -1,6 +1,6 @@
 <?php
 /**
- * Lcobucci，JWT，Claim，更大或比
+ * Lcobucci，JWT，Claim，大于或等于
  */
 
 /**

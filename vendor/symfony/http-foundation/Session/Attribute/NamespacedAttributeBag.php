@@ -17,6 +17,7 @@ namespace Symfony\Component\HttpFoundation\Session\Attribute;
 /**
  * This class provides structured storage of session attributes using
  * a name spacing character in the key.
+ * 该类通过键中的命名空间字符来对会话属性进行结构化存储。
  *
  * @author Drak <drak@zikula.org>
  */

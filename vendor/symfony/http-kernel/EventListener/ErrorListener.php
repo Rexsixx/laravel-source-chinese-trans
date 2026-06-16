@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件监听器，错误监听器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -119,6 +122,7 @@ class ErrorListener implements EventSubscriberInterface
 
     /**
      * Logs an exception.
+	 * 记录异常
      */
     protected function logException(\Throwable $exception, string $message): void
     {
@@ -133,6 +137,7 @@ class ErrorListener implements EventSubscriberInterface
 
     /**
      * Clones the request for the exception.
+	 * 克隆异常的请求
      */
     protected function duplicateRequest(\Throwable $exception, Request $request): Request
     {

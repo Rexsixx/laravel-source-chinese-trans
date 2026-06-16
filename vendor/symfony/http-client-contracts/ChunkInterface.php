@@ -54,6 +54,7 @@ interface ChunkInterface
 
     /**
      * Returns a [status code, headers] tuple when a 1xx status code was just received.
+	 * 当刚刚收到一个1xx状态码时，返回一个[状态码，报头]元组。
      *
      * @throws TransportExceptionInterface on a network error or when the idle timeout is reached
      */

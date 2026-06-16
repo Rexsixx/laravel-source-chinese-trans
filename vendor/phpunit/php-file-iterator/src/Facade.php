@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，文件迭代器，Facade
+ */
+
 /*
  * This file is part of php-file-iterator.
  *

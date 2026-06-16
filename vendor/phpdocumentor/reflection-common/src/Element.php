@@ -24,6 +24,7 @@ interface Element
 {
     /**
      * Returns the Fqsen of the element.
+	 * 返回元素的Fqsen
      */
     public function getFqsen() : Fqsen;
 

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，评论
+ */
+
 namespace PhpParser;
 
 class Comment implements \JsonSerializable

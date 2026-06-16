@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件，获取响应事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -22,6 +25,7 @@ class GetResponseEvent extends KernelEvent
 
     /**
      * Returns the response object.
+	 * 返回响应对象
      *
      * @return Response|null
      */

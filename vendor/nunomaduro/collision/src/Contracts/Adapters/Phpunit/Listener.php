@@ -1,4 +1,7 @@
 <?php
+/**
+ * NunoMaduro，冲突，契约，监听器
+ */
 
 /**
  * This file is part of Collision.
@@ -15,6 +18,7 @@ use PHPUnit\Framework\TestListener;
 
 /**
  * This is an Collision Phpunit Adapter contract.
+ * 这是一个碰撞Phpunit适配器契约。
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */

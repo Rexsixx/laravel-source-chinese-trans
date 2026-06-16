@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件，控制器事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpKernel\Event;
 
 /**
  * Allows filtering of a controller callable.
+ * 允许筛选可调用的控制器。
  *
  * You can call getController() to retrieve the current controller. With
  * setController() you can set a new controller that is used in the processing

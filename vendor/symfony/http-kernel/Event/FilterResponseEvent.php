@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件，过滤器响应事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -31,6 +34,7 @@ class FilterResponseEvent extends KernelEvent
 
     /**
      * Returns the current response object.
+	 * 返回当前响应对象
      *
      * @return Response
      */

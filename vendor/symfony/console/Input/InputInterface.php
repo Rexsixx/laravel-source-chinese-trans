@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，输入，输入接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Exception\RuntimeException;
 
 /**
  * InputInterface is the interface implemented by all input classes.
+ * InputInterface是由所有输入类实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -23,6 +27,7 @@ interface InputInterface
 {
     /**
      * Returns the first argument from the raw parameters (not parsed).
+	 * 返回原始参数中的第一个参数（未解析）
      *
      * @return string|null The value of the first argument or null otherwise
      */

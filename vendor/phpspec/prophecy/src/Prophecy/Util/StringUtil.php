@@ -36,6 +36,7 @@ class StringUtil
 
     /**
      * Stringifies any provided value.
+	 * Stringifies任何提供的值
      *
      * @param mixed   $value
      * @param boolean $exportObject

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，测试，代码清除器，抽象类通过测试
+ */
 
 /*
  * This file is part of Psy Shell.

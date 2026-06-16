@@ -22,6 +22,7 @@ use InvalidArgumentException;
 
 /**
  * Thrown to indicate that the parsed UUID string is invalid.
+ * 被抛出,以指示解析的UUID字符串无效。
  */
 class InvalidUuidStringException extends InvalidArgumentException
 {

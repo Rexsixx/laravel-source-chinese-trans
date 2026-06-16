@@ -14,6 +14,7 @@ class SetNullFilter implements Filter
 {
     /**
      * Sets the object property to null.
+	 * 将对象属性设置为null
      *
      * {@inheritdoc}
      */

@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，全局状态，黑名单测试
+ */
+
 /*
  * This file is part of sebastian/global-state.
  *

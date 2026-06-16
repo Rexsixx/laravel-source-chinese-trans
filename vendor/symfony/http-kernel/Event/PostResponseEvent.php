@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件，事后回应事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -31,6 +34,7 @@ class PostResponseEvent extends KernelEvent
 
     /**
      * Returns the response for which this event was thrown.
+	 * 返回为其引发此事件的响应
      *
      * @return Response
      */

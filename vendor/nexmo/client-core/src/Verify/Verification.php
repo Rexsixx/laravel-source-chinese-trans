@@ -1,5 +1,9 @@
 <?php
 /**
+ * Nexmo，验证，验证
+ */
+
+/**
  * Nexmo Client Library for PHP
  *
  * @copyright Copyright (c) 2016 Nexmo, Inc. (http://nexmo.com)
@@ -36,6 +40,7 @@ class Verification implements VerificationInterface, \ArrayAccess, \Serializable
 
     /**
      * Create a verification with a number and brand, or the `request_id` of an existing verification.
+	 * 创建一个有数字和品牌的验证,或者一个现有验证的“request_id”。
      *
      * @param string $idOrNumber The number to verify, or the `request_id` of an existing verification.
      * @param null|string $brand The brand that identifies your application to the user.

@@ -25,6 +25,7 @@ use Psy\Exception\ErrorException;
 /**
  * The called class pass throws warnings for get_class() and get_called_class()
  * outside a class context.
+ * 被称为class pass向get_class()和get_called_class()抛出警告。
  */
 class CalledClassPass extends CodeCleanerPass
 {

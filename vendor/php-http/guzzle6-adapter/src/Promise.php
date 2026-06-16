@@ -109,6 +109,7 @@ class Promise implements HttpPromise
 
     /**
      * Converts a Guzzle exception into an Httplug exception.
+	 * 将一个Guzzle异常转换为Httplug异常
      *
      * @param GuzzleExceptions\GuzzleException $exception
      * @param RequestInterface                 $request

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件监听器，异常监听器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -101,6 +104,7 @@ class ExceptionListener implements EventSubscriberInterface
 
     /**
      * Logs an exception.
+	 * 记录异常
      *
      * @param \Exception $exception The \Exception instance
      * @param string     $message   The error message to log

@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpKernel\ControllerMetadata;
 
 /**
  * Builds {@see ArgumentMetadata} objects based on the given Controller.
+ * 基于给定的控制器构建{@see ArgumentMetadata}对象。
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */

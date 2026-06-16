@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，工具，打印机
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -13,6 +17,7 @@ use PHPUnit\Framework\Exception;
 
 /**
  * Utility class that can print to STDOUT or write to a file.
+ * 可以打印到粘贴或写入文件的实用程序类。
  */
 class Printer
 {

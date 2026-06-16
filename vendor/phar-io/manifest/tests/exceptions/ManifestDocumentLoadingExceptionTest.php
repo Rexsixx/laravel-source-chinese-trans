@@ -1,4 +1,7 @@
 <?php
+/**
+ * PharIo，Manifest，Manifest 文档加载异常测试
+ */
 
 namespace PharIo\Manifest;
 

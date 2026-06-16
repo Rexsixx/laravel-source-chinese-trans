@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，数据采集装置，数据采集器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * DataCollectorInterface.
+ * 数据采集器接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

@@ -13,6 +13,7 @@ namespace Lcobucci\JWT\Signer;
 
 /**
  * Base class for hmac signers
+ * hmac签名者的基础类
  *
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  * @since 0.1.0

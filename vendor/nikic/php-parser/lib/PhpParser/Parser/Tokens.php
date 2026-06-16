@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，分析程序，令牌
+ */
 
 namespace PhpParser\Parser;
 

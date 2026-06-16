@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，工具，Xdebug 过滤脚本生成器
+ */
+
 /*
  * This file is part of PHPUnit.
  *

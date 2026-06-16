@@ -30,6 +30,7 @@ use ReturnTypeWillChange;
 
 /**
  * Represents a universally unique identifier (UUID), according to RFC 4122.
+ * 表示一个普遍唯一的标识符(UUID),根据RFC 4122。
  *
  * This class provides immutable UUID objects (the Uuid class) and the static
  * methods `uuid1()`, `uuid3()`, `uuid4()`, and `uuid5()` for generating version
@@ -48,6 +49,7 @@ class Uuid implements UuidInterface
 {
     /**
      * When this namespace is specified, the name string is a fully-qualified domain name.
+	 * 当指定这个名称空间时,名称字符串是一个完全限定的域名。
      * @link http://tools.ietf.org/html/rfc4122#appendix-C
      */
     const NAMESPACE_DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';

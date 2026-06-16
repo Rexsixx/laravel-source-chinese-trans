@@ -80,6 +80,7 @@ class Request
 
     /**
      * Custom parameters.
+	 * 自定义参数
      *
      * @var ParameterBag
      */

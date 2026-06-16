@@ -128,6 +128,7 @@ class Carbon extends DateTime implements JsonSerializable
 
     /**
      * Default format to use for __toString method when type juggling occurs.
+	 * 默认格式使用__toString方法时,类型杂耍发生。
      *
      * @var string
      */
@@ -135,6 +136,7 @@ class Carbon extends DateTime implements JsonSerializable
 
     /**
      * Format for converting mocked time, includes microseconds.
+	 * 格式用于转换被嘲笑的时间,包括微秒。
      *
      * @var string
      */

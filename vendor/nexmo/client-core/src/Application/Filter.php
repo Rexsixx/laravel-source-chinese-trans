@@ -1,5 +1,9 @@
 <?php
 /**
+ * Nexmo，应用程序，过滤器
+ */
+
+/**
  * Nexmo Client Library for PHP
  *
  * @copyright Copyright (c) 2016 Nexmo, Inc. (http://nexmo.com)
@@ -11,6 +15,7 @@ use Nexmo\Entity\FilterInterface;
 
 /**
  * Simple value object for application filtering.
+ * 用于应用程序过滤的简单值对象。
  */
 class Filter implements FilterInterface
 {

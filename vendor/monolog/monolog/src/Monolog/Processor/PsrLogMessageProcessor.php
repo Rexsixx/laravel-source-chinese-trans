@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理器，日志消息处理器
+ */
 
 /*
  * This file is part of the Monolog package.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件监听器，地点监听器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -22,6 +25,7 @@ use Symfony\Component\Routing\RequestContextAwareInterface;
 
 /**
  * Initializes the locale based on the current request.
+ * 根据当前请求初始化语言环境。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -80,6 +84,7 @@ class LocaleListener implements EventSubscriberInterface
             KernelEvents::REQUEST => [
                 ['setDefaultLocale', 100],
                 // must be registered after the Router to have access to the _locale
+				// 必须在路由器之后注册才能访问_locale
                 ['onKernelRequest', 16],
             ],
             KernelEvents::FINISH_REQUEST => [['onKernelFinishRequest', 0]],

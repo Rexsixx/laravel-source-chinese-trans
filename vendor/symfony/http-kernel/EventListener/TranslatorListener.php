@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件监听器，翻译顺监听器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -24,6 +27,7 @@ use Symfony\Contracts\Translation\LocaleAwareInterface;
 
 /**
  * Synchronizes the locale between the request and the translator.
+ * 同步请求和转换器之间的区域设置。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *

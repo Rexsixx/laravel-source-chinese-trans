@@ -32,6 +32,7 @@ interface StyleInterface
 
     /**
      * Formats a section title.
+	 * 格式化节标题
      *
      * @param string $message
      */

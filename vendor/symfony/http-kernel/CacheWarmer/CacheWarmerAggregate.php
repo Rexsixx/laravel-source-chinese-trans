@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpKernel\CacheWarmer;
 
 /**
  * Aggregates several cache warmers into a single one.
+ * 将多个缓存预热器聚合为一个。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *

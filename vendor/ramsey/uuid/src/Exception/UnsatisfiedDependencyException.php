@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，异常，不满足的依赖性异常
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -19,6 +23,7 @@ use RuntimeException;
 /**
  * Thrown to indicate that the requested operation has dependencies that have not
  * been satisfied.
+ * 抛出指示所请求的操作有不满足的依赖项。
  */
 class UnsatisfiedDependencyException extends RuntimeException
 {

@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，对象反射器，Object Reflector
+ */
+
 /*
  * This file is part of object-reflector.
  *

@@ -23,6 +23,7 @@ class SlackWebhookChannel
 
     /**
      * Create a new Slack channel instance.
+	 * 创建一个新的松弛通道实例
      *
      * @param  \GuzzleHttp\Client  $http
      * @return void
@@ -34,6 +35,7 @@ class SlackWebhookChannel
 
     /**
      * Send the given notification.
+	 * 发送给定的通知
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification

@@ -39,6 +39,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * The Psy Shell application.
+ * Psy Shell应用。
  *
  * Usage:
  *

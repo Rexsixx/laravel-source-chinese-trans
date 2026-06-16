@@ -32,6 +32,7 @@ class Writer implements WriterContract
 {
     /**
      * The number of frames if no verbosity is specified.
+	 * 如果没有详细说明,则帧数。
      */
     const VERBOSITY_NORMAL_FRAMES = 1;
 

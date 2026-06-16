@@ -1,4 +1,8 @@
 <?php declare(strict_types=1);
+/**
+ * SebastianBergmann，出口商，Exporter
+ */
+
 /*
  * This file is part of exporter package.
  *
@@ -13,6 +17,7 @@ use SebastianBergmann\RecursionContext\Context;
 
 /**
  * A nifty utility for visualizing PHP variables.
+ * 一个用于可视化PHP变量的漂亮实用程序。
  *
  * <code>
  * <?php

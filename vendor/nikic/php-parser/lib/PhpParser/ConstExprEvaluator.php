@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，校验器
+ */
 
 namespace PhpParser;
 
@@ -8,6 +11,7 @@ use PhpParser\Node\Scalar;
 
 /**
  * Evaluates constant expressions.
+ * 计算常量表达式。
  *
  * This evaluator is able to evaluate all constant expressions (as defined by PHP), which can be
  * evaluated without further context. If a subexpression is not of this type, a user-provided

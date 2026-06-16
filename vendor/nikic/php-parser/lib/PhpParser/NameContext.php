@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，名称上下文
+ */
+
 namespace PhpParser;
 
 use PhpParser\Node\Name;

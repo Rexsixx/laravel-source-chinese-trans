@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，简单缓存，缓存接口
+ */
 
 namespace Psr\SimpleCache;
 
@@ -6,6 +9,7 @@ interface CacheInterface
 {
     /**
      * Fetches a value from the cache.
+	 * 从缓存获取一个值
      *
      * @param string $key     The unique key of this item in the cache.
      * @param mixed  $default Default value to return if the key does not exist.
@@ -19,6 +23,7 @@ interface CacheInterface
 
     /**
      * Persists data in the cache, uniquely referenced by a key with an optional expiration TTL time.
+	 * 在缓存中保存数据,用一个可选的过期TTL时间为密钥引用。
      *
      * @param string                 $key   The key of the item to store.
      * @param mixed                  $value The value of the item to store, must be serializable.
@@ -35,6 +40,7 @@ interface CacheInterface
 
     /**
      * Delete an item from the cache by its unique key.
+	 * 通过其惟一的键从缓存中删除一个项目
      *
      * @param string $key The unique cache key of the item to delete.
      *

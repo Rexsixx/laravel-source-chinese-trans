@@ -42,6 +42,7 @@ if (interface_exists(PsrEventDispatcherInterface::class)) {
 } else {
     /**
      * Allows providing hooks on domain-specific lifecycles by dispatching events.
+	 * 允许通过调度事件在特定领域的生命周期上提供钩子。
      */
     interface EventDispatcherInterface
     {

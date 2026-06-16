@@ -1,4 +1,8 @@
 <?php
+/**
+ * PharIo，Manifest，无效电子邮件异常
+ */
+
 /*
  * This file is part of PharIo\Manifest.
  *

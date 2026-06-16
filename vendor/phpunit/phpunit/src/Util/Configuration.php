@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，工具，配置
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -19,6 +23,7 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 /**
  * Wrapper for the PHPUnit XML configuration file.
+ * PHPUnit XML配置文件的包装器。
  *
  * Example XML configuration file:
  * <code>

@@ -14,6 +14,7 @@ namespace Opis\Closure;
 
 /**
  * Helper class used to indicate a reference to an object
+ * 辅助类用于指示对象的引用
  * @internal
  */
 class SelfReference

@@ -26,6 +26,7 @@ class Argument
 {
     /**
      * Checks that argument is exact value or object.
+	 * 检查参数是精确的值或对象。
      *
      * @param mixed $value
      *

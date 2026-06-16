@@ -132,6 +132,7 @@ class Command
 
     /**
      * Checks whether the command is enabled or not in the current environment.
+	 * 检查当前环境下是否启用该命令。
      *
      * Override this to check for x or y and return false if the command can not
      * run properly under the current conditions.

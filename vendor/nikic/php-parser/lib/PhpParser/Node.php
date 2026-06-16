@@ -1,11 +1,16 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点
+ */
+
 namespace PhpParser;
 
 interface Node
 {
     /**
      * Gets the type of the node.
+	 * 获取节点的类型
      *
      * @return string Type of the node
      */

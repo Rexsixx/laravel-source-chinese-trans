@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，异常，不支持操作异常
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -18,6 +22,7 @@ use RuntimeException;
 
 /**
  * Thrown to indicate that the requested operation is not supported.
+ * 抛出,以指示不支持所请求的操作。
  */
 class UnsupportedOperationException extends RuntimeException
 {

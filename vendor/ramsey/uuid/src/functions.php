@@ -22,6 +22,7 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
 /**
  * Generate a version 1 UUID from a host ID, sequence number, and the current time.
+ * 从主机ID、序列号和当前时间生成一个版本1 UUID。
  *
  * @param int|string|null $node A 48-bit number representing the hardware address
  *     This number may be represented as an integer or a hexadecimal string.
@@ -55,6 +56,7 @@ function v3($ns, $name)
 
 /**
  * Generate a version 4 (random) UUID.
+ * 生成一个版本4(random)UUID
  *
  * @return string
  * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present

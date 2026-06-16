@@ -9,6 +9,7 @@ class KeepFilter implements Filter
 {
     /**
      * Keeps the value of the object property.
+	 * 保持对象属性的值
      *
      * {@inheritdoc}
      */

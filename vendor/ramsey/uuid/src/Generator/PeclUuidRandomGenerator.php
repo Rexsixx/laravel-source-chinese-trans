@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，生成器，Pecl Uuid 随机发生器
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -17,6 +21,7 @@ namespace Ramsey\Uuid\Generator;
 /**
  * PeclUuidRandomGenerator provides functionality to generate strings of random
  * binary data using the PECL UUID PHP extension
+ * PeclUuidRandomGenerator提供了使用PECL UUID PHP扩展的随机二进制数据字符串的功能
  *
  * @link https://pecl.php.net/package/uuid
  */
@@ -24,6 +29,7 @@ class PeclUuidRandomGenerator implements RandomGeneratorInterface
 {
     /**
      * Generates a string of random binary data of the specified length
+	 * 生成指定长度的随机二进制数据串
      *
      * @param integer $length The number of bytes of random binary data to generate
      * @return string A binary string

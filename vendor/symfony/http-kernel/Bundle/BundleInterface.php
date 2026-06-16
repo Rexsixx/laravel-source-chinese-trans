@@ -34,6 +34,7 @@ interface BundleInterface extends ContainerAwareInterface
 
     /**
      * Shutdowns the Bundle.
+	 * 关闭Bundle
      */
     public function shutdown();
 

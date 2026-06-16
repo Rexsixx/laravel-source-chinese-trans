@@ -13,6 +13,7 @@ namespace Opis\Closure;
 
 /**
  * Closure context class
+ * 闭包上下文类
  * @internal
  */
 class ClosureContext

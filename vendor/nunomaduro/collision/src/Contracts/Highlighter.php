@@ -1,4 +1,7 @@
 <?php
+/**
+ * NunoMaduro，冲突，契约，高光色
+ */
 
 /**
  * This file is part of Collision.
@@ -13,6 +16,7 @@ namespace NunoMaduro\Collision\Contracts;
 
 /**
  * This is the Collision Highlighter contract.
+ * 这是碰撞高光色契约。
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
@@ -20,6 +24,7 @@ interface Highlighter
 {
     /**
      * Highlights the provided content.
+	 * 强调提供的内容。
      *
      * @param  string $content
      * @param  int $line

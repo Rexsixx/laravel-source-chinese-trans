@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件，获取异常事件的响应
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -38,6 +41,7 @@ class GetResponseForExceptionEvent extends RequestEvent
 
     /**
      * Replaces the thrown exception.
+	 * 替换引发的异常。
      *
      * This exception will be thrown if no response is set in the event.
      */

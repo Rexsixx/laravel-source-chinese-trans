@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，生成器，随机类适配器
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -20,6 +24,7 @@ use RandomLib\Factory;
 /**
  * RandomLibAdapter provides functionality to generate strings of random
  * binary data using the paragonie/random-lib library
+ * 随机变量提供了使用“共生”/随机- lib库来生成随机二进制数据字符串的功能。
  *
  * @link https://packagist.org/packages/paragonie/random-lib
  */
@@ -32,6 +37,7 @@ class RandomLibAdapter implements RandomGeneratorInterface
 
     /**
      * Constructs a `RandomLibAdapter` using a `RandomLib\Generator`
+	 * 使用“随机自由\生成器”构造一个“随机变量”。
      *
      * By default, if no `Generator` is passed in, this creates a high-strength
      * generator to use when generating random binary data.
@@ -51,6 +57,7 @@ class RandomLibAdapter implements RandomGeneratorInterface
 
     /**
      * Generates a string of random binary data of the specified length
+	 * 生成指定长度的随机二进制数据串
      *
      * @param integer $length The number of bytes of random binary data to generate
      * @return string A binary string

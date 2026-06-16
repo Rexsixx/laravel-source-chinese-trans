@@ -10,6 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * Sends a PSR-7 Request and returns a PSR-7 response.
+ * 发送一个PSR-7请求并返回PSR-7响应。
  *
  * @author GeLo <geloen.eric@gmail.com>
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
