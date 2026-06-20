@@ -19,6 +19,7 @@ use JakubOnderka\PhpConsoleHighlighter\Highlighter;
 
 /**
  * Builds `ConsoleColor` instances configured according to the given color mode.
+ * 根据给定的颜色模式构建“rest - console - or”实例。
  */
 class ConsoleColorFactory
 {

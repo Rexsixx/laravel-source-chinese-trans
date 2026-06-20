@@ -1,5 +1,9 @@
 <?php
 /**
+ * Nexmo，验证，检查
+ */
+
+/**
  * Nexmo Client Library for PHP
  *
  * @copyright Copyright (c) 2016 Nexmo, Inc. (http://nexmo.com)
@@ -12,6 +16,7 @@ class Check
 {
     /**
      * Possible status of checking a code.
+	 * 检查代码的可能状态
      */
     const VALID = 'VALID';
     const INVALID = 'INVALID';

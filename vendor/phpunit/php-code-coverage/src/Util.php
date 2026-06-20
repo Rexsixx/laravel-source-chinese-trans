@@ -15,6 +15,7 @@ namespace SebastianBergmann\CodeCoverage;
 
 /**
  * Utility methods.
+ * 实用方法。
  */
 final class Util
 {

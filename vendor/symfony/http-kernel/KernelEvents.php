@@ -25,6 +25,7 @@ final class KernelEvents
     /**
      * The REQUEST event occurs at the very beginning of request
      * dispatching.
+	 * REQUEST 事件发生在请求分发的最开始阶段。
      *
      * This event allows you to create a response for a request before any
      * other code in the framework is executed.
@@ -35,6 +36,7 @@ final class KernelEvents
 
     /**
      * The EXCEPTION event occurs when an uncaught exception appears.
+	 * 当出现未捕获的异常时，将发生EXCEPTION事件。
      *
      * This event allows you to create a response for a thrown exception or
      * to modify the thrown exception.
@@ -46,6 +48,7 @@ final class KernelEvents
     /**
      * The VIEW event occurs when the return value of a controller
      * is not a Response instance.
+	 * 当控制器的返回值不是 Response 实例时，就会触发 VIEW 事件。
      *
      * This event allows you to create a response for the return value of the
      * controller.

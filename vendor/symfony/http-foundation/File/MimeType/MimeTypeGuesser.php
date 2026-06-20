@@ -56,6 +56,7 @@ class MimeTypeGuesser implements MimeTypeGuesserInterface
 
     /**
      * All registered MimeTypeGuesserInterface instances.
+	 * 所有注册的MimeTypeGuesserInterface实例
      *
      * @var array
      */

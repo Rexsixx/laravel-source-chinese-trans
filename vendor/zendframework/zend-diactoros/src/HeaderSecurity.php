@@ -47,9 +47,10 @@ final class HeaderSecurity
 
     /**
      * Filter a header value
-	 * 过滤报头值
+	 * 过滤报头值。
      *
      * Ensures CRLF header injection vectors are filtered.
+	 * 确保过滤了CRLF报头注入向量。
      *
      * Per RFC 7230, only VISIBLE ASCII characters, spaces, and horizontal
      * tabs are allowed in values; header continuations MUST consist of
@@ -100,6 +101,7 @@ final class HeaderSecurity
 
     /**
      * Validate a header value.
+	 * 验证报头值。
      *
      * Per RFC 7230, only VISIBLE ASCII characters, spaces, and horizontal
      * tabs are allowed in values; header continuations MUST consist of
@@ -136,6 +138,7 @@ final class HeaderSecurity
 
     /**
      * Assert a header value is valid.
+	 * 断言报头值是有效的
      *
      * @param mixed $value Value to be tested. This method asserts it is a string or number.
      * @throws Exception\InvalidArgumentException for invalid values
@@ -158,6 +161,7 @@ final class HeaderSecurity
 
     /**
      * Assert whether or not a header name is valid.
+	 * 断言标头名称是否有效
      *
      * @see http://tools.ietf.org/html/rfc7230#section-3.2
      * @param mixed $name

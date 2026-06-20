@@ -43,6 +43,7 @@ interface DumperInterface
 
     /**
      * Dumps while entering an hash.
+	 * 在输入散列时转储
      *
      * @param int        $type     A Cursor::HASH_* const for the type of hash
      * @param string|int $class    The object class, resource type or array count
@@ -52,6 +53,7 @@ interface DumperInterface
 
     /**
      * Dumps while leaving an hash.
+	 * 转储，同时留下散列。
      *
      * @param int        $type     A Cursor::HASH_* const for the type of hash
      * @param string|int $class    The object class, resource type or array count

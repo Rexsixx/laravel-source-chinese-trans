@@ -28,11 +28,13 @@ use Serializable;
 /**
  * UuidInterface defines common functionality for all universally unique
  * identifiers (UUIDs)
+ * UuidInterfaceInterface 定义了所有通用唯一标识符（UUIDs）的通用功能
  */
 interface UuidInterface extends JsonSerializable, Serializable
 {
     /**
      * Compares this UUID to the specified UUID.
+	 * 将此UUID与指定的UUID进行比较。
      *
      * The first of two UUIDs is greater than the second if the most
      * significant field in which the UUIDs differ is greater for the first
@@ -48,6 +50,7 @@ interface UuidInterface extends JsonSerializable, Serializable
 
     /**
      * Compares this object to the specified object.
+	 * 将此对象与指定对象进行比较。
      *
      * The result is true if and only if the argument is not null, is a UUID
      * object, has the same variant, and contains the same value, bit for bit,
@@ -61,6 +64,7 @@ interface UuidInterface extends JsonSerializable, Serializable
     /**
      * Returns the UUID as a 16-byte string (containing the six integer fields
      * in big-endian byte order).
+	 * 返回UUID作为一个16字节的字符串(包含大字节字节顺序的六个整数字段)
      *
      * @return string
      */
@@ -68,6 +72,7 @@ interface UuidInterface extends JsonSerializable, Serializable
 
     /**
      * Returns the number converter to use for converting hex values to/from integers.
+	 * 返回数字转换器用于将hex值转换为/从整数
      *
      * @return NumberConverterInterface
      */

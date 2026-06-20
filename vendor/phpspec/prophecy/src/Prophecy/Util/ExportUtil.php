@@ -25,6 +25,7 @@ class ExportUtil
 {
     /**
      * Exports a value as a string
+	 * 将值作为字符串导出。
      *
      * The output of this method is similar to the output of print_r(), but
      * improved in various aspects:

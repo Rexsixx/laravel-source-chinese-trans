@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，递归上下文，上下文
+ */
+
 /*
  * This file is part of the Recursion Context package.
  *
@@ -13,6 +17,7 @@ namespace SebastianBergmann\RecursionContext;
 /**
  * A context containing previously processed arrays and objects
  * when recursively processing a value.
+ * 在递归处理值时，包含先前已处理的数组和对象的上下文。
  */
 final class Context
 {
@@ -28,6 +33,7 @@ final class Context
 
     /**
      * Initialises the context
+	 * 初始化上下文
      */
     public function __construct()
     {

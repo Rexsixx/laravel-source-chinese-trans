@@ -1,6 +1,6 @@
 <?php
 /**
- * Http，客户端，异常，Http 客户端
+ * Http，客户端，异常，Http 异常
  */
 
 namespace Http\Client\Exception;
@@ -10,6 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * Thrown when a response was received but the request itself failed.
+ * 当响应被接收时抛出,但请求本身失败。
  *
  * In addition to the request, this exception always provides access to the response object.
  *
@@ -42,6 +43,7 @@ class HttpException extends RequestException
 
     /**
      * Returns the response.
+	 * 返回响应
      *
      * @return ResponseInterface
      */
@@ -52,6 +54,7 @@ class HttpException extends RequestException
 
     /**
      * Factory method to create a new exception with a normalized error message.
+	 * 工厂方法以标准化的错误消息创建一个新的异常
      *
      * @param RequestInterface  $request
      * @param ResponseInterface $response

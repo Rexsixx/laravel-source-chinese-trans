@@ -44,6 +44,8 @@ class RefreshCommand extends Command
         // Next we'll gather some of the options so that we can have the right options
         // to pass to the commands. This includes options such as which database to
         // use and the path to use for the migration. Then we'll run the command.
+		// 接下来,我们将收集一些选项,这样我们就可以有正确的选项传递到命令。
+		// 这包括选择数据库和使用迁移路径等选项。然后我们运行命令。
         $database = $this->input->getOption('database');
 
         $path = $this->input->getOption('path');
@@ -51,6 +53,8 @@ class RefreshCommand extends Command
         // If the "step" option is specified it means we only want to rollback a small
         // number of migrations before migrating again. For example, the user might
         // only rollback and remigrate the latest four migrations instead of all.
+		// 如果“step”选项被指定,这意味着我们只希望在迁移之前返回少量的迁移。
+		// 例如,用户可能只回滚回并重新迁移最近的四个迁移,而不是全部。
         $step = $this->input->getOption('step') ?: 0;
 
         if ($step > 0) {
@@ -62,6 +66,8 @@ class RefreshCommand extends Command
         // The refresh command is essentially just a brief aggregate of a few other of
         // the migration commands and just provides a convenient wrapper to execute
         // them in succession. We'll also see if we need to re-seed the database.
+		// 刷新命令本质上只是迁移命令的一小部分,只是提供了一个方便的包装器来继承它们。
+		// 我们也会看到我们是否需要重新种子数据库。
         $this->call('migrate', array_filter([
             '--database' => $database,
             '--path' => $path,

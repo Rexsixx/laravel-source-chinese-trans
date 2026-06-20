@@ -1,5 +1,9 @@
 <?php
 /**
+ * Nexmo，应用程序，信息配置
+ */
+
+/**
  * Nexmo Client Library for PHP
  *
  * @copyright Copyright (c) 2019 Nexmo, Inc. (http://nexmo.com)

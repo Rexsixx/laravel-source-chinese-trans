@@ -1,4 +1,8 @@
 <?php
+/**
+ * JakubOnderka，Php控制台颜色，示例
+ */
+
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use JakubOnderka\PhpConsoleHighlighter\Highlighter;
 

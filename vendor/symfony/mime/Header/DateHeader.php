@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，标题，日期标头
+ * Symfony，组件，Mime，数据头，日期标头
  */
 
 /*
@@ -51,6 +51,7 @@ final class DateHeader extends AbstractHeader
 
     /**
      * Set the date-time of the Date in this Header.
+	 * 设置该报头中日期的日期时间。
      *
      * If a DateTime instance is provided, it is converted to DateTimeImmutable.
      */

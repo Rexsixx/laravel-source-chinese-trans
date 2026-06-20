@@ -1,4 +1,7 @@
 <?php
+/**
+ * PharIo，Manifest，Manifest 加载测试
+ */
 
 namespace PharIo\Manifest;
 

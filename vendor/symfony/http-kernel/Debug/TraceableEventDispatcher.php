@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，调试，可跟踪事件调度程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Collects some data about event listeners.
+ * 收集有关事件侦听器的一些数据。
  *
  * This event dispatcher delegates the dispatching to another one.
  *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，输入，输入选项
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * Represents a command line option.
+ * 表示命令行选项。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -103,6 +107,7 @@ class InputOption
 
     /**
      * Returns the option shortcut.
+	 * 返回选项快捷方式
      *
      * @return string|null The shortcut
      */

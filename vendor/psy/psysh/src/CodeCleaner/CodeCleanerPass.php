@@ -18,6 +18,7 @@ use PhpParser\NodeVisitorAbstract;
 
 /**
  * A CodeCleaner pass is a PhpParser Node Visitor.
+ * CodeCleaner pass是PhpParser节点访问者。
  */
 abstract class CodeCleanerPass extends NodeVisitorAbstract
 {

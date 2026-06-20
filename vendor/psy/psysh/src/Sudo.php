@@ -22,6 +22,7 @@ class Sudo
 {
     /**
      * Fetch a property of an object, bypassing visibility restrictions.
+	 * 获取对象的属性,绕过能见度限制。
      *
      * @param object $object
      * @param string $property property name

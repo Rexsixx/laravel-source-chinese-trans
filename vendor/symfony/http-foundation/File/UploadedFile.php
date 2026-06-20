@@ -85,6 +85,7 @@ class UploadedFile extends File
 
     /**
      * Returns the original file name.
+	 * 返回原始文件名。
      *
      * It is extracted from the request from which the file has been uploaded.
      * Then it should not be considered as a safe value.

@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，类型，是否Integer测试
+ */
+
 namespace Hamcrest\Type;
 
 class IsIntegerTest extends \Hamcrest\AbstractMatcherTest

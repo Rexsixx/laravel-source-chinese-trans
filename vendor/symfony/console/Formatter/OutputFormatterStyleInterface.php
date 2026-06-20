@@ -56,11 +56,13 @@ interface OutputFormatterStyleInterface
 
     /**
      * Sets multiple style options at once.
+	 * 一次设置多个样式选项
      */
     public function setOptions(array $options);
 
     /**
      * Applies the style to a given text.
+	 * 将样式应用于给定文本
      *
      * @param string $text The text to style
      *

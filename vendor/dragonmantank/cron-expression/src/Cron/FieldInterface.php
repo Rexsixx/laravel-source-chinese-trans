@@ -1,6 +1,6 @@
 <?php
 /**
- * Cron，字段工厂
+ * Cron，字段接口
  */
 
 namespace Cron;

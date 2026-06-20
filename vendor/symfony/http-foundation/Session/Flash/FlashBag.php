@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpFoundation\Session\Flash;
 
 /**
  * FlashBag flash message container.
+ * FlashBag闪光信息容器。
  *
  * @author Drak <drak@zikula.org>
  */

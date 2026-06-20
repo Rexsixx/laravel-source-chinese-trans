@@ -1,6 +1,6 @@
 <?php
 /**
- * ralauphie，get all header
+ * ralouphie，get all header
  */
 
 if (!function_exists('getallheaders')) {

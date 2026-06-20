@@ -24,12 +24,13 @@ interface HelperInterface
 {
     /**
      * Sets the helper set associated with this helper.
-	 * 设置与此助手关联的助手设置。
+	 * 设置与此助手关联的助手设置
      */
     public function setHelperSet(HelperSet $helperSet = null);
 
     /**
      * Gets the helper set associated with this helper.
+	 * 获取与此帮助器关联的帮助器集
      *
      * @return HelperSet A HelperSet instance
      */
@@ -37,6 +38,7 @@ interface HelperInterface
 
     /**
      * Returns the canonical name of this helper.
+	 * 返回此帮助器的规范名称
      *
      * @return string The canonical name
      */

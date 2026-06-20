@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，片段，内联片段渲染器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,6 +26,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Implements the inline rendering strategy where the Request is rendered by the current HTTP kernel.
+ * 实现由当前HTTP内核呈现请求的内线呈现策略。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Lcobucci，JWT，确认，约束，签署
+ */
 
 namespace Lcobucci\JWT\Validation\Constraint;
 

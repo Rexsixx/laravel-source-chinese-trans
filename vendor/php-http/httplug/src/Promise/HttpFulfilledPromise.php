@@ -1,4 +1,7 @@
 <?php
+/**
+ * Http，客户端，许诺，Http 实现的承诺
+ */
 
 namespace Http\Client\Promise;
 

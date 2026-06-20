@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件监听器，添加请求格式监听器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Adds configured formats to each request.
+ * 向每个请求添加配置格式。
  *
  * @author Gildas Quemener <gildas.quemener@gmail.com>
  *
@@ -33,6 +37,7 @@ class AddRequestFormatsListener implements EventSubscriberInterface
 
     /**
      * Adds request formats.
+	 * 添加请求格式
      */
     public function onKernelRequest(GetResponseEvent $event)
     {

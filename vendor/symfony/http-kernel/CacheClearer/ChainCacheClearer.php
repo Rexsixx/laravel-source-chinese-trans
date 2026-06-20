@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpKernel\CacheClearer;
 
 /**
  * ChainCacheClearer.
+ * 链缓存清理器
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  *

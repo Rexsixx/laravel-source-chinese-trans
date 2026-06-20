@@ -167,6 +167,7 @@ class AmqpCaster
         $deliveryMode = new ConstStub($c->getDeliveryMode().(2 === $c->getDeliveryMode() ? ' (persistent)' : ' (non-persistent)'), $c->getDeliveryMode());
 
         // Recent version of the extension already expose private properties
+		// 最新版本的扩展已经暴露了私有属性
         if (isset($a["\x00AMQPEnvelope\x00body"])) {
             $a["\0AMQPEnvelope\0delivery_mode"] = $deliveryMode;
 

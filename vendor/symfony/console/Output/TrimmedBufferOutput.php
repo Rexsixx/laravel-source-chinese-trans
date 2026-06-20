@@ -40,6 +40,7 @@ class TrimmedBufferOutput extends Output
 
     /**
      * Empties buffer and returns its content.
+	 * 清空缓冲区并返回其内容
      *
      * @return string
      */

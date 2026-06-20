@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件，获取控制器结果事件的响应
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,6 +24,7 @@ class GetResponseForControllerResultEvent extends RequestEvent
 {
     /**
      * The return value of the controller.
+	 * 控制器的返回值
      *
      * @var mixed
      */

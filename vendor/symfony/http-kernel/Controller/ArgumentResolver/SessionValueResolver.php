@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，控制器，参数解析器，会话值解析器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 /**
  * Yields the Session.
+ * 产生会话。
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */

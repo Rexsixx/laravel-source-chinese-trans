@@ -1,6 +1,6 @@
 <?php
 /**
- * Cron，测试，Cron 表达测试
+ * Cron，测试，Cron 表达式测试
  */
 
 namespace Cron\Tests;
@@ -582,6 +582,7 @@ class CronExpressionTest extends TestCase
 
     /**
      * When there is an issue with a field, we should report the human readable position
+	 * 当有一个领域的问题时,我们应该报告人类可读的位置。
      *
      * @see https://github.com/dragonmantank/cron-expression/issues/29
      */

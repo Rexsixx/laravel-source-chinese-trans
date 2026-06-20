@@ -112,6 +112,7 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the regex.
+	 * 返回正则表达式
      *
      * @return string The regex
      */

@@ -138,7 +138,8 @@ class AuthManager implements FactoryContract
         // When using the remember me functionality of the authentication services we
         // will need to be set the encryption instance of the guard, which allows
         // secure, encrypted cookie values to get generated for those cookies.
-		// 在使用身份验证服务的功能时,我们需要设置警卫的加密实例,它允许安全、加密的cookie值来生成这些cookie。
+		// 在使用身份验证服务的功能时,我们需要设置警卫的加密实例,
+		// 它允许安全、加密的cookie值来生成这些cookie。
         if (method_exists($guard, 'setCookieJar')) {
             $guard->setCookieJar($this->app['cookie']);
         }

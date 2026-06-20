@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpFoundation\Session;
 
 /**
  * Session utility functions.
+ * 会话工具包函数。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  * @author Rémon van de Kamp <rpkamp@gmail.com>

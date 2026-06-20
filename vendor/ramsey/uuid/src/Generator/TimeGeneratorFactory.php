@@ -24,6 +24,7 @@ use Ramsey\Uuid\Provider\TimeProviderInterface;
 
 /**
  * A factory for retrieving a time generator, based on the environment
+ * 一个基于环境的时间生成器的工厂。
  */
 class TimeGeneratorFactory
 {
@@ -45,6 +46,7 @@ class TimeGeneratorFactory
     /**
      * Constructs a `TimeGeneratorFactory` using a node provider, time converter,
      * and time provider
+	 * 使用节点提供程序、时间转换器和时间提供者构建一个“时间聚合器”。
      *
      * @param NodeProviderInterface $nodeProvider
      * @param TimeConverterInterface $timeConverter
@@ -62,6 +64,7 @@ class TimeGeneratorFactory
 
     /**
      * Returns a default time generator, based on the current environment
+	 * 根据当前环境返回默认时间生成器
      *
      * @return TimeGeneratorInterface
      */

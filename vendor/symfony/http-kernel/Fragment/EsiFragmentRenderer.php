@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，片段，Esi片段渲染器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpKernel\Fragment;
 
 /**
  * Implements the ESI rendering strategy.
+ * 实现ESI呈现策略。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

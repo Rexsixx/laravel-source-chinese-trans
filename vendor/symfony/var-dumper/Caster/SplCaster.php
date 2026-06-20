@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，Caster，Spl Caster
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts SPL related classes to array representation.
+ * 将SPL相关的类强制转换为数组表示。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *

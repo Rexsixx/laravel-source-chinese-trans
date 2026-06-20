@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件，过滤器控制器事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -30,6 +33,7 @@ class FilterControllerEvent extends KernelEvent
 
     /**
      * Returns the current controller.
+	 * 返回当前控制器
      *
      * @return callable
      */

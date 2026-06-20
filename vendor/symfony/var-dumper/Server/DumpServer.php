@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，服务器，转储文件服务器
+ * Symfony，组件，Var Dumper，服务器，转储服务器
  */
 
 /*

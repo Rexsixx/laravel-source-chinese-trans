@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，错误
+ */
+
 namespace PhpParser;
 
 class Error extends \RuntimeException

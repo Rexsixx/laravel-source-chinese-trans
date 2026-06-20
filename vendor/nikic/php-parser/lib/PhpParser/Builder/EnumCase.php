@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，构建器，Enum Case
+ */
 
 declare(strict_types=1);
 

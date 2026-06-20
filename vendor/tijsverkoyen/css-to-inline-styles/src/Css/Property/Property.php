@@ -61,6 +61,7 @@ final class Property
 
     /**
      * Get originalSpecificity
+	 * 得到originalSpecificity
      *
      * @return Specificity
      */
@@ -71,6 +72,7 @@ final class Property
 
     /**
      * Is this property important?
+	 * 这个属性重要吗？
      *
      * @return bool
      */
@@ -81,6 +83,7 @@ final class Property
 
     /**
      * Get the textual representation of the property
+	 * 获取属性的文本表示形式
      *
      * @return string
      */

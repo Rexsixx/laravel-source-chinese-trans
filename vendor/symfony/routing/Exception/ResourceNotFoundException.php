@@ -19,6 +19,7 @@ namespace Symfony\Component\Routing\Exception;
  * 找不到资源。
  *
  * This exception should trigger an HTTP 404 response in your application code.
+ * 此异常应该在应用程序代码中触发HTTP 404响应。
  *
  * @author Kris Wallsmith <kris@symfony.com>
  */

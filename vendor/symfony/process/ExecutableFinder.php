@@ -35,6 +35,7 @@ class ExecutableFinder
 
     /**
      * Adds new possible suffix to check for executable.
+	 * 添加新的可能后缀以检查可执行文件
      *
      * @param string $suffix
      */
@@ -45,6 +46,7 @@ class ExecutableFinder
 
     /**
      * Finds an executable by name.
+	 * 按名称查找可执行文件
      *
      * @param string      $name      The executable name (without the extension)
      * @param string|null $default   The default to return if no executable is found

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件，响应事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpKernel\Event;
 
 /**
  * Allows to filter a Response object.
+ * 允许筛选响应对象。
  *
  * You can call getResponse() to retrieve the current response. With
  * setResponse() you can set a new response that will be returned to the

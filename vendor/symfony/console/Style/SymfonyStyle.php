@@ -60,6 +60,7 @@ class SymfonyStyle extends OutputStyle
 
     /**
      * Formats a message as a block of text.
+	 * 将消息格式化为文本块
      *
      * @param string|array $messages The message to write in the block
      * @param string|null  $type     The block type (added in [] on first line)
@@ -132,6 +133,7 @@ class SymfonyStyle extends OutputStyle
 
     /**
      * Formats a command comment.
+	 * 格式化命令注释
      *
      * @param string|array $message
      */

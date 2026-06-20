@@ -28,6 +28,7 @@ class Utils
 
     /**
      * Makes sure if a relative path is passed in it is turned into an absolute path
+	 * 如果一条相对的路径被传递,它就会变成一个绝对的路径。
      *
      * @param string $streamUrl stream URL or path without protocol
      *

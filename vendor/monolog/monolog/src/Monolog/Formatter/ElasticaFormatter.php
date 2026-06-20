@@ -18,6 +18,7 @@ use Elastica\Document;
 
 /**
  * Format a log message into an Elastica Document
+ * 将日志消息格式化为弹性文档
  *
  * @author Jelle Vink <jelle.vink@gmail.com>
  */

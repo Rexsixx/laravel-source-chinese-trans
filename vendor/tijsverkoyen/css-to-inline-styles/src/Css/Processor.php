@@ -60,8 +60,10 @@ class Processor
     private function doCleanup($css)
     {
         // remove charset
+		// 删除字符集
         $css = preg_replace('/@charset "[^"]++";/', '', $css);
         // remove media queries
+		// 删除媒体查询
         $css = preg_replace('/@media [^{]*+{([^{}]++|{[^{}]*+})*+}/', '', $css);
 
         $css = str_replace(array("\r", "\n"), '', $css);

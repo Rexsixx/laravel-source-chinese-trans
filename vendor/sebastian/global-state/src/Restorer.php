@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，全局状态，复位器
+ */
+
 /*
  * This file is part of sebastian/global-state.
  *
@@ -16,11 +20,13 @@ use ReflectionProperty;
 
 /**
  * Restorer of snapshots of global state.
+ * 全局状态快照的恢复。
  */
 class Restorer
 {
     /**
      * Deletes function definitions that are not defined in a snapshot.
+	 * 删除未在快照中定义的函数定义
      *
      * @throws RuntimeException when the uopz_delete() function is not available
      *

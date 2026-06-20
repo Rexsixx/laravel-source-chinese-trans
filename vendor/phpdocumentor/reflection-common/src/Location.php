@@ -18,6 +18,7 @@ namespace phpDocumentor\Reflection;
 
 /**
  * The location where an element occurs within a file.
+ * 在文件中发生元素的位置。
  *
  * @psalm-immutable
  */

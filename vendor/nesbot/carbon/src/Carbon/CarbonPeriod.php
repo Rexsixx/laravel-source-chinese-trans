@@ -105,6 +105,7 @@ class CarbonPeriod implements Iterator, Countable
 {
     /**
      * Built-in filters.
+	 * 内置过滤器
      *
      * @var string
      */
@@ -113,6 +114,7 @@ class CarbonPeriod implements Iterator, Countable
 
     /**
      * Special value which can be returned by filters to end iteration. Also a filter.
+	 * 特殊值,可以通过过滤器返回到结束迭代。也是一个过滤器。
      *
      * @var string
      */

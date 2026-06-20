@@ -1,4 +1,8 @@
 <?php
+/**
+ * phpDocumentor，反射，Doc Block Factory 接口
+ */
+
 
 declare(strict_types=1);
 

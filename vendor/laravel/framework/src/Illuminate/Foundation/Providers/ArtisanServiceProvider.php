@@ -319,6 +319,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the command.
+	 * 注册命令
      *
      * @return void
      */
@@ -331,6 +332,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the command.
+	 * 注册命令
      *
      * @return void
      */
@@ -593,6 +595,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the command.
+	 * 注册命令
      *
      * @return void
      */
@@ -605,6 +608,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the command.
+	 * 注册命令
      *
      * @return void
      */
@@ -617,6 +621,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the command.
+	 * 注册命令
      *
      * @return void
      */
@@ -629,6 +634,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the command.
+	 * 注册命令
      *
      * @return void
      */
@@ -641,6 +647,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the command.
+	 * 注册命令
      *
      * @return void
      */
@@ -653,6 +660,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the command.
+	 * 注册命令
      *
      * @return void
      */
@@ -665,6 +673,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the command.
+	 * 注册命令
      *
      * @return void
      */
@@ -677,6 +686,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the command.
+	 * 注册命令
      *
      * @return void
      */
@@ -689,6 +699,7 @@ class ArtisanServiceProvider extends ServiceProvider
 
     /**
      * Register the command.
+	 * 注册命令
      *
      * @return void
      */

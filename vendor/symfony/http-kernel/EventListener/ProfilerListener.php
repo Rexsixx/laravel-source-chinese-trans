@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件监听器，分析器监听器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -24,6 +27,7 @@ use Symfony\Component\HttpKernel\Profiler\Profiler;
 
 /**
  * ProfilerListener collects data for the current request by listening to the kernel events.
+ * ProfilerListener通过侦听内核事件来收集当前请求的数据。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -57,6 +61,7 @@ class ProfilerListener implements EventSubscriberInterface
 
     /**
      * Handles the onKernelException event.
+	 * 处理onKernelException事件
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
@@ -69,6 +74,7 @@ class ProfilerListener implements EventSubscriberInterface
 
     /**
      * Handles the onKernelResponse event.
+	 * 处理onKernelResponse事件
      */
     public function onKernelResponse(FilterResponseEvent $event)
     {
@@ -114,6 +120,7 @@ class ProfilerListener implements EventSubscriberInterface
     public function onKernelTerminate(PostResponseEvent $event)
     {
         // attach children to parents
+		// 让孩子依附父亲
         foreach ($this->profiles as $request) {
             if (null !== $parentRequest = $this->parents[$request]) {
                 if (isset($this->profiles[$parentRequest])) {

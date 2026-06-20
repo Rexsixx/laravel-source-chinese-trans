@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，标题，抽象的头
+ * Symfony，组件，Mime，数据头，抽象的头
  */
 
 /*
@@ -50,6 +50,7 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Set the language used in this Header.
+	 * 设置标题中使用的语言。
      *
      * For example, for US English, 'en-us'.
      */
@@ -126,6 +127,7 @@ abstract class AbstractHeader implements HeaderInterface
 
     /**
      * Encode needed word tokens within a string of input.
+	 * 在输入字符串中编码所需的字记号
      */
     protected function encodeWords(HeaderInterface $header, string $input, int $usedLength = -1): string
     {

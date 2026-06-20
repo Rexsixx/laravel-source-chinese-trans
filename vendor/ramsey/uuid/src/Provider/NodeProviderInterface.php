@@ -23,6 +23,7 @@ use Exception;
 /**
  * NodeProviderInterface provides functionality to get the node ID (or host ID
  * in the form of the system's MAC address) from a specific type of node provider
+ * NodeProviderInterface提供了从特定类型的节点提供程序中获取节点ID(或主机ID的形式)的功能
  */
 interface NodeProviderInterface
 {

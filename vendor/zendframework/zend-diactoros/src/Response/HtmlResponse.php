@@ -59,6 +59,7 @@ class HtmlResponse extends Response
 
     /**
      * Create the message body.
+	 * 创建消息主体
      *
      * @param string|StreamInterface $html
      * @throws Exception\InvalidArgumentException if $html is neither a string or stream.

@@ -47,6 +47,7 @@ class Question
 
     /**
      * Returns the question.
+	 * 返回问题
      *
      * @return string
      */

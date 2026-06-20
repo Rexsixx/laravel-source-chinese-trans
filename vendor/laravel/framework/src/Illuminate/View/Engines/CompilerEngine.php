@@ -66,6 +66,7 @@ class CompilerEngine extends PhpEngine
         // typical PHP just like any other templates. We also keep a stack of views
         // which have been rendered for right exception messages to be generated.
 		// 一旦我们获取到了编译后的文件路径，我们就会像处理其他模板一样，用标准的 PHP 来对这些路径进行评估。
+		// 我们还保留了一堆已渲染的视图，以便生成右侧的异常消息。
         $results = $this->evaluatePath($compiled, $data);
 
         array_pop($this->lastCompiled);

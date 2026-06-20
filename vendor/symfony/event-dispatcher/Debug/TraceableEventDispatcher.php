@@ -283,6 +283,7 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface
 
     /**
      * Proxies all method calls to the original event dispatcher.
+	 * 将所有方法调用代理到原始事件调度程序
      *
      * @param string $method    The method name
      * @param array  $arguments The method arguments

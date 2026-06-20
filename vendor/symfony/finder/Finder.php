@@ -101,6 +101,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Restricts the matching to files only.
+	 * 只对文件进行匹配
      *
      * @return $this
      */

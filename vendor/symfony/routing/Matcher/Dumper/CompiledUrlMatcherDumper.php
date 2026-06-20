@@ -64,6 +64,7 @@ EOF;
 
     /**
      * Generates the arrays for CompiledUrlMatcher's constructor.
+	 * 为CompiledUrlMatcher的构造函数生成数组
      */
     public function getCompiledRoutes(bool $forDump = false): array
     {
@@ -167,6 +168,7 @@ EOF;
 
     /**
      * Splits static routes from dynamic routes, so that they can be matched first, using a simple switch.
+	 * 将静态路由从动态路由中分离出来，这样它们就可以通过一个简单的开关进行匹配。
      */
     private function groupStaticRoutes(RouteCollection $collection): array
     {

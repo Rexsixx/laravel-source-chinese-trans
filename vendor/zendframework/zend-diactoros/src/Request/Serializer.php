@@ -1,6 +1,6 @@
 <?php
 /**
- * Zend，Diactoros，请求，串行(化)器
+ * Zend，Diactoros，请求，序列化器
  */
 
 /**
@@ -77,6 +77,7 @@ final class Serializer extends AbstractSerializer
 
     /**
      * Serialize a request message to a string.
+	 * 将请求消息序列化为字符串
      */
     public static function toString(RequestInterface $request) : string
     {
@@ -104,6 +105,7 @@ final class Serializer extends AbstractSerializer
 
     /**
      * Retrieve the components of the request line.
+	 * 检索请求行的组件。
      *
      * Retrieves the first line of the stream and parses it, raising an
      * exception if it does not follow specifications; if valid, returns a list
@@ -128,6 +130,7 @@ final class Serializer extends AbstractSerializer
 
     /**
      * Create and return a Uri instance based on the provided request target.
+	 * 基于所提供的请求目标创建并返回Uri实例。
      *
      * If the request target is of authority or asterisk form, an empty Uri
      * instance is returned; otherwise, the value is used to create and return

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，Caster，Cut Stub
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Represents the main properties of a PHP variable, pre-casted by a caster.
+ * 表示PHP变量的主要属性，由调测器预调测。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

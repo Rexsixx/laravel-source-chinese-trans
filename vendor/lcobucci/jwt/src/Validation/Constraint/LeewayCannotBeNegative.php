@@ -1,4 +1,7 @@
 <?php
+/**
+ * Lcobucci，JWT，确认，约束，回旋余地不可能是负的
+ */
 
 namespace Lcobucci\JWT\Validation\Constraint;
 

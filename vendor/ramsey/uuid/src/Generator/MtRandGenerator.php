@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，生成器，Mt 随机发生器
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -28,6 +32,7 @@ class MtRandGenerator implements RandomGeneratorInterface
 {
     /**
      * Generates a string of random binary data of the specified length
+	 * 生成指定长度的随机二进制数据串
      *
      * @param integer $length The number of bytes of random binary data to generate
      * @return string A binary string

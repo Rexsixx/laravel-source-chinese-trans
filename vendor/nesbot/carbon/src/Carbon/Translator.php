@@ -77,6 +77,7 @@ class Translator extends Translation\Translator
 
     /**
      * Init messages language from matching file in Lang directory.
+	 * 在Lang目录中匹配文件的Init消息语言
      *
      * @param string $locale
      *

@@ -34,6 +34,7 @@ class Loader
 
     /**
      * The list of environment variables declared inside the 'env' file.
+	 * 在‘env’文件中声明的环境变量列表
      *
      * @var array
      */
@@ -41,6 +42,7 @@ class Loader
 
     /**
      * Create a new loader instance.
+	 * 创建一个新的加载器实
      *
      * @param string $filePath
      * @param bool   $immutable
@@ -55,6 +57,7 @@ class Loader
 
     /**
      * Set immutable value.
+	 * 设置不可变值
      *
      * @param bool $immutable
      *
@@ -69,6 +72,7 @@ class Loader
 
     /**
      * Get immutable value.
+	 * 获取不可变值
      *
      * @return bool
      */
@@ -79,6 +83,7 @@ class Loader
 
     /**
      * Load `.env` file in given directory.
+	 * 加载指定目录下的Env文件。
      *
      * @throws \Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidFileException
      *
@@ -101,6 +106,7 @@ class Loader
 
     /**
      * Ensures the given filePath is readable.
+	 * 确保给定的filePath是可读的
      *
      * @throws \Dotenv\Exception\InvalidPathException
      *
@@ -115,6 +121,7 @@ class Loader
 
     /**
      * Normalise the given environment variable.
+	 * 规范化给定的环境变量。
      *
      * Takes value as passed in by developer and:
      * - ensures we're dealing with a separate name and value, breaking apart the name string if needed,
@@ -140,6 +147,7 @@ class Loader
 
     /**
      * Process the runtime filters.
+	 * 处理运行时过滤器
      *
      * Called from `normaliseEnvironmentVariable` and the `VariableFactory`, passed as a callback in `$this->loadFromFile()`.
      *
@@ -165,6 +173,7 @@ class Loader
 
     /**
      * Read lines from the file, auto detecting line endings.
+	 * 从文件中读取行，自动检测行结尾
      *
      * @param string $filePath
      *

@@ -119,6 +119,7 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Test if a value is within an increments of ranges (offset[-to]/step size)
+	 * 测试如果值在区间的增量中
      *
      * @param string $dateValue Set date value
      * @param string $value     Value to test
@@ -166,6 +167,7 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Returns a range of values for the given cron expression
+	 * 返回给定cron表达式的值范围
      *
      * @param string $expression The expression to evaluate
      * @param int $max           Maximum offset for range

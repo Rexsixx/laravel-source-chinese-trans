@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，全局状态，代码出口商测试
+ */
+
 /*
  * This file is part of sebastian/global-state.
  *

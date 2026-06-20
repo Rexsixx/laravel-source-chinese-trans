@@ -52,6 +52,7 @@ class Parser
 
     /**
      * Parses the JWT and returns a token
+	 * 解析JWT并返回一个令牌
      *
      * @param string $jwt
      *

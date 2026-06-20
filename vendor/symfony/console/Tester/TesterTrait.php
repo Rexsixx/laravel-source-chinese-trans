@@ -56,6 +56,7 @@ trait TesterTrait
 
     /**
      * Gets the output written to STDERR by the application.
+	 * 获取由应用程序写入STDERR的输出
      *
      * @param bool $normalize Whether to normalize end of lines to \n or not
      *
@@ -80,6 +81,7 @@ trait TesterTrait
 
     /**
      * Gets the input instance used by the last execution of the command or application.
+	 * 获取命令或应用程序最后一次执行时使用的输入实例
      *
      * @return InputInterface The current input instance
      */

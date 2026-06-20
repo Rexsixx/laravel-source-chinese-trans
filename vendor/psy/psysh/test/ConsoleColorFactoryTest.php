@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，测试，控制台色彩工厂测试
+ */
 
 /*
  * This file is part of Psy Shell.

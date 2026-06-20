@@ -21,6 +21,7 @@ interface FilesystemInterface
 
     /**
      * Read a file.
+	 * 读文件
      *
      * @param string $path The path to the file.
      *
@@ -32,6 +33,7 @@ interface FilesystemInterface
 
     /**
      * Retrieves a read-stream for a path.
+	 * 检索路径的读流
      *
      * @param string $path The path to the file.
      *

@@ -41,6 +41,7 @@ class ArgumentMetadata
 
     /**
      * Returns the name as given in PHP, $foo would yield "foo".
+	 * 返回PHP中给定的名称，$foo将产生“foo”。
      *
      * @return string
      */

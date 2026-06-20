@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * AjaxDataCollector.
+ * Ajax数据收集器。
  *
  * @author Bart van den Burg <bart@burgov.nl>
  *

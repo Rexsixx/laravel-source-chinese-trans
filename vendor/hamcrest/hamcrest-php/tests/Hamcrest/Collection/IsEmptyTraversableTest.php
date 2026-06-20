@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，采集，是否空Traversable测试
+ */
+
 namespace Hamcrest\Collection;
 
 use Hamcrest\AbstractMatcherTest;

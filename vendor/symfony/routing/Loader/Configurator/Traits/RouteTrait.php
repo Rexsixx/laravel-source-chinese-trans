@@ -39,6 +39,7 @@ trait RouteTrait
 
     /**
      * Adds requirements.
+	 * 增加了需求
      *
      * @return $this
      */
@@ -51,6 +52,7 @@ trait RouteTrait
 
     /**
      * Adds options.
+	 * 添加选项
      *
      * @return $this
      */
@@ -63,6 +65,7 @@ trait RouteTrait
 
     /**
      * Whether paths should accept utf8 encoding.
+	 * 路径是否接受utf8编码
      *
      * @return $this
      */
@@ -75,6 +78,7 @@ trait RouteTrait
 
     /**
      * Sets the condition.
+	 * 设置条件
      *
      * @return $this
      */
@@ -87,6 +91,7 @@ trait RouteTrait
 
     /**
      * Sets the pattern for the host.
+	 * 为主机设置模式
      *
      * @return $this
      */

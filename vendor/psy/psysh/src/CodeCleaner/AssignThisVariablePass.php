@@ -1,6 +1,6 @@
 <?php
 /**
- * Psy，代码清理器，给这个变量赋值
+ * Psy，代码清理器，分配这个变量通过
  */
 
 /*
@@ -29,6 +29,7 @@ class AssignThisVariablePass extends CodeCleanerPass
 {
     /**
      * Validate that the user input does not assign the `$this` variable.
+	 * 验证用户输入不分配“$ this”变量
      *
      * @throws RuntimeException if the user assign the `$this` variable
      *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件，请求事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpKernel\Event;
 
 /**
  * Allows to create a response for a request.
+ * 允许为请求创建响应。
  *
  * Call setResponse() to set the response that will be returned for the
  * current request. The propagation of this event is stopped as soon as a

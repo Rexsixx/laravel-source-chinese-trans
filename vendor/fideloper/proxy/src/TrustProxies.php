@@ -67,6 +67,7 @@ class TrustProxies
 
     /**
      * Sets the trusted proxies on the request to the value of trustedproxy.proxies
+	 * 在请求上设置可信代理,以满足托管代理的值。
      *
      * @param \Illuminate\Http\Request $request
      */
@@ -91,6 +92,7 @@ class TrustProxies
 
     /**
      * Specify the IP addresses to trust explicitly.
+	 * 指定IP地址显式信任
      *
      * @param \Illuminate\Http\Request $request
      * @param array                    $trustedIps
@@ -102,6 +104,7 @@ class TrustProxies
 
     /**
      * Set the trusted proxy to be the IP address calling this servers
+	 * 将可信代理设置为调用此服务器的IP地址
      *
      * @param \Illuminate\Http\Request $request
      */
@@ -112,6 +115,7 @@ class TrustProxies
 
     /**
      * Retrieve trusted header name(s), falling back to defaults if config not set.
+	 * 检索受信任的头名(s),如果配置不设置,则返回到默认值。
      *
      * @return int A bit field of Request::HEADER_*, to set which headers to trust from your proxies.
      */

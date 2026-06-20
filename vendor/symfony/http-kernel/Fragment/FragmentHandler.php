@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，片段，片段处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\HttpKernel\Controller\ControllerReference;
 
 /**
  * Renders a URI that represents a resource fragment.
+ * 呈现表示资源片段的URI。
  *
  * This class handles the rendering of resource fragments that are included into
  * a main resource. The handling of the rendering is managed by specialized renderers.
@@ -55,6 +59,7 @@ class FragmentHandler
 
     /**
      * Renders a URI and returns the Response content.
+	 * 呈现一个URI并返回响应内容。
      *
      * Available options:
      *

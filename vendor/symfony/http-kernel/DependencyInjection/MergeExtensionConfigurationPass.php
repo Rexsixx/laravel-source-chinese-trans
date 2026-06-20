@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，依赖注入，合并扩展配置通过
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Ensures certain extensions are always loaded.
+ * 确保总是加载某些扩展。
  *
  * @author Kris Wallsmith <kris@symfony.com>
  */

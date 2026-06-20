@@ -51,6 +51,7 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
     /**
      * Constructs a `DefaultTimeGenerator` using a node provider, time converter,
      * and time provider
+	 * 使用节点提供程序、时间转换器和时间提供者构建一个“DefaultTimeGenerator”。
      *
      * @param NodeProviderInterface $nodeProvider
      * @param TimeConverterInterface $timeConverter
@@ -68,6 +69,7 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
 
     /**
      * Generate a version 1 UUID from a host ID, sequence number, and the current time
+	 * 从主机ID、序列号和当前时间生成一个版本1 UUID。
      *
      * If $node is not given, we will attempt to obtain the local hardware
      * address. If $clockSeq is given, it is used as the sequence number;

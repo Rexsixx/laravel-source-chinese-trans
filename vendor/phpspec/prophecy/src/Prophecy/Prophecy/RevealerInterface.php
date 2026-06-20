@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，Prophecy，Revealer 接口
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -13,6 +16,7 @@ namespace Prophecy\Prophecy;
 
 /**
  * Prophecies revealer interface.
+ * 预言揭示接口。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */

@@ -24,6 +24,7 @@ interface IntlFormatterInterface
 {
     /**
      * Formats a localized message using rules defined by ICU MessageFormat.
+	 * 使用ICU MessageFormat定义的规则格式化本地化消息
      *
      * @see http://icu-project.org/apiref/icu4c/classMessageFormat.html#details
      */

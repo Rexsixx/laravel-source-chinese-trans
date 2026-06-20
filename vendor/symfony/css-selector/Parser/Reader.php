@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Css 选择器，分析程序，Parser
+ * Symfony，组件，Css 选择器，分析程序，Reader
  */
 
 /*

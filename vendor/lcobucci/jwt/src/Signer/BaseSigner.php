@@ -82,6 +82,7 @@ abstract class BaseSigner implements Signer
 
     /**
      * Performs the signature verification
+	 * 执行签名验证
      *
      * @internal
      *

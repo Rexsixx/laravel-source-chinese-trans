@@ -28,6 +28,7 @@ class Highlighter extends BaseHighlighter implements HighlighterContract
 {
     /**
      * Holds the theme.
+	 * 保持主题
      *
      * @var array
      */
@@ -43,6 +44,7 @@ class Highlighter extends BaseHighlighter implements HighlighterContract
 
     /**
      * Creates an instance of the Highlighter.
+	 * 创建一个highlight的实例
      *
      * @param \JakubOnderka\PhpConsoleColor\ConsoleColor|null $color
      */

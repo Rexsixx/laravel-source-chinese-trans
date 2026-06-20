@@ -26,11 +26,13 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 /**
  * UuidFactoryInterface defines common functionality all `UuidFactory` instances
  * must implement
+ * UuidFactoryInterface定义了所有UuidFactory实例必须实现的共同功能。
  */
 interface UuidFactoryInterface
 {
     /**
      * Generate a version 1 UUID from a host ID, sequence number, and the current time.
+	 * 从主机ID、序列号和当前时间生成一个版本1 UUID。
      *
      * @param int|string|null $node A 48-bit number representing the hardware address
      *     This number may be represented as an integer or a hexadecimal string.
@@ -48,6 +50,7 @@ interface UuidFactoryInterface
     /**
      * Generate a version 3 UUID based on the MD5 hash of a namespace identifier
      * (which is a UUID) and a name (which is a string).
+	 * 根据名称空间标识符(即UUID)和名称(即字符串)生成一个版本3 uid
      *
      * @param string|UuidInterface $ns The UUID namespace in which to create the named UUID
      * @param string $name The name to create a UUID for

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，HTTP缓存，代理接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ interface SurrogateInterface
 {
     /**
      * Returns surrogate name.
+	 * 返回代理名称
      *
      * @return string
      */
@@ -25,6 +29,7 @@ interface SurrogateInterface
 
     /**
      * Returns a new cache strategy instance.
+	 * 返回一个新的缓存策略实例
      *
      * @return ResponseCacheStrategyInterface A ResponseCacheStrategyInterface instance
      */
@@ -32,6 +37,7 @@ interface SurrogateInterface
 
     /**
      * Checks that at least one surrogate has Surrogate capability.
+	 * 检查是否至少有一个代理具有代理能力
      *
      * @return bool true if one surrogate has Surrogate capability, false otherwise
      */

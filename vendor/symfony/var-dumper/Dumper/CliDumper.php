@@ -125,6 +125,7 @@ class CliDumper extends AbstractDumper
 
     /**
      * Configures display options.
+	 * 配置显示选项
      *
      * @param array $displayOptions A map of display options to customize the behavior
      */

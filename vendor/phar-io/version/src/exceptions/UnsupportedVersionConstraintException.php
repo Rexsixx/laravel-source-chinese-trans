@@ -1,4 +1,8 @@
 <?php
+/**
+ * PharIo，版本，UnsupportedVersionConstraintException
+ */
+
 /*
  * This file is part of PharIo\Version.
  *

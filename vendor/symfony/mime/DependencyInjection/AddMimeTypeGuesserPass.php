@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，依赖注入，AddMime类型猜测通过
+ * Symfony，组件，Mime，依赖注入，AddMime 类型猜测通过
  */
 
 /*

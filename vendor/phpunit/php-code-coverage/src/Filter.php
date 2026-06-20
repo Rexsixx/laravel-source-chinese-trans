@@ -31,6 +31,7 @@ final class Filter
 
     /**
      * Remembers the result of the `is_file()` calls.
+	 * 记得“is_file()”呼叫的结果
      *
      * @var bool[]
      */
@@ -38,6 +39,7 @@ final class Filter
 
     /**
      * Adds a directory to the whitelist (recursively).
+	 * 向whitelist添加一个目录(递归地)
      */
     public function addDirectoryToWhitelist(string $directory, string $suffix = '.php', string $prefix = ''): void
     {
@@ -51,6 +53,7 @@ final class Filter
 
     /**
      * Adds a file to the whitelist.
+	 * 向whitelist添加一个文件
      */
     public function addFileToWhitelist(string $filename): void
     {

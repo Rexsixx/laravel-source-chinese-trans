@@ -100,6 +100,7 @@ class PlainTextHandler extends Handler
 
     /**
      * Set var dumper callback function.
+	 * 设置var dumper回调函数
      *
      * @param  callable $dumper
      * @return static

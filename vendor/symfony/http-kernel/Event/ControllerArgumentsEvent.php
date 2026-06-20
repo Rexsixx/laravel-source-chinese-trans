@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpKernel\Event;
 
 /**
  * Allows filtering of controller arguments.
+ * 允许过滤控制器参数。
  *
  * You can call getController() to retrieve the controller and getArguments
  * to retrieve the current arguments. With setArguments() you can replace

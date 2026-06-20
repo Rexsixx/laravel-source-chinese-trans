@@ -21,6 +21,7 @@ class SlackAttachment
 
     /**
      * The attachment's URL.
+	 * 附件的URL
      *
      * @var string
      */

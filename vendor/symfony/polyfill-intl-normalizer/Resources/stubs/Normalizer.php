@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Polyfill，Intl，标准化器，存根
+ */
 
 class Normalizer extends Symfony\Polyfill\Intl\Normalizer\Normalizer
 {

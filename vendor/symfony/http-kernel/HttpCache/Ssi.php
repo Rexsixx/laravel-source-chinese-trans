@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，HTTP缓存，Ssi
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Ssi implements the SSI capabilities to Request and Response instances.
+ * Ssi实现了请求和响应实例的Ssi功能。
  *
  * @author Sebastian Krebs <krebs.seb@gmail.com>
  */

@@ -31,6 +31,7 @@ abstract class AbstractLexer
 {
     /**
      * Lexer original input string.
+	 * 输入字符串
      *
      * @var string
      */

@@ -27,6 +27,7 @@ use Symfony\Component\Process\Pipes\WindowsPipes;
 /**
  * Process is a thin wrapper around proc_* functions to easily
  * start independent PHP processes.
+ * Process 是一个轻量级的封装，用于轻松启动独立的PHP进程。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Romain Neutron <imprec@gmail.com>
@@ -85,6 +86,7 @@ class Process implements \IteratorAggregate
 
     /**
      * Exit codes translation table.
+	 * 退出代码转换表。
      *
      * User-defined errors must use exit codes in the 64-113 range.
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，HTTP缓存，Esi
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Esi implements the ESI capabilities to Request and Response instances.
+ * Esi实现了请求和响应实例的Esi功能。
  *
  * For more information, read the following W3C notes:
  *

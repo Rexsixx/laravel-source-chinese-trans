@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，待定的邮件
+ * Illuminate，电子邮件，待处理的邮件
  */
 
 namespace Illuminate\Mail;

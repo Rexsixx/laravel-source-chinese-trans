@@ -77,6 +77,7 @@ class DeepCopy
 
     /**
      * If enabled, will not throw an exception when coming across an uncloneable property.
+	 * 如果启用,将不会抛出一个异常,当它遇到一个不可处理的属性时。
      *
      * @param $skipUncloneable
      *

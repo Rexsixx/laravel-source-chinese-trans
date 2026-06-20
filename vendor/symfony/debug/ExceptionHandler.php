@@ -88,6 +88,7 @@ class ExceptionHandler
 
     /**
      * Sets a user exception handler.
+	 * 设置用户异常处理程序
      *
      * @param callable $handler An handler that will be called on Exception
      *

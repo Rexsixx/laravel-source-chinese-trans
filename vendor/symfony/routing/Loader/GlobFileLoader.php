@@ -19,6 +19,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * GlobFileLoader loads files from a glob pattern.
+ * GlobFileLoader从glob模式加载文件。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

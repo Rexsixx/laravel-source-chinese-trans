@@ -21,6 +21,7 @@ class BaseCommand extends Command
         // use the path relative to the root of the installation folder so our database
         // migrations may be run for any customized path from within the application.
 		// 在这里,我们将检查是否已经定义了路径选项。
+		// 如果它有我们将使用相对于安装文件夹的根的路径,那么我们的数据库迁移可能会从应用程序中运行任何自定义路径。
         if ($this->input->hasOption('path') && $this->option('path')) {
             return collect($this->option('path'))->map(function ($path) {
                 return ! $this->usingRealPath()

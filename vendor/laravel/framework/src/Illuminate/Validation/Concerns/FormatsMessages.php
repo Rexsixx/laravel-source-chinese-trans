@@ -30,6 +30,7 @@ trait FormatsMessages
         // exists. If a custom validation message is being used we'll return the
         // custom message, otherwise we'll keep searching for a valid message.
 		// 首先，如果存在验证规则的自定义消息，我们将获取该消息。
+		// 如果使用了自定义验证消息，我们将返回该自定义消息；否则将继续查找有效的消息。
         if (! is_null($inlineMessage)) {
             return $inlineMessage;
         }
@@ -44,6 +45,7 @@ trait FormatsMessages
         // and rule. This allows the developer to specify specific messages for
         // only some attributes and rules that need to get specially formed.
 		// 首先，我们会检查该属性和规则是否具有自定义的验证消息。
+		// 这使开发者能够为某些需要特殊处理的属性和规则指定特定的消息。
         if ($customMessage !== $customKey) {
             return $customMessage;
         }
@@ -51,7 +53,8 @@ trait FormatsMessages
         // If the rule being validated is a "size" rule, we will need to gather the
         // specific error message for the type of attribute being validated such
         // as a number, file or string which all have different message types.
-		// 如果所验证的规则是“大小”规则，那么我们就需要收集针对被验证属性（如数字、文件或字符串）的特定错误消息，因为这些属性的错误消息类型各不相同。
+		// 如果所验证的规则是“大小”规则，那么我们就需要收集针对被验证属性（如数字、文件或字符串）的特定错误消息，
+		// 因为这些属性的错误消息类型各不相同。
         elseif (in_array($rule, $this->sizeRules)) {
             return $this->getSizeMessage($attribute, $rule);
         }
@@ -59,7 +62,8 @@ trait FormatsMessages
         // Finally, if no developer specified messages have been set, and no other
         // special messages apply for this rule, we will just pull the default
         // messages out of the translator service for this validation rule.
-		// 最后，如果未指定任何开发人员的消息，且此规则也没有其他特殊消息适用，我们将从翻译服务中提取此验证规则的默认消息。
+		// 最后，如果未指定任何开发人员的消息，且此规则也没有其他特殊消息适用，
+		// 我们将从翻译服务中提取此验证规则的默认消息。
         $key = "validation.{$lowerRule}";
 
         if ($key != ($value = $this->translator->trans($key))) {
@@ -259,6 +263,7 @@ trait FormatsMessages
             // validator instance. If the attribute exists in this array it is used over
             // the other ways of pulling the attribute name for this given attributes.
 			// 开发人员可以动态地为这个验证器实例指定一组自定义属性。
+			// 如果该属性存在于此数组中，则会优先使用该方式获取指定属性的名称，而非其他方法。
             if (isset($this->customAttributes[$name])) {
                 return $this->customAttributes[$name];
             }

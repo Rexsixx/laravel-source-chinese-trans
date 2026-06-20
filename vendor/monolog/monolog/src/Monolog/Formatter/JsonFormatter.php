@@ -1,4 +1,8 @@
 <?php
+/**
+ * Monolog，格式化程序，Json 格式化程序
+ */
+
 
 /*
  * This file is part of the Monolog package.

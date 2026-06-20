@@ -18,6 +18,7 @@ use Symfony\Component\Mime\Exception\LogicException;
 
 /**
  * Manages MIME types and file extensions.
+ * 管理MIME类型和文件扩展。
  *
  * For MIME type guessing, you can register custom guessers
  * by calling the registerGuesser() method.
@@ -148,6 +149,7 @@ final class MimeTypes implements MimeTypesInterface
 
     /**
      * A map of MIME types and their default extensions.
+	 * MIME类型及其默认扩展的映射。
      *
      * Updated from upstream on 2021-09-03
      *

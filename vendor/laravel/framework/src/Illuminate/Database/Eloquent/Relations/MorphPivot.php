@@ -15,6 +15,7 @@ class MorphPivot extends Pivot
 	 * 多态关系的类型。
      *
      * Explicitly define this so it's not included in saved attributes.
+	 * 显式地定义这个,所以它不包含在保存的属性中。
      *
      * @var string
      */
@@ -25,6 +26,7 @@ class MorphPivot extends Pivot
 	 * 多态关系的值。
      *
      * Explicitly define this so it's not included in saved attributes.
+	 * 显式地定义这个,所以它不包含在保存的属性中。
      *
      * @var string
      */

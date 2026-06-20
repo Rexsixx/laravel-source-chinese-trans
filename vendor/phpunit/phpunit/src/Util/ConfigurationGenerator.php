@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，工具，配置发生器
+ */
+
 /*
  * This file is part of PHPUnit.
  *

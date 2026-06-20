@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，Propel2，Populator
+ */
 
 namespace Faker\ORM\Propel2;
 
@@ -25,6 +28,7 @@ class Populator
 
     /**
      * Add an order for the generation of $number records for $entity.
+	 * 为$number的生成值的生成添加一个订单
      *
      * @param mixed $entity A Propel ActiveRecord classname, or a \Faker\ORM\Propel2\EntityPopulator instance
      * @param int   $number The number of entities to populate

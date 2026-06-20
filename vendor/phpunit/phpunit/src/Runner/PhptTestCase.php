@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，运行者，Phpt 测试用例
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -23,6 +27,7 @@ use Throwable;
 
 /**
  * Runner for PHPT test cases.
+ * PHPT测试用例的Runner。
  */
 class PhptTestCase implements SelfDescribing, Test
 {
@@ -69,6 +74,7 @@ class PhptTestCase implements SelfDescribing, Test
 
     /**
      * Constructs a test case with the given filename.
+	 * 用给定的文件名构造一个测试用例
      *
      * @throws Exception
      */

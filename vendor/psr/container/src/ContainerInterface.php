@@ -29,6 +29,8 @@ interface ContainerInterface
     /**
      * Returns true if the container can return an entry for the given identifier.
      * Returns false otherwise.
+	 * 如果容器可以返回给定标识符的条目,则返回true。
+	 * 否则返回false。
      *
      * `has($id)` returning true does not mean that `get($id)` will not throw an exception.
      * It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件监听器，响应监听器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * ResponseListener fixes the Response headers based on the Request.
+ * ResponseListener根据请求修复响应头。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -33,6 +37,7 @@ class ResponseListener implements EventSubscriberInterface
 
     /**
      * Filters the Response.
+	 * 过滤响应
      */
     public function onKernelResponse(FilterResponseEvent $event)
     {

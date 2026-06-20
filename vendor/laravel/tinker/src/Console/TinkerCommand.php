@@ -1,4 +1,7 @@
 <?php
+/**
+ * Laravel，Tinker，Tinker服务提供商
+ */
 
 namespace Laravel\Tinker\Console;
 
@@ -12,6 +15,7 @@ class TinkerCommand extends Command
 {
     /**
      * Artisan commands to include in the tinker shell.
+	 * 在tinker shell中包含的Artisan命令
      *
      * @var array
      */

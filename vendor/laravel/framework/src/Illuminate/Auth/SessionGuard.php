@@ -553,7 +553,8 @@ class SessionGuard implements StatefulGuard, SupportsBasicAuth
         // Once we have fired the logout event we will clear the users out of memory
         // so they are no longer available as the user is no longer considered as
         // being signed into this application and should not be available here.
-		// 一旦我们发射了退出的事件,我们将清除用户的内存,这样当用户不再被认为是在这个应用程序中签署的时候,它们就不再可用了,在这里不应该使用。
+		// 一旦我们发射了退出的事件,我们将清除用户的内存,
+		// 这样当用户不再被认为是在这个应用程序中签署的时候,它们就不再可用了,在这里不应该使用。
         $this->user = null;
 
         $this->loggedOut = true;

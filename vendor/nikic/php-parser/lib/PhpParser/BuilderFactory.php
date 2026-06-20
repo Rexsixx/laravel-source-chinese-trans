@@ -58,6 +58,7 @@ class BuilderFactory
 
     /**
      * Creates an interface builder.
+	 * 创建一个接口构建器
      *
      * @param string $name Name of the interface
      *
@@ -69,6 +70,7 @@ class BuilderFactory
 
     /**
      * Creates a trait builder.
+	 * 创建一个特质构建者
      *
      * @param string $name Name of the trait
      *
@@ -80,6 +82,7 @@ class BuilderFactory
 
     /**
      * Creates an enum builder.
+	 * 创造一个enum builder
      *
      * @param string $name Name of the enum
      *

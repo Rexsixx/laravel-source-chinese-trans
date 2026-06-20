@@ -1,4 +1,7 @@
 <?php
+/**
+ * Laravel，Tinker，Tinker服务提供商
+ */
 
 namespace Laravel\Tinker;
 
@@ -11,6 +14,7 @@ class TinkerServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
+	 * 指示是否延迟提供提供者
      *
      * @var bool
      */
@@ -18,6 +22,7 @@ class TinkerServiceProvider extends ServiceProvider
 
     /**
      * Boot the service provider.
+	 * 引导服务提供者
      *
      * @return void
      */
@@ -36,6 +41,7 @@ class TinkerServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
+	 * 注册服务提供者
      *
      * @return void
      */

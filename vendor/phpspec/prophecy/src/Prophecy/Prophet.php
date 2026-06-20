@@ -109,6 +109,7 @@ class Prophet
 
     /**
      * Returns all created object prophecies.
+	 * 返回所有创造的物体预言
      *
      * @return list<ObjectProphecy<object>>
      */
@@ -119,6 +120,7 @@ class Prophet
 
     /**
      * Returns Doubler instance assigned to this Prophet.
+	 * 返回被分配给这个先知的Doubler实例
      *
      * @return Doubler
      */
@@ -129,6 +131,7 @@ class Prophet
 
     /**
      * Checks all predictions defined by prophecies of this Prophet.
+	 * 检查所有预言的预言
      *
      * @return void
      *

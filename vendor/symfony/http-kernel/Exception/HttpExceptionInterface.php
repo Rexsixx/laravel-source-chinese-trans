@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，异常，Http异常接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpKernel\Exception;
 
 /**
  * Interface for HTTP error exceptions.
+ * HTTP错误异常接口。
  *
  * @author Kris Wallsmith <kris@symfony.com>
  */
@@ -20,6 +24,7 @@ interface HttpExceptionInterface extends \Throwable
 {
     /**
      * Returns the status code.
+	 * 返回状态码
      *
      * @return int An HTTP response status code
      */
@@ -27,6 +32,7 @@ interface HttpExceptionInterface extends \Throwable
 
     /**
      * Returns response headers.
+	 * 返回响应标头
      *
      * @return array Response headers
      */

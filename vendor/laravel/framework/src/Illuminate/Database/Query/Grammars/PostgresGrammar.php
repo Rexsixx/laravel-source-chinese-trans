@@ -241,6 +241,8 @@ class PostgresGrammar extends Grammar
         // Each one of the columns in the update statements needs to be wrapped in the
         // keyword identifiers, also a place-holder needs to be created for each of
         // the values in the list of bindings so we can make the sets statements.
+		// 更新语句中的每一个列都需要被包在关键字标识中,也需要为绑定列表中的每个值创建一个place-holder,
+		// 这样我们就可以进行集合语句。
         $columns = $this->compileUpdateColumns($values);
 
         $from = $this->compileUpdateFrom($query);
@@ -262,6 +264,8 @@ class PostgresGrammar extends Grammar
         // When gathering the columns for an update statement, we'll wrap each of the
         // columns and convert it to a parameter value. Then we will concatenate a
         // list of the columns that can be added into this update query clauses.
+		// 在收集更新语句的列时,我们将包每一列,并将其转换为参数值。
+		// 然后,我们将连接可以添加到这个更新查询子句的列列表。
         return collect($values)->map(function ($value, $key) {
             if ($this->isJsonSelector($key)) {
                 return $this->compileJsonUpdateColumn($key, $value);
@@ -306,6 +310,8 @@ class PostgresGrammar extends Grammar
         // When using Postgres, updates with joins list the joined tables in the from
         // clause, which is different than other systems like MySQL. Here, we will
         // compile out the tables that are joined and add them to a from clause.
+		// 在使用Postgres时,与join的更新在from子句中列出了join表,这与MySQL等其他系统不同。
+		// 在这里,我们将编译加入并将它们添加到一个from子句中的表。
         $froms = collect($query->joins)->map(function ($join) {
             return $this->wrapTable($join->table);
         })->all();
@@ -333,6 +339,8 @@ class PostgresGrammar extends Grammar
         // Once we compile the join constraints, we will either use them as the where
         // clause or append them to the existing base where clauses. If we need to
         // strip the leading boolean we will do so when using as the only where.
+		// 一旦我们编译了join约束,我们将使用它们作为where子句,或者将它们附加到现有的基本条款中。
+		// 如果我们需要去掉领导布尔,我们将在使用的时候这样做。
         $joinWheres = $this->compileUpdateJoinWheres($query);
 
         if (trim($baseWheres) == '') {
@@ -356,6 +364,8 @@ class PostgresGrammar extends Grammar
         // Here we will just loop through all of the join constraints and compile them
         // all out then implode them. This should give us "where" like syntax after
         // everything has been built and then we will join it to the real wheres.
+		// 在这里,我们将通过所有的连接约束来循环,然后将它们全部编译出来。
+		// 这应该给我们“在一切都建好后”的语法,然后我们将加入到真正的地方。
         foreach ($query->joins as $join) {
             foreach ($join->wheres as $where) {
                 $method = "where{$where['type']}";
@@ -386,6 +396,8 @@ class PostgresGrammar extends Grammar
         // Update statements with "joins" in Postgres use an interesting syntax. We need to
         // take all of the bindings and put them on the end of this array since they are
         // added to the end of the "where" clause statements as typical where clauses.
+		// 在Postgres中使用“join”更新语句,使用有趣的语法。
+		// 我们需要把所有的绑定都放在这个数组的末尾,因为它们被添加到“where”子句语句的末尾,这是典型的where子句。
         $bindingsWithoutJoin = Arr::except($bindings, 'join');
 
         return array_values(

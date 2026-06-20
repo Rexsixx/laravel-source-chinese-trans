@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，错误处理程序，抛出
+ */
+
 namespace PhpParser\ErrorHandler;
 
 use PhpParser\Error;
@@ -7,6 +11,7 @@ use PhpParser\ErrorHandler;
 
 /**
  * Error handler that handles all errors by throwing them.
+ * 错误处理程序,通过抛出错误处理所有错误。
  *
  * This is the default strategy used by all components.
  */

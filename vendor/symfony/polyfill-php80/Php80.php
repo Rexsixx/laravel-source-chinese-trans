@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Polyfill，Php80，Php80
+ */
 
 /*
  * This file is part of the Symfony package.

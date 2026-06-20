@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，版本更新，GitHub 检验员
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -63,6 +66,7 @@ class GitHubChecker implements Checker
 
     /**
      * Set to public to make testing easier.
+	 * 设置为公众,使测试更容易。
      *
      * @return mixed
      */

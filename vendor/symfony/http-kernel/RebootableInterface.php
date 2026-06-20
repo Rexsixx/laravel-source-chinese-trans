@@ -24,6 +24,7 @@ interface RebootableInterface
 {
     /**
      * Reboots a kernel.
+	 * 重新启动内核。
      *
      * The getCacheDir() method of a rebootable kernel should not be called
      * while building the container. Use the %kernel.cache_dir% parameter instead.

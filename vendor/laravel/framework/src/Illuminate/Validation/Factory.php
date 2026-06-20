@@ -119,6 +119,7 @@ class Factory implements FactoryContract
         // for the validator. It is behind an interface so that multiple versions of
         // it may be written besides database. We'll inject it into the validator.
 		// 验证器的存在性检查程序负责验证验证器所涉及的唯一且存在的数据。
+		// 它位于一个接口之后，以便可以在数据库之外编写多个版本。我们将把它注入到验证器中。
         if (! is_null($this->verifier)) {
             $validator->setPresenceVerifier($this->verifier);
         }
@@ -127,6 +128,7 @@ class Factory implements FactoryContract
         // resolve out class based validator extensions. If it is not set then these
         // types of extensions will not be possible on these validation instances.
 		// 接下来，我们将设置验证器的 IoC 容器实例，该实例用于解析基于类的验证器扩展。
+		// 如果未设置，则这些类型的扩展在这些验证实例上将无法使用。
         if (! is_null($this->container)) {
             $validator->setContainer($this->container);
         }

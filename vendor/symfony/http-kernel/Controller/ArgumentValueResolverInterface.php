@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 /**
  * Responsible for resolving the value of an argument based on its metadata.
+ * 负责根据参数的元数据解析参数的值。
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */

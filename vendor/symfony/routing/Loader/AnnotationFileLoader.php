@@ -81,6 +81,7 @@ class AnnotationFileLoader extends FileLoader
 
     /**
      * Returns the full class name for the first class in the file.
+	 * 返回文件中第一个类的完整类名
      *
      * @param string $file A PHP file path
      *

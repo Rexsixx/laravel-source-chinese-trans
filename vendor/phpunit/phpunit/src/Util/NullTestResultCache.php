@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，运行器，零测试结果缓存
+ */
+
 /*
  * This file is part of PHPUnit.
  *

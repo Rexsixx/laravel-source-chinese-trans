@@ -64,6 +64,7 @@ trait RequestTrait
 	 * 初始化请求状态。
      *
      * Used by constructors.
+	 * 由构造函数使用。
      *
      * @param null|string|UriInterface $uri URI for the request, if any.
      * @param null|string $method HTTP method for the request, if any.
@@ -88,6 +89,7 @@ trait RequestTrait
 
         // per PSR-7: attempt to set the Host header from a provided URI if no
         // Host header is provided
+		// 对于 PSR-7：如果未提供 Host Host 头部，则尝试从提供的 URI 中设置 Host Host 头部。
         if (! $this->hasHeader('Host') && $this->uri->getHost()) {
             $this->headerNames['host'] = 'Host';
             $this->headers['Host'] = [$this->getHostFromUri()];
@@ -96,6 +98,7 @@ trait RequestTrait
 
     /**
      * Create and return a URI instance.
+	 * 创建并返回一个URI实例。
      *
      * If `$uri` is a already a `UriInterface` instance, returns it.
      *
@@ -127,6 +130,7 @@ trait RequestTrait
 
     /**
      * Retrieves the message's request target.
+	 * 检索消息的请求目标。
      *
      * Retrieves the message's request-target either as it will appear (for
      * clients), as it appeared at request (for servers), or as it was
@@ -159,6 +163,7 @@ trait RequestTrait
 
     /**
      * Create a new instance with a specific request-target.
+	 * 创建具有特定请求目标的新实例。
      *
      * If the request needs a non-origin-form request-target — e.g., for
      * specifying an absolute-form, authority-form, or asterisk-form —

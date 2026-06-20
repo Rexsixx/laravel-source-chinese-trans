@@ -22,6 +22,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 /**
  * Provides an intuitive error message when controller fails because it is not registered as a service.
+ * 当控制器因未注册为服务而失败时，提供直观的错误消息。
  *
  * @author Simeon Kolev <simeon.kolev9@gmail.com>
  */

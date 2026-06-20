@@ -15,6 +15,7 @@ use Psr\Http\Message\RequestInterface;
 
 /**
  * HTTP Adapter for Guzzle 6.
+ * HTTP适配器用于Guzzle 6。
  *
  * @author David de Boer <david@ddeboer.nl>
  */
@@ -39,6 +40,7 @@ class Client implements HttpClient, HttpAsyncClient
 
     /**
      * Factory method to create the guzzle 6 adapter with custom configuration for guzzle.
+	 * 工厂方法,用自定义配置来创建guzzle 6适配器。
      *
      * @param array $config Configuration to create guzzle with.
      *
@@ -71,6 +73,7 @@ class Client implements HttpClient, HttpAsyncClient
 
     /**
      * Build the guzzle client instance.
+	 * 构建guzzle客户实例
      *
      * @param array $config Additional configuration
      *

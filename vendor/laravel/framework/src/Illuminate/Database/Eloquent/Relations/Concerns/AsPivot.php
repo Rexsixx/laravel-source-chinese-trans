@@ -52,6 +52,8 @@ trait AsPivot
         // The pivot model is a "dynamic" model since we will set the tables dynamically
         // for the instance. This allows it work for any intermediate tables for the
         // many to many relationship that are defined by this developer's classes.
+		// pivot模型是一个“动态”模型,因为我们将动态地为实例设置表。
+		// 这允许它为许多关系的中间表工作,这些关系是由这个开发人员的类定义的。
         $instance->setConnection($parent->getConnectionName())
             ->setTable($table)
             ->forceFill($attributes)
@@ -60,6 +62,8 @@ trait AsPivot
         // We store off the parent instance so we will access the timestamp column names
         // for the model, since the pivot model timestamps aren't easily configurable
         // from the developer's point of view. We can use the parents to get these.
+		// 我们存储父实例,因此我们将访问模型的时间戳列名称,因为主元模型时间戳不容易从开发人员的视图中配置。
+		// 我们可以用父母来得到这些。
         $instance->pivotParent = $parent;
 
         $instance->exists = $exists;

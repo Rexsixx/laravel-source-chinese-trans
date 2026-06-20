@@ -35,6 +35,7 @@ interface ExtractorInterface
 
     /**
      * Sets the prefix that should be used for new found messages.
+	 * 设置应用于新发现消息的前缀
      *
      * @param string $prefix The prefix
      */

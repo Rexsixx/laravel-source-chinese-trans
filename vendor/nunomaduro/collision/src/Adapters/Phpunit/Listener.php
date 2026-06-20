@@ -1,4 +1,7 @@
 <?php
+/**
+ * NunoMaduro，冲突，适配器，Phpunit，监听器
+ */
 
 /**
  * This file is part of Collision.
@@ -28,6 +31,7 @@ if (class_exists(\PHPUnit\Runner\Version::class) && substr(\PHPUnit\Runner\Versi
 
     /**
      * This is an Collision Phpunit Adapter implementation.
+	 * 这是一个碰撞Phpunit适配器实现
      *
      * @author Nuno Maduro <enunomaduro@gmail.com>
      */

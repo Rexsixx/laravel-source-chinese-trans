@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，工具，Getopt
+ */
+
 /*
  * This file is part of PHPUnit.
  *

@@ -33,6 +33,7 @@ class FileProfilerStorage implements ProfilerStorageInterface
 
     /**
      * Constructs the file storage using a "dsn-like" path.
+	 * 使用“类似于dsn”的路径构造文件存储。
      *
      * Example : "file:/path/to/the/storage/folder"
      *
@@ -196,6 +197,7 @@ class FileProfilerStorage implements ProfilerStorageInterface
 
     /**
      * Gets filename to store data, associated to the token.
+	 * 获取用于存储与令牌关联的数据的文件名
      *
      * @param string $token
      *
@@ -212,6 +214,7 @@ class FileProfilerStorage implements ProfilerStorageInterface
 
     /**
      * Gets the index filename.
+	 * 获取索引文件名
      *
      * @return string The index filename
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * PharIo，版本，InvalidVersionException
+ */
 
 namespace PharIo\Version;
 

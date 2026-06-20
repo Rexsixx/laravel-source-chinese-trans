@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，文本模板
+ */
+
 /*
  * This file is part of the Text_Template package.
  *

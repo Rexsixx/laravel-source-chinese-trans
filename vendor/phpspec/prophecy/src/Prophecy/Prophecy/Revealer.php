@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，Prophecy，Revealer
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -13,6 +16,7 @@ namespace Prophecy\Prophecy;
 
 /**
  * Basic prophecies revealer.
+ * 基本的预言揭示者。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */

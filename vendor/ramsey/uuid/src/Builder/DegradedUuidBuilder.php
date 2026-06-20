@@ -34,6 +34,7 @@ class DegradedUuidBuilder implements UuidBuilderInterface
 
     /**
      * Constructs the DegradedUuidBuilder
+	 * 构建DegradedUuidBuilder
      *
      * @param NumberConverterInterface $converter The number converter to use when constructing the DegradedUuid
      */

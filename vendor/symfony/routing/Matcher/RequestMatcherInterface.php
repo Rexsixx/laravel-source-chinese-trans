@@ -29,9 +29,11 @@ interface RequestMatcherInterface
 {
     /**
      * Tries to match a request with a set of routes.
+	 * 尝试用一组路由匹配请求。
      *
      * If the matcher can not find information, it must throw one of the exceptions documented
      * below.
+	 * 如果匹配器无法找到信息，则必须抛出以下文档中记录的异常之一。
      *
      * @return array An array of parameters
      *

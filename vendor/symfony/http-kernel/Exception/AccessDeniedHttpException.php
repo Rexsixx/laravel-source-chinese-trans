@@ -3,7 +3,6 @@
  * Symfony，组件，Http内核，异常，访问拒绝Http异常
  */
 
-
 /*
  * This file is part of the Symfony package.
  *

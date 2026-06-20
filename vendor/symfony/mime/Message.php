@@ -101,6 +101,7 @@ class Message extends RawMessage
         }
 
         // remove the Bcc field which should NOT be part of the sent message
+		// 删除密件抄送字段，它不应该是发送消息的一部分。
         $headers->remove('Bcc');
 
         return $headers;

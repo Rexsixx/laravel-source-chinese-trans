@@ -1,4 +1,7 @@
 <?php
+/**
+ * Laravel，Tinker，类别名自动器
+ */
 
 namespace Laravel\Tinker;
 

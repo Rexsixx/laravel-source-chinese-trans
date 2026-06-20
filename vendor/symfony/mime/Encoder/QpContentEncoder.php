@@ -42,6 +42,7 @@ final class QpContentEncoder implements ContentEncoderInterface
 
     /**
      * Make sure CRLF is correct and HT/SPACE are in valid places.
+	 * 确保CRLF是正确的，HT/SPACE在有效的地方。
      */
     private function standardize(string $string): string
     {

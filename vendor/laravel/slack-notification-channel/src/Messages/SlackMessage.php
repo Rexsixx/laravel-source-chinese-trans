@@ -11,6 +11,7 @@ class SlackMessage
 {
     /**
      * The "level" of the notification (info, success, warning, error).
+	 * 通知的“级别”(信息、成功、警告、错误)
      *
      * @var string
      */

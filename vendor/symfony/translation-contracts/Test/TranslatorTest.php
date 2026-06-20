@@ -318,6 +318,7 @@ class TranslatorTest extends TestCase
 
     /**
      * This array should contain all currently known langcodes.
+	 * 这个数组应该包含所有当前已知的语言码。
      *
      * As it is impossible to have this ever complete we should try as hard as possible to have it almost complete.
      *

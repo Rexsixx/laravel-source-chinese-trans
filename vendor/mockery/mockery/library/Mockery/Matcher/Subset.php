@@ -81,6 +81,7 @@ class Subset extends MatcherAbstract
 
     /**
      * Return a string representation of this Matcher
+	 * 返回这个Matcher的字符串表示
      *
      * @return string
      */

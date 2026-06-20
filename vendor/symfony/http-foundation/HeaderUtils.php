@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * HTTP header utility functions.
+ * 头工具包方法。
  *
  * @author Christian Schmidt <github@chsc.dk>
  */

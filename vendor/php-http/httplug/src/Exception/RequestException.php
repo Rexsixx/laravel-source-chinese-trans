@@ -1,4 +1,7 @@
 <?php
+/**
+ * Http，客户端，异常，请求异常
+ */
 
 namespace Http\Client\Exception;
 
@@ -6,6 +9,7 @@ use Psr\Http\Message\RequestInterface;
 
 /**
  * Exception for when a request failed, providing access to the failed request.
+ * 异常,当请求失败时,提供对失败请求的访问。
  *
  * This could be due to an invalid request, or one of the extending exceptions
  * for network errors or HTTP error responses.
@@ -33,6 +37,7 @@ class RequestException extends TransferException
 
     /**
      * Returns the request.
+	 * 返回请求
      *
      * @return RequestInterface
      */

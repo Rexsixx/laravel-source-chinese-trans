@@ -20,6 +20,7 @@ use PhpParser\ParserFactory as OriginalParserFactory;
 
 /**
  * Parser factory to abstract over PHP parser library versions.
+ * 解析器工厂抽象的PHP解析器库版本。
  */
 class ParserFactory
 {
@@ -30,6 +31,7 @@ class ParserFactory
 
     /**
      * Possible kinds of parsers for the factory, from PHP parser library.
+	 * 来自PHP解析器库的工厂可能类型的解析器种类
      *
      * @return array
      */

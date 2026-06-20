@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，事件，语言环境更新
+ * Illuminate，基础，事件，地区更新
  */
 
 namespace Illuminate\Foundation\Events;

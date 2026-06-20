@@ -39,6 +39,7 @@ class MongoDbSessionHandler extends AbstractSessionHandler
 
     /**
      * Constructor.
+	 * 构造方法。
      *
      * List of available options:
      *  * database: The name of the database [required]

@@ -22,6 +22,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
  * RouterInterface是所有Router类都必须实现的接口。
  *
  * This interface is the concatenation of UrlMatcherInterface and UrlGeneratorInterface.
+ * 该接口是UrlMatcherInterface和UrlGeneratorInterface的连接。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

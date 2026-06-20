@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，文本UI，结果打印机
+ */
+
 /*
  * This file is part of PHPUnit.
  *

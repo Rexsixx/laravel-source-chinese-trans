@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，框架，警告测试用例
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -11,6 +15,7 @@ namespace PHPUnit\Framework;
 
 /**
  * A warning.
+ * 警告。
  */
 class WarningTestCase extends TestCase
 {
@@ -55,6 +60,7 @@ class WarningTestCase extends TestCase
 
     /**
      * Returns a string representation of the test case.
+	 * 返回测试用例的字符串表示
      */
     public function toString(): string
     {

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点转储
+ */
+
 namespace PhpParser;
 
 use PhpParser\Node\Expr\Include_;
@@ -16,6 +20,7 @@ class NodeDumper
 
     /**
      * Constructs a NodeDumper.
+	 * 构建一个NodeDumper。
      *
      * Supported options:
      *  * bool dumpComments: Whether comments should be dumped.
@@ -31,6 +36,7 @@ class NodeDumper
 
     /**
      * Dumps a node or array.
+	 * 转储一个节点或数组
      *
      * @param array|Node  $node Node or array to dump
      * @param string|null $code Code corresponding to dumped AST. This only needs to be passed if

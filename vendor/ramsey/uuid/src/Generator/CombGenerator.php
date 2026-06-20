@@ -26,6 +26,7 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 /**
  * CombGenerator provides functionality to generate COMB (combined GUID/timestamp)
  * sequential UUIDs
+ * CombGenerator提供的功能可以生成梳子(组合/时间戳)*连续的UUIDs
  *
  * @link https://en.wikipedia.org/wiki/Globally_unique_identifier#Sequential_algorithms
  */
