@@ -495,6 +495,7 @@ class Router implements RegistrarContract, BindingRegistrar
         // If we have groups that need to be merged, we will merge them now after this
         // route has already been created and is ready to go. After we're done with
         // the merge we will be ready to return the route back out to the caller.
+		// 如果存在需要合并的小组，那么在这一路径已经创建完成并且可以使用之后，我们将立即进行合并操作。
         if ($this->hasGroupStack()) {
             $this->mergeGroupAttributesIntoRoute($route);
         }

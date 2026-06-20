@@ -20,6 +20,7 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
 
 /**
  * MessageSelector.
+ * 信息选择器
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Bernhard Schussek <bschussek@gmail.com>

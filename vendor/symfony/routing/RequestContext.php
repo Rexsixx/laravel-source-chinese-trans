@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由选择，请求路由
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Holds information about the current request.
+ * 保存有关当前请求的信息。
  *
  * This class implements a fluent interface.
  *

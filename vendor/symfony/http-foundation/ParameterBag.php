@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpFoundation，参数包
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * ParameterBag is a container for key/value pairs.
+ * ParameterBag是键/值对的容器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -20,6 +24,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 {
     /**
      * Parameter storage.
+	 * 参数存储器
      */
     protected $parameters;
 
@@ -30,6 +35,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the parameters.
+	 * 返回参数
      *
      * @return array An array of parameters
      */
@@ -40,6 +46,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the parameter keys.
+	 * 返回参数键
      *
      * @return array An array of parameter keys
      */

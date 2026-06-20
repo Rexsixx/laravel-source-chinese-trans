@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpFoundation，请求匹配程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * RequestMatcher compares a pre-defined set of checks against a Request instance.
+ * RequestMatcher将预定义的检查集与请求实例进行比较。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

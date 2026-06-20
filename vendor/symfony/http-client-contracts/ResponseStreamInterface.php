@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，HttpClient，响应流接口
+ */
 
 /*
  * This file is part of the Symfony package.

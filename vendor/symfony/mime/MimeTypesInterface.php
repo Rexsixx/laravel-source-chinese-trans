@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Mime，Mime 类型接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ interface MimeTypesInterface extends MimeTypeGuesserInterface
 {
     /**
      * Gets the extensions for the given MIME type in decreasing order of preference.
+	 * 按首选项降序获取给定MIME类型的扩展名
      *
      * @return string[]
      */
@@ -25,6 +29,7 @@ interface MimeTypesInterface extends MimeTypeGuesserInterface
 
     /**
      * Gets the MIME types for the given extension in decreasing order of preference.
+	 * 按首选项降序获取给定扩展的MIME类型
      *
      * @return string[]
      */

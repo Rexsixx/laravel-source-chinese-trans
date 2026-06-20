@@ -894,6 +894,7 @@ if (! function_exists('session')) {
 	 * 获取/设置指定的会话值。
      *
      * If an array is passed as the key, we will assume you want to set an array of values.
+	 * 接下来，我们将注册相关事件，以加载它所请求的每个事件的提供者。
      *
      * @param  array|string  $key
      * @param  mixed  $default

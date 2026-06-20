@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpKernel，内核接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,8 +20,10 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
  * The Kernel is the heart of the Symfony system.
+ * 内核是Symfony系统的核心。
  *
  * It manages an environment made of application kernel and bundles.
+ * 它管理一个由应用程序内核和包组成的环境。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -28,6 +33,7 @@ interface KernelInterface extends HttpKernelInterface
 {
     /**
      * Returns an array of bundles to register.
+	 * 返回要注册的bundle数组
      *
      * @return iterable|BundleInterface[] An iterable of bundle instances
      */

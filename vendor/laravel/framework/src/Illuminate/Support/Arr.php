@@ -257,6 +257,7 @@ class Arr
 
         foreach ($keys as $key) {
             // if the exact key exists in the top-level, remove it
+			// 如果顶层中存在确切的键，则删除它。
             if (static::exists($array, $key)) {
                 unset($array[$key]);
 

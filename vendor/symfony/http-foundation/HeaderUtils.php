@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpFoundation，头工具包
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * HTTP header utility functions.
+ * HTTP报头实用函数
  *
  * @author Christian Schmidt <github@chsc.dk>
  */
@@ -30,6 +34,7 @@ class HeaderUtils
 
     /**
      * Splits an HTTP header by one or more separators.
+	 * 通过一个或多个分隔符拆分HTTP标头。
      *
      * Example:
      *

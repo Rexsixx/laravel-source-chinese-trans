@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpFoundation，头包
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * HeaderBag is a container for HTTP headers.
+ * HeaderBag是HTTP头的容器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -33,6 +37,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the headers as a string.
+	 * 以字符串形式返回标头
      *
      * @return string The headers
      */
@@ -57,6 +62,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the headers.
+	 * 返会头
      *
      * @param string|null $key The name of the headers to return or null to get them all
      *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpFoundation，服务器的包
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * ServerBag is a container for HTTP headers from the $_SERVER variable.
+ * ServerBag是$_SERVER变量的HTTP头的容器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Bulat Shakirzyanov <mallluhuct@gmail.com>

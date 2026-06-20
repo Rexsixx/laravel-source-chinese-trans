@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，HttpClient，响应接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -27,6 +30,7 @@ interface ResponseInterface
 {
     /**
      * Gets the HTTP status code of the response.
+	 * 获取响应的HTTP状态码
      *
      * @throws TransportExceptionInterface when a network error occurs
      */
@@ -34,6 +38,7 @@ interface ResponseInterface
 
     /**
      * Gets the HTTP headers of the response.
+	 * 获取响应的HTTP标头
      *
      * @param bool $throw Whether an exception should be thrown on 3/4/5xx status codes
      *

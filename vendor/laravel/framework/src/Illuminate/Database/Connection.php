@@ -714,6 +714,7 @@ class Connection implements ConnectionInterface
         // To execute the statement, we'll simply call the callback, which will actually
         // run the SQL against the PDO connection. Then we can calculate the time it
         // took to execute and log the query SQL, bindings and time in our memory.
+		// 要执行此语句，我们只需调用回调函数即可，该函数将实际通过 PDO 连接执行 SQL 语句。
         try {
             $result = $callback($query, $bindings);
         }
@@ -721,6 +722,8 @@ class Connection implements ConnectionInterface
         // If an exception occurs when attempting to run a query, we'll format the error
         // message to include the bindings with SQL, which will make this exception a
         // lot more helpful to the developer instead of just the database's errors.
+		// 如果在执行查询时出现异常，我们将对错误消息进行格式化，使其包含与 SQL 语句相关的绑定信息，
+		// 这样就能让这个异常对开发人员更有帮助，而不仅仅是对数据库的错误信息有用。
         catch (Exception $e) {
             throw new QueryException(
                 $query, $this->prepareBindings($bindings), $e

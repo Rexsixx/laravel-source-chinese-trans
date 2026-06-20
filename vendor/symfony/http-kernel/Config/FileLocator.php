@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，配置，文件定位器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * FileLocator uses the KernelInterface to locate resources in bundles.
+ * FileLocator使用KernelInterface来定位包中的资源。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -68,6 +72,7 @@ class FileLocator extends BaseFileLocator
             $deprecation = false;
 
             // no need to trigger deprecations when the loaded file is given as absolute path
+			// 当加载的文件作为绝对路径时,不需要触发弃用。
             foreach ($this->paths as $deprecatedPath) {
                 foreach ((array) $locations as $location) {
                     if (null !== $currentPath && str_starts_with($location, $currentPath)) {

@@ -1052,6 +1052,7 @@ class Assert
 
     /**
      * Inclusive range, so Assert::(3, 3, 5) passes.
+	 * 包含范围，所以Assert::（3,3,5）通过。
      *
      * @psalm-pure
      *
@@ -1078,6 +1079,7 @@ class Assert
 
     /**
      * A more human-readable alias of Assert::inArray().
+	 * Assert::inArray（）的别名
      *
      * @psalm-pure
      *
@@ -1928,6 +1930,7 @@ class Assert
 
     /**
      * Checks if a value is a valid array key (int or string).
+	 * 检查值是否为有效数组键(int或string)
      *
      * @psalm-pure
      *
@@ -1952,6 +1955,7 @@ class Assert
 
     /**
      * Does not check if $array is countable, this can generate a warning on php versions after 7.2.
+	 * 不检查$数组是可数的,这可以在7.2之后生成一个关于php版本的警告。
      *
      * @param Countable|array $array
      * @param int             $number

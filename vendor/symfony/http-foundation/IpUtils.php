@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpFoundation，Ip 工具包
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * Http utility functions.
+ * Http实用函数
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -22,6 +26,7 @@ class IpUtils
 
     /**
      * This class should not be instantiated.
+	 * 不应该实例化这个类
      */
     private function __construct()
     {

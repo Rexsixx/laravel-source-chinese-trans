@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，翻译接口
+ * Symfony，组件，翻译，翻译程序接口
  */
 
 /*
@@ -60,6 +60,7 @@ interface TranslatorInterface extends LocaleAwareInterface
 
     /**
      * Sets the current locale.
+	 * 设置当前区域
      *
      * @param string $locale The locale
      *
@@ -69,6 +70,7 @@ interface TranslatorInterface extends LocaleAwareInterface
 
     /**
      * Returns the current locale.
+	 * 返回当前语言环境
      *
      * @return string The locale
      */

@@ -84,6 +84,7 @@ class Processor
     /**
      * Calculates the specificity based on a CSS Selector string,
      * Based on the patterns from premailer/css_parser by Alex Dunae
+	 * 基于CSS选择字符串的特性,根据Alex Dunae的premailer / css_parser的模式来计算。
      *
      * @see https://github.com/premailer/css_parser/blob/master/lib/css_parser/regexps.rb
      *
@@ -160,6 +161,7 @@ class Processor
         $value = $e1Specificity->compareTo($e2->getSpecificity());
 
         // if the specificity is the same, use the order in which the element appeared
+		// 如果特异性是相同的,使用元素出现的顺序。
         if ($value === 0) {
             $value = $e1->getOrder() - $e2->getOrder();
         }

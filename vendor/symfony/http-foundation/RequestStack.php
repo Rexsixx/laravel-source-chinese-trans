@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpFoundation，请求堆栈
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * Request stack that controls the lifecycle of requests.
+ * 控制请求生命周期的请求堆栈
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
@@ -25,6 +29,7 @@ class RequestStack
 
     /**
      * Pushes a Request on the stack.
+	 * 将请求推送到堆栈上。
      *
      * This method should generally not be called directly as the stack
      * management should be taken care of by the application itself.

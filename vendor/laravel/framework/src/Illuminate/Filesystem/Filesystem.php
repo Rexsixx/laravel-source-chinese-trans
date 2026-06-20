@@ -514,6 +514,7 @@ class Filesystem
         // If the destination directory does not actually exist, we will go ahead and
         // create it recursively, which just gets the destination prepared to copy
         // the files over. Once we make the directory we'll proceed the copying.
+		// 如果目标目录实际上并不存在，我们将继续递归地创建它，这样就能提前准备好目标目录以便将文件复制过去。
         if (! $this->isDirectory($destination)) {
             $this->makeDirectory($destination, 0777, true);
         }
@@ -554,6 +555,7 @@ class Filesystem
 	 * 递归删除目录
      *
      * The directory itself may be optionally preserved.
+	 * 目录本身可以选择保存。
      *
      * @param  string  $directory
      * @param  bool    $preserve

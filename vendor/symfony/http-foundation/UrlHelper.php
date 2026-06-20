@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpFoundation，Url 助手
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Routing\RequestContext;
 
 /**
  * A helper service for manipulating URLs within and outside the request scope.
+ * 用于在请求范围内外操作url的帮助器服务。
  *
  * @author Valentin Udaltsov <udaltsov.valentin@gmail.com>
  */

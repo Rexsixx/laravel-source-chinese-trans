@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpFoundation，Apache 请求
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * Request represents an HTTP request from an Apache server.
+ * Request表示来自Apache服务器的HTTP请求。
  *
  * @deprecated since Symfony 4.4. Use the Request class instead.
  *

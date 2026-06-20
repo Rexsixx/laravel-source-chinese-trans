@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由选择，编译后的路由
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Routing;
 
 /**
  * CompiledRoutes are returned by the RouteCompiler class.
+ * compileroutes由RouteCompiler类返回。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -97,6 +101,7 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the static prefix.
+	 * 返回静态前缀
      *
      * @return string The static prefix
      */

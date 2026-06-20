@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpKernel，有期限的接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -25,6 +28,7 @@ interface TerminableInterface
 {
     /**
      * Terminates a request/response cycle.
+	 * 终止请求/响应周期。
      *
      * Should be called after sending the response and before shutting down the kernel.
      */

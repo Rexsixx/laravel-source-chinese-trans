@@ -318,6 +318,7 @@ class Application implements ResetInterface
 
     /**
      * Gets the InputDefinition related to this Application.
+	 * 获取与此应用程序相关的InputDefinition
      *
      * @return InputDefinition The InputDefinition instance
      */

@@ -58,6 +58,7 @@ interface OperationInterface
 
     /**
      * Returns new messages ('new') after operation.
+	 * 操作后返回新消息（'new'）
      *
      * @param string $domain
      *

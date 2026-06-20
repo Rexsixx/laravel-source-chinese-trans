@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpKernel，日志，记录器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Psr\Log\LogLevel;
 
 /**
  * Minimalist PSR-3 logger designed to write in stderr or any other stream.
+ * 极简级的PSR-3 logger设计在stderr或任何其他流中编写。
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
  */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpFoundation，接受头
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -33,6 +36,7 @@ class AcceptHeaderItem
 
     /**
      * Builds an AcceptHeaderInstance instance from a string.
+	 * 从字符串构建一个AcceptHeaderInstance实例
      *
      * @param string $itemValue
      *

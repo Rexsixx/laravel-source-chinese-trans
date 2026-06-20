@@ -202,6 +202,9 @@ class UrlGenerator implements UrlGeneratorContract
         // First we will check if the URL is already a valid URL. If it is we will not
         // try to generate a new one but will simply return the URL as is, which is
         // convenient since developers do not always have to check if it's valid.
+		// 首先，我们会检查该 URL 是否已经是一个有效的 URL。
+		// 如果它是有效的，我们就不会尝试生成一个新的 URL，而是直接返回该 URL 的原样，
+		// 这样做比较方便，因为开发人员并不总是需要检查其是否有效。
         if ($this->isValidUrl($path)) {
             return $path;
         }
@@ -213,6 +216,7 @@ class UrlGenerator implements UrlGeneratorContract
         // Once we have the scheme we will compile the "tail" by collapsing the values
         // into a single string delimited by slashes. This just makes it convenient
         // for passing the array of parameters to this URL as a list of segments.
+		// 一旦我们制定了方案，就会通过将各项值合并成一个由斜杠分隔的字符串的方式来完成“尾部”部分的编写工作。
         $root = $this->formatRoot($this->formatScheme($secure));
 
         [$path, $query] = $this->extractQueryString($path);
@@ -252,6 +256,7 @@ class UrlGenerator implements UrlGeneratorContract
         // Once we get the root URL, we will check to see if it contains an index.php
         // file in the paths. If it does, we will remove it since it is not needed
         // for asset paths, but only for routes to endpoints in the application.
+		// 一旦我们获取到根 URL，我们就会检查该路径中是否包含名为“index.php”的文件。
         $root = $this->formatRoot($this->formatScheme($secure));
 
         return $this->removeIndex($root).'/'.trim($path, '/');
@@ -283,6 +288,7 @@ class UrlGenerator implements UrlGeneratorContract
         // Once we get the root URL, we will check to see if it contains an index.php
         // file in the paths. If it does, we will remove it since it is not needed
         // for asset paths, but only for routes to endpoints in the application.
+		// 一旦我们获取到根 URL，我们就会检查该路径中是否包含名为“index.php”的文件。
         $root = $this->formatRoot($this->formatScheme($secure), $root);
 
         return $this->removeIndex($root).'/'.trim($path, '/');

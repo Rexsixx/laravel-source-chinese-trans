@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpKernel，分析器，分析器存储接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpKernel\Profiler;
 
 /**
  * ProfilerStorageInterface.
+ * 分析器存储接口。
  *
  * This interface exists for historical reasons. The only supported
  * implementation is FileProfilerStorage.
@@ -28,6 +32,7 @@ interface ProfilerStorageInterface
 {
     /**
      * Finds profiler tokens for the given criteria.
+	 * 查找给定条件的分析器令牌
      *
      * @param string   $ip     The IP
      * @param string   $url    The URL

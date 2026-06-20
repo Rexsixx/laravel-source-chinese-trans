@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，程序，程序工具包
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
 
 /**
  * ProcessUtils is a bunch of utility methods.
+ * ProcessUtils是一堆实用程序方法。
  *
  * This class contains static methods only and is not meant to be instantiated.
  *
@@ -24,6 +28,7 @@ class ProcessUtils
 {
     /**
      * This class should not be instantiated.
+	 * 不应该实例化这个类
      */
     private function __construct()
     {

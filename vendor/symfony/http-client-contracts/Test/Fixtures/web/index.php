@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，HttpClient，测试，index
+ */
 
 if ('cli-server' !== \PHP_SAPI) {
     // safe guard against unwanted execution

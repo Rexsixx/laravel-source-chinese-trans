@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，服务，服务订阅者特征
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Contracts\Service\Attribute\SubscribedService;
 /**
  * Implementation of ServiceSubscriberInterface that determines subscribed services from
  * method return types. Service ids are available as "ClassName::methodName".
+ * 实现了 ServiceSubscriberInterface 接口，该接口通过方法的返回类型来确定所订阅的服务。
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */

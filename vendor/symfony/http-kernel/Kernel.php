@@ -1,4 +1,8 @@
 <?php
+/**
+ * Symfony，组件，HttpKernel，内核
+ */
+
 
 /*
  * This file is part of the Symfony package.
@@ -40,6 +44,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfiguration
 
 /**
  * The Kernel is the heart of the Symfony system.
+ * 内核是Symfony系统的核心。
  *
  * It manages an environment made of bundles.
  *

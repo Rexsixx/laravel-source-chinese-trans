@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpFoundation，二进制文件响应
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * BinaryFileResponse represents an HTTP response delivering a file.
+ * binaryfilerresponse表示传递文件的HTTP响应。
  *
  * @author Niklas Fiekas <niklas.fiekas@tu-clausthal.de>
  * @author stealth35 <stealth35-php@live.fr>
@@ -74,6 +78,7 @@ class BinaryFileResponse extends Response
 
     /**
      * Sets the file to stream.
+	 * 将文件设置为流
      *
      * @param \SplFileInfo|string $file               The file to stream
      * @param string              $contentDisposition

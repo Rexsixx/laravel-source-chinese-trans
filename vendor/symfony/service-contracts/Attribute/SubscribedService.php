@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，服务，属性，已订阅服务
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Contracts\Service\ServiceSubscriberTrait;
 /**
  * Use with {@see ServiceSubscriberTrait} to mark a method's return type
  * as a subscribed service.
+ * 与 {@see ServiceSubscriberTrait} 结合使用，可将方法的返回类型标记为已订阅的服务。
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，HttpClient，Chunk 接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -26,6 +29,7 @@ interface ChunkInterface
 {
     /**
      * Tells when the idle timeout has been reached.
+	 * 告知何时达到空闲超时
      *
      * @throws TransportExceptionInterface on a network error
      */
@@ -33,6 +37,7 @@ interface ChunkInterface
 
     /**
      * Tells when headers just arrived.
+	 * 告诉头文件何时到达
      *
      * @throws TransportExceptionInterface on a network error or when the idle timeout is reached
      */

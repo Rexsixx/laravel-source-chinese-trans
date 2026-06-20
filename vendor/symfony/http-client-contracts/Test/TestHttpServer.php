@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，HttpClient，测试，测试 Http服务器
+ */
 
 /*
  * This file is part of the Symfony package.

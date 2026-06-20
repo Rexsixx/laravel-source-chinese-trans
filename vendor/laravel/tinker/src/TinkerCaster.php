@@ -1,4 +1,7 @@
 <?php
+/**
+ * Laravel，Tinker，Tinker Caster
+ */
 
 namespace Laravel\Tinker;
 
@@ -9,6 +12,7 @@ class TinkerCaster
 {
     /**
      * Application methods to include in the presenter.
+	 * 在主持人中包括的应用程序
      *
      * @var array
      */
@@ -32,6 +36,7 @@ class TinkerCaster
 
     /**
      * Get an array representing the properties of an application.
+	 * 获取表示应用程序属性的数组
      *
      * @param  \Illuminate\Foundation\Application  $app
      * @return array
@@ -57,6 +62,7 @@ class TinkerCaster
 
     /**
      * Get an array representing the properties of a collection.
+	 * 获取一个表示集合属性的数组
      *
      * @param  \Illuminate\Support\Collection  $collection
      * @return array
@@ -70,6 +76,7 @@ class TinkerCaster
 
     /**
      * Get an array representing the properties of a model.
+	 * 获取表示模型属性的数组
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return array

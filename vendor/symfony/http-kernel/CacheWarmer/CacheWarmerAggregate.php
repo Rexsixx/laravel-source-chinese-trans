@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，缓存Warmer，Cache Warmer 聚合
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpKernel\CacheWarmer;
 
 /**
  * Aggregates several cache warmers into a single one.
+ * 将多个缓存预热器聚合为一个。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -45,6 +49,7 @@ class CacheWarmerAggregate implements CacheWarmerInterface
 
     /**
      * Warms up the cache.
+	 * 预热缓存
      *
      * @param string $cacheDir The cache directory
      */

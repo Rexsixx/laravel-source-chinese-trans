@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpFoundation，Cookie
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * Represents a cookie.
+ * 表示一个cookie
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
@@ -40,6 +44,7 @@ class Cookie
 
     /**
      * Creates cookie from raw header string.
+	 * 从原始报头字符串创建cookie
      *
      * @param string $cookie
      * @param bool   $decode
@@ -141,6 +146,7 @@ class Cookie
 
     /**
      * Returns the cookie as a string.
+	 * 以字符串形式返回cookie
      *
      * @return string The cookie
      */

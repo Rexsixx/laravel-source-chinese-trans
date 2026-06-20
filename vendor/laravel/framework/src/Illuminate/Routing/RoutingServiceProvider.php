@@ -61,6 +61,7 @@ class RoutingServiceProvider extends ServiceProvider
             // Keep in mind this is an object, so we're passing by references here
             // and all the registered routes will be available to the generator.
 			// URL生成器需要路由器上存在的路由集合。
+			// 请记住，这是一个对象，因此我们在这里是通过引用传递的，所有已注册的路由都将对生成器可用。
             $app->instance('routes', $routes);
 
             $url = new UrlGenerator(
@@ -84,6 +85,8 @@ class RoutingServiceProvider extends ServiceProvider
             // If the route collection is "rebound", for example, when the routes stay
             // cached for the application, we will need to rebind the routes on the
             // URL generator instance so it has the latest version of the routes.
+			// 如果路由集合是“回流”的话，例如，当这些路由为应用程序缓存起来时，
+			// 我们就需要在 URL 生成器实例上重新绑定这些路由，以便它能获取到最新的路由版本。
             $app->rebinding('routes', function ($app, $routes) {
                 $app['url']->setRoutes($routes);
             });
