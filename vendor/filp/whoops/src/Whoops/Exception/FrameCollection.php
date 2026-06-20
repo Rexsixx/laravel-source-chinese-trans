@@ -79,6 +79,7 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
     /**
      * Returns an array with all frames, does not affect
      * the internal array.
+	 * 返回一个数组和所有帧,不影响内部数组。
      *
      * @todo   If this gets any more complex than this,
      *         have getIterator use this method.
@@ -152,6 +153,7 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
 
     /**
      * Count the frames that belongs to the application.
+	 * 计算属于应用程序的框架
      *
      * @return int
      */

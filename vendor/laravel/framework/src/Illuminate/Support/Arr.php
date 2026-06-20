@@ -415,6 +415,7 @@ class Arr
             // looping. Otherwise we will key the array using the value of the key we
             // received from the developer. Then we'll return the final array form.
 			// 如果键为“null”，我们就会将该值添加到数组中，并继续循环操作。
+			// 否则，我们将使用开发者传来的键值来对数组进行索引操作，然后返回最终的数组形式。
             if (is_null($key)) {
                 $results[] = $itemValue;
             } else {

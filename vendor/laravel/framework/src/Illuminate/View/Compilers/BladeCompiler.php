@@ -186,6 +186,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
         // parse each one into the corresponding valid PHP. We will then have this
         // template as the correctly rendered PHP that can be rendered natively.
 		// 接下来，我们将遍历 Zend 解析器返回的所有标记，并将每个标记解析为相应的有效的 PHP 代码。
+		// 然后我们将拥有这个模板，它会以正确渲染的PHP形式存在，可以直接原生执行。
         foreach (token_get_all($value) as $token) {
             $result .= is_array($token) ? $this->parseToken($token) : $token;
         }
@@ -198,6 +199,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
         // add them here at the end of the template. This gets used mainly for the
         // template inheritance via the extends keyword that should be appended.
 		// 如果需要在模板中添加任何页脚内容，我们将把这些内容添加到模板的末尾这里。
+		// 这主要用于通过 extends 关键字实现模板继承，该关键字应被追加。
         if (count($this->footer) > 0) {
             $result = $this->addFooters($result);
         }

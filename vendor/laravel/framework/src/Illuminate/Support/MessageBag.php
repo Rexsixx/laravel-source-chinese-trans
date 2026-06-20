@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，信使包
+ * Illuminate，支持，消息包
  */
 
 namespace Illuminate\Support;

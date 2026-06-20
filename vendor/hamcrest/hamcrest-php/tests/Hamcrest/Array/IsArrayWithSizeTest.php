@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，数组，大小测试的数组
+ */
+
 namespace Hamcrest\Arrays;
 
 use Hamcrest\AbstractMatcherTest;

@@ -67,6 +67,7 @@ interface RunInterface
 
     /**
      * Registers this instance as an error handler.
+	 * 将此实例注册为错误处理程序
      *
      * @return Run
      */

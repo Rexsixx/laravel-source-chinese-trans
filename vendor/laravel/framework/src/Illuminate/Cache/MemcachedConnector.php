@@ -29,6 +29,8 @@ class MemcachedConnector
             // For each server in the array, we'll just extract the configuration and add
             // the server to the Memcached connection. Once we have added all of these
             // servers we'll verify the connection is successful and return it back.
+			// 对于数组中的每个服务器,我们将提取配置并将服务器添加到Memcached连接中。
+			// 一旦我们添加了所有这些服务器,我们将验证连接是否成功并返回。
             foreach ($servers as $server) {
                 $memcached->addServer(
                     $server['host'], $server['port'], $server['weight']

@@ -133,6 +133,7 @@ class SystemFacade
             // Ensure that no 'location' header is present as otherwise this
             // will override the HTTP code being set here, and mask the
             // expected error page.
+			// 返回一个数组和所有帧,不影响内部数组。
             header_remove('location');
         }
 

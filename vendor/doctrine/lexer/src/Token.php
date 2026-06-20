@@ -23,6 +23,7 @@ final class Token implements ArrayAccess
 {
     /**
      * The string value of the token in the input string
+	 * 在输入字符串中标记的字符串值
      *
      * @readonly
      * @var V

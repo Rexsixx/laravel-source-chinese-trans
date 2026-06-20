@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，类型，是否数字测试
+ */
+
 namespace Hamcrest\Type;
 
 class IsNumericTest extends \Hamcrest\AbstractMatcherTest

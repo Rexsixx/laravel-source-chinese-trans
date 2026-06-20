@@ -54,6 +54,7 @@ class EnvironmentDetector
         // and if it was that automatically overrides as the environment. Otherwise, we
         // will check the environment as a "web" request like a typical HTTP request.
 		// 首先，我们将检查是否通过控制台参数传递了环境参数，如果是的话，那么该参数将自动作为环境参数被使用。
+		// 否则,我们将检查环境作为一个“web”请求,比如一个典型的HTTP请求。
         if (! is_null($value = $this->getEnvironmentArgument($args))) {
             return head(array_slice(explode('=', $value), 1));
         }

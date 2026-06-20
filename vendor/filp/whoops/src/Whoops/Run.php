@@ -143,6 +143,7 @@ final class Run implements RunInterface
 
     /**
      * Removes and returns the last handler pushed to the handler stack.
+	 * 删除并返回推到处理程序堆栈的最后一个处理程序
      *
      * @see Run::removeFirstHandler(), Run::removeLastHandler()
      *

@@ -92,6 +92,7 @@ class CronExpression
 
     /**
      * Validate a CronExpression.
+	 * 验证一个CronExpression
      *
      * @param string $expression The CRON expression to validate.
      *

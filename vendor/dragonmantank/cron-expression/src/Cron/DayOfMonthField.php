@@ -13,6 +13,7 @@ use DateTimeInterface;
  * 月天字段。
  *
  * 'L' stands for "last" and specifies the last day of the month.
+ * “L”代表“最后”,并指定了这个月的最后一天。
  *
  * The 'W' character is used to specify the weekday (Monday-Friday) nearest the
  * given day. As an example, if you were to specify "15W" as the value for the
@@ -85,11 +86,13 @@ class DayOfMonthField extends AbstractField
         $fieldValue = $date->format('d');
 
         // Check to see if this is the last day of the month
+		// 检查一下是否是这个月的最后一天
         if ($value == 'L') {
             return $fieldValue == $date->format('t');
         }
 
         // Check to see if this is the nearest weekday to a particular value
+		// 看看这是否是最近的一个特别的工作日
         if (strpos($value, 'W')) {
             // Parse the target day
             $targetDay = substr($value, 0, strpos($value, 'W'));

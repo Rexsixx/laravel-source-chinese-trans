@@ -29,6 +29,8 @@ trait BuildsQueries
             // We'll execute the query for the given page and get the results. If there are
             // no results we can just break and return from here. When there are results
             // we will call the callback with the current chunk of these results here.
+			// 我们将执行给定页面的查询并获取结果。如果没有结果，我们可以直接退出并返回。
+			// 如果有结果，我们将在此处调用回调函数，并传入当前的结果片段。
             $results = $this->forPage($page, $count)->get();
 
             $countResults = $results->count();
@@ -40,6 +42,8 @@ trait BuildsQueries
             // On each chunk result set, we will pass them to the callback and then let the
             // developer take care of everything within the callback, which allows us to
             // keep the memory low for spinning through large result sets for working.
+			// 对于每个分块结果集，我们将把它们传递给回调函数，
+			// 然后由开发者在回调函数内部处理所有事务，这样我们就可以在遍历大量结果集时保持内存占用较低。
             if ($callback($results, $page) === false) {
                 return false;
             }

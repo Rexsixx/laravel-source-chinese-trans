@@ -17,6 +17,7 @@ class Ean
 
     /**
      * Computes the checksum of an EAN number.
+	 * 计算一个字节数的校验和
      *
      * @see https://en.wikipedia.org/wiki/International_Article_Number
      *

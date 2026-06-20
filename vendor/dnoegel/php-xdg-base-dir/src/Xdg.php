@@ -108,6 +108,7 @@ class Xdg
         $st = lstat($fallback);
 
         # The fallback must be a directory
+		# 回退必须是一个目录
         if (!$st['mode'] & self::S_IFDIR) {
             rmdir($fallback);
             $create = true;

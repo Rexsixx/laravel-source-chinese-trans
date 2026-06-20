@@ -77,6 +77,7 @@ class Kernel implements KernelContract
 	 * 中间件的优先级排序列表。
      *
      * Forces non-global middleware to always be in the given order.
+	 * 迫使非全局中间件始终处于给定的顺序。
      *
      * @var array
      */

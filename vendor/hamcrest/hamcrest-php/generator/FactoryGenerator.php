@@ -10,6 +10,7 @@
 /**
  * Controls the process of extracting @factory doctags
  * and generating factory method files.
+ * 控制提取@工厂doctag和生成工厂方法文件的过程。
  *
  * Uses File_Iterator to scan for PHP files.
  */
