@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，运送管理器
+ * Illuminate，电子邮件，传送管理者
  */
 
 namespace Illuminate\Mail;
@@ -14,6 +14,7 @@ use GuzzleHttp\Client as HttpClient;
 use Swift_SmtpTransport as SmtpTransport;
 use Illuminate\Mail\Transport\LogTransport;
 use Illuminate\Mail\Transport\SesTransport;
+use Postmark\Transport as PostmarkTransport;
 use Illuminate\Mail\Transport\ArrayTransport;
 use Illuminate\Mail\Transport\MailgunTransport;
 use Illuminate\Mail\Transport\MandrillTransport;
@@ -36,7 +37,7 @@ class TransportManager extends Manager
         // for delivering mail such as Sendgrid, Amazon SES, or a custom server
         // a developer has available. We will just pass this configured host.
 		// Swift 的 SMTP 传输实例将使我们能够使用任何 SMTP 后端来发送邮件，
-		// 比如 Sendgrid、亚马逊 SES 或者开发人员可用的任何自定义服务器。
+		// 比如 Sendgrid、亚马逊 SES 或者开发人员可用的任何自定义服务器。我们将直接传递这个已配置的主机。
         $transport = new SmtpTransport($config['host'], $config['port']);
 
         if (isset($config['encryption'])) {
@@ -46,21 +47,37 @@ class TransportManager extends Manager
         // Once we have the transport we will check for the presence of a username
         // and password. If we have it we will set the credentials on the Swift
         // transporter instance so that we'll properly authenticate delivery.
-		// 一旦我们有了运输,我们将检查用户名和密码的存在。
-		// 如果我们有它,我们将在Swift传输器实例上设置凭据,这样我们就可以正确地验证交付。
+		// 一旦我们有了传输工具，就会检查是否存在用户名和密码。
+		// 如果有这些信息，就会在 Swift 传输器实例中设置这些凭证，以便正确进行数据传输的认证。
         if (isset($config['username'])) {
             $transport->setUsername($config['username']);
 
             $transport->setPassword($config['password']);
         }
 
-        // Next we will set any stream context options specified for the transport
-        // and then return it. The option is not required any may not be inside
-        // the configuration array at all so we'll verify that before adding.
-		// 接下来,我们将设置用于传输的任何流上下文选项,然后返回它。
-		// 选项不需要任何可能不在配置数组内,所以我们将在添加之前验证这一点。
+        return $this->configureSmtpDriver($transport, $config);
+    }
+
+    /**
+     * Configure the additional SMTP driver options.
+	 * 配置其他SMTP驱动程序选项
+     *
+     * @param  \Swift_SmtpTransport  $transport
+     * @param  array  $config
+     * @return \Swift_SmtpTransport
+     */
+    protected function configureSmtpDriver($transport, $config)
+    {
         if (isset($config['stream'])) {
             $transport->setStreamOptions($config['stream']);
+        }
+
+        if (isset($config['source_ip'])) {
+            $transport->setSourceIp($config['source_ip']);
+        }
+
+        if (isset($config['local_domain'])) {
+            $transport->setLocalDomain($config['local_domain']);
         }
 
         return $transport;
@@ -104,7 +121,7 @@ class TransportManager extends Manager
      */
     protected function addSesCredentials(array $config)
     {
-        if ($config['key'] && $config['secret']) {
+        if (! empty($config['key']) && ! empty($config['secret'])) {
             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
         }
 
@@ -167,6 +184,19 @@ class TransportManager extends Manager
 
         return new SparkPostTransport(
             $this->guzzle($config), $config['secret'], $config['options'] ?? []
+        );
+    }
+
+    /**
+     * Create an instance of the Postmark Swift Transport driver.
+	 * 创建邮戳Swift传输驱动程序的实例
+     *
+     * @return \Swift_Transport
+     */
+    protected function createPostmarkDriver()
+    {
+        return new PostmarkTransport(
+            $this->app['config']->get('services.postmark.token')
         );
     }
 

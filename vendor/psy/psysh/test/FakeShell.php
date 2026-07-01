@@ -1,6 +1,6 @@
 <?php
 /**
- * Psy，测试，假的Shell
+ * Psy，测试，Fake Shell
  */
 
 /*

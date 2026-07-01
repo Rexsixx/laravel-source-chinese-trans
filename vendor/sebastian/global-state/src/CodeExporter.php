@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，全局状态，代码出口商
+ * SebastianBergmann，GlobalState，代码出口商
  */
 
 /*
@@ -18,7 +18,7 @@ namespace SebastianBergmann\GlobalState;
 
 /**
  * Exports parts of a Snapshot as PHP code.
- * 将快照的部分导出为PHP代码。
+ * 将快照的部分部分导出为PHP代码。
  */
 class CodeExporter
 {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Prophecy，工具，字符串工具
+ * Prophecy，Util，String Util
  */
 
 /*
@@ -18,7 +18,6 @@ use Prophecy\Call\Call;
 
 /**
  * String utility.
- * 字符串工具
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -36,7 +35,6 @@ class StringUtil
 
     /**
      * Stringifies any provided value.
-	 * Stringifies任何提供的值
      *
      * @param mixed   $value
      * @param boolean $exportObject

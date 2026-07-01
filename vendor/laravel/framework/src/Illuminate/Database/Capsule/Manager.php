@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Capsule，管理程序
+ * Illuminate，数据库，压缩的，管理程序
  */
 
 namespace Illuminate\Database\Capsule;
@@ -39,7 +39,7 @@ class Manager
         // Once we have the container setup, we will setup the default configuration
         // options in the container "config" binding. This will make the database
         // manager work correctly out of the box without extreme configuration.
-		// 一旦我们有了容器设置,我们将在容器“config”绑定中设置默认配置选项。
+		// 一旦完成了容器的设置，我们将在容器的“配置”绑定中设置默认的配置选项。
 		// 这将使数据库管理器在没有极端配置的情况下正确地工作。
         $this->setupDefaultConfiguration();
 
@@ -76,7 +76,7 @@ class Manager
      * Get a connection instance from the global manager.
 	 * 从全局管理器获取连接实例
      *
-     * @param  string  $connection
+     * @param  string|null  $connection
      * @return \Illuminate\Database\Connection
      */
     public static function connection($connection = null)
@@ -89,7 +89,7 @@ class Manager
 	 * 获取一个流畅的查询生成器实例
      *
      * @param  string  $table
-     * @param  string  $connection
+     * @param  string|null  $connection
      * @return \Illuminate\Database\Query\Builder
      */
     public static function table($table, $connection = null)
@@ -101,7 +101,7 @@ class Manager
      * Get a schema builder instance.
 	 * 获取模式构建器实例
      *
-     * @param  string  $connection
+     * @param  string|null  $connection
      * @return \Illuminate\Database\Schema\Builder
      */
     public static function schema($connection = null)
@@ -113,7 +113,7 @@ class Manager
      * Get a registered connection instance.
 	 * 获取已注册的连接实例
      *
-     * @param  string  $name
+     * @param  string|null  $name
      * @return \Illuminate\Database\Connection
      */
     public function getConnection($name = null)
@@ -151,8 +151,8 @@ class Manager
         // If we have an event dispatcher instance, we will go ahead and register it
         // with the Eloquent ORM, allowing for model callbacks while creating and
         // updating "model" instances; however, it is not necessary to operate.
-		// 如果我们有一个事件调度器实例,我们将继续用有技巧的ORM注册它,
-		// 在创建和更新“模型”实例时允许模型回调;然而,没有必要操作。
+		// 如果我们有事件分发器实例，我们将继续将其与 Eloquent ORM 进行注册，
+		// 以便在创建和更新“模型”实例时能够执行模型回调操作；不过，是否进行此操作并非强制要求。
         if ($dispatcher = $this->getEventDispatcher()) {
             Eloquent::setEventDispatcher($dispatcher);
         }

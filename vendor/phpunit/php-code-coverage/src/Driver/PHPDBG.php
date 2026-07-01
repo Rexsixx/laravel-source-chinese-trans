@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，代码覆盖率，驱动程序，PHPDBG
+ * SebastianBergmann，代码覆盖率，PHPDBG
  */
 
 /*
@@ -17,7 +17,6 @@ use SebastianBergmann\CodeCoverage\RuntimeException;
 
 /**
  * Driver for PHPDBG's code coverage functionality.
- * PHPDBG代码覆盖功能的驱动程序。
  *
  * @codeCoverageIgnore
  */

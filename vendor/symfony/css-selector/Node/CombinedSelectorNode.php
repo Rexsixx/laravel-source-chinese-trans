@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，调试，Css 选择器，节点，组合选择节点
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\CssSelector\Node;
 
 /**
  * Represents a combined node.
- * 表示组合节点。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.

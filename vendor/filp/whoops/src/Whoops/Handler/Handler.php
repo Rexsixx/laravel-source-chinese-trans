@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，处理者，处理者
+ * Whoops，处理者，处理器
  */
 
 /**
@@ -15,7 +15,7 @@ use Whoops\RunInterface;
 
 /**
  * Abstract implementation of a Handler.
- * 一个处理程序的抽象实现
+ * 处理程序的抽象实现。
  */
 abstract class Handler implements HandlerInterface
 {

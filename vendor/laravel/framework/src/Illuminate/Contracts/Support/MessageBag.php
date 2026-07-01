@@ -47,8 +47,8 @@ interface MessageBag extends Arrayable
      * Get the first message from the bag for a given key.
 	 * 从包中获取给定键的第一条消息
      *
-     * @param  string  $key
-     * @param  string  $format
+     * @param  string|null  $key
+     * @param  string|null  $format
      * @return string
      */
     public function first($key = null, $format = null);
@@ -58,16 +58,16 @@ interface MessageBag extends Arrayable
 	 * 从包中获取给定键的所有消息
      *
      * @param  string  $key
-     * @param  string  $format
+     * @param  string|null  $format
      * @return array
      */
     public function get($key, $format = null);
 
     /**
      * Get all of the messages for every key in the bag.
-	 * 找到包里每把钥匙的所有信息
+	 * 找到包里每把密钥的所有信息
      *
-     * @param  string  $format
+     * @param  string|null  $format
      * @return array
      */
     public function all($format = null);

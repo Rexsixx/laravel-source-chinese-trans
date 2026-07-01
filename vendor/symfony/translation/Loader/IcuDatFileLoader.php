@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，加载器，IcuDat 文件加载器
+ * Symfony，组件，翻译，载入程序，Icu Dat File 加载器
  */
 
 /*

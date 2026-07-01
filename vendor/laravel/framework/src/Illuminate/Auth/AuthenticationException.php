@@ -11,7 +11,7 @@ class AuthenticationException extends Exception
 {
     /**
      * All of the guards that were checked.
-	 * 所有的警卫都被检查过了
+	 * 所有被检查过的警卫
      *
      * @var array
      */

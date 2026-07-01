@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，表达式请求匹配器
+ * Symfony，组件，Http基础，表达请求Matcher
  */
 
 /*

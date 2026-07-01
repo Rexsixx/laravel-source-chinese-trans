@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，事件监听器，语言环境感知监听器
+ * Symfony，组件，Http内核，事件监听器，环境感知监听器
  */
 
 /*
@@ -23,7 +23,7 @@ use Symfony\Contracts\Translation\LocaleAwareInterface;
 
 /**
  * Pass the current locale to the provided services.
- * 将当前区域设置传递给所提供的服务。
+ * 将当前语言环境传递给提供的服务。
  *
  * @author Pierre Bobiet <pierrebobiet@gmail.com>
  */
@@ -63,7 +63,6 @@ class LocaleAwareListener implements EventSubscriberInterface
     {
         return [
             // must be registered after the Locale listener
-			// 必须在Locale侦听器之后注册
             KernelEvents::REQUEST => [['onKernelRequest', 15]],
             KernelEvents::FINISH_REQUEST => [['onKernelFinishRequest', -15]],
         ];

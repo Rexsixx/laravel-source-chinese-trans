@@ -29,8 +29,8 @@ trait FormatsMessages
         // First we will retrieve the custom message for the validation rule if one
         // exists. If a custom validation message is being used we'll return the
         // custom message, otherwise we'll keep searching for a valid message.
-		// 首先，如果存在验证规则的自定义消息，我们将获取该消息。
-		// 如果使用了自定义验证消息，我们将返回该自定义消息；否则将继续查找有效的消息。
+		// 首先，如果存在自定义验证规则消息，我们将获取该消息。
+		// 如果正在使用自定义验证消息，我们将返回该自定义消息，否则我们将继续寻找有效的消息。
         if (! is_null($inlineMessage)) {
             return $inlineMessage;
         }
@@ -45,7 +45,7 @@ trait FormatsMessages
         // and rule. This allows the developer to specify specific messages for
         // only some attributes and rules that need to get specially formed.
 		// 首先，我们会检查该属性和规则是否具有自定义的验证消息。
-		// 这使开发者能够为某些需要特殊处理的属性和规则指定特定的消息。
+		// 这样，开发人员就可以为某些需要特殊格式的属性和规则指定特定的提示信息。
         if ($customMessage !== $customKey) {
             return $customMessage;
         }
@@ -110,8 +110,8 @@ trait FormatsMessages
         // First we will check for a custom message for an attribute specific rule
         // message for the fields, then we will check for a general custom line
         // that is not attribute specific. If we find either we'll return it.
-		// 首先，我们将检查针对特定字段的属性规则消息是否有自定义信息，然后检查是否有非属性特定的通用自定义行。
-		// 如果找到任何一种情况，我们就将其返回。
+		// 首先，我们将检查针对特定字段的属性规则消息是否有自定义信息，
+		// 然后检查是否有非属性特定的通用自定义行。如果找到任何一种情况，我们就将其返回。
         foreach ($keys as $key) {
             foreach (array_keys($source) as $sourceKey) {
                 if (Str::is($sourceKey, $key)) {
@@ -137,8 +137,8 @@ trait FormatsMessages
         // If an exact match was not found for the key, we will collapse all of these
         // messages and loop through them and try to find a wildcard match for the
         // given key. Otherwise, we will simply return the key's value back out.
-		// 如果未找到与该键完全匹配的内容，我们将把所有这些消息合并起来，然后逐个检查它们，并尝试为给定的键找到一个通配符匹配项。
-		// 否则，我们将直接返回该键的值。
+		// 如果未找到与该键完全匹配的内容，我们将把所有这些消息合并起来，然后逐个检查它们，
+		// 并尝试为给定的键找到一个通配符匹配项。否则，我们将直接返回该键的值。
         $shortKey = preg_replace(
             '/^validation\.custom\./', '', $key
         );
@@ -150,7 +150,7 @@ trait FormatsMessages
 
     /**
      * Check the given messages for a wildcard key.
-	 * 为通配符检查给定的消息
+	 * 检查给定的消息是否有通配符键
      *
      * @param  array  $messages
      * @param  string  $search
@@ -194,7 +194,7 @@ trait FormatsMessages
 
     /**
      * Get the data type of the given attribute.
-	 * 设置给定属性的数据类型
+	 * 获取给定属性的数据类型
      *
      * @param  string  $attribute
      * @return string
@@ -205,7 +205,7 @@ trait FormatsMessages
         // means that if the attribute does not have a numeric rule and the files
         // list doesn't have it we'll just consider it a string by elimination.
 		// 我们假定文件数组中的属性均为文件类型，这意味着如果某个属性没有数值规则，
-		// 而文件列表中也没有该规则，那么我们就会通过排除法将其视为字符串类型。
+		// 而文件列表中也没有该规则，那么我们就可以通过排除法将其视为字符串类型。
         if ($this->hasRule($attribute, $this->numericRules)) {
             return 'numeric';
         } elseif ($this->hasRule($attribute, ['Array'])) {
@@ -262,8 +262,8 @@ trait FormatsMessages
             // The developer may dynamically specify the array of custom attributes on this
             // validator instance. If the attribute exists in this array it is used over
             // the other ways of pulling the attribute name for this given attributes.
-			// 开发人员可以动态地为这个验证器实例指定一组自定义属性。
-			// 如果该属性存在于此数组中，则会优先使用该方式获取指定属性的名称，而非其他方法。
+			// 开发人员可以动态地为这个验证器实例指定自定义属性的数组。如果该属性存在于这个数组中，
+			// 则会优先使用该属性，而不是通过其他方式获取此特定属性的名称。
             if (isset($this->customAttributes[$name])) {
                 return $this->customAttributes[$name];
             }
@@ -271,7 +271,8 @@ trait FormatsMessages
             // We allow for a developer to specify language lines for any attribute in this
             // application, which allows flexibility for displaying a unique displayable
             // version of the attribute name instead of the name used in an HTTP POST.
-			// 我们允许开发人员为本应用程序中的任何属性指定语言版本，这使得能够灵活地显示该属性名称的个性化显示版本，而非使用在 HTTP POST 中所使用的名称。
+			// 我们允许开发人员为本应用程序中的任何属性指定语言版本，这使得能够灵活地显示该属性名称的个性化显示版本，
+			// 而非使用在 HTTP POST 中所使用的名称。
             if ($line = $this->getAttributeFromTranslations($name)) {
                 return $line;
             }
@@ -355,6 +356,10 @@ trait FormatsMessages
 
         if (($line = $this->translator->trans($key)) !== $key) {
             return $line;
+        }
+
+        if (is_bool($value)) {
+            return $value ? 'true' : 'false';
         }
 
         return $value;

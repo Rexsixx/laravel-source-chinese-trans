@@ -14,7 +14,6 @@ use PhpParser\NodeAbstract;
 class VariadicPlaceholder extends NodeAbstract {
     /**
      * Create a variadic argument placeholder (first-class callable syntax).
-	 * 创建一个可变参数占位符(一级可调用语法)
      *
      * @param array $attributes Additional attributes
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，视图服务提供者
+ * Illuminate，视图，视图服务提供商
  */
 
 namespace Illuminate\View;
@@ -42,7 +42,7 @@ class ViewServiceProvider extends ServiceProvider
             // environment. The resolver will be used by an environment to get each of
             // the various engine implementations such as plain PHP or Blade engine.
 			// 接下来，我们需要获取将被环境所使用的引擎解析器实例。
-			// 解决器将被环境用来获取各种引擎实现,如普通PHP或Blade引擎。
+			// 该解析器将被环境用于获取各种不同的引擎实现，例如纯 PHP 引擎或 Blade 引擎。
             $resolver = $app['view.engine.resolver'];
 
             $finder = $app['view.finder'];
@@ -78,7 +78,7 @@ class ViewServiceProvider extends ServiceProvider
 
     /**
      * Register the view finder implementation.
-	 * 注册视图查找程序实现
+	 * 注册取景器实现
      *
      * @return void
      */
@@ -103,8 +103,8 @@ class ViewServiceProvider extends ServiceProvider
             // Next, we will register the various view engines with the resolver so that the
             // environment will resolve the engines needed for various views based on the
             // extension of view file. We call a method for each of the view's engines.
-			// 接下来，我们将把各种视图引擎与解析器进行关联，以便环境能够根据视图文件的扩展名来确定所需的各种视图引擎。
-			// 我们为每个视图的引擎调用一个方法。
+			// 接下来，我们将把各种视图引擎与解析器进行关联，以便环境能够根据视图文件的扩展名来确定各种视图所需使用的引擎。
+			// 针对每个视图引擎，我们都会调用一个方法。
             foreach (['file', 'php', 'blade'] as $engine) {
                 $this->{'register'.ucfirst($engine).'Engine'}($resolver);
             }

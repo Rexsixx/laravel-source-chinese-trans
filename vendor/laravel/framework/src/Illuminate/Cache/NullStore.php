@@ -5,9 +5,7 @@
 
 namespace Illuminate\Cache;
 
-use Illuminate\Contracts\Cache\Store;
-
-class NullStore extends TaggableStore implements Store
+class NullStore extends TaggableStore
 {
     use RetrievesMultipleKeys;
 
@@ -28,21 +26,20 @@ class NullStore extends TaggableStore implements Store
      */
     public function get($key)
     {
-        //
     }
 
     /**
-     * Store an item in the cache for a given number of minutes.
-	 * 将项存储在缓存中给定的分钟数
+     * Store an item in the cache for a given number of seconds.
+	 * 将项存储在缓存中给定的秒数
      *
      * @param  string  $key
      * @param  mixed   $value
-     * @param  float|int  $minutes
-     * @return void
+     * @param  int  $seconds
+     * @return bool
      */
-    public function put($key, $value, $minutes)
+    public function put($key, $value, $seconds)
     {
-        //
+        return false;
     }
 
     /**
@@ -51,11 +48,11 @@ class NullStore extends TaggableStore implements Store
      *
      * @param  string  $key
      * @param  mixed   $value
-     * @return int
+     * @return int|bool
      */
     public function increment($key, $value = 1)
     {
-        //
+        return false;
     }
 
     /**
@@ -64,11 +61,11 @@ class NullStore extends TaggableStore implements Store
      *
      * @param  string  $key
      * @param  mixed   $value
-     * @return int
+     * @return int|bool
      */
     public function decrement($key, $value = 1)
     {
-        //
+        return false;
     }
 
     /**
@@ -77,11 +74,11 @@ class NullStore extends TaggableStore implements Store
      *
      * @param  string  $key
      * @param  mixed   $value
-     * @return void
+     * @return bool
      */
     public function forever($key, $value)
     {
-        //
+        return false;
     }
 
     /**
@@ -89,11 +86,11 @@ class NullStore extends TaggableStore implements Store
 	 * 从缓存中删除项
      *
      * @param  string  $key
-     * @return void
+     * @return bool
      */
     public function forget($key)
     {
-        //
+        return true;
     }
 
     /**

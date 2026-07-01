@@ -15,7 +15,7 @@ class KeyGenerateCommand extends Command
 
     /**
      * The name and signature of the console command.
-	 * 控制台命令的名称和签名
+	 * console命令的名称和签名
      *
      * @var string
      */
@@ -25,7 +25,7 @@ class KeyGenerateCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * console命令说明
      *
      * @var string
      */
@@ -48,6 +48,8 @@ class KeyGenerateCommand extends Command
         // Next, we will replace the application key in the environment file so it is
         // automatically setup for this developer. This key gets generated using a
         // secure random byte generator and is later base64 encoded for storage.
+		// 接下来，我们将替换环境文件中的应用程序密钥，以便为该开发者自动完成设置。
+		// 此密钥是通过一个安全的随机字节生成器生成的，之后会进行 base64 编码以便存储。
         if (! $this->setKeyInEnvironmentFile($key)) {
             return;
         }

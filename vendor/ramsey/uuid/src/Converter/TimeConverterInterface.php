@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，转换器，时间转换器接口
+ * Ramsey，Uuid，转化器，时间变换器接口
  */
 
 /**
@@ -23,7 +23,6 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 /**
  * TimeConverterInterface provides facilities for converting parts of time into
  * representations that may be used in UUIDs
- * TimeConverterInterface提供了用于将时间部分转换为可能在UUIDs中使用的表示的设备
  */
 interface TimeConverterInterface
 {

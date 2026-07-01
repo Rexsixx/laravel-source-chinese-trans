@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，排序的中间件
+ * Illuminate，路由选择，排序的中间件
  */
 
 namespace Illuminate\Routing;
@@ -31,6 +31,7 @@ class SortedMiddleware extends Collection
 	 * 根据给定的优先级映射对中间件进行排序。
      *
      * Each call to this method makes one discrete middleware movement if necessary.
+	 * 如果需要,每个调用的方法都是一个离散的中间件移动。
      *
      * @param  array  $priorityMap
      * @param  array  $middlewares
@@ -53,8 +54,9 @@ class SortedMiddleware extends Collection
                 // This middleware is in the priority map. If we have encountered another middleware
                 // that was also in the priority map and was at a lower priority than the current
                 // middleware, we will move this middleware to be above the previous encounter.
-				// 此中间件位于优先级列表中。如果我们在后续过程中又遇到了另一个同样在优先级列表中的中间件，
-				// 且其优先级低于当前的这个中间件，那么我们将把当前这个中间件移到比之前遇到的那个位置更高的位置。
+				// 此中间件位于优先级映射中。
+				// 如果我们在优先级列表中还遇到了另一个中间件，并且其优先级低于当前的这个中间件，
+				// 那么我们将把这个中间件移到比之前遇到的那个位置更高的位置。
                 if (isset($lastPriorityIndex) && $priorityIndex < $lastPriorityIndex) {
                     return $this->sortMiddleware(
                         $priorityMap, array_values($this->moveMiddleware($middlewares, $index, $lastIndex))
@@ -65,6 +67,7 @@ class SortedMiddleware extends Collection
                 // encountered from the map thus far. We'll save its current index plus its index
                 // from the priority map so we can compare against them on the next iterations.
 				// 此中间件已在优先级列表中；但这是我们在目前所查看的列表中遇到的第一个此类中间件。
+				// 我们将保存其当前索引以及来自优先级列表的索引，以便在后续迭代中与它们进行比较。
                 $lastIndex = $index;
                 $lastPriorityIndex = $priorityIndex;
             }

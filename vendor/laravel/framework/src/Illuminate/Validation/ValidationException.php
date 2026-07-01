@@ -21,7 +21,7 @@ class ValidationException extends Exception
 
     /**
      * The recommended response to send to the client.
-	 * 处理失败的验证尝试
+	 * 建议发送给客户端的响应
      *
      * @var \Symfony\Component\HttpFoundation\Response|null
      */
@@ -29,7 +29,7 @@ class ValidationException extends Exception
 
     /**
      * The status code to use for the response.
-	 * 用于响应的状态码。
+	 * 用于响应的状态码
      *
      * @var int
      */
@@ -56,7 +56,7 @@ class ValidationException extends Exception
 	 * 创建一个新的异常实例
      *
      * @param  \Illuminate\Contracts\Validation\Validator  $validator
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
+     * @param  \Symfony\Component\HttpFoundation\Response|null  $response
      * @param  string  $errorBag
      * @return void
      */

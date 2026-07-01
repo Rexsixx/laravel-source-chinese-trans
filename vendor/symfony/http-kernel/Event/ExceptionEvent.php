@@ -16,7 +16,6 @@ namespace Symfony\Component\HttpKernel\Event;
 
 /**
  * Allows to create a response for a thrown exception.
- * 允许为抛出的异常创建响应。
  *
  * Call setResponse() to set the response that will be returned for the
  * current request. The propagation of this event is stopped as soon as a

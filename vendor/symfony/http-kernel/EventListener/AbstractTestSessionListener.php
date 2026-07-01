@@ -27,7 +27,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
  * 测试会话监听器。
  *
  * Saves session in test environment.
- * 在测试环境中保存会话。
  *
  * @author Bulat Shakirzyanov <mallluhuct@gmail.com>
  * @author Fabien Potencier <fabien@symfony.com>
@@ -66,7 +65,6 @@ abstract class AbstractTestSessionListener implements EventSubscriberInterface
     /**
      * Checks if session was initialized and saves if current request is master
      * Runs on 'kernel.response' in test environment.
-	 * 检查会话是否已初始化，如果当前请求是主请求则保存。在测试环境中运行于 'kernel.response' 上。
      */
     public function onKernelResponse(FilterResponseEvent $event)
     {
@@ -113,7 +111,6 @@ abstract class AbstractTestSessionListener implements EventSubscriberInterface
 
     /**
      * Gets the session object.
-	 * 获取会话对象
      *
      * @return SessionInterface|null A SessionInterface instance or null if no session is available
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Prophecy，参数，任意值令牌
+ * Prophecy，参数，令牌，任何值令牌
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Prophecy\Argument\Token;
 
 /**
  * Any values token.
- * 任意值令牌
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */

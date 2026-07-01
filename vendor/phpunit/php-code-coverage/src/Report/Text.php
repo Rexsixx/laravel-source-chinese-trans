@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，代码覆盖率，报告，文本
+ * SebastianBergmann，代码覆盖率，报告，Text
  */
 
 /*
@@ -19,7 +19,6 @@ use SebastianBergmann\CodeCoverage\Util;
 
 /**
  * Generates human readable output from a code coverage object.
- * 从代码覆盖对象生成人类可读的输出。
  *
  * The output gets put into a text file our written to the CLI.
  */

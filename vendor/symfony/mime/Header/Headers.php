@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，数据头，头
+ * Symfony，组件，Mime，数据头，标题
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\Mime\Exception\LogicException;
 
 /**
  * A collection of headers.
- * 头文件的集合。
+ * 一个标题的集合。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

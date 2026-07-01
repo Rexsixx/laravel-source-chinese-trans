@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，HTTP基础，文件，已上载文件
+ * Symfony，组件，Http基础，File，上传文件
  */
 
 /*
@@ -42,7 +42,6 @@ class UploadedFile extends File
 
     /**
      * Accepts the information of the uploaded file as provided by the PHP global $_FILES.
-	 * 接受PHP全局变量$_FILES提供的上传文件的信息。
      *
      * The file object is only created when the uploaded file is valid (i.e. when the
      * isValid() method returns true). Otherwise the only methods that could be called
@@ -54,7 +53,6 @@ class UploadedFile extends File
      *   * getError.
      *
      * Calling any other method on an non-valid instance will cause an unpredictable result.
-	 * 在无效实例上调用任何其他方法都将导致不可预测的结果。
      *
      * @param string      $path         The full temporary path to the file
      * @param string      $originalName The original file name of the uploaded file
@@ -85,7 +83,6 @@ class UploadedFile extends File
 
     /**
      * Returns the original file name.
-	 * 返回原始文件名。
      *
      * It is extracted from the request from which the file has been uploaded.
      * Then it should not be considered as a safe value.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由动作
+ * Illuminate，路由选择，路由动作
  */
 
 namespace Illuminate\Routing;
@@ -26,6 +26,7 @@ class RouteAction
         // fluent routing. In that case, we set a default closure, to be executed
         // if the user never explicitly sets an action to handle the given uri.
 		// 如果立即没有传递任何操作信息，我们就假定用户会使用流畅的路由功能。
+		// 在这种情况下，我们设置了默认的闭包，如果用户从未明确指定处理给定 URI 的操作，该闭包就会被执行。
         if (is_null($action)) {
             return static::missingAction($uri);
         }
@@ -33,9 +34,9 @@ class RouteAction
         // If the action is already a Closure instance, we will just set that instance
         // as the "uses" property, because there is nothing else we need to do when
         // it is available. Otherwise we will need to find it in the action list.
-		// 如果该操作已经是 Closure 类型的实例，我们就会将该实例设置为“使用”属性的值，
-		// 因为一旦该实例可用，我们就无需再做其他任何处理了。
-        if (is_callable($action)) {
+		// 如果该操作已经是 Closure 类型的实例，我们就会将该实例设置为“使用”属性的值，因为一旦该实例可用，我们就无需再做其他处理了。
+		// 否则我们需要在动作列表中找到它。
+        if (is_callable($action, true)) {
             return ! is_array($action) ? ['uses' => $action] : [
                 'uses' => $action[0].'@'.$action[1],
                 'controller' => $action[0].'@'.$action[1],
@@ -45,7 +46,8 @@ class RouteAction
         // If no "uses" property has been set, we will dig through the array to find a
         // Closure instance within this list. We will set the first Closure we come
         // across into the "uses" property that will get fired off by this route.
-		// 如果尚未设置“使用”属性，我们将遍历该数组，以在其中查找一个 Closure 实例。
+		// 如果没有设置“uses”属性，我们将遍历该数组，查找其中的Closure实例。
+		// 我们将把首次遇到的“闭包”对象设置到“使用”属性中，这样该属性就会由此路由触发执行。
         elseif (! isset($action['uses'])) {
             $action['uses'] = static::findCallable($action);
         }

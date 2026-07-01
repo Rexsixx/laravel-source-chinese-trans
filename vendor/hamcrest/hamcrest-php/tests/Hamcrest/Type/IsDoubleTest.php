@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，类型，是否Double测试
- */
-
 namespace Hamcrest\Type;
 
 class IsDoubleTest extends \Hamcrest\AbstractMatcherTest

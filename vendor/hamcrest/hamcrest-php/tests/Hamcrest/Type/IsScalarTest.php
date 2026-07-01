@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，类型，是否Scalar测试
- */
-
 namespace Hamcrest\Type;
 
 class IsScalarTest extends \Hamcrest\AbstractMatcherTest

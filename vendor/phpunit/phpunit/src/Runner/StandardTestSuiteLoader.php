@@ -1,8 +1,4 @@
 <?php
-/**
- * PHPUnit，运行者，标准测试套件加载器
- */
-
 /*
  * This file is part of PHPUnit.
  *
@@ -20,7 +16,6 @@ use ReflectionClass;
 
 /**
  * The standard test suite loader.
- * 标准的测试套件加载器。
  */
 class StandardTestSuiteLoader implements TestSuiteLoader
 {

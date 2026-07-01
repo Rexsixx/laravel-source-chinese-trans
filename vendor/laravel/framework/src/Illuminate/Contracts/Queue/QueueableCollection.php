@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，队列，Queueable 集合
+ * Illuminate，契约，队列，可队列集合
  */
 
 namespace Illuminate\Contracts\Queue;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Psy，代码清理器，列表通过
+ * Psy，代码清除器，列表通过
  */
 
 /*
@@ -29,7 +29,6 @@ use Psy\Exception\ParseErrorException;
 
 /**
  * Validate that the list assignment.
- * 验证列表分配。
  */
 class ListPass extends CodeCleanerPass
 {
@@ -42,7 +41,6 @@ class ListPass extends CodeCleanerPass
 
     /**
      * Validate use of list assignment.
-	 * 验证列表分配的使用
      *
      * @throws ParseErrorException if the user used empty with anything but a variable
      *

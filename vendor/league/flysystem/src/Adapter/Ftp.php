@@ -84,7 +84,6 @@ class Ftp extends AbstractFtpAdapter
 
     /**
      * Set if Ssl is enabled.
-	 * 设置Ssl启用
      *
      * @param bool $ssl
      *
@@ -99,7 +98,6 @@ class Ftp extends AbstractFtpAdapter
 
     /**
      * Set if passive mode should be used.
-	 * 如果应该使用被动模式。
      *
      * @param bool $passive
      */

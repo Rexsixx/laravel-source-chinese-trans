@@ -15,7 +15,7 @@ class Factory implements FactoryContract
 {
     /**
      * The Translator implementation.
-	 * 翻译程序实现
+	 * Translator实现
      *
      * @var \Illuminate\Contracts\Translation\Translator
      */
@@ -39,7 +39,7 @@ class Factory implements FactoryContract
 
     /**
      * All of the custom validator extensions.
-	 * 所有的自定义验证器扩展
+	 * 所有自定义验证器扩展
      *
      * @var array
      */
@@ -90,7 +90,7 @@ class Factory implements FactoryContract
 	 * 创建一个新的Validator工厂实例
      *
      * @param  \Illuminate\Contracts\Translation\Translator  $translator
-     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @param  \Illuminate\Contracts\Container\Container|null  $container
      * @return void
      */
     public function __construct(Translator $translator, Container $container = null)
@@ -118,8 +118,8 @@ class Factory implements FactoryContract
         // The presence verifier is responsible for checking the unique and exists data
         // for the validator. It is behind an interface so that multiple versions of
         // it may be written besides database. We'll inject it into the validator.
-		// 验证器的存在性检查程序负责验证验证器所涉及的唯一且存在的数据。
-		// 它位于一个接口之后，以便可以在数据库之外编写多个版本。我们将把它注入到验证器中。
+		// 验证器的存在性检查器负责验证验证器所使用的唯一且存在的数据。
+		// 它通过一个接口进行运作，这样除了数据库之外，还可以编写多个版本的该检查器。我们将将其注入到验证器中。
         if (! is_null($this->verifier)) {
             $validator->setPresenceVerifier($this->verifier);
         }
@@ -128,7 +128,7 @@ class Factory implements FactoryContract
         // resolve out class based validator extensions. If it is not set then these
         // types of extensions will not be possible on these validation instances.
 		// 接下来，我们将设置验证器的 IoC 容器实例，该实例用于解析基于类的验证器扩展。
-		// 如果未设置，则这些类型的扩展在这些验证实例上将无法使用。
+		// 如果没有设置该实例，那么在这些验证实例中就无法使用此类扩展。
         if (! is_null($this->container)) {
             $validator->setContainer($this->container);
         }
@@ -188,8 +188,8 @@ class Factory implements FactoryContract
         // Next, we will add the implicit extensions, which are similar to the required
         // and accepted rule in that they are run even if the attributes is not in a
         // array of data that is given to a validator instances via instantiation.
-		// 接下来，我们将添加隐式扩展规则，这些规则与“必需”和“允许”规则类似，
-		// 即即便属性不在通过实例化方式传递给验证器实例的数据数组中，这些规则也会被执行。
+		// 接下来，我们将添加隐式扩展规则，这些规则与“必填”和“允许”规则类似，
+		// 即便属性不在通过实例化传递给验证器实例的数据数组中，这些规则也会被执行。
         $validator->addImplicitExtensions($this->implicitExtensions);
 
         $validator->addDependentExtensions($this->dependentExtensions);
@@ -205,7 +205,7 @@ class Factory implements FactoryContract
      *
      * @param  string  $rule
      * @param  \Closure|string  $extension
-     * @param  string  $message
+     * @param  string|null  $message
      * @return void
      */
     public function extend($rule, $extension, $message = null)
@@ -223,7 +223,7 @@ class Factory implements FactoryContract
      *
      * @param  string  $rule
      * @param  \Closure|string  $extension
-     * @param  string  $message
+     * @param  string|null  $message
      * @return void
      */
     public function extendImplicit($rule, $extension, $message = null)
@@ -241,7 +241,7 @@ class Factory implements FactoryContract
      *
      * @param  string  $rule
      * @param  \Closure|string  $extension
-     * @param  string  $message
+     * @param  string|null  $message
      * @return void
      */
     public function extendDependent($rule, $extension, $message = null)

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，异常，Rfc 合规异常
+ * Symfony，组件，Mime，异常，Rfc Compliance 异常
  */
 
 /*

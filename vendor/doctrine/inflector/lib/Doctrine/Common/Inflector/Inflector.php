@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，共同，偏转器，Inflector
+ * Doctrine，公共，偏转器，Inflector
  */
 
 /*
@@ -76,6 +76,7 @@ class Inflector
 
     /**
      * Converts a word into the format for a Doctrine table name. Converts 'ModelName' to 'model_name'.
+	 * 将单词转换为Doctrine表名的格式。将‘ModelName’转换为‘model_name’。
      *
      * @deprecated
      */
@@ -110,6 +111,7 @@ class Inflector
 
     /**
      * Uppercases words with configurable delimiters between words.
+	 * 大写单词，单词之间有可配置的分隔符。
      *
      * Takes a string and capitalizes all of the words, like PHP's built-in
      * ucwords function. This extends that behavior, however, by allowing the

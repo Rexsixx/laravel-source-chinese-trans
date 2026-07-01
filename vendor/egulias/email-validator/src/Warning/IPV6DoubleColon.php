@@ -1,13 +1,10 @@
 <?php
-/**
- * Egulias，电子邮件验证器，警告，IPV6双号
- */
 
 namespace Egulias\EmailValidator\Warning;
 
 class IPV6DoubleColon extends Warning
 {
-    public const CODE = 73;
+    const CODE = 73;
 
     public function __construct()
     {

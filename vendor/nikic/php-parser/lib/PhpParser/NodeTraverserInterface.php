@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，节点交叉界面
+ * PhpParser，节点交叉接口
  */
 
 namespace PhpParser;

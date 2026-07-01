@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，模式，语法，SQLite 语法
+ * Illuminate，数据库，架构，语法，SQLite 语法
  */
 
 namespace Illuminate\Database\Schema\Grammars;
@@ -87,8 +87,8 @@ class SQLiteGrammar extends Grammar
             // Once we have all the foreign key commands for the table creation statement
             // we'll loop through each of them and add them to the create table SQL we
             // are building, since SQLite needs foreign keys on the tables creation.
-			// 一旦我们有了表创建语句的所有外键命令,我们将循环通过每个语句并将它们添加到我们正在构建的create表SQL中,
-			// 因为SQLite需要在表创建上的外键。
+			// 一旦我们获取了创建表语句中所有的外键命令，我们就会依次遍历这些命令，
+			// 并将它们添加到我们正在构建的创建表的 SQL 语句中，因为 SQLite 在创建表时需要设置外键。
             $sql .= $this->getForeignKey($foreign);
 
             if (! is_null($foreign->onDelete)) {
@@ -98,8 +98,8 @@ class SQLiteGrammar extends Grammar
             // If this foreign key specifies the action to be taken on update we will add
             // that to the statement here. We'll append it to this SQL and then return
             // the SQL so we can keep adding any other foreign constraints onto this.
-			// 如果这个外键指定在更新时采取的行动,我们将在这里添加到声明。
-			// 我们将附加到这个SQL,然后返回SQL,这样我们就可以继续添加任何其他的外部约束。
+			// 如果这个外键指定了在更新操作时要执行的行动，我们将将其添加到此处的语句中。
+			// 我们会将其附加到这个 SQL 语句中，然后返回这个 SQL 语句，这样我们就可以继续在此基础上添加任何其他的外键约束了。
             if (! is_null($foreign->onUpdate)) {
                 $sql .= " on update {$foreign->onUpdate}";
             }
@@ -120,8 +120,8 @@ class SQLiteGrammar extends Grammar
         // We need to columnize the columns that the foreign key is being defined for
         // so that it is a properly formatted list. Once we have done this, we can
         // return the foreign key SQL declaration to the calling method for use.
-		// 我们需要在指定的列上列出外键,以便它是一个格式化的列表。
-		// 一旦我们这样做了,我们就可以将外国密钥SQL声明返回给调用方法。
+		// 我们需要将定义外键所涉及的列进行排序，以便形成一个格式规范的列表。
+		// 完成此操作后，我们就可以将外键的 SQL 定义返回给调用方法，以供使用。
         return sprintf(', foreign key(%s) references %s(%s)',
             $this->columnize($foreign->columns),
             $this->wrapTable($foreign->on),
@@ -670,12 +670,12 @@ class SQLiteGrammar extends Grammar
      */
     protected function typeDateTime(Fluent $column)
     {
-        return 'datetime';
+        return $this->typeTimestamp($column);
     }
 
     /**
      * Create the column definition for a date-time (with time zone) type.
-	 * 为日期-时间（带时区）类型创建列定义。
+	 * 为日期-时间（带时区）类型创建列定义
      *
      * Note: "SQLite does not have a storage class set aside for storing dates and/or times."
      * @link https://www.sqlite.org/datatype3.html

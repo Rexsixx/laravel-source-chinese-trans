@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，依赖注入，寄存器控制器参数定位器通过
+ * Symfony，组件，Http内核，依赖注入，寄存器控制器参数控制器通过
  */
 
 /*
@@ -29,7 +29,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Creates the service-locators required by ServiceValueResolver.
- * 创建servicvalidateresolver所需的服务定位器。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

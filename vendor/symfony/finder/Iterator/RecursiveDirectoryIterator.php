@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，探测器，迭代器，递归目录迭代器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -58,7 +55,6 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
 
     /**
      * Return an instance of SplFileInfo with support for relative paths.
-	 * 返回一个支持相对路径的SplFileInfo实例
      *
      * @return SplFileInfo File information
      */

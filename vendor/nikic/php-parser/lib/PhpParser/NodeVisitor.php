@@ -10,6 +10,7 @@ interface NodeVisitor
 {
     /**
      * Called once before traversal.
+	 * 在遍历之前调用一次。
      *
      * Return value semantics:
      *  * null:      $nodes stays as-is
@@ -23,6 +24,7 @@ interface NodeVisitor
 
     /**
      * Called when entering a node.
+	 * 在输入节点时调用。
      *
      * Return value semantics:
      *  * null

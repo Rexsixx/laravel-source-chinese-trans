@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，环境，Runtime
+ * SebastianBergmann，环境，运行时间
  */
 
 /*
@@ -16,6 +16,7 @@ namespace SebastianBergmann\Environment;
 
 /**
  * Utility class for HHVM/PHP environment handling.
+ * HHVM / PHP环境处理的实用程序类。
  */
 final class Runtime
 {

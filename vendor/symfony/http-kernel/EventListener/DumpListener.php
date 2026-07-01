@@ -23,7 +23,6 @@ use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * Configures dump() handler.
- * 配置dump()处理程序。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -62,7 +61,6 @@ class DumpListener implements EventSubscriberInterface
         }
 
         // Register early to have a working dump() as early as possible
-		// 尽早注册，以便尽早拥有一个可用的dump()。
         return [ConsoleEvents::COMMAND => ['configure', 1024]];
     }
 }

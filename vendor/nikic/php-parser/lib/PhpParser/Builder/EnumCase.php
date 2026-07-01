@@ -1,6 +1,6 @@
 <?php
 /**
- * PhpParser，构建器，Enum Case
+ * PhpParser，构建器，枚举用例
  */
 
 declare(strict_types=1);

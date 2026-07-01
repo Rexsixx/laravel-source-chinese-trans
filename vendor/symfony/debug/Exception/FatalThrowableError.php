@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，调试，异常，致命错误异常
+ * Symfony，组件，调试，异常，致命的一次性错误
  */
 
 /*
@@ -18,7 +18,6 @@ namespace Symfony\Component\Debug\Exception;
 
 /**
  * Fatal Throwable Error.
- * 致命的一次性错误。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *

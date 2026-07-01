@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，匹配程序，转储，编译 Url匹配器转储
+ * Symfony，组件，路由选择，匹配程序，转储，编译 Url匹配程序转储
  */
 
 /*
@@ -21,7 +21,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * CompiledUrlMatcherDumper creates PHP arrays to be used with CompiledUrlMatcher.
- * CompiledUrlMatcherDumper创建PHP数组与CompiledUrlMatcher一起使用。
+ * CompiledUrlMatcherDumper创建了用于CompiledUrlMatcher的PHP数组。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
@@ -168,7 +168,6 @@ EOF;
 
     /**
      * Splits static routes from dynamic routes, so that they can be matched first, using a simple switch.
-	 * 将静态路由从动态路由中分离出来，这样它们就可以通过一个简单的开关进行匹配。
      */
     private function groupStaticRoutes(RouteCollection $collection): array
     {

@@ -1,11 +1,13 @@
 <?php
 /**
- * Illuminate，缓存，标签表存储
+ * Illuminate，缓存，Taggable 存储
  */
 
 namespace Illuminate\Cache;
 
-abstract class TaggableStore
+use Illuminate\Contracts\Cache\Store;
+
+abstract class TaggableStore implements Store
 {
     /**
      * Begin executing a new tags operation.

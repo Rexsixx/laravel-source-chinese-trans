@@ -53,7 +53,7 @@ class ResetCommand extends BaseCommand
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */
@@ -68,8 +68,8 @@ class ResetCommand extends BaseCommand
         // First, we'll make sure that the migration table actually exists before we
         // start trying to rollback and re-run all of the migrations. If it's not
         // present we'll just bail out with an info message for the developers.
-		// 首先,我们将确保迁移表实际上存在,在我们开始尝试回滚并重新运行所有的迁移之前。
-		// 如果不存在,我们将为开发人员提供一个信息信息。
+		// 首先，我们得先确认迁移表确实存在，然后再尝试回滚并重新执行所有的迁移操作。
+		// 如果不存在，我们只需向开发者发出一条信息提示并退出。
         if (! $this->migrator->repositoryExists()) {
             return $this->comment('Migration table not found.');
         }

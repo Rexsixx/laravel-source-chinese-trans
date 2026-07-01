@@ -65,7 +65,7 @@ abstract class Relation
 
     /**
      * Create a new relation instance.
-	 * 创建一个新的关系实例。
+	 * 创建一个新的关系实例
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Model  $parent
@@ -96,8 +96,8 @@ abstract class Relation
         // When resetting the relation where clause, we want to shift the first element
         // off of the bindings, leaving only the constraints that the developers put
         // as "extra" on the relationships, and not original relation constraints.
-		// 当重新设置where子句的关系时,我们希望将第一个元素从绑定中转移,
-		// 只留下开发人员在关系上“额外”的约束,而不是原始的关系约束。
+		// 在重置关系条件子句时，我们需要将第一个元素从绑定列表中移除，
+		// 只保留开发人员在关系中添加的“额外”约束条件，而不再保留原始的关系约束条件。
         try {
             return call_user_func($callback);
         } finally {
@@ -223,6 +223,7 @@ abstract class Relation
 	 * 为内部关系存在性查询添加约束。
      *
      * Essentially, these queries compare on column names like whereColumn.
+	 * 本质上,这些查询与类似在哪里的列名称进行比较。
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
@@ -403,7 +404,7 @@ abstract class Relation
      */
     public static function getMorphedModel($alias)
     {
-        return self::$morphMap[$alias] ?? null;
+        return static::$morphMap[$alias] ?? null;
     }
 
     /**

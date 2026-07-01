@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，测试员，测试员特征
+ * Symfony，组件，控制台，检验器，测试特性
  */
 
 /*
@@ -31,7 +31,6 @@ trait TesterTrait
 
     /**
      * Gets the display returned by the last execution of the command or application.
-	 * 获取最后执行命令或应用程序返回的显示
      *
      * @param bool $normalize Whether to normalize end of lines to \n or not
      *
@@ -56,7 +55,6 @@ trait TesterTrait
 
     /**
      * Gets the output written to STDERR by the application.
-	 * 获取由应用程序写入STDERR的输出
      *
      * @param bool $normalize Whether to normalize end of lines to \n or not
      *
@@ -81,7 +79,6 @@ trait TesterTrait
 
     /**
      * Gets the input instance used by the last execution of the command or application.
-	 * 获取命令或应用程序最后一次执行时使用的输入实例
      *
      * @return InputInterface The current input instance
      */

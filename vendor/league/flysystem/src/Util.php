@@ -50,6 +50,7 @@ class Util
 
     /**
      * Get a normalized dirname from a path.
+	 * 从路径中获得标准化的dirname
      *
      * @param string $path
      *
@@ -62,6 +63,7 @@ class Util
 
     /**
      * Map result arrays.
+	 * 映射结果数组
      *
      * @param array $object
      * @param array $map
@@ -85,6 +87,7 @@ class Util
 
     /**
      * Normalize path.
+	 * 正常化路径
      *
      * @param string $path
      *
@@ -99,6 +102,7 @@ class Util
 
     /**
      * Normalize relative directories in a path.
+	 * 在路径中规范相对目录
      *
      * @param string $path
      *
@@ -140,6 +144,7 @@ class Util
 
     /**
      * Rejects unprintable characters and invalid unicode characters.
+	 * 拒绝不可打印的字符和无效的unicode字符
      *
      * @param string $path
      *
@@ -156,6 +161,7 @@ class Util
 
     /**
      * Normalize prefix.
+	 * 正则化前缀
      *
      * @param string $prefix
      * @param string $separator
@@ -169,6 +175,7 @@ class Util
 
     /**
      * Get content size.
+	 * 获取内容大小
      *
      * @param string $contents
      *
@@ -181,6 +188,7 @@ class Util
 
     /**
      * Guess MIME Type based on the path of the file and it's content.
+	 * 基于文件路径和内容的猜测MIME类型
      *
      * @param string          $path
      * @param string|resource $content
@@ -200,6 +208,7 @@ class Util
 
     /**
      * Emulate directories.
+	 * 模拟目录
      *
      * @param array $listing
      *
@@ -225,6 +234,7 @@ class Util
 
     /**
      * Ensure a Config instance.
+	 * 确保配置实例
      *
      * @param null|array|Config $config
      *

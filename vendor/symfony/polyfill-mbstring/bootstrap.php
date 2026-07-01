@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Polyfill，Mbstring，启动
+ * Symfony，Polyfill，Mbstring，bootstrap
  */
 
 /*

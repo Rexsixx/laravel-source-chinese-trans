@@ -209,6 +209,19 @@ class PostgresGrammar extends Grammar
     }
 
     /**
+     * Compile an insert ignore statement into SQL.
+	 * 将插入忽略语句编译成SQL
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $values
+     * @return string
+     */
+    public function compileInsertOrIgnore(Builder $query, array $values)
+    {
+        return $this->compileInsert($query, $values).' on conflict do nothing';
+    }
+
+    /**
      * Compile an insert and get ID statement into SQL.
 	 * 将插入和获取ID语句编译成SQL
      *
@@ -219,11 +232,7 @@ class PostgresGrammar extends Grammar
      */
     public function compileInsertGetId(Builder $query, $values, $sequence)
     {
-        if (is_null($sequence)) {
-            $sequence = 'id';
-        }
-
-        return $this->compileInsert($query, $values).' returning '.$this->wrap($sequence);
+        return $this->compileInsert($query, $values).' returning '.$this->wrap($sequence ?: 'id');
     }
 
     /**
@@ -241,9 +250,8 @@ class PostgresGrammar extends Grammar
         // Each one of the columns in the update statements needs to be wrapped in the
         // keyword identifiers, also a place-holder needs to be created for each of
         // the values in the list of bindings so we can make the sets statements.
-		// 更新语句中的每一个列都需要被包在关键字标识中,也需要为绑定列表中的每个值创建一个place-holder,
-		// 这样我们就可以进行集合语句。
-        $columns = $this->compileUpdateColumns($values);
+		// 在更新语句中的每一列都需要用“关键字标识符”进行包裹，同时还需要为绑定列表中的每个值创建一个占位符，这样我们才能编写集合语句。
+        $columns = $this->compileUpdateColumns($query, $values);
 
         $from = $this->compileUpdateFrom($query);
 
@@ -256,22 +264,25 @@ class PostgresGrammar extends Grammar
      * Compile the columns for the update statement.
 	 * 编译update语句的列
      *
+     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array   $values
      * @return string
      */
-    protected function compileUpdateColumns($values)
+    protected function compileUpdateColumns($query, $values)
     {
         // When gathering the columns for an update statement, we'll wrap each of the
         // columns and convert it to a parameter value. Then we will concatenate a
         // list of the columns that can be added into this update query clauses.
-		// 在收集更新语句的列时,我们将包每一列,并将其转换为参数值。
-		// 然后,我们将连接可以添加到这个更新查询子句的列列表。
+		// 在为更新语句收集列时，我们会将每个列进行封装，并将其转换为参数值。
+		// 然后，我们将把可以添加到此更新查询语句中的列列表进行连接。
         return collect($values)->map(function ($value, $key) {
+            $column = last(explode('.', $key));
+
             if ($this->isJsonSelector($key)) {
-                return $this->compileJsonUpdateColumn($key, $value);
+                return $this->compileJsonUpdateColumn($column, $value);
             }
 
-            return $this->wrap($key).' = '.$this->parameter($value);
+            return $this->wrap($column).' = '.$this->parameter($value);
         })->implode(', ');
     }
 
@@ -310,8 +321,8 @@ class PostgresGrammar extends Grammar
         // When using Postgres, updates with joins list the joined tables in the from
         // clause, which is different than other systems like MySQL. Here, we will
         // compile out the tables that are joined and add them to a from clause.
-		// 在使用Postgres时,与join的更新在from子句中列出了join表,这与MySQL等其他系统不同。
-		// 在这里,我们将编译加入并将它们添加到一个from子句中的表。
+		// 在使用 Postgres 时，通过连接进行的更新会在“from”子句中列出所连接的表，这与像 MySQL 这样的其他系统有所不同。
+		// 在这里，我们将编译出已连接的表，并将其添加到 from 子句中。
         $froms = collect($query->joins)->map(function ($join) {
             return $this->wrapTable($join->table);
         })->all();
@@ -339,8 +350,8 @@ class PostgresGrammar extends Grammar
         // Once we compile the join constraints, we will either use them as the where
         // clause or append them to the existing base where clauses. If we need to
         // strip the leading boolean we will do so when using as the only where.
-		// 一旦我们编译了join约束,我们将使用它们作为where子句,或者将它们附加到现有的基本条款中。
-		// 如果我们需要去掉领导布尔,我们将在使用的时候这样做。
+		// 一旦我们完成了连接约束的编译工作，我们就会将它们用作“where”子句，或者将其附加到现有的基本“where”子句之后。
+		// 如果需要去除前面的布尔值部分，那么在仅使用“as”作为条件时，我们将进行相应的处理。
         $joinWheres = $this->compileUpdateJoinWheres($query);
 
         if (trim($baseWheres) == '') {
@@ -364,8 +375,8 @@ class PostgresGrammar extends Grammar
         // Here we will just loop through all of the join constraints and compile them
         // all out then implode them. This should give us "where" like syntax after
         // everything has been built and then we will join it to the real wheres.
-		// 在这里,我们将通过所有的连接约束来循环,然后将它们全部编译出来。
-		// 这应该给我们“在一切都建好后”的语法,然后我们将加入到真正的地方。
+		// 在这里，我们将逐一遍历所有的连接约束条件，将它们全部整理出来，然后进行合并。
+		// 这应该会在所有内容构建完成后为我们提供类似“何处”的语法结构，然后我们将将其与实际的“何处”结构相结合。
         foreach ($query->joins as $join) {
             foreach ($join->wheres as $where) {
                 $method = "where{$where['type']}";
@@ -393,15 +404,10 @@ class PostgresGrammar extends Grammar
                 : $value;
         })->all();
 
-        // Update statements with "joins" in Postgres use an interesting syntax. We need to
-        // take all of the bindings and put them on the end of this array since they are
-        // added to the end of the "where" clause statements as typical where clauses.
-		// 在Postgres中使用“join”更新语句,使用有趣的语法。
-		// 我们需要把所有的绑定都放在这个数组的末尾,因为它们被添加到“where”子句语句的末尾,这是典型的where子句。
-        $bindingsWithoutJoin = Arr::except($bindings, 'join');
+        $bindingsWithoutWhere = Arr::except($bindings, ['select', 'where']);
 
         return array_values(
-            array_merge($values, $bindings['join'], Arr::flatten($bindingsWithoutJoin))
+            array_merge($values, $bindings['where'], Arr::flatten($bindingsWithoutWhere))
         );
     }
 
@@ -435,14 +441,30 @@ class PostgresGrammar extends Grammar
             return $this->wrapTable($join->table);
         })->implode(', ');
 
-        $where = count($query->wheres) > 0 ? ' '.$this->compileUpdateWheres($query) : '';
+        $where = $this->compileUpdateWheres($query);
 
-        return trim("delete from {$table}{$using}{$where}");
+        return trim("delete from {$table}{$using} {$where}");
+    }
+
+    /**
+     * Prepare the bindings for a delete statement.
+	 * 为delete语句准备绑定
+     *
+     * @param  array  $bindings
+     * @return array
+     */
+    public function prepareBindingsForDelete(array $bindings)
+    {
+        $bindingsWithoutWhere = Arr::except($bindings, ['select', 'where']);
+
+        return array_values(
+            array_merge($bindings['where'], Arr::flatten($bindingsWithoutWhere))
+        );
     }
 
     /**
      * Compile a truncate table statement into SQL.
-	 * 将截断表语句编译成SQL。
+	 * 将截断表语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return array
@@ -474,6 +496,35 @@ class PostgresGrammar extends Grammar
         }
 
         return $field.'->>'.$attribute;
+    }
+
+    /**
+     * Wrap the given JSON selector for boolean values.
+	 * 将给定的JSON选择器包装为布尔值
+     *
+     * @param  string  $value
+     * @return string
+     */
+    protected function wrapJsonBooleanSelector($value)
+    {
+        $selector = str_replace(
+            '->>', '->',
+            $this->wrapJsonSelector($value)
+        );
+
+        return '('.$selector.')::jsonb';
+    }
+
+    /**
+     * Wrap the given JSON boolean value.
+	 * 包装给定的JSON布尔值
+     *
+     * @param  string  $value
+     * @return string
+     */
+    protected function wrapJsonBooleanValue($value)
+    {
+        return "'".$value."'::jsonb";
     }
 
     /**

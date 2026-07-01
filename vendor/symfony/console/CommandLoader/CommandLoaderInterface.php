@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，命令加载器，命令加载器接口
+ * Symfony，组件，控制台，命令装载机，命令装载机接口
  */
 
 /*
@@ -24,7 +24,7 @@ interface CommandLoaderInterface
 {
     /**
      * Loads a command.
-	 * 加载命令
+	 * 加载一个命令
      *
      * @param string $name
      *
@@ -36,7 +36,7 @@ interface CommandLoaderInterface
 
     /**
      * Checks if a command exists.
-	 * 检查命令是否存在
+	 * 检查是否存在命令
      *
      * @param string $name
      *

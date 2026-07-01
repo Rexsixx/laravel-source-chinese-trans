@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，差速器，输出，统一Diff输出生成器
+ */
+
 /*
  * This file is part of sebastian/diff.
  *
@@ -14,6 +19,7 @@ use SebastianBergmann\Diff\Differ;
 
 /**
  * Builds a diff string representation in unified diff format in chunks.
+ * 在统一的diff格式中构建一个diff字符串表示。
  */
 final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
 {

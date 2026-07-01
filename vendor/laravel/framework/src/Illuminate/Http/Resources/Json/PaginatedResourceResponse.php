@@ -37,7 +37,7 @@ class PaginatedResourceResponse extends ResourceResponse
 
     /**
      * Add the pagination information to the response.
-	 * 将分页信息添加到响应中
+	 * 添加分页信息到响应中
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array

@@ -1,30 +1,28 @@
 <?php
 /**
- * Egulias，电子邮件验证器，确认，多次验证
+ * Egulias，电子邮件验证器，验证，多次验证
  */
 
 namespace Egulias\EmailValidator\Validation;
 
 use Egulias\EmailValidator\EmailLexer;
-use Egulias\EmailValidator\Result\InvalidEmail;
 use Egulias\EmailValidator\Validation\Exception\EmptyValidationList;
-use Egulias\EmailValidator\Result\MultipleErrors;
 
 class MultipleValidationWithAnd implements EmailValidation
 {
     /**
-     * If one of validations fails, the remaining validations will be skipped.
-     * This means MultipleErrors will only contain a single error, the first found.
-	 * 如果一个验证失败,则将跳过剩下的验证。
-	 * 这意味着多路错误只会包含一个错误,第一个发现。
+     * If one of validations gets failure skips all succeeding validation.
+     * This means MultipleErrors will only contain a single error which first found.
+	 * 如果一个验证失败,就会跳过所有成功的验证。
+	 * 这意味着多路错误只会包含一个错误,首先发现。
      */
-    public const STOP_ON_ERROR = 0;
+    const STOP_ON_ERROR = 0;
 
     /**
      * All of validations will be invoked even if one of them got failure.
      * So MultipleErrors will contain all causes.
      */
-    public const ALLOW_ALL_ERRORS = 1;
+    const ALLOW_ALL_ERRORS = 1;
 
     /**
      * @var EmailValidation[]
@@ -63,51 +61,60 @@ class MultipleValidationWithAnd implements EmailValidation
     /**
      * {@inheritdoc}
      */
-    public function isValid(string $email, EmailLexer $emailLexer) : bool
+    public function isValid($email, EmailLexer $emailLexer)
     {
         $result = true;
+        $errors = [];
         foreach ($this->validations as $validation) {
             $emailLexer->reset();
             $validationResult = $validation->isValid($email, $emailLexer);
             $result = $result && $validationResult;
             $this->warnings = array_merge($this->warnings, $validation->getWarnings());
-            if (!$validationResult) {
-                $this->processError($validation);
-            }
+            $errors = $this->addNewError($validation->getError(), $errors);
 
             if ($this->shouldStop($result)) {
                 break;
             }
         }
 
+        if (!empty($errors)) {
+            $this->error = new MultipleErrors($errors);
+        }
+
         return $result;
     }
 
-    private function initErrorStorage() : void
+    /**
+     * @param \Egulias\EmailValidator\Exception\InvalidEmail|null $possibleError
+     * @param \Egulias\EmailValidator\Exception\InvalidEmail[] $errors
+     *
+     * @return \Egulias\EmailValidator\Exception\InvalidEmail[]
+     */
+    private function addNewError($possibleError, array $errors)
     {
-        if (null === $this->error) {
-            $this->error = new MultipleErrors();
+        if (null !== $possibleError) {
+            $errors[] = $possibleError;
         }
+
+        return $errors;
     }
 
-    private function processError(EmailValidation $validation) : void
-    {
-        if (null !== $validation->getError()) {
-            $this->initErrorStorage();
-            /** @psalm-suppress PossiblyNullReference */
-            $this->error->addReason($validation->getError()->reason());
-        }
-    }
-
-    private function shouldStop(bool $result) : bool
+    /**
+     * @param bool $result
+     *
+     * @return bool
+     */
+    private function shouldStop($result)
     {
         return !$result && $this->mode === self::STOP_ON_ERROR;
     }
 
     /**
      * Returns the validation errors.
+     *
+     * @return MultipleErrors|null
      */
-    public function getError() : ?InvalidEmail
+    public function getError()
     {
         return $this->error;
     }
@@ -115,7 +122,7 @@ class MultipleValidationWithAnd implements EmailValidation
     /**
      * {@inheritdoc}
      */
-    public function getWarnings() : array
+    public function getWarnings()
     {
         return $this->warnings;
     }

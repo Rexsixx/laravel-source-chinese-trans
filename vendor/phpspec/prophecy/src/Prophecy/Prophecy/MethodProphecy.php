@@ -1,6 +1,6 @@
 <?php
 /**
- * Prophecy，Prophecy，方法 Prophecy
+ * Prophecy，预言，方法预言
  */
 
 /*

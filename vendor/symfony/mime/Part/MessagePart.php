@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，部分，消息部分
+ * Symfony，组件，Mime，部分，信息部分
  */
 
 /*

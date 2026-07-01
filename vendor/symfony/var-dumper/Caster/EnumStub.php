@@ -18,7 +18,6 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Represents an enumeration of values.
- * 表示值的枚举。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

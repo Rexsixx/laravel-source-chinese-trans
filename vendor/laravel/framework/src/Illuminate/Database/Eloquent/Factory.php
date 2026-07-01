@@ -45,7 +45,7 @@ class Factory implements ArrayAccess
 
     /**
      * The Faker instance for the builder.
-	 * 生成器的Faker实例。
+	 * 生成器的Faker实例
      *
      * @var \Faker\Generator
      */
@@ -338,7 +338,7 @@ class Factory implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        return $this->define($offset, $value);
+        $this->define($offset, $value);
     }
 
     /**

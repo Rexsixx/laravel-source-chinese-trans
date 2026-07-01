@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Redis，限制器，持续限制器构建器
+ * Illuminate，Redis，限制器，持续时间限制生成器
  */
 
 namespace Illuminate\Redis\Limiters;
@@ -22,7 +22,7 @@ class DurationLimiterBuilder
 
     /**
      * The name of the lock.
-	 * 锁的名字
+	 * 锁的名称
      *
      * @var string
      */

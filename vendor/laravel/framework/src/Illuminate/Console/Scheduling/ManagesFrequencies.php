@@ -138,11 +138,13 @@ trait ManagesFrequencies
      * Schedule the event to run hourly at a given offset in the hour.
 	 * 将事件安排为按小时内给定的偏移量每小时运行一次
      *
-     * @param  int  $offset
+     * @param  array|int  $offset
      * @return $this
      */
     public function hourlyAt($offset)
     {
+        $offset = is_array($offset) ? implode(',', $offset) : $offset;
+
         return $this->spliceIntoPosition(1, $offset);
     }
 
@@ -247,7 +249,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run only on Wednesdays.
-	 * 把活动安排在星期三进行
+	 * 安排活动只在星期三进行
      *
      * @return $this
      */
@@ -258,7 +260,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run only on Thursdays.
-	 * 把活动安排在星期四进行
+	 * 安排活动只在星期四进行
      *
      * @return $this
      */
@@ -269,7 +271,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run only on Fridays.
-	 * 把活动安排在周五
+	 * 安排活动只在星期五进行
      *
      * @return $this
      */
@@ -280,7 +282,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run only on Saturdays.
-	 * 把活动安排在周六进行
+	 * 安排活动只在星期六进行
      *
      * @return $this
      */
@@ -291,7 +293,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run only on Sundays.
-	 * 把活动安排在星期天进行
+	 * 安排活动只在星期日进行
      *
      * @return $this
      */
@@ -302,7 +304,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run weekly.
-	 * 将活动安排为每周运行一次
+	 * 安排活动为每周运行一次
      *
      * @return $this
      */

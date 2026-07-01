@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，Caster，Ds Pair Stub
+ * Symfony，组件，Var Dumper，Caster，Ds Pair 存根
  */
 
 /*

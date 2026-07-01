@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，通道，Mail 通道
+ * Illuminate，通知，通道，电子邮件通道
  */
 
 namespace Illuminate\Notifications\Channels;
@@ -102,6 +102,10 @@ class MailChannel
             return $message->view;
         }
 
+        if (property_exists($message, 'theme') && ! is_null($message->theme)) {
+            $this->markdown->theme($message->theme);
+        }
+
         return [
             'html' => $this->markdown->render($message->markdown, $message->data()),
             'text' => $this->markdown->renderText($message->markdown, $message->data()),
@@ -148,6 +152,8 @@ class MailChannel
         if (! is_null($message->priority)) {
             $mailMessage->setPriority($message->priority);
         }
+
+        $this->runCallbacks($mailMessage, $message);
     }
 
     /**
@@ -239,5 +245,22 @@ class MailChannel
         foreach ($message->rawAttachments as $attachment) {
             $mailMessage->attachData($attachment['data'], $attachment['name'], $attachment['options']);
         }
+    }
+
+    /**
+     * Run the callbacks for the message.
+	 * 运行消息的回调
+     *
+     * @param  \Illuminate\Mail\Message  $mailMessage
+     * @param  \Illuminate\Notifications\Messages\MailMessage  $message
+     * @return $this
+     */
+    protected function runCallbacks($mailMessage, $message)
+    {
+        foreach ($message->callbacks as $callback) {
+            $callback($mailMessage->getSwiftMessage());
+        }
+
+        return $this;
     }
 }

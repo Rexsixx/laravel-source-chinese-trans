@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，接受头
+ * Symfony，组件，Http基础，接受报头
  */
 
 /*
@@ -19,11 +19,9 @@ class_exists(AcceptHeaderItem::class);
 
 /**
  * Represents an Accept-* header.
- * 表示Accept-*报头。
  *
  * An accept header is compound with a list of items,
  * sorted by descending quality.
- * 接受头是一个由按质量降序排列的项目列表组成的复合结构。
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  */
@@ -51,7 +49,6 @@ class AcceptHeader
 
     /**
      * Builds an AcceptHeader instance from a string.
-	 * 从字符串生成一个AcceptHeader实例
      *
      * @param string $headerValue
      *
@@ -76,7 +73,6 @@ class AcceptHeader
 
     /**
      * Returns header value's string representation.
-	 * 返回头值的字符串表示
      *
      * @return string
      */
@@ -87,7 +83,6 @@ class AcceptHeader
 
     /**
      * Tests if header has given value.
-	 * 测试头文件是否给定值
      *
      * @param string $value
      *

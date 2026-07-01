@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，管道
+ * Illuminate，路由选择，管道
  */
 
 namespace Illuminate\Routing;
@@ -23,7 +23,7 @@ class Pipeline extends BasePipeline
 {
     /**
      * Get the final piece of the Closure onion.
-	 * 获取Closure onion的最后一部分
+	 * 获取Closure洋葱的最后一部分
      *
      * @param  \Closure  $destination
      * @return \Closure

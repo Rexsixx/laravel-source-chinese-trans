@@ -1,12 +1,12 @@
 <?php
 /**
- * Egulias，电子邮件验证器，确认，电子邮件验证
+ * Egulias，电子邮件验证器，验证，电子邮件验证
  */
 
 namespace Egulias\EmailValidator\Validation;
 
 use Egulias\EmailValidator\EmailLexer;
-use Egulias\EmailValidator\Result\InvalidEmail;
+use Egulias\EmailValidator\Exception\InvalidEmail;
 use Egulias\EmailValidator\Warning\Warning;
 
 interface EmailValidation
@@ -20,7 +20,7 @@ interface EmailValidation
      *
      * @return bool
      */
-    public function isValid(string $email, EmailLexer $emailLexer) : bool;
+    public function isValid($email, EmailLexer $emailLexer);
 
     /**
      * Returns the validation error.
@@ -28,7 +28,7 @@ interface EmailValidation
      *
      * @return InvalidEmail|null
      */
-    public function getError() : ?InvalidEmail;
+    public function getError();
 
     /**
      * Returns the validation warnings.
@@ -36,5 +36,5 @@ interface EmailValidation
      *
      * @return Warning[]
      */
-    public function getWarnings() : array;
+    public function getWarnings();
 }

@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，控制器，控制器参考
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface;
 
 /**
  * Acts as a marker and a data holder for a Controller.
- * 作为控制器的标记和数据持有者。
  *
  * Some methods in Symfony accept both a URI (as a string) or a controller as
  * an argument. In the latter case, instead of passing an array representing

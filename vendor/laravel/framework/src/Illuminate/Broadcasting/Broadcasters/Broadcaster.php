@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，广播，广播员，广播员
+ * Illuminate，广播，广播员，Broadcaster
  */
 
 namespace Illuminate\Broadcasting\Broadcasters;
@@ -8,6 +8,7 @@ namespace Illuminate\Broadcasting\Broadcasters;
 use Exception;
 use ReflectionClass;
 use ReflectionFunction;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Routing\UrlRoutable;
@@ -26,6 +27,14 @@ abstract class Broadcaster implements BroadcasterContract
     protected $channels = [];
 
     /**
+     * The registered channel options.
+	 * 注册的通道选项
+     *
+     * @var array
+     */
+    protected $channelOptions = [];
+
+    /**
      * The binding registrar instance.
 	 * 绑定注册商实例
      *
@@ -39,11 +48,14 @@ abstract class Broadcaster implements BroadcasterContract
      *
      * @param  string  $channel
      * @param  callable|string  $callback
+     * @param  array  $options
      * @return $this
      */
-    public function channel($channel, $callback)
+    public function channel($channel, $callback, $options = [])
     {
         $this->channels[$channel] = $callback;
+
+        $this->channelOptions[$channel] = $options;
 
         return $this;
     }
@@ -61,7 +73,7 @@ abstract class Broadcaster implements BroadcasterContract
     protected function verifyUserCanAccessChannel($request, $channel)
     {
         foreach ($this->channels as $pattern => $callback) {
-            if (! Str::is(preg_replace('/\{(.*?)\}/', '*', $pattern), $channel)) {
+            if (! $this->channelNameMatchesPattern($channel, $pattern)) {
                 continue;
             }
 
@@ -69,7 +81,7 @@ abstract class Broadcaster implements BroadcasterContract
 
             $handler = $this->normalizeChannelHandlerToCallable($callback);
 
-            if ($result = $handler($request->user(), ...$parameters)) {
+            if ($result = $handler($this->retrieveUser($request, $channel), ...$parameters)) {
                 return $this->validAuthenticationResponse($request, $result);
             }
         }
@@ -277,5 +289,63 @@ abstract class Broadcaster implements BroadcasterContract
                 ->make($callback)
                 ->join(...$args);
         };
+    }
+
+    /**
+     * Retrieve the authenticated user using the configured guard (if any).
+	 * 使用配置的保护（如果有的话）检索经过身份验证的用户
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $channel
+     * @return mixed
+     */
+    protected function retrieveUser($request, $channel)
+    {
+        $options = $this->retrieveChannelOptions($channel);
+
+        $guards = $options['guards'] ?? null;
+
+        if (is_null($guards)) {
+            return $request->user();
+        }
+
+        foreach (Arr::wrap($guards) as $guard) {
+            if ($user = $request->user($guard)) {
+                return $user;
+            }
+        }
+    }
+
+    /**
+     * Retrieve options for a certain channel.
+	 * 检索某个通道的选项
+     *
+     * @param  string  $channel
+     * @return array
+     */
+    protected function retrieveChannelOptions($channel)
+    {
+        foreach ($this->channelOptions as $pattern => $options) {
+            if (! $this->channelNameMatchesPattern($channel, $pattern)) {
+                continue;
+            }
+
+            return $options;
+        }
+
+        return [];
+    }
+
+    /**
+     * Check if channel name from request match a pattern from registered channels.
+	 * 检查请求中的通道名是否与已注册通道中的模式匹配
+     *
+     * @param  string  $channel
+     * @param  string  $pattern
+     * @return bool
+     */
+    protected function channelNameMatchesPattern($channel, $pattern)
+    {
+        return Str::is(preg_replace('/\{(.*?)\}/', '*', $pattern), $channel);
     }
 }

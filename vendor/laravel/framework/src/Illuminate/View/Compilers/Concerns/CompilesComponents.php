@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译器，问题，编译组件
+ * Illuminate，视图，编译，问题，编译组件
  */
 
 namespace Illuminate\View\Compilers\Concerns;
@@ -51,5 +51,28 @@ trait CompilesComponents
     protected function compileEndSlot()
     {
         return '<?php $__env->endSlot(); ?>';
+    }
+
+    /**
+     * Compile the component-first statements into valid PHP.
+	 * 将组件优先语句编译成有效的PHP
+     *
+     * @param  string  $expression
+     * @return string
+     */
+    protected function compileComponentFirst($expression)
+    {
+        return "<?php \$__env->startComponentFirst{$expression}; ?>";
+    }
+
+    /**
+     * Compile the end-component-first statements into valid PHP.
+	 * 将end-component-first语句编译成有效的PHP
+     *
+     * @return string
+     */
+    protected function compileEndComponentFirst()
+    {
+        return $this->compileEndComponent();
     }
 }

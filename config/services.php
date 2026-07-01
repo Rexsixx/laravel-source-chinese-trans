@@ -1,6 +1,6 @@
 <?php
 /**
- * 配置，services
+ * 配置，service
  */
 
 return [
@@ -11,10 +11,11 @@ return [
     |--------------------------------------------------------------------------
     |
     | This file is for storing the credentials for third party services such
-    | as Stripe, Mailgun, SparkPost and others. This file provides a sane
-    | default location for this type of information, allowing packages
-    | to have a conventional place to find your various credentials.
-	| 该文件用于存储第三方服务的凭证,如条纹、邮枪、SparkPost等。
+    | as Mailgun, SparkPost and others. This file provides a sane default
+    | location for this type of information, allowing packages to have
+    | a conventional file to locate the various service credentials.
+	| 此文件用于存储 Mailgun、SparkPostPostPost 等第三方服务的凭据。
+	| 该文件为这类信息提供了一个合理的默认位置，使软件包能够使用一个常规的文件来定位各种服务凭据。
     |
     */
 
@@ -24,24 +25,18 @@ return [
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
     ],
 
+    'postmark' => [
+        'token' => env('POSTMARK_TOKEN'),
+    ],
+
     'ses' => [
-        'key' => env('SES_KEY'),
-        'secret' => env('SES_SECRET'),
-        'region' => env('SES_REGION', 'us-east-1'),
+        'key' => env('AWS_ACCESS_KEY_ID'),
+        'secret' => env('AWS_SECRET_ACCESS_KEY'),
+        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
     'sparkpost' => [
         'secret' => env('SPARKPOST_SECRET'),
-    ],
-
-    'stripe' => [
-        'model' => App\User::class,
-        'key' => env('STRIPE_KEY'),
-        'secret' => env('STRIPE_SECRET'),
-        'webhook' => [
-            'secret' => env('STRIPE_WEBHOOK_SECRET'),
-            'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
-        ],
     ],
 
 ];

@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Css 选择器，节点，哈希节点
- */
 
 /*
  * This file is part of the Symfony package.

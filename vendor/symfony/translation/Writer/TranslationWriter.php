@@ -21,7 +21,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * TranslationWriter writes translation messages.
- * TranslationWriter编写翻译消息。
+ * TranslationWriter编写翻译消息
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
@@ -59,7 +59,7 @@ class TranslationWriter implements TranslationWriterInterface
 
     /**
      * Obtains the list of supported formats.
-	 * 获取支持的格式列表
+	 * 获得支持格式的列表
      *
      * @return array
      */
@@ -70,7 +70,6 @@ class TranslationWriter implements TranslationWriterInterface
 
     /**
      * Writes translation from the catalogue according to the selected format.
-	 * 根据选定的格式从目录中编写翻译
      *
      * @param string $format  The format to use to dump the messages
      * @param array  $options Options that are passed to the dumper

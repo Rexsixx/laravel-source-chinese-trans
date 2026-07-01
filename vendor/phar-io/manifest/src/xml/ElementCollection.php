@@ -1,8 +1,4 @@
 <?php
-/**
- * PharIo，Manifest，元素收集
- */
-
 /*
  * This file is part of PharIo\Manifest.
  *
@@ -27,7 +23,6 @@ abstract class ElementCollection implements \Iterator {
 
     /**
      * ElementCollection constructor.
-	 * ElementCollection构造方法
      *
      * @param DOMNodeList $nodeList
      */

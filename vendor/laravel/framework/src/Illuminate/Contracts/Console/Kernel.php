@@ -53,4 +53,14 @@ interface Kernel
      * @return string
      */
     public function output();
+
+    /**
+     * Terminate the application.
+	 * 终止应用程序
+     *
+     * @param  \Symfony\Component\Console\Input\InputInterface  $input
+     * @param  int  $status
+     * @return void
+     */
+    public function terminate($input, $status);
 }

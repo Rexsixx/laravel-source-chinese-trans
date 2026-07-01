@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，ORM，学说，实体普及器
+ * Faker，ORM，Doctrine，实体普及器
  */
 
 namespace Faker\ORM\Doctrine;
@@ -10,7 +10,6 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 
 /**
  * Service class for populating a table through a Doctrine Entity class.
- * 服务类通过一个教条实体类填充表。
  */
 class EntityPopulator
 {

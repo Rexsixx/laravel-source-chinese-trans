@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，构成复数
+ * Illuminate，支持，构成复数的词缀
  */
 
 namespace Illuminate\Support;
@@ -49,6 +49,8 @@ class Pluralizer
         'pokemon',
         'police',
         'rain',
+        'recommended',
+        'related',
         'rice',
         'series',
         'sheep',

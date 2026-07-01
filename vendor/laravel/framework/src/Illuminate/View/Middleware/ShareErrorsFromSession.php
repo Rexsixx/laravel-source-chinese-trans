@@ -45,7 +45,7 @@ class ShareErrorsFromSession
         // its value with all view instances so the views can easily access errors
         // without having to bind. An empty bag is set when there aren't errors.
 		// 如果当前会话中存在一个名为“errors”的变量，并且该变量已被绑定，
-		// 那么我们将将其值共享给所有视图实例，这样视图就能轻松获取错误信息而无需进行绑定操作。如果没有错误发生，则会设置一个空的集合。
+		// 那么我们将将其值共享给所有视图实例，这样视图就能方便地获取错误信息，而无需进行额外的绑定操作。
         $this->view->share(
             'errors', $request->session()->get('errors') ?: new ViewErrorBag
         );
@@ -54,7 +54,7 @@ class ShareErrorsFromSession
         // assume that some errors are always available, which is convenient since
         // they don't have to continually run checks for the presence of errors.
 		// 将错误信息以每个视图的形式呈现出来，使得开发人员能够假定某些错误总是存在的，
-		// 这样就很方便了，因为他们无需持续进行检查以确认错误是否存在。
+		// 这样就非常方便了，因为他们无需持续进行检查以确认错误是否存在。
 
         return $next($request);
     }

@@ -1,7 +1,4 @@
 <?php
-/**
- * Faker，供应者，Uuid
- */
 
 namespace Faker\Provider;
 

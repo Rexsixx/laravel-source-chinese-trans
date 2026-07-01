@@ -1,7 +1,4 @@
 <?php
-/**
- * Psy，代码清理器，有效常数传递
- */
 
 /*
  * This file is part of Psy Shell.

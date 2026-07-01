@@ -1,6 +1,6 @@
 <?php
 /**
- * App，Http，中间件，如果经过身份验证,重定向
+ * App，Http，中间件，如果经过身份验证重定向
  */
 
 namespace App\Http\Middleware;

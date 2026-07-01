@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，属于许多
+ * Illuminate，数据库，Eloquent，关系，归属众多
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -161,14 +161,40 @@ class BelongsToMany extends Relation
     public function __construct(Builder $query, Model $parent, $table, $foreignPivotKey,
                                 $relatedPivotKey, $parentKey, $relatedKey, $relationName = null)
     {
-        $this->table = $table;
         $this->parentKey = $parentKey;
         $this->relatedKey = $relatedKey;
         $this->relationName = $relationName;
         $this->relatedPivotKey = $relatedPivotKey;
         $this->foreignPivotKey = $foreignPivotKey;
+        $this->table = $this->resolveTableName($table);
 
         parent::__construct($query, $parent);
+    }
+
+    /**
+     * Attempt to resolve the intermediate table name from the given string.
+	 * 尝试从给定字符串中解析中间表名
+     *
+     * @param  string  $table
+     * @return string
+     */
+    protected function resolveTableName($table)
+    {
+        if (! Str::contains($table, '\\') || ! class_exists($table)) {
+            return $table;
+        }
+
+        $model = new $table;
+
+        if (! $model instanceof Model) {
+            return $table;
+        }
+
+        if ($model instanceof Pivot) {
+            $this->using($table);
+        }
+
+        return $model->getTable();
     }
 
     /**
@@ -200,7 +226,7 @@ class BelongsToMany extends Relation
         // We need to join to the intermediate table on the related model's primary
         // key column with the intermediate table's foreign key for the related
         // model instance. Then we can set the "where" for the parent models.
-		// 我们需要在相关模型的主键列上连接到中间表的中间表,中间表是相关模型实例的外键。
+		// 我们需要在相关模型的主键列上将中间表与相关模型实例的外键进行关联操作。
 		// 然后我们可以为父模型设置“where”。
         $baseTable = $this->related->getTable();
 
@@ -276,7 +302,7 @@ class BelongsToMany extends Relation
         // Once we have an array dictionary of child objects we can easily match the
         // children back to their parent using the dictionary and the keys on the
         // the parent models. Then we will return the hydrated models back out.
-		// 一旦我们有了一个儿童对象的数组字典,我们可以很容易地将孩子与他们的父母一起使用字典和父母模型的钥匙。
+		// 一旦我们有了一个包含子对象的数组字典，就可以通过该字典以及父模型上的键轻松地将子对象与其父对象进行匹配。
 		// 然后我们会把水化的模型退回来。
         foreach ($models as $model) {
             if (isset($dictionary[$key = $model->{$this->parentKey}])) {
@@ -301,8 +327,8 @@ class BelongsToMany extends Relation
         // First we will build a dictionary of child models keyed by the foreign key
         // of the relation so that we will easily and quickly match them to their
         // parents without having a possibly slow inner loops for every models.
-		// 首先,我们将建立一本儿童模型的字典,它被关系的外国密钥所控制,
-		// 这样我们就能很容易地将它们与他们的父母匹配,而不需要对每个模型都有一个可能缓慢的内部循环。
+		// 首先，我们将构建一个基于关联关系外键的子模型字典，以便能够轻松且快速地将它们与父模型进行匹配，
+		// 而无需为每个模型都进行可能较为缓慢的内部循环操作。
         $dictionary = [];
 
         foreach ($results as $result) {
@@ -404,7 +430,7 @@ class BelongsToMany extends Relation
 	 * 为数据透视表列设置where子句。
      *
      * In addition, new pivot records will receive this value.
-	 * 此外,新的pivot记录将接收此值。
+	 * 此外，新的pivot记录将接收此值。
      *
      * @param  string|array  $column
      * @param  mixed  $value
@@ -628,8 +654,7 @@ class BelongsToMany extends Relation
         // First we'll add the proper select columns onto the query so it is run with
         // the proper columns. Then, we will get the results and hydrate out pivot
         // models with the result of those columns as a separate model relation.
-		// 首先,我们将在查询中添加适当的选择列,以便与适当的列一起运行。
-		// 然后,我们将得到结果,并将这些列作为单独的模型关系的结果,使支点模型得到。
+		// 首先，我们要在查询中添加相应的选择列，以便在运行时使用正确的列。
         $builder = $this->query->applyScopes();
 
         $columns = $builder->getQuery()->columns ? [] : $columns;
@@ -643,8 +668,8 @@ class BelongsToMany extends Relation
         // If we actually found models we will also eager load any relationships that
         // have been specified as needing to be eager loaded. This will solve the
         // n + 1 query problem for the developer and also increase performance.
-		// 如果我们真正找到了模型,我们也会急切地加载任何被指定为需要被加载的关系。
-		// 这将解决开发人员的n + 1查询问题,并提高性能。
+		// 如果我们真的找到了相应的模型，那么我们还会自动加载那些已被指定需要进行“懒加载”的关系。
+		// 这将解决开发人员面临的“n + 1 查询”问题，并且还能提高性能。
         if (count($models) > 0) {
             $models = $builder->eagerLoadRelations($models);
         }
@@ -673,7 +698,6 @@ class BelongsToMany extends Relation
 	 * 得到关系的主列。
      *
      * "pivot_" is prefixed ot each column for easy removal later.
-	 * “pivot t_”是预先固定的,在每一列中,稍后都可以轻松删除。
      *
      * @return array
      */
@@ -801,8 +825,8 @@ class BelongsToMany extends Relation
         // To hydrate the pivot relationship, we will just gather the pivot attributes
         // and create a new Pivot model, which is basically a dynamic model that we
         // will set the attributes, table, and connections on it so it will work.
-		// 要对主元关系进行水合,我们将会收集主元属性并创建一个新的pivot模型,
-		// 它基本上是一个动态模型,我们将设置属性、表和连接,这样它就会起作用。
+		// 为了强化这种核心关系，我们将只需收集核心属性并创建一个新的“核心”模型。
+		// 这个模型本质上是一个动态模型，我们将在其中设置属性、表格和连接，以便使其能够正常运行。
         foreach ($models as $model) {
             $model->setRelation($this->accessor, $this->newExistingPivot(
                 $this->migratePivotAttributes($model)
@@ -825,8 +849,8 @@ class BelongsToMany extends Relation
             // To get the pivots attributes we will just take any of the attributes which
             // begin with "pivot_" and add those to this arrays, as well as unsetting
             // them from the parent's models since they exist in a different table.
-			// 为了获取数据透视项属性,我们将使用“pivot t_”开始的任何属性,
-			// 并将它们添加到这个数组中,并将它们从父的模型中分离出来,因为它们存在于另一个表中。
+			// 为了获取这些关键属性，我们只需选取任何以“pivot_”开头的属性，
+			// 并将其添加到这个数组中，同时从父模型中移除这些属性，因为它们存在于不同的表中。
             if (strpos($key, 'pivot_') === 0) {
                 $values[substr($key, 6)] = $value;
 
@@ -873,7 +897,7 @@ class BelongsToMany extends Relation
      */
     protected function guessInverseRelation()
     {
-        return Str::camel(Str::plural(class_basename($this->getParent())));
+        return Str::camel(Str::pluralStudly(class_basename($this->getParent())));
     }
 
     /**
@@ -895,8 +919,8 @@ class BelongsToMany extends Relation
         // If we actually have IDs for the relation, we will run the query to update all
         // the related model's timestamps, to make sure these all reflect the changes
         // to the parent models. This will help us keep any caching synced up here.
-		// 如果我们实际上有关系的id,我们将运行查询来更新所有相关模型的时间券,
-		// 以确保这些都反映了对父模型的更改。这将帮助我们保持任何缓存同步。
+		// 如果我们确实掌握了这种关系的标识信息，我们就会执行查询操作，更新所有相关模型的时间戳，
+		// 以确保这些时间戳能够反映父模型的变化情况。这样做有助于我们保持此处的缓存同步。
         if (count($ids = $this->allRelatedIds()) > 0) {
             $this->getRelated()->newQueryWithoutRelationships()->whereIn($key, $ids)->update($columns);
         }
@@ -966,8 +990,8 @@ class BelongsToMany extends Relation
         // Once we save the related model, we need to attach it to the base model via
         // through intermediate table so we'll use the existing "attach" method to
         // accomplish this which will insert the record and any more attributes.
-		// 一旦我们保存了相关的模型,我们就需要通过中间表将其附加到基础模型中,
-		// 因此我们将使用现有的“附加”方法来完成它,它将插入记录和任何更多的属性。
+		// 一旦我们保存了相关模型，就需要通过中间表将其附加到基础模型上，
+		// 因此我们将使用现有的“attach”方法来完成这一操作，该方法会插入记录以及任何其他属性。
         $instance->save(['touch' => false]);
 
         $this->attach($instance, $joining, $touch);

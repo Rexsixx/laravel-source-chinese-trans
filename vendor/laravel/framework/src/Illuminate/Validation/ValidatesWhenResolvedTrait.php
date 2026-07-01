@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，验证，当解决时验证 Trait
+ * Illuminate，验证，当解决特征时验证
  */
 
 namespace Illuminate\Validation;
@@ -30,6 +30,8 @@ trait ValidatesWhenResolvedTrait
         if ($instance->fails()) {
             $this->failedValidation($instance);
         }
+
+        $this->passedValidation();
     }
 
     /**
@@ -40,7 +42,7 @@ trait ValidatesWhenResolvedTrait
      */
     protected function prepareForValidation()
     {
-        // no default action
+        //
     }
 
     /**
@@ -52,6 +54,17 @@ trait ValidatesWhenResolvedTrait
     protected function getValidatorInstance()
     {
         return $this->validator();
+    }
+
+    /**
+     * Handle a passed validation attempt.
+	 * 处理通过的验证尝试
+     *
+     * @return void
+     */
+    protected function passedValidation()
+    {
+        //
     }
 
     /**

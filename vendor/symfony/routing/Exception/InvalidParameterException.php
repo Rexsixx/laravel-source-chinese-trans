@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，异常，无效参数异常
+ * Symfony，组件，路由选择，异常，无效参数异常
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\Routing\Exception;
 
 /**
  * Exception thrown when a parameter is not valid.
- * 参数无效时引发的异常。
+ * 当参数无效时抛出异常。
  *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */

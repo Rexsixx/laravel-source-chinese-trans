@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Manifest，Php 版本要求
+ * PharIo，Manifest，Php版本要求
  */
 
 /*

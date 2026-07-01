@@ -17,7 +17,8 @@ return [
     | not explicitly specified when executing a given caching function.
 	| 该选项控制在使用该缓存库时使用的默认缓存连接。
     |
-    | Supported: "apc", "array", "database", "file", "memcached", "redis"
+    | Supported: "apc", "array", "database", "file",
+    |            "memcached", "redis", "dynamodb"
     |
     */
 
@@ -32,6 +33,7 @@ return [
     | well as their drivers. You may even define multiple stores for the
     | same cache driver to group types of items stored in your caches.
 	| 在这里,您可以定义您的应用程序和驱动程序的所有缓存“存储”。
+	| 您甚至可以为存储在缓存中的项目组类型的相同的缓存驱动程序定义多个存储。
     |
     */
 
@@ -80,6 +82,15 @@ return [
             'connection' => 'cache',
         ],
 
+        'dynamodb' => [
+            'driver' => 'dynamodb',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+            'table' => env('DYNAMODB_CACHE_TABLE', 'cache'),
+            'endpoint' => env('DYNAMODB_ENDPOINT'),
+        ],
+
     ],
 
     /*
@@ -91,6 +102,7 @@ return [
     | be other applications utilizing the same cache. So, we'll specify a
     | value to get prefixed to all our keys so we can avoid collisions.
 	| 在使用基于RAM的存储库(如APC或Memcached)时,可能会有使用相同缓存的其他应用程序。
+	| 因此,我们将指定一个值来预先固定所有的键,这样我们就可以避免碰撞。
     |
     */
 

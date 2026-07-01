@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，预设，引导程序
+ * Illuminate，基础，控制台，预先装置，引导程序
  */
 
 namespace Illuminate\Foundation\Console\Presets;

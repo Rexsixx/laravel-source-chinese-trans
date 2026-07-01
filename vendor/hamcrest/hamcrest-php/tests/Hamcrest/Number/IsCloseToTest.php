@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，数字，是否关闭测试
+ * Hamcrest，文本，接近测试
  */
 
 namespace Hamcrest\Number;

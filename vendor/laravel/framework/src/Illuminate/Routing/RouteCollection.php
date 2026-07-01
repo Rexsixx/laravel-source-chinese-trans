@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路收收集
+ * Illuminate，路由选择，路由集合
  */
 
 namespace Illuminate\Routing;
@@ -25,7 +25,7 @@ class RouteCollection implements Countable, IteratorAggregate
     protected $routes = [];
 
     /**
-     * An flattened array of all of the routes.
+     * A flattened array of all of the routes.
 	 * 所有路线的平面化排列
      *
      * @var array
@@ -94,7 +94,8 @@ class RouteCollection implements Countable, IteratorAggregate
         // If the route has a name, we will add it to the name look-up table so that we
         // will quickly be able to find any route associate with a name and not have
         // to iterate through every route every time we need to perform a look-up.
-		// 如果该路由有名称，我们将将其添加到名称查找表中，这样我们就能快速找到与某个名称相关的任何路由，而无需每次进行查找时都逐一检查所有路由。
+		// 如果该路由有名称，我们将将其添加到名称查找表中，
+		// 这样我们就能快速找到与某个名称相关的任何路由，而无需每次进行查找时都逐一检查所有路由。
         if ($name = $route->getName()) {
             $this->nameList[$name] = $route;
         }
@@ -102,8 +103,8 @@ class RouteCollection implements Countable, IteratorAggregate
         // When the route is routing to a controller we will also store the action that
         // is used by the route. This will let us reverse route to controllers while
         // processing a request and easily generate URLs to the given controllers.
-		// 当路由指向控制器时，我们还会存储该路由所使用的操作。这样，在处理请求时，
-		// 我们就能反向路由到控制器，并轻松生成指向给定控制器的 URL。
+		// 当路由指向控制器时，我们还会存储该路由所使用的操作。
+		// 这将使我们在处理请求时能够反向调用控制器，并且能够轻松生成指向指定控制器的 URL。
         $action = $route->getAction();
 
         if (isset($action['controller'])) {
@@ -180,8 +181,9 @@ class RouteCollection implements Countable, IteratorAggregate
         // First, we will see if we can find a matching route for this current request
         // method. If we can, great, we can just return it so that it can be called
         // by the consumer. Otherwise we will check for routes with another verb.
-		// 首先，我们要看看能否为当前的请求方法找到对应的路由。
-		// 如果能找到，那就太好了，我们可以直接返回该路由，以便供使用者调用。否则，我们将检查其他动词对应的路由。
+		// 首先，我们要看看能否为当前的请求方法找到一个匹配的路径。
+		// 如果可以的话，那太好了，我们可以直接将其返回，以便消费者能够调用它。
+		// 否则，我们将使用另一个动词来检查路径。
         $route = $this->matchAgainstRoutes($routes, $request);
 
         if (! is_null($route)) {
@@ -192,6 +194,7 @@ class RouteCollection implements Countable, IteratorAggregate
         // another HTTP verb. If it is we will need to throw a MethodNotAllowed and
         // inform the user agent of which HTTP verb it should use for this route.
 		// 如果未找到任何匹配的路由，那么接下来我们将检查是否由其他 HTTP 动词指定了一个相匹配的路由。
+		// 如果是这样的话，我们就需要抛出一个“方法不允许”异常，并告知用户代理对于此路径应使用何种 HTTP 动词。
         $others = $this->checkForAlternateVerbs($request);
 
         if (count($others) > 0) {
@@ -236,6 +239,7 @@ class RouteCollection implements Countable, IteratorAggregate
         // check to see if any routes respond to them. If they do, we will return a
         // proper error response with the correct headers on the response string.
 		// 接下来，我们将遍历所有动词（除了当前请求所使用的动词之外），并检查是否有任何路由能够响应这些动词。
+		// 如果他们这样做的话，我们将返回一个包含正确头部信息的恰当错误响应，并将其附在响应字符串中。
         $others = [];
 
         foreach ($methods as $method) {
@@ -265,7 +269,7 @@ class RouteCollection implements Countable, IteratorAggregate
             }))->bind($request);
         }
 
-        $this->methodNotAllowed($methods);
+        $this->methodNotAllowed($methods, $request->method());
     }
 
     /**
@@ -273,13 +277,21 @@ class RouteCollection implements Countable, IteratorAggregate
 	 * 抛出一个方法不允许HTTP异常
      *
      * @param  array  $others
+     * @param  string  $method
      * @return void
      *
      * @throws \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
      */
-    protected function methodNotAllowed(array $others)
+    protected function methodNotAllowed(array $others, $method)
     {
-        throw new MethodNotAllowedHttpException($others);
+        throw new MethodNotAllowedHttpException(
+            $others,
+            sprintf(
+                'The %s method is not supported for this route. Supported methods: %s.',
+                $method,
+                implode(', ', $others)
+            )
+        );
     }
 
     /**

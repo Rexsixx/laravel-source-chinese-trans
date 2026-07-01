@@ -53,7 +53,7 @@ abstract class AbstractAdapter implements AdapterInterface
 
     /**
      * Prefix a path.
-	 * 前缀一条路径
+	 * 前缀路径
      *
      * @param string $path
      *

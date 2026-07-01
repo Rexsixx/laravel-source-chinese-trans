@@ -98,7 +98,7 @@ trait MakesHttpRequests
      * Disable middleware for the test.
 	 * 禁用测试的中间件
      *
-     * @param  string|array  $middleware
+     * @param  string|array|null  $middleware
      * @return $this
      */
     public function withoutMiddleware($middleware = null)
@@ -125,7 +125,7 @@ trait MakesHttpRequests
      * Enable the given middleware for the test.
 	 * 为测试启用给定的中间件
      *
-     * @param  string|array  $middleware
+     * @param  string|array|null  $middleware
      * @return $this
      */
     public function withMiddleware($middleware = null)
@@ -157,14 +157,16 @@ trait MakesHttpRequests
     }
 
     /**
-     * Set the referer header to simulate a previous request.
-	 * 设置引用头以模拟先前的请求
+     * Set the referer header and previous URL session value in order to simulate a previous request.
+	 * 设置引用头和以前的URL会话值，以模拟以前的请求。
      *
      * @param  string  $url
      * @return $this
      */
     public function from(string $url)
     {
+        $this->app['session']->setPreviousUrl($url);
+
         return $this->withHeader('referer', $url);
     }
 
@@ -317,6 +319,36 @@ trait MakesHttpRequests
     }
 
     /**
+     * Visit the given URI with a OPTION request.
+	 * 使用OPTION请求访问给定的URI
+     *
+     * @param  string  $uri
+     * @param  array  $data
+     * @param  array  $headers
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
+    public function option($uri, array $data = [], array $headers = [])
+    {
+        $server = $this->transformHeadersToServerVars($headers);
+
+        return $this->call('OPTION', $uri, $data, [], [], $server);
+    }
+
+    /**
+     * Visit the given URI with a OPTION request, expecting a JSON response.
+	 * 使用OPTION请求访问给定的URI，期望得到JSON响应。
+     *
+     * @param  string  $uri
+     * @param  array  $data
+     * @param  array  $headers
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
+    public function optionJson($uri, array $data = [], array $headers = [])
+    {
+        return $this->json('OPTION', $uri, $data, $headers);
+    }
+
+    /**
      * Call the given URI with a JSON request.
 	 * 用JSON请求调用给定的URI
      *
@@ -353,7 +385,7 @@ trait MakesHttpRequests
      * @param  array  $cookies
      * @param  array  $files
      * @param  array  $server
-     * @param  string  $content
+     * @param  string|null  $content
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
     public function call($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)

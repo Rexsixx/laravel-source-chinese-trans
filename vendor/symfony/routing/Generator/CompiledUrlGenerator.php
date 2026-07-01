@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，生成器，编译 Url生成器
+ * Symfony，组件，路由选择，生成器，编译Url生成器
  */
 
 /*
@@ -20,7 +20,7 @@ use Symfony\Component\Routing\RequestContext;
 
 /**
  * Generates URLs based on rules dumped by CompiledUrlGeneratorDumper.
- * 根据CompiledUrlGeneratorDumper转储的规则生成url。
+ * 根据CompiledUrlGeneratorDumper的规则生成url。
  */
 class CompiledUrlGenerator extends UrlGenerator
 {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，视图探测器接口
+ * Illuminate，视图，视图查找器接口
  */
 
 namespace Illuminate\View;
@@ -9,7 +9,7 @@ interface ViewFinderInterface
 {
     /**
      * Hint path delimiter value.
-	 * 提示路径分隔值
+	 * 提示路径分隔符值
      *
      * @var string
      */

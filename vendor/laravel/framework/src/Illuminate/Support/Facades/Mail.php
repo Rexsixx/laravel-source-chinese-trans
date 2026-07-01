@@ -35,11 +35,13 @@ class Mail extends Facade
      * Replace the bound instance with a fake.
 	 * 将绑定实例替换为伪实例
      *
-     * @return void
+     * @return \Illuminate\Support\Testing\Fakes\MailFake
      */
     public static function fake()
     {
-        static::swap(new MailFake);
+        static::swap($fake = new MailFake);
+
+        return $fake;
     }
 
     /**

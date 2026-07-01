@@ -29,7 +29,6 @@ interface ContentEncoderInterface extends EncoderInterface
 
     /**
      * Gets the MIME name of this content encoding scheme.
-	 * 获取此内容编码模式的MIME名称
      */
     public function getName(): string;
 }

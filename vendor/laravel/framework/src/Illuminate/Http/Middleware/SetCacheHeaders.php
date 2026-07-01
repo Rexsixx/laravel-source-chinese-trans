@@ -44,7 +44,7 @@ class SetCacheHeaders
 
     /**
      * Parse the given header options.
-	 * 添加与缓存相关的HTTP头
+	 * 解析给定的标头选项
      *
      * @param  string  $options
      * @return array

@@ -29,10 +29,8 @@ use Symfony\Component\Finder\Iterator\SortableIterator;
 
 /**
  * Finder allows to build rules to find files and directories.
- * Finder允许构建查找文件和目录的规则。
  *
  * It is a thin wrapper around several specialized iterator classes.
- * 它是几个专门的迭代器类的薄包装。
  *
  * All rules may be invoked several times.
  *
@@ -77,7 +75,6 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Creates a new Finder.
-	 * 创建一个新的Finder
      *
      * @return static
      */
@@ -88,7 +85,6 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Restricts the matching to directories only.
-	 * 只限制与目录的匹配
      *
      * @return $this
      */
@@ -101,7 +97,6 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Restricts the matching to files only.
-	 * 只对文件进行匹配
      *
      * @return $this
      */

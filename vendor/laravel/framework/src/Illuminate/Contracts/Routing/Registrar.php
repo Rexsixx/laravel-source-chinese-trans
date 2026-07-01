@@ -59,7 +59,7 @@ interface Registrar
 
     /**
      * Register a new OPTIONS route with the router.
-	 * 向路由器注册一个新的OPTIONS路由
+	 & 向路由器注册一个新的OPTIONS路由
      *
      * @param  string  $uri
      * @param  \Closure|array|string|callable  $action

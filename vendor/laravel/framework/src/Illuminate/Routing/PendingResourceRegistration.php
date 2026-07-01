@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，待处理资源注册
+ * Illuminate，路由选择，待处理资源注册
  */
 
 namespace Illuminate\Routing;
@@ -13,7 +13,7 @@ class PendingResourceRegistration
 
     /**
      * The resource registrar.
-	 * 资源注册员
+	 * 资源注册
      *
      * @var \Illuminate\Routing\ResourceRegistrar
      */

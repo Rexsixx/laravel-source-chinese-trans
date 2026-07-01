@@ -49,7 +49,6 @@ class Uuid implements UuidInterface
 {
     /**
      * When this namespace is specified, the name string is a fully-qualified domain name.
-	 * 当指定这个名称空间时,名称字符串是一个完全限定的域名。
      * @link http://tools.ietf.org/html/rfc4122#appendix-C
      */
     const NAMESPACE_DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';

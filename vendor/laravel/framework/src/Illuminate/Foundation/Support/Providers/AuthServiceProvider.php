@@ -32,14 +32,6 @@ class AuthServiceProvider extends ServiceProvider
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function register()
-    {
-        //
-    }
-
-    /**
      * Get the policies defined on the provider.
 	 * 获取在提供程序上定义的策略
      *

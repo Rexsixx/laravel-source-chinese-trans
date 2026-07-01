@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，通道管理系统
+ * Illuminate，通知，通道管理程序
  */
 
 namespace Illuminate\Notifications;

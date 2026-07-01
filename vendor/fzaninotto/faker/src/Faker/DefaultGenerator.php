@@ -8,7 +8,6 @@ namespace Faker;
 /**
  * This generator returns a default value for all called properties
  * and methods. It works with Faker\Generator\Base->optional().
- * 这个生成器返回所有被称为属性的默认值和方法
  */
 class DefaultGenerator
 {

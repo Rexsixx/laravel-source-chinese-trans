@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，冲突，作者
+ * NunoMaduro，碰撞，Writer
  */
 
 /**
@@ -24,7 +24,6 @@ use NunoMaduro\Collision\Contracts\ArgumentFormatter as ArgumentFormatterContrac
 
 /**
  * This is an Collision Writer implementation.
- * 这是一个Collision Writer实现。
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
@@ -32,7 +31,6 @@ class Writer implements WriterContract
 {
     /**
      * The number of frames if no verbosity is specified.
-	 * 如果没有详细说明,则帧数。
      */
     const VERBOSITY_NORMAL_FRAMES = 1;
 

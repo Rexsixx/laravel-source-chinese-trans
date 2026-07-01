@@ -157,7 +157,7 @@ class AppNameCommand extends Command
 
     /**
      * Set the namespace in the appropriate configuration files.
-	 * 在适当的配置文件中设置命名空间
+	 * 在适当的配置文件中设置名称空间
      *
      * @return void
      */
@@ -170,7 +170,7 @@ class AppNameCommand extends Command
 
     /**
      * Set the application provider namespaces.
-	 * 设置应用程序提供程序命名空间
+	 * 设置应用程序提供程序名称空间
      *
      * @return void
      */
@@ -206,7 +206,7 @@ class AppNameCommand extends Command
 
     /**
      * Set the services User namespace.
-	 * 设置业务用户命名空间
+	 * 设置服务用户命名空间
      *
      * @return void
      */
@@ -284,7 +284,7 @@ class AppNameCommand extends Command
 
     /**
      * Get the path to the Composer.json file.
-	 * 获取到Composer文件的路径
+	 * 获取到Composer.json文件的路径
      *
      * @return string
      */

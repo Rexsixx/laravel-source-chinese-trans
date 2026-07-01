@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，HTTP基础，文件，Mime类型，扩展猜测界面
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Mime\MimeTypesInterface;
 
 /**
  * Guesses the file extension corresponding to a given mime type.
- * 猜测对应于给定mime类型的文件扩展。
  *
  * @deprecated since Symfony 4.3, use {@link MimeTypesInterface} instead
  */
@@ -26,7 +22,6 @@ interface ExtensionGuesserInterface
 {
     /**
      * Makes a best guess for a file extension, given a mime type.
-	 * 在给定mime类型的情况下，对文件扩展名进行最佳猜测。
      *
      * @param string $mimeType The mime type
      *

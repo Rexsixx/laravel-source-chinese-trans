@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，克隆，转储机接口
+ * Symfony，组件，Var Dumper，克隆，转储器接口
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\VarDumper\Cloner;
 
 /**
  * DumperInterface used by Data objects.
- * DumperInterface对象使用的接口。
+ * 数据对象使用的DumperInterface。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -24,7 +24,7 @@ interface DumperInterface
 {
     /**
      * Dumps a scalar value.
-	 * 转储标量值
+	 * 转储一个标量值
      *
      * @param string                $type  The PHP type of the value being dumped
      * @param string|int|float|bool $value The scalar value being dumped
@@ -53,7 +53,7 @@ interface DumperInterface
 
     /**
      * Dumps while leaving an hash.
-	 * 转储，同时留下散列。
+	 * 在留下散列的时候转储
      *
      * @param int        $type     A Cursor::HASH_* const for the type of hash
      * @param string|int $class    The object class, resource type or array count

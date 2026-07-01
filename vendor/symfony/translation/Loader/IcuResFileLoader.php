@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，加载器，IcuRes 文件加载器
+ * Symfony，组件，翻译，载入程序，Icu Res File 加载器
  */
 
 /*
@@ -65,7 +65,7 @@ class IcuResFileLoader implements LoaderInterface
 
     /**
      * Flattens an ResourceBundle.
-	 * Flattens ResourceBundle。
+	 * 扁平化ResourceBundle。
      *
      * The scheme used is:
      *   key { key2 { key3 { "value" } } }

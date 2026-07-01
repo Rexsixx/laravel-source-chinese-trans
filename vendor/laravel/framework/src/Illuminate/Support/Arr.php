@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，数组
+ * Illuminate，支持，Arr
  */
 
 namespace Illuminate\Support;
@@ -61,10 +61,10 @@ class Arr
                 continue;
             }
 
-            $results = array_merge($results, $values);
+            $results[] = $values;
         }
 
-        return $results;
+        return array_merge([], ...$results);
     }
 
     /**
@@ -227,10 +227,14 @@ class Arr
 
             if (! is_array($item)) {
                 $result[] = $item;
-            } elseif ($depth === 1) {
-                $result = array_merge($result, array_values($item));
             } else {
-                $result = array_merge($result, static::flatten($item, $depth - 1));
+                $values = $depth === 1
+                    ? array_values($item)
+                    : static::flatten($item, $depth - 1);
+
+                foreach ($values as $value) {
+                    $result[] = $value;
+                }
             }
         }
 
@@ -287,7 +291,7 @@ class Arr
 	 * 使用“点”符号从数组中获取项
      *
      * @param  \ArrayAccess|array  $array
-     * @param  string  $key
+     * @param  string|int  $key
      * @param  mixed   $default
      * @return mixed
      */
@@ -330,17 +334,9 @@ class Arr
      */
     public static function has($array, $keys)
     {
-        if (is_null($keys)) {
-            return false;
-        }
-
         $keys = (array) $keys;
 
-        if (! $array) {
-            return false;
-        }
-
-        if ($keys === []) {
+        if (! $array || $keys === []) {
             return false;
         }
 
@@ -415,7 +411,7 @@ class Arr
             // looping. Otherwise we will key the array using the value of the key we
             // received from the developer. Then we'll return the final array form.
 			// 如果键为“null”，我们就会将该值添加到数组中，并继续循环操作。
-			// 否则，我们将使用开发者传来的键值来对数组进行索引操作，然后返回最终的数组形式。
+			// 否则，我们将根据从开发人员那里收到的键值来为数组赋值。然后，我们将返回最终的数组形式。
             if (is_null($key)) {
                 $results[] = $itemValue;
             } else {
@@ -555,7 +551,7 @@ class Arr
             // to hold the next value, allowing us to create the arrays to hold final
             // values at the correct depth. Then we'll keep digging into the array.
 			// 如果在当前深度找不到该键，我们就只需创建一个空数组来存放下一个值，
-			// 这样就能在正确的深度创建用于存放最终值的数组了。
+			// 这样我们就能在正确的深度创建用于存放最终值的数组了。然后我们再继续深入该数组中进行查找。
             if (! isset($array[$key]) || ! is_array($array[$key])) {
                 $array[$key] = [];
             }
@@ -581,11 +577,9 @@ class Arr
         if (is_null($seed)) {
             shuffle($array);
         } else {
-            srand($seed);
-
-            usort($array, function () {
-                return rand(-1, 1);
-            });
+            mt_srand($seed);
+            shuffle($array);
+            mt_srand();
         }
 
         return $array;

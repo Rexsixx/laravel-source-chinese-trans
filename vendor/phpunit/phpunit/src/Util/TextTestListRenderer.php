@@ -1,9 +1,4 @@
 <?php declare(strict_types=1);
-
-/**
- * PHPUnit，工具，文本测试列表渲染器
- */
-
 /*
  * This file is part of PHPUnit.
  *

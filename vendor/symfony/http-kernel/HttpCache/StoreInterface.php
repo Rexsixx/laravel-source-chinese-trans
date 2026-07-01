@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，HTTP缓存，存储接口
+ * Symfony，组件，Http内核，Http缓存，存储接口
  */
 
 /*
@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Interface implemented by HTTP cache stores.
- * 接口实现的HTTP缓存存储。
+ * 通过HTTP缓存存储实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -30,7 +30,7 @@ interface StoreInterface
 {
     /**
      * Locates a cached Response for the Request provided.
-	 * 定位所提供请求的缓存响应
+	 * 为所提供的请求定位缓存响应
      *
      * @return Response|null A Response instance, or null if no cache entry was found
      */

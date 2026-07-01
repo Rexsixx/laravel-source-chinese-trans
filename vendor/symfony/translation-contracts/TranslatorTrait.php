@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，翻译，翻译特征
+ * Symfony，契约，翻译，翻译特点
  */
 
 /*
@@ -119,6 +119,7 @@ EOF;
         if (!isset($standardRules[$position])) {
             // when there's exactly one rule given, and that rule is a standard
             // rule, use this rule
+			// 当给出恰好一条规则，且该规则为标准规则时，使用此规则。
             if (1 === \count($parts) && isset($standardRules[0])) {
                 return strtr($standardRules[0], $parameters);
             }
@@ -137,7 +138,7 @@ EOF;
 
     /**
      * Returns the plural position to use for the given locale and number.
-	 * 返回要用于给定区域设置和数字的复数位置
+	 * 返回要用于给定区域设置和数字的复数位置。
      *
      * The plural rules are derived from code of the Zend Framework (2010-09-25),
      * which is subject to the new BSD license (http://framework.zend.com/license/new-bsd).

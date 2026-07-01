@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，HTTP缓存，响应缓存策略
+ * Symfony，组件，Http内核，Http缓存，响应缓存策略
  */
 
 /*
@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * ResponseCacheStrategy knows how to compute the Response cache HTTP header
  * based on the different response cache headers.
- * ResponseCacheStrategyStrategy 能够根据不同的响应缓存头来计算响应缓存的 HTTP HTTP 头信息。
  *
  * This implementation changes the master response TTL to the smallest TTL received
  * or force validation if one of the surrogates has validation cache strategy.
@@ -30,13 +29,11 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface
 {
     /**
      * Cache-Control headers that are sent to the final response if they appear in ANY of the responses.
-	 * 缓存控制头，如果它们出现在任何响应中，则发送到最终响应。
      */
     private const OVERRIDE_DIRECTIVES = ['private', 'no-cache', 'no-store', 'no-transform', 'must-revalidate', 'proxy-revalidate'];
 
     /**
      * Cache-Control headers that are sent to the final response if they appear in ALL of the responses.
-	 * 如果在所有响应中出现，则发送到最终响应的缓存控制头。
      */
     private const INHERIT_DIRECTIVES = ['public', 'immutable'];
 

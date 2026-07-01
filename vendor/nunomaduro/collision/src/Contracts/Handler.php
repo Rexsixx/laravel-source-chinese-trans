@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，冲突，契约，处理者
+ * NunoMaduro，碰撞，契约，处理者
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * This is an Collision Handler contract.
+ * 这是一个碰撞处理合同。
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */

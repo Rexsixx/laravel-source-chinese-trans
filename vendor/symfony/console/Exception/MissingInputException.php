@@ -16,7 +16,6 @@ namespace Symfony\Component\Console\Exception;
 
 /**
  * Represents failure to read input from stdin.
- * 表示未能读取stdin的输入。
  *
  * @author Gabriel Ostrolucký <gabriel.ostrolucky@gmail.com>
  */

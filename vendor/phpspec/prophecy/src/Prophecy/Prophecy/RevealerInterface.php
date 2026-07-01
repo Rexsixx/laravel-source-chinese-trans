@@ -1,6 +1,6 @@
 <?php
 /**
- * Prophecy，Prophecy，Revealer 接口
+ // * Prophecy，预言，Revealer 接口
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Prophecy\Prophecy;
 
 /**
  * Prophecies revealer interface.
- * 预言揭示接口。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */

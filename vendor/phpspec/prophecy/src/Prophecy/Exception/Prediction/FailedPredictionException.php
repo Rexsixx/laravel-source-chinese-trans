@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，异常，预言，失败预测异常
+ */
 
 /*
  * This file is part of the Prophecy.

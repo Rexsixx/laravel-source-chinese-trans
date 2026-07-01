@@ -20,7 +20,7 @@ interface Pipeline
 
     /**
      * Set the stops of the pipeline.
-	 * 设置管道的止水带
+	 * 设置管道停止
      *
      * @param  dynamic|array  $stops
      * @return $this

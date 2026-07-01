@@ -18,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts common resource types to array representation.
+ * 将公共资源类型强制转换为数组表示。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *

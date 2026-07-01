@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，Caster，日期 Caster
+ * Symfony，组件，Var Dumper，Caster，Date Caster
  */
 
 /*

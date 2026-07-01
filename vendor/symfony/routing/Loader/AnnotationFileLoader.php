@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，加载器，Annotation 文件加载器
+ * Symfony，组件，路由选择，加载程序，注释文件加载器
  */
 
 /*
@@ -22,6 +22,7 @@ use Symfony\Component\Routing\RouteCollection;
 /**
  * AnnotationFileLoader loads routing information from annotations set
  * on a PHP class and its methods.
+ * AnnotationFileLoader加载了从PHP类和它的方法设置的注释中路由信息。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -42,7 +43,7 @@ class AnnotationFileLoader extends FileLoader
 
     /**
      * Loads from annotations from a file.
-	 * 从文件的注解中加载
+	 * 从文件中加载的注释负载
      *
      * @param string      $file A PHP file path
      * @param string|null $type The resource type
@@ -81,7 +82,6 @@ class AnnotationFileLoader extends FileLoader
 
     /**
      * Returns the full class name for the first class in the file.
-	 * 返回文件中第一个类的完整类名
      *
      * @param string $file A PHP file path
      *

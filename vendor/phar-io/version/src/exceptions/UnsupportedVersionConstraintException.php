@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，版本，UnsupportedVersionConstraintException
+ * PharIo，版本，不受支持的版本约束异常
  */
 
 /*

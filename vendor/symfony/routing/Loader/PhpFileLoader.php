@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，加载器，Php 文件加载器
+ * Symfony，组件，路由选择，加载程序，Php 文件加载器
  */
 
 /*
@@ -31,6 +31,7 @@ class PhpFileLoader extends FileLoader
 {
     /**
      * Loads a PHP file.
+	 * 加载一个PHP文件
      *
      * @param string      $file A PHP file path
      * @param string|null $type The resource type

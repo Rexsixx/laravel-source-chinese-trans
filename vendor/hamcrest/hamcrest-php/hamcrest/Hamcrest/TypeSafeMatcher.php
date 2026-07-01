@@ -8,7 +8,6 @@ namespace Hamcrest;
 /**
  * Convenient base class for Matchers that require a value of a specific type.
  * This simply checks the type.
- * 方便的基类,以满足特定类型的值。这只是检查类型。
  *
  * While it may seem a useless exercise to have this in PHP, objects cannot
  * be cast to certain data types such as numerics (or even strings if

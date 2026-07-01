@@ -51,7 +51,6 @@ class Client extends AbstractBrowser
 
     /**
      * Sets whether to catch exceptions when the kernel is handling a request.
-	 * 设置内核处理请求时是否捕获异常
      *
      * @param bool $catchExceptions Whether to catch exceptions
      */
@@ -62,7 +61,6 @@ class Client extends AbstractBrowser
 
     /**
      * Makes a request.
-	 *提出请求
      *
      * @return Response A Response instance
      */
@@ -79,7 +77,6 @@ class Client extends AbstractBrowser
 
     /**
      * Returns the script to execute when the request must be insulated.
-	 * 返回在必须隔离请求时要执行的脚本
      *
      * @return string
      */
@@ -134,7 +131,6 @@ EOF;
 
     /**
      * Converts the BrowserKit request to a HttpKernel request.
-	 * 将BrowserKit请求转换为HttpKernel请求
      *
      * @return Request A Request instance
      */

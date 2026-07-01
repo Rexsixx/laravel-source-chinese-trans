@@ -1,9 +1,5 @@
 <?php
 /**
- * Ramsey，Uuid，转换器，时间变换器接口，降压时间变换器
- */
-
-/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE

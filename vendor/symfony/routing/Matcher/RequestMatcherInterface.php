@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，匹配程序，请求匹配器接口
+ * Symfony，组件，路由选择，匹配程序，请求匹配程序接口
  */
 
 /*
@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 /**
  * RequestMatcherInterface is the interface that all request matcher classes must implement.
- * RequestMatcherInterface是所有请求匹配器类必须实现的接口。
+ * RequestMatcherInterface是所有请求matcher类都必须实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -29,11 +29,10 @@ interface RequestMatcherInterface
 {
     /**
      * Tries to match a request with a set of routes.
-	 * 尝试用一组路由匹配请求。
+	 * 试着用一组路线匹配请求。
      *
      * If the matcher can not find information, it must throw one of the exceptions documented
      * below.
-	 * 如果匹配器无法找到信息，则必须抛出以下文档中记录的异常之一。
      *
      * @return array An array of parameters
      *

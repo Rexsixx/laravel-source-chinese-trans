@@ -18,7 +18,6 @@ namespace phpDocumentor\Reflection;
 
 /**
  * Interface for files processed by the ProjectFactory
- * 用于项目处理的文件接口
  */
 interface File
 {

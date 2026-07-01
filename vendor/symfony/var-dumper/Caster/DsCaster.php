@@ -21,7 +21,6 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts Ds extension classes to array representation.
- * 将Ds扩展类强制转换为数组表示。
  *
  * @author Jáchym Toušek <enumag@gmail.com>
  *

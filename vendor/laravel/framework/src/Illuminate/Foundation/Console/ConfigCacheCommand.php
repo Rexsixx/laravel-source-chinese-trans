@@ -15,7 +15,7 @@ class ConfigCacheCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
@@ -53,7 +53,7 @@ class ConfigCacheCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      *
@@ -91,6 +91,8 @@ class ConfigCacheCommand extends Command
     protected function getFreshConfiguration()
     {
         $app = require $this->laravel->bootstrapPath().'/app.php';
+
+        $app->useStoragePath($this->laravel->storagePath());
 
         $app->make(ConsoleKernelContract::class)->bootstrap();
 

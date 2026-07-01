@@ -18,7 +18,6 @@ namespace Symfony\Component\Debug\Exception;
 
 /**
  * Class (or Trait or Interface) Not Found Exception.
- * 类(或特性或接口)没有发现异常。
  *
  * @author Konstanton Myakshin <koc-dp@yandex.ru>
  *

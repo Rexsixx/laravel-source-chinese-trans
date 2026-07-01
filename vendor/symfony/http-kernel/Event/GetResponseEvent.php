@@ -25,7 +25,6 @@ class GetResponseEvent extends KernelEvent
 
     /**
      * Returns the response object.
-	 * 返回响应对象
      *
      * @return Response|null
      */

@@ -48,7 +48,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Get the keys present in the message bag.
-	 * 把密钥放在留言袋里
+	 * 把钥匙放在留言袋里
      *
      * @return array
      */
@@ -59,7 +59,7 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
 
     /**
      * Add a message to the message bag.
-	 * 添加消息到消息袋
+	 * 添加消息到消息包
      *
      * @param  string  $key
      * @param  string  $message
@@ -116,6 +116,10 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
      */
     public function has($key)
     {
+        if ($this->isEmpty()) {
+            return false;
+        }
+
         if (is_null($key)) {
             return $this->any();
         }
@@ -140,6 +144,10 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
      */
     public function hasAny($keys = [])
     {
+        if ($this->isEmpty()) {
+            return false;
+        }
+
         $keys = is_array($keys) ? $keys : func_get_args();
 
         foreach ($keys as $key) {
@@ -181,8 +189,8 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
         // If the message exists in the message bag, we will transform it and return
         // the message. Otherwise, we will check if the key is implicit & collect
         // all the messages that match the given key and output it as an array.
-		// 如果该消息存在于消息袋中，我们将对其进行转换并返回该消息。
-		// 否则,我们将检查密钥是否隐式并收集与给定密钥匹配的所有消息,并将其输出为一个数组。
+		// 如果该消息存在于消息包中，我们将对其进行转换并返回该消息。
+		// 否则，我们将检查该键是否为隐式键，并收集所有与给定键匹配的消息，并将其以数组形式输出。
         if (array_key_exists($key, $this->messages)) {
             return $this->transform(
                 $this->messages[$key], $this->checkFormat($format), $key
@@ -265,8 +273,8 @@ class MessageBag implements Arrayable, Countable, Jsonable, JsonSerializable, Me
                 // We will simply spin through the given messages and transform each one
                 // replacing the :message place holder with the real message allowing
                 // the messages to be easily formatted to each developer's desires.
-				// 我们将简单地在给定的消息中旋转,并将每个人替换为:消息位置的持有者,
-				// 以真实的消息,允许对每个开发人员的愿望格式化消息。
+				// 我们将直接对给定的信息进行处理，并对每一项信息进行转换，
+				// 将“：message”占位符替换为实际信息，从而使得这些信息能够根据每位开发者的需求进行灵活格式化。
                 return str_replace([':message', ':key'], [$message, $messageKey], $format);
             })->all();
     }

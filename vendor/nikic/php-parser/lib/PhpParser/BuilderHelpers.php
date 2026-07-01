@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，构建器辅助
+ * PhpParser，构建者辅助
  */
 
 namespace PhpParser;
@@ -25,7 +25,6 @@ final class BuilderHelpers
 {
     /**
      * Normalizes a node: Converts builder objects to nodes.
-	 * 规范节点:将构建器对象转换为节点
      *
      * @param Node|Builder $node The node to normalize
      *
@@ -45,7 +44,6 @@ final class BuilderHelpers
 
     /**
      * Normalizes a node to a statement.
-	 * 将节点规范化为语句。
      *
      * Expressions are wrapped in a Stmt\Expression node.
      *
@@ -68,7 +66,6 @@ final class BuilderHelpers
 
     /**
      * Normalizes strings to Identifier.
-	 * 将字符串规范化为标识符
      *
      * @param string|Identifier $name The identifier to normalize
      *

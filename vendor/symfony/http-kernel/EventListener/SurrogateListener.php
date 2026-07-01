@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * SurrogateListener adds a Surrogate-Control HTTP header when the Response needs to be parsed for Surrogates.
- * 当需要为代理解析响应时，SurrogateListener添加了一个代理控制HTTP报头。
+ * 当响应需要解析为Surrogates时,代流式监听器添加了一个超向控制的HTTP头。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *

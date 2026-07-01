@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，HTTP客户端，Chunk 接口
+ * Symfony，契约，Http客户端，Chunk 接口
  */
 
 /*
@@ -18,7 +18,6 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
  * The interface of chunks returned by ResponseStreamInterface::current().
- * ResponseStreamInterface::current（）返回的块接口。
  *
  * When the chunk is first, last or timeout, the content MUST be empty.
  * When an unchecked timeout or a network error occurs, a TransportExceptionInterface
@@ -30,7 +29,6 @@ interface ChunkInterface
 {
     /**
      * Tells when the idle timeout has been reached.
-	 * 告知在空闲超时时
      *
      * @throws TransportExceptionInterface on a network error
      */
@@ -38,7 +36,6 @@ interface ChunkInterface
 
     /**
      * Tells when headers just arrived.
-	 * 告诉头文件何时到达
      *
      * @throws TransportExceptionInterface on a network error or when the idle timeout is reached
      */
@@ -46,7 +43,6 @@ interface ChunkInterface
 
     /**
      * Tells when the body just completed.
-	 * 告知主体何时完成
      *
      * @throws TransportExceptionInterface on a network error or when the idle timeout is reached
      */
@@ -54,7 +50,6 @@ interface ChunkInterface
 
     /**
      * Returns a [status code, headers] tuple when a 1xx status code was just received.
-	 * 当刚刚收到一个1xx状态码时，返回一个[状态码，报头]元组。
      *
      * @throws TransportExceptionInterface on a network error or when the idle timeout is reached
      */

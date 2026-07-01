@@ -1,6 +1,6 @@
 <?php
 /**
- * PhpParser，ConstExprEvaluationException
+ * PhpParser，Const Expr 评价异常
  */
 
 namespace PhpParser;

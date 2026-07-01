@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Css 选择器，分析程序，处理者，空格处理程序
+ * Symfony，组件，Css选择器，分析程序，处理程序，空格处理程序
  */
 
 /*
@@ -20,7 +20,6 @@ use Symfony\Component\CssSelector\Parser\TokenStream;
 
 /**
  * CSS selector whitespace handler.
- * CSS选择器空白处理程序。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.

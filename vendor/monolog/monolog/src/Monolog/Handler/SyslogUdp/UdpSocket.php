@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理程序，SyslogUdp，Udp Socket
+ */
 
 /*
  * This file is part of the Monolog package.

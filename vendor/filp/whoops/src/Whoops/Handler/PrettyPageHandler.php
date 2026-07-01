@@ -36,10 +36,9 @@ class PrettyPageHandler extends Handler
 
     /**
      * Search paths to be scanned for resources.
-	 * 搜寻资源的搜索路径。
+	 * 搜索需要扫描的资源路径。
      *
      * Stored in the reverse order they're declared.
-	 * 以相反的顺序存储。
      *
      * @var array
      */
@@ -55,6 +54,7 @@ class PrettyPageHandler extends Handler
 
     /**
      * The name of the custom css file.
+	 * 自定义css文件的名称
      *
      * @var string|null
      */
@@ -62,6 +62,7 @@ class PrettyPageHandler extends Handler
 
     /**
      * The name of the custom js file.
+	 * 自定义js文件的名称
      *
      * @var string|null
      */

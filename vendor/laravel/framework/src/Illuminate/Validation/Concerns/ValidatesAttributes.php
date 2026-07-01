@@ -15,20 +15,26 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Validation\Rules\Exists;
 use Illuminate\Validation\Rules\Unique;
 use Illuminate\Validation\ValidationData;
+use Egulias\EmailValidator\EmailValidator;
 use Symfony\Component\HttpFoundation\File\File;
+use Egulias\EmailValidator\Validation\RFCValidation;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Egulias\EmailValidator\Validation\DNSCheckValidation;
+use Egulias\EmailValidator\Validation\SpoofCheckValidation;
+use Egulias\EmailValidator\Validation\NoRFCWarningsValidation;
+use Egulias\EmailValidator\Validation\MultipleValidationWithAnd;
 
 trait ValidatesAttributes
 {
     /**
      * Validate that an attribute was "accepted".
-	 * 验证一个属性是否被“接受”。
+	 * 验证一个属性是否被“接受”
      *
      * This validation rule implies the attribute is "required".
-	 * 该验证规则暗示该属性是“必需的”。
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -71,7 +77,7 @@ trait ValidatesAttributes
 	 * 第一次验证失败时“中断”。
      *
      * Always returns true, just lets us put "bail" in rules.
-	 * 总是返回true，只是让我们在规则中加入“保释”。
+	 * 永远要回到真实的地方,让我们在规则中“保释”。
      *
      * @return bool
      */
@@ -114,7 +120,7 @@ trait ValidatesAttributes
 
     /**
      * Validate the date is after a given date.
-	 * 确认日期在给定日期后
+	 * 验证日期在给定日期之后
      *
      * @param  string  $attribute
      * @param  mixed   $value
@@ -258,10 +264,10 @@ trait ValidatesAttributes
     {
         try {
             if ($this->isTestingRelativeDateTime($value)) {
-                return new Carbon($value);
+                return Date::parse($value);
             }
 
-            return new DateTime($value);
+            return date_create($value) ?: null;
         } catch (Exception $e) {
             //
         }
@@ -464,9 +470,13 @@ trait ValidatesAttributes
         $this->requireParameterCount(1, $parameters, 'different');
 
         foreach ($parameters as $parameter) {
+            if (! Arr::has($this->data, $parameter)) {
+                return false;
+            }
+
             $other = Arr::get($this->data, $parameter);
 
-            if (is_null($other) || $value === $other) {
+            if ($value === $other) {
                 return false;
             }
         }
@@ -653,12 +663,35 @@ trait ValidatesAttributes
 	 * 验证属性是否为有效的电子邮件地址
      *
      * @param  string  $attribute
-     * @param  mixed   $value
+     * @param  mixed  $value
+     * @param  array  $parameters
      * @return bool
      */
-    public function validateEmail($attribute, $value)
+    public function validateEmail($attribute, $value, $parameters)
     {
-        return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
+        if (! is_string($value) && ! (is_object($value) && method_exists($value, '__toString'))) {
+            return false;
+        }
+
+        $validations = collect($parameters)
+            ->unique()
+            ->map(function ($validation) {
+                if ($validation === 'rfc') {
+                    return new RFCValidation();
+                } elseif ($validation === 'strict') {
+                    return new NoRFCWarningsValidation();
+                } elseif ($validation === 'dns') {
+                    return new DNSCheckValidation();
+                } elseif ($validation === 'spoof') {
+                    return new SpoofCheckValidation();
+                } elseif ($validation === 'filter') {
+                    return new FilterEmailValidation();
+                }
+            })
+            ->values()
+            ->all() ?: [new RFCValidation()];
+
+        return (new EmailValidator)->isValid($value, new MultipleValidationWithAnd($validations));
     }
 
     /**
@@ -679,8 +712,8 @@ trait ValidatesAttributes
         // The second parameter position holds the name of the column that should be
         // verified as existing. If this parameter is not specified we will guess
         // that the columns being "verified" shares the given attribute's name.
-		// 第二个参数“position”用于指定需要验证是否存在的一列的名称。
-		// 如果这个参数没有指定,我们将猜测“验证”的列会共享给定的属性的名称。
+		// 第二个参数“位置”用于指定需要验证是否存在的一列的名称。
+		// 如果未指定此参数，我们将假定正在“验证”的列与所给属性的名称相同。
         $column = $this->getQueryColumn($parameters, $attribute);
 
         $expected = is_array($value) ? count(array_unique($value)) : 1;
@@ -720,7 +753,7 @@ trait ValidatesAttributes
 
     /**
      * Validate the uniqueness of an attribute value on a given database table.
-	 * 验证给定数据库表上属性值的唯一性
+	 * 验证给定数据库表上属性值的唯一性。
      *
      * If a database column is not specified, the attribute will be used.
 	 * 如果未指定数据库列，则使用该属性。
@@ -739,14 +772,18 @@ trait ValidatesAttributes
         // The second parameter position holds the name of the column that needs to
         // be verified as unique. If this parameter isn't specified we will just
         // assume that this column to be verified shares the attribute's name.
-		// 第二个参数“position”所代表的是需要进行唯一性验证的列的名称。
-		// 如果这个参数没有指定,我们将假设该列被验证,并共享属性的名称。
+		// 第二个参数“位置”用于指定需要验证为唯一的列的名称。
+		// 如果未指定此参数，我们将假定要验证的该列具有与属性相同的名称。
         $column = $this->getQueryColumn($parameters, $attribute);
 
         [$idColumn, $id] = [null, null];
 
         if (isset($parameters[2])) {
             [$idColumn, $id] = $this->getUniqueIds($parameters);
+
+            if (! is_null($id)) {
+                $id = stripslashes($id);
+            }
         }
 
         // The presence verifier is responsible for counting rows within this store
@@ -828,7 +865,7 @@ trait ValidatesAttributes
      * @param  string  $table
      * @return array
      */
-    protected function parseTable($table)
+    public function parseTable($table)
     {
         return Str::contains($table, '.') ? explode('.', $table, 2) : [null, $table];
     }
@@ -841,7 +878,7 @@ trait ValidatesAttributes
      * @param  string  $attribute
      * @return bool
      */
-    protected function getQueryColumn($parameters, $attribute)
+    public function getQueryColumn($parameters, $attribute)
     {
         return isset($parameters[1]) && $parameters[1] !== 'NULL'
                     ? $parameters[1] : $this->guessColumnForQuery($attribute);
@@ -935,7 +972,9 @@ trait ValidatesAttributes
             return $this->getSize($attribute, $value) > $parameters[0];
         }
 
-        $this->requireSameType($value, $comparedToValue);
+        if (! $this->isSameType($value, $comparedToValue)) {
+            return false;
+        }
 
         return $this->getSize($attribute, $value) > $this->getSize($attribute, $comparedToValue);
     }
@@ -961,7 +1000,9 @@ trait ValidatesAttributes
             return $this->getSize($attribute, $value) < $parameters[0];
         }
 
-        $this->requireSameType($value, $comparedToValue);
+        if (! $this->isSameType($value, $comparedToValue)) {
+            return false;
+        }
 
         return $this->getSize($attribute, $value) < $this->getSize($attribute, $comparedToValue);
     }
@@ -987,7 +1028,9 @@ trait ValidatesAttributes
             return $this->getSize($attribute, $value) >= $parameters[0];
         }
 
-        $this->requireSameType($value, $comparedToValue);
+        if (! $this->isSameType($value, $comparedToValue)) {
+            return false;
+        }
 
         return $this->getSize($attribute, $value) >= $this->getSize($attribute, $comparedToValue);
     }
@@ -1013,7 +1056,9 @@ trait ValidatesAttributes
             return $this->getSize($attribute, $value) <= $parameters[0];
         }
 
-        $this->requireSameType($value, $comparedToValue);
+        if (! $this->isSameType($value, $comparedToValue)) {
+            return false;
+        }
 
         return $this->getSize($attribute, $value) <= $this->getSize($attribute, $comparedToValue);
     }
@@ -1028,7 +1073,7 @@ trait ValidatesAttributes
      */
     public function validateImage($attribute, $value)
     {
-        return $this->validateMimes($attribute, $value, ['jpeg', 'png', 'gif', 'bmp', 'svg']);
+        return $this->validateMimes($attribute, $value, ['jpeg', 'png', 'gif', 'bmp', 'svg', 'webp']);
     }
 
     /**
@@ -1260,7 +1305,6 @@ trait ValidatesAttributes
 	 * 如果value为空，“指示”验证应该通过。
      *
      * Always returns true, just lets us put "nullable" in rules.
-	 * 总是返回true,让我们在规则中放置“无效”。
      *
      * @return bool
      */
@@ -1588,7 +1632,7 @@ trait ValidatesAttributes
 
     /**
      * "Validate" optional attributes.
-	 * “验证”可选属性。
+	 * “验证”可选属性
      *
      * Always returns true, just lets us put sometimes in rules.
 	 * 总是返回true，只是让我们加入规则。
@@ -1612,6 +1656,20 @@ trait ValidatesAttributes
     public function validateStartsWith($attribute, $value, $parameters)
     {
         return Str::startsWith($value, $parameters);
+    }
+
+    /**
+     * Validate the attribute ends with a given substring.
+	 * 验证以给定子字符串结尾的属性
+     *
+     * @param  string  $attribute
+     * @param  mixed   $value
+     * @param  array   $parameters
+     * @return bool
+     */
+    public function validateEndsWith($attribute, $value, $parameters)
+    {
+        return Str::endsWith($value, $parameters);
     }
 
     /**
@@ -1671,7 +1729,7 @@ trait ValidatesAttributes
             ((aaa|aaas|about|acap|acct|acr|adiumxtra|afp|afs|aim|apt|attachment|aw|barion|beshare|bitcoin|blob|bolo|callto|cap|chrome|chrome-extension|cid|coap|coaps|com-eventbrite-attendee|content|crid|cvs|data|dav|dict|dlna-playcontainer|dlna-playsingle|dns|dntp|dtn|dvb|ed2k|example|facetime|fax|feed|feedready|file|filesystem|finger|fish|ftp|geo|gg|git|gizmoproject|go|gopher|gtalk|h323|ham|hcp|http|https|iax|icap|icon|im|imap|info|iotdisco|ipn|ipp|ipps|irc|irc6|ircs|iris|iris.beep|iris.lwz|iris.xpc|iris.xpcs|itms|jabber|jar|jms|keyparc|lastfm|ldap|ldaps|magnet|mailserver|mailto|maps|market|message|mid|mms|modem|ms-help|ms-settings|ms-settings-airplanemode|ms-settings-bluetooth|ms-settings-camera|ms-settings-cellular|ms-settings-cloudstorage|ms-settings-emailandaccounts|ms-settings-language|ms-settings-location|ms-settings-lock|ms-settings-nfctransactions|ms-settings-notifications|ms-settings-power|ms-settings-privacy|ms-settings-proximity|ms-settings-screenrotation|ms-settings-wifi|ms-settings-workplace|msnim|msrp|msrps|mtqp|mumble|mupdate|mvn|news|nfs|ni|nih|nntp|notes|oid|opaquelocktoken|pack|palm|paparazzi|pkcs11|platform|pop|pres|prospero|proxy|psyc|query|redis|rediss|reload|res|resource|rmi|rsync|rtmfp|rtmp|rtsp|rtsps|rtspu|secondlife|s3|service|session|sftp|sgn|shttp|sieve|sip|sips|skype|smb|sms|smtp|snews|snmp|soap.beep|soap.beeps|soldat|spotify|ssh|steam|stun|stuns|submit|svn|tag|teamspeak|tel|teliaeid|telnet|tftp|things|thismessage|tip|tn3270|turn|turns|tv|udp|unreal|urn|ut2004|vemmi|ventrilo|videotex|view-source|wais|webcal|ws|wss|wtai|wyciwyg|xcon|xcon-userid|xfire|xmlrpc\.beep|xmlrpc.beeps|xmpp|xri|ymsgr|z39\.50|z39\.50r|z39\.50s))://                                 # protocol
             (([\pL\pN-]+:)?([\pL\pN-]+)@)?          # basic auth
             (
-                ([\pL\pN\pS\-\.])+(\.?([\pL]|xn\-\-[\pL\pN-]+)+\.?) # a domain name
+                ([\pL\pN\pS\-\_\.])+(\.?([\pL]|xn\-\-[\pL\pN-]+)+\.?) # a domain name
                     |                                              # or
                 \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}                 # an IP address
                     |                                              # or
@@ -1719,8 +1777,8 @@ trait ValidatesAttributes
         // return the proper size accordingly. If it is a number, then number itself
         // is the size. If it is a file, we take kilobytes, and for a string the
         // entire length of the string will be considered the attribute size.
-		// 此方法会判断该属性是数字、字符串还是文件，并据此返回相应的大小。
-		// 如果它是一个数字,那么数字本身就是大小。如果它是一个文件,我们使用千字节,而字符串的整个长度将被考虑为属性大小。
+		// 此方法将判断该属性是数字、字符串还是文件，并相应地返回其大小。
+		// 如果是数字，则数字本身即为大小。如果是文件，则以千字节为单位计算，而对于字符串，整个字符串的长度将被视为属性的大小。
         if (is_numeric($value) && $hasNumeric) {
             return $value;
         } elseif (is_array($value)) {
@@ -1806,7 +1864,7 @@ trait ValidatesAttributes
      *
      * @throws \InvalidArgumentException
      */
-    protected function requireParameterCount($count, $parameters, $rule)
+    public function requireParameterCount($count, $parameters, $rule)
     {
         if (count($parameters) < $count) {
             throw new InvalidArgumentException("Validation rule $rule requires at least $count parameters.");
@@ -1814,20 +1872,16 @@ trait ValidatesAttributes
     }
 
     /**
-     * Require comparison values to be of the same type.
-	 * 要求比较值具有相同类型
+     * Check if the parameters are of the same type.
+	 * 检查参数类型是否一致
      *
      * @param  mixed  $first
      * @param  mixed  $second
-     * @return void
-     *
-     * @throws \InvalidArgumentException
+     * @return bool
      */
-    protected function requireSameType($first, $second)
+    protected function isSameType($first, $second)
     {
-        if (gettype($first) != gettype($second)) {
-            throw new InvalidArgumentException('The values under comparison must be of the same type');
-        }
+        return gettype($first) == gettype($second);
     }
 
     /**

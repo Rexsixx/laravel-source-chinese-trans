@@ -28,7 +28,7 @@ class Undefined
 {
     /**
      * Call capturing to merely return this same object.
-	 * 调用捕获只返回相同的对象
+	 * 调用capture只返回相同的对象
      *
      * @param string $method
      * @param array $args

@@ -28,7 +28,7 @@ class DumpServerCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * console命令说明
      *
      * @var string
      */
@@ -58,7 +58,7 @@ class DumpServerCommand extends Command
 
     /**
      * Handle the command.
-	 * 处理命令
+	 * 处理该命令
      *
      * @return void
      */

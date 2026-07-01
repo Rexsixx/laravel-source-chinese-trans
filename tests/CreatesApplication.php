@@ -11,7 +11,7 @@ trait CreatesApplication
 {
     /**
      * Creates the application.
-	 * 创建应用
+	 * 创建应用程序
      *
      * @return \Illuminate\Foundation\Application
      */

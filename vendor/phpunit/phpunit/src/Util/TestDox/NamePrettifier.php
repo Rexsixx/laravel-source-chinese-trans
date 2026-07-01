@@ -1,8 +1,4 @@
 <?php
-/**
- * PHPUnit，工具，测试盒，名称美化者
- */
-
 /*
  * This file is part of PHPUnit.
  *

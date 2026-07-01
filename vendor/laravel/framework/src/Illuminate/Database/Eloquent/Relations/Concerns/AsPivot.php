@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关联，问题，As Pivot
+ * Illuminate，数据库，Eloquent，关系，问题，As Pivot
  */
 
 namespace Illuminate\Database\Eloquent\Relations\Concerns;
@@ -49,11 +49,13 @@ trait AsPivot
     {
         $instance = new static;
 
+        $instance->timestamps = $instance->hasTimestampAttributes($attributes);
+
         // The pivot model is a "dynamic" model since we will set the tables dynamically
         // for the instance. This allows it work for any intermediate tables for the
         // many to many relationship that are defined by this developer's classes.
-		// pivot模型是一个“动态”模型,因为我们将动态地为实例设置表。
-		// 这允许它为许多关系的中间表工作,这些关系是由这个开发人员的类定义的。
+		// 该模型属于“动态”模型，因为我们会根据具体情况动态设置表格。
+		// 这使得它能够适用于由该开发人员的类所定义的任何多对多关系的中间表。
         $instance->setConnection($parent->getConnectionName())
             ->setTable($table)
             ->forceFill($attributes)
@@ -62,13 +64,11 @@ trait AsPivot
         // We store off the parent instance so we will access the timestamp column names
         // for the model, since the pivot model timestamps aren't easily configurable
         // from the developer's point of view. We can use the parents to get these.
-		// 我们存储父实例,因此我们将访问模型的时间戳列名称,因为主元模型时间戳不容易从开发人员的视图中配置。
-		// 我们可以用父母来得到这些。
+		// 我们先保存父实例，这样就能获取模型的时间戳列名了，因为从开发者的角度来看，
+		// 透视模型的时间戳是不容易进行配置的。我们可以利用父实例来获取这些时间戳信息。
         $instance->pivotParent = $parent;
 
         $instance->exists = $exists;
-
-        $instance->timestamps = $instance->hasTimestampAttributes();
 
         return $instance;
     }
@@ -87,9 +87,9 @@ trait AsPivot
     {
         $instance = static::fromAttributes($parent, [], $table, $exists);
 
-        $instance->setRawAttributes($attributes, true);
+        $instance->timestamps = $instance->hasTimestampAttributes($attributes);
 
-        $instance->timestamps = $instance->hasTimestampAttributes();
+        $instance->setRawAttributes($attributes, true);
 
         return $instance;
     }
@@ -125,10 +125,18 @@ trait AsPivot
     public function delete()
     {
         if (isset($this->attributes[$this->getKeyName()])) {
-            return parent::delete();
+            return (int) parent::delete();
         }
 
-        return $this->getDeleteQuery()->delete();
+        if ($this->fireModelEvent('deleting') === false) {
+            return 0;
+        }
+
+        $this->touchOwners();
+
+        return tap($this->getDeleteQuery()->delete(), function () {
+            $this->fireModelEvent('deleted', false);
+        });
     }
 
     /**
@@ -213,14 +221,15 @@ trait AsPivot
     }
 
     /**
-     * Determine if the pivot model has timestamp attributes.
-	 * 确定数据透视模型是否具有时间戳属性
+     * Determine if the pivot model or given attributes has timestamp attributes.
+	 * 确定数据透视模型或给定属性是否具有时间戳属性
      *
+     * @param  array|null  $attributes
      * @return bool
      */
-    public function hasTimestampAttributes()
+    public function hasTimestampAttributes($attributes = null)
     {
-        return array_key_exists($this->getCreatedAtColumn(), $this->attributes);
+        return array_key_exists($this->getCreatedAtColumn(), $attributes ?? $this->attributes);
     }
 
     /**
@@ -272,7 +281,7 @@ trait AsPivot
      * Get a new query to restore one or more models by their queueable IDs.
 	 * 获取一个新查询，根据可排队id还原一个或多个模型。
      *
-     * @param  array<int>  $ids
+     * @param  int[]|string[]|string  $ids
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function newQueryForRestoration($ids)
@@ -296,7 +305,7 @@ trait AsPivot
      * Get a new query to restore multiple models by their queueable IDs.
 	 * 获取一个新查询，根据可排队id恢复多个模型。
      *
-     * @param  array|int  $ids
+     * @param  int[]|string[]  $ids
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function newQueryForCollectionRestoration(array $ids)

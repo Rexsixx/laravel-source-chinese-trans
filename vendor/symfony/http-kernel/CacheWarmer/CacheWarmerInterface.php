@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，缓存加热器，Cache Warmer 接口
+ * Symfony，组件，Http内核，CacheWarmer，CacheWarmer 接口
  */
 
 /*

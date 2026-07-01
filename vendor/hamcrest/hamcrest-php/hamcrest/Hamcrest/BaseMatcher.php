@@ -11,7 +11,6 @@ namespace Hamcrest;
 
 /**
  * BaseClass for all Matcher implementations.
- * 所有Matcher实现的BaseClass。
  *
  * @see Hamcrest\Matcher
  */

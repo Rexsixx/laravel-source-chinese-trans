@@ -12,13 +12,14 @@ class ForgotPasswordController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Password Reset Controller		密码复位控制器
+    | Password Reset Controller		密码重置控制器
     |--------------------------------------------------------------------------
     |
     | This controller is responsible for handling password reset emails and
     | includes a trait which assists in sending these notifications from
     | your application to your users. Feel free to explore this trait.
-	| 此控制器负责处理密码重置邮件，并包含一个特性，可帮助您从应用程序向用户发送此类通知。
+	| 这个控制器负责处理密码重置电子邮件,并包括一个特性,
+	| 它可以帮助将这些通知从你的应用程序发送给你的用户。你可以自由地探索这个特质。
     |
     */
 

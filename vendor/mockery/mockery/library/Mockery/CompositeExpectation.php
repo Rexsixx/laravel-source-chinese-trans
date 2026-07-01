@@ -28,7 +28,6 @@ class CompositeExpectation implements ExpectationInterface
 {
     /**
      * Stores an array of all expectations for this composite
-	 * 存储对该复合材料的所有期望的数组
      *
      * @var array
      */

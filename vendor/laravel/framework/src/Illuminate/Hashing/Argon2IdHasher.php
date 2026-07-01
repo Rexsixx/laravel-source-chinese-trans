@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，哈希，Argon2Id 哈希
+ * Illuminate，哈希算法，Argon2Id 哈希计算器
  */
 
 namespace Illuminate\Hashing;

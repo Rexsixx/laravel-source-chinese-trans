@@ -105,7 +105,7 @@ class BeanstalkdJob extends Job implements JobContract
 
     /**
      * Get the job identifier.
-	 * 获取作业标识符
+	 * 获取工作标识符
      *
      * @return int
      */

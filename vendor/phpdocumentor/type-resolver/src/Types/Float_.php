@@ -1,7 +1,4 @@
 <?php
-/**
- * phpDocumentor，反射，类型，Float_
- */
 
 declare(strict_types=1);
 

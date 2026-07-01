@@ -6,11 +6,11 @@
 namespace Illuminate\Foundation\Http\Middleware;
 
 use Closure;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\InteractsWithTime;
 use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Contracts\Encryption\Encrypter;
 use Illuminate\Session\TokenMismatchException;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 
 class VerifyCsrfToken
@@ -19,9 +19,9 @@ class VerifyCsrfToken
 
     /**
      * The application instance.
-	 * 应用实例
+	 * 程序实例
      *
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
@@ -53,7 +53,7 @@ class VerifyCsrfToken
      * Create a new middleware instance.
 	 * 创建一个新的中间件实例
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
      * @return void
      */
@@ -88,7 +88,7 @@ class VerifyCsrfToken
             });
         }
 
-        throw new TokenMismatchException;
+        throw new TokenMismatchException('CSRF token mismatch.');
     }
 
     /**

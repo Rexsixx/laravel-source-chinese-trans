@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Css 选择器，分析程序，Shortcut，空字符串解析器
+ * Symfony，组件，Css选择器，分析程序，Shortcut，空字符串解析器
  */
 
 /*
@@ -20,7 +20,6 @@ use Symfony\Component\CssSelector\Parser\ParserInterface;
 
 /**
  * CSS selector class parser shortcut.
- * CSS选择器类解析器快捷方式。
  *
  * This shortcut ensure compatibility with previous version.
  * - The parser fails to parse an empty string.

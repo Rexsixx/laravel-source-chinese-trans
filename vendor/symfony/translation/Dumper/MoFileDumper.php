@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，转储，无文件转储
+ * Symfony，组件，翻译，转储，Mo File 转储
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * MoFileDumper generates a gettext formatted string representation of a message catalogue.
+ * MoFileDumper生成消息目录的一个gettext格式的字符串表示。
  *
  * @author Stealth35
  */

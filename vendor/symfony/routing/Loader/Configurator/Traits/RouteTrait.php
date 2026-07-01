@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，加载器，配置，特性，路由特征
+ * Symfony，组件，路由选择，加载程序，配置程序，特性，路由特征
  */
 
 /*
@@ -26,7 +26,6 @@ trait RouteTrait
 
     /**
      * Adds defaults.
-	 * 添加默认
      *
      * @return $this
      */
@@ -39,7 +38,7 @@ trait RouteTrait
 
     /**
      * Adds requirements.
-	 * 增加了需求
+	 * 增加需求
      *
      * @return $this
      */
@@ -52,7 +51,6 @@ trait RouteTrait
 
     /**
      * Adds options.
-	 * 添加选项
      *
      * @return $this
      */
@@ -65,7 +63,6 @@ trait RouteTrait
 
     /**
      * Whether paths should accept utf8 encoding.
-	 * 路径是否接受utf8编码
      *
      * @return $this
      */
@@ -78,7 +75,6 @@ trait RouteTrait
 
     /**
      * Sets the condition.
-	 * 设置条件
      *
      * @return $this
      */
@@ -91,7 +87,6 @@ trait RouteTrait
 
     /**
      * Sets the pattern for the host.
-	 * 为主机设置模式
      *
      * @return $this
      */

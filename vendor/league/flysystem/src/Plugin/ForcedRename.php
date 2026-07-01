@@ -36,7 +36,6 @@ class ForcedRename extends AbstractPlugin
             $deleted = $this->filesystem->delete($newpath);
         } catch (FileNotFoundException $e) {
             // The destination path does not exist. That's ok.
-			// 目标路径不存在。没关系。
             $deleted = true;
         }
 

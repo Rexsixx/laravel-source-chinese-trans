@@ -1,7 +1,4 @@
 <?php
-/**
- * Psy，代码清理器，Leave Psysh Alone Pass
- */
 
 /*
  * This file is part of Psy Shell.

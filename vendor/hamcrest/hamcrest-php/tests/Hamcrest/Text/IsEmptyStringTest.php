@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，文本，是否空字符串测试
+ * Hamcrest，文本，空字符串测试
  */
 
 namespace Hamcrest\Text;

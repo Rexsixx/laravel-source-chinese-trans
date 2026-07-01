@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，数据头，头接口
+ * Symfony，组件，Mime，数据头，标题接口
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\Mime\Header;
 
 /**
  * A MIME Header.
+ * 一个MIME头。
  *
  * @author Chris Corbyn
  */
@@ -33,7 +34,6 @@ interface HeaderInterface
 
     /**
      * Gets the body.
-	 * 得到主体。
      *
      * The return type depends on the Header concrete class.
      *

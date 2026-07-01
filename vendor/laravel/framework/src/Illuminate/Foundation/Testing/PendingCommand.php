@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，待定的命令
+ * Illuminate，基础，测试，待处理的命令
  */
 
 namespace Illuminate\Foundation\Testing;
@@ -27,7 +27,7 @@ class PendingCommand
      * The application instance.
 	 * 程序实例
      *
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
@@ -68,7 +68,7 @@ class PendingCommand
 	 * 创建一个新的暂挂控制台命令运行
      *
      * @param  \PHPUnit\Framework\TestCase  $test
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  string  $command
      * @param  array  $parameters
      * @return void

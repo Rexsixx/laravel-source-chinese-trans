@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，加载器，Mo 文件加载器
+ * Symfony，组件，翻译，载入程序，Mo File 加载器
  */
 
 /*
@@ -31,17 +31,20 @@ class MoFileLoader extends FileLoader
     /**
      * Magic used for validating the format of an MO file as well as
      * detecting if the machine used to create that file was big endian.
+	 * 用于验证MO文件格式的魔法,以及检测用于创建该文件的机器是否非常大。
      */
     public const MO_BIG_ENDIAN_MAGIC = 0xDE120495;
 
     /**
      * The size of the header of an MO file in bytes.
+	 * 一个MO文件的头的大小
      */
     public const MO_HEADER_SIZE = 28;
 
     /**
      * Parses machine object (MO) format, independent of the machine's endian it
      * was created on. Both 32bit and 64bit systems are supported.
+	 * 解析机器对象(MO)格式,独立于机器的endian。支持32bit和64bit系统。
      *
      * {@inheritdoc}
      */

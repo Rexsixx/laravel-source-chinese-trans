@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，契约，HTTP客户端，异常，异常接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Contracts\HttpClient\Exception;
 
 /**
  * The base interface for all exceptions in the contract.
- * 本合同中所有例外的基本界面。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

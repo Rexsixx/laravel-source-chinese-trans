@@ -1,6 +1,6 @@
 <?php
 /**
- * phpDocumentor，反射，伪类型，Html 泄漏字符串
+ * phpDocumentor，反射，伪类型，非Html字符串
  */
 
 declare(strict_types=1);

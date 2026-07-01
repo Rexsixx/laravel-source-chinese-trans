@@ -20,7 +20,6 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
 /**
  * BundleInterface.
- * Bundle 接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -28,13 +27,11 @@ interface BundleInterface extends ContainerAwareInterface
 {
     /**
      * Boots the Bundle.
-	 * 启动Bundle
      */
     public function boot();
 
     /**
      * Shutdowns the Bundle.
-	 * 关闭Bundle
      */
     public function shutdown();
 

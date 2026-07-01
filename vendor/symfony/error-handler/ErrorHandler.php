@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，错误处理器，ErrorHandler
+ * Symfony，组件，错误处理程序，Error Handler
  */
 
 /*
@@ -28,7 +28,6 @@ use Symfony\Component\ErrorHandler\Exception\SilencedErrorContext;
 
 /**
  * A generic ErrorHandler for the PHP engine.
- * PHP引擎的通用ErrorHandler。
  *
  * Provides five bit fields that control how errors are handled:
  * - thrownErrors: errors thrown as \ErrorException
@@ -111,7 +110,6 @@ class ErrorHandler
 
     /**
      * Registers the error handler.
-	 * 注册错误处理程序
      */
     public static function register(self $handler = null, bool $replace = true): self
     {
@@ -162,7 +160,6 @@ class ErrorHandler
 
     /**
      * Calls a function and turns any PHP error into \ErrorException.
-	 * 调用一个函数并将任何PHP错误转换为\ ErrorException
      *
      * @return mixed What $function(...$arguments) returns
      *
@@ -200,7 +197,6 @@ class ErrorHandler
 
     /**
      * Sets a logger to non assigned errors levels.
-	 * 设置一个记录器到不指定的错误级别
      *
      * @param LoggerInterface $logger  A PSR-3 logger to put as default for the given levels
      * @param array|int|null  $levels  An array map of E_* to LogLevel::* or an integer bit field of E_* constants

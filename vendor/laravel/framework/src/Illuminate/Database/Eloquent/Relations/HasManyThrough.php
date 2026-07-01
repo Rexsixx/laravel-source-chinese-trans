@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，具有多种样式
+ * Illuminate，数据库，Eloquent，关系，有多个
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -202,8 +202,8 @@ class HasManyThrough extends Relation
         // Once we have the dictionary we can simply spin through the parent models to
         // link them up with their children using the keyed dictionary to make the
         // matching very convenient and easy work. Then we'll just return them.
-		// 一旦我们有了字典,我们就可以简单地通过父模型将它们与他们的孩子连接起来,
-		// 使用字母字典,使匹配非常方便和容易工作。然后我们就返回它们。
+		// 一旦我们有了这个字典，我们就可以直接遍历父模型，利用带键的字典将它们与子模型关联起来，
+		// 这样就能使匹配操作变得非常便捷和容易。然后我们就只需将它们返回即可。
         foreach ($models as $model) {
             if (isset($dictionary[$key = $model->getAttribute($this->localKey)])) {
                 $model->setRelation(
@@ -229,10 +229,9 @@ class HasManyThrough extends Relation
         // First we will create a dictionary of models keyed by the foreign key of the
         // relationship as this will allow us to quickly access all of the related
         // models without having to do nested looping which will be quite slow.
-		// 首先,我们将创建一个由关系的外键键键入的模型字典,这将允许我们快速访问所有相关模型,
-		// 而不必做嵌套的循环,这将会非常缓慢。
+		// 首先，我们将创建一个基于关系中外键的模型字典，这样我们就能快速访问所有相关模型，而无需进行嵌套循环操作，因为后者会非常耗时。
         foreach ($results as $result) {
-            $dictionary[$result->{$this->firstKey}][] = $result;
+            $dictionary[$result->laravel_through_key][] = $result;
         }
 
         return $dictionary;
@@ -395,8 +394,8 @@ class HasManyThrough extends Relation
         // If we actually found models we will also eager load any relationships that
         // have been specified as needing to be eager loaded. This will solve the
         // n + 1 query problem for the developer and also increase performance.
-		// 如果我们真正找到了模型,我们也会急切地加载任何被指定为需要被加载的关系。
-		// 这将解决开发人员的n + 1查询问题,并提高性能。
+		// 如果我们真的找到了相应的模型，那么我们还会自动加载那些已被指定需要进行“懒加载”的关系。
+		// 这将解决开发人员面临的“n + 1 查询”问题，并且还能提高性能。
         if (count($models) > 0) {
             $models = $builder->eagerLoadRelations($models);
         }
@@ -451,7 +450,7 @@ class HasManyThrough extends Relation
             $columns = [$this->related->getTable().'.*'];
         }
 
-        return array_merge($columns, [$this->getQualifiedFirstKeyName()]);
+        return array_merge($columns, [$this->getQualifiedFirstKeyName().' as laravel_through_key']);
     }
 
     /**
@@ -698,7 +697,7 @@ class HasManyThrough extends Relation
 
     /**
      * Get the local key on the intermediary model.
-	 * 获取中介模型上的本地键。
+	 * 获取中介模型上的本地键
      *
      * @return string
      */

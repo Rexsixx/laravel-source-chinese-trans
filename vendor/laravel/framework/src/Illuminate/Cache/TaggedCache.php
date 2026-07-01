@@ -9,7 +9,9 @@ use Illuminate\Contracts\Cache\Store;
 
 class TaggedCache extends Repository
 {
-    use RetrievesMultipleKeys;
+    use RetrievesMultipleKeys {
+        putMany as putManyAlias;
+    }
 
     /**
      * The tag set instance.
@@ -35,11 +37,28 @@ class TaggedCache extends Repository
     }
 
     /**
+     * Store multiple items in the cache for a given number of seconds.
+	 * 在给定的秒数内将多个项存储在缓存中
+     *
+     * @param  array  $values
+     * @param  int|null  $ttl
+     * @return bool
+     */
+    public function putMany(array $values, $ttl = null)
+    {
+        if ($ttl === null) {
+            return $this->putManyForever($values);
+        }
+
+        return $this->putManyAlias($values, $ttl);
+    }
+
+    /**
      * Increment the value of an item in the cache.
 	 * 增加缓存中项的值
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return void
      */
     public function increment($key, $value = 1)
@@ -49,10 +68,10 @@ class TaggedCache extends Repository
 
     /**
      * Decrement the value of an item in the cache.
-	 * 递减缓存中项的值
+	 * 递减缓存中项的值。
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return void
      */
     public function decrement($key, $value = 1)

@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，处理程序，Zend Monitor 处理程序
+ * Monolog，处理程序，Zend 监视器处理程序
  */
 
 /*
@@ -19,6 +19,7 @@ use Monolog\Logger;
 
 /**
  * Handler sending logs to Zend Monitor
+ * 处理发送日志到Zend监视器
  *
  * @author  Christian Bergau <cbergau86@gmail.com>
  * @author  Jason Davis <happydude@jasondavis.net>

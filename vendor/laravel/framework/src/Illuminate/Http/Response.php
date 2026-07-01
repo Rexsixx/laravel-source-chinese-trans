@@ -21,7 +21,7 @@ class Response extends BaseResponse
 
     /**
      * Set the content on the response.
-	 * 向响应添加一个cookie
+	 * 设置响应的内容
      *
      * @param  mixed  $content
      * @return $this
@@ -34,6 +34,7 @@ class Response extends BaseResponse
         // the content to JSON. This is useful when returning something like models
         // from routes that will be automatically transformed to their JSON form.
 		// 如果内容是“可转换为 JSON 格式”的，我们将设置相应的标头，并将内容转换为 JSON 格式。
+		// 当从路由中返回诸如模型之类的数据，并且这些数据会自动转换为 JSON 格式时，这种方法就很有用。
         if ($this->shouldBeJson($content)) {
             $this->header('Content-Type', 'application/json');
 
@@ -43,6 +44,8 @@ class Response extends BaseResponse
         // If this content implements the "Renderable" interface then we will call the
         // render method on the object so we will avoid any "__toString" exceptions
         // that might be thrown and have their errors obscured by PHP's handling.
+		// 如果此内容实现了“可渲染”接口，那么我们将调用该对象的“渲染”方法，
+		// 这样就能避免可能出现的“__toString”异常，并且这些错误也能通过 PHP 的处理方式得以掩盖。
         elseif ($content instanceof Renderable) {
             $content = $content->render();
         }
@@ -54,7 +57,7 @@ class Response extends BaseResponse
 
     /**
      * Determine if the given content should be turned into JSON.
-	 * 确定给定的内容是否应该变成JSON
+	 * 确定是否应该将给定的内容转换为JSON
      *
      * @param  mixed  $content
      * @return bool

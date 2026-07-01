@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，隐式路由绑定
+ * Illuminate，路由选择，隐式路由绑定
  */
 
 namespace Illuminate\Routing;
@@ -18,6 +18,8 @@ class ImplicitRouteBinding
      * @param  \Illuminate\Container\Container  $container
      * @param  \Illuminate\Routing\Route  $route
      * @return void
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public static function resolveForRoute($container, $route)
     {
@@ -37,7 +39,7 @@ class ImplicitRouteBinding
             $instance = $container->make($parameter->getClass()->name);
 
             if (! $model = $instance->resolveRouteBinding($parameterValue)) {
-                throw (new ModelNotFoundException)->setModel(get_class($instance));
+                throw (new ModelNotFoundException)->setModel(get_class($instance), [$parameterValue]);
             }
 
             $route->setParameter($parameterName, $model);

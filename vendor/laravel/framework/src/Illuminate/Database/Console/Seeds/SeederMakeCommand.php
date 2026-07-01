@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，控制台，播种，播种机编译命令
+ * Illuminate，数据库，控制台，种子，播种机生成命令
  */
 
 namespace Illuminate\Database\Console\Seeds;
@@ -96,7 +96,7 @@ class SeederMakeCommand extends GeneratorCommand
 
     /**
      * Parse the class name and format according to the root namespace.
-	 * 根据根命名空间解析类名和格式
+	 * 根据根命名空间解析类名和格式。
      *
      * @param  string  $name
      * @return string

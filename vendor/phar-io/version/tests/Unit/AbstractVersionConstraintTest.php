@@ -1,4 +1,8 @@
 <?php
+/**
+ * PharIo，版本，抽象版本约束测试
+ */
+
 /*
  * This file is part of PharIo\Version.
  *

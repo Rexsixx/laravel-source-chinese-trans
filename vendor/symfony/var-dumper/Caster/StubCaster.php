@@ -18,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts a caster's Stub.
+ * Casts caster的存根
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，Http 内核
+ * Symfony，组件，Http内核，Http内核
  */
 
 /*
@@ -50,7 +50,7 @@ class_exists(KernelEvents::class);
 
 /**
  * HttpKernel notifies events to convert a Request object to a Response one.
- * HttpKernel通知事件将Request对象转换为Response对象。
+ * HttpKernel通知事件将请求对象转换为响应对象。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -136,7 +136,6 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
 
     /**
      * Handles a request to convert it to a response.
-	 * 处理请求以将其转换为响应。
      *
      * Exceptions are not caught.
      *
@@ -197,7 +196,6 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
 
     /**
      * Filters a response object.
-	 * 过滤响应对象
      *
      * @throws \RuntimeException if the passed object is not a Response instance
      */

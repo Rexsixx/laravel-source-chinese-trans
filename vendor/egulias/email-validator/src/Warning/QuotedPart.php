@@ -1,13 +1,10 @@
 <?php
-/**
- * Egulias，电子邮件验证器，警告，引用部分
- */
 
 namespace Egulias\EmailValidator\Warning;
 
 class QuotedPart extends Warning
 {
-    public const CODE = 36;
+    const CODE = 36;
 
     /**
      * @param scalar $prevToken

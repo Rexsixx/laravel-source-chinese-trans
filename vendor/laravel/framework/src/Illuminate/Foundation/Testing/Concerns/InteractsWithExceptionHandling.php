@@ -103,6 +103,18 @@ trait InteractsWithExceptionHandling
             }
 
             /**
+             * Determine if the exception should be reported.
+			 * 确定是否应该报告异常
+             *
+             * @param  \Exception  $e
+             * @return bool
+             */
+            public function shouldReport(Exception $e)
+            {
+                return false;
+            }
+
+            /**
              * Render the given exception.
 			 * 呈现给定的异常
              *

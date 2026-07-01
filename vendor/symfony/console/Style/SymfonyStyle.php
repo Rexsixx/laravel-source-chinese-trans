@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，样式，Symfony 风格
+ * Symfony，组件，控制台，样式，Symfony 样式
  */
 
 /*
@@ -33,7 +33,6 @@ use Symfony\Component\Console\Terminal;
 
 /**
  * Output decorator helpers for the Symfony Style Guide.
- * 对Symfony风格指南的输出装饰器助手。
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
@@ -60,7 +59,6 @@ class SymfonyStyle extends OutputStyle
 
     /**
      * Formats a message as a block of text.
-	 * 将消息格式化为文本块
      *
      * @param string|array $messages The message to write in the block
      * @param string|null  $type     The block type (added in [] on first line)
@@ -133,7 +131,6 @@ class SymfonyStyle extends OutputStyle
 
     /**
      * Formats a command comment.
-	 * 格式化命令注释
      *
      * @param string|array $message
      */

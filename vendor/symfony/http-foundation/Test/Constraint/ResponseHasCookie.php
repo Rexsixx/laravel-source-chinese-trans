@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，HTTP基础，测试，约束，响应有Cookie
- */
 
 /*
  * This file is part of the Symfony package.

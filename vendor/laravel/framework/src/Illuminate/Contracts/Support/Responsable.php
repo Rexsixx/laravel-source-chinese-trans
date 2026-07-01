@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，支持，Responsable
+ * Illuminate，契约，支持，可响应的
  */
 
 namespace Illuminate\Contracts\Support;
@@ -12,7 +12,7 @@ interface Responsable
 	 * 创建一个表示对象的HTTP响应
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function toResponse($request);
 }

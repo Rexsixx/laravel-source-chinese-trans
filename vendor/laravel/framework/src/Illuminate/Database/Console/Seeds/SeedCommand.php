@@ -1,6 +1,6 @@
 <?php
-/**
- * Illuminate，数据库，控制台，播种，种子命令
+、/**
+ * Illuminate，数据库，控制台，种子，种子命令
  */
 
 namespace Illuminate\Database\Console\Seeds;
@@ -55,7 +55,7 @@ class SeedCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */

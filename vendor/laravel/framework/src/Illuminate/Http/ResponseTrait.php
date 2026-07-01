@@ -13,7 +13,7 @@ trait ResponseTrait
 {
     /**
      * The original content of the response.
-	 * 反应的原始内容
+	 * 回复的原始内容
      *
      * @var mixed
      */
@@ -21,7 +21,7 @@ trait ResponseTrait
 
     /**
      * The exception that triggered the error response (if applicable).
-	 * 触发错误响应的异常(如果适用)
+	 * 触发错误响应的异常（如果适用）
      *
      * @var \Exception|null
      */

@@ -108,7 +108,6 @@ class Frame implements Serializable
     /**
      * Returns the full contents of the file for this frame,
      * if it's known.
-	 * 如果已知,返回该帧的完整内容。
      * @return string|null
      */
     public function getFileContents()

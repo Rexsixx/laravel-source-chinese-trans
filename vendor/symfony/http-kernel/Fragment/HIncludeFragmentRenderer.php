@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，片段，HInclude片段渲染器
+ * Symfony，组件，Http内核，碎片，HInclude片段渲染器
  */
 
 /*
@@ -51,7 +51,6 @@ class HIncludeFragmentRenderer extends RoutableFragmentRenderer
 
     /**
      * Sets the templating engine to use to render the default content.
-	 * 设置要用于呈现默认内容的模板引擎
      *
      * @param EngineInterface|Environment|null $templating An EngineInterface or an Environment instance
      *

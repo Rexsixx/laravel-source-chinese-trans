@@ -1,7 +1,4 @@
 <?php
-/**
- * phpDocumentor，反射，类型，数组主键
- */
 
 declare(strict_types=1);
 

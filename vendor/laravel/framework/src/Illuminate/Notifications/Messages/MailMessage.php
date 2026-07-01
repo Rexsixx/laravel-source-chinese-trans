@@ -1,14 +1,17 @@
 <?php
 /**
- * Illuminate，通知，消息，邮件消息
+ * Illuminate，通知，信息，电子邮件信息
  */
 
 namespace Illuminate\Notifications\Messages;
 
 use Traversable;
+use Illuminate\Mail\Markdown;
+use Illuminate\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Renderable;
 
-class MailMessage extends SimpleMessage
+class MailMessage extends SimpleMessage implements Renderable
 {
     /**
      * The view to be rendered.
@@ -33,6 +36,14 @@ class MailMessage extends SimpleMessage
      * @var string|null
      */
     public $markdown = 'notifications::email';
+
+    /**
+     * The current theme being used when generating emails.
+	 * 生成电子邮件时使用的当前主题
+     *
+     * @var string|null
+     */
+    public $theme;
 
     /**
      * The "from" information for the message.
@@ -91,6 +102,14 @@ class MailMessage extends SimpleMessage
     public $priority;
 
     /**
+     * The callbacks for the message.
+	 * 消息的回调
+     *
+     * @var array
+     */
+    public $callbacks = [];
+
+    /**
      * Set the view for the mail message.
 	 * 设置邮件消息的视图
      *
@@ -136,6 +155,20 @@ class MailMessage extends SimpleMessage
     public function template($template)
     {
         $this->markdown = $template;
+
+        return $this;
+    }
+
+    /**
+     * Set the theme to use with the Markdown template.
+	 * 设置要与Markdown模板一起使用的主题
+     *
+     * @param  string  $theme
+     * @return $this
+     */
+    public function theme($theme)
+    {
+        $this->theme = $theme;
 
         return $this;
     }
@@ -297,5 +330,38 @@ class MailMessage extends SimpleMessage
         return is_array($address) ||
                $address instanceof Arrayable ||
                $address instanceof Traversable;
+    }
+
+    /**
+     * Render the mail notification message into an HTML string.
+	 * 将邮件通知消息呈现为HTML字符串
+     *
+     * @return string
+     */
+    public function render()
+    {
+        if (isset($this->view)) {
+            return Container::getInstance()->make('mailer')->render(
+                $this->view, $this->data()
+            );
+        }
+
+        return Container::getInstance()
+            ->make(Markdown::class)
+            ->render($this->markdown, $this->data());
+    }
+
+    /**
+     * Register a callback to be called with the Swift message instance.
+	 * 在Swift消息实例中注册一个回调函数
+     *
+     * @param  callable  $callback
+     * @return $this
+     */
+    public function withSwiftMessage($callback)
+    {
+        $this->callbacks[] = $callback;
+
+        return $this;
     }
 }

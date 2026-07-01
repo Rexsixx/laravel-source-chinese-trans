@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，错误处理器，错误增强器，错误增强接口
+ * Symfony，组件，错误处理程序，误差增强器，误差增强器接口
  */
 
 /*
@@ -18,7 +18,6 @@ interface ErrorEnhancerInterface
 {
     /**
      * Returns an \Throwable instance if the class is able to improve the error, null otherwise.
-	 * 如果类能够改善错误，则返回一个\Throwable实例，否则返回null。
      */
     public function enhance(\Throwable $error): ?\Throwable;
 }

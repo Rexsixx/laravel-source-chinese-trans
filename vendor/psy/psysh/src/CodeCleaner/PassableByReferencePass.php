@@ -1,7 +1,4 @@
 <?php
-/**
- * Psy，代码清理器，参考通行证
- */
 
 /*
  * This file is part of Psy Shell.
@@ -26,7 +23,6 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * Validate that only variables (and variable-like things) are passed by reference.
- * 验证只有变量(和可变的事物)通过引用通过。
  */
 class PassableByReferencePass extends CodeCleanerPass
 {

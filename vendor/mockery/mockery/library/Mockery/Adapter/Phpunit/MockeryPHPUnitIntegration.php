@@ -46,7 +46,6 @@ trait MockeryPHPUnitIntegration
     /**
      * Performs assertions shared by all tests of a test case. This method is
      * called before execution of a test ends and before the tearDown method.
-	 * 执行测试用例的所有测试共享的断言。在测试结束和删除方法之前调用该方法。
      */
     protected function mockeryAssertPostConditions()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，日志，调试日志接口
+ * Symfony，组件，Http内核，记录，调试记录器接口
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * DebugLoggerInterface.
- * 调试日志接口
+ * 调试记录器接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

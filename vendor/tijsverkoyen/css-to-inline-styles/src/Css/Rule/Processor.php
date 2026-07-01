@@ -1,6 +1,6 @@
 <?php
 /**
- * TijsVerkoyen，Css到内联样式，Css，规则，处理器
+ * TijsVerkoyen，Css 到内联样式，Css，规则，处理器
  */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css\Rule;
@@ -12,7 +12,7 @@ class Processor
 {
     /**
      * Splits a string into separate rules
-	 * 将字符串拆分为单独的规则
+	 * 将字符串分割成单独的规则
      *
      * @param string $rulesString
      *
@@ -84,6 +84,7 @@ class Processor
     /**
      * Calculates the specificity based on a CSS Selector string,
      * Based on the patterns from premailer/css_parser by Alex Dunae
+	 * 根据CSS选择器字符串计算特异性，基于Alex Dunae的premailer/css_parser中的模式。
      *
      * @see https://github.com/premailer/css_parser/blob/master/lib/css_parser/regexps.rb
      *
@@ -159,6 +160,7 @@ class Processor
         $value = $e1Specificity->compareTo($e2->getSpecificity());
 
         // if the specificity is the same, use the order in which the element appeared
+		// 如果特异性相同，则使用元素出现的顺序。
         if ($value === 0) {
             $value = $e1->getOrder() - $e2->getOrder();
         }

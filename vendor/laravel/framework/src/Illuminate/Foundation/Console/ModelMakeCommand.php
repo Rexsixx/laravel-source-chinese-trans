@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，模型编译命令
+ * Illuminate，基础，控制台，模型 Make 命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -91,7 +91,7 @@ class ModelMakeCommand extends GeneratorCommand
      */
     protected function createMigration()
     {
-        $table = Str::plural(Str::snake(class_basename($this->argument('name'))));
+        $table = Str::snake(Str::pluralStudly(class_basename($this->argument('name'))));
 
         if ($this->option('pivot')) {
             $table = Str::singular($table);
@@ -134,18 +134,6 @@ class ModelMakeCommand extends GeneratorCommand
         }
 
         return __DIR__.'/stubs/model.stub';
-    }
-
-    /**
-     * Get the default namespace for the class.
-	 * 获取类的默认命名空间
-     *
-     * @param  string  $rootNamespace
-     * @return string
-     */
-    protected function getDefaultNamespace($rootNamespace)
-    {
-        return $rootNamespace;
     }
 
     /**

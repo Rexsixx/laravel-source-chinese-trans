@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，约束，按顺序查看
+ * Illuminate，基础，测试，约束条件，See In Order
  */
 
 namespace Illuminate\Foundation\Testing\Constraints;
@@ -45,7 +45,7 @@ class SeeInOrder extends Constraint
      * @param  array  $values
      * @return bool
      */
-    public function matches($values) : bool
+    public function matches($values): bool
     {
         $position = 0;
 
@@ -75,7 +75,7 @@ class SeeInOrder extends Constraint
      * @param  array  $values
      * @return string
      */
-    public function failureDescription($values) : string
+    public function failureDescription($values): string
     {
         return sprintf(
             'Failed asserting that \'%s\' contains "%s" in specified order.',
@@ -90,7 +90,7 @@ class SeeInOrder extends Constraint
      *
      * @return string
      */
-    public function toString() : string
+    public function toString(): string
     {
         return (new ReflectionClass($this))->name;
     }

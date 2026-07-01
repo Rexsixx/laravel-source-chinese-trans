@@ -23,7 +23,7 @@ class_exists(NotFoundExceptionInterface::class);
 
 /**
  * A trait to help implement ServiceProviderInterface.
- * 帮助实现ServiceProviderInterface的trait。
+ * 一个有助于实现ServiceProviderInterface的特性。
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  * @author Nicolas Grekas <p@tchwork.com>

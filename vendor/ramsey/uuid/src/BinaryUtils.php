@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，二进制工具
+ * Ramsey，Uuid，二进制 Utils
  */
 
 namespace Ramsey\Uuid;
@@ -13,7 +13,6 @@ class BinaryUtils
 {
     /**
      * Applies the RFC 4122 variant field to the `clock_seq_hi_and_reserved` field
-	 * 将RFC 4122变域应用于“time_seq_seq_hi_and_预留”字段
      *
      * @param $clockSeqHi
      * @return int The high field of the clock sequence multiplexed with the variant

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，数据采集装置，内存数据采集器
+ * Symfony，组件，Http内核，数据收集器，Memory数据收集器
  */
 
 /*
@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * MemoryDataCollector.
- * 内存数据采集器
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *

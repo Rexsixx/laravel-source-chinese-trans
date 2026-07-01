@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，转储，Qt 文件转储
+ * Symfony，组件，翻译，转储，Qt File 转储
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * QtFileDumper generates ts files from a message catalogue.
- * QtFileDumper从消息目录生成ts文件。
+ * QtFileDumper从消息目录中生成ts文件。
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */

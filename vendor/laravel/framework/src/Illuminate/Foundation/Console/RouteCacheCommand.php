@@ -95,7 +95,7 @@ class RouteCacheCommand extends Command
      * Get a fresh application instance.
 	 * 获取一个新的应用程序实例
      *
-     * @return \Illuminate\Foundation\Application
+     * @return \Illuminate\Contracts\Foundation\Application
      */
     protected function getFreshApplication()
     {

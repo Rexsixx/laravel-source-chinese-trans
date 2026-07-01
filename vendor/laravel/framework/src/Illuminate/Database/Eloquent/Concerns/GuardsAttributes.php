@@ -85,7 +85,7 @@ trait GuardsAttributes
 
     /**
      * Disable all mass assignable restrictions.
-	 * 禁用所有可批量分配的限制
+	 * 禁用所有可批量分配的限制。
      *
      * @param  bool  $state
      * @return void
@@ -155,8 +155,7 @@ trait GuardsAttributes
         // If the key is in the "fillable" array, we can of course assume that it's
         // a fillable attribute. Otherwise, we will check the guarded array when
         // we need to determine if the attribute is black-listed on the model.
-		// 如果关键是在“可填充”数组中,我们当然可以假设它是一个可填充属性。
-		// 否则,当我们需要确定属性是否在模型上时,我们将检查守卫的数组。
+		// 如果该键存在于“可填充”数组中，那么我们就可以肯定它是一个可填充的属性。
         if (in_array($key, $this->getFillable())) {
             return true;
         }
@@ -164,8 +163,7 @@ trait GuardsAttributes
         // If the attribute is explicitly listed in the "guarded" array then we can
         // return false immediately. This means this attribute is definitely not
         // fillable and there is no point in going any further in this method.
-		// 如果属性被明确地列在“守护”数组中,那么我们就可以立即返回false。
-		// 这意味着这个属性绝对不是可填充的,在这种方法中没有任何意义。
+		// 如果该属性明确列在“受保护”数组中，那么我们就可以立即返回“false”。
         if ($this->isGuarded($key)) {
             return false;
         }
@@ -199,7 +197,7 @@ trait GuardsAttributes
 
     /**
      * Get the fillable attributes of a given array.
-	 * 获取给定数组的可填充属性
+	 * 获取给定数组的可填充属性。
      *
      * @param  array  $attributes
      * @return array

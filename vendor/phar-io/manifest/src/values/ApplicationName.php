@@ -22,7 +22,6 @@ class ApplicationName {
 
     /**
      * ApplicationName constructor.
-	 * ApplicationName构造函数
      *
      * @param string $name
      *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，异常，倍频器，返回参考异常
+ */
 
 /*
  * This file is part of the Prophecy.

@@ -9,7 +9,7 @@ class ApcWrapper
 {
     /**
      * Indicates if APCu is supported.
-	 * 表示是否支持APCu
+	 * 显示是否支持APCu
      *
      * @var bool
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，全局状态，黑名单测试
+ * SebastianBergmann，GlobalState，黑名单测试
  */
 
 /*

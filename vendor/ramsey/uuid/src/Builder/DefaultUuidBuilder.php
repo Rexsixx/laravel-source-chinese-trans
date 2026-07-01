@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，构建器，默认 Uuid生成器
+ * Ramsey，Uuid，构建器，默认 Uuid构建器
  */
 
 /**
@@ -25,7 +25,6 @@ use Ramsey\Uuid\Uuid;
 /**
  * DefaultUuidBuilder is the default UUID builder for ramsey/uuid; it builds
  * instances of Uuid objects
- * DefaultUuidBuilder是ramsey / UUID的默认UUID builder;它构建UUID对象的实例
  */
 class DefaultUuidBuilder implements UuidBuilderInterface
 {

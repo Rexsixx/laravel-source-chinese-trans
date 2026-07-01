@@ -6,6 +6,7 @@
 namespace Illuminate\Container;
 
 use Illuminate\Support\Arr;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Container\ContextualBindingBuilder as ContextualBindingBuilderContract;
 
 class ContextualBindingBuilder implements ContextualBindingBuilderContract
@@ -14,7 +15,7 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
      * The underlying container instance.
 	 * 底层容器实例
      *
-     * @var \Illuminate\Container\Container
+     * @var \Illuminate\Contracts\Container\Container
      */
     protected $container;
 
@@ -22,7 +23,7 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
      * The concrete instance.
 	 * 具体的例子
      *
-     * @var string
+     * @var string|array
      */
     protected $concrete;
 
@@ -38,7 +39,7 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
      * Create a new contextual binding builder.
 	 * 创建一个新的上下文绑定构建器
      *
-     * @param  \Illuminate\Container\Container  $container
+     * @param  \Illuminate\Contracts\Container\Container  $container
      * @param  string|array  $concrete
      * @return void
      */

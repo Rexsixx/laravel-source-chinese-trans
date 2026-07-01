@@ -22,7 +22,7 @@ class MigrationCreator
 
     /**
      * The registered post create hooks.
-	 * 注册的帖子创建钩子
+	 * 注册的post创建钩子
      *
      * @var array
      */
@@ -46,7 +46,7 @@ class MigrationCreator
      *
      * @param  string  $name
      * @param  string  $path
-     * @param  string  $table
+     * @param  string|null  $table
      * @param  bool    $create
      * @return string
      *
@@ -59,8 +59,8 @@ class MigrationCreator
         // First we will get the stub file for the migration, which serves as a type
         // of template for the migration. Once we have those we will populate the
         // various place-holders, save the file, and run the post create event.
-		// 首先,我们将获取迁移的存根文件,这是迁移的模板类型。
-		// 一旦我们有了这些,我们将填充各种的place - holder,保存文件,并运行post创建事件。
+		// 首先，我们将获取用于迁移的模板文件，该文件可作为迁移过程中的某种模板使用。
+		// 一旦我们获取到这些信息，就会填充各个占位符，保存文件，并运行创建后的事件。
         $stub = $this->getStub($table, $create);
 
         $this->files->put(
@@ -71,8 +71,8 @@ class MigrationCreator
         // Next, we will fire any hooks that are supposed to fire after a migration is
         // created. Once that is done we'll be ready to return the full path to the
         // migration file so it can be used however it's needed by the developer.
-		// 接下来,我们将在创建迁移后触发任何应该触发的钩子。
-		// 一旦完成,我们就可以返回迁移文件的完整路径,这样它就可以被使用,但开发人员需要它。
+		// 接下来，我们将触发所有原本应在迁移创建完成后才触发的钩子。
+		// 完成这些步骤后，我们就能将迁移文件的完整路径提供给开发人员，以便他们根据需要进行使用。
         $this->firePostCreateHooks($table);
 
         return $path;
@@ -98,7 +98,7 @@ class MigrationCreator
      * Get the migration stub file.
 	 * 获取迁移存根文件
      *
-     * @param  string  $table
+     * @param  string|null  $table
      * @param  bool    $create
      * @return string
      */
@@ -111,7 +111,7 @@ class MigrationCreator
         // We also have stubs for creating new tables and modifying existing tables
         // to save the developer some typing when they are creating a new tables
         // or modifying existing tables. We'll grab the appropriate stub here.
-		// 我们还为创建新表和修改现有表以节省开发人员在创建新表或修改现有表时所使用的一些类型。
+		// 我们还提供了创建新表和修改现有表的快捷方式，以便在开发人员创建新表或修改现有表时减少他们的输入工作量。
 		// 我们会在这里抓住合适的存根。
         $stub = $create ? 'create.stub' : 'update.stub';
 
@@ -124,7 +124,7 @@ class MigrationCreator
      *
      * @param  string  $name
      * @param  string  $stub
-     * @param  string  $table
+     * @param  string|null  $table
      * @return string
      */
     protected function populateStub($name, $stub, $table)
@@ -134,8 +134,7 @@ class MigrationCreator
         // Here we will replace the table place-holders with the table specified by
         // the developer, which is useful for quickly creating a tables creation
         // or update migration from the console instead of typing it manually.
-		// 在这里,我们将用开发人员指定的表替换表位持有者,
-		// 这对于快速创建表创建或更新从控制台发送迁移,而不是手动输入它是很有用的。
+		// 在这里，我们将用开发人员指定的表格来替换表格占位符，这便于通过控制台快速创建表格或进行更新迁移操作，而无需手动输入。
         if (! is_null($table)) {
             $stub = str_replace('DummyTable', $table, $stub);
         }
@@ -172,7 +171,7 @@ class MigrationCreator
      * Fire the registered post create hooks.
 	 * 触发注册的帖子创建钩子
      *
-     * @param  string  $table
+     * @param  string|null  $table
      * @return void
      */
     protected function firePostCreateHooks($table)

@@ -1,7 +1,4 @@
 <?php
-/**
- * Laravel，Tinker，Tinker Caster
- */
 
 namespace Laravel\Tinker;
 

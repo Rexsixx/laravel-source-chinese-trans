@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，会话，中间件，开始会话
+ * Illuminate，Session，中间件，开始会话
  */
 
 namespace Illuminate\Session\Middleware;
@@ -8,9 +8,9 @@ namespace Illuminate\Session\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Session\SessionManager;
 use Illuminate\Contracts\Session\Session;
-use Illuminate\Session\CookieSessionHandler;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,14 +23,6 @@ class StartSession
      * @var \Illuminate\Session\SessionManager
      */
     protected $manager;
-
-    /**
-     * Indicates if the session was handled for the current request.
-	 * 指示是否为当前请求处理了会话
-     *
-     * @var bool
-     */
-    protected $sessionHandled = false;
 
     /**
      * Create a new session middleware.
@@ -54,50 +46,35 @@ class StartSession
      */
     public function handle($request, Closure $next)
     {
-        $this->sessionHandled = true;
+        if (! $this->sessionConfigured()) {
+            return $next($request);
+        }
 
         // If a session driver has been configured, we will need to start the session here
         // so that the data is ready for an application. Note that the Laravel sessions
         // do not make use of PHP "native" sessions in any way since they are crappy.
 		// 如果已配置了会话驱动程序，那么我们就需要在此启动会话，以便为应用程序准备好相关数据。
-		// 请注意,Laravel会话并没有从任何方式使用PHP“本机”会话,因为它们很糟糕。
-        if ($this->sessionConfigured()) {
-            $request->setLaravelSession(
-                $session = $this->startSession($request)
-            );
+		// 请注意，Laravel 的会话机制完全不采用 PHP 的“原生”会话功能，因为这种原生会话机制非常糟糕。
+        $request->setLaravelSession(
+            $session = $this->startSession($request)
+        );
 
-            $this->collectGarbage($session);
-        }
+        $this->collectGarbage($session);
 
         $response = $next($request);
+
+        $this->storeCurrentUrl($request, $session);
+
+        $this->addCookieToResponse($response, $session);
 
         // Again, if the session has been configured we will need to close out the session
         // so that the attributes may be persisted to some storage medium. We will also
         // add the session identifier cookie to the application response headers now.
 		// 另外，如果会话已进行配置，我们就需要结束该会话，以便将属性保存到某种存储介质中。
-		// 我们现在还将添加会话标识符cookie到应用程序响应头。
-        if ($this->sessionConfigured()) {
-            $this->storeCurrentUrl($request, $session);
-
-            $this->addCookieToResponse($response, $session);
-        }
+		// 我们还将现在将会话标识符 cookie 添加到应用程序响应的头部中。
+        $this->saveSession($request);
 
         return $response;
-    }
-
-    /**
-     * Perform any final actions for the request lifecycle.
-	 * 为请求生命周期执行任何最终操作
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
-     * @return void
-     */
-    public function terminate($request, $response)
-    {
-        if ($this->sessionHandled && $this->sessionConfigured() && ! $this->usingCookieSessions()) {
-            $this->manager->driver()->save();
-        }
     }
 
     /**
@@ -145,7 +122,7 @@ class StartSession
         // the odds needed to perform garbage collection on any given request. If we do
         // hit it, we'll call this handler to let it delete all the expired sessions.
 		// 在这里，我们将检验这一请求是否能成功触发垃圾回收机制，即看其是否满足执行垃圾回收所需的条件。
-		// 如果我们点击它,我们将调用这个处理程序让它删除所有过期会话。
+		// 如果真的发生了这种情况，我们会调用这个处理程序，让它删除所有过期的会话。
         if ($this->configHitsLottery($config)) {
             $session->getHandler()->gc($this->getSessionLifetimeInSeconds());
         }
@@ -153,7 +130,7 @@ class StartSession
 
     /**
      * Determine if the configuration odds hit the lottery.
-	 * 确定配置的概率是否命中彩票
+	 * 确定配置的概率是否命中lottery
      *
      * @param  array  $config
      * @return bool
@@ -191,10 +168,6 @@ class StartSession
      */
     protected function addCookieToResponse(Response $response, Session $session)
     {
-        if ($this->usingCookieSessions()) {
-            $this->manager->driver()->save();
-        }
-
         if ($this->sessionIsPersistent($config = $this->manager->getSessionConfig())) {
             $response->headers->setCookie(new Cookie(
                 $session->getName(), $session->getId(), $this->getCookieExpirationDate(),
@@ -202,6 +175,18 @@ class StartSession
                 $config['http_only'] ?? true, false, $config['same_site'] ?? null
             ));
         }
+    }
+
+    /**
+     * Save the session data to storage.
+	 * 将会话数据保存到存储中
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
+    protected function saveSession($request)
+    {
+        $this->manager->driver()->save();
     }
 
     /**
@@ -219,13 +204,15 @@ class StartSession
      * Get the cookie lifetime in seconds.
 	 * 获取以秒为单位的cookie生命周期
      *
-     * @return \DateTimeInterface
+     * @return \DateTimeInterface|int
      */
     protected function getCookieExpirationDate()
     {
         $config = $this->manager->getSessionConfig();
 
-        return $config['expire_on_close'] ? 0 : Carbon::now()->addMinutes($config['lifetime']);
+        return $config['expire_on_close'] ? 0 : Date::instance(
+            Carbon::now()->addRealMinutes($config['lifetime'])
+        );
     }
 
     /**
@@ -251,20 +238,5 @@ class StartSession
         $config = $config ?: $this->manager->getSessionConfig();
 
         return ! in_array($config['driver'], [null, 'array']);
-    }
-
-    /**
-     * Determine if the session is using cookie sessions.
-	 * 确定会话是否使用cookie会话
-     *
-     * @return bool
-     */
-    protected function usingCookieSessions()
-    {
-        if ($this->sessionConfigured()) {
-            return $this->manager->driver()->getHandler() instanceof CookieSessionHandler;
-        }
-
-        return false;
     }
 }

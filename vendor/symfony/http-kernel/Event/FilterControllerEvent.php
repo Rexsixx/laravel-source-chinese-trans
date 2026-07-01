@@ -33,7 +33,6 @@ class FilterControllerEvent extends KernelEvent
 
     /**
      * Returns the current controller.
-	 * 返回当前控制器
      *
      * @return callable
      */

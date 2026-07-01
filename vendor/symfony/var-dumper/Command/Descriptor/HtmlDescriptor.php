@@ -20,7 +20,7 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
 /**
  * Describe collected data clones for html output.
- * 描述为html输出而收集的数据克隆。
+ * 描述为html输出收集的数据克隆。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  *

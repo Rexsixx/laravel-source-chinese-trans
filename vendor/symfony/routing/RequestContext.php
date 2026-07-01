@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，请求上下文
+ * Symfony，组件，路由选择，请求上下文
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Holds information about the current request.
- * 保存有关当前请求的信息。
+ * 掌握有关当前请求的信息。
  *
  * This class implements a fluent interface.
  *
@@ -51,7 +51,7 @@ class RequestContext
 
     /**
      * Updates the RequestContext information based on a HttpFoundation Request.
-	 * 基于HttpFoundation请求更新RequestContext信息
+	 * 根据HttpFoundation请求更新RequestContext信息
      *
      * @return $this
      */
@@ -71,7 +71,6 @@ class RequestContext
 
     /**
      * Gets the base URL.
-	 * 获取基础URL
      *
      * @return string The base URL
      */
@@ -82,7 +81,6 @@ class RequestContext
 
     /**
      * Sets the base URL.
-	 * 设置基础URL
      *
      * @param string $baseUrl The base URL
      *

@@ -35,7 +35,7 @@ class Factory implements FactoryContract
 
     /**
      * The view finder implementation.
-	 * 视图查找程序实现
+	 * 视图查找器实现
      *
      * @var \Illuminate\View\ViewFinderInterface
      */
@@ -75,11 +75,12 @@ class Factory implements FactoryContract
         'blade.php' => 'blade',
         'php' => 'php',
         'css' => 'file',
+        'html' => 'file',
     ];
 
     /**
      * The view composer events.
-	 * 视图编写器事件
+	 * 视图composer事件
      *
      * @var array
      */
@@ -147,8 +148,8 @@ class Factory implements FactoryContract
         // Next, we will create the view instance and call the view creator for the view
         // which can set any data, etc. Then we will return the view instance back to
         // the caller for rendering or performing other view manipulations on this.
-		// 接下来，我们将创建视图实例，并调用视图创建器来创建该视图，视图创建器能够设置任何数据等信息。
-		// 然后我们将将视图实例返回给调用者,以呈现或执行其他视图操作。
+		// 接下来，我们将创建视图实例，并调用视图创建器来创建该视图，视图创建器可以设置任何数据等。
+		// 然后，我们将将视图实例返回给调用者，以便进行渲染或其他对视图的操作。
         $data = array_merge($mergeData, $this->parseData($data));
 
         return tap($this->viewInstance($view, $path, $data), function ($view) {
@@ -230,7 +231,7 @@ class Factory implements FactoryContract
         // view. Alternatively, the "empty view" could be a raw string that begins
         // with "raw|" for convenience and to let this know that it is a string.
 		// 如果数组中没有数据，我们将显示空视图的内容。
-		// 或者,“空视图”可能是一个原始字符串,它以“raw”开始,为了方便,并让它知道它是一个字符串。
+		// 或者，“空视图”也可以是一个以“raw”开头的原始字符串，这样做既方便又能让用户明白这是一个字符串。
         else {
             $result = Str::startsWith($empty, 'raw|')
                         ? substr($empty, 4)
@@ -337,7 +338,7 @@ class Factory implements FactoryContract
 	 * 向环境中添加一段共享数据
      *
      * @param  array|string  $key
-     * @param  mixed  $value
+     * @param  mixed|null  $value
      * @return mixed
      */
     public function share($key, $value = null)
@@ -428,7 +429,7 @@ class Factory implements FactoryContract
 
     /**
      * Replace the namespace hints for the given namespace.
-	 * 替换给定名称空间的名称空间提示
+	 * 替换给定命名空间的命名空间提示
      *
      * @param  string  $namespace
      * @param  string|array  $hints
@@ -447,7 +448,7 @@ class Factory implements FactoryContract
      *
      * @param  string    $extension
      * @param  string    $engine
-     * @param  \Closure  $resolver
+     * @param  \Closure|null  $resolver
      * @return void
      */
     public function addExtension($extension, $engine, $resolver = null)
@@ -525,7 +526,7 @@ class Factory implements FactoryContract
 
     /**
      * Set the view finder instance.
-	 * 设置取景器实例。
+	 * 设置视图查找器实例
      *
      * @param  \Illuminate\View\ViewFinderInterface  $finder
      * @return void

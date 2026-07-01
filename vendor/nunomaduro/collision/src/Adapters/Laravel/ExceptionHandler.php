@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，冲突，适配器，Laravel，异常处理程序
+ * NunoMaduro，碰撞，适配器，Laravel，异常处理程序
  */
 
 /**
@@ -15,14 +15,14 @@
 namespace NunoMaduro\Collision\Adapters\Laravel;
 
 use Exception;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Container\Container;
 use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Symfony\Component\Console\Exception\ExceptionInterface as SymfonyConsoleExceptionInterface;
 
 /**
  * This is an Collision Laravel Adapter ExceptionHandler implementation.
- * 这是一个Collision Laravel Adapter ExceptionHandler实现。
+ * 这是一个碰撞后的适配器异常处理程序实现。
  *
  * Registers the Error Handler on Laravel.
  *
@@ -32,29 +32,27 @@ class ExceptionHandler implements ExceptionHandlerContract
 {
     /**
      * Holds an instance of the application exception handler.
-	 * 保存应用程序异常处理程序的实例。
      *
      * @var \Illuminate\Contracts\Debug\ExceptionHandler
      */
     protected $appExceptionHandler;
 
     /**
-     * Holds an instance of the application.
-	 * 保存应用程序的一个实例
+     * Holds an instance of the container.
      *
-     * @var \Illuminate\Contracts\Foundation\Application
+     * @var \Illuminate\Contracts\Container\Container
      */
-    protected $app;
+    protected $container;
 
     /**
      * Creates a new instance of the ExceptionHandler.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param \Illuminate\Contracts\Container\Container $container
      * @param \Illuminate\Contracts\Debug\ExceptionHandler $appExceptionHandler
      */
-    public function __construct(Application $app, ExceptionHandlerContract $appExceptionHandler)
+    public function __construct(Container $container, ExceptionHandlerContract $appExceptionHandler)
     {
-        $this->app = $app;
+        $this->container = $container;
         $this->appExceptionHandler = $appExceptionHandler;
     }
 
@@ -82,7 +80,7 @@ class ExceptionHandler implements ExceptionHandlerContract
         if ($e instanceof SymfonyConsoleExceptionInterface) {
             $this->appExceptionHandler->renderForConsole($output, $e);
         } else {
-            $handler = $this->app->make(ProviderContract::class)
+            $handler = $this->container->make(ProviderContract::class)
                 ->register()
                 ->getHandler()
                 ->setOutput($output);

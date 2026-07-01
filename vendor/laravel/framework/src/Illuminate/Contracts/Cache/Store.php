@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，缓存，存储
+ * Illuminate，契约，缓存，储存
  */
 
 namespace Illuminate\Contracts\Cache;
@@ -29,25 +29,25 @@ interface Store
     public function many(array $keys);
 
     /**
-     * Store an item in the cache for a given number of minutes.
-	 * 将项存储在缓存中给定的分钟数
+     * Store an item in the cache for a given number of seconds.
+	 * 将项存储在缓存中给定的秒数
      *
      * @param  string  $key
      * @param  mixed  $value
-     * @param  float|int  $minutes
-     * @return void
+     * @param  int  $seconds
+     * @return bool
      */
-    public function put($key, $value, $minutes);
+    public function put($key, $value, $seconds);
 
     /**
-     * Store multiple items in the cache for a given number of minutes.
-	 * 在给定的分钟数内将多个项存储在缓存中
+     * Store multiple items in the cache for a given number of seconds.
+	 * 在给定的秒数内将多个项存储在缓存中
      *
      * @param  array  $values
-     * @param  float|int  $minutes
-     * @return void
+     * @param  int  $seconds
+     * @return bool
      */
-    public function putMany(array $values, $minutes);
+    public function putMany(array $values, $seconds);
 
     /**
      * Increment the value of an item in the cache.
@@ -75,7 +75,7 @@ interface Store
      *
      * @param  string  $key
      * @param  mixed  $value
-     * @return void
+     * @return bool
      */
     public function forever($key, $value);
 

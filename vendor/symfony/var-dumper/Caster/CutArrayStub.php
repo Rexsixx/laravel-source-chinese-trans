@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，Caster，切割阵列存根
+ * Symfony，组件，Var Dumper，Caster，切割数组存根
  */
 
 /*

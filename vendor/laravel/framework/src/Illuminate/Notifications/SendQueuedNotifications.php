@@ -59,7 +59,7 @@ class SendQueuedNotifications implements ShouldQueue
      *
      * @param  \Illuminate\Support\Collection  $notifiables
      * @param  \Illuminate\Notifications\Notification  $notification
-     * @param  array  $channels
+     * @param  array|null  $channels
      * @return void
      */
     public function __construct($notifiables, $notification, array $channels = null)
@@ -106,6 +106,21 @@ class SendQueuedNotifications implements ShouldQueue
         if (method_exists($this->notification, 'failed')) {
             $this->notification->failed($e);
         }
+    }
+
+    /**
+     * Get the retry delay for the notification.
+	 * 获取通知的重试延迟
+     *
+     * @return mixed
+     */
+    public function retryAfter()
+    {
+        if (! method_exists($this->notification, 'retryAfter') && ! isset($this->notification->retryAfter)) {
+            return;
+        }
+
+        return $this->notification->retryAfter ?? $this->notification->retryAfter();
     }
 
     /**

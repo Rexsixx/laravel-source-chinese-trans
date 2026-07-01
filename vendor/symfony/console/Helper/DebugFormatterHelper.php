@@ -16,10 +16,8 @@ namespace Symfony\Component\Console\Helper;
 
 /**
  * Helps outputting debug information when running an external program from a command.
- * 在从命令运行外部程序时帮助排除调试信息。
  *
  * An external program can be a Process, an HTTP request, or anything else.
- * 外部程序可以是一个过程,一个HTTP请求,或者其他任何东西。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -31,7 +29,6 @@ class DebugFormatterHelper extends Helper
 
     /**
      * Starts a debug formatting session.
-	 * 启动调试格式化会话
      *
      * @param string $id      The id of the formatting session
      * @param string $message The message to display
@@ -48,7 +45,6 @@ class DebugFormatterHelper extends Helper
 
     /**
      * Adds progress to a formatting session.
-	 * 添加到格式化会话的进度
      *
      * @param string $id          The id of the formatting session
      * @param string $buffer      The message to display
@@ -91,7 +87,6 @@ class DebugFormatterHelper extends Helper
 
     /**
      * Stops a formatting session.
-	 * 停止格式化会话
      *
      * @param string $id         The id of the formatting session
      * @param string $message    The message to display

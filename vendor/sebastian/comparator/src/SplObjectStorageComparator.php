@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，比较器，Spl对象存储比较器
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -11,6 +15,7 @@ namespace SebastianBergmann\Comparator;
 
 /**
  * Compares \SplObjectStorage instances for equality.
+ * 比较\ SplObjectStorage实例的等式。
  */
 class SplObjectStorageComparator extends Comparator
 {

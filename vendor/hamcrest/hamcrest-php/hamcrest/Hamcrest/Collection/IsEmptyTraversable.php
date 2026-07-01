@@ -48,7 +48,6 @@ class IsEmptyTraversable extends BaseMatcher
 
     /**
      * Returns true if traversable is empty.
-	 * 如果穿越是空的,返回true
      *
      * @factory
      */

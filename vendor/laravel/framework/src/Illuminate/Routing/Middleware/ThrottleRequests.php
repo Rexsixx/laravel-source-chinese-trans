@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，中间件，节流阀的请求
+ * Illuminate，路由选择，中间件，节流阀的请求
  */
 
 namespace Illuminate\Routing\Middleware;
@@ -59,7 +59,7 @@ class ThrottleRequests
             throw $this->buildException($key, $maxAttempts);
         }
 
-        $this->limiter->hit($key, $decayMinutes);
+        $this->limiter->hit($key, $decayMinutes * 60);
 
         $response = $next($request);
 

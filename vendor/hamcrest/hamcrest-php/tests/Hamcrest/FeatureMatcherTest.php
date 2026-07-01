@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，结果匹配测试
+ * Hamcrest，结果匹配程序
  */
 
 namespace Hamcrest;

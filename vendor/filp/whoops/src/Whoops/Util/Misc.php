@@ -14,7 +14,7 @@ class Misc
 {
     /**
      * Can we at this point in time send HTTP headers?
-	 * 在这个时候,我们能发送HTTP头吗?
+	 * 我们现在可以发送HTTP报头吗？
      *
      * Currently this checks if we are even serving an HTTP request,
      * as opposed to running from a command line.

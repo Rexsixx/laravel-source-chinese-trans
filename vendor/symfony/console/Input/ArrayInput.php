@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，输入，Argv 输入
+ * Symfony，组件，控制台，输入，数组输入
  */
 
 /*
@@ -19,7 +19,6 @@ use Symfony\Component\Console\Exception\InvalidOptionException;
 
 /**
  * ArrayInput represents an input provided as an array.
- * ArrayInput表示提供的输入作为数组。
  *
  * Usage:
  *

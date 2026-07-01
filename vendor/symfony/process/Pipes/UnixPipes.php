@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，进程，管道，Unix 管道
+ * Symfony，组件，过程，管道，Unix 管道
  */
 
 /*

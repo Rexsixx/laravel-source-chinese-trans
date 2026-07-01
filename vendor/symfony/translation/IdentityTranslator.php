@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，译者身份
+ * Symfony，组件，翻译，Identity 翻译程序
  */
 
 /*
@@ -20,7 +20,6 @@ use Symfony\Contracts\Translation\TranslatorTrait;
 
 /**
  * IdentityTranslator does not translate anything.
- * IdentityTranslator不翻译任何东西。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

@@ -1,8 +1,8 @@
 <?php
 /**
- * Ramsey，Uuid，构建器，退化的Uuid生成器
+ * Ramsey，Uuid，构建器，被降级的 Uuid构建器
  */
- 
+
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -24,6 +24,7 @@ use Ramsey\Uuid\DegradedUuid;
 
 /**
  * DegradedUuidBuilder builds instances of DegradedUuid
+ * DegradedUuidBuilder构建DegradedUuid实例
  */
 class DegradedUuidBuilder implements UuidBuilderInterface
 {
@@ -34,7 +35,6 @@ class DegradedUuidBuilder implements UuidBuilderInterface
 
     /**
      * Constructs the DegradedUuidBuilder
-	 * 构建DegradedUuidBuilder
      *
      * @param NumberConverterInterface $converter The number converter to use when constructing the DegradedUuid
      */

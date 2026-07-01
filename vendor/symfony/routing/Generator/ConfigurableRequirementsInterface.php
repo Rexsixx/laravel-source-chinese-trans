@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，生成器，可配置需求接口
+ * Symfony，组件，路由选择，生成器，可配置需求接口
  */
 
 /*
@@ -43,6 +43,8 @@ interface ConfigurableRequirementsInterface
     /**
      * Enables or disables the exception on incorrect parameters.
      * Passing null will deactivate the requirements check completely.
+	 * 在不正确的参数上启用或禁用异常。
+	 * 传递空将完全取消需求检查。
      *
      * @param bool|null $enabled
      */

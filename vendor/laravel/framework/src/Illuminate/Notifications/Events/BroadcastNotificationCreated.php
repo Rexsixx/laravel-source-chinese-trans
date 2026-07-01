@@ -16,7 +16,7 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * The notifiable entity who received the notification.
-	 * 收到通知的应通知实体
+	 * 收到通知的应通知实体。
      *
      * @var mixed
      */
@@ -90,7 +90,7 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * Get the data that should be sent with the broadcasted event.
-	 * 获取应该通过广播事件发送的数据
+	 * 获取应该随广播事件一起发送的数据
      *
      * @return array
      */
@@ -104,7 +104,7 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * Get the type of the notification being broadcast.
-	 * 获取正在播放的通知的类型
+	 * 获取正在广播的通知的类型
      *
      * @return string
      */

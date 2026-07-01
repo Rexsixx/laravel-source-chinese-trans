@@ -11,7 +11,7 @@ class MessageSelector
 {
     /**
      * Select a proper translation string based on the given number.
-	 * 根据给定的数字选择一个合适的翻译字符串
+	 * 根据给定的数字选择合适的翻译字符串
      *
      * @param  string  $line
      * @param  int  $number
@@ -105,7 +105,7 @@ class MessageSelector
 
     /**
      * Get the index to use for pluralization.
-	 * 获取用于复数形式的索引
+	 * 获取用于复数形式的索引。
      *
      * The plural rules are derived from code of the Zend Framework (2010-09-25), which
      * is subject to the new BSD license (http://framework.zend.com/license/new-bsd)

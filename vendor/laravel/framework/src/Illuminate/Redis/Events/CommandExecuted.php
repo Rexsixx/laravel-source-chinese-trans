@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Redis，事件，命令执行
+ * Illuminate，Redis，事件，命令已执行
  */
 
 namespace Illuminate\Redis\Events;

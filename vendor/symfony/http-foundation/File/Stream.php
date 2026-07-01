@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，HTTP基础，文件，流动
+ * Symfony，组件，Http基础，File，流
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\HttpFoundation\File;
 
 /**
  * A PHP stream of unknown size.
- * 大小未知的PHP流。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

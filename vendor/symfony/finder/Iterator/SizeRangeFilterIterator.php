@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，探测器，迭代器，大小范围过滤器迭代器
+ * Symfony，组件，探测器，迭代器，尺寸范围过滤器迭代器
  */
 
 /*
@@ -18,7 +18,6 @@ use Symfony\Component\Finder\Comparator\NumberComparator;
 
 /**
  * SizeRangeFilterIterator filters out files that are not in the given size range.
- * SizeRangeFilterIterator过滤掉不在给定大小范围内的文件。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -39,7 +38,6 @@ class SizeRangeFilterIterator extends \FilterIterator
 
     /**
      * Filters the iterator values.
-	 * 过滤迭代器值
      *
      * @return bool true if the value should be kept, false otherwise
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，提供商，节点，回退节点提供程序
+ * Ramsey，Uuid，提供者，节点，撤退节点提供程序
  */
 
 /**
@@ -25,7 +25,6 @@ use Ramsey\Uuid\Provider\NodeProviderInterface;
  * FallbackNodeProvider attempts to gain the system host ID from an array of
  * providers, falling back to the next in line in the event a host ID can not be
  * obtained
- * FallbackNodeProvider试图从一个提供者数组中获得系统主机ID,在事件中返回到下一个队列,不能获得主机ID。
  */
 class FallbackNodeProvider implements NodeProviderInterface
 {
@@ -36,7 +35,6 @@ class FallbackNodeProvider implements NodeProviderInterface
 
     /**
      * Constructs a `FallbackNodeProvider` using an array of node providers
-	 * 使用一个节点提供者数组构造一个“FallbackNodeProvider”
      *
      * @param NodeProviderInterface[] $providers Array of node providers
      */

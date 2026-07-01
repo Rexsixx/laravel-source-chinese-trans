@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，认证，密码，密码代理管理器
+ * Illuminate，Auth，密码，密码代理管理器
  */
 
 namespace Illuminate\Auth\Passwords;
@@ -18,7 +18,7 @@ class PasswordBrokerManager implements FactoryContract
      * The application instance.
 	 * 应用实例
      *
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
@@ -32,9 +32,9 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Create a new PasswordBroker manager instance.
-	 * 创建一个新的PasswordBroker管理器实例
+	 * 创建一个新的PasswordBroker管理器实例。
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
      */
     public function __construct($app)
@@ -53,9 +53,7 @@ class PasswordBrokerManager implements FactoryContract
     {
         $name = $name ?: $this->getDefaultDriver();
 
-        return isset($this->brokers[$name])
-                    ? $this->brokers[$name]
-                    : $this->brokers[$name] = $this->resolve($name);
+        return $this->brokers[$name] ?? ($this->brokers[$name] = $this->resolve($name));
     }
 
     /**
@@ -78,8 +76,7 @@ class PasswordBrokerManager implements FactoryContract
         // The password broker uses a token repository to validate tokens and send user
         // password e-mails, as well as validating that password reset process as an
         // aggregate service of sorts providing a convenient interface for resets.
-		// 密码经纪系统使用令牌存储库来验证令牌并发送用户密码邮件，
-		// 同时作为某种聚合服务来验证密码重置流程，为重置提供便捷的接口。
+		// 密码代理使用令牌存储库来验证令牌并发送用户密码电子邮件，同时验证密码重置流程，作为某种聚合服务，提供方便的重置接口。
         return new PasswordBroker(
             $this->createTokenRepository($config),
             $this->app['auth']->createUserProvider($config['provider'] ?? null)

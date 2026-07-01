@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，HTTP基础，文件，异常，文件未发现异常
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\HttpFoundation\File\Exception;
 
 /**
  * Thrown when a file was not found.
- * 当找不到文件时抛出。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */

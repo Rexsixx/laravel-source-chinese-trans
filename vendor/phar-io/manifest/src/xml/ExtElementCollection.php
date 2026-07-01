@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Manifest，Ext 元素集合
+ * PharIo，Manifest，Ext元素集合
  */
 
 /*

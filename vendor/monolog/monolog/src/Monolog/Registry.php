@@ -18,6 +18,7 @@ use InvalidArgumentException;
 
 /**
  * Monolog log registry
+ * Monolog日志注册表
  *
  * Allows to get `Logger` instances in the global scope
  * via static method calls on this class.

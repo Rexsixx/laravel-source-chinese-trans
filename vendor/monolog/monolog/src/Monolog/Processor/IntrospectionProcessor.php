@@ -18,6 +18,7 @@ use Monolog\Logger;
 
 /**
  * Injects line/file:class/function where the log message came from
+ * 注入行/文件:来自日志消息的类/函数
  *
  * Warning: This only works if the handler processes the logs directly.
  * If you put the processor on a handler that is behind a FingersCrossedHandler

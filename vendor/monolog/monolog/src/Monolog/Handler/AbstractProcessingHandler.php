@@ -18,6 +18,7 @@ use Monolog\ResettableInterface;
 
 /**
  * Base Handler class providing the Handler structure
+ * 提供处理程序结构的基本处理程序类
  *
  * Classes extending it should (in most cases) only implement write($record)
  *

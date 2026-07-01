@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，核心，是类型的
- */
-
 namespace Hamcrest\Core;
 
 /*

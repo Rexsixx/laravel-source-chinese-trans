@@ -14,13 +14,16 @@ class BoundMethod
 {
     /**
      * Call the given Closure / class@method and inject its dependencies.
-	 * 调用给定的Closure / class@method并注入它的依赖项
+	 * 调用给定的Closure/class@method并注入它的依赖项
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  callable|string  $callback
      * @param  array  $parameters
      * @param  string|null  $defaultMethod
      * @return mixed
+     *
+     * @throws \ReflectionException
+     * @throws \InvalidArgumentException
      */
     public static function call($container, $callback, array $parameters = [], $defaultMethod = null)
     {
@@ -37,7 +40,7 @@ class BoundMethod
 
     /**
      * Call a string reference to a class using Class@method syntax.
-	 *使用Class@method语法调用对类的字符串引用
+	 * 使用Class@method语法调用对类的字符串引用
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  string  $target
@@ -54,8 +57,7 @@ class BoundMethod
         // We will assume an @ sign is used to delimit the class name from the method
         // name. We will split on this @ sign and then build a callable array that
         // we can pass right back into the "call" method for dependency binding.
-		// 我们将使用@符号来分隔方法的类名。
-		// 我们将在这个@符号上分割,然后构建一个可调用的数组,我们可以返回到“调用”方法中依赖绑定。
+		// 我们将假定“@”符号用于将类名与方法名分隔开来。
         $method = count($segments) === 2
                         ? $segments[1] : $defaultMethod;
 
@@ -70,7 +72,7 @@ class BoundMethod
 
     /**
      * Call a method that has been bound to the container.
-	 * 调用一个绑定到容器的方法
+	 * 调用已绑定到容器的方法
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  callable  $callback
@@ -86,8 +88,8 @@ class BoundMethod
         // Here we need to turn the array callable into a Class@method string we can use to
         // examine the container and see if there are any method bindings for this given
         // method. If there are, we can call this method binding callback immediately.
-		// 在这里,我们需要将数组callable转换为一个类@ method字符串,我们可以使用它来检查容器,并查看该给定方法是否有任何方法绑定。
-		// 如果有,我们可以立即调用此方法绑定回调。
+		// 在这里，我们需要将数组可调用对象转换为一个类方法字符串，以便我们能够使用它来检查容器，
+		// 并查看是否存在针对此给定方法的任何方法绑定。
         $method = static::normalizeMethod($callback);
 
         if ($container->hasMethodBinding($method)) {
@@ -119,6 +121,8 @@ class BoundMethod
      * @param  callable|string  $callback
      * @param  array  $parameters
      * @return array
+     *
+     * @throws \ReflectionException
      */
     protected static function getMethodDependencies($container, $callback, array $parameters = [])
     {
@@ -159,7 +163,7 @@ class BoundMethod
      * @param  \ReflectionParameter  $parameter
      * @param  array  $parameters
      * @param  array  $dependencies
-     * @return mixed
+     * @return void
      */
     protected static function addDependencyForCallParameter($container, $parameter,
                                                             array &$parameters, &$dependencies)

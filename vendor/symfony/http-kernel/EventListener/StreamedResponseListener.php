@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 /**
  * StreamedResponseListener is responsible for sending the Response
  * to the client.
- * StreamedResponseListenerListenerListener 负责将响应发送给客户端。
+ * StreamedResponseListener负责将响应发送给客户机。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -32,7 +32,6 @@ class StreamedResponseListener implements EventSubscriberInterface
 {
     /**
      * Filters the Response.
-	 * 过滤响应。
      */
     public function onKernelResponse(FilterResponseEvent $event)
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，探测器，迭代器，合适的迭代器
+ * Symfony，组件，探测器，分类迭代器
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\Finder\Iterator;
 
 /**
  * SortableIterator applies a sort on a given Iterator.
- * SortableIterator在给定的Iterator上应用排序。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

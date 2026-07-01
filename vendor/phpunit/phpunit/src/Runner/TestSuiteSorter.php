@@ -1,9 +1,4 @@
 <?php declare(strict_types=1);
-
-/**
- * PHPUnit，运行者，测试套件分类器
- */
-
 /*
  * This file is part of PHPUnit.
  *
@@ -48,7 +43,6 @@ final class TestSuiteSorter
 
     /**
      * List of sorting weights for all test result codes. A higher number gives higher priority.
-	 * 所有测试结果代码的排序权重列表。更高的数字给予更高的优先级。
      */
     private const DEFECT_SORT_WEIGHT = [
         BaseTestRunner::STATUS_ERROR      => 6,

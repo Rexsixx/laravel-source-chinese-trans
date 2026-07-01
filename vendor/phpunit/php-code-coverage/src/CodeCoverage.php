@@ -26,7 +26,6 @@ use SebastianBergmann\Environment\Runtime;
 
 /**
  * Provides collection functionality for PHP code coverage information.
- * 提供PHP代码覆盖率信息的收集功能
  */
 final class CodeCoverage
 {
@@ -92,7 +91,6 @@ final class CodeCoverage
 
     /**
      * Code coverage data.
-	 * 代码覆盖率数据
      *
      * @var array
      */
@@ -129,7 +127,6 @@ final class CodeCoverage
 
     /**
      * Determine whether we need to check for dead and unused code on each test
-	 * 确定我们是否需要检查每个测试中死亡和未使用的代码
      *
      * @var bool
      */

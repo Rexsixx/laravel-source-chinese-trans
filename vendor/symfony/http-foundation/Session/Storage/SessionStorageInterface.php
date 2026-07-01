@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，HTTP基础，会话，存储，会话存储接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
 
 /**
  * StorageInterface.
- * 会话存储接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Drak <drak@zikula.org>
@@ -27,7 +23,6 @@ interface SessionStorageInterface
 {
     /**
      * Starts the session.
-	 * 开始会话
      *
      * @return bool True if started
      *
@@ -37,7 +32,6 @@ interface SessionStorageInterface
 
     /**
      * Checks if the session is started.
-	 * 检查会话是否启动
      *
      * @return bool True if started, false otherwise
      */
@@ -45,7 +39,6 @@ interface SessionStorageInterface
 
     /**
      * Returns the session ID.
-	 * 返回会话ID
      *
      * @return string The session ID or empty
      */
@@ -53,7 +46,6 @@ interface SessionStorageInterface
 
     /**
      * Sets the session ID.
-	 * 设置会话ID
      *
      * @param string $id
      */

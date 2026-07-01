@@ -1,7 +1,4 @@
 <?php
-/**
- * Psy，代码清理器，循环上下文传递
- */
 
 /*
  * This file is part of Psy Shell.
@@ -28,7 +25,6 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * The loop context pass handles invalid `break` and `continue` statements.
- * 循环上下文传递处理无效的“break”和“continue”语句。
  */
 class LoopContextPass extends CodeCleanerPass
 {

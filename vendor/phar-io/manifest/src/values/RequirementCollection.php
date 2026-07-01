@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Manifest，要求收集
+ * PharIo，Manifest，需求收集
  */
 
 /*

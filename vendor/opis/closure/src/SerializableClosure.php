@@ -1,6 +1,6 @@
 <?php
 /**
- * Opis，闭包，可序列化的闭包
+ * Opis，闭包，可序列化闭包
  */
 
 /* ===========================================================================
@@ -18,7 +18,6 @@ use ReflectionObject;
 
 /**
  * Provides a wrapper for serialization of closures
- * 提供用于闭包序列化的包装器
  */
 class SerializableClosure implements Serializable
 {
@@ -69,7 +68,6 @@ class SerializableClosure implements Serializable
 
     /**
      * Constructor
-	 * 构造函数
      *
      * @param   Closure $closure Closure you want to serialize
      */
@@ -84,7 +82,6 @@ class SerializableClosure implements Serializable
 
     /**
      * Get the Closure object
-	 * 得到闭包对象
      *
      * @return  Closure The wrapped closure
      */
@@ -95,7 +92,6 @@ class SerializableClosure implements Serializable
 
     /**
      * Get the reflector for closure
-	 * 将反射器设置为闭包
      *
      * @return  ReflectionClosure
      */

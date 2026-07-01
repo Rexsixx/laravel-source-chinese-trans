@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，Caster，Exception Caster
+ * Symfony，组件，Var Dumper，Caster，异常 Caster
  */
 
 /*
@@ -20,6 +20,7 @@ use Symfony\Component\VarDumper\Exception\ThrowingCasterException;
 
 /**
  * Casts common Exception classes to array representation.
+ * 将通用Exception类强制转换为数组表示。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *

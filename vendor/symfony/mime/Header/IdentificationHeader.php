@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，数据头，识别头
+ * Symfony，组件，Mime，数据头，身份证明标题
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\Mime\Exception\RfcComplianceException;
 
 /**
  * An ID MIME Header for something like Message-ID or Content-ID (one or more addresses).
- * 一个ID MIME报头，用于消息ID或内容ID（一个或多个地址）。
+ * 类似消息ID或内容ID(一个或多个地址)的ID MIME Header。
  *
  * @author Chris Corbyn
  */
@@ -55,7 +55,7 @@ final class IdentificationHeader extends AbstractHeader
 
     /**
      * Set the ID used in the value of this header.
-	 * 设置该报头值中使用的ID
+	 * 设置此头的值使用的ID
      *
      * @param string|array $id
      *

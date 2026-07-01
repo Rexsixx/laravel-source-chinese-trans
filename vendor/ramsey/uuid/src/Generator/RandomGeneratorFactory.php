@@ -1,9 +1,5 @@
 <?php
 /**
- * Ramsey，Uuid，生成器，随机发电机工厂
- */
-
-/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -20,13 +16,11 @@ namespace Ramsey\Uuid\Generator;
 
 /**
  * A factory for retrieving a random generator, based on the environment
- * 一个基于环境的随机生成器的工厂
  */
 class RandomGeneratorFactory
 {
     /**
      * Returns a default random generator, based on the current environment
-	 * 根据当前环境返回一个默认的随机生成器
      *
      * @return RandomGeneratorInterface
      */

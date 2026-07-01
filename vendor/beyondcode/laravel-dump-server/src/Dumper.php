@@ -1,6 +1,6 @@
 <?php
 /**
- * BeyondCode，转储服务器，转储
+ * BeyondCode，转储服务器，Dumper
  */
 
 namespace BeyondCode\DumpServer;
@@ -34,7 +34,7 @@ class Dumper
 
     /**
      * Dump a value with elegance.
-	 * 优雅地转储值
+	 * 优雅地转储一个值
      *
      * @param  mixed  $value
      * @return void

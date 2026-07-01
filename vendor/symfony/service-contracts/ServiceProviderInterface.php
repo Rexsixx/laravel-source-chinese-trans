@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，服务，服务提供商接口
+ * Symfony，契约，服务，服务提供者接口
  */
 
 /*
@@ -18,7 +18,6 @@ use Psr\Container\ContainerInterface;
 
 /**
  * A ServiceProviderInterface exposes the identifiers and the types of services provided by a container.
- * ServiceProviderInterface公开了一个容器提供的标识符和服务类型。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  * @author Mateusz Sip <mateusz.sip@gmail.com>

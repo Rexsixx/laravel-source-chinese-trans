@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，控制台，迁移，回调命令
+ * Illuminate，数据库，控制台，迁移，回滚命令
  */
 
 namespace Illuminate\Database\Console\Migrations;
@@ -53,7 +53,7 @@ class RollbackCommand extends BaseCommand
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */
@@ -86,7 +86,7 @@ class RollbackCommand extends BaseCommand
 
             ['force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production'],
 
-            ['path', null, InputOption::VALUE_OPTIONAL, 'The path to the migrations files to be executed'],
+            ['path', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'The path(s) to the migrations files to be executed'],
 
             ['realpath', null, InputOption::VALUE_NONE, 'Indicate any provided migration file paths are pre-resolved absolute paths'],
 

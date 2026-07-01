@@ -1,8 +1,4 @@
 <?php
-/**
- * PHPUnit，工具，全球声明
- */
-
 /*
  * This file is part of PHPUnit.
  *

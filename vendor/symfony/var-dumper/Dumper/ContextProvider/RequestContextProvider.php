@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，转储器，内容提供器，请求上下文提供程序
+ * Symfony，组件，Var Dumper，转储，上下文提供者，请求上下文提供程序
  */
 
 /*
@@ -20,7 +20,7 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 
 /**
  * Tries to provide context from a request.
- * 尝试提供来自请求的上下文。
+ * 试图从请求提供上下文。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */

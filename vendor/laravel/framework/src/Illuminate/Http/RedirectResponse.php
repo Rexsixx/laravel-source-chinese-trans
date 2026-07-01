@@ -43,7 +43,7 @@ class RedirectResponse extends BaseRedirectResponse
      *
      * @param  string|array  $key
      * @param  mixed  $value
-     * @return \Illuminate\Http\RedirectResponse
+     * @return $this
      */
     public function with($key, $value = null)
     {
@@ -76,7 +76,7 @@ class RedirectResponse extends BaseRedirectResponse
      * Flash an array of input to the session.
 	 * 将输入数组闪现到会话中
      *
-     * @param  array  $input
+     * @param  array|null  $input
      * @return $this
      */
     public function withInput(array $input = null)
@@ -112,7 +112,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Flash an array of input to the session.
-	 * 将输入数组闪现到会话中
+	 * 将输入数组闪存到会话中
      *
      * @return $this
      */
@@ -123,9 +123,9 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Flash an array of input to the session.
-	 * 将输入数组闪现到会话中
+	 * 将输入数组闪存到会话中
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return $this
      */
     public function exceptInput()
     {
@@ -134,7 +134,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Flash a container of errors to the session.
-	 * 将错误容器闪现到会话中
+	 * 将错误容器闪存到会话中
      *
      * @param  \Illuminate\Contracts\Support\MessageProvider|array|string  $provider
      * @param  string  $key
@@ -236,7 +236,7 @@ class RedirectResponse extends BaseRedirectResponse
      *
      * @param  string  $method
      * @param  array  $parameters
-     * @return $this
+     * @return mixed
      *
      * @throws \BadMethodCallException
      */

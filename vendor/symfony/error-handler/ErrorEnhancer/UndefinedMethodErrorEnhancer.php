@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，错误处理器，误差增强器，未定义方错误增强器
+ * Symfony，组件，错误处理程序，误差增强器，未定义方法误差增强器
  */
 
 /*
@@ -44,7 +44,6 @@ class UndefinedMethodErrorEnhancer implements ErrorEnhancerInterface
 
         if ('' === $methodName || !class_exists($className) || null === $methods = get_class_methods($className)) {
             // failed to get the class or its methods on which an unknown method was called (for example on an anonymous class)
-			// 未能获取调用未知方法的类或其方法（例如匿名类）
             return new UndefinedMethodError($message, $error);
         }
 

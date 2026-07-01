@@ -48,7 +48,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * The global from address and name.
-	 * 全局从地址和名称
+	 * 全局地址和名称
      *
      * @var array
      */
@@ -219,7 +219,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Render the given message as a view.
-	 * 将给定的消息呈现为视图
+	 * 呈现给定的消息为视图
      *
      * @param  string|array  $view
      * @param  array  $data
@@ -230,8 +230,8 @@ class Mailer implements MailerContract, MailQueueContract
         // First we need to parse the view, which could either be a string or an array
         // containing both an HTML and plain text versions of the view which should
         // be used when sending an e-mail. We will extract both of them out here.
-		// 首先,我们需要解析视图,它可以是一个字符串,也可以是一个包含HTML和纯文本版本的数组,
-		// 当发送电子邮件时应该使用它。我们将把它们都提取出来。
+		// 首先，我们需要解析该视图，它既可以是字符串形式，也可以是包含 HTML 和纯文本版本的数组，
+		// 而后者则是发送电子邮件时应使用的版本。我们将在这里将两者都提取出来。
         [$view, $plain, $raw] = $this->parseView($view);
 
         $data['message'] = $this->createMessage();
@@ -245,7 +245,7 @@ class Mailer implements MailerContract, MailQueueContract
      *
      * @param  string|array|\Illuminate\Contracts\Mail\Mailable  $view
      * @param  array  $data
-     * @param  \Closure|string  $callback
+     * @param  \Closure|string|null  $callback
      * @return void
      */
     public function send($view, array $data = [], $callback = null)
@@ -257,8 +257,8 @@ class Mailer implements MailerContract, MailQueueContract
         // First we need to parse the view, which could either be a string or an array
         // containing both an HTML and plain text versions of the view which should
         // be used when sending an e-mail. We will extract both of them out here.
-		// 首先,我们需要解析视图,它可以是一个字符串,也可以是一个包含HTML和纯文本版本的数组,
-		// 当发送电子邮件时应该使用它。我们将把它们都提取出来。
+		// 首先，我们需要解析该视图，它既可以是字符串形式，也可以是包含 HTML 和纯文本版本的数组，
+		// 而后者则是发送电子邮件时应使用的版本。我们将在这里将两者都提取出来。
         [$view, $plain, $raw] = $this->parseView($view);
 
         $data['message'] = $message = $this->createMessage();
@@ -266,8 +266,8 @@ class Mailer implements MailerContract, MailQueueContract
         // Once we have retrieved the view content for the e-mail we will set the body
         // of this message using the HTML type, which will provide a simple wrapper
         // to creating view based emails that are able to receive arrays of data.
-		// 一旦我们检索到电子邮件的视图内容,我们将使用HTML类型设置此消息的主体,
-		// 它将提供一个简单的包装器,以创建基于数据数组的基于视图的电子邮件。
+		// 一旦我们获取了电子邮件的视图内容，我们就会使用 HTML 类型来设置此消息的主体，
+		// 这样就能为基于视图的电子邮件提供一个简单的框架，使其能够接收数据数组。
         call_user_func($callback, $message);
 
         $this->addContent($message, $view, $plain, $raw, $data);
@@ -275,8 +275,8 @@ class Mailer implements MailerContract, MailQueueContract
         // If a global "to" address has been set, we will set that address on the mail
         // message. This is primarily useful during local development in which each
         // message should be delivered into a single mail address for inspection.
-		// 如果设置了全局“to”地址,我们将在邮件消息上设置这个地址。
-		// 这在本地开发期间主要是有用的,在本地开发中,每个消息都应该被交付到一个邮件地址进行检查。
+		// 如果已设置了全球“收件人”地址，我们将把该地址设置到邮件中。
+		// 这在本地开发过程中特别有用，在这种情况下，每条消息都应被发送至一个单一的邮件地址以便进行检查。
         if (isset($this->to['address'])) {
             $this->setGlobalToAndRemoveCcAndBcc($message);
         }
@@ -284,8 +284,8 @@ class Mailer implements MailerContract, MailQueueContract
         // Next we will determine if the message should be sent. We give the developer
         // one final chance to stop this message and then we will send it to all of
         // its recipients. We will then fire the sent event for the sent message.
-		// 接下来我们将决定是否应该发送消息。我们给开发人员最后一个机会来阻止这个消息,
-		// 然后我们将它发送给所有的收件人。然后,我们将向发送的消息发射发送的事件。
+		// 接下来，我们将决定是否发送这条消息。我们会给开发人员最后一次机会来阻止这条消息的发送，然后我们将将其发送给所有接收者。
+		// 然后，我们将为已发送的消息触发已发送事件。
         $swiftMessage = $message->getSwiftMessage();
 
         if ($this->shouldSendMessage($swiftMessage, $data)) {
@@ -305,7 +305,8 @@ class Mailer implements MailerContract, MailQueueContract
     protected function sendMailable(MailableContract $mailable)
     {
         return $mailable instanceof ShouldQueue
-            ? $mailable->queue($this->queue) : $mailable->send($this);
+                        ? $mailable->queue($this->queue)
+                        : $mailable->send($this);
     }
 
     /**
@@ -326,8 +327,8 @@ class Mailer implements MailerContract, MailQueueContract
         // If the given view is an array with numeric keys, we will just assume that
         // both a "pretty" and "plain" view were provided, so we will return this
         // array as is, since it should contain both views with numerical keys.
-		// 如果给定的视图是带有数字键的数组,我们将假设提供了一个“漂亮”和“平坦”视图,
-		// 因此我们将返回这个数组,因为它应该包含两个视图和数字键。
+		// 如果给定的视图是一个具有数字键的数组，我们就会假定同时提供了“美观”和“简洁”的视图，
+		// 所以我们将直接返回这个数组，因为它应该包含具有数字键的两个视图。
         if (is_array($view) && isset($view[0])) {
             return [$view[0], $view[1], null];
         }
@@ -335,8 +336,8 @@ class Mailer implements MailerContract, MailQueueContract
         // If this view is an array but doesn't contain numeric keys, we will assume
         // the views are being explicitly specified and will extract them via the
         // named keys instead, allowing the developers to use one or the other.
-		// 如果这个视图是一个数组,但不包含数字键,我们将假定视图是显式指定的,
-		// 并将通过命名的键提取它们,允许开发人员使用一个或另一个。
+		// 如果此视图是一个数组但不包含数字键，我们将假定这些视图是明确指定的，
+		// 并将通过指定的键来提取它们，从而允许开发人员选择使用其中任何一个。
         if (is_array($view)) {
             return [
                 $view['html'] ?? null,
@@ -448,7 +449,7 @@ class Mailer implements MailerContract, MailQueueContract
 	 * 将要在给定队列上发送的新电子邮件放入队列。
      *
      * This method didn't match rest of framework's "onQueue" phrasing. Added "onQueue".
-	 * 该方法不匹配框架的“onQueue”措辞。添加“onQueue”。
+	 * 这个方法与框架的“onQueue”措辞不匹配。添加“onQueue”。
      *
      * @param  string  $queue
      * @param  \Illuminate\Contracts\Mail\Mailable  $view
@@ -506,8 +507,8 @@ class Mailer implements MailerContract, MailQueueContract
         // If a global from address has been specified we will set it on every message
         // instance so the developer does not have to repeat themselves every time
         // they create a new message. We'll just go ahead and push this address.
-		// 如果已经指定了一个来自地址的全局,我们将在每个消息实例上设置它,
-		// 因此开发人员在每次创建新消息时都不必重复自己。我们继续推进这个地址。
+		// 如果指定了全局发送地址，我们将将其设置到每个消息实例中，
+		// 这样开发人员就不必每次创建新消息时都重复输入该地址了。我们直接将这个地址推送过去即可。
         if (! empty($this->from['address'])) {
             $message->from($this->from['address'], $this->from['name']);
         }
@@ -515,8 +516,8 @@ class Mailer implements MailerContract, MailQueueContract
         // When a global reply address was specified we will set this on every message
         // instance so the developer does not have to repeat themselves every time
         // they create a new message. We will just go ahead and push this address.
-		// 当指定了一个全局应答地址时,我们将在每个消息实例上设置它,
-		// 因此开发人员在每次创建新消息时都不必重复自己。我们将继续推进这个地址。
+		// 当指定了全球回复地址时，我们会将该地址设置到每一个消息实例中，
+		// 这样开发人员就不必每次创建新消息时都重复输入了。我们直接将这个地址推送过去即可。
         if (! empty($this->replyTo['address'])) {
             $message->replyTo($this->replyTo['address'], $this->replyTo['name']);
         }
@@ -578,7 +579,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Force the transport to re-connect.
-	 * 强制传输重新连接
+	 * 强制传输重新连接。
      *
      * This will prevent errors in daemon queue situations.
      *
@@ -590,14 +591,14 @@ class Mailer implements MailerContract, MailQueueContract
     }
 
     /**
-     * Get the view factory instance.
-	 * 获取视图工厂实例
+     * Get the array of failed recipients.
+	 * 获取失败收件人的数组
      *
-     * @return \Illuminate\Contracts\View\Factory
+     * @return array
      */
-    public function getViewFactory()
+    public function failures()
     {
-        return $this->views;
+        return $this->failedRecipients;
     }
 
     /**
@@ -612,14 +613,14 @@ class Mailer implements MailerContract, MailQueueContract
     }
 
     /**
-     * Get the array of failed recipients.
-	 * 获取失败收件人的数组
+     * Get the view factory instance.
+	 * 获取视图工厂实例
      *
-     * @return array
+     * @return \Illuminate\Contracts\View\Factory
      */
-    public function failures()
+    public function getViewFactory()
     {
-        return $this->failedRecipients;
+        return $this->views;
     }
 
     /**

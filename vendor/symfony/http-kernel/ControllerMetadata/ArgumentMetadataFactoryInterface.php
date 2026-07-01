@@ -16,7 +16,6 @@ namespace Symfony\Component\HttpKernel\ControllerMetadata;
 
 /**
  * Builds method argument data.
- * 构建方法参数数据。
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，行列，监听器
+ * Illuminate，队列，监听器
  */
 
 namespace Illuminate\Queue;
@@ -21,7 +21,7 @@ class Listener
 
     /**
      * The environment the workers should run under.
-	 * 工作线程的工作环境
+	 * 工作线程的运行环境
      *
      * @var string
      */
@@ -123,8 +123,8 @@ class Listener
         // If the environment is set, we will append it to the command array so the
         // workers will run under the specified environment. Otherwise, they will
         // just run under the production environment which is not always right.
-		// 如果设置了环境,我们将将它附加到命令数组,这样工人就会在指定的环境下运行。
-		// 否则,他们就会在生产环境下运行,这并不总是正确的。
+		// 如果环境已设置好，我们将将其添加到命令数组中，以便工作进程能够在指定的环境中运行。
+		// 否则，他们就会在不恰当的生产环境中运行程序，而这样的操作往往并不可靠。
         if (isset($options->environment)) {
             $command = $this->addEnvironment($command, $options);
         }
@@ -142,7 +142,7 @@ class Listener
      * Add the environment option to the given command.
 	 * 将环境选项添加到给定命令中
      *
-     * @param  string  $command
+     * @param  array  $command
      * @param  \Illuminate\Queue\ListenerOptions  $options
      * @return array
      */
@@ -195,8 +195,8 @@ class Listener
         // Once we have run the job we'll go check if the memory limit has been exceeded
         // for the script. If it has, we will kill this script so the process manager
         // will restart this with a clean slate of memory automatically on exiting.
-		// 一旦我们运行了这个工作,我们就会检查是否已经超过了脚本的内存限制。
-		// 如果它有,我们将杀死这个脚本,这样过程管理器将自动在退出时自动重新启动这个内存。
+		// 一旦我们完成了这项任务，就会去检查一下该脚本的内存使用量是否已超过限制。
+		// 如果存在这种情况，我们将删除该脚本，这样进程管理器在退出时就能自动以全新的内存状态重新启动此程序。
         if ($this->memoryExceeded($memory)) {
             $this->stop();
         }

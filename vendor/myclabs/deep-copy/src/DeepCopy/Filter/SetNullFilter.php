@@ -1,6 +1,6 @@
 <?php
 /**
- * DeepCopy，过滤器，零过滤器
+ * 深拷贝，过滤，设置零过滤器
  */
 
 namespace DeepCopy\Filter;

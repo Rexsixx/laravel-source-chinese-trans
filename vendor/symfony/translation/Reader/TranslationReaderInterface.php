@@ -18,7 +18,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * TranslationReader reads translation messages from translation files.
- * TranslationReader从翻译文件中读取翻译消息。
+ * 翻译阅读器从翻译文件读取翻译消息。
  *
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
@@ -26,7 +26,7 @@ interface TranslationReaderInterface
 {
     /**
      * Reads translation messages from a directory to the catalogue.
-	 * 将翻译消息从目录读取到目录
+	 * 从目录到目录读取翻译消息
      *
      * @param string $directory
      */

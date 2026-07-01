@@ -16,7 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * ResponseHeaderBag is a container for Response HTTP headers.
- * ResponseHeaderBag是HTTP响应头的容器。
+ * ResponseHeaderBag是响应HTTP头的容器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -48,7 +48,6 @@ class ResponseHeaderBag extends HeaderBag
 
     /**
      * Returns the headers, with original capitalizations.
-	 * 返回带有原始大写字母的标头
      *
      * @return array An array of headers
      */

@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，数据采集装置，事件数据采集器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -24,7 +21,6 @@ use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * EventDataCollector.
- * 事件数据采集器
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -82,7 +78,6 @@ class EventDataCollector extends DataCollector implements LateDataCollectorInter
 
     /**
      * Sets the called listeners.
-	 * 设置被调用的监听器
      *
      * @param array $listeners An array of called listeners
      *

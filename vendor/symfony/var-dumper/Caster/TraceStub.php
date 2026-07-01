@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，Caster，Trace Stub
+ * Symfony，组件，Var Dumper，Caster，跟踪存根
  */
 
 /*

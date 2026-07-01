@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，行列，调用队列处理程序
+ * Illuminate，队列，调用队列处理程序
  */
 
 namespace Illuminate\Queue;
@@ -137,9 +137,7 @@ class CallQueuedHandler
             return $job->delete();
         }
 
-        return FailingJob::handle(
-            $job->getConnectionName(), $job, $e
-        );
+        return $job->fail($e);
     }
 
     /**
@@ -147,6 +145,7 @@ class CallQueuedHandler
 	 * 在作业实例上调用失败的方法。
      *
      * The exception that caused the failure will be passed.
+	 * 导致失败的异常将被传递。
      *
      * @param  array  $data
      * @param  \Exception  $e

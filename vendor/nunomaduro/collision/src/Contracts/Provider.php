@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，冲突，契约，供应者
+ * NunoMaduro，碰撞，契约，供应者
  */
 
 /*

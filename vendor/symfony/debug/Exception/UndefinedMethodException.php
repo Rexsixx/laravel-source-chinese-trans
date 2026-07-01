@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，调试，异常，未定义方法异常
+ * Symfony，组件，调试，异常，未定义的方法异常
  */
 
 /*
@@ -18,7 +18,6 @@ namespace Symfony\Component\Debug\Exception;
 
 /**
  * Undefined Method Exception.
- * 未定义的方法异常。
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  *

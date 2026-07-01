@@ -15,7 +15,7 @@ class MorphPivot extends Pivot
 	 * 多态关系的类型。
      *
      * Explicitly define this so it's not included in saved attributes.
-	 * 显式地定义这个,所以它不包含在保存的属性中。
+	 * 显式地定义它，使它不包含在保存的属性中。
      *
      * @var string
      */
@@ -26,7 +26,7 @@ class MorphPivot extends Pivot
 	 * 多态关系的值。
      *
      * Explicitly define this so it's not included in saved attributes.
-	 * 显式地定义这个,所以它不包含在保存的属性中。
+	 * 显式地定义它，使它不包含在保存的属性中。
      *
      * @var string
      */
@@ -138,7 +138,7 @@ class MorphPivot extends Pivot
      * Get a new query to restore multiple models by their queueable IDs.
 	 * 获取一个新查询，根据可排队id恢复多个模型。
      *
-     * @param  array<int>  $ids
+     * @param  array  $ids
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function newQueryForCollectionRestoration(array $ids)

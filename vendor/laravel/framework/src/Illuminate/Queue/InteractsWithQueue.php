@@ -45,13 +45,13 @@ trait InteractsWithQueue
      * Fail the job from the queue.
 	 * 从队列中失败作业
      *
-     * @param  \Throwable  $exception
+     * @param  \Throwable|null  $exception
      * @return void
      */
     public function fail($exception = null)
     {
         if ($this->job) {
-            FailingJob::handle($this->job->getConnectionName(), $this->job, $exception);
+            $this->job->fail($exception);
         }
     }
 

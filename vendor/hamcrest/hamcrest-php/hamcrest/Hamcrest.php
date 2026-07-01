@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest
+ * Hamcrest，Hamcrest
  */
 
 /*
@@ -8,7 +8,6 @@
  */
 
 // This file is generated from the static method @factory doctags.
-// 这个文件是由静态方法@factory doctag生成的。
 
 if (!function_exists('assertThat')) {
     /**

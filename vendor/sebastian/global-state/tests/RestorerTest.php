@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，全局状态，快备份测试
+ * SebastianBergmann，GlobalState，恢复测试
  */
 
 /*
@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class Restorer.
- * 类备份
+ * 恢复测试
  */
 class RestorerTest extends TestCase
 {
@@ -33,7 +33,6 @@ class RestorerTest extends TestCase
 
     /**
      * Check global variables are correctly backuped and restored (unit test).
-	 * 检查全局变量正确备份和恢复(单元测试)
      *
      * @covers \SebastianBergmann\GlobalState\Restorer::restoreGlobalVariables
      * @covers \SebastianBergmann\GlobalState\Restorer::restoreSuperGlobalArray
@@ -65,7 +64,6 @@ class RestorerTest extends TestCase
 
     /**
      * Check global variables are correctly backuped and restored.
-	 * 检查全局变量正确恢复和恢复。
      *
      * The real test is the second, but the first has to be executed to backup the globals.
      *

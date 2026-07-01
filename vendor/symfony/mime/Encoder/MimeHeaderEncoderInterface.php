@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，编码器，Mime报头编码器接口
+ * Symfony，组件，Mime，编码器，Mime头编码器接口
  */
 
 /*
@@ -21,7 +21,7 @@ interface MimeHeaderEncoderInterface
 {
     /**
      * Get the MIME name of this content encoding scheme.
-	 * 获取此内容编码方案的MIME名称
+	 * 获取该内容编码方案的MIME名称
      */
     public function getName(): string;
 }

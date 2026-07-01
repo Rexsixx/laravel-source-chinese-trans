@@ -312,6 +312,8 @@ class Message
         // First we will check for a MIME type on the message, which instructs the
         // mail client on what type of attachment the file is so that it may be
         // downloaded correctly by the user. The MIME option is not required.
+		// 首先，我们将检查邮件的 MIME 类型。该类型会告知邮件客户端文件的类型，
+		// 以便用户能够正确下载该文件。不过，MIME 选项并非必需。
         if (isset($options['mime'])) {
             $attachment->setContentType($options['mime']);
         }
@@ -319,6 +321,8 @@ class Message
         // If an alternative name was given as an option, we will set that on this
         // attachment so that it will be downloaded with the desired names from
         // the developer, otherwise the default file names will get assigned.
+		// 如果提供了其他名称作为选项，我们将在此附件中设置该名称，以便与开发者提供的相应名称一同下载，
+		// 否则将使用默认的文件名进行下载。
         if (isset($options['as'])) {
             $attachment->setFilename($options['as']);
         }

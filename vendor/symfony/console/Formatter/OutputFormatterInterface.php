@@ -16,7 +16,6 @@ namespace Symfony\Component\Console\Formatter;
 
 /**
  * Formatter interface for console output.
- * 用于控制台输出的格式化程序接口。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -24,7 +23,6 @@ interface OutputFormatterInterface
 {
     /**
      * Sets the decorated flag.
-	 * 设置装饰的标志
      *
      * @param bool $decorated Whether to decorate the messages or not
      */
@@ -32,7 +30,6 @@ interface OutputFormatterInterface
 
     /**
      * Gets the decorated flag.
-	 * 得到装饰的标志
      *
      * @return bool true if the output will decorate messages, false otherwise
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Fideloper，代理人，可信代理
+ * Fideloper，代理，信托代理
  */
 
 namespace Fideloper\Proxy;
@@ -48,7 +48,7 @@ class TrustProxies
 
     /**
      * Handle an incoming request.
-	 * 处理传入的请求
+	 * 处理传入请求
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
@@ -67,7 +67,7 @@ class TrustProxies
 
     /**
      * Sets the trusted proxies on the request to the value of trustedproxy.proxies
-	 * 在请求上设置可信代理,以满足托管代理的值。
+	 * 将请求上的可信代理设置为trustedproxy.proxies的值
      *
      * @param \Illuminate\Http\Request $request
      */

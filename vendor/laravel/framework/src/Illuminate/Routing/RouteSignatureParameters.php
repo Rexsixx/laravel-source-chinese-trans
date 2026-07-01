@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由签名参数
+ * Illuminate，路由选择，路由签名参数
  */
 
 namespace Illuminate\Routing;
@@ -16,7 +16,7 @@ class RouteSignatureParameters
 	 * 提取路由动作的签名参数
      *
      * @param  array  $action
-     * @param  string  $subClass
+     * @param  string|null  $subClass
      * @return array
      */
     public static function fromAction(array $action, $subClass = null)

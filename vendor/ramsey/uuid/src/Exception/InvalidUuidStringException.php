@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，生成器，无效Uuid字符串异常
+ * Ramsey，Uuid，异常，无效的Uuid字符串异常
  */
 
 /**
@@ -22,7 +22,6 @@ use InvalidArgumentException;
 
 /**
  * Thrown to indicate that the parsed UUID string is invalid.
- * 被抛出,以指示解析的UUID字符串无效。
  */
 class InvalidUuidStringException extends InvalidArgumentException
 {

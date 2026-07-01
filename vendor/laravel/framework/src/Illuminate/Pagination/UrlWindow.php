@@ -91,8 +91,8 @@ class UrlWindow
         // If the current page is very close to the beginning of the page range, we will
         // just render the beginning of the page range, followed by the last 2 of the
         // links in this list, since we will not have room to create a full slider.
-		// 如果当前页面非常接近页面范围的开始,我们将呈现页面范围的开始,
-		// 后面是列表中的最后两个链接,因为我们将没有空间创建一个完整的滑块。
+		// 如果当前页面距离页面范围的起始位置非常近，我们将只渲染页面范围的起始部分，
+		// 然后展示此列表中的最后两个链接，因为我们没有足够的空间来创建完整的滑块。
         if ($this->currentPage() <= $window) {
             return $this->getSliderTooCloseToBeginning($window);
         }
@@ -100,8 +100,8 @@ class UrlWindow
         // If the current page is close to the ending of the page range we will just get
         // this first couple pages, followed by a larger window of these ending pages
         // since we're too close to the end of the list to create a full on slider.
-		// 如果当前的页面接近页面范围的结束,我们就会得到第一个过去的页面,
-		// 然后是这些结束页面的一个更大的窗口,因为我们离列表的末尾太近,无法在滑块上创建一个完整的窗口。
+		// 如果当前页面接近页面范围的末尾，我们将只获取这开头的几页，
+		// 然后接着显示这部分末尾的更多页面，因为此时我们距离列表的末尾太近了，无法创建完整的滑动窗口。
         elseif ($this->currentPage() > ($this->lastPage() - $window)) {
             return $this->getSliderTooCloseToEnding($window);
         }
@@ -109,8 +109,8 @@ class UrlWindow
         // If we have enough room on both sides of the current page to build a slider we
         // will surround it with both the beginning and ending caps, with this window
         // of pages in the middle providing a Google style sliding paginator setup.
-		// 如果我们在当前页面的两边有足够的空间来构建一个滑块,我们将用一个开始和结束的大写来围绕它,
-		// 在中间的这个窗口中提供一个谷歌风格的滑动paginator设置。
+		// 如果当前页面两侧有足够的空间来设置滑动条，我们将用起始和结束的帽状装饰将其环绕起来，
+		// 而在中间的这一段页面区域则会形成类似谷歌风格的滑动分页器布局。
         return $this->getFullSlider($onEachSide);
     }
 

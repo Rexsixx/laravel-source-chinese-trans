@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译器，问题，编译 Helpers
+ * Illuminate，视图，编译，问题，编译辅助
  */
 
 namespace Illuminate\View\Compilers\Concerns;
@@ -20,7 +20,7 @@ trait CompilesHelpers
 
     /**
      * Compile the "dd" statements into valid PHP.
-	 * 将“dd”语句编译成有效的PH
+	 * 将“dd”语句编译成有效的PHP
      *
      * @param  string  $arguments
      * @return string

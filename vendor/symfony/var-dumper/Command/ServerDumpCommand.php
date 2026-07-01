@@ -30,7 +30,7 @@ use Symfony\Component\VarDumper\Server\DumpServer;
 
 /**
  * Starts a dump server to collect and output dumps on a single place with multiple formats support.
- * 启动转储服务器，在支持多种格式的地方收集和输出转储。
+ * 在一个具有多个格式支持的单一位置上,启动一个转储服务器来收集和输出转储。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  *

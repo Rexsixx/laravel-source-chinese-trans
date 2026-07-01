@@ -16,7 +16,6 @@ namespace Symfony\Component\Console\Question;
 
 /**
  * Represents a yes/no question.
- * 代表一个是的/毫无疑问。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -39,7 +38,6 @@ class ConfirmationQuestion extends Question
 
     /**
      * Returns the default answer normalizer.
-	 * 返回默认的答案正常化
      */
     private function getDefaultNormalizer(): callable
     {

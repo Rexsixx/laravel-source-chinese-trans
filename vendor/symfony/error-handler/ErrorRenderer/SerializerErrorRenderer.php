@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，错误处理器，错误呈现器，序列化错误呈现器
+ * Symfony，组件，错误处理程序，错误渲染器，序列化错误渲染器
  */
 
 /*
@@ -22,7 +22,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Formats an exception using Serializer for rendering.
- * 使用Serializer格式化异常以进行呈现。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

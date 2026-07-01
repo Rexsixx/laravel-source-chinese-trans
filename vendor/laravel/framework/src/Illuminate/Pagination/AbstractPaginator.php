@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，分页，抽象分页器
+ * Illuminate，分页，抽象的分页器
  */
 
 namespace Illuminate\Pagination;
@@ -21,7 +21,7 @@ abstract class AbstractPaginator implements Htmlable
 
     /**
      * All of the items being paginated.
-	 * 切片前的项目总数
+	 * 所有被分页的项
      *
      * @var \Illuminate\Support\Collection
      */
@@ -45,7 +45,7 @@ abstract class AbstractPaginator implements Htmlable
 
     /**
      * The base path to assign to all URLs.
-	 * 为所有url分配的基本路径
+	 * 分配给所有url的基本路径
      *
      * @var string
      */
@@ -61,7 +61,7 @@ abstract class AbstractPaginator implements Htmlable
 
     /**
      * The URL fragment to add to all URLs.
-	 * URL片段添加到所有URL
+	 * 要添加到所有URL的URL片段
      *
      * @var string|null
      */
@@ -187,8 +187,8 @@ abstract class AbstractPaginator implements Htmlable
         // If we have any extra query string key / value pairs that need to be added
         // onto the URL, we will put them in query string form and then attach it
         // to the URL. This allows for extra information like sortings storage.
-		// 如果我们有任何额外的查询字符串键/值对,需要在URL上添加,我们将把它们放在查询字符串表单中,然后将其连接到URL。
-		// 这允许提供类似分类存储的额外信息。
+		// 如果我们有需要添加到 URL 中的任何额外的查询字符串键/值对，我们会将其以查询字符串的形式存储，
+		// 然后将其附加到 URL 之中。这样可以存储诸如排序等额外信息。
         $parameters = [$this->pageName => $page];
 
         if (count($this->query) > 0) {
@@ -712,7 +712,7 @@ abstract class AbstractPaginator implements Htmlable
 
     /**
      * Render the contents of the paginator when casting to string.
-	 * 在转换为字符串时呈现分页器的内容
+	 * 在转换为字符串时呈现分页器的内容。
      *
      * @return string
      */

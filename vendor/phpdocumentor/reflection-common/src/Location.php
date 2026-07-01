@@ -1,6 +1,6 @@
 <?php
 /**
- * phpDocumentor，反射，地点
+ * phpDocumentor，反射，位置
  */
 
 declare(strict_types=1);
@@ -18,7 +18,6 @@ namespace phpDocumentor\Reflection;
 
 /**
  * The location where an element occurs within a file.
- * 在文件中发生元素的位置。
  *
  * @psalm-immutable
  */

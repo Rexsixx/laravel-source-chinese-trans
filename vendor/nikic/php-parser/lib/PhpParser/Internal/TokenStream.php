@@ -8,7 +8,6 @@ namespace PhpParser\Internal;
 
 /**
  * Provides operations on token streams, for use by pretty printer.
- * 在令牌流上提供操作,用于漂亮的打印机。
  *
  * @internal
  */

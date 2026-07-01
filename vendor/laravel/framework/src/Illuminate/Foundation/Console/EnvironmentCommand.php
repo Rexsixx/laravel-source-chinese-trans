@@ -11,7 +11,7 @@ class EnvironmentCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
@@ -27,7 +27,7 @@ class EnvironmentCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */

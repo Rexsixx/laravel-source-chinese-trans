@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，缓存加热器，Warmable接口
+ * Symfony，组件，Http内核，CacheWarmer，Warmable Interface
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\HttpKernel\CacheWarmer;
 
 /**
  * Interface for classes that support warming their cache.
- * 接口，用于支持加热其缓存的类。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

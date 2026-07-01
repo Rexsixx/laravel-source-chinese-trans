@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，加载器，Xliff 文件加载器
+ * Symfony，组件，翻译，载入程序，Xliff File 加载器
  */
 
 /*
@@ -23,7 +23,7 @@ use Symfony\Component\Translation\Util\XliffUtils;
 
 /**
  * XliffFileLoader loads translations from XLIFF files.
- * XliffFileLoader从XLIFF文件加载翻译。
+ * XliffFileLoader加载XLIFF文件的翻译。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -76,7 +76,7 @@ class XliffFileLoader implements LoaderInterface
 
     /**
      * Extract messages and metadata from DOMDocument into a MessageCatalogue.
-	 * 从DOMDocument中提取消息和元数据到MessageCatalogue中
+	 * 从DOMDocument中提取消息和元数据到MessageCatalogue
      */
     private function extractXliff1(\DOMDocument $dom, MessageCatalogue $catalogue, string $domain)
     {
@@ -101,7 +101,6 @@ class XliffFileLoader implements LoaderInterface
                 $source = isset($attributes['resname']) && $attributes['resname'] ? $attributes['resname'] : $translation->source;
                 // If the xlf file has another encoding specified, try to convert it because
                 // simple_xml will always return utf-8 encoded values
-				// 如果 xlf 文件指定了其他编码，请尝试进行转换，因为 simple_xml_xml 总是返回 UTF-88 编码的值。
                 $target = $this->utf8ToCharset((string) ($translation->target ?? $translation->source), $encoding);
 
                 $catalogue->set((string) $source, $target, $domain);
@@ -145,7 +144,6 @@ class XliffFileLoader implements LoaderInterface
 
                 // If the xlf file has another encoding specified, try to convert it because
                 // simple_xml will always return utf-8 encoded values
-				// 如果xlf文件指定了其他编码，请尝试进行转换，因为simple_xml始终会返回utf-8编码的值。
                 $target = $this->utf8ToCharset((string) ($segment->target ?? $source), $encoding);
 
                 $catalogue->set((string) $source, $target, $domain);
@@ -177,6 +175,7 @@ class XliffFileLoader implements LoaderInterface
 
     /**
      * Convert a UTF8 string to the specified encoding.
+	 * 将UTF8字符串转换为指定的编码
      */
     private function utf8ToCharset(string $content, string $encoding = null): string
     {

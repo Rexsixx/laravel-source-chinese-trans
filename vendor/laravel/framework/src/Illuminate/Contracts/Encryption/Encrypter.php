@@ -13,7 +13,9 @@ interface Encrypter
      *
      * @param  mixed  $value
      * @param  bool  $serialize
-     * @return mixed
+     * @return string
+     *
+     * @throws \Illuminate\Contracts\Encryption\EncryptException
      */
     public function encrypt($value, $serialize = true);
 
@@ -21,9 +23,11 @@ interface Encrypter
      * Decrypt the given value.
 	 * 解密给定的值
      *
-     * @param  mixed  $payload
+     * @param  string  $payload
      * @param  bool  $unserialize
      * @return mixed
+     *
+     * @throws \Illuminate\Contracts\Encryption\DecryptException
      */
     public function decrypt($payload, $unserialize = true);
 }

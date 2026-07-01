@@ -14,7 +14,7 @@ class ViewCacheCommand extends Command
 {
     /**
      * The name and signature of the console command.
-	 * 控制台命令的名称和签名
+	 * console命令的名称和签名
      *
      * @var string
      */
@@ -30,12 +30,14 @@ class ViewCacheCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return mixed
      */
     public function handle()
     {
+        $this->call('view:clear');
+
         $this->paths()->each(function ($path) {
             $this->compileViews($this->bladeFilesIn([$path]));
         });

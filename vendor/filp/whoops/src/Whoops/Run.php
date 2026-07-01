@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，Run
+ * Whoops，运行
  */
 
 /**
@@ -100,7 +100,6 @@ final class Run implements RunInterface
 
     /**
      * Explicitly request your handler runs as the last of all currently registered handlers.
-	 * 显式地请求您的处理程序运行为当前所有注册处理程序的最后一个
      *
      * @param callable|HandlerInterface $handler
      *
@@ -114,7 +113,6 @@ final class Run implements RunInterface
 
     /**
      * Explicitly request your handler runs as the first of all currently registered handlers.
-	 * 显式地请求您的处理程序作为所有当前注册处理程序中的第一个运行
      *
      * @param callable|HandlerInterface $handler
      *
@@ -143,7 +141,6 @@ final class Run implements RunInterface
 
     /**
      * Removes and returns the last handler pushed to the handler stack.
-	 * 删除并返回推到处理程序堆栈的最后一个处理程序
      *
      * @see Run::removeFirstHandler(), Run::removeLastHandler()
      *

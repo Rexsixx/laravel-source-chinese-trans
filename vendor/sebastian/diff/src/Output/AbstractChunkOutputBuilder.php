@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，差速器，输出，抽象块输出生成器
+ */
+
 /*
  * This file is part of sebastian/diff.
  *
@@ -15,6 +20,7 @@ abstract class AbstractChunkOutputBuilder implements DiffOutputBuilderInterface
     /**
      * Takes input of the diff array and returns the common parts.
      * Iterates through diff line by line.
+	 * 输入diff数组并返回常见部件。迭代通过diff线。
      *
      * @param array $diff
      * @param int   $lineThreshold

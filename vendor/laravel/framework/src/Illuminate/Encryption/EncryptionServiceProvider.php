@@ -25,8 +25,8 @@ class EncryptionServiceProvider extends ServiceProvider
             // If the key starts with "base64:", we will need to decode the key before handing
             // it off to the encrypter. Keys may be base-64 encoded for presentation and we
             // want to make sure to convert them back to the raw bytes before encrypting.
-			// 如果关键从“base64”开始,那么我们就需要在将密钥解码到加密器之前需要解码密钥。
-			// 密钥可能是base-64编码的表示,我们想要确保在加密之前将它们转换回原始字节。
+			// 如果密钥以“base64：”开头，那么在将其传递给加密器之前，我们需要先对其进行解码。
+			// 密钥可能经过Base-64编码以进行显示，我们希望在加密前将其转换回原始字节。
             if (Str::startsWith($key = $this->key($config), 'base64:')) {
                 $key = base64_decode(substr($key, 7));
             }

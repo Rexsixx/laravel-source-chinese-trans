@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，模式，语法，修改字段
+ * Illuminate，数据库，架构，语法，修改字段
  */
 
 namespace Illuminate\Database\Schema\Grammars;
@@ -84,11 +84,16 @@ class ChangeColumn
             // Here we will spin through each fluent column definition and map it to the proper
             // Doctrine column definitions - which is necessary because Laravel and Doctrine
             // use some different terminology for various column attributes on the tables.
+			// 接下来，我们将逐一查看每个流畅的列定义，并将其与相应的 Doctrine 列定义进行匹配——这是必要的，
+			// 因为 Laravel 和 Doctrine 在表的某些列属性方面使用了不同的术语。
             foreach ($fluent->getAttributes() as $key => $value) {
                 if (! is_null($option = static::mapFluentOptionToDoctrine($key))) {
                     if (method_exists($column, $method = 'set'.ucfirst($option))) {
                         $column->{$method}(static::mapFluentValueToDoctrine($option, $value));
+                        continue;
                     }
+
+                    $column->setCustomSchemaOption($option, static::mapFluentValueToDoctrine($option, $value));
                 }
             }
         }
@@ -126,7 +131,7 @@ class ChangeColumn
             $options['length'] = static::calculateDoctrineTextLength($fluent['type']);
         }
 
-        if ($fluent['type'] === 'json') {
+        if (in_array($fluent['type'], ['json', 'binary'])) {
             $options['customSchemaOptions'] = [
                 'collation' => '',
             ];
@@ -137,7 +142,7 @@ class ChangeColumn
 
     /**
      * Get the doctrine column type.
-	 * 获取条令列类型
+	 * 获取原则令列类型
      *
      * @param  string  $type
      * @return \Doctrine\DBAL\Types\Type
@@ -186,7 +191,7 @@ class ChangeColumn
 
     /**
      * Get the matching Doctrine option for a given Fluent attribute name.
-	 * 获取给定Fluent属性名称的匹配Doctrine选项
+	 * 获取给定Fluent属性名称的匹配Doctrine选项。
      *
      * @param  string  $attribute
      * @return string|null

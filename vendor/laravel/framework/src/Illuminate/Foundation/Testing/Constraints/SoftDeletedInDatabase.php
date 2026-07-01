@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，约束，数据库软删除
+ * Illuminate，基础，测试，约束条件，数据库软删除
  */
 
 namespace Illuminate\Foundation\Testing\Constraints;

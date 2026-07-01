@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，流响应
+ * Symfony，组件，Http基础，流式响应
  */
 
 /*
@@ -52,7 +52,6 @@ class StreamedResponse extends Response
 
     /**
      * Factory method for chainability.
-	 * 可链性的工厂方法
      *
      * @param callable|null $callback A valid PHP callback or null to set it later
      * @param int           $status   The response status code
@@ -67,7 +66,6 @@ class StreamedResponse extends Response
 
     /**
      * Sets the PHP callback associated with this Response.
-	 * 设置与此响应关联的PHP回调
      *
      * @return $this
      */

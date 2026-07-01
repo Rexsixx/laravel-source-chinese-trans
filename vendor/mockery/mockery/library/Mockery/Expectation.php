@@ -1,9 +1,5 @@
 <?php
 /**
- * Mockery，预期
- */
-
-/**
  * Mockery
  *
  * LICENSE

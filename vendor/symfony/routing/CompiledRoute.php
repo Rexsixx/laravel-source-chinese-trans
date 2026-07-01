@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，编译后的路由
+ * Symfony，组件，路由选择，已编译路由
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\Routing;
 
 /**
  * CompiledRoutes are returned by the RouteCompiler class.
- * CompiledRoutes由RouteCompiler类返回
+ * CompiledRoutes由惯例类返回。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -112,7 +112,7 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the regex.
-	 * 返回正则表达式
+	 * 返回regex
      *
      * @return string The regex
      */

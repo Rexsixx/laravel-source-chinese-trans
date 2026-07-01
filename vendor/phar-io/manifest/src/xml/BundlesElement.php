@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Manifest，Bundles 收集
+ * PharIo，Manifest，包元素
  */
 
 /*

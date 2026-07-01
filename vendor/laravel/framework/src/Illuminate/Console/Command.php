@@ -111,7 +111,7 @@ class Command extends SymfonyCommand
         // We will go ahead and set the name, description, and parameters on console
         // commands just to make things a little easier on the developer. This is
         // so they don't have to all be manually specified in the constructors.
-		// 我们将继续在控制台命令上设置名称、描述和参数,以便使开发人员更容易。
+		// 我们将直接在控制台命令中设定名称、描述以及参数，这样能为开发者提供一些便利。
 		// 这是因此,它们不需要在构造函数中手动指定。
         if (isset($this->signature)) {
             $this->configureUsingFluentDefinition();
@@ -122,7 +122,7 @@ class Command extends SymfonyCommand
         // Once we have constructed the command, we'll set the description and other
         // related properties of the command. If a signature wasn't used to build
         // the command we'll set the arguments and the options on this command.
-		// 一旦我们构建了命令,我们将设置命令的描述和其他相关属性。
+		// 一旦我们构建好了命令，就会设置该命令的描述以及其他相关属性。
 		// 如果签名不用于构建命令,我们将设置参数和选项的选项。
         $this->setDescription($this->description);
 
@@ -148,7 +148,7 @@ class Command extends SymfonyCommand
         // After parsing the signature we will spin through the arguments and options
         // and set them on this command. These will already be changed into proper
         // instances of these "InputArgument" and "InputOption" Symfony classes.
-		// 解析签名后,我们将通过参数和选项进行旋转,并在此命令中设置为它们。
+		// 在解析完签名后，我们将依次检查参数和选项，并将它们设置到此命令中。
 		// 这些将被改变为这些“InputArgument”和“InputOption”的适当实例。
         $this->getDefinition()->addArguments($arguments);
         $this->getDefinition()->addOptions($options);
@@ -165,7 +165,7 @@ class Command extends SymfonyCommand
         // We will loop through all of the arguments and options for the command and
         // set them all on the base command instance. This specifies what can get
         // passed into these commands as "parameters" to control the execution.
-		// 我们将通过所有的参数和选项来循环,并将它们设置为基本命令实例。
+		// 我们将遍历该命令的所有参数和选项，并将它们全部设置到基础命令实例中。
 		// 这说明了什么可以被传递到这些命令中作为“参数”来控制执行。
         foreach ($this->getArguments() as $arguments) {
             call_user_func_array([$this, 'addArgument'], $arguments);
@@ -495,7 +495,7 @@ class Command extends SymfonyCommand
 	 * 写一个字符串作为标准输出
      *
      * @param  string  $string
-     * @param  string  $style
+     * @param  string|null  $style
      * @param  int|string|null  $verbosity
      * @return void
      */

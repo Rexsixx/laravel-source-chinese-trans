@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，文件视图探测器
+ * Illuminate，视图，文件视图查找器
  */
 
 namespace Illuminate\View;
@@ -48,7 +48,7 @@ class FileViewFinder implements ViewFinderInterface
      *
      * @var array
      */
-    protected $extensions = ['blade.php', 'php', 'css'];
+    protected $extensions = ['blade.php', 'php', 'css', 'html'];
 
     /**
      * Create a new file view loader instance.
@@ -56,13 +56,13 @@ class FileViewFinder implements ViewFinderInterface
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  array  $paths
-     * @param  array  $extensions
+     * @param  array|null  $extensions
      * @return void
      */
     public function __construct(Filesystem $files, array $paths, array $extensions = null)
     {
         $this->files = $files;
-        $this->paths = $paths;
+        $this->paths = array_map([$this, 'resolvePath'], $paths);
 
         if (isset($extensions)) {
             $this->extensions = $extensions;
@@ -173,7 +173,7 @@ class FileViewFinder implements ViewFinderInterface
      */
     public function addLocation($location)
     {
-        $this->paths[] = $location;
+        $this->paths[] = $this->resolvePath($location);
     }
 
     /**
@@ -185,7 +185,19 @@ class FileViewFinder implements ViewFinderInterface
      */
     public function prependLocation($location)
     {
-        array_unshift($this->paths, $location);
+        array_unshift($this->paths, $this->resolvePath($location));
+    }
+
+    /**
+     * Resolve the path.
+	 * 解析路径
+     *
+     * @param  string  $path
+     * @return string
+     */
+    protected function resolvePath($path)
+    {
+        return realpath($path) ?: $path;
     }
 
     /**
@@ -241,7 +253,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Register an extension with the view finder.
-	 * 用探测器注册一个扩展
+	 * 用取景器注册一个扩展
      *
      * @param  string  $extension
      * @return void
@@ -315,8 +327,19 @@ class FileViewFinder implements ViewFinderInterface
     }
 
     /**
+     * Get the views that have been located.
+	 * 获取已定位的视图
+     *
+     * @return array
+     */
+    public function getViews()
+    {
+        return $this->views;
+    }
+
+    /**
      * Get the namespace to file path hints.
-	 * 得到命名空间获取到文件路径提示
+	 * 将名称空间获取到文件路径提示
      *
      * @return array
      */

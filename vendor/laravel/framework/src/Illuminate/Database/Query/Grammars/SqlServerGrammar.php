@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，查询，语法，Sql Server 语法
+ * Illuminate，数据库，查询，语法，SqlServer 语法
  */
 
 namespace Illuminate\Database\Query\Grammars;
@@ -38,8 +38,7 @@ class SqlServerGrammar extends Grammar
         // If an offset is present on the query, we will need to wrap the query in
         // a big "ANSI" offset syntax block. This is very nasty compared to the
         // other database systems but is necessary for implementing features.
-		// 如果在查询中存在一个偏移量,我们将需要将查询包在一个大的“ANSI”偏移语法块中。
-		// 与其他数据库系统相比,这非常令人讨厌,但对于实现特性来说是必要的。
+		// 如果查询中存在偏移量，我们就需要将该查询包裹在一个大型的“ANSI”偏移量语法块中。
         if (is_null($query->columns)) {
             $query->columns = ['*'];
         }
@@ -68,8 +67,8 @@ class SqlServerGrammar extends Grammar
         // If there is a limit on the query, but not an offset, we will add the top
         // clause to the query, which serves as a "limit" type clause within the
         // SQL Server system similar to the limit keywords available in MySQL.
-		// 如果查询有一个限制,而不是一个偏差,我们将将顶部子句添加到查询中,
-		// 在SQL Server系统中作为一个“限制”类型子句,类似于MySQL中可用的限制关键字。
+		// 如果查询有上限但没有偏移量，我们将向查询中添加“top”子句，
+		// 该子句在 SQL Server 系统中类似于 MySQL 中可用的“limit”关键字，起到类似限制的作用。
         if ($query->limit > 0 && $query->offset <= 0) {
             $select .= 'top '.$query->limit.' ';
         }
@@ -186,8 +185,8 @@ class SqlServerGrammar extends Grammar
         // An ORDER BY clause is required to make this offset query work, so if one does
         // not exist we'll just create a dummy clause to trick the database and so it
         // does not complain about the queries for not having an "order by" clause.
-		// 为了使此偏移查询工作,需要一个命令。
-		// 因此,如果一个不存在,我们将创建一个虚拟子句来欺骗数据库,因此它不会抱怨查询没有“ORDER BY”子句。
+		// 要使这个偏移查询能够正常运行，就需要有一个“ORDER BY”子句。
+		// 如果不存在这样的子句，我们就创建一个虚拟的子句来欺骗数据库，这样数据库就不会因为这些查询缺少“ORDER BY”子句而发出警告了。
         if (empty($components['orders'])) {
             $components['orders'] = 'order by (select 0)';
         }
@@ -195,8 +194,8 @@ class SqlServerGrammar extends Grammar
         // We need to add the row number to the query so we can compare it to the offset
         // and limit values given for the statements. So we will add an expression to
         // the "select" that will give back the row numbers on each of the records.
-		// 我们需要将行号添加到查询中,这样我们就可以将其与所给出的值的偏移量和极限值进行比较。
-		// 因此,我们将向“select”添加一个表达式,它将在每个记录上给出行号。
+		// 我们需要在查询中添加行号，以便能够将其与给定的语句的偏移量和限制值进行比较。
+		// 因此，我们将向“选择”语句中添加一个表达式，该表达式将返回每条记录的行号。
         $components['columns'] .= $this->compileOver($components['orders']);
 
         unset($components['orders']);
@@ -204,8 +203,8 @@ class SqlServerGrammar extends Grammar
         // Next we need to calculate the constraints that should be placed on the query
         // to get the right offset and limit from our query but if there is no limit
         // set we will just handle the offset only since that is all that matters.
-		// 接下来,我们需要计算在查询中应该放置的约束,以得到我们的查询的正确偏移和限制,
-		// 但如果没有限制,我们只会在所有重要的事情上只处理偏移量。
+		// 接下来，我们需要计算出对查询所应施加的限制条件，以便从查询结果中获取正确的偏移量和限制范围。
+		// 但如果没有设定限制条件，我们只会处理偏移量部分，因为这才是关键所在。
         $sql = $this->concatenate($components);
 
         return $this->compileTableExpression($sql, $query);
@@ -389,8 +388,8 @@ class SqlServerGrammar extends Grammar
         // Each one of the columns in the update statements needs to be wrapped in the
         // keyword identifiers, also a place-holder needs to be created for each of
         // the values in the list of bindings so we can make the sets statements.
-		// 更新语句中的每一个列都需要被包在关键字标识中,也需要为绑定列表中的每个值创建一个place-holder,
-		// 这样我们就可以进行集合语句。
+		// 在更新语句中的每一列都需要用“关键字标识符”进行包裹，
+		// 同时还需要为绑定列表中的每个值创建一个占位符，这样我们才能编写集合语句。
         $columns = collect($values)->map(function ($value, $key) {
             return $this->wrap($key).' = '.$this->parameter($value);
         })->implode(', ');
@@ -398,8 +397,8 @@ class SqlServerGrammar extends Grammar
         // If the query has any "join" clauses, we will setup the joins on the builder
         // and compile them so we can attach them to this update, as update queries
         // can get join statements to attach to other tables when they're needed.
-		// 如果查询有任何“join”子句,我们将在构建器上设置连接,并编译它们,
-		// 这样我们就可以将它们连接到这个更新,因为更新查询可以在需要时连接到其他表的连接语句。
+		// 如果查询中包含任何“连接”条件，我们将先在构建器中设置这些连接条件，然后对其进行编译，以便将其附加到此次更新操作中。
+		// 因为更新查询在需要时能够生成连接语句并将其附加到其他表上。
         $joins = '';
 
         if (isset($query->joins)) {
@@ -409,8 +408,8 @@ class SqlServerGrammar extends Grammar
         // Of course, update queries may also be constrained by where clauses so we'll
         // need to compile the where clauses and attach it to the query so only the
         // intended records are updated by the SQL statements we generate to run.
-		// 当然,更新查询也可能受到where子句的限制,因此我们需要编译where子句,
-		// 并将其附加到查询中,所以只有预期的记录由我们生成的SQL语句更新。
+		// 当然，更新查询也可能受到“where”子句的限制，因此我们需要编译这些“where”子句，
+		// 并将其附加到查询中，这样我们生成的 SQL 语句就能仅更新预期的记录。
         $where = $this->compileWheres($query);
 
         if (! empty($joins)) {
@@ -448,15 +447,10 @@ class SqlServerGrammar extends Grammar
      */
     public function prepareBindingsForUpdate(array $bindings, array $values)
     {
-        // Update statements with joins in SQL Servers utilize an unique syntax. We need to
-        // take all of the bindings and put them on the end of this array since they are
-        // added to the end of the "where" clause statements as typical where clauses.
-		// 在SQL server中使用连接更新语句使用一种独特的语法。
-		// 我们需要把所有的绑定都放在这个数组的末尾,因为它们被添加到“where”子句语句的末尾,这是典型的where子句。
-        $bindingsWithoutJoin = Arr::except($bindings, 'join');
+        $cleanBindings = Arr::except($bindings, 'select');
 
         return array_values(
-            array_merge($values, $bindings['join'], Arr::flatten($bindingsWithoutJoin))
+            array_merge($values, Arr::flatten($cleanBindings))
         );
     }
 
@@ -516,11 +510,21 @@ class SqlServerGrammar extends Grammar
      */
     protected function wrapJsonSelector($value)
     {
-        $parts = explode('->', $value, 2);
+        [$field, $path] = $this->wrapJsonFieldAndPath($value);
 
-        $field = $this->wrapSegments(explode('.', array_shift($parts)));
+        return 'json_value('.$field.$path.')';
+    }
 
-        return 'json_value('.$field.', '.$this->wrapJsonPath($parts[0]).')';
+    /**
+     * Wrap the given JSON boolean value.
+	 * 包装给定的JSON布尔值
+     *
+     * @param  string  $value
+     * @return string
+     */
+    protected function wrapJsonBooleanValue($value)
+    {
+        return "'".$value."'";
     }
 
     /**
@@ -541,7 +545,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Wrap a table in keyword identifiers.
-	 * 用关键字标识符包装表。
+	 * 用关键字标识符包装表
      *
      * @param  string  $table
      * @return string

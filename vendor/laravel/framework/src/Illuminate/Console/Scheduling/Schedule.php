@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，线程调度，调度
+ * Illuminate，控制台，线程调度，Schedule
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -38,13 +38,24 @@ class Schedule
     protected $schedulingMutex;
 
     /**
+     * The timezone the date should be evaluated on.
+	 * 应该对日期进行评估的时区
+     *
+     * @var \DateTimeZone|string
+     */
+    protected $timezone;
+
+    /**
      * Create a new schedule instance.
 	 * 创建一个新的调度实例
      *
+     * @param  \DateTimeZone|string|null  $timezone
      * @return void
      */
-    public function __construct()
+    public function __construct($timezone = null)
     {
+        $this->timezone = $timezone;
+
         $container = Container::getInstance();
 
         $this->eventMutex = $container->bound(EventMutex::class)
@@ -130,7 +141,7 @@ class Schedule
             $command .= ' '.$this->compileParameters($parameters);
         }
 
-        $this->events[] = $event = new Event($this->eventMutex, $command);
+        $this->events[] = $event = new Event($this->eventMutex, $command, $this->timezone);
 
         return $event;
     }

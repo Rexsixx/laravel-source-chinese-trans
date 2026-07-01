@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，再设置接口
+ * Monolog，可重调接口
  */
 
 /*

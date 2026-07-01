@@ -15,9 +15,9 @@ trait InteractsWithInput
 {
     /**
      * Retrieve a server variable from the request.
-	 * 将紧急消息记录到日志中
+	 * 从请求中检索服务器变量
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  string|array|null  $default
      * @return string|array|null
      */
@@ -42,7 +42,7 @@ trait InteractsWithInput
      * Retrieve a header from the request.
 	 * 从请求中检索报头
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  string|array|null  $default
      * @return string|array|null
      */
@@ -191,7 +191,7 @@ trait InteractsWithInput
      * Get all of the input and files for the request.
 	 * 获取请求的所有输入和文件
      *
-     * @param  array|mixed  $keys
+     * @param  array|mixed|null  $keys
      * @return array
      */
     public function all($keys = null)
@@ -274,7 +274,7 @@ trait InteractsWithInput
      * Retrieve a query string item from the request.
 	 * 从请求中检索查询字符串项
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  string|array|null  $default
      * @return string|array|null
      */
@@ -287,9 +287,8 @@ trait InteractsWithInput
      * Retrieve a request payload item from the request.
 	 * 从请求中检索请求有效负载项
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  string|array|null  $default
-     *
      * @return string|array|null
      */
     public function post($key = null, $default = null)
@@ -313,7 +312,7 @@ trait InteractsWithInput
      * Retrieve a cookie from the request.
 	 * 从请求中检索cookie
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  string|array|null  $default
      * @return string|array|null
      */
@@ -332,9 +331,7 @@ trait InteractsWithInput
     {
         $files = $this->files->all();
 
-        return $this->convertedFiles
-                    ? $this->convertedFiles
-                    : $this->convertedFiles = $this->convertUploadedFiles($files);
+        return $this->convertedFiles = $this->convertedFiles ?? $this->convertUploadedFiles($files);
     }
 
     /**
@@ -395,7 +392,7 @@ trait InteractsWithInput
      * Retrieve a file from the request.
 	 * 从请求中检索文件
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  mixed  $default
      * @return \Illuminate\Http\UploadedFile|\Illuminate\Http\UploadedFile[]|array|null
      */

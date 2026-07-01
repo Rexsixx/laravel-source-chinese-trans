@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，翻译机接口
+ * Symfony，组件，翻译，转换器接口
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Contracts\Translation\LocaleAwareInterface;
 
 /**
  * TranslatorInterface.
- * 翻译机接口
+ * 转换器接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -29,7 +29,7 @@ interface TranslatorInterface extends LocaleAwareInterface
 {
     /**
      * Translates the given message.
-	 * 翻译给定的信息
+	 * 翻译给定的消息
      *
      * @param string      $id         The message id (may also be an object that can be cast to string)
      * @param array       $parameters An array of parameters for the message

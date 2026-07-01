@@ -18,7 +18,6 @@ use Prophecy\Argument\Token;
 
 /**
  * Argument tokens shortcuts.
- * 参数令牌快捷方式。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -26,7 +25,6 @@ class Argument
 {
     /**
      * Checks that argument is exact value or object.
-	 * 检查参数是精确的值或对象。
      *
      * @param mixed $value
      *

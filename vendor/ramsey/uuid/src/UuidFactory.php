@@ -60,7 +60,6 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      * Constructs a `UuidFactory` for creating `Ramsey\Uuid\UuidInterface` instances
-	 * 构建“UuidFactory”来创建“Ramsey \ uidinterface”实例
      *
      * @param FeatureSet $features A set of features for use when creating UUIDs
      */
@@ -78,7 +77,6 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      * Returns the UUID coder-decoder used by this factory
-	 * 返回本工厂使用的uuuid密码解码器
      *
      * @return CodecInterface
      */
@@ -89,7 +87,6 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      * Sets the UUID coder-decoder used by this factory
-	 * 设置本工厂使用的uuuid密码解码器
      *
      * @param CodecInterface $codec
      */
@@ -100,7 +97,6 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      * Returns the system node ID provider used by this factory
-	 * 返回本工厂使用的系统节点ID提供程序
      *
      * @return NodeProviderInterface
      */
@@ -111,7 +107,6 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      * Returns the random UUID generator used by this factory
-	 * 返回该工厂使用的随机UUID生成器
      *
      * @return RandomGeneratorInterface
      */

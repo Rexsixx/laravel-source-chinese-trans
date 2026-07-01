@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，数据采集装置，异常数据采集器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * ExceptionDataCollector.
- * 异常数据采集器
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *

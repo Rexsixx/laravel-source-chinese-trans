@@ -58,7 +58,7 @@ class RedisQueue extends Queue implements QueueContract
      *
      * @param  \Illuminate\Contracts\Redis\Factory  $redis
      * @param  string  $default
-     * @param  string  $connection
+     * @param  string|null  $connection
      * @param  int  $retryAfter
      * @param  int|null  $blockFor
      * @return void
@@ -76,7 +76,7 @@ class RedisQueue extends Queue implements QueueContract
      * Get the size of the queue.
 	 * 获取队列的大小
      *
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return int
      */
     public function size($queue = null)
@@ -94,7 +94,7 @@ class RedisQueue extends Queue implements QueueContract
      *
      * @param  object|string  $job
      * @param  mixed   $data
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return mixed
      */
     public function push($job, $data = '', $queue = null)
@@ -107,13 +107,16 @@ class RedisQueue extends Queue implements QueueContract
 	 * 将原始有效负载推入队列
      *
      * @param  string  $payload
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @param  array   $options
      * @return mixed
      */
     public function pushRaw($payload, $queue = null, array $options = [])
     {
-        $this->getConnection()->rpush($this->getQueue($queue), $payload);
+        $this->getConnection()->eval(
+            LuaScripts::push(), 2, $this->getQueue($queue),
+            $this->getQueue($queue).':notify', $payload
+        );
 
         return json_decode($payload, true)['id'] ?? null;
     }
@@ -125,7 +128,7 @@ class RedisQueue extends Queue implements QueueContract
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  object|string  $job
      * @param  mixed   $data
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return mixed
      */
     public function later($delay, $job, $data = '', $queue = null)
@@ -139,7 +142,7 @@ class RedisQueue extends Queue implements QueueContract
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $payload
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return mixed
      */
     protected function laterRaw($delay, $payload, $queue = null)
@@ -172,7 +175,7 @@ class RedisQueue extends Queue implements QueueContract
      * Pop the next job off of the queue.
 	 * 将下一个作业从队列中弹出
      *
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
      */
     public function pop($queue = null)
@@ -220,7 +223,7 @@ class RedisQueue extends Queue implements QueueContract
     public function migrateExpiredJobs($from, $to)
     {
         return $this->getConnection()->eval(
-            LuaScripts::migrateExpiredJobs(), 2, $from, $to, $this->currentTime()
+            LuaScripts::migrateExpiredJobs(), 3, $from, $to, $to.':notify', $this->currentTime()
         );
     }
 
@@ -229,46 +232,28 @@ class RedisQueue extends Queue implements QueueContract
 	 * 从队列中检索下一个作业
      *
      * @param  string  $queue
+     * @param  bool  $block
      * @return array
      */
-    protected function retrieveNextJob($queue)
+    protected function retrieveNextJob($queue, $block = true)
     {
-        if (! is_null($this->blockFor)) {
-            return $this->blockingPop($queue);
-        }
-
-        return $this->getConnection()->eval(
-            LuaScripts::pop(), 2, $queue, $queue.':reserved',
+        $nextJob = $this->getConnection()->eval(
+            LuaScripts::pop(), 3, $queue, $queue.':reserved', $queue.':notify',
             $this->availableAt($this->retryAfter)
         );
-    }
 
-    /**
-     * Retrieve the next job by blocking-pop.
-	 * 通过阻塞弹出检索下一个作业
-     *
-     * @param  string  $queue
-     * @return array
-     */
-    protected function blockingPop($queue)
-    {
-        $rawBody = $this->getConnection()->blpop($queue, $this->blockFor);
-
-        if (! empty($rawBody)) {
-            $payload = json_decode($rawBody[1], true);
-
-            $payload['attempts']++;
-
-            $reserved = json_encode($payload);
-
-            $this->getConnection()->zadd($queue.':reserved', [
-                $reserved => $this->availableAt($this->retryAfter),
-            ]);
-
-            return [$rawBody[1], $reserved];
+        if (empty($nextJob)) {
+            return [null, null];
         }
 
-        return [null, null];
+        [$job, $reserved] = $nextJob;
+
+        if (! $job && ! is_null($this->blockFor) && $block &&
+            $this->getConnection()->blpop([$queue.':notify'], $this->blockFor)) {
+            return $this->retrieveNextJob($queue, false);
+        }
+
+        return [$job, $reserved];
     }
 
     /**

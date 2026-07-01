@@ -20,7 +20,6 @@ class ListPaths extends AbstractPlugin
 
     /**
      * List all paths.
-	 * 列出所有路径
      *
      * @param string $directory
      * @param bool   $recursive

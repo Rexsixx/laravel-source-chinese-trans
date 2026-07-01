@@ -1,8 +1,4 @@
 <?php
-/**
- * PHPUnit，工具，Xml
- */
-
 /*
  * This file is part of PHPUnit.
  *
@@ -33,7 +29,6 @@ final class Xml
     /**
      * Load an $actual document into a DOMDocument.  This is called
      * from the selector assertions.
-	 * 将一个$实际文档加载到DOMDocument中。这是从选择器断言调用的。
      *
      * If $actual is already a DOMDocument, it is returned with
      * no changes.  Otherwise, $actual is loaded into a new DOMDocument
@@ -125,7 +120,6 @@ final class Xml
 
     /**
      * Loads an XML (or HTML) file into a DOMDocument object.
-	 * 将一个XML(或HTML)文件加载到一个DOMDocument对象中
      *
      * @throws Exception
      */

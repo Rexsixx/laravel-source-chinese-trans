@@ -19,7 +19,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Collects some data about event listeners.
- * 收集有关事件侦听器的一些数据。
  *
  * This event dispatcher delegates the dispatching to another one.
  *

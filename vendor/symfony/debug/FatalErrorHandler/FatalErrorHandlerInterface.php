@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，调试，致命错误处理程序，致命错误处理接口
+ * Symfony，组件，调试，致命错误处理程序，致命错误处理程序接口
  */
 
 /*
@@ -20,7 +20,6 @@ use Symfony\Component\Debug\Exception\FatalErrorException;
 
 /**
  * Attempts to convert fatal errors to exceptions.
- * 试图将致命错误转换为异常。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -30,7 +29,6 @@ interface FatalErrorHandlerInterface
 {
     /**
      * Attempts to convert an error into an exception.
-	 * 试图将错误转换为异常
      *
      * @param array $error An array as returned by error_get_last()
      *

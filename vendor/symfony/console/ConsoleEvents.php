@@ -16,7 +16,6 @@ namespace Symfony\Component\Console;
 
 /**
  * Contains all events dispatched by an Application.
- * 包含应用程序分派的所有事件。
  *
  * @author Francesco Levorato <git@flevour.net>
  */
@@ -26,8 +25,6 @@ final class ConsoleEvents
      * The COMMAND event allows you to attach listeners before any command is
      * executed by the console. It also allows you to modify the command, input and output
      * before they are handed to the command.
-	 * 命令事件允许您在控制台执行任何命令之前附加侦听器。
-	 * 它还允许您在命令、输入和输出之前修改命令、输入和输出。
      *
      * @Event("Symfony\Component\Console\Event\ConsoleCommandEvent")
      */
@@ -36,7 +33,6 @@ final class ConsoleEvents
     /**
      * The TERMINATE event allows you to attach listeners after a command is
      * executed by the console.
-	 * 终止事件允许您在控制台执行命令后附加侦听器。
      *
      * @Event("Symfony\Component\Console\Event\ConsoleTerminateEvent")
      */
@@ -44,7 +40,6 @@ final class ConsoleEvents
 
     /**
      * The ERROR event occurs when an uncaught exception or error appears.
-	 * 当出现未捕获的异常或错误时，发生ERROR事件。
      *
      * This event allows you to deal with the exception/error or
      * to modify the thrown exception.

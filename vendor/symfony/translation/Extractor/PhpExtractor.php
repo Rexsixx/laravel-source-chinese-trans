@@ -19,7 +19,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * PhpExtractor extracts translation messages from a PHP template.
- * PhpExtractor从PHP模板中提取翻译消息。
+ * PhpExtractor从PHP模板中提取翻译消息
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
@@ -31,6 +31,7 @@ class PhpExtractor extends AbstractFileExtractor implements ExtractorInterface
 
     /**
      * Prefix for new found message.
+	 * 新发现信息的前缀
      *
      * @var string
      */
@@ -38,6 +39,7 @@ class PhpExtractor extends AbstractFileExtractor implements ExtractorInterface
 
     /**
      * The sequence that captures translation messages.
+	 * 捕获翻译消息的序列
      *
      * @var array
      */
@@ -101,6 +103,7 @@ class PhpExtractor extends AbstractFileExtractor implements ExtractorInterface
 
     /**
      * Normalizes a token.
+	 * 使令牌正常化
      *
      * @param mixed $token
      *
@@ -117,6 +120,7 @@ class PhpExtractor extends AbstractFileExtractor implements ExtractorInterface
 
     /**
      * Seeks to a non-whitespace token.
+	 * 寻找非空格令牌
      */
     private function seekToNextRelevantToken(\Iterator $tokenIterator)
     {

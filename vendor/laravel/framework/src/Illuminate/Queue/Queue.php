@@ -72,7 +72,7 @@ abstract class Queue
      *
      * @param  array   $jobs
      * @param  mixed   $data
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return void
      */
     public function bulk($jobs, $data = '', $queue = null)
@@ -86,7 +86,7 @@ abstract class Queue
      * Create a payload string from the given job and data.
 	 * 根据给定的作业和数据创建有效负载字符串
      *
-     * @param  string  $job
+     * @param  string|object  $job
      * @param  string  $queue
      * @param  mixed   $data
      * @return string
@@ -110,7 +110,7 @@ abstract class Queue
      * Create a payload array from the given job and data.
 	 * 根据给定的作业和数据创建有效负载数组
      *
-     * @param  mixed  $job
+     * @param  string|object  $job
      * @param  string  $queue
      * @param  mixed  $data
      * @return array
@@ -126,7 +126,7 @@ abstract class Queue
      * Create a payload for an object-based queue handler.
 	 * 为基于对象的队列处理程序创建有效负载
      *
-     * @param  mixed  $job
+     * @param  object  $job
      * @param  string  $queue
      * @return array
      */
@@ -136,6 +136,7 @@ abstract class Queue
             'displayName' => $this->getDisplayName($job),
             'job' => 'Illuminate\Queue\CallQueuedHandler@call',
             'maxTries' => $job->tries ?? null,
+            'delay' => $this->getJobRetryDelay($job),
             'timeout' => $job->timeout ?? null,
             'timeoutAt' => $this->getJobExpiration($job),
             'data' => [
@@ -156,13 +157,32 @@ abstract class Queue
      * Get the display name for the given job.
 	 * 获取给定作业的显示名称
      *
-     * @param  mixed  $job
+     * @param  object  $job
      * @return string
      */
     protected function getDisplayName($job)
     {
         return method_exists($job, 'displayName')
                         ? $job->displayName() : get_class($job);
+    }
+
+    /**
+     * Get the retry delay for an object-based queue handler.
+	 * 获取基于对象的队列处理程序的重试延迟
+     *
+     * @param  mixed  $job
+     * @return mixed
+     */
+    public function getJobRetryDelay($job)
+    {
+        if (! method_exists($job, 'retryAfter') && ! isset($job->retryAfter)) {
+            return;
+        }
+
+        $delay = $job->retryAfter ?? $job->retryAfter();
+
+        return $delay instanceof DateTimeInterface
+                        ? $this->secondsUntil($delay) : $delay;
     }
 
     /**
@@ -199,6 +219,7 @@ abstract class Queue
             'displayName' => is_string($job) ? explode('@', $job)[0] : null,
             'job' => $job,
             'maxTries' => null,
+            'delay' => null,
             'timeout' => null,
             'data' => $data,
         ]);

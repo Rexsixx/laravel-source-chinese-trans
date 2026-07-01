@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，哈希，哈希计算器
+ * Illuminate，契约，哈希，Hasher
  */
 
 namespace Illuminate\Contracts\Hashing;

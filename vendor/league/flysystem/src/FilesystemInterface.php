@@ -21,7 +21,7 @@ interface FilesystemInterface
 
     /**
      * Read a file.
-	 * 读文件
+	 * 读取文件
      *
      * @param string $path The path to the file.
      *
@@ -45,6 +45,7 @@ interface FilesystemInterface
 
     /**
      * List contents of a directory.
+	 * 列表目录的内容
      *
      * @param string $directory The directory to list.
      * @param bool   $recursive Whether to list recursively.
@@ -55,6 +56,7 @@ interface FilesystemInterface
 
     /**
      * Get a file's metadata.
+	 * 获取文件的元数据
      *
      * @param string $path The path to the file.
      *
@@ -66,6 +68,7 @@ interface FilesystemInterface
 
     /**
      * Get a file's size.
+	 * 获取文件的大小
      *
      * @param string $path The path to the file.
      *

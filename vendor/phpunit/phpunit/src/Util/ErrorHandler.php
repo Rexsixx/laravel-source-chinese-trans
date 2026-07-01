@@ -1,8 +1,4 @@
 <?php
-/**
- * PHPUnit，工具，错误处理程序
- */
-
 /*
  * This file is part of PHPUnit.
  *
@@ -20,7 +16,6 @@ use PHPUnit\Framework\Error\Warning;
 
 /**
  * Error handler that converts PHP errors and warnings to exceptions.
- * 将PHP错误和警告转换为异常的错误处理程序。
  */
 final class ErrorHandler
 {
@@ -28,7 +23,6 @@ final class ErrorHandler
 
     /**
      * Returns the error stack.
-	 * 返回错误堆栈
      */
     public static function getErrorStack(): array
     {

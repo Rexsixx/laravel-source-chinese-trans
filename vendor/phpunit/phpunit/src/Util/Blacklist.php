@@ -1,6 +1,6 @@
 <?php
 /**
- * PHPUnit，工具，黑名单
+ * PHPUnit，Util，黑名单
  */
 
 /*
@@ -45,7 +45,6 @@ use Webmozart\Assert\Assert;
 
 /**
  * Utility class for blacklisting PHPUnit's own source code files.
- * 用于黑名单PHPUnit的源代码文件的实用程序类。
  */
 final class Blacklist
 {

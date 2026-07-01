@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，哈希，哈希管理器
+ * Illuminate，哈希算法，哈希管理员
  */
 
 namespace Illuminate\Hashing;
@@ -57,7 +57,7 @@ class HashManager extends Manager implements Hasher
 
     /**
      * Hash the given value.
-	 * 对给定值进行散列
+	 * 散列给定值
      *
      * @param  string  $value
      * @param  array   $options

@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，格式化程序，Chrome PHP 格式化程序
+ * Monolog，格式化程序，Chrome PHP格式化程序
  */
 
 /*
@@ -44,6 +44,7 @@ class ChromePHPFormatter implements FormatterInterface
     public function format(array $record)
     {
         // Retrieve the line and file if set and remove them from the formatted extra
+		// 如果设置并从格式化的额外文件中删除行和文件
         $backtrace = 'unknown';
         if (isset($record['extra']['file'], $record['extra']['line'])) {
             $backtrace = $record['extra']['file'].' : '.$record['extra']['line'];

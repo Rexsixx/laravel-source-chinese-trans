@@ -1,6 +1,6 @@
 <?php
 /**
- * Psy，测试，版本更新器，GitHub 检查员测试
+ * Psy，测试，版本Updater，GitHub检查测试
  */
 
 /*

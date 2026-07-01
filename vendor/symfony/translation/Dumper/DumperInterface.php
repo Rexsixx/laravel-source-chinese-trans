@@ -19,7 +19,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 /**
  * DumperInterface is the interface implemented by all translation dumpers.
  * There is no common option.
- * DumperInterface 是所有翻译转储程序所实现的接口。没有通用选项。
+ * DumperInterface是由所有翻译dumpers实现的接口。没有共同的选择。
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
@@ -27,7 +27,7 @@ interface DumperInterface
 {
     /**
      * Dumps the message catalogue.
-	 * 转储邮件目录
+	 * 转储信息目录
      *
      * @param array $options Options that are used by the dumper
      */

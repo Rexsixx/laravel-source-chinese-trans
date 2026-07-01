@@ -1,8 +1,4 @@
 <?php
-/**
- * PHPUnit，文本UI，命令
- */
-
 /*
  * This file is part of PHPUnit.
  *
@@ -44,7 +40,6 @@ use Throwable;
 /**
  * A TestRunner for the Command Line Interface (CLI)
  * PHP SAPI Module.
- * 命令行接口(CLI)PHP SAPI模块的TestRunner。
  */
 class Command
 {

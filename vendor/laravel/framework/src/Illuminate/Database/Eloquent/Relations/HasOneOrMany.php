@@ -143,8 +143,7 @@ abstract class HasOneOrMany extends Relation
         // Once we have the dictionary we can simply spin through the parent models to
         // link them up with their children using the keyed dictionary to make the
         // matching very convenient and easy work. Then we'll just return them.
-		// 一旦我们有了这个字典，我们就可以直接遍历父模型，利用带键的字典将它们与子模型关联起来，
-		// 这样就能使匹配操作变得非常便捷和容易。然后我们再将它们返回即可。
+		// 一旦我们有了这个字典，我们就可以直接遍历父模型，利用带键的字典将它们与子模型关联起来，这样就能使匹配操作变得非常便捷和容易。
         foreach ($models as $model) {
             if (isset($dictionary[$key = $model->getAttribute($this->localKey)])) {
                 $model->setRelation(

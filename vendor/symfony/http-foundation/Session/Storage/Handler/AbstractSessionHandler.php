@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，HTTP基础，会话，存储，处理者，抽象会话处理程序
- */
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +17,6 @@ use Symfony\Component\HttpFoundation\Session\SessionUtils;
  * This abstract session handler provides a generic implementation
  * of the PHP 7.0 SessionUpdateTimestampHandlerInterface,
  * enabling strict and lazy session handling.
- * 这个抽象的会话处理程序提供了PHP 7.0 SessionUpdateTimestampHandlerInterface的通用实现,使严格和懒惰的会话处理变得更加严格。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

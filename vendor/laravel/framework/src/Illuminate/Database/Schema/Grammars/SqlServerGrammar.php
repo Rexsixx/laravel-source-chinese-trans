@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，模式，语法，Sql Server 语法
+ * Illuminate，数据库，架构，语法，SqlServer 语法
  */
 
 namespace Illuminate\Database\Schema\Grammars;
@@ -340,6 +340,22 @@ class SqlServerGrammar extends Grammar
     }
 
     /**
+     * Compile the command to drop all foreign keys.
+	 * 编译命令以删除所有外键
+     *
+     * @return string
+     */
+    public function compileDropAllForeignKeys()
+    {
+        return "DECLARE @sql NVARCHAR(MAX) = N'';
+            SELECT @sql += 'ALTER TABLE ' + QUOTENAME(OBJECT_NAME(parent_object_id)) 
+                + ' DROP CONSTRAINT ' + QUOTENAME(name) + ';'
+            FROM sys.foreign_keys;
+            
+            EXEC sp_executesql @sql;";
+    }
+
+    /**
      * Create the column definition for a char type.
 	 * 为char类型创建列定义
      *
@@ -497,7 +513,7 @@ class SqlServerGrammar extends Grammar
 
     /**
      * Create the column definition for a boolean type.
-	 * 为布尔类型创建列定义
+	 * 为布尔类型创建列定义。
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -568,7 +584,7 @@ class SqlServerGrammar extends Grammar
      */
     protected function typeDateTime(Fluent $column)
     {
-        return $column->precision ? "datetime2($column->precision)" : 'datetime';
+        return $this->typeTimestamp($column);
     }
 
     /**
@@ -580,7 +596,7 @@ class SqlServerGrammar extends Grammar
      */
     protected function typeDateTimeTz(Fluent $column)
     {
-        return $column->precision ? "datetimeoffset($column->precision)" : 'datetimeoffset';
+        return $this->typeTimestampTz($column);
     }
 
     /**
@@ -632,13 +648,9 @@ class SqlServerGrammar extends Grammar
      */
     protected function typeTimestampTz(Fluent $column)
     {
-        if ($column->useCurrent) {
-            $columnType = $column->precision ? "datetimeoffset($column->precision)" : 'datetimeoffset';
+        $columnType = $column->precision ? "datetimeoffset($column->precision)" : 'datetimeoffset';
 
-            return "$columnType default CURRENT_TIMESTAMP";
-        }
-
-        return "datetimeoffset($column->precision)";
+        return $column->useCurrent ? "$columnType default CURRENT_TIMESTAMP" : $columnType;
     }
 
     /**
@@ -898,5 +910,21 @@ class SqlServerGrammar extends Grammar
         }
 
         return parent::wrapTable($table);
+    }
+
+    /**
+     * Quote the given string literal.
+	 * 引用给定的字符串字面值
+     *
+     * @param  string|array  $value
+     * @return string
+     */
+    public function quoteString($value)
+    {
+        if (is_array($value)) {
+            return implode(', ', array_map([$this, __FUNCTION__], $value));
+        }
+
+        return "N'$value'";
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，认证， Eloquent 用户提供商
+ * Illuminate，认证，Eloquent 用户提供者
  */
 
 namespace Illuminate\Auth;
@@ -54,9 +54,9 @@ class EloquentUserProvider implements UserProvider
     {
         $model = $this->createModel();
 
-        return $model->newQuery()
-            ->where($model->getAuthIdentifierName(), $identifier)
-            ->first();
+        return $this->newModelQuery($model)
+                    ->where($model->getAuthIdentifierName(), $identifier)
+                    ->first();
     }
 
     /**
@@ -71,15 +71,18 @@ class EloquentUserProvider implements UserProvider
     {
         $model = $this->createModel();
 
-        $model = $model->where($model->getAuthIdentifierName(), $identifier)->first();
+        $retrievedModel = $this->newModelQuery($model)->where(
+            $model->getAuthIdentifierName(), $identifier
+        )->first();
 
-        if (! $model) {
+        if (! $retrievedModel) {
             return;
         }
 
-        $rememberToken = $model->getRememberToken();
+        $rememberToken = $retrievedModel->getRememberToken();
 
-        return $rememberToken && hash_equals($rememberToken, $token) ? $model : null;
+        return $rememberToken && hash_equals($rememberToken, $token)
+                        ? $retrievedModel : null;
     }
 
     /**
@@ -114,16 +117,16 @@ class EloquentUserProvider implements UserProvider
     {
         if (empty($credentials) ||
            (count($credentials) === 1 &&
-            array_key_exists('password', $credentials))) {
+            Str::contains($this->firstCredentialKey($credentials), 'password'))) {
             return;
         }
 
         // First we will add each credential element to the query as a where clause.
         // Then we can execute the query and, if we found a user, return it in a
         // Eloquent User "model" that will be utilized by the Guard instances.
-		// 首先,我们将将每个凭据元素添加到查询中,作为where子句。
-		// 然后我们可以执行查询,如果我们找到了一个用户,请将它返回到一个具有代表性的用户“模型”中,这将被保护实例使用。
-        $query = $this->createModel()->newQuery();
+		// 首先，我们将把每个凭证元素作为“where”子句添加到查询中。
+		// 然后，我们可以执行该查询，如果找到了用户，就会将其以“Eloquent 用户”“模型”的形式返回，该模型将被守护实例所使用。
+        $query = $this->newModelQuery();
 
         foreach ($credentials as $key => $value) {
             if (Str::contains($key, 'password')) {
@@ -141,6 +144,20 @@ class EloquentUserProvider implements UserProvider
     }
 
     /**
+     * Get the first key from the credential array.
+	 * 从凭据数组中获取第一个密钥
+     *
+     * @param  array  $credentials
+     * @return string|null
+     */
+    protected function firstCredentialKey(array $credentials)
+    {
+        foreach ($credentials as $key => $value) {
+            return $key;
+        }
+    }
+
+    /**
      * Validate a user against the given credentials.
 	 * 根据给定的凭据验证用户
      *
@@ -153,6 +170,20 @@ class EloquentUserProvider implements UserProvider
         $plain = $credentials['password'];
 
         return $this->hasher->check($plain, $user->getAuthPassword());
+    }
+
+    /**
+     * Get a new query builder for the model instance.
+	 * 获取模型实例的新查询生成器
+     *
+     * @param  \Illuminate\Database\Eloquent\Model|null  $model
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function newModelQuery($model = null)
+    {
+        return is_null($model)
+                ? $this->createModel()->newQuery()
+                : $model->newQuery();
     }
 
     /**

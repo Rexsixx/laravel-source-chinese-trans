@@ -1,7 +1,4 @@
 <?php
-/**
- * Psy，代码清理器，命名空间感知传递
- */
 
 /*
  * This file is part of Psy Shell.
@@ -21,7 +18,6 @@ use PhpParser\Node\Stmt\Namespace_;
 
 /**
  * Abstract namespace-aware code cleaner pass.
- * 抽象的名称空间意识代码清洁通道。
  */
 abstract class NamespaceAwarePass extends CodeCleanerPass
 {

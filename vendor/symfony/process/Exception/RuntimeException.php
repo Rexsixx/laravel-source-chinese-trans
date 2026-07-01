@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，进程，异常，运行时异常
+ * Symfony，组件，过程，异常，运行时异常
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\Process\Exception;
 
 /**
  * RuntimeException for the Process Component.
- * 流程组件的运行时异常。
+ * 过程组件的RuntimeException。
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */

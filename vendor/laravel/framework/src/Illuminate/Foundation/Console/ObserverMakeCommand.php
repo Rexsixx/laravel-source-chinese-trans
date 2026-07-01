@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，观察者编译命令
+ * Illuminate，基础，控制台，观察者生成命令
  */
 
 namespace Illuminate\Foundation\Console;

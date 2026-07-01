@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，会话，基于缓存的会话处理程序
+ * Illuminate，Session，基于缓存的会话处理程序
  */
 
 namespace Illuminate\Session;
@@ -20,7 +20,7 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
 
     /**
      * The number of minutes to store the data in the cache.
-	 * 将数据存储在缓存中的时间数
+	 * 将数据存储在缓存中的分钟数
      *
      * @var int
      */
@@ -69,7 +69,7 @@ class CacheBasedSessionHandler implements SessionHandlerInterface
      */
     public function write($sessionId, $data)
     {
-        return $this->cache->put($sessionId, $data, $this->minutes);
+        return $this->cache->put($sessionId, $data, $this->minutes * 60);
     }
 
     /**

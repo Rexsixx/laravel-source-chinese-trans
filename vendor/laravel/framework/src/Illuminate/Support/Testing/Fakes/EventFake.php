@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，假装，事件 Fake
+ * Illuminate，支持，测试，Fakes，事件 Fake
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -190,7 +190,7 @@ class EventFake implements Dispatcher
 
     /**
      * Flush a set of pushed events.
-	 * 刷新一组推送的事件 
+	 * 刷新一组推送的事件
      *
      * @param  string  $event
      * @return void
@@ -198,20 +198,6 @@ class EventFake implements Dispatcher
     public function flush($event)
     {
         //
-    }
-
-    /**
-     * Fire an event and call the listeners.
-	 * 触发一个事件并调用侦听器
-     *
-     * @param  string|object  $event
-     * @param  mixed  $payload
-     * @param  bool  $halt
-     * @return array|null
-     */
-    public function fire($event, $payload = [], $halt = false)
-    {
-        return $this->dispatch($event, $payload, $halt);
     }
 
     /**

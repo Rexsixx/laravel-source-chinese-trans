@@ -16,7 +16,6 @@ namespace Symfony\Component\HttpKernel\Event;
 
 /**
  * Allows to filter a Response object.
- * 允许筛选响应对象。
  *
  * You can call getResponse() to retrieve the current response. With
  * setResponse() you can set a new response that will be returned to the

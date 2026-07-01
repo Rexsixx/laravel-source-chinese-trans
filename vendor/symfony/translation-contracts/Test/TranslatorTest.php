@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，翻译，测试，翻译测试
+ * Symfony，契约，翻译，测试，转换器测试
  */
 
 /*
@@ -321,6 +321,7 @@ class TranslatorTest extends TestCase
 	 * 这个数组应该包含所有当前已知的语言码。
      *
      * As it is impossible to have this ever complete we should try as hard as possible to have it almost complete.
+	 * 由于这是不可能完成的，我们应该尽可能努力使它几乎完成。
      *
      * @return array
      */
@@ -337,6 +338,7 @@ class TranslatorTest extends TestCase
 
     /**
      * This array should be at least empty within the near future.
+	 * 在不久的将来，这个数组至少应该是空的。
      *
      * This both depends on a complete list trying to add above as understanding
      * the plural rules of the current failing languages.
@@ -356,6 +358,7 @@ class TranslatorTest extends TestCase
 
     /**
      * We validate only on the plural coverage. Thus the real rules is not tested.
+	 * 我们只对复数覆盖进行验证。因此，真正的规则没有经过检验。
      *
      * @param string $nplural       Plural expected
      * @param array  $matrix        Containing langcodes and their plural index values

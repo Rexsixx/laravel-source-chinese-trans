@@ -18,7 +18,6 @@ use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * Resets provided services.
- * 重置提供的服务。
  *
  * @author Alexander M. Turek <me@derrabus.de>
  * @author Nicolas Grekas <p@tchwork.com>

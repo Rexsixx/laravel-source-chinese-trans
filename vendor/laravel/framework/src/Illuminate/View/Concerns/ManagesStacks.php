@@ -11,7 +11,7 @@ trait ManagesStacks
 {
     /**
      * All of the finished, captured push sections.
-	 * 所有完成的，捕获的推段。
+	 * 所有完成的，捕获的片段。
      *
      * @var array
      */

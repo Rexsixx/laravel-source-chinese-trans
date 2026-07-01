@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，形态单一或多种多样
+ * Illuminate，数据库，Eloquent，关系，变形一个或多个
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -101,7 +101,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
     public function getRelationExistenceQuery(Builder $query, Builder $parentQuery, $columns = ['*'])
     {
         return parent::getRelationExistenceQuery($query, $parentQuery, $columns)->where(
-            $this->morphType, $this->morphClass
+            $query->qualifyColumn($this->getMorphType()), $this->morphClass
         );
     }
 

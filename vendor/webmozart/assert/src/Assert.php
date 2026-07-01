@@ -28,7 +28,7 @@ use Traversable;
 
 /**
  * Efficient assertions to validate the input/output of your methods.
- * 有效的断言来验证方法的输入/输出
+ * 有效的断言来验证方法的输入/输出。
  *
  * @since  1.0
  *
@@ -1530,6 +1530,7 @@ class Assert
 
     /**
      * Inclusive min.
+	 * 包含的最小值
      *
      * @psalm-pure
      *
@@ -1554,6 +1555,7 @@ class Assert
 
     /**
      * Inclusive max.
+	 * 包含的最大值
      *
      * @psalm-pure
      *
@@ -1578,6 +1580,7 @@ class Assert
 
     /**
      * Inclusive , so Assert::lengthBetween('asd', 3, 5); passes the assertion.
+	 * 包括，所以Assert::lengthBetween('asd', 3,5)；传递断言。
      *
      * @psalm-pure
      *
@@ -1928,7 +1931,6 @@ class Assert
 
     /**
      * Checks if a value is a valid array key (int or string).
-	 * 检查值是否为有效的数组键（int或string）
      *
      * @psalm-pure
      *
@@ -1953,7 +1955,6 @@ class Assert
 
     /**
      * Does not check if $array is countable, this can generate a warning on php versions after 7.2.
-	 * 不检查$array是否可计数，这会在7.2以后的php版本中产生警告。
      *
      * @param Countable|array $array
      * @param int             $number

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，认证，可以重置密码
+ * Illuminate，契约，认证，是否可以重置密码
  */
 
 namespace Illuminate\Contracts\Auth;

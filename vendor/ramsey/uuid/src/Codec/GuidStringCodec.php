@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，编码解码器，Guid 字符串编解码器
+ * Ramsey，Uuid，编码解码器，Guid 编解码器
  */
 
 /**

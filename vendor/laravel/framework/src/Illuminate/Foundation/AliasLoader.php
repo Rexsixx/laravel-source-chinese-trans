@@ -255,7 +255,7 @@ class AliasLoader
 
     /**
      * Clone method.
-	 * 复制方法
+	 * 克隆方法
      *
      * @return void
      */

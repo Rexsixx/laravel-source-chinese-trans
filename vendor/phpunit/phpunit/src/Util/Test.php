@@ -1,8 +1,4 @@
 <?php
-/**
- * PHPUnit，工具，测试
- */
-
 /*
  * This file is part of PHPUnit.
  *
@@ -147,7 +143,6 @@ final class Test
 
     /**
      * Returns lines of code specified with the @uses annotation.
-	 * 返回使用注释指定的代码行
      *
      * @throws CodeCoverageException
      */
@@ -158,7 +153,6 @@ final class Test
 
     /**
      * Returns the requirements for a test.
-	 * 返回测试的要求
      *
      * @throws Warning
      */

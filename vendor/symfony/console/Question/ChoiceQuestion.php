@@ -18,7 +18,6 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 /**
  * Represents a choice question.
- * 代表一个选择问题。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -49,7 +48,6 @@ class ChoiceQuestion extends Question
 
     /**
      * Returns available choices.
-	 * 返回可用选项
      *
      * @return array
      */
@@ -60,7 +58,6 @@ class ChoiceQuestion extends Question
 
     /**
      * Sets multiselect option.
-	 * 设置多选择选项。
      *
      * When multiselect is set to true, multiple choices can be answered.
      *

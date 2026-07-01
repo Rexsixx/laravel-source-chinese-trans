@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，片段，Ssi片段渲染器
+ * Symfony，组件，Http内核，碎片，Ssi碎片渲染器
  */
 
 /*

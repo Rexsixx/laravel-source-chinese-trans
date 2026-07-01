@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 /**
  * Yields the default value defined in the action signature when no value has been given.
- * 当未给出任何值时，产生动作签名中定义的默认值。
+ * 在没有给定值的情况下,在动作签名中定义默认值。
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */

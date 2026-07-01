@@ -23,7 +23,7 @@ interface AddressEncoderInterface
 {
     /**
      * Encodes an email address.
-	 * 对电子邮件地址进行编码
+	 * 编码电子邮件地址
      *
      * @throws AddressEncoderException if the email cannot be represented in
      *                                 the encoding implemented by this class

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，进程，可执行的查找器
+ * Symfony，组件，过程，可执行程序
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\Process;
 
 /**
  * Generic executable finder.
- * 通用可执行查找器。
+ * 通用可执行程序查找器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
@@ -35,7 +35,6 @@ class ExecutableFinder
 
     /**
      * Adds new possible suffix to check for executable.
-	 * 添加新的可能后缀以检查可执行文件
      *
      * @param string $suffix
      */
@@ -46,7 +45,6 @@ class ExecutableFinder
 
     /**
      * Finds an executable by name.
-	 * 按名称查找可执行文件
      *
      * @param string      $name      The executable name (without the extension)
      * @param string|null $default   The default to return if no executable is found

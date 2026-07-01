@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，控制台，控制器设置命令
+ * Illuminate，路由选择，控制台，控制器编译命令
  */
 
 namespace Illuminate\Routing\Console;
@@ -69,7 +69,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认名称空间
+	 * 获取类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string

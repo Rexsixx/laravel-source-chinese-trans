@@ -1,8 +1,4 @@
 <?php
-/**
- * PHPUnit，工具，测试盒，Xml 结果打印机
- */
-
 /*
  * This file is part of PHPUnit.
  *
@@ -67,7 +63,6 @@ class XmlResultPrinter extends Printer implements TestListener
 
     /**
      * Flush buffer and close output.
-	 * 刷新缓冲区和关闭输出
      */
     public function flush(): void
     {

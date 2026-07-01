@@ -149,7 +149,11 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
     {
         $response = new StreamedResponse;
 
-        $disposition = $response->headers->makeDisposition($disposition, $name ?? basename($path));
+        $filename = $name ?? basename($path);
+
+        $disposition = $response->headers->makeDisposition(
+            $disposition, $filename, $this->fallbackName($filename)
+        );
 
         $response->headers->replace($headers + [
             'Content-Type' => $this->mimeType($path),
@@ -181,6 +185,18 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
     }
 
     /**
+     * Convert the string to ASCII characters that are equivalent to the given name.
+	 * 将字符串转换为与给定名称等效的ASCII字符
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function fallbackName($name)
+    {
+        return str_replace('%', '', Str::ascii($name));
+    }
+
+    /**
      * Write the contents of a file.
 	 * 写入文件的内容
      *
@@ -198,6 +214,8 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
         // If the given contents is actually a file or uploaded file instance than we will
         // automatically store the file using a stream. This provides a convenient path
         // for the developer to store streams without managing them manually in code.
+		// 如果给定的内容实际上是一个文件或上传的文件实例，那么我们将使用流自动存储该文件。
+		// 这为开发者提供了一种便捷的方式来存储流，而无需在代码中手动进行管理。
         if ($contents instanceof File ||
             $contents instanceof UploadedFile) {
             return $this->putFile($path, $contents, $options);
@@ -239,8 +257,8 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
         // Next, we will format the path of the file and store the file using a stream since
         // they provide better performance than alternatives. Once we write the file this
         // stream will get closed automatically by us so the developer doesn't have to.
-		// 接下来,我们将格式化文件的路径,并使用流存储文件,因为它们提供了比选择更好的性能。
-		// 一旦我们写了文件,这条流就会自动关闭,所以开发人员不必这么做。
+		// 接下来，我们将对文件路径进行格式化，并使用流来存储该文件，因为这种方式比其他方法具有更高的性能。
+		// 一旦我们完成文件的写入操作，这个流就会自动由我们关闭，这样开发人员就无需手动关闭了。
         $result = $this->put(
             $path = trim($path.'/'.$name, '/'), $stream, $options
         );
@@ -443,9 +461,7 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
     public function readStream($path)
     {
         try {
-            $resource = $this->driver->readStream($path);
-
-            return $resource ? $resource : null;
+            return $this->driver->readStream($path) ?: null;
         } catch (FileNotFoundException $e) {
             throw new ContractFileNotFoundException($e->getMessage(), $e->getCode(), $e);
         }
@@ -476,8 +492,8 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
         // If an explicit base URL has been set on the disk configuration then we will use
         // it as the base URL instead of the default path. This allows the developer to
         // have full control over the base path for this filesystem's generated URLs.
-		// 如果在磁盘配置上设置了一个显式基URL,那么我们将使用它作为基本URL而不是默认路径。
-		// 这允许开发人员完全控制该文件系统生成的url的基本路径。
+		// 如果在磁盘配置中已设置了明确的基 URL，那么我们将使用该基 URL 而非默认路径作为基础 URL。
+		// 这使得开发人员能够完全掌控此文件系统生成的 URL 的基础路径。
         if (! is_null($url = $this->driver->getConfig()->get('url'))) {
             return $this->concatPathToUrl($url, $adapter->getPathPrefix().$path);
         }
@@ -514,8 +530,8 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
         // If an explicit base URL has been set on the disk configuration then we will use
         // it as the base URL instead of the default path. This allows the developer to
         // have full control over the base path for this filesystem's generated URLs.
-		// 如果在磁盘配置上设置了一个显式基URL,那么我们将使用它作为基本URL而不是默认路径。
-		// 这允许开发人员完全控制该文件系统生成的url的基本路径。
+		// 如果在磁盘配置中已设置了明确的基 URL，那么我们将使用该基 URL 而非默认路径作为基础 URL。
+		// 这使得开发人员能够完全掌控此文件系统生成的 URL 的基础路径。
         if ($config->has('url')) {
             return $this->concatPathToUrl($config->get('url'), $path);
         }
@@ -525,8 +541,7 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
         // If the path contains "storage/public", it probably means the developer is using
         // the default disk to generate the path instead of the "public" disk like they
         // are really supposed to use. We will remove the public from this path here.
-		// 如果路径包含“存储/公共”,可能意味着开发人员使用默认磁盘生成路径,而不是像它们真的应该使用的“公共”磁盘。
-		// 我们将从这条道路上删除公众。
+		// 如果路径中包含“storage/public”，这很可能意味着开发者使用的是默认磁盘来生成该路径，而并非他们本应使用的“public”磁盘。
         if (Str::contains($path, '/storage/public/')) {
             return Str::replaceFirst('/public/', '/', $path);
         }

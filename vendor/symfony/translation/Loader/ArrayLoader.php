@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，加载器，数组加载器
+ * Symfony，组件，翻译，载入程序，Array 加载器
  */
 
 /*
@@ -38,7 +38,7 @@ class ArrayLoader implements LoaderInterface
 
     /**
      * Flattens an nested array of translations.
-	 * 平坦化一个嵌套的翻译数组
+	 * 平坦化一个嵌套的翻译数组。
      *
      * The scheme used is:
      *   'key' => ['key2' => ['key3' => 'value']]

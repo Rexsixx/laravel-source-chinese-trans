@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，预设，Preset
+ * Illuminate，基础，控制台，预先装置，Preset
  */
 
 namespace Illuminate\Foundation\Console\Presets;
@@ -56,7 +56,7 @@ class Preset
 
     /**
      * Remove the installed Node modules.
-	 * 拆卸已安装的Node模块
+	 * 移除已安装的Node模块
      *
      * @return void
      */

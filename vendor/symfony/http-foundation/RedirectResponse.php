@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http基础，重定向响应
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * RedirectResponse represents an HTTP response doing a redirect.
- * RedirectResponse表示执行重定向的HTTP响应。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -26,7 +22,6 @@ class RedirectResponse extends Response
 
     /**
      * Creates a redirect response so that it conforms to the rules defined for a redirect status code.
-	 * 创建重定向响应，使其符合为重定向状态码定义的规则。
      *
      * @param string $url     The URL to redirect to. The URL should be a full URL, with schema etc.,
      *                        but practically every browser redirects on paths only as well

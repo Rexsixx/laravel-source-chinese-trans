@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，异常，预条件要求 HTTP 异常
+ * Symfony，组件，Http内核，异常，先决条件需要Http异常
  */
 
 /*

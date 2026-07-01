@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，认证，警卫助手
+ * Illuminate，认证，警卫队助手
  */
 
 namespace Illuminate\Auth;

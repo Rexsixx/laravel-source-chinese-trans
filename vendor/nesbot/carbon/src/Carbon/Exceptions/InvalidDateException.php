@@ -3,7 +3,7 @@
  * Carbon，异常，无效日期异常
  */
 
-/*
+/**
  * This file is part of the Carbon package.
  *
  * (c) Brian Nesbitt <brian@nesbot.com>
@@ -14,10 +14,10 @@
 
 namespace Carbon\Exceptions;
 
-use Exception;
-use InvalidArgumentException;
+use InvalidArgumentException as BaseInvalidArgumentException;
+use Throwable;
 
-class InvalidDateException extends InvalidArgumentException
+class InvalidDateException extends BaseInvalidArgumentException implements InvalidArgumentException
 {
     /**
      * The invalid field.
@@ -29,7 +29,6 @@ class InvalidDateException extends InvalidArgumentException
 
     /**
      * The invalid value.
-	 * 无效值
      *
      * @var mixed
      */
@@ -37,14 +36,13 @@ class InvalidDateException extends InvalidArgumentException
 
     /**
      * Constructor.
-	 * 构造函数
      *
-     * @param string          $field
-     * @param mixed           $value
-     * @param int             $code
-     * @param \Exception|null $previous
+     * @param string         $field
+     * @param mixed          $value
+     * @param int            $code
+     * @param Throwable|null $previous
      */
-    public function __construct($field, $value, $code = 0, Exception $previous = null)
+    public function __construct($field, $value, $code = 0, ?Throwable $previous = null)
     {
         $this->field = $field;
         $this->value = $value;

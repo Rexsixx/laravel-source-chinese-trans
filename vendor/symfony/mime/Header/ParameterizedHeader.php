@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，数据头，参数化的头
+ * Symfony，组件，Mime，数据头，参数化的标题
  */
 
 /*
@@ -23,7 +23,6 @@ final class ParameterizedHeader extends UnstructuredHeader
 {
     /**
      * RFC 2231's definition of a token.
-	 * RFC 2231对令牌的定义
      *
      * @var string
      */
@@ -85,7 +84,6 @@ final class ParameterizedHeader extends UnstructuredHeader
 
     /**
      * Generate a list of all tokens in the final header.
-	 * 在最终头文件中生成所有令牌的列表。
      *
      * This doesn't need to be overridden in theory, but it is for implementation
      * reasons to prevent potential breakage of attributes.

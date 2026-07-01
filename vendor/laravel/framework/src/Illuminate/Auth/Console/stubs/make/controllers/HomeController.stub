@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，存根，主页控制器，根据实际修改
+ * Illuminate，Auth，控制台，存根，根据实际修改
  */
 
 namespace {{namespace}}Http\Controllers;

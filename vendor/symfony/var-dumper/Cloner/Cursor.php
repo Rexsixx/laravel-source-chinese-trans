@@ -16,7 +16,7 @@ namespace Symfony\Component\VarDumper\Cloner;
 
 /**
  * Represents the current state of a dumper while dumping.
- * 表示转储程序在转储时的当前状态。
+ * 表示在倾倒时的水流状态。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

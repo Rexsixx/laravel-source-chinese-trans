@@ -21,7 +21,7 @@ class InstallCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令名称
      *
      * @var string
      */

@@ -2,7 +2,6 @@
 /**
  * PharIo，版本，异常
  */
-
 /*
  * This file is part of PharIo\Version.
  *

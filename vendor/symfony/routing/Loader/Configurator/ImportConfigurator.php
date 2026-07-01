@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，加载器，配置，导入配置
+ * Symfony，组件，路由选择，加载程序，配置程序，输入配置器
  */
 
 /*
@@ -53,7 +53,7 @@ class ImportConfigurator
 
     /**
      * Sets the prefix to add to the path of all child routes.
-	 * 设置要添加到所有子路由路径的前缀
+	 * 设置前缀,以增加所有子路径的路径
      *
      * @param string|array $prefix the prefix, or the localized prefixes
      *
@@ -100,7 +100,6 @@ class ImportConfigurator
 
     /**
      * Sets the prefix to add to the name of all child routes.
-	 * 设置要添加到所有子路由名称的前缀
      *
      * @return $this
      */

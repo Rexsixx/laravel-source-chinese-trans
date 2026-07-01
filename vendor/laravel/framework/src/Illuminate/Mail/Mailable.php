@@ -57,7 +57,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The "bcc" recipients of the message.
-	 * 消息的“密件抄送”收件人
+	 * 消息的“密件抄送”收件人。
      *
      * @var array
      */
@@ -168,10 +168,10 @@ class Mailable implements MailableContract, Renderable
      */
     public function send(MailerContract $mailer)
     {
-        $this->withLocale($this->locale, function () use ($mailer) {
+        return $this->withLocale($this->locale, function () use ($mailer) {
             Container::getInstance()->call([$this, 'build']);
 
-            $mailer->send($this->buildView(), $this->buildViewData(), function ($message) {
+            return $mailer->send($this->buildView(), $this->buildViewData(), function ($message) {
                 $this->buildFrom($message)
                      ->buildRecipients($message)
                      ->buildSubject($message)
@@ -412,7 +412,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Add all of the disk attachments to the message.
-	 * 将所有附件添加到消息中
+	 * 将所有磁盘附件添加到消息中
      *
      * @param  \Illuminate\Mail\Message  $message
      * @return void
@@ -815,7 +815,7 @@ class Mailable implements MailableContract, Renderable
 	 * 将文件从存储器附加到消息上
      *
      * @param  string  $path
-     * @param  string  $name
+     * @param  string|null  $name
      * @param  array  $options
      * @return $this
      */
@@ -830,7 +830,7 @@ class Mailable implements MailableContract, Renderable
      *
      * @param  string  $disk
      * @param  string  $path
-     * @param  string  $name
+     * @param  string|null  $name
      * @param  array  $options
      * @return $this
      */

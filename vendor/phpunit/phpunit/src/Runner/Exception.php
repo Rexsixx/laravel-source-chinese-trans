@@ -1,8 +1,4 @@
 <?php
-/**
- * PHPUnit，运行者，异常
- */
-
 /*
  * This file is part of PHPUnit.
  *

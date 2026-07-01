@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，元数据感知接口
+ * Symfony，组件，翻译，元数据意识接口
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\Translation;
 
 /**
  * MetadataAwareInterface.
- * 元数据感知接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -24,7 +23,6 @@ interface MetadataAwareInterface
 {
     /**
      * Gets metadata for the given domain and key.
-	 * 获取给定域和键的元数据。
      *
      * Passing an empty domain will return an array with all metadata indexed by
      * domain and then by key. Passing an empty key will return an array with all
@@ -39,7 +37,6 @@ interface MetadataAwareInterface
 
     /**
      * Adds metadata to a message domain.
-	 * 将元数据添加到消息域
      *
      * @param string $key    The key
      * @param mixed  $value  The value

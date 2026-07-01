@@ -1,9 +1,5 @@
 <?php
 /**
- * Ramsey，Uuid，生成器，随机发生器接口
- */
-
-/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -25,13 +21,11 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 /**
  * RandomGeneratorInterface provides functionality to generate strings of random
  * binary data
- * 随机介绍接口提供了生成随机二进制数据字符串的功能。
  */
 interface RandomGeneratorInterface
 {
     /**
      * Generates a string of random binary data of the specified length
-	 * 生成指定长度的随机二进制数据串
      *
      * @param integer $length The number of bytes of random binary data to generate
      * @return string A binary string

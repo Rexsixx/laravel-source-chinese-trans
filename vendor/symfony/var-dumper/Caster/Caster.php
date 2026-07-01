@@ -18,7 +18,6 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Helper for filtering out properties in casters.
- * 用于过滤脚轮中的属性的帮助器。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *
@@ -43,7 +42,6 @@ class Caster
 
     /**
      * Casts objects to arrays and adds the dynamic property prefix.
-	 * 将对象强制转换为数组并添加动态属性前缀
      *
      * @param object $obj          The object to cast
      * @param bool   $hasDebugInfo Whether the __debugInfo method exists on $obj or not
@@ -116,7 +114,6 @@ class Caster
 
     /**
      * Filters out the specified properties.
-	 * 过滤掉指定的属性。
      *
      * By default, a single match in the $filter bit field filters properties out, following an "or" logic.
      * When EXCLUDE_STRICT is set, an "and" logic is applied: all bits must match for a property to be removed.

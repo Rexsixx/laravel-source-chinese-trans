@@ -1,8 +1,4 @@
 <?php
-/**
- * PHPUnit，运行者，测试套件加载程序
- */
-
 /*
  * This file is part of PHPUnit.
  *
@@ -17,7 +13,6 @@ use ReflectionClass;
 
 /**
  * An interface to define how a test suite should be loaded.
- * 一个接口来定义是否应该加载测试套件。
  */
 interface TestSuiteLoader
 {

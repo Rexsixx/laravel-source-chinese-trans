@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Css 选择器，分析程序，Shortcut，类解析器
+ * Symfony，组件，Css选择器，分析程序，Shortcut，CSS选择器
  */
 
 /*
@@ -21,7 +21,6 @@ use Symfony\Component\CssSelector\Parser\ParserInterface;
 
 /**
  * CSS selector class parser shortcut.
- * CSS选择器类分析器快捷方式。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，验证，验证器
+ * Illuminate，验证，验证程序
  */
 
 namespace Illuminate\Validation;
@@ -25,7 +25,7 @@ class Validator implements ValidatorContract
 
     /**
      * The Translator implementation.
-	 * 翻译机实现
+	 * Translator实现
      *
      * @var \Illuminate\Contracts\Translation\Translator
      */
@@ -129,7 +129,7 @@ class Validator implements ValidatorContract
 
     /**
      * The array of fallback error messages.
-	 * 回退错误消息数组
+	 * 回退错误消息数组。
      *
      * @var array
      */
@@ -297,13 +297,13 @@ class Validator implements ValidatorContract
     {
         $this->messages = new MessageBag;
 
-        $this->distinctValues = [];
+        [$this->distinctValues, $this->failedRules] = [[], []];
 
         // We'll spin through each rule, validating the attributes attached to that
         // rule. Any error messages will be added to the containers with each of
         // the other error messages, returning true if we don't have messages.
-		// 我们将逐一检查每条规则，并验证与该规则相关的各项属性。
-		// 如果我们没有消息,任何错误消息都将被添加到容器中,每个错误消息都将被添加到容器中。
+		// 我们将逐一检查每条规则，并验证与该规则相关的属性。
+		// 任何错误消息都会与其它错误消息一起添加到容器中，如果没有任何错误消息则返回“真”。
         foreach ($this->rules as $attribute => $rules) {
             $attribute = str_replace('\.', '->', $attribute);
 
@@ -319,8 +319,8 @@ class Validator implements ValidatorContract
         // Here we will spin through all of the "after" hooks on this validator and
         // fire them off. This gives the callbacks a chance to perform all kinds
         // of other validation that needs to get wrapped up in this operation.
-		// 接下来，我们将逐一执行这个验证器中的所有“后续”操作，并启动这些操作。
-		// 这给回调一个机会执行各种其他的验证,需要在这个操作中完成。
+		// 接下来，我们将遍历此验证器中的所有“后续”钩子，并触发它们。
+		// 这样就能让回调函数有机会执行各种其他需要在此操作中完成的验证工作。
         foreach ($this->after as $after) {
             call_user_func($after);
         }
@@ -341,7 +341,7 @@ class Validator implements ValidatorContract
 
     /**
      * Run the validator's rules against its data.
-	 * 确定数据是否不符合验证规则
+	 * 针对其数据运行验证器的规则
      *
      * @return array
      *
@@ -357,8 +357,8 @@ class Validator implements ValidatorContract
     }
 
     /**
-     * Return validated value.
-	 * 确定数据是否不符合验证规则
+     * Get the attributes and values that were validated.
+	 * 获取已验证的属性和值
      *
      * @return array
      *
@@ -387,7 +387,7 @@ class Validator implements ValidatorContract
 
     /**
      * Validate a given attribute against a rule.
-	 * 确定数据是否不符合验证规则
+	 * 根据规则验证给定的属性
      *
      * @param  string  $attribute
      * @param  string  $rule
@@ -406,9 +406,8 @@ class Validator implements ValidatorContract
         // First we will get the correct keys for the given attribute in case the field is nested in
         // an array. Then we determine if the given rule accepts other field names as parameters.
         // If so, we will replace any asterisks found in the parameters with the correct keys.
-		// 首先，如果给定的字段嵌套在数组中，我们将获取该属性的正确键。
-		// 然后，我们会检查给定的规则是否允许将其他字段名称作为参数使用。
-		// 如果是这样，我们将把参数中出现的星号替换为正确的键。
+		// 首先，如果该字段嵌套在数组中，我们将获取给定属性的正确键。
+		// 然后，我们会检查给定的规则是否允许将其他字段名称作为参数使用。如果是这样，我们将把参数中出现的星号替换为正确的键值。
         if (($keys = $this->getExplicitKeys($attribute)) &&
             $this->dependsOnOtherFields($rule)) {
             $parameters = $this->replaceAsterisksInParameters($parameters, $keys);
@@ -420,7 +419,7 @@ class Validator implements ValidatorContract
         // and if it wasn't we will add a failure for the attribute. Files may not successfully
         // upload if they are too large based on PHP's settings so we will bail in this case.
 		// 如果该属性是文件，我们将验证文件上传是否确实成功了，如果不成功，我们将为该属性添加一个失败记录。
-		// 如果基于PHP的设置,文件可能无法成功上传,所以我们将在这种情况下保释。
+		// 如果文件过大（超出 PHP 的设置限制），则可能无法成功上传，因此在这种情况下我们将停止操作。
         if ($value instanceof UploadedFile && ! $value->isValid() &&
             $this->hasRule($attribute, array_merge($this->fileRules, $this->implicitRules))
         ) {
@@ -430,8 +429,8 @@ class Validator implements ValidatorContract
         // If we have made it this far we will make sure the attribute is validatable and if it is
         // we will call the validation method with the attribute. If a method returns false the
         // attribute is invalid and we will add a failure message for this failing attribute.
-		// 如果我们已经做到了这一点,我们将确保属性是可验证的,如果是,我们将将验证方法称为属性。
-		// 如果方法返回false,属性无效,我们将为这个失败属性添加一个失败消息。
+		// 如果我们已经成功完成了这一过程，那么我们就会确保该属性具有可验证性，
+		// 如果具备可验证性的话，我们就会使用该属性调用验证方法。
         $validatable = $this->isValidatable($rule, $attribute, $value);
 
         if ($rule instanceof RuleContract) {
@@ -449,7 +448,7 @@ class Validator implements ValidatorContract
 
     /**
      * Determine if the given rule depends on other fields.
-	 * 确定数据是否不符合验证规则
+	 * 确定给定的规则是否依赖于其他字段
      *
      * @param  string  $rule
      * @return bool
@@ -486,7 +485,6 @@ class Validator implements ValidatorContract
 	 * 获取主属性名称。
      *
      * For example, if "name.0" is given, "name.*" will be returned.
-	 * 例如,如果给"name.0"，"name.*"将会回来。
      *
      * @param  string  $attribute
      * @return string
@@ -604,9 +602,10 @@ class Validator implements ValidatorContract
 
     /**
      * Determine if it's a necessary presence validation.
-	 * 确定它是否是必要的状态验证
+	 * 确定它是否是必要的状态验证。
      *
      * This is to avoid possible database type comparison errors.
+	 * 这是为了避免可能的数据库类型比较错误。
      *
      * @param  string  $rule
      * @param  string  $attribute
@@ -631,7 +630,7 @@ class Validator implements ValidatorContract
         if (! $rule->passes($attribute, $value)) {
             $this->failedRules[$attribute][get_class($rule)] = [];
 
-            $messages = (array) $rule->message();
+            $messages = $rule->message() ? (array) $rule->message() : [get_class($rule)];
 
             foreach ($messages as $message) {
                 $this->messages->add($attribute, $this->makeReplacements(
@@ -663,7 +662,7 @@ class Validator implements ValidatorContract
         // and that rule already failed then we should stop validation at this point
         // as now there is no point in calling other rules with this field empty.
 		// 如果该属性有任何表明该字段是必填项的规则，并且该规则已经失败，
-		// 那么此时我们就应该停止验证，因为此时再对这个字段为空的情况调用其他规则已经没有意义了。
+		// 那么此时我们就应该停止验证了，因为此时再对这个字段为空的情况调用其他规则已经没有意义了。
         return $this->hasRule($attribute, $this->implicitRules) &&
                isset($this->failedRules[$attribute]) &&
                array_intersect(array_keys($this->failedRules[$attribute]), $this->implicitRules);
@@ -671,7 +670,7 @@ class Validator implements ValidatorContract
 
     /**
      * Add a failed rule and error message to the collection.
-	 * 向集合添加失败的规则和错误消息
+	 * 向集合中添加一个失败的规则和错误消息
      *
      * @param  string  $attribute
      * @param  string  $rule
@@ -915,8 +914,8 @@ class Validator implements ValidatorContract
         // The primary purpose of this parser is to expand any "*" rules to the all
         // of the explicit rules needed for the given data. For example the rule
         // names.* would get expanded to names.0, names.1, etc. for this data.
-		// 此解析器的主要作用是将任何带有“*”的规则扩展为针对给定数据所需的全部明确规则。
-		// 例如规则名称。*会扩展到名称。0,名字。1等。为了这个数据。
+		// 此解析器的主要作用是将任何“*”规则扩展为针对给定数据所需的全部明确规则。
+		// 例如，规则名.* 会扩展为 names.0、names.1 等，适用于此数据。
         $response = (new ValidationRuleParser($this->data))
                             ->explode($rules);
 
@@ -1183,7 +1182,7 @@ class Validator implements ValidatorContract
      *
      * @throws \RuntimeException
      */
-    protected function getPresenceVerifierFor($connection)
+    public function getPresenceVerifierFor($connection)
     {
         return tap($this->getPresenceVerifier(), function ($verifier) use ($connection) {
             $verifier->setConnection($connection);

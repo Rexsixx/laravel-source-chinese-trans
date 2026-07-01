@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，HTTP缓存，Esi
+ * Symfony，组件，Http内核，Http缓存，Ssi
  */
 
 /*

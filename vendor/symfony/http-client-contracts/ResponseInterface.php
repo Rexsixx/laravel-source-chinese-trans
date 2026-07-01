@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，HTTP客户端，响应接口
+ * Symfony，契约，Http客户端，响应接口
  */
 
 /*
@@ -23,7 +23,6 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
  * A (lazily retrieved) HTTP response.
- * 一个（延迟检索的）HTTP响应。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -31,7 +30,6 @@ interface ResponseInterface
 {
     /**
      * Gets the HTTP status code of the response.
-	 * 获取响应的HTTP状态码
      *
      * @throws TransportExceptionInterface when a network error occurs
      */
@@ -39,7 +37,6 @@ interface ResponseInterface
 
     /**
      * Gets the HTTP headers of the response.
-	 * 获取响应的HTTP头
      *
      * @param bool $throw Whether an exception should be thrown on 3/4/5xx status codes
      *
@@ -54,7 +51,6 @@ interface ResponseInterface
 
     /**
      * Gets the response body as a string.
-	 * 获取响应体作为字符串
      *
      * @param bool $throw Whether an exception should be thrown on 3/4/5xx status codes
      *
@@ -67,7 +63,6 @@ interface ResponseInterface
 
     /**
      * Gets the response body decoded as array, typically from a JSON payload.
-	 * 将响应体解码为数组,通常来自JSON有效负载。
      *
      * @param bool $throw Whether an exception should be thrown on 3/4/5xx status codes
      *
@@ -81,7 +76,6 @@ interface ResponseInterface
 
     /**
      * Closes the response stream and all related buffers.
-	 * 关闭响应流和所有相关缓冲区。
      *
      * No further chunk will be yielded after this method has been called.
      */
@@ -89,7 +83,6 @@ interface ResponseInterface
 
     /**
      * Returns info coming from the transport layer.
-	 * 返回来自传输层的信息。
      *
      * This method SHOULD NOT throw any ExceptionInterface and SHOULD be non-blocking.
      * The returned info is "live": it can be empty and can change from one call to

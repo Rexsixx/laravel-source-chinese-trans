@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，异常，Whoops 处理程序
+ * Illuminate，基础，异常处理，Whoops 处理程序
  */
 
 namespace Illuminate\Foundation\Exceptions;

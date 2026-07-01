@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，适配器，Php单元，Mockery PHPUnitIntegrationAssertPostConditionsForV7AndPrevious
+ * Mockery，适配器，Php单元，MockeryPHPUnitIntegrationAssertPostConditionsForV7AndPrevious
  */
 
 /**

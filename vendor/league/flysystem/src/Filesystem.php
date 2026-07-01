@@ -31,7 +31,6 @@ class Filesystem implements FilesystemInterface
 
     /**
      * Constructor.
-	 * 构造函数
      *
      * @param AdapterInterface $adapter
      * @param Config|array     $config
@@ -44,7 +43,6 @@ class Filesystem implements FilesystemInterface
 
     /**
      * Get the Adapter.
-	 * 获取适配器
      *
      * @return AdapterInterface adapter
      */

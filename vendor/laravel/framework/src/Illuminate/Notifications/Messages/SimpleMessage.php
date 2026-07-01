@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，消息，简单消息
+ * Illuminate，通知，信息，简单信息
  */
 
 namespace Illuminate\Notifications\Messages;
@@ -28,7 +28,7 @@ class SimpleMessage
 
     /**
      * The notification's greeting.
-	 * 通知的问候
+	 * 通知的招呼
      *
      * @var string
      */

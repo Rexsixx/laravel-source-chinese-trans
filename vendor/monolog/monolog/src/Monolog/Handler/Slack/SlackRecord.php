@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理程序，Slack 记录
+ */
 
 /*
  * This file is part of the Monolog package.

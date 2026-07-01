@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，控制台，助手，Helper
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
  * Helper is the base class for all helper classes.
- * Helper是所有助手类的基类。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -44,7 +40,6 @@ abstract class Helper implements HelperInterface
 
     /**
      * Returns the length of a string, using mb_strwidth if it is available.
-	 * 返回字符串的长度,如果可用,使用mb_strwidth。
      *
      * @param string $string The string to check its length
      *

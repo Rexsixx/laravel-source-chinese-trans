@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，日志，日志管理器
+ * Illuminate，日志，日志记录器
  */
 
 namespace Illuminate\Log;
@@ -26,9 +26,9 @@ class LogManager implements LoggerInterface
 
     /**
      * The application instance.
-	 * 应用实例
+	 * 程序实例
      *
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
@@ -52,7 +52,7 @@ class LogManager implements LoggerInterface
      * Create a new Log manager instance.
 	 * 创建一个新的日志管理器实例
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
      */
     public function __construct($app)
@@ -62,7 +62,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Create a new, on-demand aggregate logger instance.
-	 * 创建一个新的,按需聚合记录器实例
+	 * 创建一个新的按需聚合日志记录器实例
      *
      * @param  array  $channels
      * @param  string|null  $channel
@@ -314,7 +314,8 @@ class LogManager implements LoggerInterface
     {
         return new Monolog($this->parseChannel($config), [
             $this->prepareHandler(new SyslogHandler(
-                $this->app['config']['app.name'], $config['facility'] ?? LOG_USER, $this->level($config)
+                Str::snake($this->app['config']['app.name'], '-'),
+                $config['facility'] ?? LOG_USER, $this->level($config)
             ), $config),
         ]);
     }
@@ -354,6 +355,7 @@ class LogManager implements LoggerInterface
         }
 
         $with = array_merge(
+            ['level' => $this->level($config)],
             $config['with'] ?? [],
             $config['handler_with'] ?? []
         );
@@ -365,7 +367,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Prepare the handlers for usage by Monolog.
-	 * 准备处理程序供Monolog使用
+	 * 准备处理程序供独白使用
      *
      * @param  array  $handlers
      * @return array
@@ -381,7 +383,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Prepare the handler for usage by Monolog.
-	 * 准备处理程序供Monolog使用
+	 * 准备处理程序供独白使用
      *
      * @param  \Monolog\Handler\HandlerInterface  $handler
      * @param  array  $config
@@ -476,8 +478,8 @@ class LogManager implements LoggerInterface
      * System is unusable.
 	 * 系统不可用
      *
-     * @param string $message
-     * @param array  $context
+     * @param  string  $message
+     * @param  array  $context
      *
      * @return void
      */
@@ -493,8 +495,8 @@ class LogManager implements LoggerInterface
      * Example: Entire website down, database unavailable, etc. This should
      * trigger the SMS alerts and wake you up.
      *
-     * @param string $message
-     * @param array  $context
+     * @param  string  $message
+     * @param  array  $context
      *
      * @return void
      */
@@ -508,9 +510,10 @@ class LogManager implements LoggerInterface
 	 * 临界状态。
      *
      * Example: Application component unavailable, unexpected exception.
+	 * 示例:应用程序组件不可用,意外异常。
      *
-     * @param string $message
-     * @param array  $context
+     * @param  string  $message
+     * @param  array  $context
      *
      * @return void
      */
@@ -522,10 +525,10 @@ class LogManager implements LoggerInterface
     /**
      * Runtime errors that do not require immediate action but should typically
      * be logged and monitored.
-	 * 运行时错误，不需要立即采取行动，但通常应该被记录和监控。
+	 * 运行时错误无需立即采取行动，但通常应予以记录并进行监控。
      *
-     * @param string $message
-     * @param array  $context
+     * @param  string  $message
+     * @param  array  $context
      *
      * @return void
      */
@@ -541,8 +544,8 @@ class LogManager implements LoggerInterface
      * Example: Use of deprecated APIs, poor use of an API, undesirable things
      * that are not necessarily wrong.
      *
-     * @param string $message
-     * @param array  $context
+     * @param  string  $message
+     * @param  array  $context
      *
      * @return void
      */
@@ -555,8 +558,8 @@ class LogManager implements LoggerInterface
      * Normal but significant events.
 	 * 正常但重要的事件
      *
-     * @param string $message
-     * @param array  $context
+     * @param  string  $message
+     * @param  array  $context
      *
      * @return void
      */
@@ -571,8 +574,8 @@ class LogManager implements LoggerInterface
      *
      * Example: User logs in, SQL logs.
      *
-     * @param string $message
-     * @param array  $context
+     * @param  string  $message
+     * @param  array  $context
      *
      * @return void
      */
@@ -585,8 +588,8 @@ class LogManager implements LoggerInterface
      * Detailed debug information.
 	 * 详细的调试信息
      *
-     * @param string $message
-     * @param array  $context
+     * @param  string  $message
+     * @param  array  $context
      *
      * @return void
      */
@@ -599,9 +602,9 @@ class LogManager implements LoggerInterface
      * Logs with an arbitrary level.
 	 * 具有任意级别的日志
      *
-     * @param mixed  $level
-     * @param string $message
-     * @param array  $context
+     * @param  mixed  $level
+     * @param  string  $message
+     * @param  array  $context
      *
      * @return void
      */
@@ -615,7 +618,7 @@ class LogManager implements LoggerInterface
 	 * 动态调用默认驱动程序实例
      *
      * @param  string  $method
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return mixed
      */
     public function __call($method, $parameters)

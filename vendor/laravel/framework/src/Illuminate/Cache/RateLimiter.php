@@ -58,21 +58,21 @@ class RateLimiter
 	 * 为给定的衰减时间增加给定键的计数器
      *
      * @param  string  $key
-     * @param  float|int  $decayMinutes
+     * @param  int  $decaySeconds
      * @return int
      */
-    public function hit($key, $decayMinutes = 1)
+    public function hit($key, $decaySeconds = 60)
     {
         $this->cache->add(
-            $key.':timer', $this->availableAt($decayMinutes * 60), $decayMinutes
+            $key.':timer', $this->availableAt($decaySeconds), $decaySeconds
         );
 
-        $added = $this->cache->add($key, 0, $decayMinutes);
+        $added = $this->cache->add($key, 0, $decaySeconds);
 
         $hits = (int) $this->cache->increment($key);
 
         if (! $added && $hits == 1) {
-            $this->cache->put($key, 1, $decayMinutes);
+            $this->cache->put($key, 1, $decaySeconds);
         }
 
         return $hits;
@@ -80,7 +80,7 @@ class RateLimiter
 
     /**
      * Get the number of attempts for the given key.
-	 * 获取给定键的尝试次数。
+	 * 获取给定键的尝试次数
      *
      * @param  string  $key
      * @return mixed

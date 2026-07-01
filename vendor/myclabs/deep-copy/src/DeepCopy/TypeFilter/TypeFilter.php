@@ -1,6 +1,6 @@
 <?php
 /**
- * DeepCopy，类型过滤器，Type Filter
+ * 深拷贝，类型过滤器，Type Filter
  */
 
 namespace DeepCopy\TypeFilter;

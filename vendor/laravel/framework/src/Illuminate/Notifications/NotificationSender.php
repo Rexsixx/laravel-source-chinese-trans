@@ -63,8 +63,8 @@ class NotificationSender
     {
         $this->bus = $bus;
         $this->events = $events;
-        $this->manager = $manager;
         $this->locale = $locale;
+        $this->manager = $manager;
     }
 
     /**
@@ -92,7 +92,7 @@ class NotificationSender
      *
      * @param  \Illuminate\Support\Collection|array|mixed  $notifiables
      * @param  mixed  $notification
-     * @param  array  $channels
+     * @param  array|null  $channels
      * @return void
      */
     public function sendNow($notifiables, $notification, array $channels = null)
@@ -193,7 +193,7 @@ class NotificationSender
         foreach ($notifiables as $notifiable) {
             $notificationId = Str::uuid()->toString();
 
-            foreach ($original->via($notifiable) as $channel) {
+            foreach ((array) $original->via($notifiable) as $channel) {
                 $notification = clone $original;
 
                 $notification->id = $notificationId;

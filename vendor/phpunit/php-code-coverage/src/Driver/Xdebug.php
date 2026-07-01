@@ -2,7 +2,7 @@
 /**
  * SebastianBergmann，代码覆盖率，驱动程序，Xdebug
  */
- 
+
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -18,7 +18,6 @@ use SebastianBergmann\CodeCoverage\RuntimeException;
 
 /**
  * Driver for Xdebug's code coverage functionality.
- * Xdebug的代码覆盖功能的驱动程序。
  *
  * @codeCoverageIgnore
  */
@@ -56,7 +55,6 @@ final class Xdebug implements Driver
 
     /**
      * Start collection of code coverage information.
-	 * 开始收集代码覆盖率信息
      */
     public function start(bool $determineUnusedAndDead = true): void
     {

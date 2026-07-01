@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，哈希，Bcrypt 哈希
+ * Illuminate，哈希算法，Bcrypt 哈希
  */
 
 namespace Illuminate\Hashing;

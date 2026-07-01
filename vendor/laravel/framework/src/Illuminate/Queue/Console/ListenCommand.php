@@ -68,8 +68,8 @@ class ListenCommand extends Command
         // We need to get the right queue for the connection which is set in the queue
         // configuration file for the application. We will pull it based on the set
         // connection being run for the queue operation currently being executed.
-		// 我们需要为应用程序的队列配置文件设置连接的正确队列。
-		// 我们将根据目前正在执行的队列操作的设置连接来拉它。
+		// 我们需要根据应用程序的队列配置文件中所设定的正确队列来建立连接。
+		// 我们将根据当前正在执行的队列操作所设定的连接条件来进行操作。
         $queue = $this->getQueue(
             $connection = $this->input->getArgument('connection')
         );

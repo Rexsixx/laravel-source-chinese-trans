@@ -1,6 +1,6 @@
 <?php
 /**
- * Psy，VarDumper，推荐者意识到的
+ * Psy，VarDumper，推荐者
  */
 
 /*

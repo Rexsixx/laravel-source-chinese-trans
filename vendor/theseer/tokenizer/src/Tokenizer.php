@@ -1,7 +1,7 @@
 <?php declare(strict_types = 1);
 
 /**
- * TheSeer，词法分析器，Tokenizer
+ * TheSeer，Tokenizer，Tokenizer
  */
 
 namespace TheSeer\Tokenizer;
@@ -10,7 +10,7 @@ class Tokenizer {
 
     /**
      * Token Map for "non-tokens"
-	 * “非令牌”令牌图
+	 * “非令牌”的令牌映射
      *
      * @var array
      */

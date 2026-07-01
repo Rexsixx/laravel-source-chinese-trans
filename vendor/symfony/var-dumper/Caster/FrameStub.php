@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，Caster，Frame 存根
+ * Symfony，组件，Var Dumper，Caster，Frame Caster
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\VarDumper\Caster;
 
 /**
  * Represents a single backtrace frame as returned by debug_backtrace() or Exception->getTrace().
- * 表示由debug_backtrace（）或Exception->getTrace（）返回的单个回溯帧。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

@@ -47,7 +47,7 @@ interface Gate
 
     /**
      * Register a callback to run after all Gate checks.
-	 * 注册一个回调，在所有Gate检查之后运行
+	 * 注册一个回调，在所有Gate检查之后运行。
      *
      * @param  callable  $callback
      * @return $this

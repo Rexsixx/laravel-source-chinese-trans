@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，提供商，节点提供程序接口
+ * Ramsey，Uuid，转化器，节点提供接口
  */
 
 /**
@@ -23,13 +23,11 @@ use Exception;
 /**
  * NodeProviderInterface provides functionality to get the node ID (or host ID
  * in the form of the system's MAC address) from a specific type of node provider
- * NodeProviderInterface提供了从特定类型的节点提供程序中获取节点ID(或主机ID的形式)的功能
  */
 interface NodeProviderInterface
 {
     /**
      * Returns the system node ID
-	 * 返回系统节点ID
      *
      * @return string System node ID as a hexadecimal string
      * @throws Exception if it was not possible to gather sufficient entropy

@@ -1,10 +1,11 @@
 <?php
 /**
- * Illuminate，控制台，线程调度，缓存事件互斥锁
+ * Illuminate，控制台，线程调度，调度互斥
  */
 
 namespace Illuminate\Console\Scheduling;
 
+use DateTimeInterface;
 
 interface SchedulingMutex
 {

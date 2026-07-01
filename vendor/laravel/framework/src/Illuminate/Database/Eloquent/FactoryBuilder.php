@@ -146,7 +146,7 @@ class FactoryBuilder
 
     /**
      * Set the states to be applied to the model.
-	 * 设置要应用于模型的状态。
+	 * 设置要应用于模型的状态
      *
      * @param  array|mixed  $states
      * @return $this

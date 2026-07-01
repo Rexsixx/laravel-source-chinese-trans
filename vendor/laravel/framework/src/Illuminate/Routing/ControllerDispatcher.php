@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，控制器调度台
+ * Illuminate，路由选择，控制器调度程序
  */
 
 namespace Illuminate\Routing;
@@ -34,7 +34,7 @@ class ControllerDispatcher implements ControllerDispatcherContract
 
     /**
      * Dispatch a request to a given controller and method.
-	 * 向给定的控制器和方法发送请求
+	 * 将请求分派给给定的控制器和方法
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  mixed  $controller

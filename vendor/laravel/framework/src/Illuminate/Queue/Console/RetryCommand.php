@@ -20,7 +20,7 @@ class RetryCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * console命令说明
      *
      * @var string
      */
@@ -85,7 +85,7 @@ class RetryCommand extends Command
 	 * 重置负载尝试。
      *
      * Applicable to Redis jobs which store attempts in their payload.
-	 * 适用于Redis的工作,在他们的有效负载中存储尝试。
+	 * 适用于在负载中存储尝试的Redis作业。
      *
      * @param  string  $payload
      * @return string

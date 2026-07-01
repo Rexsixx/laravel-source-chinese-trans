@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，生成器，Url 生成器接口
+ * Symfony，组件，路由选择，生成器，Url 生成器接口
  */
 
 /*
@@ -21,6 +21,7 @@ use Symfony\Component\Routing\RequestContextAwareInterface;
 
 /**
  * UrlGeneratorInterface is the interface that all URL generator classes must implement.
+ * UrlGeneratorInterface是所有URL生成器类都必须实现的接口。
  *
  * The constants in this interface define the different types of resource references that
  * are declared in RFC 3986: http://tools.ietf.org/html/rfc3986

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，Route
+ * Symfony，组件，路由选择，路由
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\Routing;
 
 /**
  * A Route describes a route and its parameters.
- * Route描述了一条路由及其参数。
+ * 一条路线描述了一条路线及其参数。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
@@ -39,7 +39,6 @@ class Route implements \Serializable
 
     /**
      * Constructor.
-	 * 构造方法。
      *
      * Available options:
      *
@@ -130,7 +129,6 @@ class Route implements \Serializable
 
     /**
      * Sets the pattern for the path.
-	 * 为路径设置模式
      *
      * @param string $pattern The path pattern
      *
@@ -169,7 +167,6 @@ class Route implements \Serializable
 
     /**
      * Sets the pattern for the host.
-	 * 为主机设置模式
      *
      * @param string $pattern The host pattern
      *

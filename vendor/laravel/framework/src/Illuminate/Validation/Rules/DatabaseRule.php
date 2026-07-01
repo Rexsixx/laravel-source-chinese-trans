@@ -43,7 +43,7 @@ trait DatabaseRule
 
     /**
      * Create a new rule instance.
-	 * 创建一个新的规则实例。
+	 * 创建一个新的规则实例
      *
      * @param  string  $table
      * @param  string  $column
@@ -165,7 +165,7 @@ trait DatabaseRule
 
     /**
      * Get the custom query callbacks for the rule.
-	 * 获取规则的自定义查询回调
+	 * 获取规则的自定义查询回调。
      *
      * @return array
      */
@@ -183,7 +183,7 @@ trait DatabaseRule
     protected function formatWheres()
     {
         return collect($this->wheres)->map(function ($where) {
-            return $where['column'].','.$where['value'];
+            return $where['column'].','.'"'.str_replace('"', '""', $where['value']).'"';
         })->implode(',');
     }
 }

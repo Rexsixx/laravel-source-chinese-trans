@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，数据头，路径头
+ * Symfony，组件，Mime，数据头，路径标题
  */
 
 /*
@@ -19,7 +19,6 @@ use Symfony\Component\Mime\Exception\RfcComplianceException;
 
 /**
  * A Path Header, such a Return-Path (one address).
- * 一个路径头，如返回路径（一个地址）。
  *
  * @author Chris Corbyn
  */

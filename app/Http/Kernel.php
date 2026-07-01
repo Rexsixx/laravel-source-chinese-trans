@@ -19,11 +19,11 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
+        \App\Http\Middleware\TrustProxies::class,
         \App\Http\Middleware\CheckForMaintenanceMode::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \App\Http\Middleware\TrustProxies::class,
     ];
 
     /**
@@ -54,7 +54,7 @@ class Kernel extends HttpKernel
 	 * 应用程序的路由中间件。
      *
      * These middleware may be assigned to groups or used individually.
-	 * 这些中间件可以分配给组，也可以单独使用。
+	 * 这些中间件可以被分配到组或单独使用。
      *
      * @var array
      */
@@ -72,10 +72,10 @@ class Kernel extends HttpKernel
 
     /**
      * The priority-sorted list of middleware.
-	 * 中间件的优先级排序列表。
+	 * 中间件的优先排序列表。
      *
      * This forces non-global middleware to always be in the given order.
-	 * 这迫使非全局中间件始终按照给定的顺序排列。
+	 * 这迫使非全局中间件始终处于给定的顺序。
      *
      * @var array
      */

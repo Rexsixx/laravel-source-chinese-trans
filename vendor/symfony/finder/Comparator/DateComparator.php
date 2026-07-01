@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，探测器，比较器，日期比较器
+ * Symfony，组件，探测器，比较仪，日期比较器
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\Finder\Comparator;
 
 /**
  * DateCompare compiles date comparisons.
- * DateCompare编译日期比较。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，生成器命令
+ * Illuminate，控制台，生成器指令
  */
 
 namespace Illuminate\Console;
@@ -65,7 +65,7 @@ abstract class GeneratorCommand extends Command
         // First we will check to see if the class already exists. If it does, we don't want
         // to create the class and overwrite the user's code. So, we will bail out so the
         // code is untouched. Otherwise, we will continue generating this class' files.
-		// 首先,我们将检查是否已经存在这个类。如果它这样做,我们就不希望创建类并覆盖用户的代码。
+		// 首先，我们将检查类是否已经存在。如果它这样做,我们就不希望创建类并覆盖用户的代码。
 		// 所以,我们将保释出来,这样代码就不受影响了。否则,我们将继续生成这个类的文件。
         if ((! $this->hasOption('force') ||
              ! $this->option('force')) &&
@@ -78,8 +78,8 @@ abstract class GeneratorCommand extends Command
         // Next, we will generate the path to the location where this class' file should get
         // written. Then, we will build the class and make the proper replacements on the
         // stub files so that it gets the correctly formatted namespace and class name.
-		// 接下来,我们将生成该类文件应该写入的位置的路径。
-		// 然后，我们将创建该类，并在模板文件中进行适当的替换，以确保命名空间和类名格式正确。
+		// 接下来，我们将生成该类文件所在位置的路径。
+		// 然后,我们将构建类,并在存根文件上进行适当的替换,以便它获得正确格式化的名称空间和类名。
         $this->makeDirectory($path);
 
         $this->files->put($path, $this->buildClass($name));

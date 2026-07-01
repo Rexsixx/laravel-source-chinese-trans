@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，异常，缺少必选参数异常
+ * Symfony，组件，路由选择，异常，错误的强制参数异常
  */
 
 /*
@@ -17,7 +17,7 @@ namespace Symfony\Component\Routing\Exception;
 /**
  * Exception thrown when a route cannot be generated because of missing
  * mandatory parameters.
- * 由于缺少必需参数而无法生成路由时抛出异常。
+ * 当路由无法生成的时候,由于缺少强制参数而无法生成异常。
  *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */

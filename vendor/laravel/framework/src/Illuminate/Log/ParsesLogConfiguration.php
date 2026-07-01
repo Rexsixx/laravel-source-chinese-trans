@@ -12,7 +12,7 @@ trait ParsesLogConfiguration
 {
     /**
      * The Log levels.
-	 * 日志等级
+	 * 日志级别
      *
      * @var array
      */
@@ -64,10 +64,6 @@ trait ParsesLogConfiguration
      */
     protected function parseChannel(array $config)
     {
-        if (! isset($config['name'])) {
-            return $this->getFallbackChannelName();
-        }
-
-        return $config['name'];
+        return $config['name'] ?? $this->getFallbackChannelName();
     }
 }

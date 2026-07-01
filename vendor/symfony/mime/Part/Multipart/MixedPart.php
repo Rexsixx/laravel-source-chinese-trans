@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，部分，多部件的，混合部分
+ * Symfony，组件，Mime，多部件的，混合部分
  */
 
 /*

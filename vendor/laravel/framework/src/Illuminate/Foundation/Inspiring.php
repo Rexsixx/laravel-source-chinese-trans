@@ -11,7 +11,7 @@ class Inspiring
 {
     /**
      * Get an inspiring quote.
-	 * 引用一句鼓舞人心的话
+	 * 引用一句鼓舞人心的话。
      *
      * Taylor & Dayle made this commit from Jungfraujoch. (11,333 ft.)
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，类型，是否数组测试
+ * Hamcrest，类型，数组测试
  */
 
 namespace Hamcrest\Type;

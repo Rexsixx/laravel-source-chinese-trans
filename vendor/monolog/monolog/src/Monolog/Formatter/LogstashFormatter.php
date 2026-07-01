@@ -16,7 +16,6 @@ namespace Monolog\Formatter;
 
 /**
  * Serializes a log message to Logstash Event Format
- * 将日志消息序列化为日志事件格式
  *
  * @see http://logstash.net/
  * @see https://github.com/logstash/logstash/blob/master/lib/logstash/event.rb

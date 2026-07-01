@@ -1,6 +1,6 @@
 <?php
 /**
- * Psy，命令，缓冲区命令
+ * Psy，命令，缓冲命令
  */
 
 /*
@@ -21,7 +21,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Interact with the current code buffer.
- * 与当前代码缓冲区交互。
  *
  * Shows and clears the buffer for the current multi-line expression.
  */

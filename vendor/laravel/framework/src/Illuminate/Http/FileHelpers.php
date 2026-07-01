@@ -30,7 +30,7 @@ trait FileHelpers
 
     /**
      * Get the file's extension.
-	 * 获取文件的扩展
+	 * 获取文件的扩展名
      *
      * @return string
      */
@@ -40,21 +40,10 @@ trait FileHelpers
     }
 
     /**
-     * Get the file's extension supplied by the client.
-	 * 获取客户端提供的文件扩展名
-     *
-     * @return string
-     */
-    public function clientExtension()
-    {
-        return $this->guessClientExtension();
-    }
-
-    /**
      * Get a filename for the file.
 	 * 获取文件的文件名
      *
-     * @param  string  $path
+     * @param  string|null  $path
      * @return string
      */
     public function hashName($path = null)

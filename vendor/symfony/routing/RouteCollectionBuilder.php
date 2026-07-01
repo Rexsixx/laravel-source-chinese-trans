@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，路由集合生成器
+ * Symfony，组件，路由选择，路由收集器构建者
  */
 
 /*
@@ -20,7 +20,7 @@ use Symfony\Component\Config\Resource\ResourceInterface;
 
 /**
  * Helps add and import routes into a RouteCollection.
- * 帮助在RouteCollection中添加和导入路由。
+ * 帮助添加和导入路由。
  *
  * @author Ryan Weaver <ryan@knpuniversity.com>
  */
@@ -49,7 +49,7 @@ class RouteCollectionBuilder
 
     /**
      * Import an external routing resource and returns the RouteCollectionBuilder.
-	 * 导入外部路由资源并返回RouteCollectionBuilder
+	 * 导入外部路由资源并返回RouteCollectionBuilder。
      *
      *     $routes->import('blog.yml', '/blog');
      *
@@ -91,7 +91,7 @@ class RouteCollectionBuilder
 
     /**
      * Adds a route and returns it for future modification.
-	 * 添加路由并返回以备将来修改
+	 * 添加一条路线,并返回它来进行未来的修改。
      *
      * @param string      $path       The route path
      * @param string      $controller The route's controller
@@ -110,7 +110,6 @@ class RouteCollectionBuilder
 
     /**
      * Returns a RouteCollectionBuilder that can be configured and then added with mount().
-	 * 返回一个可以配置的RouteCollectionBuilder，然后用mount（）添加。
      *
      * @return self
      */
@@ -121,7 +120,6 @@ class RouteCollectionBuilder
 
     /**
      * Add a RouteCollectionBuilder.
-	 * 添加一个RouteCollectionBuilder
      *
      * @param string $prefix
      */
@@ -133,7 +131,6 @@ class RouteCollectionBuilder
 
     /**
      * Adds a Route object to the builder.
-	 * 将Route对象添加到构建器中
      *
      * @param string|null $name
      *
@@ -153,7 +150,6 @@ class RouteCollectionBuilder
 
     /**
      * Sets the host on all embedded routes (unless already set).
-	 * 在所有嵌入路由上设置主机（除非已经设置）
      *
      * @param string $pattern
      *
@@ -168,7 +164,6 @@ class RouteCollectionBuilder
 
     /**
      * Sets a condition on all embedded routes (unless already set).
-	 * 在所有嵌入路由上设置一个条件（除非已经设置）
      *
      * @param string $condition
      *
@@ -184,7 +179,6 @@ class RouteCollectionBuilder
     /**
      * Sets a default value that will be added to all embedded routes (unless that
      * default value is already set).
-	 * 设置一个默认值，该值将被添加到所有嵌入式路由中（除非该默认值已设置）
      *
      * @param string $key
      * @param mixed  $value
@@ -201,7 +195,6 @@ class RouteCollectionBuilder
     /**
      * Sets a requirement that will be added to all embedded routes (unless that
      * requirement is already set).
-	 * 设置一个将被添加到所有嵌入式路由中的要求（除非该要求已设置）
      *
      * @param string $key
      * @param mixed  $regex

@@ -90,7 +90,7 @@ class View implements ArrayAccess, ViewContract
 	 * 获取视图的字符串内容
      *
      * @param  callable|null  $callback
-     * @return string
+     * @return array|string
      *
      * @throws \Throwable
      */
@@ -104,8 +104,8 @@ class View implements ArrayAccess, ViewContract
             // Once we have the contents of the view, we will flush the sections if we are
             // done rendering all views so that there is nothing left hanging over when
             // another view gets rendered in the future by the application developer.
-			// 一旦我们获取了视图的内容，如果已经完成了所有视图的渲染工作，
-			// 我们就会刷新各个部分，这样在应用程序开发者未来再次渲染其他视图时就不会有任何内容遗留下来未被处理。
+			// 一旦获取到了视图的内容，如果已经完成了所有视图的渲染工作，我们就会刷新各个部分，
+			// 这样在应用程序开发者未来再次渲染其他视图时，就不会有任何内容遗留下来未被处理。
             $this->factory->flushStateIfDoneRendering();
 
             return ! is_null($response) ? $response : $contents;
@@ -132,6 +132,7 @@ class View implements ArrayAccess, ViewContract
         // the section after the complete rendering operation is done. This will
         // clear out the sections for any separate views that may be rendered.
 		// 我们将跟踪所呈现的浏览量数据，以便在整个渲染操作完成后清除该部分的内容。
+		// 这将清除所有可能呈现的独立视图的相关区域。
         $this->factory->incrementRender();
 
         $this->factory->callComposer($this);
@@ -165,7 +166,7 @@ class View implements ArrayAccess, ViewContract
      *
      * @return array
      */
-    protected function gatherData()
+    public function gatherData()
     {
         $data = array_merge($this->factory->getShared(), $this->data);
 
@@ -182,7 +183,7 @@ class View implements ArrayAccess, ViewContract
      * Get the sections of the rendered view.
 	 * 获取渲染视图的部分
      *
-     * @return string
+     * @return array
      *
      * @throws \Throwable
      */
@@ -394,7 +395,7 @@ class View implements ArrayAccess, ViewContract
 
     /**
      * Set a piece of data on the view.
-	 * 在视图上设置一段数
+	 * 在视图上设置一段数据
      *
      * @param  string  $key
      * @param  mixed   $value

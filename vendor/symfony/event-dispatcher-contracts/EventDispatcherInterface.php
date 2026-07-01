@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，事件调度器，事件调度器接口
+ * Symfony，契约，事件调度程序，事件调度程序接口
  */
 
 /*
@@ -19,13 +19,11 @@ use Psr\EventDispatcher\EventDispatcherInterface as PsrEventDispatcherInterface;
 if (interface_exists(PsrEventDispatcherInterface::class)) {
     /**
      * Allows providing hooks on domain-specific lifecycles by dispatching events.
-	 * 允许通过调度事件在特定领域的生命周期上提供钩子
      */
     interface EventDispatcherInterface extends PsrEventDispatcherInterface
     {
         /**
          * Dispatches an event to all registered listeners.
-		 * 将事件分派给所有已注册的侦听器。
          *
          * For BC with Symfony 4, the $eventName argument is not declared explicitly on the
          * signature of the method. Implementations that are not bound by this BC constraint
@@ -42,7 +40,6 @@ if (interface_exists(PsrEventDispatcherInterface::class)) {
 } else {
     /**
      * Allows providing hooks on domain-specific lifecycles by dispatching events.
-	 * 允许通过调度事件在特定领域的生命周期上提供钩子。
      */
     interface EventDispatcherInterface
     {

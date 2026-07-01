@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，工具，模板助手
+ * Whoops，工具，模板辅助
  */
 
 /**
@@ -18,7 +18,7 @@ use Whoops\Exception\Frame;
 
 /**
  * Exposes useful tools for working with/in templates
- * 在模板中使用有用的工具
+ * 公开使用/in模板的有用工具
  */
 class TemplateHelper
 {
@@ -57,7 +57,7 @@ class TemplateHelper
 
     /**
      * Escapes a string for output in an HTML document
-	 * 在HTML文档中从字符串中Escapes
+	 * 在HTML文档中从字符串中逃脱
      *
      * @param  string $raw
      * @return string

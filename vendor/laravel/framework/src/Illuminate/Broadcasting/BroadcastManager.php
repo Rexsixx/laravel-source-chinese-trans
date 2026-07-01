@@ -23,9 +23,9 @@ class BroadcastManager implements FactoryContract
 {
     /**
      * The application instance.
-	 * 应用实例
+	 * 程序实例
      *
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
@@ -47,9 +47,9 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Create a new manager instance.
-	 * 注册的自定义驱动程序创建者
+	 * 创建一个新的管理器实例
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
      */
     public function __construct($app)
@@ -144,7 +144,7 @@ class BroadcastManager implements FactoryContract
      * Get a driver instance.
 	 * 获取驱动程序实例
      *
-     * @param  string  $driver
+     * @param  string|null  $driver
      * @return mixed
      */
     public function connection($driver = null)
@@ -179,8 +179,8 @@ class BroadcastManager implements FactoryContract
     }
 
     /**
-     * Resolve the given store.
-	 * 解析给定的存储
+     * Resolve the given broadcaster.
+	 * 解析给定的广播器
      *
      * @param  string  $name
      * @return \Illuminate\Contracts\Broadcasting\Broadcaster

@@ -5,6 +5,7 @@
 
 namespace Illuminate\View\Concerns;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
 
 trait ManagesComponents
@@ -19,7 +20,7 @@ trait ManagesComponents
 
     /**
      * The original data passed to the component.
-	 * 原始数据传递给组件
+	 * 传递给组件的原始数据
      *
      * @var array
      */
@@ -58,6 +59,23 @@ trait ManagesComponents
 
             $this->slots[$this->currentComponent()] = [];
         }
+    }
+
+    /**
+     * Get the first view that actually exists from the given list, and start a component.
+	 * 从给定列表中获取实际存在的第一个视图，并启动一个组件。
+     *
+     * @param  array  $names
+     * @param  array  $data
+     * @return void
+     */
+    public function startComponentFirst(array $names, array $data = [])
+    {
+        $name = Arr::first($names, function ($item) {
+            return $this->exists($item);
+        });
+
+        $this->startComponent($name, $data);
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，控制台，迁移，迁移编译命令
+ * Illuminate，数据库，控制台，迁移，迁移 Make命令
  */
 
 namespace Illuminate\Database\Console\Migrations;
@@ -21,11 +21,12 @@ class MigrateMakeCommand extends BaseCommand
         {--create= : The table to be created}
         {--table= : The table to migrate}
         {--path= : The location where the migration file should be created}
-        {--realpath : Indicate any provided migration file paths are pre-resolved absolute paths}';
+        {--realpath : Indicate any provided migration file paths are pre-resolved absolute paths}
+        {--fullpath : Output the full path of the migration}';
 
     /**
      * The console command description.
-	 *控制台命令描述
+	 * console命令说明
      *
      * @var string
      */
@@ -74,8 +75,8 @@ class MigrateMakeCommand extends BaseCommand
         // It's possible for the developer to specify the tables to modify in this
         // schema operation. The developer may also specify if this table needs
         // to be freshly created so we can create the appropriate migrations.
-		// 开发人员可以在此模式操作中指定要修改的表。
-		// 开发人员还可以指定是否需要新创建的表,这样我们就可以创建适当的迁移。
+		// 开发人员可以在此架构操作中指定要修改的表。
+		// 开发人员还可以指定是否需要重新创建此表，以便我们能够创建相应的迁移操作。
         $name = Str::snake(trim($this->input->getArgument('name')));
 
         $table = $this->input->getOption('table');
@@ -85,8 +86,8 @@ class MigrateMakeCommand extends BaseCommand
         // If no table was given as an option but a create option is given then we
         // will use the "create" option as the table name. This allows the devs
         // to pass a table name into this option as a short-cut for creating.
-		// 如果没有提供表作为选项,但是给定创建选项,那么我们将使用“create”选项作为表名。
-		// 这允许devs将一个表名传递到这个选项中,作为创建的捷径。
+		// 如果未给出表名选项，但提供了“创建”选项，那么我们将使用“创建”选项作为表名。
+		// 这使得开发人员能够将表名作为参数传递给此选项，从而简化了创建操作。
         if (! $table && is_string($create)) {
             $table = $create;
 
@@ -96,8 +97,8 @@ class MigrateMakeCommand extends BaseCommand
         // Next, we will attempt to guess the table name if this the migration has
         // "create" in the name. This will allow us to provide a convenient way
         // of creating migrations that create new tables for the application.
-		// 接下来,我们将尝试猜测这个表名,如果这个迁移以名称“创建”。
-		// 这将允许我们提供一种方便的方法来创建为应用程序创建新表的迁移。
+		// 接下来，如果迁移操作的名称中包含“创建”一词，我们将尝试猜测其对应的表名。
+		// 这将使我们能够提供一种便捷的方式来创建迁移操作，从而为应用程序创建新的表。
         if (! $table) {
             [$table, $create] = TableGuesser::guess($name);
         }
@@ -105,8 +106,9 @@ class MigrateMakeCommand extends BaseCommand
         // Now we are ready to write the migration out to disk. Once we've written
         // the migration out, we will dump-autoload for the entire framework to
         // make sure that the migrations are registered by the class loaders.
-		// 现在我们已经准备好将迁移写入磁盘。一旦我们已经编写了迁移,
-		// 我们将为整个框架打开一个简单的插件,以确保迁移是由类装入器注册的。
+		// 现在我们准备将迁移写入磁盘。
+		// 一旦我们完成了迁移工作，我们就会对整个框架进行“dump-autoload”操作，
+		// 以确保迁移信息能被类加载器正确识别并注册。
         $this->writeMigration($name, $table, $create);
 
         $this->composer->dumpAutoloads();
@@ -123,9 +125,13 @@ class MigrateMakeCommand extends BaseCommand
      */
     protected function writeMigration($name, $table, $create)
     {
-        $file = pathinfo($this->creator->create(
+        $file = $this->creator->create(
             $name, $this->getMigrationPath(), $table, $create
-        ), PATHINFO_FILENAME);
+        );
+
+        if (! $this->option('fullpath')) {
+            $file = pathinfo($file, PATHINFO_FILENAME);
+        }
 
         $this->line("<info>Created Migration:</info> {$file}");
     }

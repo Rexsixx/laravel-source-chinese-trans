@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，预设，React
+ * Illuminate，基础，控制台，预先装置，React
  */
 
 namespace Illuminate\Foundation\Console\Presets;
@@ -39,7 +39,7 @@ class React extends Preset
             '@babel/preset-react' => '^7.0.0',
             'react' => '^16.2.0',
             'react-dom' => '^16.2.0',
-        ] + Arr::except($packages, ['vue']);
+        ] + Arr::except($packages, ['vue', 'vue-template-compiler']);
     }
 
     /**

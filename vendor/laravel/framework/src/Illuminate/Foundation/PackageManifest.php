@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，包清单
+ * Illuminate，基础，软件包清单
  */
 
 namespace Illuminate\Foundation;

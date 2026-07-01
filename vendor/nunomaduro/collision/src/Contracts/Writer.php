@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，冲突，契约，作者
+ * NunoMaduro，碰撞，契约，作者
  */
 
 /**

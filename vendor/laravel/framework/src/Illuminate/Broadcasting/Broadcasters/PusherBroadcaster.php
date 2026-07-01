@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，广播，广播员，Pusher 广播机
+ * Illuminate，广播，广播员，Pusher 广播员
  */
 
 namespace Illuminate\Broadcasting\Broadcasters;
@@ -13,6 +13,8 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class PusherBroadcaster extends Broadcaster
 {
+    use UsePusherChannelConventions;
+
     /**
      * The Pusher SDK instance.
 	 * Pusher SDK实例
@@ -44,14 +46,12 @@ class PusherBroadcaster extends Broadcaster
      */
     public function auth($request)
     {
-        if (Str::startsWith($request->channel_name, ['private-', 'presence-']) &&
-            ! $request->user()) {
+        $channelName = $this->normalizeChannelName($request->channel_name);
+
+        if ($this->isGuardedChannel($request->channel_name) &&
+            ! $this->retrieveUser($request, $channelName)) {
             throw new AccessDeniedHttpException;
         }
-
-        $channelName = Str::startsWith($request->channel_name, 'private-')
-                            ? Str::replaceFirst('private-', '', $request->channel_name)
-                            : Str::replaceFirst('presence-', '', $request->channel_name);
 
         return parent::verifyUserCanAccessChannel(
             $request, $channelName
@@ -74,11 +74,13 @@ class PusherBroadcaster extends Broadcaster
             );
         }
 
+        $channelName = $this->normalizeChannelName($request->channel_name);
+
         return $this->decodePusherResponse(
             $request,
             $this->pusher->presence_auth(
                 $request->channel_name, $request->socket_id,
-                $request->user()->getAuthIdentifier(), $result
+                $this->retrieveUser($request, $channelName)->getAuthIdentifier(), $result
             )
         );
     }

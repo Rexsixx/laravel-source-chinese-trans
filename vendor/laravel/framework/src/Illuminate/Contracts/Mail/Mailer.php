@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，Mail，邮件收发机
+ * Illuminate，契约，电子邮件，邮件收发机
  */
 
 namespace Illuminate\Contracts\Mail;
@@ -41,7 +41,7 @@ interface Mailer
      *
      * @param  string|array|\Illuminate\Contracts\Mail\Mailable  $view
      * @param  array  $data
-     * @param  \Closure|string  $callback
+     * @param  \Closure|string|null  $callback
      * @return void
      */
     public function send($view, array $data = [], $callback = null);

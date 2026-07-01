@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Css 选择器，XPath，扩展，属性匹配扩展
+ * Symfony，组件，Css选择器，XPath，扩展，属性匹配扩展
  */
 
 /*
@@ -19,7 +19,6 @@ use Symfony\Component\CssSelector\XPath\XPathExpr;
 
 /**
  * XPath expression translator attribute extension.
- * XPath表达式翻译属性扩展。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.

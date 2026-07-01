@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，全局状态，Snapshot 测试
+ * SebastianBergmann，GlobalState，快照测试
  */
 
 /*

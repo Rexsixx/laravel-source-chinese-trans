@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，供应商发布命令
+ * Illuminate，基础，控制台，厂商发布命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -52,7 +52,7 @@ class VendorPublishCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * console命令说明
      *
      * @var string
      */
@@ -165,7 +165,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Publishes the assets for a tag.
-	 * 发布标记的资产
+	 * 发布标记的资源
      *
      * @param  string  $tag
      * @return mixed

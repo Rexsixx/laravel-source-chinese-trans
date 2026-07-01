@@ -21,7 +21,6 @@ use Symfony\Component\Debug\Exception\UndefinedMethodException;
 
 /**
  * ErrorHandler for undefined methods.
- * 用于未定义方法的ErrorHandler。
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  *
@@ -46,7 +45,6 @@ class UndefinedMethodFatalErrorHandler implements FatalErrorHandlerInterface
 
         if ('' === $methodName || !class_exists($className) || null === $methods = get_class_methods($className)) {
             // failed to get the class or its methods on which an unknown method was called (for example on an anonymous class)
-			// 未能获得该类或其方法的方法(例如在匿名类上)
             return new UndefinedMethodException($message, $exception);
         }
 

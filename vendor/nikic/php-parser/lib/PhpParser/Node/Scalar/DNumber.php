@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，标量，DNumber
+ */
+
 namespace PhpParser\Node\Scalar;
 
 use PhpParser\Node\Scalar;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，测试，约束，电子邮件Html正文包含
+ * Symfony，组件，Mime，测试，约束，电子邮件主体包含
  */
 
 /*

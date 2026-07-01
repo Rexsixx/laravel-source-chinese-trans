@@ -32,8 +32,8 @@ interface RunInterface
 
     /**
      * Removes the last handler in the stack and returns it.
-     * Returns null if there"s nothing else to pop.
-	 * 删除堆栈中的最后一个处理程序并返回它。如果没有别的东西,就返回null。
+     * Returns null if there"s nothing else to pop.如果没有别的东西,就返回null。
+	 * 删除堆栈中的最后一个处理程序并返回它。
      *
      * @return null|HandlerInterface
      */
@@ -42,6 +42,7 @@ interface RunInterface
     /**
      * Returns an array with all handlers, in the
      * order they were added to the stack.
+	 * 返回一个数组与所有处理程序,按顺序添加到堆栈。
      *
      * @return array
      */
@@ -67,7 +68,6 @@ interface RunInterface
 
     /**
      * Registers this instance as an error handler.
-	 * 将此实例注册为错误处理程序
      *
      * @return Run
      */

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，构建器工厂
+ * PhpParser，构建者工厂
  */
 
 namespace PhpParser;
@@ -18,7 +18,7 @@ class BuilderFactory
 {
     /**
      * Creates an attribute node.
-	 * 创建属性节点
+	 * 创建一个属性节点
      *
      * @param string|Name $name Name of the attribute
      * @param array       $args Attribute named arguments
@@ -34,7 +34,6 @@ class BuilderFactory
 
     /**
      * Creates a namespace builder.
-	 * 创建命名空间构建器
      *
      * @param null|string|Node\Name $name Name of the namespace
      *
@@ -46,7 +45,6 @@ class BuilderFactory
 
     /**
      * Creates a class builder.
-	 * 创建类构建器
      *
      * @param string $name Name of the class
      *
@@ -58,7 +56,6 @@ class BuilderFactory
 
     /**
      * Creates an interface builder.
-	 * 创建一个接口构建器
      *
      * @param string $name Name of the interface
      *
@@ -70,7 +67,6 @@ class BuilderFactory
 
     /**
      * Creates a trait builder.
-	 * 创建一个特质构建者
      *
      * @param string $name Name of the trait
      *
@@ -82,7 +78,6 @@ class BuilderFactory
 
     /**
      * Creates an enum builder.
-	 * 创造一个enum builder
      *
      * @param string $name Name of the enum
      *

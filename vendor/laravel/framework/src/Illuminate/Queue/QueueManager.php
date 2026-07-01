@@ -17,9 +17,9 @@ class QueueManager implements FactoryContract, MonitorContract
 {
     /**
      * The application instance.
-	 * 程序实例
+	 * 应用实例
      *
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
@@ -43,7 +43,7 @@ class QueueManager implements FactoryContract, MonitorContract
      * Create a new queue manager instance.
 	 * 创建一个新的队列管理器实例
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
      */
     public function __construct($app)
@@ -127,7 +127,7 @@ class QueueManager implements FactoryContract, MonitorContract
      * Determine if the driver is connected.
 	 * 确定驱动程序是否已连接
      *
-     * @param  string  $name
+     * @param  string|null  $name
      * @return bool
      */
     public function connected($name = null)
@@ -139,7 +139,7 @@ class QueueManager implements FactoryContract, MonitorContract
      * Resolve a queue connection instance.
 	 * 解析队列连接实例
      *
-     * @param  string  $name
+     * @param  string|null  $name
      * @return \Illuminate\Contracts\Queue\Queue
      */
     public function connection($name = null)
@@ -149,8 +149,8 @@ class QueueManager implements FactoryContract, MonitorContract
         // If the connection has not been resolved yet we will resolve it now as all
         // of the connections are resolved when they are actually needed so we do
         // not make any unnecessary connection to the various queue end-points.
-		// 如果连接还没有得到解决,但是我们现在将解决它,因为所有的连接都在实际需要的时候解决,
-		// 因此我们不会对各种队列端点没有任何不必要的连接。
+		// 如果连接尚未解决，那么我们现在就来解决它。因为所有连接在实际需要时都会被解决，
+		// 所以我们不会与各个队列端点建立任何不必要的连接。
         if (! isset($this->connections[$name])) {
             $this->connections[$name] = $this->resolve($name);
 
@@ -263,7 +263,7 @@ class QueueManager implements FactoryContract, MonitorContract
      * Get the full name for the given connection.
 	 * 获取给定连接的全名
      *
-     * @param  string  $connection
+     * @param  string|null  $connection
      * @return string
      */
     public function getName($connection = null)

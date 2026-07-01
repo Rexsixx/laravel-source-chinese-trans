@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，全局状态，代码出口商测试
+ * SebastianBergmann，GlobalState，代码出口商测试
  */
 
 /*

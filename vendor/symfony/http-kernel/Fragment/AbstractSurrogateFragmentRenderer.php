@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，片段，代理片段渲染器
+ * Symfony，组件，Http内核，碎片，抽象的代理片段渲染器
  */
 
 /*
@@ -35,7 +35,6 @@ abstract class AbstractSurrogateFragmentRenderer extends RoutableFragmentRendere
     /**
      * The "fallback" strategy when surrogate is not available should always be an
      * instance of InlineFragmentRenderer.
-	 * 当没有可用的替代方案时，“回退”策略应始终是 InlineFragmentRenderer 的实例。
      *
      * @param FragmentRendererInterface $inlineStrategy The inline strategy to use when the surrogate is not supported
      */
@@ -51,7 +50,6 @@ abstract class AbstractSurrogateFragmentRenderer extends RoutableFragmentRendere
      *
      * Note that if the current Request has no surrogate capability, this method
      * falls back to use the inline rendering strategy.
-	 * 请注意，如果当前请求没有替代能力，则此方法将回退到使用内联渲染策略。
      *
      * Additional available options:
      *

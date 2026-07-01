@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，调用Matcher测试
+ * Hamcrest，样本调用Matcher
  */
 
 namespace Hamcrest;

@@ -125,7 +125,7 @@ class Filesystem
      * @param  string  $path
      * @param  string  $contents
      * @param  bool  $lock
-     * @return int
+     * @return int|bool
      */
     public function put($path, $contents, $lock = false)
     {
@@ -143,7 +143,7 @@ class Filesystem
     public function replace($path, $content)
     {
         // If the path already exists and is a symlink, get the real path...
-		// 如果路径已经存在并且是一个符号链接，则获取真实路径…
+		// 如果路径已经存在并且是符号链接，则获取实际路径。
         clearstatcache(true, $path);
 
         $path = realpath($path) ?: $path;
@@ -193,7 +193,7 @@ class Filesystem
 	 * 获取或设置文件或目录的UNIX模式
      *
      * @param  string  $path
-     * @param  int  $mode
+     * @param  int|null  $mode
      * @return mixed
      */
     public function chmod($path, $mode = null)
@@ -273,7 +273,7 @@ class Filesystem
 
         $mode = $this->isDirectory($target) ? 'J' : 'H';
 
-        exec("mklink /{$mode} \"{$link}\" \"{$target}\"");
+        exec("mklink /{$mode} ".escapeshellarg($link).' '.escapeshellarg($target));
     }
 
     /**
@@ -374,7 +374,7 @@ class Filesystem
 
     /**
      * Determine if the given path is a directory.
-	 * 确定给定的路径是否是一个目录。
+	 * 确定给定的路径是否是一个目录
      *
      * @param  string  $directory
      * @return bool
@@ -485,7 +485,7 @@ class Filesystem
 
     /**
      * Create a directory.
-	 * 创建一个目录
+	 * 创建目录
      *
      * @param  string  $path
      * @param  int     $mode
@@ -526,7 +526,7 @@ class Filesystem
      *
      * @param  string  $directory
      * @param  string  $destination
-     * @param  int     $options
+     * @param  int|null  $options
      * @return bool
      */
     public function copyDirectory($directory, $destination, $options = null)
@@ -540,8 +540,8 @@ class Filesystem
         // If the destination directory does not actually exist, we will go ahead and
         // create it recursively, which just gets the destination prepared to copy
         // the files over. Once we make the directory we'll proceed the copying.
-		// 如果目标目录实际上不存在,我们将继续进行递归地创建它,这就得到了准备复制文件的目的地。
-		// 一旦我们制作了目录,我们就会进行复制。
+		// 如果目标目录实际上并不存在，我们将继续递归地创建它，这样就能提前准备好目标目录以便将文件复制过去。
+		// 一旦创建好目录，我们就会开始进行文件的复制操作。
         if (! $this->isDirectory($destination)) {
             $this->makeDirectory($destination, 0777, true);
         }
@@ -552,8 +552,8 @@ class Filesystem
             // As we spin through items, we will check to see if the current file is actually
             // a directory or a file. When it is actually a directory we will need to call
             // back into this function recursively to keep copying these nested folders.
-			// 当我们在项目中旋转时,我们将检查当前文件是否实际上是一个目录或文件。
-			// 当它实际上是一个目录时,我们需要返回到这个函数递归地继续复制这些嵌套文件夹。
+			// 在逐个处理这些项目的过程中，我们会检查当前文件是否实际上是目录还是文件。
+			// 如果它实际上是目录，我们就需要递归地调用此函数，以便继续复制这些嵌套的文件夹。
             $target = $destination.'/'.$item->getBasename();
 
             if ($item->isDir()) {
@@ -567,8 +567,8 @@ class Filesystem
             // If the current items is just a regular file, we will just copy this to the new
             // location and keep looping. If for some reason the copy fails we'll bail out
             // and return false, so the developer is aware that the copy process failed.
-			// 如果当前项目只是一个常规文件,我们将把它复制到新的位置并保持循环。
-			// 如果由于某些原因,副本失败了,我们将重新启动并返回false,因此开发人员意识到复制过程失败了。
+			// 如果当前项只是一个普通文件，我们将直接将其复制到新位置，并继续循环操作。
+			// 如果由于某种原因复制失败，我们将终止程序并返回“false”，以便开发人员能够知晓复制过程失败的情况。
             else {
                 if (! $this->copy($item->getPathname(), $target)) {
                     return false;
@@ -584,6 +584,7 @@ class Filesystem
 	 * 递归删除目录。
      *
      * The directory itself may be optionally preserved.
+	 * 可以选择保留目录本身。
      *
      * @param  string  $directory
      * @param  bool    $preserve
@@ -601,8 +602,8 @@ class Filesystem
             // If the item is a directory, we can just recurse into the function and
             // delete that sub-directory otherwise we'll just delete the file and
             // keep iterating through each file until the directory is cleaned.
-			// 如果该项目是一个目录,我们可以将其递归到函数中,并删除该子目录,
-			// 否则我们将删除该文件,并继续遍历每个文件,直到清除目录。
+			// 如果该项是一个目录，我们就可以直接递归调用该函数并删除该子目录；
+			// 否则，我们只需删除该文件，并继续遍历每个文件，直到该目录被清理完毕。
             if ($item->isDir() && ! $item->isLink()) {
                 $this->deleteDirectory($item->getPathname());
             }
@@ -610,8 +611,8 @@ class Filesystem
             // If the item is just a file, we can go ahead and delete it since we're
             // just looping through and waxing all of the files in this directory
             // and calling directories recursively, so we delete the real path.
-			// 如果这个项目只是一个文件,我们可以继续删除它,
-			// 因为我们只是在这个目录中循环通过并waxing所有的文件,然后递归地调用目录,因此我们删除了真正的路径。
+			// 如果该项目只是一个文件，我们可以直接将其删除，因为我们只是在遍历并处理此目录中的所有文件，
+			// 并且会递归地处理子目录，所以我们会删除其完整路径。
             else {
                 $this->delete($item->getPathname());
             }

@@ -20,7 +20,7 @@ use Monolog\Handler\AbstractHandler;
 
 /**
  * Monolog error handler
- * Monolog错误处理程序
+ * Monolog 错误处理程序
  *
  * A facility to enable logging of runtime errors, exceptions and fatal errors.
  *

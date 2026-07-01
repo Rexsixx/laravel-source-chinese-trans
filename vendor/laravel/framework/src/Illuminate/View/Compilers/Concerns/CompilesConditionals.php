@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译器，问题，编译条件
+ * Illuminate，视图，编译，问题，编译条件
  */
 
 namespace Illuminate\View\Compilers\Concerns;
@@ -242,7 +242,7 @@ trait CompilesConditionals
 
     /**
      * Compile the end switch statements into valid PHP.
-	 * 将结束开关语句编译成有效的PHP
+	 * 将结束开关语句编译成有效的PH
      *
      * @return string
      */

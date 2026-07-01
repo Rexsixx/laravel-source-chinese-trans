@@ -16,7 +16,6 @@ namespace Symfony\Component\HttpKernel\Event;
 
 /**
  * Allows filtering of a controller callable.
- * 允许筛选可调用的控制器。
  *
  * You can call getController() to retrieve the current controller. With
  * setController() you can set a new controller that is used in the processing

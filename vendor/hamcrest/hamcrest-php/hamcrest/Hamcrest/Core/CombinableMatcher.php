@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，核心，可组合匹配器
- */
-
 namespace Hamcrest\Core;
 
 /*

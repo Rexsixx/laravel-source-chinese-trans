@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，闭包包装
+ * Mockery，闭包包装器
  */
 
 /**

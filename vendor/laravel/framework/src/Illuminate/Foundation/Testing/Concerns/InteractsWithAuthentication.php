@@ -24,7 +24,7 @@ trait InteractsWithAuthentication
 
     /**
      * Set the currently logged in user for the application.
-	 * 为应用程序设置当前登录的用户
+	 * 禁用模拟控制台输出
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string|null  $driver

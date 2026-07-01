@@ -9,7 +9,6 @@ use DateTimeInterface;
 
 /**
  * Month field.  Allows: * , / -
- * 月字段
  */
 class MonthField extends AbstractField
 {

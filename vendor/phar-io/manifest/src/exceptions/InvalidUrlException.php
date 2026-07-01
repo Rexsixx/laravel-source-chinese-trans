@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Manifest，无效 Url异常
+ * PharIo，Manifest，无效Url异常
  */
 
 /*

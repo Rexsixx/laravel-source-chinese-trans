@@ -13,7 +13,7 @@ class StatusCommand extends BaseCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名。
      *
      * @var string
      */
@@ -29,7 +29,7 @@ class StatusCommand extends BaseCommand
 
     /**
      * The migrator instance.
-	 * 迁移器实例
+	 * 迁移实例
      *
      * @var \Illuminate\Database\Migrations\Migrator
      */
@@ -116,7 +116,7 @@ class StatusCommand extends BaseCommand
         return [
             ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use'],
 
-            ['path', null, InputOption::VALUE_OPTIONAL, 'The path to the migrations files to use'],
+            ['path', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'The path(s) to the migrations files to use'],
 
             ['realpath', null, InputOption::VALUE_NONE, 'Indicate any provided migration file paths are pre-resolved absolute paths'],
         ];

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译器，问题，编译 Echos
+ * Illuminate，视图，编译，问题，编译 Echos
  */
 
 namespace Illuminate\View\Compilers\Concerns;
@@ -9,7 +9,7 @@ trait CompilesEchos
 {
     /**
      * Compile Blade echos into valid PHP.
-	 * 将Blade回显编译成有效的PH
+	 * 将Blade回显编译成有效的PHP
      *
      * @param  string  $value
      * @return string
@@ -60,7 +60,7 @@ trait CompilesEchos
 
     /**
      * Compile the "regular" echo statements.
-	 * 编译“正则”echo语句
+	 * 编译“常规”echo语句
      *
      * @param  string  $value
      * @return string

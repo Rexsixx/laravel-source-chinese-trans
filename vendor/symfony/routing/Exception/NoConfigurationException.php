@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，异常，无配置异常
+ * Symfony，组件，路由选择，异常，无配置异常
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\Routing\Exception;
 
 /**
  * Exception thrown when no routes are configured.
- * 当没有配置路由时抛出异常。
+ * 在没有配置路径时抛出异常。
  *
  * @author Yonel Ceruto <yonelceruto@gmail.com>
  */

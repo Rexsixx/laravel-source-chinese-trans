@@ -1,6 +1,6 @@
 <?php
 /**
- * phpDocumentor，反射，Pseudo 类型
+ * phpDocumentor，反射，伪类型
  */
 
 declare(strict_types=1);

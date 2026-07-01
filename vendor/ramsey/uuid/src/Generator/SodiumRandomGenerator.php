@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，生成器，Sodium 随机发生器
+ * Ramsey，Uuid，转化器，Sodium 随机发生器
  */
 
 /**
@@ -21,7 +21,6 @@ namespace Ramsey\Uuid\Generator;
 /**
  * SodiumRandomGenerator provides functionality to generate strings of random
  * binary data using the PECL libsodium extension
- * sodiumrandom生成器提供了使用PECL lib钠扩展生成随机二进制数据字符串的功能。
  *
  * @deprecated As of PHP 7.2.0, the libsodium extension is bundled with PHP, and
  *     the random_bytes() PHP function is now the recommended method for

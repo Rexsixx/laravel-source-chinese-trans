@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，错误处理程序，抛出
+ * PhpParser，错误处理程序，Throwing
  */
 
 namespace PhpParser\ErrorHandler;

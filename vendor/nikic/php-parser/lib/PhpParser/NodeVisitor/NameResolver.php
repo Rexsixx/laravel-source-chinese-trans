@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，节点访问者，名称解析器
- */
-
 namespace PhpParser\NodeVisitor;
 
 use PhpParser\ErrorHandler;

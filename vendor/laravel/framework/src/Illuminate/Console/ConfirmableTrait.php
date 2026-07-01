@@ -14,7 +14,7 @@ trait ConfirmableTrait
 	 * 在继续操作之前进行确认。
      *
      * This method only asks for confirmation in production.
-	 * 此方法仅在生产中要求确认。
+	 * 这种方法只要求在生产中确认。
      *
      * @param  string  $warning
      * @param  \Closure|bool|null  $callback
@@ -27,7 +27,7 @@ trait ConfirmableTrait
         $shouldConfirm = $callback instanceof Closure ? call_user_func($callback) : $callback;
 
         if ($shouldConfirm) {
-            if ($this->option('force')) {
+            if ($this->hasOption('force') && $this->option('force')) {
                 return true;
             }
 

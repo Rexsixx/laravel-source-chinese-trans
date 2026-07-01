@@ -17,8 +17,6 @@ namespace Symfony\Component\Console\Output;
 /**
  * ConsoleOutputInterface is the interface implemented by ConsoleOutput class.
  * This adds information about stderr and section output stream.
- * ConsoleOutputInterface是crueoutput类实现的接口。
- * 这增加了关于stderr和section输出流的信息。
  *
  * @author Dariusz Górecki <darek.krk@gmail.com>
  *
@@ -28,7 +26,6 @@ interface ConsoleOutputInterface extends OutputInterface
 {
     /**
      * Gets the OutputInterface for errors.
-	 * 获取错误的OutputInterface
      *
      * @return OutputInterface
      */

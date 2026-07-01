@@ -1,13 +1,10 @@
 <?php
-/**
- * Egulias，电子邮件验证器，警告，IPV6 坏字符
- */
 
 namespace Egulias\EmailValidator\Warning;
 
 class IPV6BadChar extends Warning
 {
-    public const CODE = 74;
+    const CODE = 74;
 
     public function __construct()
     {

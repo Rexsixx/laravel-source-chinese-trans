@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，数据采集装置，数据采集器
+ * Symfony，组件，Http内核，数据收集器，数据收集器
  */
 
 /*
@@ -23,7 +23,6 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 
 /**
  * DataCollector.
- * 数据采集器
  *
  * Children of this class must store the collected data in the data property.
  *

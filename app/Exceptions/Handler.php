@@ -1,6 +1,6 @@
 <?php
 /**
- * App，异常，处理程序
+ * App，异常，处理者
  */
 
 namespace App\Exceptions;
@@ -12,7 +12,7 @@ class Handler extends ExceptionHandler
 {
     /**
      * A list of the exception types that are not reported.
-	 * 未报告的异常类型列表
+	 * 没有报告的异常类型列表
      *
      * @var array
      */

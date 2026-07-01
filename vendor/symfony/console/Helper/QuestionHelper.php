@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，控制台，助手，问题助手
- */
 
 /*
  * This file is part of the Symfony package.
@@ -29,7 +26,6 @@ use Symfony\Component\Console\Terminal;
 
 /**
  * The QuestionHelper class provides helpers to interact with the user.
- * 问题助手类提供了与用户交互的助手。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -42,7 +38,6 @@ class QuestionHelper extends Helper
 
     /**
      * Asks a question to the user.
-	 * 向用户提出一个问题
      *
      * @return mixed The user answer
      *

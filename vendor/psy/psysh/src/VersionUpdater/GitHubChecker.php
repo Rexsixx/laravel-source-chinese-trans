@@ -1,6 +1,6 @@
 <?php
 /**
- * Psy，版本更新，GitHub 检验员
+ * Psy，版本更新器，GitHub 检验员
  */
 
 /*
@@ -66,7 +66,6 @@ class GitHubChecker implements Checker
 
     /**
      * Set to public to make testing easier.
-	 * 设置为公众,使测试更容易。
      *
      * @return mixed
      */

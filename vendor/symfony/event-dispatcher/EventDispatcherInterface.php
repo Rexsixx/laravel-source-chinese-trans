@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，事件调度器，事件调度器接口
+ * Symfony，组件，事件调度程序，事件调度程序接口
  */
 
 /*
@@ -27,7 +27,6 @@ interface EventDispatcherInterface extends ContractsEventDispatcherInterface
 {
     /**
      * Adds an event listener that listens on the specified events.
-	 * 添加侦听指定事件的事件侦听器
      *
      * @param string   $eventName The event to listen on
      * @param callable $listener  The listener
@@ -38,7 +37,6 @@ interface EventDispatcherInterface extends ContractsEventDispatcherInterface
 
     /**
      * Adds an event subscriber.
-	 * 添加事件订阅者。
      *
      * The subscriber is asked for all the events it is
      * interested in and added as a listener for these events.

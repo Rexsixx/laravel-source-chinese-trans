@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，哈希，Argon 哈希
+ * Illuminate，哈希算法，Argon 哈希
  */
 
 namespace Illuminate\Hashing;
@@ -12,7 +12,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 {
     /**
      * The default memory cost factor.
-	 * 默认成本因子
+	 * 默认内存成本因子
      *
      * @var int
      */

@@ -19,7 +19,6 @@ class Config
 
     /**
      * Constructor.
-	 * 构造函数
      *
      * @param array $settings
      */
@@ -30,7 +29,6 @@ class Config
 
     /**
      * Get a setting.
-	 * 设置一个设置
      *
      * @param string $key
      * @param mixed  $default
@@ -48,7 +46,6 @@ class Config
 
     /**
      * Check if an item exists by key.
-	 * 检查一个项目是否有关键
      *
      * @param string $key
      *

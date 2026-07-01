@@ -1,6 +1,6 @@
 <?php
 /**
- * phpDocumentor，反射，类型，聚集类型
+ * phpDocumentor，反射，类型，聚合类型
  */
 
 /**

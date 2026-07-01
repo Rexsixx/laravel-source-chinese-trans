@@ -87,7 +87,7 @@ class SparkPostTransport extends Transport
 	 * 获取此消息应发送到的所有地址。
      *
      * Note that SparkPost still respects CC, BCC headers in raw message itself.
-	 * 注意,SparkPost仍然尊重原始消息本身的CC、BCC头。
+	 * 请注意，SparkPost仍然尊重原始消息本身的抄送，密件抄送头。
      *
      * @param  \Swift_Mime_SimpleMessage $message
      * @return array

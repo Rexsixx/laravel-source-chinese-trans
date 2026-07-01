@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，行列，队列服务提供程序
+ * Illuminate，队列，队列服务提供程序
  */
 
 namespace Illuminate\Queue;
@@ -15,19 +15,12 @@ use Illuminate\Queue\Connectors\RedisConnector;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Queue\Connectors\DatabaseConnector;
 use Illuminate\Queue\Failed\NullFailedJobProvider;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Queue\Connectors\BeanstalkdConnector;
 use Illuminate\Queue\Failed\DatabaseFailedJobProvider;
 
-class QueueServiceProvider extends ServiceProvider
+class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * Indicates if loading of the provider is deferred.
-	 * 指示是否延迟加载提供程序
-     *
-     * @var bool
-     */
-    protected $defer = true;
-
     /**
      * Register the service provider.
 	 * 注册服务提供者
@@ -56,6 +49,8 @@ class QueueServiceProvider extends ServiceProvider
             // Once we have an instance of the queue manager, we will register the various
             // resolvers for the queue connectors. These connectors are responsible for
             // creating the classes that accept queue configs and instantiate queues.
+			// 一旦我们获得了队列管理器的实例，我们就会为队列连接器注册各种解析器。
+			// 这些连接器负责创建那些能够接收队列配置并实例化队列的类。
             return tap(new QueueManager($app), function ($manager) {
                 $this->registerConnectors($manager);
             });

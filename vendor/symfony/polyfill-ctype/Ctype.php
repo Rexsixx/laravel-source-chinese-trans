@@ -26,7 +26,7 @@ final class Ctype
 {
     /**
      * Returns TRUE if every character in text is either a letter or a digit, FALSE otherwise.
-	 * 如果文本中的每个字符都是字母或数字则返回TRUE，否则返回FALSE。
+	 * 如果文本中的每个字符都是字母或数字,则返回TRUE。
      *
      * @see https://php.net/ctype-alnum
      *
@@ -43,7 +43,7 @@ final class Ctype
 
     /**
      * Returns TRUE if every character in text is a letter, FALSE otherwise.
-	 * 如果文本中的每个字符都是字母则返回TRUE，否则返回FALSE。
+	 * 如果文本中的每个字符都是字母,则返回TRUE。
      *
      * @see https://php.net/ctype-alpha
      *
@@ -60,7 +60,6 @@ final class Ctype
 
     /**
      * Returns TRUE if every character in text is a control character from the current locale, FALSE otherwise.
-	 * 如果文本中的每个字符都是来自当前语言环境的控制字符，则返回TRUE，否则返回FALSE。
      *
      * @see https://php.net/ctype-cntrl
      *
@@ -77,7 +76,6 @@ final class Ctype
 
     /**
      * Returns TRUE if every character in the string text is a decimal digit, FALSE otherwise.
-	 * 如果字符串文本中的每个字符都是十进制数字则返回TRUE，否则返回FALSE。
      *
      * @see https://php.net/ctype-digit
      *
@@ -94,7 +92,6 @@ final class Ctype
 
     /**
      * Returns TRUE if every character in text is printable and actually creates visible output (no white space), FALSE otherwise.
-	 * 如果文本中的每个字符都是可打印的并且实际上创建了可见的输出（没有空白），则返回TRUE，否则返回FALSE。
      *
      * @see https://php.net/ctype-graph
      *
@@ -111,7 +108,6 @@ final class Ctype
 
     /**
      * Returns TRUE if every character in text is a lowercase letter.
-	 * 如果文本中的每个字符都是小写字母,返回TRUE
      *
      * @see https://php.net/ctype-lower
      *
@@ -128,7 +124,6 @@ final class Ctype
 
     /**
      * Returns TRUE if every character in text will actually create output (including blanks). Returns FALSE if text contains control characters or characters that do not have any output or control function at all.
-	 * 如果文本中的每个字符都将实际创建输出（包括空白），则返回TRUE。如果文本包含控制字符或没有任何输出或控制功能的字符，则返回FALSE。
      *
      * @see https://php.net/ctype-print
      *

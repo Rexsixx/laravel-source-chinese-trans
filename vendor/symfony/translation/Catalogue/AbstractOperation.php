@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，数据采集器，抽象操作
+ * Symfony，组件，翻译，目录，抽象操作
  */
 
 /*
@@ -21,7 +21,7 @@ use Symfony\Component\Translation\MessageCatalogueInterface;
 
 /**
  * Base catalogues binary operation class.
- * 基目录二进制操作类。
+ * 基本目录二进制操作类。
  *
  * A catalogue binary operation performs operation on
  * source (the left argument) and target (the right argument) catalogues.
@@ -41,7 +41,6 @@ abstract class AbstractOperation implements OperationInterface
 
     /**
      * This array stores 'all', 'new' and 'obsolete' messages for all valid domains.
-	 * 此数组存储所有有效域的“all”、“new”和“obsolete”消息。
      *
      * The data structure of this array is as follows:
      *

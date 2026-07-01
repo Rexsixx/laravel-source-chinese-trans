@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，助手，表格样式
+ * Symfony，组件，控制台，助手，表样式
  */
 
 /*
@@ -19,7 +19,6 @@ use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * Defines the styles for a Table.
- * 为表定义样式。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Саша Стаменковић <umpirsky@gmail.com>
@@ -54,7 +53,6 @@ class TableStyle
 
     /**
      * Sets padding character, used for cell padding.
-	 * 设置填充字符,用于单元格填充。
      *
      * @param string $paddingChar
      *

@@ -12,7 +12,7 @@ interface Lock
 	 * 尝试获取锁
      *
      * @param  callable|null  $callback
-     * @return bool
+     * @return mixed
      */
     public function get($callback = null);
 
@@ -33,4 +33,20 @@ interface Lock
      * @return void
      */
     public function release();
+
+    /**
+     * Returns the current owner of the lock.
+	 * 返回锁的当前所有者
+     *
+     * @return string
+     */
+    public function owner();
+
+    /**
+     * Releases this lock in disregard of ownership.
+	 * 释放此锁，而不考虑所有权。
+     *
+     * @return void
+     */
+    public function forceRelease();
 }

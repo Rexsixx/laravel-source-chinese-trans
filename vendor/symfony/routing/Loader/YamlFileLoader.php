@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，加载器，Yaml 文件加载器
+ * Symfony，组件，路由选择，加载程序，Yaml 文件加载器
  */
 
 /*
@@ -106,7 +106,6 @@ class YamlFileLoader extends FileLoader
 
     /**
      * Parses a route and adds it to the RouteCollection.
-	 * 解析路由并将其添加到RouteCollection中
      *
      * @param string $name   Route name
      * @param array  $config Route definition

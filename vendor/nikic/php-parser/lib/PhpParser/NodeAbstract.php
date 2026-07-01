@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，节点抽象
+ * PhpParser，节点摘要
  */
 
 namespace PhpParser;

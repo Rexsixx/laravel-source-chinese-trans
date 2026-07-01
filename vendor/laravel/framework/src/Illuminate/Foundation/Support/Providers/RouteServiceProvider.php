@@ -35,7 +35,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->setRootControllerNamespace();
 
-        if ($this->app->routesAreCached()) {
+        if ($this->routesAreCached()) {
             $this->loadCachedRoutes();
         } else {
             $this->loadRoutes();
@@ -58,6 +58,17 @@ class RouteServiceProvider extends ServiceProvider
         if (! is_null($this->namespace)) {
             $this->app[UrlGenerator::class]->setRootControllerNamespace($this->namespace);
         }
+    }
+
+    /**
+     * Determine if the application routes are cached.
+	 * 确定是否缓存了应用程序路由
+     *
+     * @return bool
+     */
+    protected function routesAreCached()
+    {
+        return $this->app->routesAreCached();
     }
 
     /**
@@ -84,17 +95,6 @@ class RouteServiceProvider extends ServiceProvider
         if (method_exists($this, 'map')) {
             $this->app->call([$this, 'map']);
         }
-    }
-
-    /**
-     * Register the service provider.
-	 * 注册服务提供者
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
     }
 
     /**

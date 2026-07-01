@@ -77,7 +77,7 @@ class Kernel implements KernelContract
 	 * 中间件的优先级排序列表。
      *
      * Forces non-global middleware to always be in the given order.
-	 * 迫使非全局中间件始终处于给定的顺序。
+	 * 强制非全局中间件始终按照给定的顺序排列。
      *
      * @var array
      */
@@ -361,6 +361,17 @@ class Kernel implements KernelContract
     public function getMiddlewareGroups()
     {
         return $this->middlewareGroups;
+    }
+
+    /**
+     * Get the application's route middleware.
+	 * 获取应用程序的路由中间件
+     *
+     * @return array
+     */
+    public function getRouteMiddleware()
+    {
+        return $this->routeMiddleware;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，文件迭代器，Facade
+ * SebastianBergmann，文件迭代器，门面
  */
 
 /*

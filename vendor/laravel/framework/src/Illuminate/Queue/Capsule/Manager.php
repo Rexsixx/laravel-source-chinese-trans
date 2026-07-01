@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，Capsule，管理程序
+ * Illuminate，队列，压缩，管理程序
  */
 
 namespace Illuminate\Queue\Capsule;
@@ -28,9 +28,9 @@ class Manager
 
     /**
      * Create a new queue capsule manager.
-	 * 创建一个新的队列capsule管理器
+	 * 创建一个新的队列胶囊管理器
      *
-     * @param  \Illuminate\Container\Container  $container
+     * @param  \Illuminate\Container\Container|null  $container
      * @return void
      */
     public function __construct(Container $container = null)
@@ -40,8 +40,8 @@ class Manager
         // Once we have the container setup, we will setup the default configuration
         // options in the container "config" bindings. This just makes this queue
         // manager behave correctly since all the correct binding are in place.
-		// 一旦我们有了容器设置,我们将在容器“配置”绑定中设置默认配置选项。
-		// 这只是使队列管理器的行为正确,因为所有正确的绑定都就位了。
+		// 一旦完成了容器的设置，我们将在容器的“配置”绑定中设置默认的配置选项。
+		// 这样做是为了确保队列管理器能够正常运行，因为所有的正确绑定都已经准备就绪了。
         $this->setupDefaultConfiguration();
 
         $this->setupManager();
@@ -88,7 +88,7 @@ class Manager
      * Get a connection instance from the global manager.
 	 * 从全局管理器获取连接实例
      *
-     * @param  string  $connection
+     * @param  string|null  $connection
      * @return \Illuminate\Contracts\Queue\Queue
      */
     public static function connection($connection = null)
@@ -102,8 +102,8 @@ class Manager
      *
      * @param  string  $job
      * @param  mixed   $data
-     * @param  string  $queue
-     * @param  string  $connection
+     * @param  string|null  $queue
+     * @param  string|null  $connection
      * @return mixed
      */
     public static function push($job, $data = '', $queue = null, $connection = null)
@@ -117,8 +117,8 @@ class Manager
      *
      * @param  array   $jobs
      * @param  mixed   $data
-     * @param  string  $queue
-     * @param  string  $connection
+     * @param  string|null  $queue
+     * @param  string|null  $connection
      * @return mixed
      */
     public static function bulk($jobs, $data = '', $queue = null, $connection = null)
@@ -133,8 +133,8 @@ class Manager
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job
      * @param  mixed   $data
-     * @param  string  $queue
-     * @param  string  $connection
+     * @param  string|null  $queue
+     * @param  string|null  $connection
      * @return mixed
      */
     public static function later($delay, $job, $data = '', $queue = null, $connection = null)
@@ -146,7 +146,7 @@ class Manager
      * Get a registered connection instance.
 	 * 获取已注册的连接实例
      *
-     * @param  string  $name
+     * @param  string|null  $name
      * @return \Illuminate\Contracts\Queue\Queue
      */
     public function getConnection($name = null)

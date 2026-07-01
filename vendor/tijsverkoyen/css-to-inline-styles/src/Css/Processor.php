@@ -1,6 +1,6 @@
 <?php
 /**
- * TijsVerkoyen，Css到内联样式，Css，处理器
+ * TijsVerkoyen，Css 到内联样式，Css，处理器
  */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css;
@@ -12,7 +12,7 @@ class Processor
 {
     /**
      * Get the rules from a given CSS-string
-	 * 从给定的css字符串中获取规则
+	 * 从给定的css字符串获取规则
      *
      * @param string $css
      * @param Rule[] $existingRules
@@ -60,10 +60,8 @@ class Processor
     private function doCleanup($css)
     {
         // remove charset
-		// 删除字符集
         $css = preg_replace('/@charset "[^"]++";/', '', $css);
         // remove media queries
-		// 删除媒体查询
         $css = preg_replace('/@media [^{]*+{([^{}]++|{[^{}]*+})*+}/', '', $css);
 
         $css = str_replace(array("\r", "\n"), '', $css);

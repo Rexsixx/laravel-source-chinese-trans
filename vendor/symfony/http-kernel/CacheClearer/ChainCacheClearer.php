@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，缓存清理器，链缓存清理器
+ * Symfony，组件，Http内核，缓存清洁器，链式高速缓存器
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\HttpKernel\CacheClearer;
 
 /**
  * ChainCacheClearer.
- * 链缓存清理器
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  *

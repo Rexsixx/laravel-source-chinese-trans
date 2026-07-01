@@ -66,6 +66,17 @@ class SesTransport extends Transport
     }
 
     /**
+     * Get the Amazon SES client for the SesTransport instance.
+	 * 获取SesTransport实例的Amazon SES客户端
+     *
+     * @return \Aws\Ses\SesClient
+     */
+    public function ses()
+    {
+        return $this->ses;
+    }
+
+    /**
      * Get the transmission options being used by the transport.
 	 * 获取传输所使用的传输选项
      *

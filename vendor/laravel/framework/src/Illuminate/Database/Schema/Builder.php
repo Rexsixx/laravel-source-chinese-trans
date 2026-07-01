@@ -1,12 +1,14 @@
 <?php
 /**
- * Illuminate，数据库，模式，构建器
+ * Illuminate，数据库，架构，构建器
  */
 
 namespace Illuminate\Database\Schema;
 
 use Closure;
 use LogicException;
+use RuntimeException;
+use Doctrine\DBAL\Types\Type;
 use Illuminate\Database\Connection;
 
 class Builder
@@ -236,6 +238,19 @@ class Builder
     }
 
     /**
+     * Drop all types from the database.
+	 * 从数据库中删除所有类型
+     *
+     * @return void
+     *
+     * @throws \LogicException
+     */
+    public function dropAllTypes()
+    {
+        throw new LogicException('This database driver does not support dropping all types.');
+    }
+
+    /**
      * Rename a table on the schema.
 	 * 重命名模式上的表
      *
@@ -307,6 +322,35 @@ class Builder
         }
 
         return new Blueprint($table, $callback, $prefix);
+    }
+
+    /**
+     * Register a custom Doctrine mapping type.
+	 * 注册一个自定义Doctrine映射类型
+     *
+     * @param  string  $class
+     * @param  string  $name
+     * @param  string  $type
+     * @return void
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function registerCustomDoctrineType($class, $name, $type)
+    {
+        if (! $this->connection->isDoctrineAvailable()) {
+            throw new RuntimeException(
+                'Registering a custom Doctrine type requires Doctrine DBAL (doctrine/dbal).'
+            );
+        }
+
+        if (! Type::hasType($name)) {
+            Type::addType($name, $class);
+
+            $this->connection
+                ->getDoctrineSchemaManager()
+                ->getDatabasePlatform()
+                ->registerDoctrineTypeMapping($type, $name);
+        }
     }
 
     /**

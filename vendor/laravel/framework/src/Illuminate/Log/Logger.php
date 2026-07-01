@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，日志，记录器
+ * Illuminate，日志，日志记录器
  */
 
 namespace Illuminate\Log;
@@ -17,7 +17,7 @@ class Logger implements LoggerInterface
 {
     /**
      * The underlying logger implementation.
-	 * 底层的logger实现
+	 * 底层日志记录器实现
      *
      * @var \Psr\Log\LoggerInterface
      */
@@ -179,7 +179,7 @@ class Logger implements LoggerInterface
 
     /**
      * Write a message to the log.
-	 * 向日志中写入消息
+	 * 将消息写入日志
      *
      * @param  string  $level
      * @param  string  $message
@@ -226,7 +226,7 @@ class Logger implements LoggerInterface
         // log listeners. These are useful for building profilers or other tools
         // that aggregate all of the log messages for a given "request" cycle.
 		// 如果事件调度器已设置好，我们将把参数传递给日志监听器。
-		// 这些用于构建profilers或其他工具,将所有的日志消息聚合到给定的“请求”周期。
+		// 这些对于构建分析工具或类似程序非常有用，这类工具能够汇总特定“请求”周期中的所有日志信息。
         if (isset($this->dispatcher)) {
             $this->dispatcher->dispatch(new MessageLogged($level, $message, $context));
         }

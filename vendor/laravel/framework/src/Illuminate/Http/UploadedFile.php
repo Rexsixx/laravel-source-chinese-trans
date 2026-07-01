@@ -18,7 +18,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Begin creating a new file fake.
-	 * 开始创建一个新的文件
+	 * 开始创建一个新的文件fake
      *
      * @return \Illuminate\Http\Testing\FileFactory
      */
@@ -110,6 +110,17 @@ class UploadedFile extends SymfonyUploadedFile
         }
 
         return file_get_contents($this->getPathname());
+    }
+
+    /**
+     * Get the file's extension supplied by the client.
+	 * 获取客户端提供的文件扩展名
+     *
+     * @return string
+     */
+    public function clientExtension()
+    {
+        return $this->guessClientExtension();
     }
 
     /**

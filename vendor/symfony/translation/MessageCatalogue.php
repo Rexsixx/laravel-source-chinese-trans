@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，消息目录
+ * Symfony，组件，翻译，信息目录
  */
 
 /*
@@ -74,7 +74,6 @@ class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterf
     {
         if (null !== $domain) {
             // skip messages merge if intl-icu requested explicitly
-			// 如果明确请求inti -icu，则跳过消息合并。
             if (str_ends_with($domain, self::INTL_DOMAIN_SUFFIX)) {
                 return $this->messages[$domain] ?? [];
             }
@@ -303,6 +302,7 @@ class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterf
 
     /**
      * Adds current values with the new values.
+	 * 用新值添加当前值
      *
      * @param array $values Values to add
      */

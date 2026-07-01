@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，Json解码器
+ * PhpParser，Json 解码器
  */
 
 namespace PhpParser;

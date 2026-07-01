@@ -29,7 +29,6 @@ use Prophecy\Exception\Prediction\AggregateException;
 
 /**
  * Prophet creates prophecies.
- * 先知创造预言。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -71,7 +70,6 @@ class Prophet
 
     /**
      * Creates new object prophecy.
-	 * 创建新的对象预言
      *
      * @param null|string $classOrInterface Class or interface name
      *
@@ -109,7 +107,6 @@ class Prophet
 
     /**
      * Returns all created object prophecies.
-	 * 返回所有创造的物体预言
      *
      * @return list<ObjectProphecy<object>>
      */
@@ -120,7 +117,6 @@ class Prophet
 
     /**
      * Returns Doubler instance assigned to this Prophet.
-	 * 返回被分配给这个先知的Doubler实例
      *
      * @return Doubler
      */
@@ -131,7 +127,6 @@ class Prophet
 
     /**
      * Checks all predictions defined by prophecies of this Prophet.
-	 * 检查所有预言的预言
      *
      * @return void
      *

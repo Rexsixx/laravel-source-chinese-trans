@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，HTTP客户端，异常，客户端异常接口
+ * Symfony，契约，Http客户端，异常，客户端异常接口
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Contracts\HttpClient\Exception;
 
 /**
  * When a 4xx response is returned.
- * 当返回4xx响应时。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

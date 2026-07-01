@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，HTTP基础，文件，File
+ * Symfony，组件，Http基础，File，File
  */
 
 /*
@@ -28,7 +28,6 @@ class File extends \SplFileInfo
 {
     /**
      * Constructs a new file from the given path.
-	 * 从给定路径构造一个新文件
      *
      * @param string $path      The path to the file
      * @param bool   $checkPath Whether to check the path or not
@@ -46,7 +45,6 @@ class File extends \SplFileInfo
 
     /**
      * Returns the extension based on the mime type.
-	 * 返回基于mime类型的扩展名。
      *
      * If the mime type is unknown, returns null.
      *

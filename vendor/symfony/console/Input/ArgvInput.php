@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，输入，Argv 输入
+ * Symfony，组件，控制台，输入，Argv输入
  */
 
 /*
@@ -18,7 +18,6 @@ use Symfony\Component\Console\Exception\RuntimeException;
 
 /**
  * ArgvInput represents an input coming from the CLI arguments.
- * ArgvInput表示来自CLI参数的输入。
  *
  * Usage:
  *
@@ -91,7 +90,6 @@ class ArgvInput extends Input
 
     /**
      * Parses a short option.
-	 * 替换一个简短的选项
      */
     private function parseShortOption(string $token)
     {

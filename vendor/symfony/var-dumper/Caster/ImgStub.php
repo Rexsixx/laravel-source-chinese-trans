@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，Caster，Img Stub
+ * Symfony，组件，Var Dumper，Caster，Img Caster
  */
 
 /*

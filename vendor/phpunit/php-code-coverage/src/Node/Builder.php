@@ -1,8 +1,4 @@
 <?php
-/**
- * SebastianBergmann，代码覆盖率，节点，构建器
- */
-
 /*
  * This file is part of the php-code-coverage package.
  *

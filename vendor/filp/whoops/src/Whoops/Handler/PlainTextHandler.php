@@ -20,7 +20,7 @@ use Whoops\Exception\Frame;
 * Handler outputing plaintext error messages. Can be used
 * directly, or will be instantiated automagically by Whoops\Run
 * if passed to Run::pushHandler
-* 处理程序输出明文错误消息。
+* 输出明文错误消息的处理程序。
 */
 class PlainTextHandler extends Handler
 {
@@ -100,7 +100,6 @@ class PlainTextHandler extends Handler
 
     /**
      * Set var dumper callback function.
-	 * 设置var dumper回调函数
      *
      * @param  callable $dumper
      * @return static

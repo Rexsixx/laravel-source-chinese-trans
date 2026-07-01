@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，节点访问者，第一次寻找访客
+ * PhpParser，节点访问者，第一次寻找访问者
  */
 
 namespace PhpParser\NodeVisitor;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，翻译机
+ * Symfony，组件，翻译，翻译程序
  */
 
 /*
@@ -117,7 +117,6 @@ class Translator implements LegacyTranslatorInterface, TranslatorInterface, Tran
 
     /**
      * Adds a Loader.
-	 * 添加加载器
      *
      * @param string $format The name of the loader (@see addResource())
      */
@@ -128,7 +127,6 @@ class Translator implements LegacyTranslatorInterface, TranslatorInterface, Tran
 
     /**
      * Adds a Resource.
-	 * 添加资源
      *
      * @param string $format   The name of the loader (@see addLoader())
      * @param mixed  $resource The resource name
@@ -182,7 +180,6 @@ class Translator implements LegacyTranslatorInterface, TranslatorInterface, Tran
 
     /**
      * Sets the fallback locales.
-	 * 设置回退区域设置
      *
      * @throws InvalidArgumentException If a locale contains invalid characters
      */
@@ -203,7 +200,6 @@ class Translator implements LegacyTranslatorInterface, TranslatorInterface, Tran
 
     /**
      * Gets the fallback locales.
-	 * 获取备用区域设置
      *
      * @internal since Symfony 4.2
      *
@@ -304,7 +300,6 @@ class Translator implements LegacyTranslatorInterface, TranslatorInterface, Tran
 
     /**
      * Gets the loaders.
-	 * 获取加载器
      *
      * @return array LoaderInterface[]
      */
@@ -509,7 +504,6 @@ EOF
 
     /**
      * Asserts that the locale is valid, throws an Exception if not.
-	 * 断言语言环境是否有效，如果无效则抛出异常。
      *
      * @param string $locale Locale to tests
      *
@@ -525,7 +519,6 @@ EOF
     /**
      * Provides the ConfigCache factory implementation, falling back to a
      * default implementation if necessary.
-	 * 提供 ConfigCacheCache 工厂实现，必要时将回退到默认实现。
      */
     private function getConfigCacheFactory(): ConfigCacheFactoryInterface
     {

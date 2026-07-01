@@ -9,7 +9,7 @@ interface HasLocalePreference
 {
     /**
      * Get the preferred locale of the entity.
-	 * 设置实体的首选语言环境
+	 * 获取实体的首选语言环境
      *
      * @return string|null
      */

@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，契约，HTTP客户端，异常，Http 异常接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * Base interface for HTTP-related exceptions.
- * http相关异常的基本接口。
  *
  * @author Anton Chernikov <anton_ch1989@mail.ru>
  */

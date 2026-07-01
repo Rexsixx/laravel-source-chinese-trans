@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，密码，SMime
+ * Symfony，组件，Mime，Crypto，SMime
  */
 
 /*
@@ -79,7 +79,6 @@ abstract class SMime
         $currentHeaderName = '';
 
         // Transform header lines into an associative array
-		// 将标题行转换为关联数组
         foreach ($headerLines as $headerLine) {
             // Empty lines between headers indicate a new mime-entity
             if ('' === $headerLine) {

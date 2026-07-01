@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由组
+ * Illuminate，路由选择，路由分组
  */
 
 namespace Illuminate\Routing;

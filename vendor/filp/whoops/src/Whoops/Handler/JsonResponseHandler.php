@@ -16,7 +16,7 @@ use Whoops\Exception\Formatter;
  * Catches an exception and converts it to a JSON
  * response. Additionally can also return exception
  * frames for consumption by an API.
- * 捕获一个异常并将其转换为JSON响应。此外,还可以通过API返回异常帧。
+ * 捕获异常并将其转换为 JSON 响应。
  */
 class JsonResponseHandler extends Handler
 {

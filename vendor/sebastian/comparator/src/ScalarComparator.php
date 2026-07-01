@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，比较器，标量比较器
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -11,11 +15,13 @@ namespace SebastianBergmann\Comparator;
 
 /**
  * Compares scalar or NULL values for equality.
+ * 比较标量或零值。
  */
 class ScalarComparator extends Comparator
 {
     /**
      * Returns whether the comparator can compare two values.
+	 * 返回比较器可以比较两个值
      *
      * @param mixed $expected The first value to compare
      * @param mixed $actual   The second value to compare

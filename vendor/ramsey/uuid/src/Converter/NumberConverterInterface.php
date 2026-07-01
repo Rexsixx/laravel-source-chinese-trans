@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，转换器，数字转换器接口
+ * Ramsey，Uuid，转化器，数字转换器接口
  */
 
 /**
@@ -23,13 +23,11 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 /**
  * NumberConverterInterface converts UUIDs from hexadecimal characters into
  * representations of integers and vice versa
- * 数字接口将UUIDs从十六进制字符转换成整数的表示,反之亦然。
  */
 interface NumberConverterInterface
 {
     /**
      * Converts a hexadecimal number into an integer representation of the number
-	 * 将十六进制数转换成数字的整数表示。
      *
      * The integer representation returned may be an object or a string
      * representation of the integer, depending on the implementation.

@@ -1,7 +1,4 @@
 <?php
-/**
- * Psy，代码清理器，函数返回写入上下文传递
- */
 
 /*
  * This file is part of Psy Shell.
@@ -27,7 +24,6 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * Validate that the functions are used correctly.
- * 验证函数正确使用。
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */

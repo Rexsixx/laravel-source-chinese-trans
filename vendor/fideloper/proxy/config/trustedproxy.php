@@ -1,6 +1,6 @@
 <?php
 /**
- * Fideloper，可信的代理
+ * Fideloper，真实代理
  */
 
 return [
@@ -36,6 +36,7 @@ return [
 
     /*
      * Which headers to use to detect proxy related data (For, Host, Proto, Port)
+	 * 哪些标头用于检测代理相关数据（For, Host, Proto, Port）
      *
      * Options include:
      *

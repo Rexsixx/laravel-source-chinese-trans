@@ -38,6 +38,7 @@ class StringCodec implements CodecInterface
 
     /**
      * Constructs a StringCodec for use encoding and decoding UUIDs
+	 * 构建一个用于使用编码和解码UUIDs的StringCodec
      *
      * @param UuidBuilderInterface $builder The UUID builder to use when encoding UUIDs
      */

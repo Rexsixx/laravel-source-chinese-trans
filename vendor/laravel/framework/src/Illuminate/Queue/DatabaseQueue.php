@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，行列，数据库队列
+ * Illuminate，队列，数据库队列
  */
 
 namespace Illuminate\Queue;
@@ -67,7 +67,7 @@ class DatabaseQueue extends Queue implements QueueContract
      * Get the size of the queue.
 	 * 获取队列的大小
      *
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return int
      */
     public function size($queue = null)
@@ -83,7 +83,7 @@ class DatabaseQueue extends Queue implements QueueContract
      *
      * @param  string  $job
      * @param  mixed   $data
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return mixed
      */
     public function push($job, $data = '', $queue = null)
@@ -98,7 +98,7 @@ class DatabaseQueue extends Queue implements QueueContract
 	 * 将原始有效负载推入队列
      *
      * @param  string  $payload
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @param  array   $options
      * @return mixed
      */
@@ -114,7 +114,7 @@ class DatabaseQueue extends Queue implements QueueContract
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job
      * @param  mixed   $data
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return void
      */
     public function later($delay, $job, $data = '', $queue = null)
@@ -130,7 +130,7 @@ class DatabaseQueue extends Queue implements QueueContract
      *
      * @param  array   $jobs
      * @param  mixed   $data
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return mixed
      */
     public function bulk($jobs, $data = '', $queue = null)
@@ -203,7 +203,7 @@ class DatabaseQueue extends Queue implements QueueContract
      * Pop the next job off of the queue.
 	 * 将下一个作业从队列中弹出
      *
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
      *
      * @throws \Exception|\Throwable

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，事件调度器，事件订购者接口
+ * Symfony，组件，事件调度程序，事件签署者调度程序接口
  */
 
 /*
@@ -19,7 +19,6 @@ namespace Symfony\Component\EventDispatcher;
  * If an EventSubscriber is added to an EventDispatcherInterface, the manager invokes
  * {@link getSubscribedEvents} and registers the subscriber as a listener for all
  * returned events.
- * 一个event订阅者知道它感兴趣的事件。
  *
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -30,10 +29,8 @@ interface EventSubscriberInterface
 {
     /**
      * Returns an array of event names this subscriber wants to listen to.
-	 * 返回此订阅者想要收听的事件名称数组。
      *
      * The array keys are event names and the value can be:
-	 * 数组键是事件名称，其值可以是：
      *
      *  * The method name to call (priority defaults to 0)
      *  * An array composed of the method name to call and the priority

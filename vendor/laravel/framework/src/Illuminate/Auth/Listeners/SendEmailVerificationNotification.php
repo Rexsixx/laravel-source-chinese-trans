@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，监听器，发送邮件验证通知
+ * Illuminate，Auth，监听器，发送电子邮件验证通知
  */
 
 namespace Illuminate\Auth\Listeners;

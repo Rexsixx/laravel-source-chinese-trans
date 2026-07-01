@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，Apache 请求
+ * Symfony，组件，Http基础，Apache请求
  */
 
 /*
@@ -18,7 +18,6 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * Request represents an HTTP request from an Apache server.
- * Request表示来自Apache服务器的HTTP请求。
  *
  * @deprecated since Symfony 4.4. Use the Request class instead.
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，转储，Xliff 文件转储
+ * Symfony，组件，翻译，转储，Xliff File 转储
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * XliffFileDumper generates xliff files from a message catalogue.
- * XliffFileDumper从消息目录生成xliff文件。
+ * XliffFileDumper从消息目录中生成xliff文件。
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */

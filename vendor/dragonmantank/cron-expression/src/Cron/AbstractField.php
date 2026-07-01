@@ -20,28 +20,26 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Literal values we need to convert to integers
-	 * 我们需要转换成整数的文字值
+	 * 我们需要将文字值转换为整数
      * @var array
      */
     protected $literals = [];
 
     /**
      * Start value of the full range
-	 * 开始值的全范围
+	 * 全范围的起始值
      * @var integer
      */
     protected $rangeStart;
 
     /**
      * End value of the full range
-	 * 全范围的端值
      * @var integer
      */
     protected $rangeEnd;
 
     /**
      * Constructor
-	 * 构造函数
      */
     public function __construct()
     {
@@ -50,7 +48,6 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Check to see if a field is satisfied by a value
-	 * 检查一个字段是否满足值
      *
      * @param string $dateValue Date value to check
      * @param string $value     Value to test
@@ -70,7 +67,6 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Check if a value is a range
-	 * 检查值是否为范围
      *
      * @param string $value Value to test
      *
@@ -83,7 +79,6 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Check if a value is an increments of ranges
-	 * 检查值是否为区间的增量
      *
      * @param string $value Value to test
      *
@@ -96,7 +91,6 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Test if a value is within a range
-	 * 如果值在一个范围内测试
      *
      * @param string $dateValue Set date value
      * @param string $value     Value to test
@@ -119,7 +113,6 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Test if a value is within an increments of ranges (offset[-to]/step size)
-	 * 测试如果值在区间的增量中
      *
      * @param string $dateValue Set date value
      * @param string $value     Value to test
@@ -167,7 +160,6 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Returns a range of values for the given cron expression
-	 * 返回给定cron表达式的值范围
      *
      * @param string $expression The expression to evaluate
      * @param int $max           Maximum offset for range

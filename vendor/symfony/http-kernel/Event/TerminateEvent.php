@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，事件，终止事件
+ * Symfony，组件，Http内核，事件，结束事件
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\HttpKernel\Event;
 
 /**
  * Allows to execute logic after a response was sent.
- * 允许在发送响应后执行逻辑。
  *
  * Since it's only triggered on master requests, the `getRequestType()` method
  * will always return the value of `HttpKernelInterface::MASTER_REQUEST`.

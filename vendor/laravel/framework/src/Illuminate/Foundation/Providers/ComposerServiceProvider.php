@@ -7,17 +7,10 @@ namespace Illuminate\Foundation\Providers;
 
 use Illuminate\Support\Composer;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Support\DeferrableProvider;
 
-class ComposerServiceProvider extends ServiceProvider
+class ComposerServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * Indicates if loading of the provider is deferred.
-	 * 指示是否延迟加载提供程序
-     *
-     * @var bool
-     */
-    protected $defer = true;
-
     /**
      * Register the service provider.
 	 * 注册服务提供者

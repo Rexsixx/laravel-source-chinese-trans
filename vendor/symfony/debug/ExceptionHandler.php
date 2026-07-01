@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\Debug\FileLinkFormatter;
 
 /**
  * ExceptionHandler converts an exception to a Response object.
- * ExceptionHandler将异常转换为响应对象。
+ * 异常处理程序将异常转换为响应对象。
  *
  * It is mostly useful in debug mode to replace the default PHP/XDebug
  * output with something prettier and more useful.
@@ -65,7 +65,6 @@ class ExceptionHandler
 
     /**
      * Registers the exception handler.
-	 * 注册异常处理程序
      *
      * @param bool        $debug          Enable/disable debug mode, where the stack trace is displayed
      * @param string|null $charset        The charset used by exception messages
@@ -88,7 +87,6 @@ class ExceptionHandler
 
     /**
      * Sets a user exception handler.
-	 * 设置用户异常处理程序
      *
      * @param callable $handler An handler that will be called on Exception
      *

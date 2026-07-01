@@ -18,7 +18,6 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
  * OutputInterface is the interface implemented by all Output classes.
- * OutputInterface是由所有Output类实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -36,7 +35,6 @@ interface OutputInterface
 
     /**
      * Writes a message to the output.
-	 * 将消息写入输出
      *
      * @param string|iterable $messages The message as an iterable of strings or a single string
      * @param bool            $newline  Whether to add a newline

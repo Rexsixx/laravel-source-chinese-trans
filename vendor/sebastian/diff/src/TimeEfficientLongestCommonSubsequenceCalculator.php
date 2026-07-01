@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，Diff，TimeEfficientLongestCommonSubsequenceCalculator
+ * SebastianBergmann，差速器，TimeEfficientLongestCommonSubsequenceCalculator
  */
 
 /*

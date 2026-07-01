@@ -1,7 +1,4 @@
 <?php
-/**
- * Psy，代码清理器，Legacy 空通过
- */
 
 /*
  * This file is part of Psy Shell.

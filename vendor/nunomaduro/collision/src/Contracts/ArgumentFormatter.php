@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，冲突，契约，参数格式化程序
+ * NunoMaduro，碰撞，契约，参数格式化程序
  */
 
 /*
@@ -16,7 +16,6 @@ namespace NunoMaduro\Collision\Contracts;
 
 /**
  * This is an Collision Argument Formatter contract.
- * 这是一个碰撞论证格式契约。
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */

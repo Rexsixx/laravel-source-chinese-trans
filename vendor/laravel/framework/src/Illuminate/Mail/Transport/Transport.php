@@ -14,7 +14,7 @@ abstract class Transport implements Swift_Transport
 {
     /**
      * The plug-ins registered with the transport.
-	 * 插件注册的运输
+	 * 使用传输注册的插件
      *
      * @var array
      */
@@ -54,7 +54,7 @@ abstract class Transport implements Swift_Transport
 
     /**
      * Register a plug-in with the transport.
-	 * 注册一个插件与运输
+	 * 向传输注册插件
      *
      * @param  \Swift_Events_EventListener  $plugin
      * @return void

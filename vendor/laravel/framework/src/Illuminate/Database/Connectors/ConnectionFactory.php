@@ -42,7 +42,7 @@ class ConnectionFactory
 	 * 根据配置信息建立PDO连接
      *
      * @param  array   $config
-     * @param  string  $name
+     * @param  string|null  $name
      * @return \Illuminate\Database\Connection
      */
     public function make(array $config, $name = null)
@@ -141,7 +141,7 @@ class ConnectionFactory
 
     /**
      * Get a read / write level configuration.
-	 * 获取读/写级别配置。
+	 * 获取读/写级别配置
      *
      * @param  array   $config
      * @param  string  $type
@@ -156,7 +156,7 @@ class ConnectionFactory
 
     /**
      * Merge a configuration for a read / write connection.
-	 * 合并读写连接的配置。
+	 * 合并读写连接的配置
      *
      * @param  array  $config
      * @param  array  $merge

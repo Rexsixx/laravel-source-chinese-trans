@@ -1,6 +1,6 @@
 <?php
 /**
- * PHPUnit，运行者，基本测试运行器
+ * PHPUnit，运行，基线测试运行器
  */
 
 /*
@@ -22,7 +22,6 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 /**
  * Base class for all test runners.
- * 所有测试者的基类。
  */
 abstract class BaseTestRunner
 {
@@ -73,7 +72,6 @@ abstract class BaseTestRunner
 
     /**
      * Returns the loader to be used.
-	 * 返回使用的加载程序
      */
     public function getLoader(): TestSuiteLoader
     {

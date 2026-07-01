@@ -35,10 +35,10 @@ trait SendsPasswordResetEmails
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we
         // need to show to the user. Finally, we'll send out a proper response.
-		// 我们将发送密码重置链接到这个用户。一旦我们尝试发送链接,我们将检查响应,
-		// 然后看到我们需要向用户显示的消息。最后,我们会发出适当的答复。
+		// 我们将向该用户发送密码重置链接。在尝试发送链接之后，我们会查看响应结果，
+		// 然后确定需要向用户展示的提示信息。最后，我们会给出恰当的回复。
         $response = $this->broker()->sendResetLink(
-            $request->only('email')
+            $this->credentials($request)
         );
 
         return $response == Password::RESET_LINK_SENT
@@ -56,6 +56,18 @@ trait SendsPasswordResetEmails
     protected function validateEmail(Request $request)
     {
         $request->validate(['email' => 'required|email']);
+    }
+
+    /**
+     * Get the needed authentication credentials from the request.
+	 * 从请求中获取所需的身份验证凭据
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        return $request->only('email');
     }
 
     /**

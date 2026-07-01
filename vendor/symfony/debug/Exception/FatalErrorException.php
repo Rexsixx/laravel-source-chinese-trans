@@ -18,7 +18,6 @@ namespace Symfony\Component\Debug\Exception;
 
 /**
  * Fatal Error Exception.
- * 致命错误异常
  *
  * @author Konstanton Myakshin <koc-dp@yandex.ru>
  *

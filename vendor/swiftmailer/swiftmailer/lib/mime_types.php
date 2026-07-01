@@ -1,7 +1,4 @@
 <?php
-/**
- * Swiftmailer，mime 类型
- */
 
 /*
  * This file is part of SwiftMailer.

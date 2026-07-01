@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，密码，SMime 加密
+ * Symfony，组件，Mime，Crypto，SMime加密器
  */
 
 /*

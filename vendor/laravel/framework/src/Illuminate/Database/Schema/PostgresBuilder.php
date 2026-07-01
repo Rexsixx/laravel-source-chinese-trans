@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，模式，Postgres 构建器
+ * Illuminate，数据库，架构，Postgres 构建器
  */
 
 namespace Illuminate\Database\Schema;
@@ -82,6 +82,29 @@ class PostgresBuilder extends Builder
     }
 
     /**
+     * Drop all types from the database.
+	 * 从数据库中删除所有类型
+     */
+    public function dropAllTypes()
+    {
+        $types = [];
+
+        foreach ($this->getAllTypes() as $row) {
+            $row = (array) $row;
+
+            $types[] = reset($row);
+        }
+
+        if (empty($types)) {
+            return;
+        }
+
+        $this->connection->statement(
+            $this->grammar->compileDropAllTypes($types)
+        );
+    }
+
+    /**
      * Get all of the table names for the database.
 	 * 获取数据库的所有表名
      *
@@ -104,6 +127,19 @@ class PostgresBuilder extends Builder
     {
         return $this->connection->select(
             $this->grammar->compileGetAllViews($this->connection->getConfig('schema'))
+        );
+    }
+
+    /**
+     * Get all of the type names for the database.
+	 * 获取数据库的所有类型名称
+     *
+     * @return array
+     */
+    protected function getAllTypes()
+    {
+        return $this->connection->select(
+            $this->grammar->compileGetAllTypes()
         );
     }
 

@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，HTTP基础，文件，Mime类型，Mime类型猜测接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +17,6 @@ use Symfony\Component\Mime\MimeTypesInterface;
 
 /**
  * Guesses the mime type of a file.
- * 猜测文件的mime类型。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
@@ -30,7 +26,6 @@ interface MimeTypeGuesserInterface
 {
     /**
      * Guesses the mime type of the file with the given path.
-	 * 猜测具有给定路径的文件的mime类型
      *
      * @param string $path The path to the file
      *

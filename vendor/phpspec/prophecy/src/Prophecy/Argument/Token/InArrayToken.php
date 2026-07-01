@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，参数，令牌，在数组令牌
+ */
 
 /*
  * This file is part of the Prophecy.

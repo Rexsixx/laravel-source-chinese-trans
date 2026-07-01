@@ -16,7 +16,6 @@ namespace Psy;
 
 /**
  * The Psy Shell's execution scope.
- * Psy Shell的执行范围。
  */
 class ExecutionClosure
 {

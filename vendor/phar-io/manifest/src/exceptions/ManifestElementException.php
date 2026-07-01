@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Manifest，Manifest元素异常
+ * PharIo，Manifest，清单元素异常
  */
 
 namespace PharIo\Manifest;

@@ -28,7 +28,7 @@ class ExpectationDirector
 {
     /**
      * Method name the director is directing
-	 * 方法名称
+	 * 方法名称:导演是导演
      *
      * @var string
      */

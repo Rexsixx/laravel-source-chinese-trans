@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，事件调度器，依赖注入，添加事件别名通过
+ * Symfony，组件，事件调度程序，依赖注入，添加事件别名通过
  */
 
 /*
@@ -19,7 +19,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * This pass allows bundles to extend the list of event aliases.
- * 此通道允许bundle扩展事件别名列表。
  *
  * @author Alexander M. Turek <me@derrabus.de>
  */

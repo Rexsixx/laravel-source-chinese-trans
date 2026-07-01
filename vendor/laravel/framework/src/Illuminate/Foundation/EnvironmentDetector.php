@@ -6,7 +6,6 @@
 namespace Illuminate\Foundation;
 
 use Closure;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class EnvironmentDetector
@@ -54,9 +53,9 @@ class EnvironmentDetector
         // and if it was that automatically overrides as the environment. Otherwise, we
         // will check the environment as a "web" request like a typical HTTP request.
 		// 首先，我们将检查是否通过控制台参数传递了环境参数，如果是的话，那么该参数将自动作为环境参数被使用。
-		// 否则,我们将检查环境作为一个“web”请求,比如一个典型的HTTP请求。
+		// 否则，我们将像处理常规的 HTTP 请求那样，以“网络”请求的形式来检查环境。
         if (! is_null($value = $this->getEnvironmentArgument($args))) {
-            return head(array_slice(explode('=', $value), 1));
+            return $value;
         }
 
         return $this->detectWebEnvironment($callback);
@@ -71,8 +70,14 @@ class EnvironmentDetector
      */
     protected function getEnvironmentArgument(array $args)
     {
-        return Arr::first($args, function ($value) {
-            return Str::startsWith($value, '--env');
-        });
+        foreach ($args as $i => $value) {
+            if ($value === '--env') {
+                return $args[$i + 1] ?? null;
+            }
+
+            if (Str::startsWith($value, '--env')) {
+                return head(array_slice(explode('=', $value), 1));
+            }
+        }
     }
 }

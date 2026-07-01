@@ -26,12 +26,36 @@ class JoinClause extends Builder
     public $table;
 
     /**
-     * The parent query builder instance.
-	 * 父查询生成器实例
+     * The connection of the parent query builder.
+	 * 父查询生成器的连接
      *
-     * @var \Illuminate\Database\Query\Builder
+     * @var \Illuminate\Database\ConnectionInterface
      */
-    private $parentQuery;
+    protected $parentConnection;
+
+    /**
+     * The grammar of the parent query builder.
+	 * 父查询生成器的语法
+     *
+     * @var \Illuminate\Database\Query\Grammars\Grammar
+     */
+    protected $parentGrammar;
+
+    /**
+     * The processor of the parent query builder.
+	 * 父查询生成器的处理器
+     *
+     * @var \Illuminate\Database\Query\Processors\Processor
+     */
+    protected $parentProcessor;
+
+    /**
+     * The class name of the parent query builder.
+	 * 父查询生成器的类名
+     *
+     * @var string
+     */
+    protected $parentClass;
 
     /**
      * Create a new join clause instance.
@@ -46,10 +70,13 @@ class JoinClause extends Builder
     {
         $this->type = $type;
         $this->table = $table;
-        $this->parentQuery = $parentQuery;
+        $this->parentClass = get_class($parentQuery);
+        $this->parentGrammar = $parentQuery->getGrammar();
+        $this->parentProcessor = $parentQuery->getProcessor();
+        $this->parentConnection = $parentQuery->getConnection();
 
         parent::__construct(
-            $parentQuery->getConnection(), $parentQuery->getGrammar(), $parentQuery->getProcessor()
+            $this->parentConnection, $this->parentGrammar, $this->parentProcessor
         );
     }
 
@@ -64,7 +91,7 @@ class JoinClause extends Builder
      *
      * will produce the following SQL:
      *
-     * on `contacts`.`user_id` = `users`.`id`  and `contacts`.`info_id` = `info`.`id`
+     * on `contacts`.`user_id` = `users`.`id` and `contacts`.`info_id` = `info`.`id`
      *
      * @param  \Closure|string  $first
      * @param  string|null  $operator
@@ -105,7 +132,7 @@ class JoinClause extends Builder
      */
     public function newQuery()
     {
-        return new static($this->parentQuery, $this->type, $this->table);
+        return new static($this->newParentQuery(), $this->type, $this->table);
     }
 
     /**
@@ -116,6 +143,19 @@ class JoinClause extends Builder
      */
     protected function forSubQuery()
     {
-        return $this->parentQuery->newQuery();
+        return $this->newParentQuery()->newQuery();
+    }
+
+    /**
+     * Create a new parent query instance.
+	 * 创建一个新的父查询实例
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    protected function newParentQuery()
+    {
+        $class = $this->parentClass;
+
+        return new $class($this->parentConnection, $this->parentGrammar, $this->parentProcessor);
     }
 }

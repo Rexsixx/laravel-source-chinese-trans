@@ -5,7 +5,6 @@
 
 namespace Illuminate\Database\Query\Grammars;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JsonExpression;
@@ -63,6 +62,19 @@ class MySqlGrammar extends Grammar
     }
 
     /**
+     * Compile an insert ignore statement into SQL.
+	 * 将插入忽略语句编译成SQL
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $values
+     * @return string
+     */
+    public function compileInsertOrIgnore(Builder $query, array $values)
+    {
+        return Str::replaceFirst('insert', 'insert ignore', $this->compileInsert($query, $values));
+    }
+
+    /**
      * Compile a "JSON contains" statement into SQL.
 	 * 将“JSON contains”语句编译成SQL
      *
@@ -72,7 +84,9 @@ class MySqlGrammar extends Grammar
      */
     protected function compileJsonContains($column, $value)
     {
-        return 'json_contains('.$this->wrap($column).', '.$value.')';
+        [$field, $path] = $this->wrapJsonFieldAndPath($column);
+
+        return 'json_contains('.$field.', '.$value.$path.')';
     }
 
     /**
@@ -149,14 +163,15 @@ class MySqlGrammar extends Grammar
         // Each one of the columns in the update statements needs to be wrapped in the
         // keyword identifiers, also a place-holder needs to be created for each of
         // the values in the list of bindings so we can make the sets statements.
-		// 更新语句中的每一个列都需要被包在关键字标识中,也需要为绑定列表中的每个值创建一个place-holder,这样我们就可以进行集合语句。
+		// 在更新语句中的每一列都需要用关键字标识符进行包裹，
+		// 同时还需要为绑定列表中的每个值创建一个占位符，这样我们才能编写集合语句。
         $columns = $this->compileUpdateColumns($values);
 
         // If the query has any "join" clauses, we will setup the joins on the builder
         // and compile them so we can attach them to this update, as update queries
         // can get join statements to attach to other tables when they're needed.
-		// 如果查询有任何“join”子句,我们将在构建器上设置连接,并编译它们,
-		// 这样我们就可以将它们连接到这个更新,因为更新查询可以在需要时连接到其他表的连接语句。
+		// 如果查询中包含任何“连接”条件，我们将先在构建器中设置这些连接条件，
+		// 然后对其进行编译，以便将其附加到此次更新操作中。因为更新查询在需要时能够生成连接语句并将其附加到其他表上。
         $joins = '';
 
         if (isset($query->joins)) {
@@ -166,7 +181,7 @@ class MySqlGrammar extends Grammar
         // Of course, update queries may also be constrained by where clauses so we'll
         // need to compile the where clauses and attach it to the query so only the
         // intended records are updated by the SQL statements we generate to run.
-		// 当然，更新查询也可能受到“where”子句的限制，因此我们需要编译这些“where”子句，
+		// 当然，更新查询也可能受到“where”子句的限制，因此我们需要编译“where”子句，
 		// 并将其附加到查询中，这样我们生成的 SQL 语句就能仅更新预期的记录。
         $where = $this->compileWheres($query);
 
@@ -184,7 +199,7 @@ class MySqlGrammar extends Grammar
         // Updates on MySQL also supports "limits", which allow you to easily update a
         // single record very easily. This is not supported by all database engines
         // so we have customized this update compiler here in order to add it in.
-		// MySQL的更新也支持“限制”,允许您很容易地轻松地更新一个记录。
+		// 关于 MySQL 的更新功能还支持“限制”这一功能，它使您能够轻松地更新单个记录。
 		// 这不是所有数据库引擎支持的,所以我们已经定制了这个更新编译器来添加它。
         if (isset($query->limit)) {
             $sql .= ' '.$this->compileLimit($query, $query->limit);
@@ -231,7 +246,7 @@ class MySqlGrammar extends Grammar
 	 * 为更新语句准备绑定。
      *
      * Booleans, integers, and doubles are inserted into JSON updates as raw values.
-	 * Booleans、整数和double被插入到JSON更新中,作为原始值。
+	 * 布尔值、整数和双精度值作为原始值插入JSON更新中。
      *
      * @param  array  $bindings
      * @param  array  $values
@@ -265,28 +280,12 @@ class MySqlGrammar extends Grammar
     }
 
     /**
-     * Prepare the bindings for a delete statement.
-	 * 为delete语句准备绑定
-     *
-     * @param  array  $bindings
-     * @return array
-     */
-    public function prepareBindingsForDelete(array $bindings)
-    {
-        $cleanBindings = Arr::except($bindings, ['join', 'select']);
-
-        return array_values(
-            array_merge($bindings['join'], Arr::flatten($cleanBindings))
-        );
-    }
-
-    /**
      * Compile a delete query that does not use joins.
 	 * 编译一个不使用连接的删除查询
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $table
-     * @param  array  $where
+     * @param  string  $where
      * @return string
      */
     protected function compileDeleteWithoutJoins($query, $table, $where)
@@ -296,7 +295,7 @@ class MySqlGrammar extends Grammar
         // When using MySQL, delete statements may contain order by statements and limits
         // so we will compile both of those here. Once we have finished compiling this
         // we will return the completed SQL statement so it will be executed for us.
-		// 在使用MySQL时,删除语句可能包含语句和限制的顺序,所以我们将在这里编译这两个。
+		// 在使用 MySQL 时，删除语句可能会包含“按顺序排列”语句和“限制数量”语句，因此我们将把这两部分都整合到这里进行编译。
 		// 一旦我们完成了编译,我们将返回已完成的SQL语句,这样它就会为我们执行。
         if (! empty($query->orders)) {
             $sql .= ' '.$this->compileOrders($query, $query->orders);
@@ -315,7 +314,7 @@ class MySqlGrammar extends Grammar
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $table
-     * @param  array  $where
+     * @param  string  $where
      * @return string
      */
     protected function compileDeleteWithJoins($query, $table, $where)
@@ -349,16 +348,22 @@ class MySqlGrammar extends Grammar
      */
     protected function wrapJsonSelector($value)
     {
-        $delimiter = Str::contains($value, '->>')
-            ? '->>'
-            : '->';
+        [$field, $path] = $this->wrapJsonFieldAndPath($value);
 
-        $path = explode($delimiter, $value);
+        return 'json_unquote(json_extract('.$field.$path.'))';
+    }
 
-        $field = $this->wrapSegments(explode('.', array_shift($path)));
+    /**
+     * Wrap the given JSON selector for boolean values.
+	 * 将给定的JSON选择器包装为布尔值
+     *
+     * @param  string  $value
+     * @return string
+     */
+    protected function wrapJsonBooleanSelector($value)
+    {
+        [$field, $path] = $this->wrapJsonFieldAndPath($value);
 
-        return sprintf('%s'.$delimiter.'\'$.%s\'', $field, collect($path)->map(function ($part) {
-            return '"'.$part.'"';
-        })->implode('.'));
+        return 'json_extract('.$field.$path.')';
     }
 }

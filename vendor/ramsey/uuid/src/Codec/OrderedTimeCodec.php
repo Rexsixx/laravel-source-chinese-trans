@@ -29,6 +29,7 @@ class OrderedTimeCodec extends StringCodec
 
     /**
      * Encodes a UuidInterface as an optimized binary representation of a UUID
+	 * 将uuuidinterface编码为UUID的优化的二进制表示
      *
      * @param UuidInterface $uuid
      * @return string Binary string representation of a UUID

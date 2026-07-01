@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，电子邮件
+ * Symfony，组件，Mime，Email
  */
 
 /*

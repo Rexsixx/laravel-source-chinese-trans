@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，采集，尺寸是可穿越的
+ * Hamcrest，采集，大小是可穿越的
  */
 
 namespace Hamcrest\Collection;
@@ -14,7 +14,6 @@ use Hamcrest\Util;
 
 /**
  * Matches if traversable size satisfies a nested matcher.
- * 匹配如果移动尺寸满足一个嵌套的matcher。
  */
 class IsTraversableWithSize extends FeatureMatcher
 {

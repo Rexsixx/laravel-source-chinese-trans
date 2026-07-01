@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，全局状态，Snapshot
+ * SebastianBergmann，GlobalState，快照
  */
 
 /*
@@ -21,7 +21,7 @@ use Serializable;
 
 /**
  * A snapshot of global state.
- * 全球状态的快照。
+ * 全局的国家快照。
  */
 class Snapshot
 {

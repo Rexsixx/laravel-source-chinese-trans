@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由注册
+ * Illuminate，路由选择，路由注册
  */
 
 namespace Illuminate\Routing;
@@ -135,7 +135,7 @@ class RouteRegistrar
 
     /**
      * Register a new route with the given verbs.
-	 * 用给定的动词注册一条新路线
+	 * 用给定的动词注册一条新路由
      *
      * @param  array|string  $methods
      * @param  string  $uri

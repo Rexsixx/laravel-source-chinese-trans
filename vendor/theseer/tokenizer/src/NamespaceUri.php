@@ -1,7 +1,7 @@
 <?php declare(strict_types = 1);
 
 /**
- * TheSeer，词法分析器，命名空间 URI
+ * TheSeer，Tokenizer，名称空间 Uri
  */
 
 namespace TheSeer\Tokenizer;

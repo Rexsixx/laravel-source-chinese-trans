@@ -12,7 +12,7 @@ trait ForwardsCalls
 {
     /**
      * Forward a method call to the given object.
-	 * 向给定对象转发一个方法调用
+	 * 将方法调用转发给给定对象
      *
      * @param  mixed  $object
      * @param  string  $method

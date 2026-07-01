@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，转储，Php 文件转储
+ * Symfony，组件，翻译，转储，Php File 转储
  */
 
 /*
@@ -18,6 +18,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * PhpFileDumper generates PHP files from a message catalogue.
+ * phfabledumper从消息目录中生成PHP文件。
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */

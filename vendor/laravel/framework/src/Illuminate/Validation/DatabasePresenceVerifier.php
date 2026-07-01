@@ -41,7 +41,7 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
 
     /**
      * Count the number of objects in a collection having the given value.
-	 * 在集合中计算给定值的集合的数量
+	 * 计算集合中具有给定值的对象的数量
      *
      * @param  string  $collection
      * @param  string  $column
@@ -131,7 +131,7 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
      * @param  string  $table
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function table($table)
+    public function table($table)
     {
         return $this->db->connection($this->connection)->table($table)->useWritePdo();
     }

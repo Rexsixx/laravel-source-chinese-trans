@@ -24,7 +24,6 @@ class ConfigPaths
 {
     /**
      * Get potential config directory paths.
-	 * 获取潜在的配置目录路径。
      *
      * Returns `~/.psysh`, `%APPDATA%/PsySH` (when on Windows), and all
      * XDG Base Directory config directories:

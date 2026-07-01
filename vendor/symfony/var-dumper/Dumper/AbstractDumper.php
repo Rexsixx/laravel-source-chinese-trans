@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，转储器，抽象转储器
+ * Symfony，组件，Var Dumper，转储，抽象转储器
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\VarDumper\Cloner\DumperInterface;
 
 /**
  * Abstract mechanism for dumping a Data object.
- * 转储数据对象的抽象机制。
+ * 用于转储数据对象的抽象机制。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -85,7 +85,6 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
 
     /**
      * Sets the default character encoding to use for non-UTF8 strings.
-	 * 设置用于非utf8字符串的默认字符编码
      *
      * @param string $charset The default character encoding to use for non-UTF8 strings
      *
@@ -105,7 +104,6 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
 
     /**
      * Sets the indentation pad string.
-	 * 设置缩进垫字符串
      *
      * @param string $pad A string that will be prepended to dumped lines, repeated by nesting level
      *
@@ -121,7 +119,6 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
 
     /**
      * Dumps a Data object.
-	 * 转储数据对象
      *
      * @param callable|resource|string|true|null $output A line dumper callable, an opened stream, an output path or true to return the dump
      *

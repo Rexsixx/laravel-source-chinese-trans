@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Polyfill，Php80，Php 令牌
+ * Symfony，Polyfill，Php80，Php令牌
  */
 
 /*

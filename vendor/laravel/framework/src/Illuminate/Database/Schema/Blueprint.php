@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，模式，蓝图
+ * Illuminate，数据库，架构，蓝图
  */
 
 namespace Illuminate\Database\Schema;
@@ -65,7 +65,7 @@ class Blueprint
 
     /**
      * The collation that should be used for the table.
-	 * 应用于表的排序规则。
+	 * 应用于表的排序规则
      */
     public $collation;
 
@@ -128,6 +128,8 @@ class Blueprint
         // Each type of command has a corresponding compiler function on the schema
         // grammar which is used to build the necessary SQL statements to build
         // the blueprint element, so we'll just call that compilers function.
+		// 每种类型的命令在模式语法中都有一个对应的编译器函数，
+		// 该函数用于生成构建蓝图元素所需的 SQL 语句，因此我们将其称为编译器函数。
         $this->ensureCommandsAreValid($connection);
 
         foreach ($this->commands as $command) {
@@ -218,6 +220,8 @@ class Blueprint
                 // If the index has been specified on the given column, but is simply equal
                 // to "true" (boolean), no name has been specified for this index so the
                 // index method can be called without a name and it will generate one.
+				// 如果已为给定列指定了索引，但该索引的值仅仅是“true”（布尔值），那么就未为该索引指定名称。
+				// 因此，可以不指定名称就调用索引方法，系统会自动生成一个名称。
                 if ($column->{$index} === true) {
                     $this->{$index}($column->name);
 
@@ -227,6 +231,8 @@ class Blueprint
                 // If the index has been specified on the given column, and it has a string
                 // value, we'll go ahead and call the index method and pass the name for
                 // the index since the developer specified the explicit name for this.
+				// 如果在给定的列上已指定了索引，并且该索引具有字符串值，那么我们将继续调用索引方法，
+				// 并传递索引的名称，因为开发人员已经明确指定了这个索引的名称。
                 elseif (isset($column->{$index})) {
                     $this->{$index}($column->name, $column->{$index});
 
@@ -350,7 +356,7 @@ class Blueprint
      * Indicate that the given primary key should be dropped.
 	 * 指示应该删除给定的主键
      *
-     * @param  string|array  $index
+     * @param  string|array|null  $index
      * @return \Illuminate\Support\Fluent
      */
     public function dropPrimary($index = null)
@@ -508,7 +514,7 @@ class Blueprint
 	 * 指定表的主键
      *
      * @param  string|array  $columns
-     * @param  string  $name
+     * @param  string|null  $name
      * @param  string|null  $algorithm
      * @return \Illuminate\Support\Fluent
      */
@@ -522,7 +528,7 @@ class Blueprint
 	 * 为表指定唯一索引
      *
      * @param  string|array  $columns
-     * @param  string  $name
+     * @param  string|null  $name
      * @param  string|null  $algorithm
      * @return \Illuminate\Support\Fluent
      */
@@ -536,7 +542,7 @@ class Blueprint
 	 * 为表指定索引
      *
      * @param  string|array  $columns
-     * @param  string  $name
+     * @param  string|null  $name
      * @param  string|null  $algorithm
      * @return \Illuminate\Support\Fluent
      */
@@ -550,7 +556,7 @@ class Blueprint
 	 * 为表指定空间索引
      *
      * @param  string|array  $columns
-     * @param  string  $name
+     * @param  string|null  $name
      * @return \Illuminate\Support\Fluent
      */
     public function spatialIndex($columns, $name = null)
@@ -563,8 +569,8 @@ class Blueprint
 	 * 为表指定一个外键
      *
      * @param  string|array  $columns
-     * @param  string  $name
-     * @return \Illuminate\Support\Fluent
+     * @param  string|null  $name
+     * @return \Illuminate\Support\Fluent|\Illuminate\Database\Schema\ForeignKeyDefinition
      */
     public function foreign($columns, $name = null)
     {
@@ -584,8 +590,20 @@ class Blueprint
     }
 
     /**
+     * Create a new auto-incrementing integer (4-byte) column on the table.
+	 * 在表上创建一个新的自动递增的整数（4字节）列
+     *
+     * @param  string  $column
+     * @return \Illuminate\Database\Schema\ColumnDefinition
+     */
+    public function integerIncrements($column)
+    {
+        return $this->unsignedInteger($column, true);
+    }
+
+    /**
      * Create a new auto-incrementing tiny integer (1-byte) column on the table.
-	 * 在表上创建一个新的自动递增的小整数（1字节）列
+	 * 在表上创建一个新的自动递增的小整数（1字节）列。
      *
      * @param  string  $column
      * @return \Illuminate\Database\Schema\ColumnDefinition
@@ -636,7 +654,7 @@ class Blueprint
 	 * 在表上创建一个新的字符列
      *
      * @param  string  $column
-     * @param  int  $length
+     * @param  int|null  $length
      * @return \Illuminate\Database\Schema\ColumnDefinition
      */
     public function char($column, $length = null)
@@ -651,7 +669,7 @@ class Blueprint
 	 * 在表上创建一个新的字符串列
      *
      * @param  string  $column
-     * @param  int  $length
+     * @param  int|null  $length
      * @return \Illuminate\Database\Schema\ColumnDefinition
      */
     public function string($column, $length = null)
@@ -916,6 +934,19 @@ class Blueprint
     }
 
     /**
+     * Create a new set column on the table.
+	 * 在表上创建一个新的set列
+     *
+     * @param  string  $column
+     * @param  array  $allowed
+     * @return \Illuminate\Database\Schema\ColumnDefinition
+     */
+    public function set($column, array $allowed)
+    {
+        return $this->addColumn('set', $column, compact('allowed'));
+    }
+
+    /**
      * Create a new json column on the table.
 	 * 在表上创建一个新的json列
      *
@@ -1045,7 +1076,7 @@ class Blueprint
 
     /**
      * Add nullable creation and update timestamps to the table.
-	 * 向表中添加可空的创建和更新时间戳
+	 * 向表中添加可空的创建和更新时间戳。
      *
      * Alias for self::timestamps().
      *
@@ -1244,7 +1275,7 @@ class Blueprint
 
     /**
      * Create a new multipolygon column on the table.
-	 * 在表上创建一个新的多多边形列。
+	 * 在表上创建一个新的多多边形列
      *
      * @param  string  $column
      * @return \Illuminate\Database\Schema\ColumnDefinition
@@ -1252,6 +1283,18 @@ class Blueprint
     public function multiPolygon($column)
     {
         return $this->addColumn('multipolygon', $column);
+    }
+
+    /**
+     * Create a new multipolygon column on the table.
+	 * 在表上创建一个新的多多边形列
+     *
+     * @param  string  $column
+     * @return \Illuminate\Database\Schema\ColumnDefinition
+     */
+    public function multiPolygonZ($column)
+    {
+        return $this->addColumn('multipolygonz', $column);
     }
 
     /**
@@ -1302,6 +1345,40 @@ class Blueprint
     }
 
     /**
+     * Add the proper columns for a polymorphic table using UUIDs.
+	 * 为使用uid的多态表添加适当的列
+     *
+     * @param  string  $name
+     * @param  string|null  $indexName
+     * @return void
+     */
+    public function uuidMorphs($name, $indexName = null)
+    {
+        $this->string("{$name}_type");
+
+        $this->uuid("{$name}_id");
+
+        $this->index(["{$name}_type", "{$name}_id"], $indexName);
+    }
+
+    /**
+     * Add nullable columns for a polymorphic table using UUIDs.
+	 * 为使用uid的多态表添加可空列
+     *
+     * @param  string  $name
+     * @param  string|null  $indexName
+     * @return void
+     */
+    public function nullableUuidMorphs($name, $indexName = null)
+    {
+        $this->string("{$name}_type")->nullable();
+
+        $this->uuid("{$name}_id")->nullable();
+
+        $this->index(["{$name}_type", "{$name}_id"], $indexName);
+    }
+
+    /**
      * Adds the `remember_token` column to the table.
 	 * 将‘ memor_token ’列添加到表中
      *
@@ -1329,6 +1406,7 @@ class Blueprint
         // If no name was specified for this index, we will create one using a basic
         // convention of the table name, followed by the columns, followed by an
         // index type, such as primary or index, which makes the index unique.
+		// 如果未为该索引指定名称，我们将按照表名、列名以及索引类型（如主索引或普通索引）的基本规则来创建一个索引，这样就能确保该索引具有唯一性。
         $index = $index ?: $this->createIndexName($type, $columns);
 
         return $this->addCommand(
@@ -1352,6 +1430,7 @@ class Blueprint
         // If the given "index" is actually an array of columns, the developer means
         // to drop an index merely by specifying the columns involved without the
         // conventional name, so we will build the index name from the columns.
+		// 如果给定的“索引”实际上是一个列数组，那么开发人员只是通过指定涉及的列（而非常规名称）来删除索引，因此我们将根据这些列来构建索引名称。
         if (is_array($index)) {
             $index = $this->createIndexName($type, $columns = $index);
         }

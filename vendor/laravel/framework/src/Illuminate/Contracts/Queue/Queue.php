@@ -11,7 +11,7 @@ interface Queue
      * Get the size of the queue.
 	 * 获取队列的大小
      *
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return int
      */
     public function size($queue = null);
@@ -22,7 +22,7 @@ interface Queue
      *
      * @param  string|object  $job
      * @param  mixed   $data
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return mixed
      */
     public function push($job, $data = '', $queue = null);
@@ -43,7 +43,7 @@ interface Queue
 	 * 将原始有效负载推入队列
      *
      * @param  string  $payload
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @param  array   $options
      * @return mixed
      */
@@ -56,7 +56,7 @@ interface Queue
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string|object  $job
      * @param  mixed   $data
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return mixed
      */
     public function later($delay, $job, $data = '', $queue = null);
@@ -79,7 +79,7 @@ interface Queue
      *
      * @param  array   $jobs
      * @param  mixed   $data
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return mixed
      */
     public function bulk($jobs, $data = '', $queue = null);

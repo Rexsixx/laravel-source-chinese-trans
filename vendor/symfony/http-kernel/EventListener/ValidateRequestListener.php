@@ -30,7 +30,6 @@ class ValidateRequestListener implements EventSubscriberInterface
 {
     /**
      * Performs the validation.
-	 * 执行验证。
      */
     public function onKernelRequest(GetResponseEvent $event)
     {

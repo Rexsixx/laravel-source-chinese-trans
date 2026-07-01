@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，数字，Is Close To
+ * Hamcrest，Number，Is Close To
  */
 
 namespace Hamcrest\Number;

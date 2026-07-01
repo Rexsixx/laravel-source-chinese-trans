@@ -40,7 +40,6 @@ trait PluggableTrait
 
     /**
      * Find a specific plugin.
-	 * 找到一个特定的插件
      *
      * @param string $method
      *

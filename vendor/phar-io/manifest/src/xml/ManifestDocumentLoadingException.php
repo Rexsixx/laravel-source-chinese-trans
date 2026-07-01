@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Manifest，Manifest 文件加载异常
+ * PharIo，Manifest，Php元素
  */
 
 /*

@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，提供商，节点，系统节点提供商
+ * Ramsey，Uuid，提供者，节点，系统节点提供程序
  */
 
 /**
@@ -23,13 +23,11 @@ use Ramsey\Uuid\Provider\NodeProviderInterface;
 /**
  * SystemNodeProvider provides functionality to get the system node ID (MAC
  * address) using external system calls
- * SystemNodeProvider提供了使用外部系统调用的系统节点ID(MAC地址)的功能
  */
 class SystemNodeProvider implements NodeProviderInterface
 {
     /**
      * Returns the system node ID
-	 * 返回系统节点ID
      *
      * @return string|false System node ID as a hexadecimal string, or false if it is not found
      */

@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，代码覆盖率，引导
+ */
+
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/TestCase.php';
 

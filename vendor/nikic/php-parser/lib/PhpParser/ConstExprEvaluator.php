@@ -1,6 +1,6 @@
 <?php
 /**
- * PhpParser，校验器
+ * PhpParser，Const Expr 校验器
  */
 
 namespace PhpParser;

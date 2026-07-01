@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，全局状态，复位器
+ * SebastianBergmann，GlobalState，恢复器
  */
 
 /*
@@ -20,7 +20,7 @@ use ReflectionProperty;
 
 /**
  * Restorer of snapshots of global state.
- * 全局状态快照的恢复。
+ * 全局国家的快照恢复器。
  */
 class Restorer
 {
@@ -47,6 +47,7 @@ class Restorer
 
     /**
      * Restores all global and super-global variables from a snapshot.
+	 * 从快照中恢复所有全局和超全局变量
      */
     public function restoreGlobalVariables(Snapshot $snapshot)
     {

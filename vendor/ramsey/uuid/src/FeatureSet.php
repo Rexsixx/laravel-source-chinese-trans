@@ -102,7 +102,6 @@ class FeatureSet
     /**
      * Constructs a `FeatureSet` for use by a `UuidFactory` to determine or set
      * features available to the environment
-	 * 构造一个“UuidFactory”的“特征特性”,以确定或设置环境可用的特性。
      *
      * @param bool $useGuids Whether to build UUIDs using the `GuidStringCodec`
      * @param bool $force32Bit Whether to force the use of 32-bit functionality
@@ -136,7 +135,6 @@ class FeatureSet
 
     /**
      * Returns the builder configured for this environment
-	 * 返回为此环境配置的构建器
      *
      * @return UuidBuilderInterface
      */
@@ -147,7 +145,6 @@ class FeatureSet
 
     /**
      * Returns the UUID UUID coder-decoder configured for this environment
-	 * 返回为此环境配置的UUID UUID编码器解码器
      *
      * @return CodecInterface
      */
@@ -158,7 +155,6 @@ class FeatureSet
 
     /**
      * Returns the system node ID provider configured for this environment
-	 * 返回为此环境配置的系统节点ID提供者
      *
      * @return NodeProviderInterface
      */
@@ -169,7 +165,6 @@ class FeatureSet
 
     /**
      * Returns the number converter configured for this environment
-	 * 返回为此环境配置的数字转换器
      *
      * @return NumberConverterInterface
      */
@@ -180,7 +175,6 @@ class FeatureSet
 
     /**
      * Returns the random UUID generator configured for this environment
-	 * 为此环境配置配置的随机UUID生成器
      *
      * @return RandomGeneratorInterface
      */

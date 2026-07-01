@@ -26,7 +26,6 @@ final class QpContentEncoder implements ContentEncoderInterface
         }
 
         // we don't use PHP stream filters here as the content should be small enough
-		// 这里我们不使用PHP流过滤器，因为内容应该足够小。
         yield $this->encodeString(stream_get_contents($stream), 'utf-8', 0, $maxLineLength);
     }
 
@@ -42,7 +41,7 @@ final class QpContentEncoder implements ContentEncoderInterface
 
     /**
      * Make sure CRLF is correct and HT/SPACE are in valid places.
-	 * 确保CRLF是正确的，HT/SPACE在有效的地方。
+	 * 确保CRLF是正确的,HT / SPACE在有效的位置。
      */
     private function standardize(string $string): string
     {

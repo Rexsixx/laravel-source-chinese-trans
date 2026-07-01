@@ -19,7 +19,6 @@ use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * Represents a command line option.
- * 表示命令行选项。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -107,7 +106,6 @@ class InputOption
 
     /**
      * Returns the option shortcut.
-	 * 返回选项快捷方式
      *
      * @return string|null The shortcut
      */

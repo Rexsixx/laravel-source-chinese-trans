@@ -12,6 +12,7 @@ use Illuminate\Contracts\Container\Container;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -186,25 +187,42 @@ class Application extends SymfonyApplication implements ApplicationContract
      */
     public function call($command, array $parameters = [], $outputBuffer = null)
     {
-        if (is_subclass_of($command, SymfonyCommand::class)) {
-            $command = $this->laravel->make($command)->getName();
-        }
+        [$command, $input] = $this->parseCommand($command, $parameters);
 
         if (! $this->has($command)) {
             throw new CommandNotFoundException(sprintf('The command "%s" does not exist.', $command));
         }
 
-        array_unshift($parameters, $command);
+        return $this->run(
+            $input, $this->lastOutput = $outputBuffer ?: new BufferedOutput
+        );
+    }
 
-        $this->lastOutput = $outputBuffer ?: new BufferedOutput;
+    /**
+     * Parse the incoming Artisan command and its input.
+	 * 解析传入的Artisan命令及其输入
+     *
+     * @param  string  $command
+     * @param  array  $parameters
+     * @return array
+     */
+    protected function parseCommand($command, $parameters)
+    {
+        if (is_subclass_of($command, SymfonyCommand::class)) {
+            $callingClass = true;
 
-        $this->setCatchExceptions(false);
+            $command = $this->laravel->make($command)->getName();
+        }
 
-        $result = $this->run(new ArrayInput($parameters), $this->lastOutput);
+        if (! isset($callingClass) && empty($parameters)) {
+            $command = $this->getCommandName($input = new StringInput($command));
+        } else {
+            array_unshift($parameters, $command);
 
-        $this->setCatchExceptions(true);
+            $input = new ArrayInput($parameters);
+        }
 
-        return $result;
+        return [$command, $input ?? null];
     }
 
     /**
@@ -283,7 +301,6 @@ class Application extends SymfonyApplication implements ApplicationContract
 	 * 获取应用程序的默认输入定义。
      *
      * This is used to add the --env option to every available command.
-	 * 这用于向每个可用命令添加--env选项。
      *
      * @return \Symfony\Component\Console\Input\InputDefinition
      */

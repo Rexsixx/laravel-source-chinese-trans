@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，片段，可路由片段渲染器
+ * Symfony，组件，Http内核，碎片，可路由片段渲染器
  */
 
 /*
@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\EventListener\FragmentListener;
 
 /**
  * Adds the possibility to generate a fragment URI for a given Controller.
- * 增加了为给定控制器生成片段URI的可能性。
+ * 添加生成给定控制器的片段URI的可能性。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -43,6 +43,7 @@ abstract class RoutableFragmentRenderer implements FragmentRendererInterface
 
     /**
      * Generates a fragment URI for a given controller.
+	 * 生成给定控制器的片段URI
      *
      * @param bool $absolute Whether to generate an absolute URL or not
      * @param bool $strict   Whether to allow non-scalar attributes or not

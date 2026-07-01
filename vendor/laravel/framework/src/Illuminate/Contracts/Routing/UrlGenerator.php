@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，路由，Url 生成器
+ * Illuminate，契约，路由，网址生成器
  */
 
 namespace Illuminate\Contracts\Routing;
@@ -16,12 +16,21 @@ interface UrlGenerator
     public function current();
 
     /**
+     * Get the URL for the previous request.
+	 * 获取前一个请求的URL
+     *
+     * @param  mixed  $fallback
+     * @return string
+     */
+    public function previous($fallback = false);
+
+    /**
      * Generate an absolute URL to the given path.
 	 * 生成给定路径的绝对URL
      *
      * @param  string  $path
      * @param  mixed  $extra
-     * @param  bool  $secure
+     * @param  bool|null  $secure
      * @return string
      */
     public function to($path, $extra = [], $secure = null);
@@ -41,7 +50,7 @@ interface UrlGenerator
 	 * 生成应用程序资产的URL
      *
      * @param  string  $path
-     * @param  bool    $secure
+     * @param  bool|null  $secure
      * @return string
      */
     public function asset($path, $secure = null);

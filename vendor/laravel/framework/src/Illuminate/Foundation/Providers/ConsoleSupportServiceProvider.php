@@ -7,17 +7,10 @@ namespace Illuminate\Foundation\Providers;
 
 use Illuminate\Support\AggregateServiceProvider;
 use Illuminate\Database\MigrationServiceProvider;
+use Illuminate\Contracts\Support\DeferrableProvider;
 
-class ConsoleSupportServiceProvider extends AggregateServiceProvider
+class ConsoleSupportServiceProvider extends AggregateServiceProvider implements DeferrableProvider
 {
-    /**
-     * Indicates if loading of the provider is deferred.
-	 * 指示是否延迟加载提供程序
-     *
-     * @var bool
-     */
-    protected $defer = true;
-
     /**
      * The provider class names.
 	 * 提供程序类名

@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，比较器，日期时间比较器
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -11,6 +15,7 @@ namespace SebastianBergmann\Comparator;
 
 /**
  * Compares DateTimeInterface instances for equality.
+ * 比较DateTimeInterface实例的平等。
  */
 class DateTimeComparator extends ObjectComparator
 {

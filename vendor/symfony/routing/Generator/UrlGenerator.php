@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，生成器，Url 生成器
+ * Symfony，组件，路由选择，生成器，Url 生成器
  */
 
 /*
@@ -24,6 +24,7 @@ use Symfony\Component\Routing\RouteCollection;
 /**
  * UrlGenerator can generate a URL or a path for any route in the RouteCollection
  * based on the passed parameters.
+ * url生成器可以根据传递的参数在路由中生成URL或路径。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
@@ -58,7 +59,6 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
 
     /**
      * This array defines the characters (besides alphanumeric ones) that will not be percent-encoded in the path segment of the generated URL.
-	 * 这个数组定义了在生成的URL的路径段中不进行百分比编码的字符（除了字母数字字符）。
      *
      * PHP's rawurlencode() encodes all chars except "a-zA-Z0-9-._~" according to RFC 3986. But we want to allow some chars
      * to be used in their literal form (reasons below). Other chars inside the path must of course be encoded, e.g.
@@ -148,7 +148,6 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
         }
 
         // the Route has a cache of its own and is not recompiled as long as it does not get modified
-		// Route有自己的缓存，只要它没有被修改，就不会被重新编译。
         $compiledRoute = $route->compile();
 
         $defaults = $route->getDefaults();

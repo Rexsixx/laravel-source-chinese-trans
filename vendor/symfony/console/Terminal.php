@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，终端
+ * Symfony，组件，控制台，终端机
  */
 
 /*
@@ -22,7 +22,6 @@ class Terminal
 
     /**
      * Gets the terminal width.
-	 * 获取终端宽度
      *
      * @return int
      */
@@ -42,7 +41,6 @@ class Terminal
 
     /**
      * Gets the terminal height.
-	 * 到达终端高度
      *
      * @return int
      */
@@ -113,7 +111,6 @@ class Terminal
 
     /**
      * Initializes dimensions using the output of an stty columns line.
-	 * 使用stty列行的输出初始化维数
      */
     private static function initDimensionsUsingStty()
     {

@@ -24,7 +24,6 @@ abstract class Handler
 
     /**
      * Constructor.
-	 * 构造函数
      *
      * @param FilesystemInterface $filesystem
      * @param string              $path

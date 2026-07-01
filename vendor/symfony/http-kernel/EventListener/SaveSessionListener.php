@@ -43,7 +43,6 @@ class SaveSessionListener implements EventSubscriberInterface
     {
         return [
             // low priority but higher than StreamedResponseListener
-			// 低优先级，但高于streamedresponsellistener。
             KernelEvents::RESPONSE => [['onKernelResponse', -1000]],
         ];
     }

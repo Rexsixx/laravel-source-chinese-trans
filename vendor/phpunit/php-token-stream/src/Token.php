@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，PHP令牌
+ * SebastianBergmann，PHP_Token
  */
 
 /*

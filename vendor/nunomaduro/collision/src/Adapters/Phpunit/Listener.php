@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，冲突，适配器，Phpunit，监听器
+ * NunoMaduro，碰撞，适配器，Php单元，监听器
  */
 
 /**
@@ -27,11 +27,10 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use NunoMaduro\Collision\Contracts\Writer as WriterContract;
 use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
 
-if (class_exists(\PHPUnit\Runner\Version::class) && substr(\PHPUnit\Runner\Version::id(), 0, 2) === '7.') {
+if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runner\Version::id(), 0, 1)) >= 7) {
 
     /**
      * This is an Collision Phpunit Adapter implementation.
-	 * 这是一个碰撞Phpunit适配器实现
      *
      * @author Nuno Maduro <enunomaduro@gmail.com>
      */

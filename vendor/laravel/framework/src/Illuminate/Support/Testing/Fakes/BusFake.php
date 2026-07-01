@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，假装，总线 Fake
+ * Illuminate，支持，测试，Fakes，总线 Fake
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -139,7 +139,7 @@ class BusFake implements Dispatcher
      */
     public function pipeThrough(array $pipes)
     {
-        //
+        return $this;
     }
 
     /**

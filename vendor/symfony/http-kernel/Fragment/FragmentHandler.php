@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，片段，片段处理程序
+ * Symfony，组件，Http内核，碎片，片段处理程序
  */
 
 /*
@@ -59,7 +59,6 @@ class FragmentHandler
 
     /**
      * Renders a URI and returns the Response content.
-	 * 呈现一个URI并返回响应内容。
      *
      * Available options:
      *

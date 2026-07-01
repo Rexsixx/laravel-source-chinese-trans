@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，资源注册
+ * Illuminate，路由选择，资源注册
  */
 
 namespace Illuminate\Routing;
@@ -91,7 +91,7 @@ class ResourceRegistrar
         // register these resource routes with a prefix so we will set that up out of
         // the box so they don't have to mess with it. Otherwise, we will continue.
 		// 如果资源名称中包含斜杠，我们就会假定开发者希望以某个前缀来注册这些资源路由，
-		// 因此我们会预先做好设置，这样他们就不必自行处理了。否则，我们将继续进行下一步操作。
+		// 因此我们会预先做好设置，这样他们就不必自行处理了。否则，我们将继续进行操作。
         if (Str::contains($name, '/')) {
             $this->prefixedResource($name, $controller, $options);
 
@@ -101,8 +101,8 @@ class ResourceRegistrar
         // We need to extract the base resource from the resource name. Nested resources
         // are supported in the framework, but we need to know what name to use for a
         // place-holder on the route parameters, which should be the base resources.
-		// 我们需要从资源名称中提取基础资源。该框架支持嵌套资源，
-		// 但我们需要知道在路由参数中使用什么名称作为占位符，这个名称应该是基础资源。
+		// 我们需要从资源名称中提取出基础资源。该框架支持嵌套资源，
+		// 但我们需要知道在路由参数中使用何种名称作为占位符，而这个名称应当是基础资源。
         $base = $this->getResourceWildcard(last(explode('.', $name)));
 
         $defaults = $this->resourceDefaults;
@@ -134,8 +134,8 @@ class ResourceRegistrar
         // We need to extract the base resource from the resource name. Nested resources
         // are supported in the framework, but we need to know what name to use for a
         // place-holder on the route parameters, which should be the base resources.
-		// 我们需要从资源名称中提取基础资源。
-		// 该框架支持嵌套资源，但我们需要知道在路由参数中使用什么名称作为占位符，这个名称应该是基础资源。
+		// 我们需要从资源名称中提取出基础资源。该框架支持嵌套资源，
+		// 但我们需要知道在路由参数中使用什么名称作为占位符，这个名称应该是基础资源。
         $callback = function ($me) use ($name, $controller, $options) {
             $me->resource($name, $controller, $options);
         };
@@ -157,8 +157,8 @@ class ResourceRegistrar
         // To get the prefix, we will take all of the name segments and implode them on
         // a slash. This will generate a proper URI prefix for us. Then we take this
         // last segment, which will be considered the final resources name we use.
-		// 为了获取前缀，我们将把所有的名字片段组合起来，并用斜线连接起来。
-		// 这将为我们生成一个适当的URI前缀。然后我们取最后一个部分,它将被考虑为我们使用的最终资源名称。
+		// 为了获取前缀，我们将把所有的名称段落组合起来，并用斜杠连接起来。这样就能为我们生成一个正确的 URI 前缀。
+		// 然后，我们取最后一个段落，它将被视为我们所使用的最终资源名称。
         $prefix = implode('/', array_slice($segments, 0, -1));
 
         return [end($segments), $prefix];
@@ -336,7 +336,7 @@ class ResourceRegistrar
         // Once we have built the base URI, we'll remove the parameter holder for this
         // base resource name so that the individual route adders can suffix these
         // paths however they need to, as some do not have any parameters at all.
-		// 一旦我们构建好了基础 URI，我们就会移除与此基础资源名称相关的参数存储器，
+		// 一旦我们构建好了基础 URI，就会移除与此基础资源名称相关的参数存储器，
 		// 这样各个路由添加器就可以根据需要为这些路径添加后缀了，因为有些路径根本就没有参数。
         $segments = explode('.', $resource);
 
@@ -358,7 +358,7 @@ class ResourceRegistrar
         // resource segments, as well as the resource itself. Then we should get an
         // entire string for the resource URI that contains all nested resources.
 		// 我们将逐一浏览这些部分，并为每个资源部分以及该资源本身创建一个占位符。
-		// 然后,我们应该得到包含所有嵌套资源的资源URI的整个字符串。
+		// 然后，我们应该获取一个完整的资源 URI 字符串，该字符串包含所有嵌套资源的信息。
         return implode('/', array_map(function ($s) {
             return $s.'/{'.$this->getResourceWildcard($s).'}';
         }, $segments));
@@ -423,8 +423,8 @@ class ResourceRegistrar
         // If the names array has been provided to us we will check for an entry in the
         // array first. We will also check for the specific method within this array
         // so the names may be specified on a more "granular" level using methods.
-		// 如果已为我们提供了名称数组，我们将首先在该数组中查找相应的条目。
-		// 同时，我们还会检查此数组中的特定方法，以便能够以更“精细”的方式（通过方法）指定名称。
+		// 如果已为我们提供了“姓名”数组，我们将首先在该数组中查找相应的条目。
+		// 我们还将在这组数组中查找具体的实现方式，以便能够以更“精细”的层次来指定名称，通过使用相关方法来实现。
         if (isset($options['names'])) {
             if (is_string($options['names'])) {
                 $name = $options['names'];

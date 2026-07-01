@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，比较器，对象比较器
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *

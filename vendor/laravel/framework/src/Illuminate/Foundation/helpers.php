@@ -3,10 +3,10 @@
  * Illuminate，基础，辅助
  */
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
+use Illuminate\Foundation\Mix;
 use Illuminate\Support\HtmlString;
 use Illuminate\Container\Container;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Queue\CallQueuedClosure;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Queue\SerializableClosure;
@@ -116,9 +116,9 @@ if (! function_exists('app')) {
      * Get the available container instance.
 	 * 获取可用的容器实例
      *
-     * @param  string  $abstract
+     * @param  string|null  $abstract
      * @param  array   $parameters
-     * @return mixed|\Illuminate\Foundation\Application
+     * @return mixed|\Illuminate\Contracts\Foundation\Application
      */
     function app($abstract = null, array $parameters = [])
     {
@@ -150,7 +150,7 @@ if (! function_exists('asset')) {
 	 * 为应用程序生成一个资产路径
      *
      * @param  string  $path
-     * @param  bool    $secure
+     * @param  bool|null  $secure
      * @return string
      */
     function asset($path, $secure = null)
@@ -283,7 +283,7 @@ if (! function_exists('config')) {
      *
      * If an array is passed as the key, we will assume you want to set an array of values.
      *
-     * @param  array|string  $key
+     * @param  array|string|null  $key
      * @param  mixed  $default
      * @return mixed|\Illuminate\Config\Repository
      */
@@ -320,11 +320,11 @@ if (! function_exists('cookie')) {
      * Create a new cookie instance.
 	 * 创建一个新的cookie实例
      *
-     * @param  string  $name
-     * @param  string  $value
+     * @param  string|null  $name
+     * @param  string|null  $value
      * @param  int  $minutes
-     * @param  string  $path
-     * @param  string  $domain
+     * @param  string|null  $path
+     * @param  string|null  $domain
      * @param  bool  $secure
      * @param  bool  $httpOnly
      * @param  bool  $raw
@@ -555,7 +555,7 @@ if (! function_exists('logger')) {
      * Log a debug message to the logs.
 	 * 将调试消息记录到日志中
      *
-     * @param  string  $message
+     * @param  string|null  $message
      * @param  array  $context
      * @return \Illuminate\Log\LogManager|null
      */
@@ -574,7 +574,7 @@ if (! function_exists('logs')) {
      * Get a log driver instance.
 	 * 获取日志驱动程序实例
      *
-     * @param  string  $driver
+     * @param  string|null  $driver
      * @return \Illuminate\Log\LogManager|\Psr\Log\LoggerInterface
      */
     function logs($driver = null)
@@ -610,51 +610,7 @@ if (! function_exists('mix')) {
      */
     function mix($path, $manifestDirectory = '')
     {
-        static $manifests = [];
-
-        if (! Str::startsWith($path, '/')) {
-            $path = "/{$path}";
-        }
-
-        if ($manifestDirectory && ! Str::startsWith($manifestDirectory, '/')) {
-            $manifestDirectory = "/{$manifestDirectory}";
-        }
-
-        if (file_exists(public_path($manifestDirectory.'/hot'))) {
-            $url = rtrim(file_get_contents(public_path($manifestDirectory.'/hot')));
-
-            if (Str::startsWith($url, ['http://', 'https://'])) {
-                return new HtmlString(Str::after($url, ':').$path);
-            }
-
-            return new HtmlString("//localhost:8080{$path}");
-        }
-
-        $manifestPath = public_path($manifestDirectory.'/mix-manifest.json');
-
-        if (! isset($manifests[$manifestPath])) {
-            if (! file_exists($manifestPath)) {
-                throw new Exception('The Mix manifest does not exist.');
-            }
-
-            $manifests[$manifestPath] = json_decode(file_get_contents($manifestPath), true);
-        }
-
-        $manifest = $manifests[$manifestPath];
-
-        if (! isset($manifest[$path])) {
-            $exception = new Exception("Unable to locate Mix file: {$path}.");
-
-            if (! app('config')->get('app.debug')) {
-                report($exception);
-
-                return $path;
-            } else {
-                throw $exception;
-            }
-        }
-
-        return new HtmlString($manifestDirectory.$manifest[$path]);
+        return app(Mix::class)(...func_get_args());
     }
 }
 
@@ -668,7 +624,7 @@ if (! function_exists('now')) {
      */
     function now($tz = null)
     {
-        return Carbon::now($tz);
+        return Date::now($tz);
     }
 }
 
@@ -677,7 +633,7 @@ if (! function_exists('old')) {
      * Retrieve an old input item.
 	 * 检索旧的输入项
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  mixed   $default
      * @return mixed
      */
@@ -725,7 +681,7 @@ if (! function_exists('redirect')) {
      * @param  string|null  $to
      * @param  int     $status
      * @param  array   $headers
-     * @param  bool    $secure
+     * @param  bool|null    $secure
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     function redirect($to = null, $status = 302, $headers = [], $secure = null)
@@ -743,7 +699,7 @@ if (! function_exists('report')) {
      * Report an exception.
 	 * 报告异常
      *
-     * @param  \Exception  $exception
+     * @param  \Throwable  $exception
      * @return void
      */
     function report($exception)
@@ -762,7 +718,7 @@ if (! function_exists('request')) {
      * Get an instance of the current request or an input item from the request.
 	 * 获取当前请求的实例或来自请求的输入项
      *
-     * @param  array|string  $key
+     * @param  array|string|null  $key
      * @param  mixed   $default
      * @return \Illuminate\Http\Request|string|array
      */
@@ -789,14 +745,17 @@ if (! function_exists('rescue')) {
      *
      * @param  callable  $callback
      * @param  mixed  $rescue
+     * @param  bool  $report
      * @return mixed
      */
-    function rescue(callable $callback, $rescue = null)
+    function rescue(callable $callback, $rescue = null, $report = true)
     {
         try {
             return $callback();
         } catch (Throwable $e) {
-            report($e);
+            if ($report) {
+                report($e);
+            }
 
             return value($rescue);
         }
@@ -809,11 +768,12 @@ if (! function_exists('resolve')) {
 	 * 从容器解析服务
      *
      * @param  string  $name
+     * @param  array  $parameters
      * @return mixed
      */
-    function resolve($name)
+    function resolve($name, array $parameters = [])
     {
-        return app($name);
+        return app($name, $parameters);
     }
 }
 
@@ -904,8 +864,9 @@ if (! function_exists('session')) {
 	 * 获取/设置指定的会话值。
      *
      * If an array is passed as the key, we will assume you want to set an array of values.
+	 * 如果传递一个数组作为键，我们将假设您想要设置一个值数组。
      *
-     * @param  array|string  $key
+     * @param  array|string|null  $key
      * @param  mixed  $default
      * @return mixed|\Illuminate\Session\Store|\Illuminate\Session\SessionManager
      */
@@ -947,7 +908,7 @@ if (! function_exists('today')) {
      */
     function today($tz = null)
     {
-        return Carbon::today($tz);
+        return Date::today($tz);
     }
 }
 
@@ -956,9 +917,9 @@ if (! function_exists('trans')) {
      * Translate the given message.
 	 * 翻译给定的信息
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  array   $replace
-     * @param  string  $locale
+     * @param  string|null  $locale
      * @return \Illuminate\Contracts\Translation\Translator|string|array|null
      */
     function trans($key = null, $replace = [], $locale = null)
@@ -979,7 +940,7 @@ if (! function_exists('trans_choice')) {
      * @param  string  $key
      * @param  int|array|\Countable  $number
      * @param  array   $replace
-     * @param  string  $locale
+     * @param  string|null  $locale
      * @return string
      */
     function trans_choice($key, $number, array $replace = [], $locale = null)
@@ -995,7 +956,7 @@ if (! function_exists('__')) {
      *
      * @param  string  $key
      * @param  array  $replace
-     * @param  string  $locale
+     * @param  string|null  $locale
      * @return string|array|null
      */
     function __($key, $replace = [], $locale = null)
@@ -1011,7 +972,7 @@ if (! function_exists('url')) {
      *
      * @param  string  $path
      * @param  mixed   $parameters
-     * @param  bool    $secure
+     * @param  bool|null    $secure
      * @return \Illuminate\Contracts\Routing\UrlGenerator|string
      */
     function url($path = null, $parameters = [], $secure = null)
@@ -1052,8 +1013,8 @@ if (! function_exists('view')) {
      * Get the evaluated view contents for the given view.
 	 * 获取给定视图的求值视图内容
      *
-     * @param  string  $view
-     * @param  array   $data
+     * @param  string|null  $view
+     * @param  \Illuminate\Contracts\Support\Arrayable|array   $data
      * @param  array   $mergeData
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */

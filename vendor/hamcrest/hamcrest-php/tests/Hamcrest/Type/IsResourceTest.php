@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，类型，是否资源测试
- */
-
 namespace Hamcrest\Type;
 
 class IsResourceTest extends \Hamcrest\AbstractMatcherTest

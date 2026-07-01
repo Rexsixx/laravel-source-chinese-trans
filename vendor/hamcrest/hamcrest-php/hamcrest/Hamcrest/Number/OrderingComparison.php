@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，数字，排序比较
+ * Hamcrest，Number，排序比较
  */
 
 namespace Hamcrest\Number;

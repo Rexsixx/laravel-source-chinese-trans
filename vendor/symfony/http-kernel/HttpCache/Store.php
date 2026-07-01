@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，HTTP缓存，储存
+ * Symfony，组件，Http内核，Http缓存，存储
  */
 
 /*
@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Store implements all the logic for storing cache metadata (Request and Response headers).
- * Store实现存储缓存元数据（请求和响应标头）的所有逻辑。
+ * 存储实现存储缓存元数据(请求和响应头)的所有逻辑。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -35,7 +35,6 @@ class Store implements StoreInterface
 
     /**
      * Constructor.
-	 * 构造方法。
      *
      * The available options are:
      *

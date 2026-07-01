@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，加载器，Annotation 目录加载器
+ * Symfony，组件，路由选择，加载程序，注释目录加载器
  */
 
 /*
@@ -20,7 +20,7 @@ use Symfony\Component\Routing\RouteCollection;
 /**
  * AnnotationDirectoryLoader loads routing information from annotations set
  * on PHP classes and methods.
- * AnnotationDirectoryLoader 从 PHP 类和方法上设置的注解中加载路由信息。
+ * AnnotationDirectoryLoader加载从PHP类和方法设置的注释中路由信息。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -28,6 +28,7 @@ class AnnotationDirectoryLoader extends AnnotationFileLoader
 {
     /**
      * Loads from annotations from a directory.
+	 * 从目录中加载的注释负载
      *
      * @param string      $path A directory path
      * @param string|null $type The resource type

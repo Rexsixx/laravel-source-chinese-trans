@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，退化的 Uuid
+ * Ramsey，Uuid，退化 Uuid
  */
 
 /**
@@ -25,7 +25,7 @@ use Ramsey\Uuid\Exception\UnsupportedOperationException;
 
 /**
  * DegradedUuid represents an RFC 4122 UUID on 32-bit systems
- * DegradedUuid表示32位系统上的RFC 4122 UUID
+ * DegradedUuid在32位系统上表示RFC 4122 UUID。
  *
  * @see Uuid
  */

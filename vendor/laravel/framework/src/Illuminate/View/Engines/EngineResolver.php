@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，引擎，引擎解析器
+ * Illuminate，视图，引擎，引擎解析器
  */
 
 namespace Illuminate\View\Engines;
@@ -31,7 +31,7 @@ class EngineResolver
 	 * 注册一个新的引擎解析器。
      *
      * The engine string typically corresponds to a file extension.
-	 * 引擎字符串通常对应于文件扩展名。
+	 * 引擎字符串通常对应于文件扩展名
      *
      * @param  string   $engine
      * @param  \Closure  $resolver

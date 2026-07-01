@@ -10,7 +10,6 @@ interface Node
 {
     /**
      * Gets the type of the node.
-	 * 获取节点的类型
      *
      * @return string Type of the node
      */

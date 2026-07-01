@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，表格请求
+ * Illuminate，基础，Http，表单请求
  */
 
 namespace Illuminate\Foundation\Http;
@@ -83,6 +83,10 @@ class FormRequest extends Request implements ValidatesWhenResolved
      */
     protected function getValidatorInstance()
     {
+        if ($this->validator) {
+            return $this->validator;
+        }
+
         $factory = $this->container->make(ValidationFactory::class);
 
         if (method_exists($this, 'validator')) {

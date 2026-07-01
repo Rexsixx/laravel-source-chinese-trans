@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Css 选择器，节点，特征
+ * Symfony，组件，Css选择器，节点，特异性
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\CssSelector\Node;
 
 /**
  * Represents a node specificity.
- * 表示节点特异性。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.

@@ -1,10 +1,14 @@
 <?php
+/**
+ * Faker，ORM，Propel，Populator
+ */
 
 namespace Faker\ORM\Propel;
 
 /**
  * Service class for populating a database using the Propel ORM.
  * A Populator can populate several tables using ActiveRecord classes.
+ * 使用驱动ORM填充数据库的服务类。
  */
 class Populator
 {

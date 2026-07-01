@@ -1,8 +1,4 @@
 <?php
-/**
- * PHPUnit，工具，无效参数助手
- */
-
 /*
  * This file is part of PHPUnit.
  *

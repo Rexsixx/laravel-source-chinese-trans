@@ -34,7 +34,6 @@ class FilterResponseEvent extends KernelEvent
 
     /**
      * Returns the current response object.
-	 * 返回当前响应对象
      *
      * @return Response
      */

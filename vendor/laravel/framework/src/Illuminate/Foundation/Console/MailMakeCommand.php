@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，邮件编译命令
+ * Illuminate，基础，控制台，Mail Make 命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -36,7 +36,7 @@ class MailMakeCommand extends GeneratorCommand
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */
@@ -101,7 +101,7 @@ class MailMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认命名空间
+	 * 获取类的默认名称空间
      *
      * @param  string  $rootNamespace
      * @return string

@@ -16,7 +16,6 @@ namespace Prophecy\Argument;
 
 /**
  * Arguments wildcarding.
- * 参数通配符
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */

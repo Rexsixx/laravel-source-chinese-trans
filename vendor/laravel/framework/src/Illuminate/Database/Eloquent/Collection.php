@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，收集
+ * Illuminate，数据库，Eloquent，集合
  */
 
 namespace Illuminate\Database\Eloquent;
@@ -21,7 +21,7 @@ class Collection extends BaseCollection implements QueueableCollection
      *
      * @param  mixed  $key
      * @param  mixed  $default
-     * @return \Illuminate\Database\Eloquent\Model|static
+     * @return \Illuminate\Database\Eloquent\Model|static|null
      */
     public function find($key, $default = null)
     {
@@ -199,20 +199,6 @@ class Collection extends BaseCollection implements QueueableCollection
     }
 
     /**
-     * Add an item to the collection.
-	 * 向集合中添加项
-     *
-     * @param  mixed  $item
-     * @return $this
-     */
-    public function add($item)
-    {
-        $this->items[] = $item;
-
-        return $this;
-    }
-
-    /**
      * Determine if a key exists in the collection.
 	 * 确定一个键是否存在于集合中
      *
@@ -271,7 +257,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Run a map over each of the items.
-	 * 在每个项目上运行一张地图
+	 * 在每个项目上运行一张映射
      *
      * @param  callable  $callback
      * @return \Illuminate\Support\Collection|static
@@ -469,7 +455,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Get the keys of the collection items.
-	 * 获得收集项目的密钥
+	 * 获取具有给定键值的数组
      *
      * @return \Illuminate\Support\Collection
      */
@@ -535,6 +521,20 @@ class Collection extends BaseCollection implements QueueableCollection
     public function pad($size, $value)
     {
         return $this->toBase()->pad($size, $value);
+    }
+
+    /**
+     * Get the comparison function to detect duplicates.
+	 * 获取比较函数以检测重复项
+     *
+     * @param  bool  $strict
+     * @return \Closure
+     */
+    protected function duplicateComparator($strict)
+    {
+        return function ($a, $b) {
+            return $a->is($b);
+        };
     }
 
     /**

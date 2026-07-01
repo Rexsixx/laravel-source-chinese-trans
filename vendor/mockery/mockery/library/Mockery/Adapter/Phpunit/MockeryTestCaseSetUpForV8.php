@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，适配器，Php单元，Mockery 为V8设置的测试用例
+ * Mockery，适配器，Php单元，MockeryTestCaseSetUpForV8
  */
 
 /**

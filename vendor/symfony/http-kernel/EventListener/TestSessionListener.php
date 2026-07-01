@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Sets the session in the request.
- * 设置请求中的会话。
+ * 在请求中设置会话。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *

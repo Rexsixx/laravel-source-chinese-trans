@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，管道，Hub
+ * Illuminate，契约，管道，中心
  */
 
 namespace Illuminate\Contracts\Pipeline;

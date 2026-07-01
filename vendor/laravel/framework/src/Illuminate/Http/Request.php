@@ -32,7 +32,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 
     /**
      * All of the converted files for the request.
-	 * 所有转换文件的请求
+	 * 为请求转换的所有文件
      *
      * @var array
      */
@@ -203,8 +203,10 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      */
     public function is(...$patterns)
     {
+        $path = $this->decodedPath();
+
         foreach ($patterns as $pattern) {
-            if (Str::is($pattern, $this->decodedPath())) {
+            if (Str::is($pattern, $path)) {
                 return true;
             }
         }
@@ -293,7 +295,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      * Get the client IP address.
 	 * 获取客户端IP地址
      *
-     * @return string
+     * @return string|null
      */
     public function ip()
     {
@@ -327,7 +329,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 	 * 将新输入合并到当前请求的输入数组中
      *
      * @param  array  $input
-     * @return \Illuminate\Http\Request
+     * @return $this
      */
     public function merge(array $input)
     {
@@ -341,7 +343,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 	 * 替换当前请求的输入
      *
      * @param  array  $input
-     * @return \Illuminate\Http\Request
+     * @return $this
      */
     public function replace(array $input)
     {
@@ -355,6 +357,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 	 * 这个方法属于Symfony HttpFoundation，在使用Laravel时通常不需要。
      *
      * Instead, you may use the "input" method.
+	 * 相反，您可以使用“输入”方法。
      *
      * @param  string  $key
      * @param  mixed  $default
@@ -369,7 +372,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      * Get the JSON payload for the request.
 	 * 获取请求的JSON有效负载
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  mixed   $default
      * @return \Symfony\Component\HttpFoundation\ParameterBag|mixed
      */
@@ -427,6 +430,8 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
             $from->getContent()
         );
 
+        $request->headers->replace($from->headers->all());
+
         $request->setJson($from->json());
 
         if ($session = $from->getSession()) {
@@ -445,7 +450,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
 	 * 从Symfony实例创建一个照亮请求
      *
      * @param  \Symfony\Component\HttpFoundation\Request  $request
-     * @return \Illuminate\Http\Request
+     * @return static
      */
     public static function createFromBase(SymfonyRequest $request)
     {
@@ -453,18 +458,18 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
             return $request;
         }
 
-        $content = $request->content;
-
-        $request = (new static)->duplicate(
+        $newRequest = (new static)->duplicate(
             $request->query->all(), $request->request->all(), $request->attributes->all(),
             $request->cookies->all(), $request->files->all(), $request->server->all()
         );
 
-        $request->content = $content;
+        $newRequest->headers->replace($request->headers->all());
 
-        $request->request = $request->getInputSource();
+        $newRequest->content = $request->content;
 
-        return $request;
+        $newRequest->request = $newRequest->getInputSource();
+
+        return $newRequest;
     }
 
     /**

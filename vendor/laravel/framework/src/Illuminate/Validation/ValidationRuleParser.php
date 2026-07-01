@@ -103,7 +103,7 @@ class ValidationRuleParser
 
     /**
      * Prepare the given rule for the Validator.
-	 * 为验证器准备给定规则
+	 * 为Validator准备给定的规则
      *
      * @param  mixed  $rule
      * @return mixed
@@ -142,7 +142,7 @@ class ValidationRuleParser
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, $attribute) || (bool) preg_match('/^'.$pattern.'\z/', $key)) {
                 foreach ((array) $rules as $rule) {
-                    $this->implicitAttributes[$attribute][] = $key;
+                    $this->implicitAttributes[$attribute][] = strval($key);
 
                     $results = $this->mergeRules($results, $key, $rule);
                 }
@@ -247,7 +247,7 @@ class ValidationRuleParser
         // easy {rule}:{parameters} formatting convention. For instance the
         // rule "Max:3" states that the value may only be three letters.
 		// 指定验证规则和参数的格式遵循一种简单的“规则：参数”的格式规范。
-		// 例如，规则“Max:3”表示该值只能是三个字母。
+		// 例如，规则“Max:3”表示该值只能为三个字母。
         if (strpos($rules, ':') !== false) {
             [$rules, $parameter] = explode(':', $rules, 2);
 

@@ -205,7 +205,7 @@ trait ManagesLayouts
 	 * 获取一个节的内容
      *
      * @param  string  $name
-     * @param  string  $default
+     * @param  string|null  $default
      * @return mixed
      */
     public function getSection($name, $default = null)
@@ -226,7 +226,7 @@ trait ManagesLayouts
 
     /**
      * Flush all of the sections.
-	 * 刷新所有的部分
+	 * 冲洗所有的部分
      *
      * @return void
      */

@@ -1,13 +1,10 @@
 <?php
-/**
- * Laravel，Tinker，配置
- */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Console Commands	控制台命令
+    | Console Commands
     |--------------------------------------------------------------------------
     |
     | This option allows you to add additional Artisan commands that should

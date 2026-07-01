@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由器
+ * Illuminate，路由选择，路由器
  */
 
 namespace Illuminate\Routing;
@@ -139,7 +139,7 @@ class Router implements RegistrarContract, BindingRegistrar
 	 * 创建一个新的Router实例
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
-     * @param  \Illuminate\Container\Container  $container
+     * @param  \Illuminate\Container\Container|null  $container
      * @return void
      */
     public function __construct(Dispatcher $events, Container $container = null)
@@ -303,7 +303,7 @@ class Router implements RegistrarContract, BindingRegistrar
 
     /**
      * Register a new route with the given verbs.
-	 * 用给定的动词注册一条新路由
+	 * 用给定的动词注册一条新路线
      *
      * @param  array|string  $methods
      * @param  string  $uri
@@ -404,7 +404,8 @@ class Router implements RegistrarContract, BindingRegistrar
         // Once we have updated the group stack, we'll load the provided routes and
         // merge in the group's attributes when the routes are created. After we
         // have created the routes, we will pop the attributes off the stack.
-		// 一旦我们完成了组堆栈的更新，我们就会加载所提供的路由，并在创建这些路由时将组的属性一并纳入其中。
+		// 一旦我们完成了组栈的更新，我们就会加载所提供的路由，并在创建路由时将组的属性合并进去。
+		// 在创建完路由之后，我们会将属性从栈中移除。
         $this->loadRoutes($routes);
 
         array_pop($this->groupStack);
@@ -450,9 +451,7 @@ class Router implements RegistrarContract, BindingRegistrar
         if ($routes instanceof Closure) {
             $routes($this);
         } else {
-            $router = $this;
-
-            require $routes;
+            (new RouteFileRegistrar($this))->register($routes);
         }
     }
 
@@ -514,7 +513,8 @@ class Router implements RegistrarContract, BindingRegistrar
         // If we have groups that need to be merged, we will merge them now after this
         // route has already been created and is ready to go. After we're done with
         // the merge we will be ready to return the route back out to the caller.
-		// 如果存在需要合并的小组，那么在这一路线已经创建完成并准备投入使用之后，我们将立即对其进行合并。
+		// 如果存在需要合并的组，那么在该路由已创建并准备就绪之后，我们将立即进行合并操作。
+		// 完成合并后，我们将把该路由重新返回给调用方。
         if ($this->hasGroupStack()) {
             $this->mergeGroupAttributesIntoRoute($route);
         }
@@ -556,7 +556,8 @@ class Router implements RegistrarContract, BindingRegistrar
         // Here we'll merge any group "uses" statement if necessary so that the action
         // has the proper clause for this property. Then we can simply set the name
         // of the controller on the action and return the action array for usage.
-		// 在这里，如果有必要的话，我们会将任何“使用”语句合并起来，以便使该操作具备针对此属性的恰当子句。
+		// 在这里，如果有必要的话，我们会合并任何“使用”语句，以使该操作具备针对此属性的恰当子句。
+		// 然后，我们只需在操作上设置控制器的名称，并返回操作数组以供使用。
         if (! empty($this->groupStack)) {
             $action['uses'] = $this->prependGroupNamespace($action['uses']);
         }
@@ -564,7 +565,8 @@ class Router implements RegistrarContract, BindingRegistrar
         // Here we will set this controller name on the action array just so we always
         // have a copy of it for reference if we need it. This can be used while we
         // search for a controller name or do some other type of fetch operation.
-		// 在这里，我们将把这个控制器名称设置到操作数组中，这样如果需要的话，我们就能始终拥有一个该名称的副本以供参考。
+		// 在这里，我们将把此控制器名称设置到操作数组中，这样我们就能始终拥有其副本以供参考，以防在需要时使用。
+		// 在我们查找控制器名称或执行其他类型的获取操作时，都可以使用这个方法。
         $action['controller'] = $action['uses'];
 
         return $action;
@@ -646,7 +648,7 @@ class Router implements RegistrarContract, BindingRegistrar
 	 * 返回由给定路由返回的响应
      *
      * @param  string  $name
-     * @return mixed
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function respondWithRoute($name)
     {
@@ -674,7 +676,7 @@ class Router implements RegistrarContract, BindingRegistrar
 	 * 将请求分派到路由并返回响应
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return mixed
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function dispatchToRoute(Request $request)
     {
@@ -703,7 +705,7 @@ class Router implements RegistrarContract, BindingRegistrar
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Routing\Route  $route
-     * @return mixed
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     protected function runRoute(Request $request, Route $route)
     {
@@ -786,7 +788,7 @@ class Router implements RegistrarContract, BindingRegistrar
 
     /**
      * Static version of prepareResponse.
-	 * prepareerresponse的静态版本
+	 * prepareResponse的静态版本
      *
      * @param  \Symfony\Component\HttpFoundation\Request  $request
      * @param  mixed  $response
@@ -826,6 +828,8 @@ class Router implements RegistrarContract, BindingRegistrar
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return \Illuminate\Routing\Route
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function substituteBindings($route)
     {
@@ -844,6 +848,8 @@ class Router implements RegistrarContract, BindingRegistrar
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return void
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function substituteImplicitBindings($route)
     {
@@ -858,6 +864,8 @@ class Router implements RegistrarContract, BindingRegistrar
      * @param  string  $value
      * @param  \Illuminate\Routing\Route  $route
      * @return mixed
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     protected function performBinding($key, $value, $route)
     {
@@ -1007,8 +1015,6 @@ class Router implements RegistrarContract, BindingRegistrar
      * @param  string  $class
      * @param  \Closure|null  $callback
      * @return void
-     *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function model($key, $class, Closure $callback = null)
     {
@@ -1094,7 +1100,7 @@ class Router implements RegistrarContract, BindingRegistrar
 	 * 获取当前路由的路由参数
      *
      * @param  string  $key
-     * @param  string  $default
+     * @param  string|null  $default
      * @return mixed
      */
     public function input($key, $default = null)

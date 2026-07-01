@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，Caster，Xml 资源Caster
+ * Symfony，组件，Var Dumper，Caster，Xml资源 Caster
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts XML resources to array representation.
- * 将XML资源强制转换为数组表示。
+ * 将XML资源转换为数组表示。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *

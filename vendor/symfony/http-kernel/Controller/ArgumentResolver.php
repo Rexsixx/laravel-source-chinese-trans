@@ -25,7 +25,6 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactoryInter
 
 /**
  * Responsible for resolving the arguments passed to an action.
- * 负责解决传递给行动的论点。
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */

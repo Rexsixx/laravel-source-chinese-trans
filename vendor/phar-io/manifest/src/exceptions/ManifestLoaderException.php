@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Manifest，Manifest装载机异常
+ * PharIo，Manifest，清单加载器异常
  */
 
 namespace PharIo\Manifest;

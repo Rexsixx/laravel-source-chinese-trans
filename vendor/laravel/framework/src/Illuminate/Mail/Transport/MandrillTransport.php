@@ -12,7 +12,7 @@ class MandrillTransport extends Transport
 {
     /**
      * Guzzle client instance.
-	 * Guzzle 客户端实例
+	 * Guzzle客户端实例
      *
      * @var \GuzzleHttp\ClientInterface
      */
@@ -66,7 +66,7 @@ class MandrillTransport extends Transport
 	 * 获取此消息应发送到的所有地址。
      *
      * Note that Mandrill still respects CC, BCC headers in raw message itself.
-	 * 注意,持久化仍然尊重原始消息本身的CC、BCC头。
+	 * 请注意，Mandrill仍然尊重原始消息本身的抄送、密件抄送头。
      *
      * @param  \Swift_Mime_SimpleMessage $message
      * @return array

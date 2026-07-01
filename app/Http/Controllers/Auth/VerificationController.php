@@ -18,7 +18,8 @@ class VerificationController extends Controller
     | This controller is responsible for handling email verification for any
     | user that recently registered with the application. Emails may also
     | be re-sent if the user didn't receive the original email message.
-	| 此控制器负责处理任何近期在该应用程序中注册的用户的电子邮件验证事宜。
+	| 该控制器负责处理最近在应用程序注册的任何用户的电子邮件验证。
+	| 如果用户没有收到原始的电子邮件信息,电子邮件也可能被重新发送。
     |
     */
 

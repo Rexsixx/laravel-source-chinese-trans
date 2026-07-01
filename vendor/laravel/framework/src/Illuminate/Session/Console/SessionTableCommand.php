@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，会话，控制台，会话表命令
+ * Illuminate，Session，控制台，会话表命令
  */
 
 namespace Illuminate\Session\Console;
@@ -29,7 +29,7 @@ class SessionTableCommand extends Command
 
     /**
      * The filesystem instance.
-	 * 文件系统实例      
+	 * 文件系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */

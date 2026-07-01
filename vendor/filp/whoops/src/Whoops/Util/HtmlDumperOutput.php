@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，工具，Html Dumper 输出
+ * Whoops，工具，Html dump输出
  */
 
 /**
@@ -12,7 +12,6 @@ namespace Whoops\Util;
 
 /**
  * Used as output callable for Symfony\Component\VarDumper\Dumper\HtmlDumper::dump()
- * 用于输出可调用
  *
  * @see TemplateHelper::dump()
  */

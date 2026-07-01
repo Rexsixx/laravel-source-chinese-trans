@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，转储器，Cli 转储器
+ * Symfony，组件，Var Dumper，转储，Cli Dumper
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * CliDumper dumps variables for command line output.
- * CliDumper为命令行输出转储变量。
+ * 命令行输出的变量转储变量。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -332,6 +332,7 @@ class CliDumper extends AbstractDumper
 
     /**
      * Dumps an ellipsis for cut children.
+	 * 为剪切的子转储省略号
      *
      * @param bool $hasChild When the dump of the hash has child item
      * @param int  $cut      The number of items the hash has been cut by
@@ -351,6 +352,7 @@ class CliDumper extends AbstractDumper
 
     /**
      * Dumps a key in a hash structure.
+	 * 在散列结构中转储键
      */
     protected function dumpKey(Cursor $cursor)
     {
@@ -433,6 +435,7 @@ class CliDumper extends AbstractDumper
 
     /**
      * Decorates a value with some style.
+	 * 用某种样式装饰值
      *
      * @param string $style The type of style being applied
      * @param string $value The value being styled
@@ -583,6 +586,7 @@ class CliDumper extends AbstractDumper
 
     /**
      * Returns true if the stream supports colorization.
+	 * 如果流支持着色，则返回true。
      *
      * Reference: Composer\XdebugHandler\Process::supportsColor
      * https://github.com/composer/xdebug-handler
@@ -627,6 +631,7 @@ class CliDumper extends AbstractDumper
 
     /**
      * Returns true if the Windows terminal supports true color.
+	 * 如果Windows终端支持真彩色，则返回true。
      *
      * Note that this does not check an output stream, but relies on environment
      * variables from known implementations, or a PHP and Windows version that

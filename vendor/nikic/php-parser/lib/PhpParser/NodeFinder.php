@@ -13,7 +13,6 @@ class NodeFinder
 {
     /**
      * Find all nodes satisfying a filter callback.
-	 * 发现所有满足过滤器回调的节点
      *
      * @param Node|Node[] $nodes  Single node or array of nodes to search in
      * @param callable    $filter Filter callback: function(Node $node) : bool

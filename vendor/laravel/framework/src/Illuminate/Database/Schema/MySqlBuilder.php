@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，模式，MySql 构建器
+ * Illuminate，数据库，架构，MySql 构建器
  */
 
 namespace Illuminate\Database\Schema;

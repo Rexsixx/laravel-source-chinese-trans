@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，多态多对多关系
+ * Illuminate，数据库，Eloquent，关系，形态变多样
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -165,6 +165,7 @@ class MorphToMany extends BelongsToMany
 	 * 得到关系的主列。
      *
      * "pivot_" is prefixed at each column for easy removal later.
+	 * “pivot_”在每一列前加上前缀，以便稍后删除。
      *
      * @return array
      */

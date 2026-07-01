@@ -39,7 +39,7 @@ class Rule
 
     /**
      * Get an in constraint builder instance.
-	 * 获取一个已存在的约束生成器实例
+	 * 获取约束生成器实例
      *
      * @param  \Illuminate\Contracts\Support\Arrayable|array|string  $values
      * @return \Illuminate\Validation\Rules\In
@@ -71,9 +71,9 @@ class Rule
 
     /**
      * Get a required_if constraint builder instance.
-	 * 如果约束生成器实例得到一个需求
+	 * 获取required_if约束构建器实例
      *
-     * @param  callable  $callback
+     * @param  callable|bool  $callback
      * @return \Illuminate\Validation\Rules\RequiredIf
      */
     public static function requiredIf($callback)
@@ -83,7 +83,7 @@ class Rule
 
     /**
      * Get a unique constraint builder instance.
-	 * 获取一个惟一的约束生成器实例
+	 * 获取唯一约束构建器实例
      *
      * @param  string  $table
      * @param  string  $column

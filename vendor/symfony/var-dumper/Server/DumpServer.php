@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，服务器，转储服务器
+ * Symfony，组件，Var Dumper，服务，转储服务器
  */
 
 /*
@@ -20,7 +20,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * A server collecting Data clones sent by a ServerDumper.
- * 收集ServerDumper发送的数据克隆的服务器。
+ * 一个服务器收集由一个ServerDumper发送的数据克隆。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  *

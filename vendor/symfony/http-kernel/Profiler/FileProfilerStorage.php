@@ -1,8 +1,7 @@
 <?php
 /**
- * Symfony，组件，Http内核，分析器，文件分析器存储
+ * Symfony，组件，Http内核，分析器，文件分析器存储器
  */
-
 
 /*
  * This file is part of the Symfony package.
@@ -17,7 +16,7 @@ namespace Symfony\Component\HttpKernel\Profiler;
 
 /**
  * Storage for profiler using files.
- * 使用文件的分析器存储。
+ * 用于profiler使用文件的存储。
  *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
@@ -25,7 +24,7 @@ class FileProfilerStorage implements ProfilerStorageInterface
 {
     /**
      * Folder where profiler data are stored.
-	 * 存储分析器数据的文件夹
+	 * 存储原始数据的文件夹
      *
      * @var string
      */
@@ -33,7 +32,6 @@ class FileProfilerStorage implements ProfilerStorageInterface
 
     /**
      * Constructs the file storage using a "dsn-like" path.
-	 * 使用“类似于dsn”的路径构造文件存储。
      *
      * Example : "file:/path/to/the/storage/folder"
      *
@@ -197,7 +195,6 @@ class FileProfilerStorage implements ProfilerStorageInterface
 
     /**
      * Gets filename to store data, associated to the token.
-	 * 获取用于存储与令牌关联的数据的文件名
      *
      * @param string $token
      *
@@ -214,7 +211,6 @@ class FileProfilerStorage implements ProfilerStorageInterface
 
     /**
      * Gets the index filename.
-	 * 获取索引文件名
      *
      * @return string The index filename
      */

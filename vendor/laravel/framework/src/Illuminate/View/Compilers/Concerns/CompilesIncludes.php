@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译器，问题，编译 Includes
+ * Illuminate，视图，编译，问题，编译包含
  */
 
 namespace Illuminate\View\Compilers\Concerns;
@@ -9,7 +9,7 @@ trait CompilesIncludes
 {
     /**
      * Compile the each statements into valid PHP.
-	 * 将每个语句编译成有效的PHP
+	 * 编译每个语句成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -30,7 +30,7 @@ trait CompilesIncludes
     {
         $expression = $this->stripParentheses($expression);
 
-        return "<?php echo \$__env->make({$expression}, \Illuminate\Support\Arr::except(get_defined_vars(), array('__data', '__path')))->render(); ?>";
+        return "<?php echo \$__env->make({$expression}, \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>";
     }
 
     /**
@@ -44,7 +44,7 @@ trait CompilesIncludes
     {
         $expression = $this->stripParentheses($expression);
 
-        return "<?php if (\$__env->exists({$expression})) echo \$__env->make({$expression}, \Illuminate\Support\Arr::except(get_defined_vars(), array('__data', '__path')))->render(); ?>";
+        return "<?php if (\$__env->exists({$expression})) echo \$__env->make({$expression}, \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>";
     }
 
     /**
@@ -58,7 +58,7 @@ trait CompilesIncludes
     {
         $expression = $this->stripParentheses($expression);
 
-        return "<?php echo \$__env->renderWhen($expression, \Illuminate\Support\Arr::except(get_defined_vars(), array('__data', '__path'))); ?>";
+        return "<?php echo \$__env->renderWhen($expression, \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path'])); ?>";
     }
 
     /**
@@ -72,6 +72,6 @@ trait CompilesIncludes
     {
         $expression = $this->stripParentheses($expression);
 
-        return "<?php echo \$__env->first({$expression}, \Illuminate\Support\Arr::except(get_defined_vars(), array('__data', '__path')))->render(); ?>";
+        return "<?php echo \$__env->first({$expression}, \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>";
     }
 }

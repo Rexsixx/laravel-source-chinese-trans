@@ -15,7 +15,7 @@ class FreshCommand extends Command
 
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
@@ -31,7 +31,7 @@ class FreshCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */
@@ -52,6 +52,12 @@ class FreshCommand extends Command
         $this->dropAllTables($database);
 
         $this->info('Dropped all tables successfully.');
+
+        if ($this->option('drop-types')) {
+            $this->dropAllTypes($database);
+
+            $this->info('Dropped all types successfully.');
+        }
 
         $this->call('migrate', array_filter([
             '--database' => $database,
@@ -95,6 +101,20 @@ class FreshCommand extends Command
     }
 
     /**
+     * Drop all of the database types.
+	 * 删除所有数据库类型
+     *
+     * @param string $database
+     * @return void
+     */
+    protected function dropAllTypes($database)
+    {
+        $this->laravel['db']->connection($database)
+                    ->getSchemaBuilder()
+                    ->dropAllTypes();
+    }
+
+    /**
      * Determine if the developer has requested database seeding.
 	 * 确定开发人员是否请求了数据库播种
      *
@@ -131,19 +151,13 @@ class FreshCommand extends Command
     {
         return [
             ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use'],
-
             ['drop-views', null, InputOption::VALUE_NONE, 'Drop all tables and views'],
-
+            ['drop-types', null, InputOption::VALUE_NONE, 'Drop all tables and types (Postgres only)'],
             ['force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production'],
-
             ['path', null, InputOption::VALUE_OPTIONAL, 'The path to the migrations files to be executed'],
-
             ['realpath', null, InputOption::VALUE_NONE, 'Indicate any provided migration file paths are pre-resolved absolute paths'],
-
             ['seed', null, InputOption::VALUE_NONE, 'Indicates if the seed task should be re-run'],
-
             ['seeder', null, InputOption::VALUE_OPTIONAL, 'The class name of the root seeder'],
-
             ['step', null, InputOption::VALUE_NONE, 'Force the migrations to be run so they can be rolled back individually'],
         ];
     }

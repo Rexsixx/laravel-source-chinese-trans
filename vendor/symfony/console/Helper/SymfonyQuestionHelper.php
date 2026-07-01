@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，控制台，助手，Symfony 问题助手
- */
 
 /*
  * This file is part of the Symfony package.
@@ -23,7 +20,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Symfony Style Guide compliant question helper.
- * Symfony风格指南兼容问题助手。
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */

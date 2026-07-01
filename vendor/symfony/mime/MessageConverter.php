@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，消息转换器
+ * Symfony，组件，Mime，信息转换器
  */
 
 /*
@@ -36,7 +36,6 @@ final class MessageConverter
         }
 
         // try to convert to a "simple" Email instance
-		// 尝试转换为一个“简单”的电子邮件实例
         $body = $message->getBody();
         if ($body instanceof TextPart) {
             return self::createEmailFromTextPart($message, $body);

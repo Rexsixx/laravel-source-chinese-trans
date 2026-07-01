@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，事件监听器，片段监听器
+ * Symfony，组件，Http内核，事件监听器，碎片监听器
  */
 
 /*
@@ -51,7 +51,6 @@ class FragmentListener implements EventSubscriberInterface
 
     /**
      * Fixes request attributes when the path is '/_fragment'.
-	 * 修复了路径为‘/_fragment’时的请求属性
      *
      * @throws AccessDeniedHttpException if the request does not come from a trusted IP
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，加载器，指针加载器
+ * Symfony，组件，路由选择，加载程序，闭包加载器
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * ClosureLoader loads routes from a PHP closure.
+ * ClosureLoader从PHP关闭中加载路由。
  *
  * The Closure must return a RouteCollection instance.
  *
@@ -28,6 +29,7 @@ class ClosureLoader extends Loader
 {
     /**
      * Loads a Closure.
+	 * 加载一个闭包
      *
      * @param \Closure    $closure A Closure
      * @param string|null $type    The resource type

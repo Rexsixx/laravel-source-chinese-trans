@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，控制台，线程调度，调度运行命令 schedule:run
+ * Illuminate，控制台，线程调度，调度运行命令
  */
 
 namespace Illuminate\Console\Scheduling;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Date;
 
 class ScheduleRunCommand extends Command
 {
@@ -61,14 +61,14 @@ class ScheduleRunCommand extends Command
     {
         $this->schedule = $schedule;
 
-        $this->startedAt = Carbon::now();
+        $this->startedAt = Date::now();
 
         parent::__construct();
     }
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */

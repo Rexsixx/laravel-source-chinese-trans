@@ -11,7 +11,7 @@ class GenericUser implements UserContract
 {
     /**
      * All of the user's attributes.
-	 * 所有用户的属性
+	 * 用户的所有属性
      *
      * @var array
      */

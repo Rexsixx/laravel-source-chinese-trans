@@ -1,8 +1,4 @@
 <?php
-/**
- * PharIo，Manifest，Manifest 文件
- */
-
 /*
  * This file is part of PharIo\Manifest.
  *

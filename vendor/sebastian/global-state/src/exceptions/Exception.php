@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，全局状态，异常
+ * SebastianBergmann，GlobalState，异常
  */
 
 /*

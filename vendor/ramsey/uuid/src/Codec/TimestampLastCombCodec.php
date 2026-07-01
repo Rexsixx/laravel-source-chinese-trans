@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，编码解码器，时间戳最后梳编
+ * Ramsey，Uuid，编码解码器，时间戳最后Comb Codec
  */
 
 /**

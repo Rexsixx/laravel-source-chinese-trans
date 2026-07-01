@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，制表，自动完成
+ */
 
 /*
  * This file is part of Psy Shell.

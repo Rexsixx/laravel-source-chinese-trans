@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，全局状态，黑名单
+ * SebastianBergmann，GlobalState，黑名单
  */
 
 /*
@@ -20,7 +20,7 @@ use ReflectionClass;
 
 /**
  * A blacklist for global state elements that should not be snapshotted.
- * 全球国家元素的黑名单,不应该被snapshoact。
+ * 全局国家元素的黑名单,不应该被snapshoact。
  */
 class Blacklist
 {

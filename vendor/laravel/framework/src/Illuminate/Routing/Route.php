@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，Route
+ * Illuminate，路由选择，路由
  */
 
 namespace Illuminate\Routing;
@@ -533,7 +533,7 @@ class Route
 	 * 在路由上配置正则表达式要求
      *
      * @param  array|string  $name
-     * @param  string  $expression
+     * @param  string|null  $expression
      * @return $this
      */
     public function where($name, $expression = null)
@@ -831,7 +831,7 @@ class Route
 
     /**
      * Set the action array for the route.
-	 * 设置路由的动作数组。
+	 * 设置路由的动作数组
      *
      * @param  array  $action
      * @return $this
@@ -933,8 +933,8 @@ class Route
         // To match the route, we will use a chain of responsibility pattern with the
         // validator implementations. We will spin through each one making sure it
         // passes and then we will know if the route as a whole matches request.
-		// 为了实现该路线，我们将采用责任链模式，并结合验证器实现来进行操作。
-		// 我们将旋转每一个确保它通过,然后我们将知道路线是一个完整的匹配请求。
+		// 为了实现这一路线，我们将采用责任链模式，并结合验证器实现来进行操作。
+		// 我们将逐一检查每一个环节，确保其符合要求，然后我们就能确定整个路线是否符合我们的要求。
         return static::$validators = [
             new UriValidator, new MethodValidator,
             new SchemeValidator, new HostValidator,

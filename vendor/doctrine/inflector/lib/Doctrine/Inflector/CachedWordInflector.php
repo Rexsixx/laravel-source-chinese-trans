@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，偏转器，Cached Word 偏转器
+ * Doctrine，偏转器，缓存字偏转器
  */
 
 declare(strict_types=1);

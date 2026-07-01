@@ -13,7 +13,7 @@ trait ManagesEvents
 {
     /**
      * Register a view creator event.
-	 * 注册视图创建者事件
+	 * 注册一个视图创建者事件
      *
      * @param  array|string     $views
      * @param  \Closure|string  $callback
@@ -105,8 +105,8 @@ trait ManagesEvents
         // When registering a class based view "composer", we will simply resolve the
         // classes from the application IoC container then call the compose method
         // on the instance. This allows for convenient, testable view composers.
-		// 在注册基于类的视图“composer”时，我们只需从应用程序的依赖注入容器中解析这些类，然后对实例调用“compose”方法。
-		// 这允许方便,可测试的视图composers。
+		// 在注册基于类的视图“composer”时，我们只需从应用程序的依赖注入容器中解析这些类，然后对实例调用“compose”方法即可。
+		// 这允许使用方便的、可测试的视图编写器。
         $callback = $this->buildClassEventCallback(
             $class, $prefix
         );

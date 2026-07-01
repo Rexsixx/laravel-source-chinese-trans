@@ -1,6 +1,6 @@
 <?php
 /**
- * phpDocumentor，反射，类型解析器
+ * phpDocumentor，反射，类型分解器
  */
 
 declare(strict_types=1);

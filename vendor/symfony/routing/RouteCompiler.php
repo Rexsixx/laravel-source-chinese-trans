@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，路由编译器
+ * Symfony，组件，路由选择，路由编译器
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\Routing;
 
 /**
  * RouteCompiler compiles Route instances to CompiledRoute instances.
- * RouteCompiler将Route实例编译为CompiledRoute实例。
+ * 惯例将路由实例编译为编译实例。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>

@@ -21,7 +21,7 @@ interface EncoderInterface
 {
     /**
      * Encode a given string to produce an encoded string.
-	 * 对给定字符串进行编码以产生编码字符串
+	 * 编码给定的字符串来生成编码的字符串
      *
      * @param int $firstLineOffset if first line needs to be shorter
      * @param int $maxLineLength   - 0 indicates the default length for this encoding

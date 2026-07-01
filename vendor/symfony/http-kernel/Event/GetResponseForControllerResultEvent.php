@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，事件，获取控制器结果事件的响应
+ * Symfony，组件，Http内核，事件，为控制器结果事件得到响应
  */
 
 /*
@@ -24,7 +24,6 @@ class GetResponseForControllerResultEvent extends RequestEvent
 {
     /**
      * The return value of the controller.
-	 * 控制器的返回值
      *
      * @var mixed
      */

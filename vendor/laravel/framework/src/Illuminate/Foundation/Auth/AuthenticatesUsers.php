@@ -40,7 +40,9 @@ trait AuthenticatesUsers
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
         // the IP address of the client making these requests into this application.
-        if ($this->hasTooManyLoginAttempts($request)) {
+		// 如果该类使用了“ThrottlesLogins”特性，我们就可以自动对这个应用程序的登录尝试进行限制。
+        if (method_exists($this, 'hasTooManyLoginAttempts') &&
+            $this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
 
             return $this->sendLockoutResponse($request);
@@ -53,6 +55,8 @@ trait AuthenticatesUsers
         // If the login attempt was unsuccessful we will increment the number of attempts
         // to login and redirect the user back to the login form. Of course, when this
         // user surpasses their maximum number of attempts they will get locked out.
+		// 如果登录尝试未成功，我们将增加登录尝试次数，并将用户重新引导回登录页面。
+		// 当然，如果该用户超过其最大尝试次数，他们就会被锁定无法继续操作。
         $this->incrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);

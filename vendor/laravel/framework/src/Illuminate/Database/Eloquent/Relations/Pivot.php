@@ -13,6 +13,14 @@ class Pivot extends Model
     use AsPivot;
 
     /**
+     * Indicates if the IDs are auto-incrementing.
+	 * 指示id是否自动递增
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
      * The attributes that aren't mass assignable.
 	 * 不能大规模分配的属性
      *

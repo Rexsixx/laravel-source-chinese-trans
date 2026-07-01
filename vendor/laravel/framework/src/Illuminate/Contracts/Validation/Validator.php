@@ -18,6 +18,14 @@ interface Validator extends MessageProvider
     public function validate();
 
     /**
+     * Get the attributes and values that were validated.
+	 * 获取已验证的属性和值
+     *
+     * @return array
+     */
+    public function validated();
+
+    /**
      * Determine if the data fails the validation rules.
 	 * 确定数据是否不符合验证规则
      *

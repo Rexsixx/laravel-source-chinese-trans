@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理程序，Fingers Crossed，激活策略接口
+ */
 
 /*
  * This file is part of the Monolog package.

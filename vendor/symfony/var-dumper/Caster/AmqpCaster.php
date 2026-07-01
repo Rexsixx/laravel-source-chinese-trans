@@ -18,7 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts Amqp related classes to array representation.
- * 将Amqp相关类强制转换为数组表示。
+ * 将Amqp相关类投射到数组表示。
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  *
@@ -65,7 +65,6 @@ class AmqpCaster
         }
 
         // BC layer in the amqp lib
-		// 在amqp库中的BC层
         if (method_exists($c, 'getReadTimeout')) {
             $timeout = $c->getReadTimeout();
         } else {
@@ -95,7 +94,6 @@ class AmqpCaster
         ];
 
         // Recent version of the extension already expose private properties
-		// 最新版本的扩展已经暴露了私有属性
         if (isset($a["\x00AMQPChannel\x00connection"])) {
             return $a;
         }
@@ -118,6 +116,7 @@ class AmqpCaster
         ];
 
         // Recent version of the extension already expose private properties
+		// 最新版本的扩展已经暴露了私有属性
         if (isset($a["\x00AMQPQueue\x00name"])) {
             return $a;
         }
@@ -167,7 +166,6 @@ class AmqpCaster
         $deliveryMode = new ConstStub($c->getDeliveryMode().(2 === $c->getDeliveryMode() ? ' (persistent)' : ' (non-persistent)'), $c->getDeliveryMode());
 
         // Recent version of the extension already expose private properties
-		// 最新版本的扩展已经暴露了私有属性
         if (isset($a["\x00AMQPEnvelope\x00body"])) {
             $a["\0AMQPEnvelope\0delivery_mode"] = $deliveryMode;
 

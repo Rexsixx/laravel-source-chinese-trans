@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，依赖注入，扩展
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\DependencyInjection\Extension\Extension as BaseExtension;
 
 /**
  * Allow adding classes to the class cache.
- * 允许向类缓存中添加类。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -28,7 +24,6 @@ abstract class Extension extends BaseExtension
 
     /**
      * Gets the annotated classes to cache.
-	 * 获取要缓存的带注释的类
      *
      * @return array An array of classes
      */

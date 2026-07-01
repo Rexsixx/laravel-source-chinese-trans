@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，转储器，内容提供器，上下文提供程序接口
+ * Symfony，组件，Var Dumper，转储，上下文提供者，上下文提供程序接口
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\VarDumper\Dumper\ContextProvider;
 
 /**
  * Interface to provide contextual data about dump data clones sent to a server.
- * 接口，以提供有关发送到服务器的转储数据克隆的上下文数据。
+ * 接口提供关于转储数据克隆发送到服务器的上下文数据。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */

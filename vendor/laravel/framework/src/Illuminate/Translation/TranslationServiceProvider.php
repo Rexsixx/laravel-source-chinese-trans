@@ -6,17 +6,10 @@
 namespace Illuminate\Translation;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Support\DeferrableProvider;
 
-class TranslationServiceProvider extends ServiceProvider
+class TranslationServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * Indicates if loading of the provider is deferred.
-	 * 指示是否延迟加载提供程序
-     *
-     * @var bool
-     */
-    protected $defer = true;
-
     /**
      * Register the service provider.
 	 * 注册服务提供者
@@ -34,6 +27,7 @@ class TranslationServiceProvider extends ServiceProvider
             // locale as well as the fallback locale. So, we'll grab the application
             // configuration so we can easily get both of these values from there.
 			// 在注册翻译组件时，我们需要设定默认语言环境以及备用语言环境。
+			// 所以，我们将获取应用程序配置信息，这样就能从那里轻松获取这两个值了。
             $locale = $app['config']['app.locale'];
 
             $trans = new Translator($loader, $locale);

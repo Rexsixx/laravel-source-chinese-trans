@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Manifest，Manifest 加载器
+ * PharIo，Manifest，Manifest 装载机
  */
 
 /*

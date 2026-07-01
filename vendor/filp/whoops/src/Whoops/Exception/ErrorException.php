@@ -2,7 +2,7 @@
 /**
  * Whoops，异常，错误异常
  */
- 
+
 /**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
@@ -15,7 +15,7 @@ use ErrorException as BaseErrorException;
 /**
  * Wraps ErrorException; mostly used for typing (at least now)
  * to easily cleanup the stack trace of redundant info.
- * 包ErrorException;主要用于输入(至少现在),方便地清理冗余信息的堆栈跟踪。
+ * 包装异常；主要用于类型标注（至少目前），以便轻松清理堆栈跟踪中的冗余信息。
  */
 class ErrorException extends BaseErrorException
 {

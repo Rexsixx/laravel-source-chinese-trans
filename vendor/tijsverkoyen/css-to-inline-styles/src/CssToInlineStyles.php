@@ -1,6 +1,6 @@
 <?php
 /**
- * TijsVerkoyen，Css到内联样式，CssToInlineStyles
+ * TijsVerkoyen，Css 到内联样式，Css To Inline Styles
  */
 
 namespace TijsVerkoyen\CssToInlineStyles;
@@ -25,7 +25,7 @@ class CssToInlineStyles
 
     /**
      * Will inline the $css into the given $html
-	 * 将内联$css到给定的$html
+	 * 将$ css内联到给定$ html中
      *
      * Remark: if the html contains <style>-tags those will be used, the rules
      * in $css will be appended.
@@ -56,7 +56,7 @@ class CssToInlineStyles
 
     /**
      * Inline the given properties on an given DOMElement
-	 * 将给定属性内联到给定DOMElement上
+	 * 在给定的DOMElement上内联给定的属性
      *
      * @param \DOMElement             $element
      * @param Css\Property\Property[] $properties
@@ -223,7 +223,6 @@ class CssToInlineStyles
                 $existingProperty = $cssProperties[$property->getName()];
 
                 //skip check to overrule if existing property is important and current is not
-				// 如果现有属性重要而当前属性不重要，则跳过检查以否决。
                 if ($existingProperty->isImportant() && !$property->isImportant()) {
                     continue;
                 }

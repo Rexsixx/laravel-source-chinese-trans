@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Css 选择器，分析程序，令牌
+ * Symfony，组件，Css选择器，分析程序，令牌
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\CssSelector\Parser;
 
 /**
  * CSS selector token.
- * Css 选择器令牌。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.

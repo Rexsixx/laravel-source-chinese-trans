@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，探测器，迭代器，文件名过滤迭代器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Finder\Glob;
 
 /**
  * FilenameFilterIterator filters files by patterns (a regexp, a glob, or a string).
- * FilenameFilterIterator按模式（regexp、glob或字符串）过滤文件。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -26,7 +22,6 @@ class FilenameFilterIterator extends MultiplePcreFilterIterator
 {
     /**
      * Filters the iterator values.
-	 * 过滤迭代器值
      *
      * @return bool true if the value should be kept, false otherwise
      */
@@ -38,7 +33,6 @@ class FilenameFilterIterator extends MultiplePcreFilterIterator
 
     /**
      * Converts glob to regexp.
-	 * 将glob转换为regexp。
      *
      * PCRE patterns are left unchanged.
      * Glob strings are transformed with Glob::toRegex().

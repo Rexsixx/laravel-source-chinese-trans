@@ -16,7 +16,6 @@ namespace Symfony\Component\Console\Style;
 
 /**
  * Output style helpers.
- * 输出样式助手。
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
@@ -24,7 +23,6 @@ interface StyleInterface
 {
     /**
      * Formats a command title.
-	 * 格式化一个命令标题
      *
      * @param string $message
      */
@@ -32,7 +30,6 @@ interface StyleInterface
 
     /**
      * Formats a section title.
-	 * 格式化节标题
      *
      * @param string $message
      */

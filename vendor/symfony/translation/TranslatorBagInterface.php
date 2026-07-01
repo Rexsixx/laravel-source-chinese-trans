@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，翻译机包接口
+ * Symfony，组件，翻译，翻译包接口
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
 
 /**
  * TranslatorBagInterface.
- * 翻译机包接口
+ * 翻译包接口
  *
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
  */

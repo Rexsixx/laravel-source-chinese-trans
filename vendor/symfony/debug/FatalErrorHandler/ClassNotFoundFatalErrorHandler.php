@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，调试，致命错误处理程序，没有发现致命错误处理程序的类
+ * Symfony，组件，调试，致命错误处理程序，类未发现致命错误处理程序
  */
 
 /*
@@ -69,7 +69,6 @@ class ClassNotFoundFatalErrorHandler implements FatalErrorHandlerInterface
 
     /**
      * Tries to guess the full namespace for a given class name.
-	 * 尝试猜测给定类名的完整名称空间。
      *
      * By default, it looks for PSR-0 and PSR-4 classes registered via a Symfony or a Composer
      * autoloader (that should cover all common cases).

@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，核心，Is Instance Of
- */
-
 namespace Hamcrest\Core;
 
 /*
@@ -13,7 +9,6 @@ use Hamcrest\DiagnosingMatcher;
 
 /**
  * Tests whether the value is an instance of a class.
- * 测试值是否是类的一个实例。
  */
 class IsInstanceOf extends DiagnosingMatcher
 {

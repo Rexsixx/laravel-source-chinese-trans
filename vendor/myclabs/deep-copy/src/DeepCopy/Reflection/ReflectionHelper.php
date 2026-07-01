@@ -1,6 +1,6 @@
 <?php
 /**
- * DeepCopy，反射，反射助手
+ * 深拷贝，反射，反射辅助
  */
 
 namespace DeepCopy\Reflection;
@@ -50,6 +50,7 @@ class ReflectionHelper
 
     /**
      * Retrieves property by name from object and all its ancestors.
+	 * 从对象和所有祖先的名字中检索属性
      *
      * @param object|string $object
      * @param string $name

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，行列，Beanstalkd 队列
+ * Illuminate，队列，Beanstalkd 队列
  */
 
 namespace Illuminate\Queue;
@@ -8,7 +8,6 @@ namespace Illuminate\Queue;
 use Pheanstalk\Pheanstalk;
 use Pheanstalk\Job as PheanstalkJob;
 use Illuminate\Queue\Jobs\BeanstalkdJob;
-use Pheanstalk\Contract\PheanstalkInterface;
 use Illuminate\Contracts\Queue\Queue as QueueContract;
 
 class BeanstalkdQueue extends Queue implements QueueContract
@@ -38,17 +37,27 @@ class BeanstalkdQueue extends Queue implements QueueContract
     protected $timeToRun;
 
     /**
+     * The maximum number of seconds to block for a job.
+	 * 阻塞作业的最大秒数
+     *
+     * @var int
+     */
+    protected $blockFor;
+
+    /**
      * Create a new Beanstalkd queue instance.
 	 * 创建一个新的beanstald队列实例
      *
      * @param  \Pheanstalk\Pheanstalk  $pheanstalk
      * @param  string  $default
      * @param  int  $timeToRun
+     * @param  int  $blockFor
      * @return void
      */
-    public function __construct(Pheanstalk $pheanstalk, $default, $timeToRun)
+    public function __construct(Pheanstalk $pheanstalk, $default, $timeToRun, $blockFor = 0)
     {
         $this->default = $default;
+        $this->blockFor = $blockFor;
         $this->timeToRun = $timeToRun;
         $this->pheanstalk = $pheanstalk;
     }
@@ -57,7 +66,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
      * Get the size of the queue.
 	 * 获取队列的大小
      *
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return int
      */
     public function size($queue = null)
@@ -73,7 +82,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
      *
      * @param  string  $job
      * @param  mixed   $data
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return mixed
      */
     public function push($job, $data = '', $queue = null)
@@ -86,7 +95,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 	 * 将原始有效负载推入队列
      *
      * @param  string  $payload
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @param  array   $options
      * @return mixed
      */
@@ -104,7 +113,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job
      * @param  mixed   $data
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return mixed
      */
     public function later($delay, $job, $data = '', $queue = null)
@@ -123,18 +132,14 @@ class BeanstalkdQueue extends Queue implements QueueContract
      * Pop the next job off of the queue.
 	 * 将下一个作业从队列中弹出
      *
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
      */
     public function pop($queue = null)
     {
         $queue = $this->getQueue($queue);
 
-        $this->pheanstalk->watchOnly($queue);
-
-        $job = interface_exists(PheanstalkInterface::class)
-                    ? $this->pheanstalk->reserveWithTimeout(0)
-                    : $this->pheanstalk->reserve(0);
+        $job = $this->pheanstalk->watchOnly($queue)->reserveWithTimeout($this->blockFor);
 
         if ($job instanceof PheanstalkJob) {
             return new BeanstalkdJob(

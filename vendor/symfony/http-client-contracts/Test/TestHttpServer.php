@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，HTTP客户端，测试，测试 Http服务
+ * Symfony，契约，Http客户端，测试，测试Http服务器
  */
 
 /*

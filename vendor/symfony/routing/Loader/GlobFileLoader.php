@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，加载器，Glob 文件加载器
+ * Symfony，组件，路由选择，加载程序，Glob 文件加载器
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * GlobFileLoader loads files from a glob pattern.
- * GlobFileLoader从glob模式加载文件。
+ * GlobFileLoader从一个glob模式加载文件。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

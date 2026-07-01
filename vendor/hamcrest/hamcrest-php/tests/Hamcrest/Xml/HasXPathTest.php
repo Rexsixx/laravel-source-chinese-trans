@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，有XPath测试
+ * Hamcrest，HasX路径测试
  */
 
 namespace Hamcrest\Xml;

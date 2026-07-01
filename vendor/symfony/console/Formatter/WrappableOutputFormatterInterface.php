@@ -16,7 +16,6 @@ namespace Symfony\Component\Console\Formatter;
 
 /**
  * Formatter interface for console output that supports word wrapping.
- * 支持word包装的控制台输出的格式化程序接口。
  *
  * @author Roland Franssen <franssen.roland@gmail.com>
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，加载器，Csv 文件加载器
+ * Symfony，组件，翻译，载入程序，Csv File 加载器
  */
 
 /*

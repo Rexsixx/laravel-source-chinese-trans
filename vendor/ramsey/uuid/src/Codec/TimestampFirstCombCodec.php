@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，编码解码器，时间戳最后梳编
+ * Ramsey，Uuid，编码解码器，时间戳最早Comb Codec
  */
 
 /**
@@ -28,7 +28,6 @@ class TimestampFirstCombCodec extends StringCodec
 {
     /**
      * Encodes a UuidInterface as a string representation of a timestamp first COMB UUID
-	 * 将UuidInterface编码为一个时间戳的第一个锯齿UUID的字符串表示
      *
      * @param UuidInterface $uuid
      *

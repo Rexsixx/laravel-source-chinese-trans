@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，模式，Sql Server 构建器
+ * Illuminate，数据库，架构，Sql Server 构建器
  */
 
 namespace Illuminate\Database\Schema;
@@ -15,10 +15,8 @@ class SqlServerBuilder extends Builder
      */
     public function dropAllTables()
     {
-        $this->disableForeignKeyConstraints();
+        $this->connection->statement($this->grammar->compileDropAllForeignKeys());
 
         $this->connection->statement($this->grammar->compileDropAllTables());
-
-        $this->enableForeignKeyConstraints();
     }
 }

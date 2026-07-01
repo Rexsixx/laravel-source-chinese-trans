@@ -1,8 +1,4 @@
 <?php
-/**
- * PHPUnit，工具，Json
- */
-
 /*
  * This file is part of PHPUnit.
  *
@@ -19,7 +15,6 @@ final class Json
 {
     /**
      * Prettify json string
-	 * 修饰json字符串
      *
      * @throws \PHPUnit\Framework\Exception
      */

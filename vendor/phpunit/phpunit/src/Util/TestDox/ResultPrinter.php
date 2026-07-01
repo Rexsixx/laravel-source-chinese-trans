@@ -1,8 +1,4 @@
 <?php
-/**
- * PHPUnit，工具，测试盒，Xml 结果打印机
- */
-
 /*
  * This file is part of PHPUnit.
  *
@@ -25,7 +21,6 @@ use PHPUnit\Util\Printer;
 
 /**
  * Base class for printers of TestDox documentation.
- * TestDox文档打印机的基类。
  */
 abstract class ResultPrinter extends Printer implements TestListener
 {

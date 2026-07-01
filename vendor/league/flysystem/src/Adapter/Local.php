@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，适配器，局部
+ * League，Flysystem，适配器，Local
  */
 
 namespace League\Flysystem\Adapter;
@@ -66,7 +66,6 @@ class Local extends AbstractAdapter
 
     /**
      * Constructor.
-	 * 构造函数
      *
      * @param string $root
      * @param int    $writeFlags
@@ -92,7 +91,6 @@ class Local extends AbstractAdapter
 
     /**
      * Ensure the root directory exists.
-	 * 确保根目录存在
      *
      * @param string $root root directory path
      *

@@ -9,7 +9,7 @@ class JobExceptionOccurred
 {
     /**
      * The connection name.
-	 * 连接名称
+	 * 连接名
      *
      * @var string
      */
@@ -33,7 +33,7 @@ class JobExceptionOccurred
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例。
+	 * 创建一个新的事件实例
      *
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job

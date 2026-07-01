@@ -20,6 +20,7 @@ use Hamcrest\Util;
 /**
  * Matcher for array whose elements satisfy a sequence of matchers.
  * The array size must equal the number of element matchers.
+ * 对数组的Matcher,它的元素满足了一个序列的matchers。数组大小必须与元素的数量相等。
  */
 class IsArray extends TypeSafeMatcher
 {

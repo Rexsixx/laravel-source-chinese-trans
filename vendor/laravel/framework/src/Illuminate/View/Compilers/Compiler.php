@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译器，Compiler
+ * Illuminate，视图，编译，编译程序
  */
 
 namespace Illuminate\View\Compilers;
@@ -12,7 +12,7 @@ abstract class Compiler
 {
     /**
      * The Filesystem instance.
-	 * 文件系统实例
+	 * Filesystem实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -60,7 +60,7 @@ abstract class Compiler
 
     /**
      * Determine if the view at the given path is expired.
-	 * 确定给定路径的视图是否已过期
+	 * 确定给定路径上的视图是否已过期
      *
      * @param  string  $path
      * @return bool
@@ -73,7 +73,7 @@ abstract class Compiler
         // so that it can be re-compiled. Else, we will verify the last modification
         // of the views is less than the modification times of the compiled views.
 		// 如果编译后的文件不存在，我们将表明该视图已过期，以便重新进行编译。
-		// 另外,我们将验证对视图的最后修改小于已编译视图的修改时间。
+		// 否则，我们将验证这些视图的最后修改时间是否早于已编译视图的修改时间。
         if (! $this->files->exists($compiled)) {
             return true;
         }

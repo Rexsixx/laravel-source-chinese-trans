@@ -16,7 +16,7 @@ namespace Symfony\Component\Mime\Encoder;
 
 /**
  * An IDN email address encoder.
- * IDN电子邮件地址编码器。
+ * 一个IDN电子邮件地址编码器。
  *
  * Encodes the domain part of an address using IDN. This is compatible will all
  * SMTP servers.

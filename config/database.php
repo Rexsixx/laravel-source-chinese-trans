@@ -3,6 +3,8 @@
  * 配置，database
  */
 
+use Illuminate\Support\Str;
+
 return [
 
     /*
@@ -13,7 +15,8 @@ return [
     | Here you may specify which of the database connections below you wish
     | to use as your default connection for all database work. Of course
     | you may use many connections at once using the Database library.
-	| 在此您可以指定以下数据库连接中，您希望将其设为所有数据库操作的默认连接。
+	| 在这里,您可以指定您希望在所有数据库工作中使用的数据库连接哪一个。
+	| 当然,您可以使用数据库库使用许多连接。
     |
     */
 
@@ -21,19 +24,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Database Connections		数据库连接
+    | Database Connections	数据库连接
     |--------------------------------------------------------------------------
     |
     | Here are each of the database connections setup for your application.
     | Of course, examples of configuring each database platform that is
     | supported by Laravel is shown below to make development simple.
-	| 以下是为您的应用程序设置的每个数据库连接。
-	| 当然，下面展示了针对 Laravel 所支持的每个数据库平台的配置示例，以便简化开发过程。
+	| 这里是您的应用程序的每个数据库连接设置。当然,配置Laravel支持的每个数据库平台的例子都是简单的。
     |
     |
     | All database work in Laravel is done through the PHP PDO facilities
     | so make sure you have the driver for your particular database of
     | choice installed on your machine before you begin development.
+	| 在Laravel中的所有数据库工作都是通过PHP PDO设备完成的,所以要确保在开始开发之前,您的机器上安装了特定的选择数据库。
     |
     */
 
@@ -41,6 +44,7 @@ return [
 
         'sqlite' => [
             'driver' => 'sqlite',
+            'url' => env('DATABASE_URL'),
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
@@ -48,6 +52,7 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'forge'),
@@ -60,10 +65,14 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
         ],
 
         'pgsql' => [
             'driver' => 'pgsql',
+            'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '5432'),
             'database' => env('DB_DATABASE', 'forge'),
@@ -78,6 +87,7 @@ return [
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '1433'),
             'database' => env('DB_DATABASE', 'forge'),
@@ -99,6 +109,7 @@ return [
     | your application. Using this information, we can determine which of
     | the migrations on disk haven't actually been run in the database.
 	| 此表跟踪已经运行的所有应用程序的迁移。
+	| 使用这些信息,我们可以确定磁盘上的迁移实际上还没有在数据库中运行。
     |
     */
 
@@ -112,15 +123,22 @@ return [
     | Redis is an open source, fast, and advanced key-value store that also
     | provides a richer body of commands than a typical key-value system
     | such as APC or Memcached. Laravel makes it easy to dig right in.
-	| Redis是一个开源的、快速的、先进的键值存储库,它提供了比典型的密钥值系统(如APC或Memcached)更丰富的命令。
+	| Redis是一个开源的、快速的、高级的键值存储库,它还提供了比典型的密钥值系统(如APC或Memcached)更丰富的命令。
+	| Laravel很容易就能找到。
     |
     */
 
     'redis' => [
 
-        'client' => 'predis',
+        'client' => env('REDIS_CLIENT', 'predis'),
+
+        'options' => [
+            'cluster' => env('REDIS_CLUSTER', 'predis'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+        ],
 
         'default' => [
+            'url' => env('REDIS_URL'),
             'host' => env('REDIS_HOST', '127.0.0.1'),
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
@@ -128,6 +146,7 @@ return [
         ],
 
         'cache' => [
+            'url' => env('REDIS_URL'),
             'host' => env('REDIS_HOST', '127.0.0.1'),
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),

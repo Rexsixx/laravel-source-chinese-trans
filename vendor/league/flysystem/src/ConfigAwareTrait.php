@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，配置感知特性
+ * League，Flysystem，配置意识特质
  */
 
 namespace League\Flysystem;
@@ -28,7 +28,7 @@ trait ConfigAwareTrait
 
     /**
      * Get the Config.
-	 * 获取配置
+	 * 得到配置
      *
      * @return Config config object
      */

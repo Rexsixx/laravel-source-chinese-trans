@@ -5,6 +5,7 @@
 
 namespace Illuminate\Foundation\Console;
 
+use Exception;
 use Illuminate\Console\Command;
 
 class UpCommand extends Command
@@ -27,14 +28,28 @@ class UpCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
-     * @return void
+     * @return int
      */
     public function handle()
     {
-        @unlink(storage_path('framework/down'));
+        try {
+            if (! file_exists(storage_path('framework/down'))) {
+                $this->comment('Application is already up.');
 
-        $this->info('Application is now live.');
+                return true;
+            }
+
+            unlink(storage_path('framework/down'));
+
+            $this->info('Application is now live.');
+        } catch (Exception $e) {
+            $this->error('Failed to disable maintenance mode.');
+
+            $this->error($e->getMessage());
+
+            return 1;
+        }
     }
 }

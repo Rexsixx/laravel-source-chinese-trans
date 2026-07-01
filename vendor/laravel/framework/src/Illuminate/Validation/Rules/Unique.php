@@ -49,7 +49,7 @@ class Unique
 
     /**
      * Ignore the given model during the unique check.
-	 * 在惟一检查期间忽略给定的模型。
+	 * 在惟一检查期间忽略给定的模型
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string|null  $idColumn
@@ -74,7 +74,7 @@ class Unique
         return rtrim(sprintf('unique:%s,%s,%s,%s,%s',
             $this->table,
             $this->column,
-            $this->ignore ? '"'.$this->ignore.'"' : 'NULL',
+            $this->ignore ? '"'.addslashes($this->ignore).'"' : 'NULL',
             $this->idColumn,
             $this->formatWheres()
         ), ',');

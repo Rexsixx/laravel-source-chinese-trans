@@ -13,6 +13,7 @@ class Error extends \RuntimeException
 
     /**
      * Creates an Exception signifying a parse error.
+	 * 创建一个异常表示解析错误
      *
      * @param string    $message    Error message
      * @param array|int $attributes Attributes of node/token where error occurred

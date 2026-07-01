@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，HTTP基础，文件，异常，意外类型异常
- */
 
 /*
  * This file is part of the Symfony package.

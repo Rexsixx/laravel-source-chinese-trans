@@ -49,7 +49,7 @@ class SqsJob extends Job implements JobContract
 
     /**
      * Release the job back into the queue.
-	 * 将作业释放回队列
+	 * 释放作业回队列
      *
      * @param  int   $delay
      * @return void

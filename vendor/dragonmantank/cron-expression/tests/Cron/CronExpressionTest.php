@@ -77,7 +77,6 @@ class CronExpressionTest extends TestCase
 
     /**
      * Data provider for testParsesCronScheduleWithAnySpaceCharsAsSeparators
-	 * 数据提供者testParsesCronScheduleWithAnySpaceCharsAsSeparators
      *
      * @return array
      */
@@ -118,7 +117,6 @@ class CronExpressionTest extends TestCase
 
     /**
      * Data provider for cron schedule
-	 * cron计划的数据提供程序
      *
      * @return array
      */
@@ -582,7 +580,6 @@ class CronExpressionTest extends TestCase
 
     /**
      * When there is an issue with a field, we should report the human readable position
-	 * 当有一个领域的问题时,我们应该报告人类可读的位置。
      *
      * @see https://github.com/dragonmantank/cron-expression/issues/29
      */

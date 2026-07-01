@@ -12,7 +12,7 @@ class MergeValue
 {
     /**
      * The data to be merged.
-	 * 要合并的数据
+	 * 待合并的数据
      *
      * @var array
      */

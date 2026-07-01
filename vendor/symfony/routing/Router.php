@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，路由器
+ * Symfony，组件，路由选择，路由器
  */
 
 /*
@@ -40,7 +40,6 @@ use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 /**
  * The Router class is an example of the integration of all pieces of the
  * routing system for easier use.
- * 路由器类是路由系统各组件集成的示例，便于使用。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -118,7 +117,6 @@ class Router implements RouterInterface, RequestMatcherInterface
 
     /**
      * Sets options.
-	 * 设置选项。
      *
      * Available options:
      *
@@ -169,7 +167,6 @@ class Router implements RouterInterface, RequestMatcherInterface
 
     /**
      * Sets an option.
-	 * 设置一个选项
      *
      * @param string $key   The key
      * @param mixed  $value The value
@@ -189,7 +186,6 @@ class Router implements RouterInterface, RequestMatcherInterface
 
     /**
      * Gets an option value.
-	 * 获取选项值
      *
      * @param string $key The key
      *

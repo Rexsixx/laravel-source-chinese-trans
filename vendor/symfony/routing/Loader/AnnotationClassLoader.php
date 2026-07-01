@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，加载器，Annotation 类加载器
+ * Symfony，组件，路由选择，加载程序，注释类加载器
  */
 
 /*
@@ -80,6 +80,7 @@ abstract class AnnotationClassLoader implements LoaderInterface
 
     /**
      * Sets the annotation class to read route properties from.
+	 * 设置注释类以读取路由属性
      *
      * @param string $class A fully-qualified class name
      */

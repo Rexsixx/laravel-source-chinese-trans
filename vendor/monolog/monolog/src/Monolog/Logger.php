@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，日志记录器
+ * Monolog，记录器
  */
 
 /*
@@ -22,7 +22,6 @@ use Exception;
 
 /**
  * Monolog log channel
- * Monolog日志通道
  *
  * It contains a stack of Handlers and a stack of Processors,
  * and uses them to store records that are added to it.
@@ -33,7 +32,6 @@ class Logger implements LoggerInterface, ResettableInterface
 {
     /**
      * Detailed debug information
-	 * 详细调试信息
      */
     const DEBUG = 100;
 

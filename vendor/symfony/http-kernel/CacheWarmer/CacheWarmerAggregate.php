@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，缓存加热器，Cache Warmer Aggregate
+ * Symfony，组件，Http内核，CacheWarmer，CacheWarmer 集合
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\HttpKernel\CacheWarmer;
 
 /**
  * Aggregates several cache warmers into a single one.
- * 将多个缓存预热器聚合为一个。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *

@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，差速器，异常
+ */
+
 /*
  * This file is part of sebastian/diff.
  *

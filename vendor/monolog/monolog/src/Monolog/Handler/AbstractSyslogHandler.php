@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，处理程序，Abstract Syslog 处理程序
+ * Monolog，处理程序，抽象 Syslog处理程序
  */
 
 /*

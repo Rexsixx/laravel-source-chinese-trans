@@ -65,8 +65,8 @@ abstract class Grammar
         // If the value being wrapped has a column alias we will need to separate out
         // the pieces so we can wrap each of the segments of the expression on its
         // own, and then join these both back together using the "as" connector.
-		// 如果包的值有一个列的别名,那么我们就需要将这些片段分开,
-		// 这样我们就可以将表达式的每一个部分打包,然后用“作为”连接器来连接它们。
+		// 如果被包裹的值带有列别名，那么我们就需要将这些部分分离出来，
+		// 以便能够分别对表达式中的每一部分进行包裹处理，然后使用“as”连接符将这两部分重新组合起来。
         if (stripos($value, ' as ') !== false) {
             return $this->wrapAliasedValue($value, $prefixAlias);
         }
@@ -89,8 +89,8 @@ abstract class Grammar
         // If we are wrapping a table we need to prefix the alias with the table prefix
         // as well in order to generate proper syntax. If this is a column of course
         // no prefix is necessary. The condition will be true when from wrapTable.
-		// 如果我们正在包装一个表,我们需要用表前缀来前缀别名,以生成适当的语法。
-		// 如果这是一列当然没有前缀是必要的。从包到的情况下,情况将是正确的。
+		// 如果我们正在对一个表格进行封装处理，那么在使用别名时，也需要在其前面加上表格前缀，以确保生成正确的语法。
+		// 当然，如果这是某一列的话，则无需添加前缀。当条件为“from wrapTable”时，该条件将为真。
         if ($prefixAlias) {
             $segments[1] = $this->tablePrefix.$segments[1];
         }

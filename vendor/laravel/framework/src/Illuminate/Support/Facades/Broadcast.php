@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，广播
+ * Illuminate，支持，门面，Broadcast
  */
 
 namespace Illuminate\Support\Facades;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，行列，呼叫队列闭包
+ * Illuminate，队列，呼叫队列闭包
  */
 
 namespace Illuminate\Queue;
@@ -25,7 +25,7 @@ class CallQueuedClosure implements ShouldQueue
 
     /**
      * Indicate if the job should be deleted when models are missing.
-	 * 创建一个新的处理程序实例
+	 * 指示当模型丢失时是否应该删除作业
      *
      * @var bool
      */

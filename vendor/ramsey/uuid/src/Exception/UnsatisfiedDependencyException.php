@@ -23,7 +23,6 @@ use RuntimeException;
 /**
  * Thrown to indicate that the requested operation has dependencies that have not
  * been satisfied.
- * 抛出指示所请求的操作有不满足的依赖项。
  */
 class UnsatisfiedDependencyException extends RuntimeException
 {

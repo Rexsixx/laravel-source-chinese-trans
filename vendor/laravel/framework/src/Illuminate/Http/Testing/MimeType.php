@@ -801,7 +801,7 @@ class MimeType
      * Get the MIME type for a given extension or return all mimes.
 	 * 获取给定扩展的MIME类型或返回所有MIME
      *
-     * @param  string  $extension
+     * @param  string|null  $extension
      * @return string|array
      */
     public static function get($extension = null)

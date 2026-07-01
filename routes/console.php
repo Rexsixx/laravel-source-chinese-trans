@@ -1,6 +1,6 @@
 <?php
 /**
- * 路由，控制台
+ * 路由，console
  */
 
 use Illuminate\Foundation\Inspiring;
@@ -13,8 +13,8 @@ use Illuminate\Foundation\Inspiring;
 | This file is where you may define all of your Closure based console
 | commands. Each Closure is bound to a command instance allowing a
 | simple approach to interacting with each command's IO methods.
-| 这个文件可以定义所有基于闭包的控制台命令。
-| 每个闭包都绑定到一个命令实例,允许简单的方法与每个命令的IO方法交互。
+| 此文件用于定义您所有的基于 Closure 的控制台命令。
+| 每个闭包都绑定到一个命令实例，从而可以轻松地调用各个命令的输入输出方法。
 |
 */
 

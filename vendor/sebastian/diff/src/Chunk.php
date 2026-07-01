@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，差速器，Chunk
+ */
+
 /*
  * This file is part of sebastian/diff.
  *

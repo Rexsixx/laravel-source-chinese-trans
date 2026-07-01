@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，加载器，Php 文件加载器
+ * Symfony，组件，翻译，载入程序，Php File 加载器
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\Translation\Loader;
 
 /**
  * PhpFileLoader loads translations from PHP files returning an array of translations.
- * PhpFileLoader从PHP文件中加载翻译，返回一个翻译数组。
+ * PhpFileLoader加载来自PHP文件的翻译,返回一系列的翻译。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

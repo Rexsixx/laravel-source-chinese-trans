@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，冲突，处理程序
+ * NunoMaduro，碰撞，处理者
  */
 
 /**
@@ -21,7 +21,6 @@ use NunoMaduro\Collision\Contracts\Handler as HandlerContract;
 
 /**
  * This is an Collision Handler implementation.
- * 这是一个冲突处理程序实现
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */
@@ -29,7 +28,6 @@ class Handler extends AbstractHandler implements HandlerContract
 {
     /**
      * Holds an instance of the writer.
-	 * 保存写入器的实例
      *
      * @var \NunoMaduro\Collision\Contracts\Writer
      */
@@ -37,7 +35,6 @@ class Handler extends AbstractHandler implements HandlerContract
 
     /**
      * Creates an instance of the Handler.
-	 * 创建处理程序的实例
      *
      * @param \NunoMaduro\Collision\Contracts\Writer|null $writer
      */

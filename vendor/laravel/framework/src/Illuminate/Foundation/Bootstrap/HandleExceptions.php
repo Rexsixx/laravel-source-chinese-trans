@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，引导程序，处理程序异常
+ * Illuminate，基础，引导程序，处理异常
  */
 
 namespace Illuminate\Foundation\Bootstrap;
@@ -16,8 +16,16 @@ use Symfony\Component\Debug\Exception\FatalThrowableError;
 class HandleExceptions
 {
     /**
+     * Reserved memory so that errors can be displayed properly on memory exhaustion.
+	 * 预留内存，以便在内存耗尽时正确显示错误。
+     *
+     * @var string
+     */
+    public static $reservedMemory;
+
+    /**
      * The application instance.
-	 * 应用实例
+	 * 程序实例
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -32,6 +40,8 @@ class HandleExceptions
      */
     public function bootstrap(Application $app)
     {
+        self::$reservedMemory = str_repeat('x', 10240);
+
         $this->app = $app;
 
         error_reporting(-1);
@@ -85,6 +95,8 @@ class HandleExceptions
         }
 
         try {
+            self::$reservedMemory = null;
+
             $this->getExceptionHandler()->report($e);
         } catch (Exception $e) {
             //

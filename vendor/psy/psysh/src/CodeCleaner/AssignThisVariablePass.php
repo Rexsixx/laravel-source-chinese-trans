@@ -1,6 +1,6 @@
 <?php
 /**
- * Psy，代码清理器，分配这个变量通过
+ * Psy，代码清除器，分配这个变量通过
  */
 
 /*
@@ -21,7 +21,6 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * Validate that the user input does not assign the `$this` variable.
- * 验证用户输入没有分配‘ $this ’变量。
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */
@@ -29,7 +28,6 @@ class AssignThisVariablePass extends CodeCleanerPass
 {
     /**
      * Validate that the user input does not assign the `$this` variable.
-	 * 验证用户输入不分配“$ this”变量
      *
      * @throws RuntimeException if the user assign the `$this` variable
      *

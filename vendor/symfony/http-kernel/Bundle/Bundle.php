@@ -61,7 +61,6 @@ abstract class Bundle implements BundleInterface
 
     /**
      * Returns the bundle's container extension.
-	 * 返回bundle的容器扩展名
      *
      * @return ExtensionInterface|null The container extension
      *

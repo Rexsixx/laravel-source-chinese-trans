@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，依赖注入，延迟加载片段处理程序
- */
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +17,6 @@ use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 
 /**
  * Lazily loads fragment renderers from the dependency injection container.
- * 从依赖注入容器中惰性加载片段渲染器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，生成器
+ * Faker，发生器
  */
 
 namespace Faker;

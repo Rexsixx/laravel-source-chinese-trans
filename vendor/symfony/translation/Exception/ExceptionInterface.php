@@ -16,7 +16,7 @@ namespace Symfony\Component\Translation\Exception;
 
 /**
  * Exception interface for all exceptions thrown by the component.
- * 用于组件抛出的所有异常的Exception接口。
+ * 异常接口对组件抛出的所有异常。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

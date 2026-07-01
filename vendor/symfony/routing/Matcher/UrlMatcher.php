@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，匹配程序，Url 匹配器
+ * Symfony，组件，路由选择，匹配程序，Url 匹配程序
  */
 
 /*
@@ -41,12 +41,13 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Collects HTTP methods that would be allowed for the request.
-	 * 收集请求允许使用的HTTP方法
+	 * 收集可以请求的HTTP方法
      */
     protected $allow = [];
 
     /**
      * Collects URI schemes that would be allowed for the request.
+	 * 收集允许请求的URI方案
      *
      * @internal
      */

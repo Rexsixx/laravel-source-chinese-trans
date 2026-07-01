@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，Annotation，路由
+ * Symfony，组件，路由选择，注释，路由
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\Routing\Annotation;
 
 /**
  * Annotation class for @Route().
+ * 注释类用于@Route()。
  *
  * @Annotation
  * @Target({"CLASS", "METHOD"})

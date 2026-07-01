@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，探测器，Gitignore
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\Finder;
 
 /**
  * Gitignore matches against text.
- * Gitignore匹配文本。
  *
  * @author Michael Voříšek <vorismi3@fel.cvut.cz>
  * @author Ahmed Abdou <mail@ahmd.io>
@@ -25,7 +21,6 @@ class Gitignore
 {
     /**
      * Returns a regexp which is the equivalent of the gitignore pattern.
-	 * 返回一个相当于gitignore模式的regexp
      *
      * Format specification: https://git-scm.com/docs/gitignore#_pattern_format
      */

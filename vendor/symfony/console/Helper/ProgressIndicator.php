@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，控制台，助手，进程指示符
- */
 
 /*
  * This file is part of the Symfony package.
@@ -67,7 +64,6 @@ class ProgressIndicator
 
     /**
      * Sets the current indicator message.
-	 * 设置当前的指示信息
      *
      * @param string|null $message
      */
@@ -80,7 +76,6 @@ class ProgressIndicator
 
     /**
      * Starts the indicator output.
-	 * 启动指示输出
      *
      * @param $message
      */
@@ -101,7 +96,6 @@ class ProgressIndicator
 
     /**
      * Advances the indicator.
-	 * 推进指示器
      */
     public function advance()
     {

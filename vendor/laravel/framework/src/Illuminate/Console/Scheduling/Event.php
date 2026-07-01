@@ -10,6 +10,7 @@ use Cron\CronExpression;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use GuzzleHttp\Client as HttpClient;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Contracts\Mail\Mailer;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Traits\Macroable;
@@ -164,17 +165,28 @@ class Event
     public $mutex;
 
     /**
+     * The exit status code of the command.
+	 * 命令的退出状态码
+     *
+     * @var int|null
+     */
+    public $exitCode;
+
+    /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建一个新的事件实例。
      *
      * @param  \Illuminate\Console\Scheduling\EventMutex  $mutex
      * @param  string  $command
+     * @param  \DateTimeZone|string|null $timezone
      * @return void
      */
-    public function __construct(EventMutex $mutex, $command)
+    public function __construct(EventMutex $mutex, $command, $timezone = null)
     {
         $this->mutex = $mutex;
         $this->command = $command;
+        $this->timezone = $timezone;
+
         $this->output = $this->getDefaultOutput();
     }
 
@@ -230,9 +242,7 @@ class Event
     {
         $this->callBeforeCallbacks($container);
 
-        (new Process(
-            $this->buildCommand(), base_path(), null, null, null
-        ))->run();
+        $this->exitCode = Process::fromShellCommandline($this->buildCommand(), base_path(), null, null, null)->run();
 
         $this->callAfterCallbacks($container);
     }
@@ -248,14 +258,12 @@ class Event
     {
         $this->callBeforeCallbacks($container);
 
-        (new Process(
-            $this->buildCommand(), base_path(), null, null, null
-        ))->run();
+        Process::fromShellCommandline($this->buildCommand(), base_path(), null, null, null)->run();
     }
 
     /**
      * Call all of the "before" callbacks for the event.
-	 * 调用事件的所有“before”回调。
+	 * 调用事件的所有“before”回调
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
@@ -427,7 +435,7 @@ class Event
      */
     public function emailOutputTo($addresses, $onlyIfOutputExists = false)
     {
-        $this->ensureOutputIsBeingCapturedForEmail();
+        $this->ensureOutputIsBeingCaptured();
 
         $addresses = Arr::wrap($addresses);
 
@@ -451,16 +459,21 @@ class Event
     }
 
     /**
-     * Ensure that output is being captured for email.
-	 * 确保为电子邮件捕获输出
+     * E-mail the results of the scheduled operation if it fails.
+	 * 如果计划操作失败，则通过电子邮件发送其结果。
      *
-     * @return void
-     *
-     * @deprecated See ensureOutputIsBeingCaptured.
+     * @param  array|mixed  $addresses
+     * @return $this
      */
-    protected function ensureOutputIsBeingCapturedForEmail()
+    public function emailOutputOnFailure($addresses)
     {
         $this->ensureOutputIsBeingCaptured();
+
+        $addresses = Arr::wrap($addresses);
+
+        return $this->onFailure(function (Mailer $mailer) use ($addresses) {
+            $this->emailOutput($mailer, $addresses, false);
+        });
     }
 
     /**
@@ -565,6 +578,34 @@ class Event
     public function thenPingIf($value, $url)
     {
         return $value ? $this->thenPing($url) : $this;
+    }
+
+    /**
+     * Register a callback to ping a given URL if the operation succeeds.
+	 * 如果操作成功，注册一个回调来ping给定的URL。
+     *
+     * @param  string  $url
+     * @return $this
+     */
+    public function pingOnSuccess($url)
+    {
+        return $this->onSuccess(function () use ($url) {
+            (new HttpClient)->get($url);
+        });
+    }
+
+    /**
+     * Register a callback to ping a given URL if the operation fails.
+	 * 如果操作失败，注册一个回调来ping给定的URL。
+     *
+     * @param  string  $url
+     * @return $this
+     */
+    public function pingOnFailure($url)
+    {
+        return $this->onFailure(function () use ($url) {
+            (new HttpClient)->get($url);
+        });
     }
 
     /**
@@ -727,6 +768,38 @@ class Event
     }
 
     /**
+     * Register a callback to be called if the operation succeeds.
+	 * 注册一个回调函数，在操作成功时调用。
+     *
+     * @param  \Closure  $callback
+     * @return $this
+     */
+    public function onSuccess(Closure $callback)
+    {
+        return $this->then(function (Container $container) use ($callback) {
+            if (0 === $this->exitCode) {
+                $container->call($callback);
+            }
+        });
+    }
+
+    /**
+     * Register a callback to be called if the operation fails.
+	 * 注册一个回调函数，以便在操作失败时调用。
+     *
+     * @param  \Closure  $callback
+     * @return $this
+     */
+    public function onFailure(Closure $callback)
+    {
+        return $this->then(function (Container $container) use ($callback) {
+            if (0 !== $this->exitCode) {
+                $container->call($callback);
+            }
+        });
+    }
+
+    /**
      * Set the human-friendly description of the event.
 	 * 设置事件的人性化描述
      *
@@ -771,14 +844,14 @@ class Event
      * Determine the next due date for an event.
 	 * 确定事件的下一个截止日期
      *
-     * @param  \DateTime|string  $currentTime
+     * @param  \DateTimeInterface|string  $currentTime
      * @param  int  $nth
      * @param  bool  $allowCurrentDate
      * @return \Illuminate\Support\Carbon
      */
     public function nextRunDate($currentTime = 'now', $nth = 0, $allowCurrentDate = false)
     {
-        return Carbon::instance(CronExpression::factory(
+        return Date::instance(CronExpression::factory(
             $this->getExpression()
         )->getNextRunDate($currentTime, $nth, $allowCurrentDate, $this->timezone));
     }

@@ -18,7 +18,6 @@ namespace Symfony\Component\Debug;
 
 /**
  * Registers all the debug tools.
- * 注册所有调试工具。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -30,7 +29,6 @@ class Debug
 
     /**
      * Enables the debug tools.
-	 * 启用调试工具。
      *
      * This method registers an error handler and an exception handler.
      *

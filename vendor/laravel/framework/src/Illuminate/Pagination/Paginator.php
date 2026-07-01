@@ -66,7 +66,7 @@ class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Cou
 
     /**
      * Set the items for the paginator.
-	 * 设置分页器的项
+	 * 设置分页器的项目
      *
      * @param  mixed  $items
      * @return void

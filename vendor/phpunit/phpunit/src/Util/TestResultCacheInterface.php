@@ -1,8 +1,4 @@
 <?php
-/**
- * PHPUnit，工具，测试结果缓存接口
- */
-
 /*
  * This file is part of PHPUnit.
  *

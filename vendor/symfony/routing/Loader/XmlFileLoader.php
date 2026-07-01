@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，加载器，Xml 文件加载器
+ * Symfony，组件，路由选择，加载程序，Xml 文件加载器
  */
 
 /*
@@ -35,7 +35,7 @@ class XmlFileLoader extends FileLoader
 
     /**
      * Loads an XML file.
-	 * 加载XML文件
+	 * 加载一个XML文件
      *
      * @param string      $file An XML file path
      * @param string|null $type The resource type
@@ -68,7 +68,6 @@ class XmlFileLoader extends FileLoader
 
     /**
      * Parses a node from a loaded XML file.
-	 * 从加载的XML文件解析节点
      *
      * @param \DOMElement $node Element to parse
      * @param string      $path Full path of the XML file being processed
@@ -104,7 +103,6 @@ class XmlFileLoader extends FileLoader
 
     /**
      * Parses a route and adds it to the RouteCollection.
-	 * 解析路由并将其添加到RouteCollection中
      *
      * @param \DOMElement $node Element to parse that represents a Route
      * @param string      $path Full path of the XML file being processed
@@ -146,7 +144,6 @@ class XmlFileLoader extends FileLoader
 
     /**
      * Parses an import and adds the routes in the resource to the RouteCollection.
-	 * 解析导入并将资源中的路由添加到RouteCollection中
      *
      * @param \DOMElement $node Element to parse that represents a Route
      * @param string      $path Full path of the XML file being processed

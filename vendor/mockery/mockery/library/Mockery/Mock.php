@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，模拟
+ * Mockery，Mock
  */
 
 /**

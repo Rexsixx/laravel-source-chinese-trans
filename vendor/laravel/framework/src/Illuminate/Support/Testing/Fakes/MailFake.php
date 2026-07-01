@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，测试，假装，Mail Fake
+ * Illuminate，支持，测试，Fakes，Mail Fake
  */
 
 namespace Illuminate\Support\Testing\Fakes;
@@ -73,7 +73,7 @@ class MailFake implements Mailer, MailQueue
 
     /**
      * Determine if a mailable was not sent based on a truth-test callback.
-	 * 根据真值测试回调确定是否未发送可邮件。
+	 * 根据真值测试回调确定是否未发送可邮件
      *
      * @param  string  $mailable
      * @param  callable|null  $callback
@@ -289,7 +289,7 @@ class MailFake implements Mailer, MailQueue
      *
      * @param  string  $text
      * @param  \Closure|string  $callback
-     * @return int
+     * @return void
      */
     public function raw($text, $callback)
     {

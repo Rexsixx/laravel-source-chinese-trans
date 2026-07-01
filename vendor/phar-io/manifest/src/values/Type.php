@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Manifest，Type
+ * PharIo，Manifest，类型
  */
 
 /*

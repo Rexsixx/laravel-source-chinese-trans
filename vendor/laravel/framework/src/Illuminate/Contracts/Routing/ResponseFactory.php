@@ -44,7 +44,7 @@ interface ResponseFactory
      * Create a new JSON response instance.
 	 * 创建一个新的JSON响应实例
      *
-     * @param  string|array  $data
+     * @param  string|array|object  $data
      * @param  int  $status
      * @param  array  $headers
      * @param  int  $options
@@ -57,7 +57,7 @@ interface ResponseFactory
 	 * 创建一个新的JSONP响应实例
      *
      * @param  string  $callback
-     * @param  string|array  $data
+     * @param  string|array|object  $data
      * @param  int  $status
      * @param  array  $headers
      * @param  int  $options
@@ -99,6 +99,16 @@ interface ResponseFactory
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function download($file, $name = null, array $headers = [], $disposition = 'attachment');
+
+    /**
+     * Return the raw contents of a binary file.
+	 * 返回二进制文件的原始内容
+     *
+     * @param  \SplFileInfo|string  $file
+     * @param  array  $headers
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function file($file, array $headers = []);
 
     /**
      * Create a new redirect response to the given path.

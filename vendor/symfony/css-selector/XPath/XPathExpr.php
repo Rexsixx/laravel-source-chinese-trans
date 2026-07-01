@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Css 选择器，XPath，XPath Expr
+ * Symfony，组件，Css选择器，XPath，XPath Expr
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\CssSelector\XPath;
 
 /**
  * XPath expression translator interface.
- * XPath表达式翻译接口。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，Http 内核接口
+ * Symfony，组件，Http内核，Http内核接口
  */
 
 /*
@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * HttpKernelInterface handles a Request to convert it to a Response.
- * HttpKernelInterface处理请求并将其转换为响应。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -30,7 +29,6 @@ interface HttpKernelInterface
 
     /**
      * Handles a Request to convert it to a Response.
-	 * 对电子邮件地址进行编码。
      *
      * When $catch is true, the implementation must catch all exceptions
      * and do its best to convert them to a Response instance.

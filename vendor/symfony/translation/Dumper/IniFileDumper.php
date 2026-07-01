@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，转储，Ini 文件转储
+ * Symfony，组件，翻译，转储，Ini File 转储
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * IniFileDumper generates an ini formatted string representation of a message catalogue.
- * IniFileDumper生成消息目录的ini格式字符串表示。
+ * IniFileDumper生成一个消息目录的ini格式化字符串表示。
  *
  * @author Stealth35
  */

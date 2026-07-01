@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，异常，太多的请求Http异常
+ * Symfony，组件，Http内核，异常，先决条件失败Http异常
  */
 
 /*

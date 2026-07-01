@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，错误处理器，异常，沉默错误背景信息
+ * Symfony，组件，错误处理程序，异常，分隔错误上下文
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\ErrorHandler\Exception;
 
 /**
  * Data Object that represents a Silenced Error.
- * 表示沉默错误的数据对象。
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */

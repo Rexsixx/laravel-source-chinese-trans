@@ -39,7 +39,6 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
 	 * 应该添加到资源响应中的其他元数据。
      *
      * Added during response construction by the developer.
-	 * 在响应构建期间由开发人员添加。
      *
      * @var array
      */
@@ -86,7 +85,11 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
      */
     public static function collection($resource)
     {
-        return new AnonymousResourceCollection($resource, static::class);
+        return tap(new AnonymousResourceCollection($resource, static::class), function ($collection) {
+            if (property_exists(static::class, 'preserveKeys')) {
+                $collection->preserveKeys = (new static([]))->preserveKeys === true;
+            }
+        });
     }
 
     /**

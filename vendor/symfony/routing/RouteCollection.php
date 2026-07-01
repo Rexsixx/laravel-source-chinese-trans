@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由，路由集合
+ * Symfony，组件，路由选择，路由收集
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\Config\Resource\ResourceInterface;
 
 /**
  * A RouteCollection represents a set of Route instances.
- * RouteCollection表示一组Route实例。
+ * 路由表示一组路由实例
  *
  * When adding a route at the end of the collection, an existing route
  * with the same name is removed first. So there can only be one route
@@ -48,7 +48,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Gets the current RouteCollection as an Iterator that includes all routes.
-	 * 获取当前的RouteCollection作为包含所有路由的迭代器。
+	 * 将当前的RouteCollection作为包含所有路由的迭代器
      *
      * It implements \IteratorAggregate.
      *
@@ -64,6 +64,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
     /**
      * Gets the number of Routes in this collection.
+	 * 获取这个集合中的路由数量
      *
      * @return int The number of routes
      */

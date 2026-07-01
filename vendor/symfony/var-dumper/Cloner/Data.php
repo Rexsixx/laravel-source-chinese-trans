@@ -236,6 +236,7 @@ class Data implements \ArrayAccess, \Countable, \IteratorAggregate
 
     /**
      * Enables/disables objects' identifiers tracking.
+	 * 启用/禁用对象标识符跟踪
      *
      * @param bool $useRefHandles False to hide global ref. handles
      *

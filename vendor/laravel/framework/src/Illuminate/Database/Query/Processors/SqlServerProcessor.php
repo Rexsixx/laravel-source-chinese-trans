@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，查询，处理器，Sql Server 处理器
+ * Illuminate，数据库，查询，处理器，SqlServer 处理器
  */
 
 namespace Illuminate\Database\Query\Processors;
@@ -13,12 +13,12 @@ class SqlServerProcessor extends Processor
 {
     /**
      * Process an "insert get ID" query.
-	 * 处理“insert get ID”查询。
+	 * 处理“insert get ID”查询
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $sql
      * @param  array   $values
-     * @param  string  $sequence
+     * @param  string|null  $sequence
      * @return int
      */
     public function processInsertGetId(Builder $query, $sql, $values, $sequence = null)

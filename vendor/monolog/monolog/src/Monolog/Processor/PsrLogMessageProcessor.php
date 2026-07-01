@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，处理器，日志消息处理器
+ * Monolog，处理器，PsrLog 消息处理程序
  */
 
 /*

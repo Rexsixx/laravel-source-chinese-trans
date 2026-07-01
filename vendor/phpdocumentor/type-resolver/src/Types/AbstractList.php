@@ -20,7 +20,6 @@ use phpDocumentor\Reflection\Type;
 
 /**
  * Represents a list of values. This is an abstract class for Array_ and Collection.
- * 表示值的列表。这是Array_和Collection的抽象类。
  *
  * @psalm-immutable
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Redis，限制器，持续限制器
+ * Illuminate，Redis，限制器，负载限制器
  */
 
 namespace Illuminate\Redis\Limiters;

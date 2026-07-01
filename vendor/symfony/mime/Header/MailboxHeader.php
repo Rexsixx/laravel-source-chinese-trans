@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，数据头，邮箱头
+ * Symfony，组件，Mime，数据头，Mailbox标题
  */
 
 /*
@@ -19,7 +19,6 @@ use Symfony\Component\Mime\Exception\RfcComplianceException;
 
 /**
  * A Mailbox MIME Header for something like Sender (one named address).
- * 一个邮箱MIME报头，类似于发送者（一个命名地址）。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -77,7 +76,6 @@ final class MailboxHeader extends AbstractHeader
 
     /**
      * Redefine the encoding requirements for an address.
-	 * 重新定义地址的编码要求。
      *
      * All "specials" must be encoded as the full header value will not be quoted
      *

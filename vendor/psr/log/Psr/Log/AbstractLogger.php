@@ -1,6 +1,6 @@
 <?php
 /**
- * Psy，Log，抽象记录器
+ * Psr，日志，抽象记录器
  */
 
 namespace Psr\Log;
@@ -17,7 +17,6 @@ abstract class AbstractLogger implements LoggerInterface
 {
     /**
      * System is unusable.
-	 * 系统是不可用的
      *
      * @param string  $message
      * @param mixed[] $context

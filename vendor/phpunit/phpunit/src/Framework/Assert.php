@@ -68,7 +68,6 @@ use Traversable;
 
 /**
  * A set of assertion methods.
- * 一组断言方法。
  */
 abstract class Assert
 {
@@ -79,7 +78,6 @@ abstract class Assert
 
     /**
      * Asserts that an array has a specified key.
-	 * 断言数组有一个指定的键
      *
      * @param int|string        $key
      * @param array|ArrayAccess $array

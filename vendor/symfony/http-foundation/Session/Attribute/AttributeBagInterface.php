@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，HTTP基础，会话，属性，属性包接口
- */
 
 /*
  * This file is part of the Symfony package.

@@ -19,7 +19,6 @@ use SebastianBergmann\CodeCoverage\RuntimeException;
 
 /**
  * Generates a Clover XML logfile from a code coverage object.
- * 从代码覆盖对象生成Clover XML日志文件。
  */
 final class Clover
 {
