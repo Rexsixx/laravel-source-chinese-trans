@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，异常，Exception
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -14,6 +17,7 @@ namespace Prophecy\Exception;
 /**
  * Core Prophecy exception interface.
  * All Prophecy exceptions implement it.
+ * 核心预言异常接口。所有的预言异常都实现了它。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */

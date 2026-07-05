@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，论证，令牌，回调令牌
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -15,6 +18,7 @@ use Prophecy\Exception\InvalidArgumentException;
 
 /**
  * Callback-verified token.
+ * 回验证令牌。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -29,6 +33,7 @@ class CallbackToken implements TokenInterface
 
     /**
      * Initializes token.
+	 * 初始化令牌
      *
      * @param callable $callback
      * @param string|null $customStringRepresentation Customize the __toString() representation of this token

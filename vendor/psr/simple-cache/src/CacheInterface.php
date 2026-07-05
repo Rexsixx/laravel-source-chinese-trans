@@ -40,6 +40,7 @@ interface CacheInterface
 
     /**
      * Delete an item from the cache by its unique key.
+	 * 通过其惟一的键从缓存中删除一个项目
      *
      * @param string $key The unique cache key of the item to delete.
      *

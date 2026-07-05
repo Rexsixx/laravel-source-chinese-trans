@@ -33,6 +33,7 @@ final class Console
 
     /**
      * Returns true if STDOUT supports colorization.
+	 * 如果stout支持着色,返回true。
      *
      * This code has been copied and adapted from
      * Symfony\Component\Console\Output\StreamOutput.

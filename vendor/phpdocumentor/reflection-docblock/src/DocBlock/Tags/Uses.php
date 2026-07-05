@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，Doc Block，标签，使用
+ */
 
 declare(strict_types=1);
 
@@ -26,6 +29,7 @@ use function explode;
 
 /**
  * Reflection class for a {@}uses tag in a Docblock.
+ * 在Docblock中使用标记的反射类。
  */
 final class Uses extends BaseTag implements Factory\StaticMethod
 {
@@ -37,6 +41,7 @@ final class Uses extends BaseTag implements Factory\StaticMethod
 
     /**
      * Initializes this tag.
+	 * 初始化这个标签
      */
     public function __construct(Fqsen $refers, ?Description $description = null)
     {
@@ -76,6 +81,7 @@ final class Uses extends BaseTag implements Factory\StaticMethod
 
     /**
      * Returns the structural element this tag refers to.
+	 * 返回这个标记指的结构元素
      */
     public function getReference(): Fqsen
     {
@@ -84,6 +90,7 @@ final class Uses extends BaseTag implements Factory\StaticMethod
 
     /**
      * Returns a string representation of this tag.
+	 * 返回这个标记的字符串表示
      */
     public function __toString(): string
     {

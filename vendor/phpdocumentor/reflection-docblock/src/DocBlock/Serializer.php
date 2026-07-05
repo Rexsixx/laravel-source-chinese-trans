@@ -51,6 +51,7 @@ class Serializer
 
     /**
      * Create a Serializer instance.
+	 * 创建一个序列化实例
      *
      * @param int       $indent          The number of times the indent string is repeated.
      * @param string    $indentString    The string to indent the comment with.
@@ -77,6 +78,7 @@ class Serializer
 
     /**
      * Generate a DocBlock comment.
+	 * 生成DocBlock注释
      *
      * @param DocBlock $docblock The DocBlock to serialize.
      *

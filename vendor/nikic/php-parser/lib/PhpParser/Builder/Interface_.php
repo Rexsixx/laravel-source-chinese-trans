@@ -24,6 +24,7 @@ class Interface_ extends Declaration
 
     /**
      * Creates an interface builder.
+	 * 创建一个接口构建器
      *
      * @param string $name Name of the interface
      */
@@ -33,6 +34,7 @@ class Interface_ extends Declaration
 
     /**
      * Extends one or more interfaces.
+	 * 扩展一个或多个接口
      *
      * @param Name|string ...$interfaces Names of interfaces to extend
      *

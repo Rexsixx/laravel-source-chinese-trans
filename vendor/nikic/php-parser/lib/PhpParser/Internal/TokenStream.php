@@ -88,6 +88,7 @@ class TokenStream
 
     /**
      * Check whether the position is directly followed by a certain token type.
+	 * 检查这个位置是否直接遵循某个令牌类型。
      *
      * During this check whitespace and comments are skipped.
      *

@@ -64,6 +64,7 @@ class EnumCase implements PhpParser\Builder
 
     /**
      * Adds an attribute group.
+	 * 添加一个属性组
      *
      * @param Node\Attribute|Node\AttributeGroup $attribute
      *

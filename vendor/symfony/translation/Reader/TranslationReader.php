@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，翻译，阅读器，翻译阅读器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * TranslationReader reads translation messages from translation files.
+ * 翻译阅读器从翻译文件读取翻译消息。
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */

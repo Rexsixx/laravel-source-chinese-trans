@@ -24,6 +24,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Text descriptor.
+ * 文本描述符
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  *

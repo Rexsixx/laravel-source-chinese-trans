@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，翻译，命令，Xliff Lint 命令
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,6 +26,7 @@ use Symfony\Component\Translation\Util\XliffUtils;
 
 /**
  * Validates XLIFF files syntax and outputs encountered errors.
+ * 验证XLIFF文件的语法和输出遇到错误。
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  * @author Robin Chalas <robin.chalas@gmail.com>

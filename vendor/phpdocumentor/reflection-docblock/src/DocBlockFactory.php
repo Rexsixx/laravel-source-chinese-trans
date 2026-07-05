@@ -56,6 +56,7 @@ final class DocBlockFactory implements DocBlockFactoryInterface
 
     /**
      * Factory method for easy instantiation.
+	 * 易于实例化的工厂方法
      *
      * @param array<string, class-string<Tag>> $additionalTags
      */
@@ -124,6 +125,7 @@ final class DocBlockFactory implements DocBlockFactoryInterface
 
     /**
      * Strips the asterisks from the DocBlock comment.
+	 * 从DocBlock注释中删除星号
      *
      * @param string $comment String containing the comment text.
      */

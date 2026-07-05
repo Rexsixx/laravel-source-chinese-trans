@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，Inflector，循环单词影响器
+ * Doctrine，Inflector，循环单词偏转器
  */
 
 declare(strict_types=1);

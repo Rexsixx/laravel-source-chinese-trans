@@ -20,6 +20,7 @@ use ReflectionClass;
 
 /**
  * A blacklist for global state elements that should not be snapshotted.
+ * 全球国家元素的黑名单,不应该被snapshoact。
  */
 class Blacklist
 {

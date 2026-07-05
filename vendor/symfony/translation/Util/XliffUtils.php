@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，翻译，Util，Xliff Utils
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Translation\Exception\InvalidResourceException;
 /**
  * Provides some utility methods for XLIFF translation files, such as validating
  * their contents according to the XSD schema.
+ * 为XLIFF翻译文件提供一些实用的方法,例如根据XSD模式验证它们的内容。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

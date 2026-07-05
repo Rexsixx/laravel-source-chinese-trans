@@ -21,6 +21,8 @@ define('LARAVEL_START', microtime(true));
 | our application. We just need to utilize it! We'll simply require it
 | into the script here so that we don't have to worry about manual
 | loading any of our classes later on. It feels great to relax.
+| 编译器为我们应用程序提供了便捷的、自动生成的类加载器。
+| 我们只需要使用它！只需把它引入脚本中，之后就无需再手动加载任何类了。感觉放松起来真舒服。
 |
 */
 
@@ -28,13 +30,15 @@ require __DIR__.'/../vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
-| Turn On The Lights	打开灯
+| Turn On The Lights	点亮灯
 |--------------------------------------------------------------------------
 |
 | We need to illuminate PHP development, so let us turn on the lights.
 | This bootstraps the framework and gets it ready for use, then it
 | will load up this application so that we can run it and send
 | the responses back to the browser and delight our users.
+| 我们需要阐明PHP的开发,让我们打开灯。
+| 这会初始化框架并使其准备好使用，然后加载该应用程序，以便我们运行它并将响应返回给浏览器，从而让我们的用户感到满意。
 |
 */
 
@@ -42,13 +46,15 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 
 /*
 |--------------------------------------------------------------------------
-| Run The Application
+| Run The Application	运行应用
 |--------------------------------------------------------------------------
 |
 | Once we have the application, we can handle the incoming request
 | through the kernel, and send the associated response back to
 | the client's browser allowing them to enjoy the creative
 | and wonderful application we have prepared for them.
+| 一旦我们有了该应用程序，就可以通过内核来处理接收到的请求，
+| 并将相关的响应发送回客户端的浏览器，使他们能够享受到我们为他们准备的富有创意且精彩的应用程序。
 |
 */
 

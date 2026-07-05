@@ -70,6 +70,7 @@ class Class_ extends Declaration
 
     /**
      * Makes the class abstract.
+	 * 使类抽象
      *
      * @return $this The builder instance (for fluid interface)
      */

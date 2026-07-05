@@ -21,6 +21,7 @@ class Function_ extends FunctionLike
 
     /**
      * Creates a function builder.
+	 * 创建一个函数生成器
      *
      * @param string $name Name of the function
      */

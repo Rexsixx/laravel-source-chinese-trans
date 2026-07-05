@@ -1,4 +1,8 @@
 <?php
+/**
+ * PharIo，Manifest，Manifest元素
+ */
+
 /*
  * This file is part of PharIo\Manifest.
  *
@@ -23,6 +27,7 @@ class ManifestElement {
 
     /**
      * ContainsElement constructor.
+	 * ContainsElement构造函数
      *
      * @param DOMElement $element
      */

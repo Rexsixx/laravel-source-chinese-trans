@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，CodeCoverage，节点，迭代器
+ */
+
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -11,6 +15,7 @@ namespace SebastianBergmann\CodeCoverage\Node;
 
 /**
  * Recursive iterator for node object graphs.
+ * 节点对象图的递归迭代器。
  */
 final class Iterator implements \RecursiveIterator
 {

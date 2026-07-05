@@ -1,4 +1,7 @@
 <?php
+/**
+ * Hamcrest，匹配
+ */
 
 /*
  Copyright (c) 2009-2010 hamcrest.org
@@ -10,6 +13,7 @@ namespace Hamcrest;
 
 /**
  * A series of static factories for all hamcrest matchers.
+ * 一系列静态工厂为所有的hamcrest matchers。
  */
 class Matchers
 {
@@ -25,6 +29,7 @@ class Matchers
 
     /**
      * Evaluates to true if any item in an array satisfies the given matcher.
+	 * 如果数组中的任何项满足给定的matcher,则评估为true。
      *
      * @param mixed $item as a {@link Hamcrest\Matcher} or a value.
      *

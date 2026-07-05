@@ -1,6 +1,6 @@
 <?php
 /**
- * DeepCopy，过滤器，证明过滤器
+ * DeepCopy，过滤器，链式过滤器
  */
 
 namespace DeepCopy\Filter;

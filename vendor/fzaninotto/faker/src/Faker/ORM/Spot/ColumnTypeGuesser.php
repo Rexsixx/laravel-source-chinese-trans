@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，Spot，列式猜测器
+ */
 
 namespace Faker\ORM\Spot;
 
@@ -71,6 +74,7 @@ class ColumnTypeGuesser
                 };
             default:
                 // no smart way to guess what the user expects here
+				// 没有一个聪明的方法来猜测用户在这里的期望
                 return null;
         }
     }

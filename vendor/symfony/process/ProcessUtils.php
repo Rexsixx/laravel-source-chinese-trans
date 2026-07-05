@@ -21,6 +21,7 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
  * ProcessUtils是一堆实用程序方法。
  *
  * This class contains static methods only and is not meant to be instantiated.
+ * 这个类只包含静态方法,并不是要实例化的。
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */
@@ -36,6 +37,7 @@ class ProcessUtils
 
     /**
      * Validates and normalizes a Process input.
+	 * 验证并将流程输入规范化
      *
      * @param string $caller The name of method call that validates the input
      * @param mixed  $input  The input to validate

@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，TextUI，命令
+ */
+
 /*
  * This file is part of PHPUnit.
  *

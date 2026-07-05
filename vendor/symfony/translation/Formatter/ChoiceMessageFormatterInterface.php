@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，翻译，格式化程序，选择消息格式化程序接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ interface ChoiceMessageFormatterInterface
 {
     /**
      * Formats a localized message pattern with given arguments.
+	 * 使用给定的参数格式化本地化的消息模式
      *
      * @param string $message    The message (may also be an object that can be cast to string)
      * @param int    $number     The number to use to find the indice of the message

@@ -171,6 +171,7 @@ class CodeCleaner
 
     /**
      * Search the stack trace for a file in which the user called Psy\debug.
+	 * 搜索一个名为Psy \ debug的文件的堆栈跟踪
      *
      * @return string|null
      */

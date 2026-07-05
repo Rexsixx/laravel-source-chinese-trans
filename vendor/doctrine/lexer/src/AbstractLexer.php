@@ -173,6 +173,7 @@ abstract class AbstractLexer
 
     /**
      * Checks whether any of the given tokens matches the current lookahead.
+	 * 检查给定的标记是否与当前的展望相匹配
      *
      * @param list<T> $types
      *
@@ -187,6 +188,7 @@ abstract class AbstractLexer
 
     /**
      * Moves to the next token in the input string.
+	 * 在输入字符串中移动到下一个令牌
      *
      * @return bool
      *
@@ -204,6 +206,7 @@ abstract class AbstractLexer
 
     /**
      * Tells the lexer to skip input tokens until it sees a token with the given value.
+	 * 告诉lexer跳过输入令牌,直到它看到一个带有给定值的令牌。
      *
      * @param T $type The token type to skip until.
      *

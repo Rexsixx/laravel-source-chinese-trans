@@ -162,6 +162,7 @@ final class BuilderHelpers
 
     /**
      * Normalizes a type: Converts plain-text type names into proper AST representation.
+	 * 规范类型:将明文类型名称转换为适当的AST表示。
      *
      * In particular, builtin types become Identifiers, custom types become Names and nullables
      * are wrapped in NullableType nodes.

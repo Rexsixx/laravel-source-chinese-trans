@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Manifest，需求测试
+ * NunoMaduro，Manifest，应用测试
  */
 
 /*

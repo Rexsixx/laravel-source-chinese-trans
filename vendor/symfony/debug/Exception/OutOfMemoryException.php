@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，异常，失去内存异常
+ */
 
 /*
  * This file is part of the Symfony package.

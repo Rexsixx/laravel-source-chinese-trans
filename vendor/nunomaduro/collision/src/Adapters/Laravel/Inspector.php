@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，Collision，适配器，Laravel，检查员
+ * NunoMaduro，Collision，适配器，Laravel，检查器
  */
 
 /**

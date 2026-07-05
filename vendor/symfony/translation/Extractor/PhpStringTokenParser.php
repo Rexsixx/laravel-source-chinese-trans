@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，翻译，提取器，Php字符串令牌解析器
+ */
 
 /*
  * This file is part of the Symfony package.

@@ -47,6 +47,7 @@ class DayOfWeekField extends AbstractField
 
     /**
      * Constructor
+	 * 构造函数
      */
     public function __construct()
     {
@@ -66,6 +67,7 @@ class DayOfWeekField extends AbstractField
         }
 
         // Convert text day of the week values to integers
+		// 将每周的文本日转换为整数
         $value = $this->convertLiterals($value);
 
         $currentYear = $date->format('Y');

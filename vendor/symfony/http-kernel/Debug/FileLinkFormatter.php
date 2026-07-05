@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpKernel，调试，文件链接格式化程序
+ */
 
 /*
  * This file is part of the Symfony package.

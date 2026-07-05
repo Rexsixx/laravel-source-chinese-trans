@@ -37,6 +37,7 @@ class AnyValuesToken implements TokenInterface
 
     /**
      * Returns true to stop wildcard from processing other tokens.
+	 * 返回true以停止从处理其他令牌的通配符
      *
      * @return bool
      */
@@ -47,6 +48,7 @@ class AnyValuesToken implements TokenInterface
 
     /**
      * Returns string representation for token.
+	 * 返回字符串表示
      *
      * @return string
      */

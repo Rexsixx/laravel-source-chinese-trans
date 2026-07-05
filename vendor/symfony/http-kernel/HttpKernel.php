@@ -197,6 +197,7 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
 
     /**
      * Filters a response object.
+	 * 过滤一个响应对象
      *
      * @throws \RuntimeException if the passed object is not a Response instance
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Prophecy，Reflection，Prophet
+ * Prophecy，Prophet
  */
 
 /*
@@ -109,6 +109,7 @@ class Prophet
 
     /**
      * Returns all created object prophecies.
+	 * 返回所有创造的物体预言
      *
      * @return list<ObjectProphecy<object>>
      */

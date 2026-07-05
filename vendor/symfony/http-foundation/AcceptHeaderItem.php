@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，HttpFoundation，接受头
+ * Symfony，组件，HttpFoundation，接受头项
  */
 
 /*

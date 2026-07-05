@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，倍频器，类Patch，禁用构造器Patch
+ */
 
 /*
  * This file is part of the Prophecy.

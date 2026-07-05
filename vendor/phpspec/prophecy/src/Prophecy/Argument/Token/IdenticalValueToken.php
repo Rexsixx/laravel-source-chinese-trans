@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，论证，令牌，相同价值令牌
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -15,6 +18,7 @@ use Prophecy\Util\StringUtil;
 
 /**
  * Identical value token.
+ * 相同值令牌。
  *
  * @author Florian Voutzinos <florian@voutzinos.com>
  */

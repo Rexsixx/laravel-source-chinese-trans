@@ -285,6 +285,7 @@ abstract class PrettyPrinterAbstract
 
     /**
      * Pretty prints an array of nodes (statements) and indents them optionally.
+	 * 漂亮打印出一个数组的节点(语句),并可以选择。
      *
      * @param Node[] $nodes  Array of nodes
      * @param bool   $indent Whether to indent the printed nodes
@@ -318,6 +319,7 @@ abstract class PrettyPrinterAbstract
 
     /**
      * Pretty-print an infix operation while taking precedence into account.
+	 * 在优先考虑的同时,打印一个infix操作。
      *
      * @param string $class          Node class of operator
      * @param Node   $leftNode       Left-hand side node

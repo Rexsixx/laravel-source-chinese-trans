@@ -19,6 +19,7 @@ namespace phpDocumentor\Reflection;
 /**
  * Interface for project factories. A project factory shall convert a set of files
  * into an object implementing the Project interface.
+ * 项目工厂的接口。项目工厂应将一组文件转换为实现 Project 接口的对象。
  */
 interface ProjectFactory
 {

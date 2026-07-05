@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理程序，ElasticSearch 处理程序
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -19,6 +22,7 @@ use Elastica\Exception\ExceptionInterface;
 
 /**
  * Elastic Search handler
+ * ElasticSearch 处理程序
  *
  * Usage example:
  *

@@ -71,6 +71,7 @@ abstract class AggregatedType implements Type, IteratorAggregate
 
     /**
      * Tests if this compound type has a type with the given index.
+	 * 如果这种复合类型与给定的索引类型有一个类型,则测试。
      */
     public function has(int $index): bool
     {
@@ -79,6 +80,7 @@ abstract class AggregatedType implements Type, IteratorAggregate
 
     /**
      * Tests if this compound type contains the given type.
+	 * 测试如果这个复合类型包含给定类型
      */
     public function contains(Type $type): bool
     {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，Php文档，类标记检索
+ */
 
 /*
  * This file is part of the Prophecy.

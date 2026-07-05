@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，类型，Callable_
+ */
 
 declare(strict_types=1);
 
@@ -17,6 +20,7 @@ use phpDocumentor\Reflection\Type;
 
 /**
  * Value Object representing a Callable type.
+ * 表示可调用类型的值对象。
  *
  * @psalm-immutable
  */
@@ -24,6 +28,7 @@ final class Callable_ implements Type
 {
     /**
      * Returns a rendered output of the Type as it would be used in a DocBlock.
+	 * 返回该类型的输出输出,因为它将在DocBlock中使用。
      */
     public function __toString(): string
     {

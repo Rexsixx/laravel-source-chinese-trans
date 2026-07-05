@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Manifest，显性元素异常
+ * PharIo，Manifest，Manifest 元素异常
  */
 
 

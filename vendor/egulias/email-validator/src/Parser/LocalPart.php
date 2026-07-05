@@ -48,6 +48,7 @@ class LocalPart extends PartParser
                 $dquoteParsingResult = $this->parseDoubleQuote();
 
                 //Invalid double quote parsing
+				// 无效的双引号解析
                 if($dquoteParsingResult->isInvalid()) {
                     return $dquoteParsingResult;
                 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，类型，布尔
+ */
 
 declare(strict_types=1);
 
@@ -17,6 +20,7 @@ use phpDocumentor\Reflection\Type;
 
 /**
  * Value Object representing a Boolean type.
+ * 表示布尔类型的值对象。
  *
  * @psalm-immutable
  */
@@ -24,6 +28,7 @@ class Boolean implements Type
 {
     /**
      * Returns a rendered output of the Type as it would be used in a DocBlock.
+	 * 返回该类型的输出输出,因为它将在DocBlock中使用。
      */
     public function __toString(): string
     {

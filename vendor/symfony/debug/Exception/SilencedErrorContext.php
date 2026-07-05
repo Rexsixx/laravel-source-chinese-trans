@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，异常，分隔错误上下文
+ */
 
 /*
  * This file is part of the Symfony package.

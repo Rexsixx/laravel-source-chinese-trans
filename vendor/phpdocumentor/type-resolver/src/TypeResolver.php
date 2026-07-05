@@ -185,6 +185,7 @@ final class TypeResolver
 
     /**
      * Analyse each tokens and creates types
+	 * 分析每个令牌并创建类型
      *
      * @param ArrayIterator<int, string|null> $tokens        the iterator on tokens
      * @param int                        $parserContext on of self::PARSER_* constants, indicating
@@ -345,6 +346,7 @@ final class TypeResolver
 
     /**
      * resolve the given type into a type object
+	 * 将给定类型解析为类型对象
      *
      * @param string $type the type string, representing a single type
      *

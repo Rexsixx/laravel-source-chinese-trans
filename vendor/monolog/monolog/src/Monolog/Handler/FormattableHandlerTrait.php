@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，可处理的处理特性
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -16,6 +20,7 @@ use Monolog\Formatter\LineFormatter;
 
 /**
  * Helper trait for implementing FormattableInterface
+ * 可处理的处理特性
  *
  * This trait is present in monolog 1.x to ease forward compatibility.
  *

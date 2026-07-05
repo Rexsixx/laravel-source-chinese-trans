@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，类型，上下文工厂
+ */
 
 declare(strict_types=1);
 
@@ -57,6 +60,7 @@ if (!defined('T_NAME_FULLY_QUALIFIED')) {
 
 /**
  * Convenience class to create a Context for DocBlocks when not using the Reflection Component of phpDocumentor.
+ * 方便类在不使用phpDocumentor的反射组件时为docblock创建上下文。
  *
  * For a DocBlock to be able to resolve types that use partial namespace names or rely on namespace imports we need to
  * provide a bit of context so that the DocBlock can read that and based on it decide how to resolve the types to
@@ -74,6 +78,7 @@ final class ContextFactory
 
     /**
      * Build a Context given a Class Reflection.
+	 * 构建一个具有类反射的上下文
      *
      * @see Context for more information on Contexts.
      */

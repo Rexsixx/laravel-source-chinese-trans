@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，Doc Block，标签，举例
+ */
 
 declare(strict_types=1);
 

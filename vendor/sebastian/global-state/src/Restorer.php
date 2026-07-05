@@ -20,11 +20,13 @@ use ReflectionProperty;
 
 /**
  * Restorer of snapshots of global state.
+ * 全局情况的快照恢复器。
  */
 class Restorer
 {
     /**
      * Deletes function definitions that are not defined in a snapshot.
+	 * 删除未在快照中定义的函数定义
      *
      * @throws RuntimeException when the uopz_delete() function is not available
      *

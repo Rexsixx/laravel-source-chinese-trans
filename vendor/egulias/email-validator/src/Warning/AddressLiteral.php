@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，EmailValidator，警告，地址常量
+ * Egulias，EmailValidator，警告，地址文字
  */
 
 namespace Egulias\EmailValidator\Warning;

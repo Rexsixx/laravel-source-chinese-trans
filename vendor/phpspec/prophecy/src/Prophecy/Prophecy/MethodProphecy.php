@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，预言，方法预言
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -24,6 +27,7 @@ use ReflectionUnionType;
 
 /**
  * Method prophecy.
+ * 方法预言
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -187,6 +191,7 @@ class MethodProphecy
 
     /**
      * Sets argument wildcard.
+	 * 设置参数通配符
      *
      * @param array<mixed>|Argument\ArgumentsWildcard $arguments
      *

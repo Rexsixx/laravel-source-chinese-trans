@@ -48,6 +48,7 @@ interface Driver
 
     /**
      * Stop collection of code coverage information.
+	 * 停止收集代码覆盖信息
      */
     public function stop(): array;
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，Propel2，普及者
+ */
 
 namespace Faker\ORM\Propel2;
 

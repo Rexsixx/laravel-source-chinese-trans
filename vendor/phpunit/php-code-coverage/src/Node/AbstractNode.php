@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，CodeCoverage，节点，抽象节点
+ */
+
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -13,6 +17,7 @@ use SebastianBergmann\CodeCoverage\Util;
 
 /**
  * Base class for nodes in the code coverage information tree.
+ * 代码覆盖信息树中的节点的基类。
  */
 abstract class AbstractNode implements \Countable
 {

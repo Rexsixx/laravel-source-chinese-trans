@@ -68,6 +68,7 @@ class Emulative extends Lexer
 
         // Collect emulators that are relevant for the PHP version we're running
         // and the PHP version we're targeting for emulation.
+		// 收集与我们正在运行的PHP版本相关的模拟器,以及我们针对仿真的PHP版本。
         foreach ($emulators as $emulator) {
             $emulatorPhpVersion = $emulator->getPhpVersion();
             if ($this->isForwardEmulationNeeded($emulatorPhpVersion)) {

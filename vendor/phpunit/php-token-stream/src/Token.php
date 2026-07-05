@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHP_Token
+ */
+
 /*
  * This file is part of php-token-stream.
  *

@@ -28,6 +28,7 @@ final class Runtime
     /**
      * Returns true when Xdebug or PCOV is available or
      * the runtime used is PHPDBG.
+	 * 当Xdebug或PCOV可用时返回true,或者使用的运行时是PHPDBG。
      */
     public function canCollectCodeCoverage(): bool
     {

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，Lexer，令牌仿真器，属性仿真器
+ */
+
 namespace PhpParser\Lexer\TokenEmulator;
 
 use PhpParser\Lexer\Emulative;
@@ -20,6 +24,7 @@ final class AttributeEmulator extends TokenEmulator
     {
         // We need to manually iterate and manage a count because we'll change
         // the tokens array on the way.
+		// 我们需要手动迭代和管理一个计数,因为我们将在路上更改令牌数组。
         $line = 1;
         for ($i = 0, $c = count($tokens); $i < $c; ++$i) {
             if ($tokens[$i] === '#' && isset($tokens[$i + 1]) && $tokens[$i + 1] === '[') {

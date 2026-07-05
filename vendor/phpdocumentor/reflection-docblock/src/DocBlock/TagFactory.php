@@ -58,6 +58,7 @@ interface TagFactory
 
     /**
      * Registers a service with the Service Locator using the FQCN of the class or the alias, if provided.
+	 * 如果提供,使用类或别名的FQCN注册服务定位器。
      *
      * When calling a tag's "create" method we always check the signature for dependencies to inject. If a parameter
      * has a typehint then the ServiceLocator is queried to see if a Service is registered for that typehint.

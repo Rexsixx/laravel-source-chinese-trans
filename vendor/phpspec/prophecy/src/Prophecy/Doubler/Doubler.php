@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，倍频器，Doubler
+ */
 
 /*
  * This file is part of the Prophecy.

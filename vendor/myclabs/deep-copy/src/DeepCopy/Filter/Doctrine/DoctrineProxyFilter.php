@@ -1,4 +1,7 @@
 <?php
+/**
+ * DeepCopy，过滤器，Doctrine，Doctrine 收集过滤器
+ */
 
 namespace DeepCopy\Filter\Doctrine;
 

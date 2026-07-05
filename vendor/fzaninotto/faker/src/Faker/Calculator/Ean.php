@@ -45,6 +45,7 @@ class Ean
     /**
      * Checks whether the provided number is an EAN compliant number and that
      * the checksum is correct.
+	 * 检查所提供的号码是否符合指令,校验和是正确的。
      *
      * @param string $ean An EAN number
      * @return boolean

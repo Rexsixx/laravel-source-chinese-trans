@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，事件，控制台事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Allows to inspect input and output of a command.
+ * 允许检查命令的输入和输出。
  *
  * @author Francesco Levorato <git@flevour.net>
  */

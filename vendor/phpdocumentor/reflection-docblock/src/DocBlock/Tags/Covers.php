@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，Doc Block，标签，覆盖
+ */
 
 declare(strict_types=1);
 
@@ -26,6 +29,7 @@ use function explode;
 
 /**
  * Reflection class for a @covers tag in a Docblock.
+ * 在Docblock中为@ cover标记的反射类。
  */
 final class Covers extends BaseTag implements Factory\StaticMethod
 {
@@ -37,6 +41,7 @@ final class Covers extends BaseTag implements Factory\StaticMethod
 
     /**
      * Initializes this tag.
+	 * 初始化这个标签
      */
     public function __construct(Fqsen $refers, ?Description $description = null)
     {

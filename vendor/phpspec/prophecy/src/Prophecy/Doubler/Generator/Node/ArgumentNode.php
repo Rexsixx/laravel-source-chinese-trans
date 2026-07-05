@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，倍频器，发生器，节点，参数节点
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -13,6 +16,7 @@ namespace Prophecy\Doubler\Generator\Node;
 
 /**
  * Argument node.
+ * 参数节点
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */

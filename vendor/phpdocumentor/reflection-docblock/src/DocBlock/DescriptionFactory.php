@@ -92,6 +92,7 @@ class DescriptionFactory
 
     /**
      * Strips the contents from superfluous whitespace and splits the description into a series of tokens.
+	 * 将内容从多余的空白中删除,并将描述分成一系列的令牌。
      *
      * @return string[] A series of tokens of which the description text is composed.
      */
@@ -137,6 +138,7 @@ class DescriptionFactory
 
     /**
      * Removes the superfluous from a multi-line description.
+	 * 从多行描述中删除多余的。
      *
      * When a description has more than one line then it can happen that the second and subsequent lines have an
      * additional indentation. This is commonly in use with tags like this:

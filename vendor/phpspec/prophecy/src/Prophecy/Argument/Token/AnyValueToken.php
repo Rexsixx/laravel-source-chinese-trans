@@ -24,6 +24,7 @@ class AnyValueToken implements TokenInterface
 {
     /**
      * Always scores 3 for any argument.
+	 * 任何论点都有分数3
      *
      * @param mixed $argument
      *
@@ -36,6 +37,7 @@ class AnyValueToken implements TokenInterface
 
     /**
      * Returns false.
+	 * 返回false
      *
      * @return bool
      */

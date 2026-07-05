@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，异常
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -11,6 +15,7 @@ namespace PHPUnit;
 
 /**
  * Marker interface for PHPUnit exceptions.
+ * PHPUnit异常的标记接口。
  */
 interface Exception extends \Throwable
 {

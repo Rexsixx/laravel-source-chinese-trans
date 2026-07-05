@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，结果，原因，连续点
+ */
 
 namespace Egulias\EmailValidator\Result\Reason;
 

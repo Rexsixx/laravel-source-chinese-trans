@@ -43,6 +43,7 @@ final class Ctype
 
     /**
      * Returns TRUE if every character in text is a letter, FALSE otherwise.
+	 * 如果文本中的每个字符都是字母,则返回TRUE。
      *
      * @see https://php.net/ctype-alpha
      *

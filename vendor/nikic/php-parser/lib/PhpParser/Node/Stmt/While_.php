@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，Stmt，While_
+ */
+
 namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
@@ -13,6 +17,7 @@ class While_ extends Node\Stmt
 
     /**
      * Constructs a while node.
+	 * 构造一个while节点
      *
      * @param Node\Expr   $cond       Condition
      * @param Node\Stmt[] $stmts      Statements

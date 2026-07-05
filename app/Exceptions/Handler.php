@@ -1,6 +1,6 @@
 <?php
 /**
- * App，条款，处理器
+ * App，条款，处理程序
  */
 
 namespace App\Exceptions;

@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，Doc Block，标签，工厂，静态方法
+ */
 
 declare(strict_types=1);
 

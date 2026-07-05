@@ -18,6 +18,7 @@ use Symfony\Component\Config\Resource\ResourceInterface;
 
 /**
  * MessageCatalogueInterface.
+ * 信息目录接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

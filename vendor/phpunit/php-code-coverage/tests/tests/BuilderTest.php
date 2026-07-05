@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，CodeCoverage，报告，构建器测试
+ */
+
 /*
  * This file is part of the php-code-coverage package.
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，CodeCoverage，未执行的覆盖代码
+ * SebastianBergmann，CodeCoverage，无意地覆盖代码异常
  */
 
 /*

@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，Doc Block，标签，格式化程序，对齐格式器
+ */
 
 declare(strict_types=1);
 
@@ -37,6 +40,7 @@ class AlignFormatter implements Formatter
 
     /**
      * Formats the given tag to return a simple plain text version.
+	 * 格式化给定的标记以返回一个简单的纯文本版本
      */
     public function format(Tag $tag): string
     {

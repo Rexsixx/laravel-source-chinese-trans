@@ -172,6 +172,7 @@ class DeepCopy
 
     /**
      * Copy an array
+	 * 复制一个数组
      * @param array $array
      * @return array
      */

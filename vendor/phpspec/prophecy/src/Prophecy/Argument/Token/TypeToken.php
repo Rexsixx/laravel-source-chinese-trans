@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，论证，令牌，类型令牌
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -15,6 +18,7 @@ use Prophecy\Exception\InvalidArgumentException;
 
 /**
  * Value type token.
+ * 值类型令牌
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -39,6 +43,7 @@ class TypeToken implements TokenInterface
 
     /**
      * Scores 5 if argument has the same type this token was constructed with.
+	 * 如果参数有相同的类型,则构建此令牌。
      *
      * @param $argument
      *

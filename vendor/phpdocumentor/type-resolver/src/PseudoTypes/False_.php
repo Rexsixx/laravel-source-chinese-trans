@@ -1,6 +1,6 @@
 <?php
 /**
- * phpDocumentor，Reflection，伪类型，False
+ * phpDocumentor，Reflection，伪类型，False_
  */
 
 declare(strict_types=1);

@@ -1,6 +1,6 @@
 <?php
 /**
- * phpDocumentor，Reflection，类型，数组键
+ * phpDocumentor，Reflection，类型，数组主键
  */
 
 declare(strict_types=1);
@@ -24,6 +24,7 @@ use phpDocumentor\Reflection\Type;
  * 表示arraykey类型的值对象。
  *
  * A array-key Type is the supertype (but not a union) of int and string.
+ * arraykey类型是int和string的超类型(但不是一个union)。
  *
  * @psalm-immutable
  */

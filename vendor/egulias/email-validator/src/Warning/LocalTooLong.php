@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，警告，局部太长
+ */
 
 namespace Egulias\EmailValidator\Warning;
 

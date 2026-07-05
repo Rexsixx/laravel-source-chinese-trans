@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，警告，IPV6 不良字符
+ */
 
 namespace Egulias\EmailValidator\Warning;
 

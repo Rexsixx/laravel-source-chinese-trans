@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，核心，所有
+ */
+
 namespace Hamcrest\Core;
 
 /*
@@ -12,6 +16,7 @@ use Hamcrest\Util;
  * Calculates the logical conjunction of multiple matchers. Evaluation is
  * shortcut, so subsequent matchers are not called if an earlier matcher
  * returns <code>false</code>.
+ * 计算多个规的逻辑连词。
  */
 class AllOf extends DiagnosingMatcher
 {

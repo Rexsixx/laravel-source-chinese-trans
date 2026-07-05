@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，描述
+ */
+
 namespace Hamcrest;
 
 /*
@@ -8,6 +12,7 @@ namespace Hamcrest;
 /**
  * A description of a Matcher. A Matcher will describe itself to a description
  * which can later be used for reporting.
+ * 对Matcher的描述。Matcher将描述自己描述的描述,稍后可以用于报告。
  *
  * @see Hamcrest\Matcher::describeTo()
  */
@@ -16,6 +21,7 @@ interface Description
 
     /**
      * Appends some plain text to the description.
+	 * 将一些普通文本添加到描述中
      *
      * @param string $text
      *
@@ -35,6 +41,7 @@ interface Description
 
     /**
      * Appends an arbitary value to the description.
+	 * 将仲裁值附加到描述
      *
      * @param mixed $value
      *

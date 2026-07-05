@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，探测器，迭代器，自定义过滤器迭代器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Finder\Iterator;
 
 /**
  * CustomFilterIterator filters files by applying anonymous functions.
+ * CustomFilterIterator通过应用匿名函数来筛选文件。
  *
  * The anonymous function receives a \SplFileInfo and must return false
  * to remove files.

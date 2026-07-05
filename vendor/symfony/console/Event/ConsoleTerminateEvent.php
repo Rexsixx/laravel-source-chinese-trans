@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，事件，控制台结束事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Allows to manipulate the exit code of a command after its execution.
+ * 允许在执行后操作命令的退出代码。
  *
  * @author Francesco Levorato <git@flevour.net>
  *
@@ -35,6 +39,7 @@ class ConsoleTerminateEvent extends ConsoleEvent
 
     /**
      * Sets the exit code.
+	 * 设置退出代码
      *
      * @param int $exitCode The command exit code
      */

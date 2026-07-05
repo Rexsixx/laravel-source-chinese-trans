@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，结果，原因，不寻常元素
+ */
 
 namespace Egulias\EmailValidator\Result\Reason;
 

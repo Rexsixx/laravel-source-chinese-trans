@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，输入，Argv 输入
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Console\Exception\RuntimeException;
 
 /**
  * ArgvInput represents an input coming from the CLI arguments.
+ * ArgvInput表示来自CLI参数的输入。
  *
  * Usage:
  *

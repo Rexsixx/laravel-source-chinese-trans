@@ -1,6 +1,6 @@
 <?php
 /**
- * Fideloper，Proxy，配置
+ * Fideloper，Proxy，配置，真实代理
  */
 
 return [

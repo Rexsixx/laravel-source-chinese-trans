@@ -13,6 +13,8 @@ return [
     | Here you may specify the default filesystem disk that should be used
     | by the framework. The "local" disk, as well as a variety of cloud
     | based disks are available to your application. Just store away!
+	| 在此您可以指定框架应使用的默认文件系统磁盘。
+	| 您的应用程序可使用本地磁盘以及多种云存储盘。只需轻松存储即可！
     |
     */
 
@@ -26,6 +28,8 @@ return [
     | Many applications store files both locally and in the cloud. For this
     | reason, you may specify a default "cloud" driver here. This driver
     | will be bound as the Cloud disk implementation in the container.
+	| 许多应用程序将文件存储在本地和云中。
+	| 此驱动程序将作为容器中的云盘实现进行绑定。
     |
     */
 
@@ -39,6 +43,7 @@ return [
     | Here you may configure as many filesystem "disks" as you wish, and you
     | may even configure multiple disks of the same driver. Defaults have
     | been setup for each driver as an example of the required options.
+	| 在这里，您可以根据需要配置任意数量的文件系统“磁盘”，而且您甚至可以为同一类型的驱动器配置多个磁盘。
     |
     | Supported Drivers: "local", "ftp", "sftp", "s3", "rackspace"
     |

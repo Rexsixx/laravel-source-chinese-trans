@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，Runner，基本测试 Runner
+ */
+
 /*
  * This file is part of PHPUnit.
  *

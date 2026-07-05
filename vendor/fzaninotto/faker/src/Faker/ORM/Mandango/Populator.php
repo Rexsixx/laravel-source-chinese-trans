@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，Mandango，普及者
+ */
 
 namespace Faker\ORM\Mandango;
 

@@ -8,6 +8,7 @@ namespace Faker;
 /**
  * Proxy for other generators, to return only valid values. Works with
  * Faker\Generator\Base->valid()
+ * 代理其他生成器,只返回有效值。
  */
 class ValidGenerator
 {

@@ -33,6 +33,7 @@ class ArgumentsWildcard
 
     /**
      * Initializes wildcard.
+	 * 初始化通配符
      *
      * @param array<mixed> $arguments Array of argument tokens or values
      */

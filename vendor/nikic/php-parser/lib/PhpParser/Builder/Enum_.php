@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，构建器，Enum
+ * PhpParser，构建器，Enum_
  */
 
 namespace PhpParser\Builder;
@@ -98,6 +98,7 @@ class Enum_ extends Declaration
 
     /**
      * Adds an attribute group.
+	 * 添加一个属性组
      *
      * @param Node\Attribute|Node\AttributeGroup $attribute
      *

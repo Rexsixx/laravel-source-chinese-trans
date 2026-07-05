@@ -114,6 +114,7 @@ class Registry
 
     /**
      * Gets Logger instance from the registry
+	 * 从注册表获取Logger实例
      *
      * @param  string                    $name Name of the requested Logger instance
      * @throws \InvalidArgumentException If named Logger instance is not in the registry
@@ -130,6 +131,7 @@ class Registry
 
     /**
      * Gets Logger instance from the registry via static method call
+	 * 通过静态方法调用从注册表中获取Logger实例
      *
      * @param  string                    $name      Name of the requested Logger instance
      * @param  array                     $arguments Arguments passed to static method call

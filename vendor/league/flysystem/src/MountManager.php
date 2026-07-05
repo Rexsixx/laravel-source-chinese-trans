@@ -269,6 +269,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Invoke a plugin on a filesystem mounted on a given prefix.
+	 * 在给定的前缀上安装文件系统上的插件
      *
      * @param string $method
      * @param array  $arguments
@@ -311,6 +312,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Check whether a file exists.
+	 * 检查文件是否存在
      *
      * @param string $path
      *
@@ -325,6 +327,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Read a file.
+	 * 读取文件
      *
      * @param string $path The path to the file.
      *

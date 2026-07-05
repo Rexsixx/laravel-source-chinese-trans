@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，标量，D Number
+ */
+
 namespace PhpParser\Node\Scalar;
 
 use PhpParser\Node\Scalar;
@@ -11,6 +15,7 @@ class DNumber extends Scalar
 
     /**
      * Constructs a float number scalar node.
+	 * 构造一个浮点数标量节点
      *
      * @param float $value      Value of the number
      * @param array $attributes Additional attributes

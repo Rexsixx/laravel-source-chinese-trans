@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，Doc Block，标签，作者
+ */
 
 declare(strict_types=1);
 
@@ -23,6 +26,7 @@ use const FILTER_VALIDATE_EMAIL;
 
 /**
  * Reflection class for an {@}author tag in a Docblock.
+ * Docblock中{@}author标签的反射类。
  */
 final class Author extends BaseTag implements Factory\StaticMethod
 {
@@ -37,6 +41,7 @@ final class Author extends BaseTag implements Factory\StaticMethod
 
     /**
      * Initializes this tag with the author name and e-mail.
+	 * 用作者的名字和电子邮件初始化这个标签
      */
     public function __construct(string $authorName, string $authorEmail)
     {
@@ -50,6 +55,7 @@ final class Author extends BaseTag implements Factory\StaticMethod
 
     /**
      * Gets the author's name.
+	 * 获取作者的名字
      *
      * @return string The author's name.
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，预测，回调预测
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -20,6 +23,7 @@ use ReflectionFunction;
 
 /**
  * Executes preset callback.
+ * 执行预设回调。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，预言，对象预言
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -62,6 +65,7 @@ class ObjectProphecy implements ProphecyInterface
 
     /**
      * Forces double to extend specific class.
+	 * 强制加倍来扩展特定的类
      *
      * @param string $class
      *
@@ -80,6 +84,7 @@ class ObjectProphecy implements ProphecyInterface
 
     /**
      * Forces double to implement specific interface.
+	 * 强制加倍实现特定的接口
      *
      * @param string $interface
      *

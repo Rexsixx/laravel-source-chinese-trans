@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，CodeCoverage，报告，Clover
+ */
+
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -15,6 +19,7 @@ use SebastianBergmann\CodeCoverage\RuntimeException;
 
 /**
  * Generates a Clover XML logfile from a code coverage object.
+ * 从代码覆盖对象中生成苜蓿XML日志文件。
  */
 final class Clover
 {

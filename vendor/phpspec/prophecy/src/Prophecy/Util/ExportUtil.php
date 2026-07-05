@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，Util，导出 Util
+ */
 
 namespace Prophecy\Util;
 
@@ -22,6 +25,7 @@ class ExportUtil
 {
     /**
      * Exports a value as a string
+	 * 导出值为字符串
      *
      * The output of this method is similar to the output of print_r(), but
      * improved in various aspects:

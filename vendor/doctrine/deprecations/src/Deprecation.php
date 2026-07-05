@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，Deprecation，弃用
+ * Doctrine，Deprecation，反对
  */
 
 declare(strict_types=1);

@@ -80,6 +80,7 @@ class Argument
 
     /**
      * Matches any single value.
+	 * 匹配任何一个值
      *
      * @return Token\AnyValueToken
      */

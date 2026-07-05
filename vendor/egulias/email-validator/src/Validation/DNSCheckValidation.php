@@ -129,6 +129,7 @@ class DNSCheckValidation implements EmailValidation
 
     /**
      * Validate the DNS records for given host.
+	 * 验证给定主机的DNS记录
      *
      * @param string $host A set of DNS records in the format returned by dns_get_record.
      *
@@ -166,6 +167,7 @@ class DNSCheckValidation implements EmailValidation
 
     /**
      * Validate an MX record
+	 * 验证MX记录
      *
      * @param array $dnsRecord Given DNS record.
      *

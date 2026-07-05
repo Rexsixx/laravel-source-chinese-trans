@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，Text_Template
+ * Text_Template
  */
 
 /*

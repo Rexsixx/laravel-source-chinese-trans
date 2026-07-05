@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，特性规范
+ */
+
 namespace Hamcrest;
 
 /*

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，Util，字符串 Util
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -15,6 +18,7 @@ use Prophecy\Call\Call;
 
 /**
  * String utility.
+ * 字符串 Util
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -32,6 +36,7 @@ class StringUtil
 
     /**
      * Stringifies any provided value.
+	 * Stringifies任何提供的值
      *
      * @param mixed   $value
      * @param boolean $exportObject

@@ -234,6 +234,7 @@ class Util
 
     /**
      * Ensure a Config instance.
+	 * 确保配置实例
      *
      * @param null|array|Config $config
      *

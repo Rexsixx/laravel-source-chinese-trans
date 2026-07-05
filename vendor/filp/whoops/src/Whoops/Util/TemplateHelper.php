@@ -57,6 +57,7 @@ class TemplateHelper
 
     /**
      * Escapes a string for output in an HTML document
+	 * 在HTML文档中从字符串中逃脱
      *
      * @param  string $raw
      * @return string
@@ -85,6 +86,7 @@ class TemplateHelper
     /**
      * Escapes a string for output in an HTML document, but preserves
      * URIs within it, and converts them to clickable anchor elements.
+	 * 在HTML文档中逃离一个字符串,但保存在它的uri,并将它们转换为可单击的锚元素。
      *
      * @param  string $raw
      * @return string
@@ -101,6 +103,7 @@ class TemplateHelper
 
     /**
      * Makes sure that the given string breaks on the delimiter.
+	 * 确保给定的字符串在分隔符上中断
      *
      * @param  string $delimiter
      * @param  string $s

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理程序，Fire 处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -22,6 +25,7 @@ class FirePHPHandler extends AbstractProcessingHandler
 {
     /**
      * WildFire JSON header message format
+	 * WildFire JSON头消息格式
      */
     const PROTOCOL_URI = 'http://meta.wildfirehq.org/Protocol/JsonStream/0.2';
 

@@ -1,4 +1,8 @@
 <?php
+/**
+ * PharIo，Manifest，Manifest 文件加载异常
+ */
+
 /*
  * This file is part of PharIo\Manifest.
  *
@@ -20,6 +24,7 @@ class ManifestDocumentLoadingException extends \Exception implements Exception {
 
     /**
      * ManifestDocumentLoadingException constructor.
+	 * ManifestDocumentLoadingException构造函数
      *
      * @param LibXMLError[] $libxmlErrors
      */

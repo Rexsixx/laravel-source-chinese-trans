@@ -70,6 +70,7 @@ class Call
 
     /**
      * Returns called method name.
+	 * 返回称为方法名称
      *
      * @return string
      */

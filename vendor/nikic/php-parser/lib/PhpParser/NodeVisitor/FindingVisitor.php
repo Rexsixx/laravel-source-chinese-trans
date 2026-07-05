@@ -12,6 +12,7 @@ use PhpParser\NodeVisitorAbstract;
 /**
  * This visitor can be used to find and collect all nodes satisfying some criterion determined by
  * a filter callback.
+ * 这个访问者可以用来查找和收集所有节点,以满足一个过滤器回调决定的标准。
  */
 class FindingVisitor extends NodeVisitorAbstract
 {
@@ -26,6 +27,7 @@ class FindingVisitor extends NodeVisitorAbstract
 
     /**
      * Get found nodes satisfying the filter callback.
+	 * 找到满足过滤器回调的节点。
      *
      * Nodes are returned in pre-order.
      *

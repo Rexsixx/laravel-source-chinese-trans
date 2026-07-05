@@ -52,6 +52,7 @@ abstract class AbstractList implements Type
 
     /**
      * Returns the type for the keys of this array.
+	 * 返回该数组键的类型
      */
     public function getKeyType(): Type
     {
@@ -60,6 +61,7 @@ abstract class AbstractList implements Type
 
     /**
      * Returns the value for the keys of this array.
+	 * 返回这个数组键的值
      */
     public function getValueType(): Type
     {

@@ -30,6 +30,7 @@ interface Element
 
     /**
      * Returns the name of the element.
+	 * 返回元素的名称
      */
     public function getName() : string;
 }

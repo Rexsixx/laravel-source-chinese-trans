@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，HttpFoundation，异常，头文件冲突异常
+ * Symfony，组件，HttpFoundation，异常，冲突头异常
  */
 
 /*

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，格式化程序，封装的输出格式化程序接口
+ */
 
 /*
  * This file is part of the Symfony package.

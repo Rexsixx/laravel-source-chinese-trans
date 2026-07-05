@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，倍频器，发生器，类型提示引用
+ */
 
 namespace Prophecy\Doubler\Generator;
 

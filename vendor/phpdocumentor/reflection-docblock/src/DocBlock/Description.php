@@ -96,6 +96,7 @@ class Description
     /**
      * Renders this description as a string where the provided formatter will format the tags in the expected string
      * format.
+	 * 将此描述渲染为字符串，其中提供的格式化器会以期望的字符串格式对标签进行格式化。
      */
     public function render(?Formatter $formatter = null): string
     {
@@ -113,6 +114,7 @@ class Description
 
     /**
      * Returns a plain string representation of this description.
+	 * 返回这个描述的普通字符串表示
      */
     public function __toString(): string
     {

@@ -1,5 +1,9 @@
 <?php
 /**
+ * phpDocumentor，Reflection，类型，Intersection
+ */
+
+/**
  * This file is part of phpDocumentor.
  *
  *  For the full copyright and license information, please view the LICENSE

@@ -12,6 +12,7 @@ use PhpParser\NodeVisitorAbstract;
 /**
  * Visitor that connects a child node to its parent node
  * as well as its sibling nodes.
+ * 将子节点连接到父节点和其兄弟节点的访问者。
  *
  * On the child node, the parent node can be accessed through
  * <code>$node->getAttribute('parent')</code>, the previous

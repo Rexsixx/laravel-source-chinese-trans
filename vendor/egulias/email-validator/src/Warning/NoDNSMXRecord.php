@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，警告，没有DNS MX记录
+ */
 
 namespace Egulias\EmailValidator\Warning;
 

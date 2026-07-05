@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Manifest，单文件制图测试
+ * PharIo，Manifest，Manifest 文件映射器测试
  */
 
 namespace PharIo\Manifest;

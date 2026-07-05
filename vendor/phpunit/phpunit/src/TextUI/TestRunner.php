@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，TextUI，Test Runner
+ */
+
 /*
  * This file is part of PHPUnit.
  *

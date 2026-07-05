@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，Doc Block，标签，版本
+ */
 
 declare(strict_types=1);
 
@@ -22,6 +25,7 @@ use function preg_match;
 
 /**
  * Reflection class for a {@}version tag in a Docblock.
+ * 在Docblock中具有{ @ }版本标记的反射类。
  */
 final class Version extends BaseTag implements Factory\StaticMethod
 {

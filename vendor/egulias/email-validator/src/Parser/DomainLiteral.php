@@ -155,6 +155,7 @@ class DomainLiteral extends PartParser
         $IPv4Match = preg_match(self::IPV4_REGEX, $addressLiteralIPv4, $matchesIP);
 
         // Extract IPv4 part from the end of the address-literal (if there is one)
+		// 从地址-文字的末尾提取IPv4部分(如果有的话)
         if ($IPv4Match > 0) {
             $index = (int) strrpos($addressLiteralIPv4, $matchesIP[0]);
             //There's a match but it is at the start

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，可成形的处理程序接口
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -15,6 +19,7 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Interface to describe loggers that have a formatter
+ * 接口来描述有格式化程序的日志记录器。
  *
  * This interface is present in monolog 1.x to ease forward compatibility.
  *

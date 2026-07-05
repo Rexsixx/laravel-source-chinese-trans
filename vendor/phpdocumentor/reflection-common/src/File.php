@@ -36,6 +36,7 @@ interface File
 
     /**
      * Returns an relative path to the file.
+	 * 返回文件的相对路径
      */
     public function path() : string;
 }

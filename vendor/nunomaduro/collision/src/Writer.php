@@ -217,6 +217,7 @@ class Writer implements WriterContract
     /**
      * Renders the editor containing the code that was the
      * origin of the exception.
+	 * 使编辑器包含异常的来源的代码
      *
      * @param \Whoops\Exception\Frame $frame
      *

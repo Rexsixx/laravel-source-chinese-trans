@@ -102,6 +102,7 @@ final class DocBlock
 
     /**
      * Returns whether this DocBlock is the start of a Template section.
+	 * 返回这个DocBlock是模板部分的开始。
      *
      * A Docblock may serve as template for a series of subsequent DocBlocks. This is indicated by a special marker
      * (`#@+`) that is appended directly after the opening `/**` of a DocBlock.
@@ -126,6 +127,7 @@ final class DocBlock
 
     /**
      * Returns whether this DocBlock is the end of a Template section.
+	 * 返回此DocBlock是模板部分的结束
      *
      * @see self::isTemplateStart() for a more complete description of the Docblock Template functionality.
      */
@@ -136,6 +138,7 @@ final class DocBlock
 
     /**
      * Returns the tags for this DocBlock.
+	 * 返回这个DocBlock的标记
      *
      * @return Tag[]
      */
@@ -147,6 +150,7 @@ final class DocBlock
     /**
      * Returns an array of tags matching the given name. If no tags are found
      * an empty array is returned.
+	 * 返回匹配给定名称的标记数组。如果没有发现任何标签,则返回空数组。
      *
      * @param string $name String to search by.
      *
@@ -170,6 +174,7 @@ final class DocBlock
     /**
      * Returns an array of tags with type matching the given name. If no tags are found
      * an empty array is returned.
+	 * 返回匹配给定名称的类型的标记数组。如果没有发现任何标签,则返回空数组。
      *
      * @param string $name String to search by.
      *

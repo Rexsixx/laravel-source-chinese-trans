@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，编码解码器，时间戳首次Comb编码解码器
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -19,6 +23,7 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * TimestampFirstCombCodec encodes and decodes COMB UUIDs which have the timestamp as the first 48 bits.
  * To be used with MySQL, PostgreSQL, Oracle.
+ * 时间stampfirstunk codec编码和解码梳子UUIDs,它有前48位的时间戳。要使用MySQL,PostgreSQL,Oracle。
  */
 class TimestampFirstCombCodec extends StringCodec
 {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，调试类装入器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use PHPUnit\Framework\MockObject\Matcher\StatelessInvocation;
 
 /**
  * Autoloader checking if the class is really defined in the file found.
+ * Autoloader检查是否在文件中定义了这个类。
  *
  * The ClassLoader will wrap all registered autoloaders
  * and will throw an exception if a file is found but does
@@ -76,6 +80,7 @@ class DebugClassLoader
 
     /**
      * Gets the wrapped class loader.
+	 * 获取包类装入器
      *
      * @return callable The wrapped class loader
      */
@@ -142,6 +147,7 @@ class DebugClassLoader
 
     /**
      * Loads the given class or interface.
+	 * 加载给定的类或接口
      *
      * @param string $class The name of the class
      *

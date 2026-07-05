@@ -28,6 +28,7 @@ class Util
 
     /**
      * Executes a CURL request with optional retries and exception on failure
+	 * 在故障中执行旋度请求,并在失败时执行异常。
      *
      * @param  resource          $ch curl handler
      * @throws \RuntimeException

@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，Util，黑名单
+ */
+
 /*
  * This file is part of PHPUnit.
  *

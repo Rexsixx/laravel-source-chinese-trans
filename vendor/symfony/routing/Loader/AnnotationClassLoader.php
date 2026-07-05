@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由选择，载入程序，注释类加载程序
+ */
 
 /*
  * This file is part of the Symfony package.

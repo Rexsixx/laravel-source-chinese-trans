@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，Doc Block，标签，基本标签
+ */
 
 declare(strict_types=1);
 
@@ -18,6 +21,7 @@ use phpDocumentor\Reflection\DocBlock\Description;
 
 /**
  * Parses a tag definition for a DocBlock.
+ * 解析DocBlock的标签定义。
  */
 abstract class BaseTag implements DocBlock\Tag
 {
@@ -29,6 +33,7 @@ abstract class BaseTag implements DocBlock\Tag
 
     /**
      * Gets the name of this tag.
+	 * 获取这个标签的名称
      *
      * @return string The name of this tag.
      */

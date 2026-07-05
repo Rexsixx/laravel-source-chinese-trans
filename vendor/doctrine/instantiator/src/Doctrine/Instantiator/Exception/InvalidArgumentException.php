@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，Instantiator，无效参数异常
+ * Doctrine，Instantiator，异常，无效参数异常
  */
 
 namespace Doctrine\Instantiator\Exception;

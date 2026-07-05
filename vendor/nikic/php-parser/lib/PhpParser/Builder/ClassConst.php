@@ -65,6 +65,7 @@ class ClassConst implements PhpParser\Builder
 
     /**
      * Makes the constant protected.
+	 * 使持续保护
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -76,6 +77,7 @@ class ClassConst implements PhpParser\Builder
 
     /**
      * Makes the constant private.
+	 * 将常量设为私有
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -87,6 +89,7 @@ class ClassConst implements PhpParser\Builder
 
     /**
      * Makes the constant final.
+	 * 做最后的最后
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -98,6 +101,7 @@ class ClassConst implements PhpParser\Builder
 
     /**
      * Sets doc comment for the constant.
+	 * 为常量设置文档注释
      *
      * @param PhpParser\Comment\Doc|string $docComment Doc comment to set
      *

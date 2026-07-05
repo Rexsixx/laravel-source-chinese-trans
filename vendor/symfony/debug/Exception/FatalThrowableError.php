@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，异常，致命的一次性错误
+ */
 
 /*
  * This file is part of the Symfony package.

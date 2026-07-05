@@ -1,4 +1,7 @@
 <?php
+/**
+ * phpDocumentor，Reflection，Doc Block，标签，不赞成
+ */
 
 declare(strict_types=1);
 

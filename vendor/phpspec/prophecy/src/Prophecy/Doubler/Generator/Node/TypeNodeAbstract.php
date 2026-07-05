@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，倍频器，发生器，节点，类型节点抽象
+ */
 
 namespace Prophecy\Doubler\Generator\Node;
 

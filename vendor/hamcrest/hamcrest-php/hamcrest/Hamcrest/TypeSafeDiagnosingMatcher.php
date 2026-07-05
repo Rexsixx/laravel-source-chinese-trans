@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，类型安全诊断Matcher
+ */
+
 namespace Hamcrest;
 
 /**
@@ -24,6 +28,7 @@ abstract class TypeSafeDiagnosingMatcher extends TypeSafeMatcher
     /**
      * Subclasses should implement these. The item will already have been checked for
      * the specific type.
+	 * 子类应该实现这些。这个项目已经被检查了具体类型。
      */
     abstract protected function matchesSafelyWithDiagnosticDescription($item, Description $mismatchDescription);
 }

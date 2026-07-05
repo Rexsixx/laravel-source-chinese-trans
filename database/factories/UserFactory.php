@@ -13,6 +13,8 @@ use Faker\Generator as Faker;
 | This directory should contain each of the model factory definitions for
 | your application. Factories provide a convenient way to generate new
 | model instances for testing / seeding your application's database.
+| 此目录应包含您应用程序中所有的模型工厂定义。
+| 工厂为生成新的模型实例提供了便捷方式，可用于测试或初始化应用程序的数据库。
 |
 */
 

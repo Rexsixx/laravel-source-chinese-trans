@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，错误处理程序，调试类装入器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,6 +26,7 @@ use ProxyManager\Proxy\ProxyInterface;
 
 /**
  * Autoloader checking if the class is really defined in the file found.
+ * Autoloader检查是否在文件中定义了这个类。
  *
  * The ClassLoader will wrap all registered autoloaders
  * and will throw an exception if a file is found but does

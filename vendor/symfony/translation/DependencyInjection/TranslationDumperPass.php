@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，翻译，提取器，翻译 Dumper Pass
+ */
 
 /*
  * This file is part of the Symfony package.

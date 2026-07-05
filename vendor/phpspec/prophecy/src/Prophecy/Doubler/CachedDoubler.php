@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，倍频器，缓存倍频器
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -16,6 +19,7 @@ use ReflectionClass;
 /**
  * Cached class doubler.
  * Prevents mirroring/creation of the same structure twice.
+ * 缓存类倍频器。防止镜像/创建相同的结构两次。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */

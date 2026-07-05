@@ -14,6 +14,8 @@ return [
     | as Stripe, Mailgun, SparkPost and others. This file provides a sane
     | default location for this type of information, allowing packages
     | to have a conventional place to find your various credentials.
+	| 此文件用于存储诸如 Stripe、Mailgun、SparkPost 等第三方服务的凭证信息。
+	| 该文件为这类信息提供了一个合理的默认位置，使软件包能够方便地找到您的各种凭据。
     |
     */
 

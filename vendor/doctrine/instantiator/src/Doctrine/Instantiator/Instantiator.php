@@ -110,6 +110,7 @@ final class Instantiator implements InstantiatorInterface
     /**
      * Builds a callable capable of instantiating the given $className without
      * invoking its constructor.
+	 * 构建可调用的,能够在不调用其构造函数的情况下实例化给定$ className。
      *
      * @phpstan-param class-string<T> $className
      *
@@ -232,6 +233,7 @@ final class Instantiator implements InstantiatorInterface
 
     /**
      * Verifies whether the given class is to be considered internal
+	 * 验证给定的类是否被认为是内部的
      *
      * @phpstan-param ReflectionClass<T> $reflectionClass
      *

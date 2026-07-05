@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，HttpKernel，HTTP缓存，抽象替代
+ * Symfony，组件，HttpKernel，HTTP缓存，抽象代理
  */
 
 /*
@@ -20,6 +20,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Abstract class implementing Surrogate capabilities to Request and Response instances.
+ * 实现请求和响应实例代理功能的抽象类。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Robin Chalas <robin.chalas@gmail.com>

@@ -164,6 +164,7 @@ class Ftp extends AbstractFtpAdapter
 
     /**
      * Set the connection to UTF-8 mode.
+	 * 设置连接UTF-8模式
      */
     protected function setUtf8Mode()
     {
@@ -179,6 +180,7 @@ class Ftp extends AbstractFtpAdapter
 
     /**
      * Set the connections to passive mode.
+	 * 将连接设置为被动模式
      *
      * @throws ConnectionRuntimeException
      */

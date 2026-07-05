@@ -59,6 +59,7 @@ class ExampleFinder
 
     /**
      * Registers the project's root directory where an 'examples' folder can be expected.
+	 * 注册项目的根目录,在这里可以看到一个“示例”文件夹。
      */
     public function setSourceDirectory(string $directory = ''): void
     {
@@ -76,6 +77,7 @@ class ExampleFinder
 
     /**
      * Registers a series of directories that may contain examples.
+	 * 注册一系列可能包含示例的目录
      *
      * @param string[] $directories
      */
@@ -86,6 +88,7 @@ class ExampleFinder
 
     /**
      * Returns a series of directories that may contain examples.
+	 * 返回可能包含示例的一系列目录
      *
      * @return string[]
      */
@@ -96,6 +99,7 @@ class ExampleFinder
 
     /**
      * Attempts to find the requested example file and returns its contents or null if no file was found.
+	 * 试图查找所请求的示例文件并返回它的内容或null,如果没有找到文件。
      *
      * This method will try several methods in search of the given example file, the first one it encounters is
      * returned:

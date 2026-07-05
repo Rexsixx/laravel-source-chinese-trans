@@ -133,6 +133,7 @@ class SystemFacade
             // Ensure that no 'location' header is present as otherwise this
             // will override the HTTP code being set here, and mask the
             // expected error page.
+			// 确保不存在“位置”头,否则将覆盖在这里设置的HTTP代码,并屏蔽预期的错误页面。
             header_remove('location');
         }
 

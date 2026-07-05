@@ -41,6 +41,7 @@ abstract class AbstractOperation implements OperationInterface
 
     /**
      * This array stores 'all', 'new' and 'obsolete' messages for all valid domains.
+	 * 这个数组存储所有有效域的“所有”、“新”和“过时”的消息。
      *
      * The data structure of this array is as follows:
      *

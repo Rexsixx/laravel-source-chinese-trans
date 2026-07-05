@@ -113,6 +113,7 @@ class Inflector
 
     /**
      * Uppercases words with configurable delimiters between words.
+	 * 大写单词，单词之间有可配置的分隔符。
      *
      * Takes a string and capitalizes all of the words, like PHP's built-in
      * ucwords function. This extends that behavior, however, by allowing the
@@ -162,6 +163,7 @@ class Inflector
 
     /**
      * Adds custom inflection $rules, of either 'plural' or 'singular' $type.
+	 * 添加定制的汇率规则,要么是复数的,要么是“单数”的美元类型。
      *
      * ### Usage:
      *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，事件，控制台命令事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Console\Event;
 
 /**
  * Allows to do things before the command is executed, like skipping the command or changing the input.
+ * 允许在执行命令之前做一些事情,比如跳过命令或更改输入。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -22,11 +26,13 @@ class ConsoleCommandEvent extends ConsoleEvent
 {
     /**
      * The return code for skipped commands, this will also be passed into the terminate event.
+	 * 跳过命令的返回代码,这也将传递到终止事件。
      */
     public const RETURN_CODE_DISABLED = 113;
 
     /**
      * Indicates if the command should be run or skipped.
+	 * 指示该命令是否应该运行或跳过
      */
     private $commandShouldRun = true;
 

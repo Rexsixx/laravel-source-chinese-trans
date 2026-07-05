@@ -163,6 +163,7 @@ final class CodeCoverage
 
     /**
      * Returns the code coverage information as a graph of node objects.
+	 * 将代码覆盖信息作为节点对象的图形返回
      */
     public function getReport(): Directory
     {

@@ -340,6 +340,7 @@ class Application implements ResetInterface
 
     /**
      * Gets the help message.
+	 * 获取帮助信息
      *
      * @return string A help message
      */

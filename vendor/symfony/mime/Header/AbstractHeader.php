@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Mime，数据头，抽象数据头
+ */
 
 /*
  * This file is part of the Symfony package.

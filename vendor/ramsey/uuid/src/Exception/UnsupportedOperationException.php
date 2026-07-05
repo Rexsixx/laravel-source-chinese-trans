@@ -22,6 +22,7 @@ use RuntimeException;
 
 /**
  * Thrown to indicate that the requested operation is not supported.
+ * 抛出,以指示不支持所请求的操作。
  */
 class UnsupportedOperationException extends RuntimeException
 {

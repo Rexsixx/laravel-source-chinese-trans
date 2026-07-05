@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，许诺，许诺接口
+ */
 
 /*
  * This file is part of the Prophecy.

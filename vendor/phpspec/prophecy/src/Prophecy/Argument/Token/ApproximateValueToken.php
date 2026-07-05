@@ -16,6 +16,7 @@ namespace Prophecy\Argument\Token;
 
 /**
  * Approximate value token
+ * 近似值令牌
  *
  * @author Daniel Leech <daniel@dantleech.com>
  */
@@ -56,6 +57,7 @@ class ApproximateValueToken implements TokenInterface
 
     /**
      * Returns string representation for token.
+	 * 返回字符串表示
      *
      * @return string
      */

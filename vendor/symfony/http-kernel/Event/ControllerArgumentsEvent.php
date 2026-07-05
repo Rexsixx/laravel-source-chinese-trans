@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，HttpKernel，事件，控制器参数事件
+ */
 
 /*
  * This file is part of the Symfony package.

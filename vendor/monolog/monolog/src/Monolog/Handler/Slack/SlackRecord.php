@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理程序，Slack，松弛记录
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -18,6 +21,7 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Slack record utility helping to log to Slack webhooks or API.
+ * Slack记录实用工具,帮助登录到松弛的网络钩子或API。
  *
  * @author Greg Kedzierski <greg@gregkedzierski.com>
  * @author Haralan Dobrev <hkdobrev@gmail.com>
@@ -54,6 +58,7 @@ class SlackRecord
 
     /**
      * Whether the message should be added to Slack as attachment (plain text otherwise)
+	 * 是否应该将消息添加到松弛的附件(否则)
      * @var bool
      */
     private $useAttachment;

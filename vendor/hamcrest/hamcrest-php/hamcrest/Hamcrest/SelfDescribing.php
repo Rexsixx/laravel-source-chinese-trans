@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，自我描述
+ */
+
 namespace Hamcrest;
 
 /*
@@ -7,6 +11,7 @@ namespace Hamcrest;
 
 /**
  * The ability of an object to describe itself.
+ * 一个对象描述自己的能力。
  */
 interface SelfDescribing
 {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，论证，令牌，数组计数令牌
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -13,6 +16,7 @@ namespace Prophecy\Argument\Token;
 
 /**
  * Array elements count token.
+ * 数组元素数令牌。
  *
  * @author Boris Mikhaylov <kaguxmail@gmail.com>
  */
@@ -31,6 +35,7 @@ class ArrayCountToken implements TokenInterface
 
     /**
      * Scores 6 when argument has preset number of elements.
+	 * 当论证有预先设置的元素数时,得分6。
      *
      * @param mixed $argument
      *
@@ -43,6 +48,7 @@ class ArrayCountToken implements TokenInterface
 
     /**
      * Returns false.
+	 * 返回假
      *
      * @return boolean
      */

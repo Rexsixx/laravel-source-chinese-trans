@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，处理程序，重复数据删除处理程序
+ * Monolog，处理程序，Deduplication 处理程序
  */
 
 /*

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，程序，管道，抽象管道
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -56,6 +59,7 @@ abstract class AbstractPipes implements PipesInterface
 
     /**
      * Returns true if a system call has been interrupted.
+	 * 如果系统调用被中断,返回true。
      */
     protected function hasSystemCallBeenInterrupted(): bool
     {

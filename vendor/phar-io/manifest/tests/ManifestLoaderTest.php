@@ -1,6 +1,6 @@
 <?php
 /**
- * PharIo，Manifest，Manifest 装载机试验
+ * PharIo，Manifest，Manifest 装载机测试
  */
 
 namespace PharIo\Manifest;

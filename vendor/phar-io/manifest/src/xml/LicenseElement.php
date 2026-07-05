@@ -1,4 +1,8 @@
 <?php
+/**
+ * PharIo，Manifest，License元素
+ */
+
 /*
  * This file is part of PharIo\Manifest.
  *

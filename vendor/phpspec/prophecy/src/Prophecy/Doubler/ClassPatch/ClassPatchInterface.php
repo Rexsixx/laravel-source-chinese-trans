@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，倍频器，类Patch，类Patch接口
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -24,6 +27,7 @@ interface ClassPatchInterface
 {
     /**
      * Checks if patch supports specific class node.
+	 * 检查补丁是否支持特定的类节点
      *
      * @param ClassNode $node
      *

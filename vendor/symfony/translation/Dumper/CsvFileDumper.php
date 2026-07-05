@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，翻译，Dumper，Csv File Dumper
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * CsvFileDumper generates a csv formatted string representation of a message catalogue.
+ * CsvFileDumper生成一个信息目录的csv格式的字符串表示。
  *
  * @author Stealth35
  */
