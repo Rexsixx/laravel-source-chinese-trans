@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，Propel2，普及器
+ */
 
 namespace Faker\ORM\Propel2;
 
@@ -8,6 +11,7 @@ use Propel\Runtime\ServiceContainer\ServiceContainerInterface;
 /**
  * Service class for populating a database using the Propel ORM.
  * A Populator can populate several tables using ActiveRecord classes.
+ * 使用驱动ORM填充数据库的服务类。
  */
 class Populator
 {

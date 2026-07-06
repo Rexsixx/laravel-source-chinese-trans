@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，构建器，类 Const
+ */
 
 declare(strict_types=1);
 

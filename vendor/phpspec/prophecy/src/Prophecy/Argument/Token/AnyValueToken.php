@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，参数，令牌，任何值令牌
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -21,7 +24,7 @@ class AnyValueToken implements TokenInterface
     /**
      * Always scores 3 for any argument.
      *
-     * @param $argument
+     * @param mixed $argument
      *
      * @return int
      */

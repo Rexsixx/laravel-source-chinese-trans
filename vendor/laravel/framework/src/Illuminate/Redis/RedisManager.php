@@ -1,12 +1,14 @@
 <?php
 /**
- * Illuminate，Redis，Redis 管理器
+ * Illuminate，Http，Redis 管理者
  */
 
 namespace Illuminate\Redis;
 
 use InvalidArgumentException;
 use Illuminate\Contracts\Redis\Factory;
+use Illuminate\Redis\Connections\Connection;
+use Illuminate\Support\ConfigurationUrlParser;
 
 /**
  * @mixin \Illuminate\Redis\Connections\Connection
@@ -14,12 +16,28 @@ use Illuminate\Contracts\Redis\Factory;
 class RedisManager implements Factory
 {
     /**
+     * The application instance.
+	 * 程序实例
+     *
+     * @var \Illuminate\Contracts\Foundation\Application
+     */
+    protected $app;
+
+    /**
      * The name of the default driver.
 	 * 默认驱动程序的名称
      *
      * @var string
      */
     protected $driver;
+
+    /**
+     * The registered custom driver creators.
+	 * 注册的自定义驱动程序创建者
+     *
+     * @var array
+     */
+    protected $customCreators = [];
 
     /**
      * The Redis server configurations.
@@ -31,22 +49,32 @@ class RedisManager implements Factory
 
     /**
      * The Redis connections.
-	 * Redis连接
+	 * Redis的连接
      *
      * @var mixed
      */
     protected $connections;
 
     /**
+     * Indicates whether event dispatcher is set on connections.
+	 * 指示是否在连接上设置事件调度程序
+     *
+     * @var bool
+     */
+    protected $events = false;
+
+    /**
      * Create a new Redis manager instance.
 	 * 创建一个新的Redis管理器实例
      *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  string  $driver
      * @param  array  $config
      * @return void
      */
-    public function __construct($driver, array $config)
+    public function __construct($app, $driver, array $config)
     {
+        $this->app = $app;
         $this->driver = $driver;
         $this->config = $config;
     }
@@ -66,7 +94,9 @@ class RedisManager implements Factory
             return $this->connections[$name];
         }
 
-        return $this->connections[$name] = $this->resolve($name);
+        return $this->connections[$name] = $this->configure(
+            $this->resolve($name), $name
+        );
     }
 
     /**
@@ -85,16 +115,17 @@ class RedisManager implements Factory
         $options = $this->config['options'] ?? [];
 
         if (isset($this->config[$name])) {
-            return $this->connector()->connect($this->config[$name], $options);
+            return $this->connector()->connect(
+                $this->parseConnectionConfiguration($this->config[$name]),
+                $options
+            );
         }
 
         if (isset($this->config['clusters'][$name])) {
             return $this->resolveCluster($name);
         }
 
-        throw new InvalidArgumentException(
-            "Redis connection [{$name}] not configured."
-        );
+        throw new InvalidArgumentException("Redis connection [{$name}] not configured.");
     }
 
     /**
@@ -106,27 +137,70 @@ class RedisManager implements Factory
      */
     protected function resolveCluster($name)
     {
-        $clusterOptions = $this->config['clusters']['options'] ?? [];
-
         return $this->connector()->connectToCluster(
-            $this->config['clusters'][$name], $clusterOptions, $this->config['options'] ?? []
+            array_map(function ($config) {
+                return $this->parseConnectionConfiguration($config);
+            }, $this->config['clusters'][$name]),
+            $this->config['clusters']['options'] ?? [],
+            $this->config['options'] ?? []
         );
+    }
+
+    /**
+     * Configure the given connection to prepare it for commands.
+	 * 配置给定的连接，以便为命令做好准备。
+     *
+     * @param  \Illuminate\Redis\Connections\Connection  $connection
+     * @param  string  $name
+     * @return \Illuminate\Redis\Connections\Connection
+     */
+    protected function configure(Connection $connection, $name)
+    {
+        $connection->setName($name);
+
+        if ($this->events && $this->app->bound('events')) {
+            $connection->setEventDispatcher($this->app->make('events'));
+        }
+
+        return $connection;
     }
 
     /**
      * Get the connector instance for the current driver.
 	 * 获取当前驱动程序的连接器实例
      *
-     * @return \Illuminate\Redis\Connectors\PhpRedisConnector|\Illuminate\Redis\Connectors\PredisConnector
+     * @return \Illuminate\Contracts\Redis\Connector
      */
     protected function connector()
     {
+        $customCreator = $this->customCreators[$this->driver] ?? null;
+
+        if ($customCreator) {
+            return call_user_func($customCreator);
+        }
+
         switch ($this->driver) {
             case 'predis':
                 return new Connectors\PredisConnector;
             case 'phpredis':
                 return new Connectors\PhpRedisConnector;
         }
+    }
+
+    /**
+     * Parse the Redis connection configuration.
+	 * 解析Redis连接配置
+     *
+     * @param  mixed  $config
+     * @return array
+     */
+    protected function parseConnectionConfiguration($config)
+    {
+        $parsed = (new ConfigurationUrlParser)->parseConfiguration($config);
+
+        return array_filter($parsed, function ($key) {
+            return ! in_array($key, ['driver', 'username'], true);
+        }, ARRAY_FILTER_USE_KEY);
     }
 
     /**
@@ -138,6 +212,55 @@ class RedisManager implements Factory
     public function connections()
     {
         return $this->connections;
+    }
+
+    /**
+     * Enable the firing of Redis command events.
+	 * 启用Redis命令事件的触发
+     *
+     * @return void
+     */
+    public function enableEvents()
+    {
+        $this->events = true;
+    }
+
+    /**
+     * Disable the firing of Redis command events.
+	 * 禁用Redis命令事件的触发
+     *
+     * @return void
+     */
+    public function disableEvents()
+    {
+        $this->events = false;
+    }
+
+    /**
+     * Set the default driver.
+	 * 设置默认驱动程序
+     *
+     * @param  string  $driver
+     * @return void
+     */
+    public function setDriver($driver)
+    {
+        $this->driver = $driver;
+    }
+
+    /**
+     * Register a custom driver creator Closure.
+	 * 注册自定义驱动程序创建器Closure
+     *
+     * @param  string  $driver
+     * @param  \Closure  $callback
+     * @return $this
+     */
+    public function extend($driver, \Closure $callback)
+    {
+        $this->customCreators[$driver] = $callback->bindTo($this, $this);
+
+        return $this;
     }
 
     /**

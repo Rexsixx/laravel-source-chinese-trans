@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，探测器，Spl文件信息
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -26,7 +29,7 @@ class SplFileInfo extends \SplFileInfo
      * @param string $relativePath     The relative path
      * @param string $relativePathname The relative path name
      */
-    public function __construct($file, $relativePath, $relativePathname)
+    public function __construct(string $file, string $relativePath, string $relativePathname)
     {
         parent::__construct($file);
         $this->relativePath = $relativePath;
@@ -55,6 +58,13 @@ class SplFileInfo extends \SplFileInfo
     public function getRelativePathname()
     {
         return $this->relativePathname;
+    }
+
+    public function getFilenameWithoutExtension(): string
+    {
+        $filename = $this->getFilename();
+
+        return pathinfo($filename, \PATHINFO_FILENAME);
     }
 
     /**

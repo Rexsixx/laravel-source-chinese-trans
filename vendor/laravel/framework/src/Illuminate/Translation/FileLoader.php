@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，翻译，文件加载机
+ * Illuminate，翻译，文件加载器
  */
 
 namespace Illuminate\Translation;
@@ -31,13 +31,13 @@ class FileLoader implements Loader
      * All of the registered paths to JSON translation files.
 	 * 所有注册到JSON翻译文件的路径
      *
-     * @var string
+     * @var array
      */
     protected $jsonPaths = [];
 
     /**
      * All of the namespace hints.
-	 * 所有命名空间提示
+	 * 所有名称空间提示
      *
      * @var array
      */
@@ -63,16 +63,16 @@ class FileLoader implements Loader
      *
      * @param  string  $locale
      * @param  string  $group
-     * @param  string  $namespace
+     * @param  string|null  $namespace
      * @return array
      */
     public function load($locale, $group, $namespace = null)
     {
-        if ($group == '*' && $namespace == '*') {
+        if ($group === '*' && $namespace === '*') {
             return $this->loadJsonPaths($locale);
         }
 
-        if (is_null($namespace) || $namespace == '*') {
+        if (is_null($namespace) || $namespace === '*') {
             return $this->loadPath($this->path, $locale, $group);
         }
 

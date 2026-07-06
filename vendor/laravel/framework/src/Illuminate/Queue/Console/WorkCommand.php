@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，控制台，工作命令
+ * Illuminate，队列，控制台，工作线程命令
  */
 
 namespace Illuminate\Queue\Console;
@@ -18,7 +18,7 @@ class WorkCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
@@ -27,6 +27,7 @@ class WorkCommand extends Command
                             {--queue= : The names of the queues to work}
                             {--daemon : Run the worker in daemon mode (Deprecated)}
                             {--once : Only process the next job on the queue}
+                            {--stop-when-empty : Stop when the queue is empty}
                             {--delay=0 : The number of seconds to delay failed jobs}
                             {--force : Force the worker to run even in maintenance mode}
                             {--memory=128 : The memory limit in megabytes}
@@ -79,6 +80,8 @@ class WorkCommand extends Command
         // We'll listen to the processed and failed events so we can write information
         // to the console as jobs are processed, which will let the developer watch
         // which jobs are coming through a queue and be informed on its progress.
+		// 我们将监听处理过程中的事件以及失败事件，这样在处理任务的过程中就可以将相关信息写入控制台，
+		// 这样开发人员就能查看哪些任务正通过队列流转，并能了解其进展情况。
         $this->listenForEvents();
 
         $connection = $this->argument('connection')
@@ -87,6 +90,8 @@ class WorkCommand extends Command
         // We need to get the right queue for the connection which is set in the queue
         // configuration file for the application. We will pull it based on the set
         // connection being run for the queue operation currently being executed.
+		// 我们需要根据应用程序的队列配置文件中所设定的正确队列来建立连接。
+		// 我们将根据当前正在执行的队列操作所设定的连接条件来进行操作。
         $queue = $this->getQueue($connection);
 
         $this->runWorker(
@@ -122,7 +127,8 @@ class WorkCommand extends Command
         return new WorkerOptions(
             $this->option('delay'), $this->option('memory'),
             $this->option('timeout'), $this->option('sleep'),
-            $this->option('tries'), $this->option('force')
+            $this->option('tries'), $this->option('force'),
+            $this->option('stop-when-empty')
         );
     }
 
@@ -181,8 +187,9 @@ class WorkCommand extends Command
     protected function writeStatus(Job $job, $status, $type)
     {
         $this->output->writeln(sprintf(
-            "<{$type}>[%s] %s</{$type}> %s",
+            "<{$type}>[%s][%s] %s</{$type}> %s",
             Carbon::now()->format('Y-m-d H:i:s'),
+            $job->getJobId(),
             str_pad("{$status}:", 11), $job->resolveName()
         ));
     }
@@ -218,7 +225,7 @@ class WorkCommand extends Command
 
     /**
      * Determine if the worker should run in maintenance mode.
-	 * 确定工人是否应该在维护模式下运行
+	 * 确定线程是否应该在维护模式下运行
      *
      * @return bool
      */

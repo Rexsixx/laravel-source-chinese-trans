@@ -1,10 +1,11 @@
 <?php
 /**
- * Illuminate，支持，测试，佯装，事件 Fake
+ * Illuminate，支持，测试，Fakes，事件 Fake
  */
 
 namespace Illuminate\Support\Testing\Fakes;
 
+use Closure;
 use Illuminate\Support\Arr;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -72,7 +73,7 @@ class EventFake implements Dispatcher
 
     /**
      * Assert if a event was dispatched a number of times.
-	 * 如果事件被多次调度，则断言
+	 * 如果事件被多次调度，则断言。
      *
      * @param  string  $event
      * @param  int  $times
@@ -147,7 +148,7 @@ class EventFake implements Dispatcher
      */
     public function listen($events, $listener)
     {
-        //
+        $this->dispatcher->listen($events, $listener);
     }
 
     /**
@@ -159,7 +160,7 @@ class EventFake implements Dispatcher
      */
     public function hasListeners($eventName)
     {
-        //
+        return $this->dispatcher->hasListeners($eventName);
     }
 
     /**
@@ -184,7 +185,7 @@ class EventFake implements Dispatcher
      */
     public function subscribe($subscriber)
     {
-        //
+        $this->dispatcher->subscribe($subscriber);
     }
 
     /**
@@ -208,28 +209,14 @@ class EventFake implements Dispatcher
      * @param  bool  $halt
      * @return array|null
      */
-    public function fire($event, $payload = [], $halt = false)
-    {
-        return $this->dispatch($event, $payload, $halt);
-    }
-
-    /**
-     * Fire an event and call the listeners.
-	 * 触发一个事件并调用侦听器
-     *
-     * @param  string|object  $event
-     * @param  mixed  $payload
-     * @param  bool  $halt
-     * @return array|null
-     */
     public function dispatch($event, $payload = [], $halt = false)
     {
         $name = is_object($event) ? get_class($event) : (string) $event;
 
-        if ($this->shouldFakeEvent($name)) {
+        if ($this->shouldFakeEvent($name, $payload)) {
             $this->events[$name][] = func_get_args();
         } else {
-            $this->dispatcher->dispatch($event, $payload, $halt);
+            return $this->dispatcher->dispatch($event, $payload, $halt);
         }
     }
 
@@ -238,11 +225,22 @@ class EventFake implements Dispatcher
 	 * 确定是否应该伪造或实际分派事件
      *
      * @param  string  $eventName
+     * @param  mixed  $payload
      * @return bool
      */
-    protected function shouldFakeEvent($eventName)
+    protected function shouldFakeEvent($eventName, $payload)
     {
-        return empty($this->eventsToFake) || in_array($eventName, $this->eventsToFake);
+        if (empty($this->eventsToFake)) {
+            return true;
+        }
+
+        return collect($this->eventsToFake)
+            ->filter(function ($event) use ($eventName, $payload) {
+                return $event instanceof Closure
+                            ? $event($eventName, $payload)
+                            : $event === $eventName;
+            })
+            ->isNotEmpty();
     }
 
     /**

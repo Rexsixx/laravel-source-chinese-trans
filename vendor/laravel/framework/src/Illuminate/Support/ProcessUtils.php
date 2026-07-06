@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，进程工具包
+ * Illuminate，支持，进程工具
  */
 
 namespace Illuminate\Support;

@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，GlobalState，快照
+ */
+
 /*
  * This file is part of sebastian/global-state.
  *
@@ -17,6 +21,7 @@ use Serializable;
 
 /**
  * A snapshot of global state.
+ * 全局的国家快照。
  */
 class Snapshot
 {
@@ -82,6 +87,7 @@ class Snapshot
 
     /**
      * Creates a snapshot of the current global state.
+	 * 创建当前全局状态的快照
      */
     public function __construct(Blacklist $blacklist = null, bool $includeGlobalVariables = true, bool $includeStaticAttributes = true, bool $includeConstants = true, bool $includeFunctions = true, bool $includeClasses = true, bool $includeInterfaces = true, bool $includeTraits = true, bool $includeIniSettings = true, bool $includeIncludedFiles = true)
     {

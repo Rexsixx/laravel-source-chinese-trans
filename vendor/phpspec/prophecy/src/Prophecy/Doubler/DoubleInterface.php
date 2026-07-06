@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，倍频器，双接口
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -17,6 +20,4 @@ namespace Prophecy\Doubler;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface DoubleInterface
-{
-}
+interface DoubleInterface {}

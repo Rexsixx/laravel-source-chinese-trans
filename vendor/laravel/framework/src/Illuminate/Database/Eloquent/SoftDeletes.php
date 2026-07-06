@@ -5,6 +5,11 @@
 
 namespace Illuminate\Database\Eloquent;
 
+/**
+ * @method static static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder withTrashed()
+ * @method static static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder onlyTrashed()
+ * @method static static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder withoutTrashed()
+ */
 trait SoftDeletes
 {
     /**
@@ -27,6 +32,17 @@ trait SoftDeletes
     }
 
     /**
+     * Initialize the soft deleting trait for an instance.
+	 * 初始化实例的软删除特性
+     *
+     * @return void
+     */
+    public function initializeSoftDeletes()
+    {
+        $this->dates[] = $this->getDeletedAtColumn();
+    }
+
+    /**
      * Force a hard delete on a soft deleted model.
 	 * 对已软删除的模型强制执行硬删除
      *
@@ -36,11 +52,13 @@ trait SoftDeletes
     {
         $this->forceDeleting = true;
 
-        $deleted = $this->delete();
+        return tap($this->delete(), function ($deleted) {
+            $this->forceDeleting = false;
 
-        $this->forceDeleting = false;
-
-        return $deleted;
+            if ($deleted) {
+                $this->fireModelEvent('forceDeleted', false);
+            }
+        });
     }
 
     /**
@@ -54,7 +72,7 @@ trait SoftDeletes
         if ($this->forceDeleting) {
             $this->exists = false;
 
-            return $this->newModelQuery()->where($this->getKeyName(), $this->getKey())->forceDelete();
+            return $this->setKeysForSaveQuery($this->newModelQuery())->forceDelete();
         }
 
         return $this->runSoftDelete();
@@ -68,7 +86,7 @@ trait SoftDeletes
      */
     protected function runSoftDelete()
     {
-        $query = $this->newModelQuery()->where($this->getKeyName(), $this->getKey());
+        $query = $this->setKeysForSaveQuery($this->newModelQuery());
 
         $time = $this->freshTimestamp();
 
@@ -96,6 +114,8 @@ trait SoftDeletes
         // If the restoring event does not return false, we will proceed with this
         // restore operation. Otherwise, we bail out so the developer will stop
         // the restore totally. We will clear the deleted timestamp and save.
+		// 如果恢复事件未返回“false”值，我们将继续执行此次恢复操作。
+		// 否则，我们将终止操作，以便开发人员能够完全停止恢复过程。我们将清除已删除的时间戳并保存。
         if ($this->fireModelEvent('restoring') === false) {
             return false;
         }
@@ -105,6 +125,8 @@ trait SoftDeletes
         // Once we have saved the model, we will fire the "restored" event so this
         // developer will do anything they need to after a restore operation is
         // totally finished. Then we will return the result of the save call.
+		// 一旦我们完成了模型的保存操作，我们就会触发“已恢复”事件，
+		// 以便该开发人员在恢复操作完全结束之后能够执行任何他们需要的操作。然后，我们将返回保存调用的结果。
         $this->exists = true;
 
         $result = $this->save();

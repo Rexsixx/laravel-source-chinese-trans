@@ -17,7 +17,7 @@ class MessageLogged
 
     /**
      * The log message.
-	 * 日志留言
+	 * 日志消息
      *
      * @var string
      */

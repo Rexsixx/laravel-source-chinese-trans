@@ -29,6 +29,9 @@ trait BuildsQueries
             // We'll execute the query for the given page and get the results. If there are
             // no results we can just break and return from here. When there are results
             // we will call the callback with the current chunk of these results here.
+			// 我们将执行给定页面的查询并获得结果。
+			// 如果没有结果，我们就可以提前终止并从这里返回。
+			// 一旦有了结果，我们就会使用这里的当前结果块来调用回调函数。
             $results = $this->forPage($page, $count)->get();
 
             $countResults = $results->count();
@@ -40,6 +43,8 @@ trait BuildsQueries
             // On each chunk result set, we will pass them to the callback and then let the
             // developer take care of everything within the callback, which allows us to
             // keep the memory low for spinning through large result sets for working.
+			// 对于每个分块的结果集，我们都会将其传递给回调函数，
+			// 然后让开发人员在回调函数中处理所有相关事宜，这样就能使我们在处理大量结果集时保持较低的内存占用。
             if ($callback($results, $page) === false) {
                 return false;
             }
@@ -89,8 +94,8 @@ trait BuildsQueries
      *
      * @param  mixed  $value
      * @param  callable  $callback
-     * @param  callable  $default
-     * @return mixed
+     * @param  callable|null  $default
+     * @return mixed|$this
      */
     public function when($value, $callback, $default = null)
     {
@@ -107,7 +112,7 @@ trait BuildsQueries
      * Pass the query to a given callback.
 	 * 将查询传递给给定的回调
      *
-     * @param  \Closure  $callback
+     * @param  callable  $callback
      * @return \Illuminate\Database\Query\Builder
      */
     public function tap($callback)
@@ -121,8 +126,8 @@ trait BuildsQueries
      *
      * @param  mixed  $value
      * @param  callable  $callback
-     * @param  callable  $default
-     * @return mixed
+     * @param  callable|null  $default
+     * @return mixed|$this
      */
     public function unless($value, $callback, $default = null)
     {

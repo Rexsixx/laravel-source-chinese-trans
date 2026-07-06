@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，控制台，缓存表命令 cache:table
+ * Illuminate，缓存，控制台，缓存表命令
  */
 
 namespace Illuminate\Cache\Console;

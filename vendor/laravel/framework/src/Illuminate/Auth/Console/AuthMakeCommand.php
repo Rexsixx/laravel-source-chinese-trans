@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，控制台，授权制作命令
+ * Illuminate，Auth，控制台，授权编译命令
  */
 
 namespace Illuminate\Auth\Console;
@@ -14,7 +14,7 @@ class AuthMakeCommand extends Command
 
     /**
      * The name and signature of the console command.
-	 * 控制台命令的名称和签名
+	 * console命令的名称和签名
      *
      * @var string
      */
@@ -39,6 +39,7 @@ class AuthMakeCommand extends Command
     protected $views = [
         'auth/login.stub' => 'auth/login.blade.php',
         'auth/register.stub' => 'auth/register.blade.php',
+        'auth/verify.stub' => 'auth/verify.blade.php',
         'auth/passwords/email.stub' => 'auth/passwords/email.blade.php',
         'auth/passwords/reset.stub' => 'auth/passwords/reset.blade.php',
         'layouts/app.stub' => 'layouts/app.blade.php',
@@ -47,7 +48,7 @@ class AuthMakeCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */
@@ -81,11 +82,11 @@ class AuthMakeCommand extends Command
      */
     protected function createDirectories()
     {
-        if (! is_dir($directory = resource_path('views/layouts'))) {
+        if (! is_dir($directory = $this->getViewPath('layouts'))) {
             mkdir($directory, 0755, true);
         }
 
-        if (! is_dir($directory = resource_path('views/auth/passwords'))) {
+        if (! is_dir($directory = $this->getViewPath('auth/passwords'))) {
             mkdir($directory, 0755, true);
         }
     }
@@ -99,7 +100,7 @@ class AuthMakeCommand extends Command
     protected function exportViews()
     {
         foreach ($this->views as $key => $value) {
-            if (file_exists($view = resource_path('views/'.$value)) && ! $this->option('force')) {
+            if (file_exists($view = $this->getViewPath($value)) && ! $this->option('force')) {
                 if (! $this->confirm("The [{$value}] view already exists. Do you want to replace it?")) {
                     continue;
                 }
@@ -125,5 +126,19 @@ class AuthMakeCommand extends Command
             $this->getAppNamespace(),
             file_get_contents(__DIR__.'/stubs/make/controllers/HomeController.stub')
         );
+    }
+
+    /**
+     * Get full view path relative to the app's configured view path.
+	 * 获取相对于应用配置的视图路径的完整视图路径
+     *
+     * @param  string  $path
+     * @return string
+     */
+    protected function getViewPath($path)
+    {
+        return implode(DIRECTORY_SEPARATOR, [
+            config('view.paths')[0] ?? resource_path('views'), $path,
+        ]);
     }
 }

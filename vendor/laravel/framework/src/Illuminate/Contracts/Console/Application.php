@@ -8,14 +8,15 @@ namespace Illuminate\Contracts\Console;
 interface Application
 {
     /**
-     * Call a console application command.
-	 * 调用控制台应用程序命令
+     * Run an Artisan console command by name.
+	 * 按名称运行Artisan控制台命令
      *
      * @param  string  $command
      * @param  array  $parameters
+     * @param  \Symfony\Component\Console\Output\OutputInterface|null  $outputBuffer
      * @return int
      */
-    public function call($command, array $parameters = []);
+    public function call($command, array $parameters = [], $outputBuffer = null);
 
     /**
      * Get the output from the last command.

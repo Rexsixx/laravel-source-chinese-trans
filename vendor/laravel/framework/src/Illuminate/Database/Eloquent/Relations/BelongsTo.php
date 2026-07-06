@@ -10,9 +10,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\Concerns\SupportsDefaultModels;
 
-/**
- * @mixin \Illuminate\Database\Eloquent\Builder
- */
 class BelongsTo extends Relation
 {
     use SupportsDefaultModels;
@@ -45,7 +42,7 @@ class BelongsTo extends Relation
      *
      * @var string
      */
-    protected $relation;
+    protected $relationName;
 
     /**
      * The count of self joins.
@@ -63,18 +60,21 @@ class BelongsTo extends Relation
      * @param  \Illuminate\Database\Eloquent\Model  $child
      * @param  string  $foreignKey
      * @param  string  $ownerKey
-     * @param  string  $relation
+     * @param  string  $relationName
+     *
      * @return void
      */
-    public function __construct(Builder $query, Model $child, $foreignKey, $ownerKey, $relation)
+    public function __construct(Builder $query, Model $child, $foreignKey, $ownerKey, $relationName)
     {
         $this->ownerKey = $ownerKey;
-        $this->relation = $relation;
+        $this->relationName = $relationName;
         $this->foreignKey = $foreignKey;
 
         // In the underlying base relationship class, this variable is referred to as
         // the "parent" since most relationships are not inversed. But, since this
         // one is we will create a "child" variable for much better readability.
+		// 在基础的基类关系中，这个变量被称为“父项”，因为大多数关系都不是反向的。
+		// 但是，鉴于这是第一个例子，我们将创建一个“child”变量以提高可读性。
         $this->child = $child;
 
         parent::__construct($query, $child);
@@ -88,6 +88,10 @@ class BelongsTo extends Relation
      */
     public function getResults()
     {
+        if (is_null($this->child->{$this->foreignKey})) {
+            return $this->getDefaultFor($this->parent);
+        }
+
         return $this->query->first() ?: $this->getDefaultFor($this->parent);
     }
 
@@ -103,6 +107,8 @@ class BelongsTo extends Relation
             // For belongs to relationships, which are essentially the inverse of has one
             // or has many relationships, we need to actually query on the primary key
             // of the related models matching on the foreign key that's on a parent.
+			// “属于”属于关系类型，而关系本质上是“拥有一个”或“拥有多个”的关系的逆操作。
+			// 因此，我们需要针对相关模型的主键进行查询，查询条件是基于父模型中的外键。
             $table = $this->related->getTable();
 
             $this->query->where($table.'.'.$this->ownerKey, '=', $this->child->{$this->foreignKey});
@@ -121,9 +127,13 @@ class BelongsTo extends Relation
         // We'll grab the primary key name of the related models since it could be set to
         // a non-standard name and not "id". We will then construct the constraint for
         // our eagerly loading query so it returns the proper models from execution.
+		// 我们将获取相关模型的主键名称，因为该名称可能并非“id”且可能是非标准名称。
+		// 然后，我们将为我们的快速加载查询构建约束条件，以便在执行过程中能够返回正确的模型。
         $key = $this->related->getTable().'.'.$this->ownerKey;
 
-        $this->query->whereIn($key, $this->getEagerModelKeys($models));
+        $whereIn = $this->whereInMethod($this->related, $this->ownerKey);
+
+        $this->query->{$whereIn}($key, $this->getEagerModelKeys($models));
     }
 
     /**
@@ -140,17 +150,12 @@ class BelongsTo extends Relation
         // First we need to gather all of the keys from the parent models so we know what
         // to query for via the eager loading query. We will add them to an array then
         // execute a "where in" statement to gather up all of those related records.
+		// 首先，我们需要从父模型中收集所有的键值，这样我们就能通过“主动加载查询”来确定需要查询的内容。
+		// 我们将把它们添加到一个数组中，然后执行一个“在...之中”的语句，以收集所有相关的记录。
         foreach ($models as $model) {
             if (! is_null($value = $model->{$this->foreignKey})) {
                 $keys[] = $value;
             }
-        }
-
-        // If there are no keys that were not null we will just return an array with null
-        // so this query wont fail plus returns zero results, which should be what the
-        // developer expects to happen in this situation. Otherwise we'll sort them.
-        if (count($keys) === 0) {
-            return [null];
         }
 
         sort($keys);
@@ -193,6 +198,8 @@ class BelongsTo extends Relation
         // First we will get to build a dictionary of the child models by their primary
         // key of the relationship, then we can easily match the children back onto
         // the parents using that dictionary and the primary key of the children.
+		// 首先，我们将根据关系中的主键来构建一个子模型的字典，
+		// 然后就可以利用这个字典以及子模型的主键轻松地将子模型重新关联到父模型上。
         $dictionary = [];
 
         foreach ($results as $result) {
@@ -202,6 +209,8 @@ class BelongsTo extends Relation
         // Once we have the dictionary constructed, we can loop through all the parents
         // and match back onto their children using these keys of the dictionary and
         // the primary key of the children to map them onto the correct instances.
+		// 一旦构建好了字典，我们就可以遍历所有的父节点，
+		// 并使用字典中的这些键以及子节点的主键来将它们匹配回对应的子节点，并将它们映射到正确的实例上。
         foreach ($models as $model) {
             if (isset($dictionary[$model->{$foreign}])) {
                 $model->setRelation($relation, $dictionary[$model->{$foreign}]);
@@ -237,7 +246,9 @@ class BelongsTo extends Relation
         $this->child->setAttribute($this->foreignKey, $ownerKey);
 
         if ($model instanceof Model) {
-            $this->child->setRelation($this->relation, $model);
+            $this->child->setRelation($this->relationName, $model);
+        } elseif ($this->child->isDirty($this->foreignKey)) {
+            $this->child->unsetRelation($this->relationName);
         }
 
         return $this->child;
@@ -253,7 +264,7 @@ class BelongsTo extends Relation
     {
         $this->child->setAttribute($this->foreignKey, null);
 
-        return $this->child->setRelation($this->relation, null);
+        return $this->child->setRelation($this->relationName, null);
     }
 
     /**
@@ -272,7 +283,7 @@ class BelongsTo extends Relation
         }
 
         return $query->select($columns)->whereColumn(
-            $this->getQualifiedForeignKey(), '=', $query->qualifyColumn($this->ownerKey)
+            $this->getQualifiedForeignKeyName(), '=', $query->qualifyColumn($this->ownerKey)
         );
     }
 
@@ -294,7 +305,7 @@ class BelongsTo extends Relation
         $query->getModel()->setTable($hash);
 
         return $query->whereColumn(
-            $hash.'.'.$query->getModel()->getKeyName(), '=', $this->getQualifiedForeignKey()
+            $hash.'.'.$this->ownerKey, '=', $this->getQualifiedForeignKeyName()
         );
     }
 
@@ -334,12 +345,23 @@ class BelongsTo extends Relation
     }
 
     /**
+     * Get the child of the relationship.
+	 * 得到这段关系的子
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function getChild()
+    {
+        return $this->child;
+    }
+
+    /**
      * Get the foreign key of the relationship.
 	 * 获取关系的外键
      *
      * @return string
      */
-    public function getForeignKey()
+    public function getForeignKeyName()
     {
         return $this->foreignKey;
     }
@@ -350,7 +372,7 @@ class BelongsTo extends Relation
      *
      * @return string
      */
-    public function getQualifiedForeignKey()
+    public function getQualifiedForeignKeyName()
     {
         return $this->child->qualifyColumn($this->foreignKey);
     }
@@ -361,7 +383,7 @@ class BelongsTo extends Relation
      *
      * @return string
      */
-    public function getOwnerKey()
+    public function getOwnerKeyName()
     {
         return $this->ownerKey;
     }
@@ -383,8 +405,20 @@ class BelongsTo extends Relation
      *
      * @return string
      */
+    public function getRelationName()
+    {
+        return $this->relationName;
+    }
+
+    /**
+     * Get the name of the relationship.
+	 * 获取关系的名称
+     *
+     * @return string
+     * @deprecated The getRelationName() method should be used instead. Will be removed in Laravel 6.0.
+     */
     public function getRelation()
     {
-        return $this->relation;
+        return $this->relationName;
     }
 }

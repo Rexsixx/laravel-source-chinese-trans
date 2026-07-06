@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，类型安全匹配程序
+ */
+
 namespace Hamcrest;
 
 /**
@@ -24,6 +28,7 @@ abstract class TypeSafeMatcher extends BaseMatcher
 
     /**
      * The type that is required for a safe comparison
+	 * 一个安全比较需要的类型
      *
      * @var int
      */

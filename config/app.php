@@ -13,7 +13,8 @@ return [
     | This value is the name of your application. This value is used when the
     | framework needs to place the application's name in a notification or
     | any other location as required by the application or its packages.
-    |
+    | 这个值是应用程序的名称。
+	| 当框架需要将应用程序的名称放置在通知或应用程序或其包所需的任何其他位置时,使用此值。
     */
 
     'name' => env('APP_NAME', 'Laravel'),
@@ -25,7 +26,9 @@ return [
     |
     | This value determines the "environment" your application is currently
     | running in. This may determine how you prefer to configure various
-    | services your application utilizes. Set this in your ".env" file.
+    | services the application utilizes. Set this in your ".env" file.
+	| 该值决定了您的应用程序当前运行的“环境”。
+	| 这可能决定了您希望如何配置应用程序所使用的各种服务。请在您的“.env”文件中设置此选项。
     |
     */
 
@@ -33,12 +36,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Debug Mode	应用环境
+    | Application Debug Mode	应用程序调试模式
     |--------------------------------------------------------------------------
     |
     | When your application is in debug mode, detailed error messages with
     | stack traces will be shown on every error that occurs within your
     | application. If disabled, a simple generic error page is shown.
+	| 当您的应用程序处于调试模式时，每次发生错误都会显示包含堆栈跟踪的详细错误信息。
+	| 如果禁用，则显示一个简单的通用错误页面。
     |
     */
 
@@ -46,25 +51,31 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application URL	应用URL
+    | Application URL	申请网址
     |--------------------------------------------------------------------------
     |
     | This URL is used by the console to properly generate URLs when using
     | the Artisan command line tool. You should set this to the root of
     | your application so that it is used when running Artisan tasks.
+	| 此URL由控制台用于在使用Artisan命令行工具时正确生成URL。
+	| 你应该将此设置为应用程序的根目录，以便在运行 Artisan 任务时使用。
     |
     */
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'asset_url' => env('ASSET_URL', null),
+
     /*
     |--------------------------------------------------------------------------
-    | Application Timezone		应用时区
+    | Application Timezone	应用时区
     |--------------------------------------------------------------------------
     |
     | Here you may specify the default timezone for your application, which
     | will be used by the PHP date and date-time functions. We have gone
     | ahead and set this to a sensible default for you out of the box.
+	| 在此处您可以指定应用程序的默认时区，该时区将被 PHP 的日期和时间函数使用。
+	| 我们已经走了,把它设置为一个合理的默认,让你离开这个盒子。
     |
     */
 
@@ -72,12 +83,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Locale Configuration		应用程序区域设置配置
+    | Application Locale Configuration	应用程序区域设置配置
     |--------------------------------------------------------------------------
     |
     | The application locale determines the default locale that will be used
     | by the translation service provider. You are free to set this value
     | to any of the locales which will be supported by the application.
+	| 应用程序区域设置了将被翻译服务提供者使用的默认语言环境。
+	| 您可以自由地将此值设置为任何将由应用程序支持的地方。
     |
     */
 
@@ -91,6 +104,8 @@ return [
     | The fallback locale determines the locale to use when the current one
     | is not available. You may change the value to correspond to any of
     | the language folders that are provided through your application.
+	| 当前一个不可用时,回退语言环境确定使用的区域设置。
+	| 您可以更改值,以对应通过应用程序提供的任何语言文件夹。
     |
     */
 
@@ -98,12 +113,29 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Encryption Key	加密密钥
+    | Faker Locale	假的语言环境
+    |--------------------------------------------------------------------------
+    |
+    | This locale will be used by the Faker PHP library when generating fake
+    | data for your database seeds. For example, this will be used to get
+    | localized telephone numbers, street address information and more.
+	| 当为您的数据库种子生成假数据时,Faker PHP库将使用这个区域。
+	| 例如,这将被用来获取本地化的电话号码,街道地址信息等等。
+    |
+    */
+
+    'faker_locale' => 'en_US',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Encryption Key	骗子语言环境
     |--------------------------------------------------------------------------
     |
     | This key is used by the Illuminate encrypter service and should be set
     | to a random, 32 character string, otherwise these encrypted strings
     | will not be safe. Please do this before deploying an application!
+	| 此键用于照明加密服务,应该设置为随机的32个字符字符串,否则这些加密的字符串将不安全。
+	| 在部署应用程序之前请进行此操作!
     |
     */
 
@@ -113,29 +145,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Logging Configuration
-    |--------------------------------------------------------------------------
-    |
-    | Here you may configure the log settings for your application. Out of
-    | the box, Laravel uses the Monolog PHP logging library. This gives
-    | you a variety of powerful log handlers / formatters to utilize.
-    |
-    | Available Settings: "single", "daily", "syslog", "errorlog"
-    |
-    */
-
-    'log' => env('APP_LOG', 'single'),
-
-    'log_level' => env('APP_LOG_LEVEL', 'debug'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Autoloaded Service Providers
+    | Autoloaded Service Providers	自动服务提供商
     |--------------------------------------------------------------------------
     |
     | The service providers listed here will be automatically loaded on the
     | request to your application. Feel free to add your own services to
     | this array to grant expanded functionality to your applications.
+	| 这里列出的服务提供者将自动加载到应用程序的请求上。
+	| 可以自由地将自己的服务添加到这个数组中,以向应用程序扩展功能。
     |
     */
 
@@ -184,18 +201,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Class Aliases
+    | Class Aliases	类别名
     |--------------------------------------------------------------------------
     |
     | This array of class aliases will be registered when this application
     | is started. However, feel free to register as many as you wish as
     | the aliases are "lazy" loaded so they don't hinder performance.
+	| 当启动此应用程序时,将注册这类类别名。
+	| 然而,你可以自由地注册尽可能多的别名,因为别名是“懒惰的”,这样它们就不会阻碍性能。
     |
     */
 
     'aliases' => [
 
         'App' => Illuminate\Support\Facades\App::class,
+        'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
         'Blade' => Illuminate\Support\Facades\Blade::class,
@@ -225,6 +245,7 @@ return [
         'Schema' => Illuminate\Support\Facades\Schema::class,
         'Session' => Illuminate\Support\Facades\Session::class,
         'Storage' => Illuminate\Support\Facades\Storage::class,
+        'Str' => Illuminate\Support\Str::class,
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,

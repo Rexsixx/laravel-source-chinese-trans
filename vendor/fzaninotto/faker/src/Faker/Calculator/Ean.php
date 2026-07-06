@@ -1,9 +1,13 @@
 <?php
+/**
+ * Faker，计算器，Ean
+ */
 
 namespace Faker\Calculator;
 
 /**
  * Utility class for validating EAN-8 and EAN-13 numbers
+ * 用于验证EAN-8和EAN-13编号的实用程序类
  *
  * @package Faker\Calculator
  */

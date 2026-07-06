@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，载入程序，Eval 装载机
+ */
+
+/**
  * Mockery
  *
  * LICENSE

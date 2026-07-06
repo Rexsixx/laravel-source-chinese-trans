@@ -1,4 +1,7 @@
 <?php
+/**
+ * 深拷贝，过滤，置换过滤器
+ */
 
 namespace DeepCopy\Filter;
 

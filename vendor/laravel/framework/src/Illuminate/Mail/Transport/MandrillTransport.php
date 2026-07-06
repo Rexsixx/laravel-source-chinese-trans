@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，运送，Mandrill 运送
+ * Illuminate，电子邮件，传送，Mandrill 传送
  */
 
 namespace Illuminate\Mail\Transport;
@@ -47,7 +47,7 @@ class MandrillTransport extends Transport
     {
         $this->beforeSendPerformed($message);
 
-        $this->client->post('https://mandrillapp.com/api/1.0/messages/send-raw.json', [
+        $this->client->request('POST', 'https://mandrillapp.com/api/1.0/messages/send-raw.json', [
             'form_params' => [
                 'key' => $this->key,
                 'to' => $this->getTo($message),
@@ -66,6 +66,7 @@ class MandrillTransport extends Transport
 	 * 获取此消息应发送到的所有地址。
      *
      * Note that Mandrill still respects CC, BCC headers in raw message itself.
+	 * 请注意，Mandrill仍然尊重原始消息本身的抄送、密件抄送头。
      *
      * @param  \Swift_Mime_SimpleMessage $message
      * @return array

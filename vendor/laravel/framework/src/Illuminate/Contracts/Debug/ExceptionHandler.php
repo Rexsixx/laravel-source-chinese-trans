@@ -19,6 +19,15 @@ interface ExceptionHandler
     public function report(Exception $e);
 
     /**
+     * Determine if the exception should be reported.
+	 * 确定是否应该报告异常
+     *
+     * @param  \Exception  $e
+     * @return bool
+     */
+    public function shouldReport(Exception $e);
+
+    /**
      * Render an exception into an HTTP response.
 	 * 将异常呈现到HTTP响应中
      *

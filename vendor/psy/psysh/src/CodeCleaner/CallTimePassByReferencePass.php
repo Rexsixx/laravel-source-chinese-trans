@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清除器，调用时间通过参考传递
+ */
 
 /*
  * This file is part of Psy Shell.

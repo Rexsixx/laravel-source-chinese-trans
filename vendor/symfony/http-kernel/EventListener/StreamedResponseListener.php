@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件监听器，流响应监听器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,8 +22,11 @@ use Symfony\Component\HttpKernel\KernelEvents;
 /**
  * StreamedResponseListener is responsible for sending the Response
  * to the client.
+ * StreamedResponseListener负责将响应发送给客户机。
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @final since Symfony 4.3
  */
 class StreamedResponseListener implements EventSubscriberInterface
 {

@@ -17,9 +17,9 @@ trait InteractsWithInput
      * Retrieve a server variable from the request.
 	 * 从请求中检索服务器变量
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  string|array|null  $default
-     * @return string|array
+     * @return string|array|null
      */
     public function server($key = null, $default = null)
     {
@@ -42,9 +42,9 @@ trait InteractsWithInput
      * Retrieve a header from the request.
 	 * 从请求中检索报头
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  string|array|null  $default
-     * @return string|array
+     * @return string|array|null
      */
     public function header($key = null, $default = null)
     {
@@ -104,11 +104,13 @@ trait InteractsWithInput
      * Determine if the request contains any of the given inputs.
 	 * 确定请求是否包含任何给定的输入
      *
-     * @param  dynamic  $key
+     * @param  string|array  $keys
      * @return bool
      */
-    public function hasAny(...$keys)
+    public function hasAny($keys)
     {
+        $keys = is_array($keys) ? $keys : func_get_args();
+
         $input = $this->all();
 
         foreach ($keys as $key) {
@@ -141,6 +143,26 @@ trait InteractsWithInput
     }
 
     /**
+     * Determine if the request contains a non-empty value for any of the given inputs.
+	 * 确定请求是否包含任何给定输入的非空值
+     *
+     * @param  string|array  $keys
+     * @return bool
+     */
+    public function anyFilled($keys)
+    {
+        $keys = is_array($keys) ? $keys : func_get_args();
+
+        foreach ($keys as $key) {
+            if ($this->filled($key)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Determine if the given input key is an empty string for "has".
 	 * 确定给定的输入键是否为“has”的空字符串
      *
@@ -169,7 +191,7 @@ trait InteractsWithInput
      * Get all of the input and files for the request.
 	 * 获取请求的所有输入和文件
      *
-     * @param  array|mixed  $keys
+     * @param  array|mixed|null  $keys
      * @return array
      */
     public function all($keys = null)
@@ -193,9 +215,9 @@ trait InteractsWithInput
      * Retrieve an input item from the request.
 	 * 从请求中检索输入项
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  string|array|null  $default
-     * @return string|array
+     * @return string|array|null
      */
     public function input($key = null, $default = null)
     {
@@ -252,9 +274,9 @@ trait InteractsWithInput
      * Retrieve a query string item from the request.
 	 * 从请求中检索查询字符串项
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  string|array|null  $default
-     * @return string|array
+     * @return string|array|null
      */
     public function query($key = null, $default = null)
     {
@@ -265,10 +287,9 @@ trait InteractsWithInput
      * Retrieve a request payload item from the request.
 	 * 从请求中检索请求有效负载项
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  string|array|null  $default
-     *
-     * @return string|array
+     * @return string|array|null
      */
     public function post($key = null, $default = null)
     {
@@ -291,9 +312,9 @@ trait InteractsWithInput
      * Retrieve a cookie from the request.
 	 * 从请求中检索cookie
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  string|array|null  $default
-     * @return string|array
+     * @return string|array|null
      */
     public function cookie($key = null, $default = null)
     {
@@ -310,9 +331,7 @@ trait InteractsWithInput
     {
         $files = $this->files->all();
 
-        return $this->convertedFiles
-                    ? $this->convertedFiles
-                    : $this->convertedFiles = $this->convertUploadedFiles($files);
+        return $this->convertedFiles = $this->convertedFiles ?? $this->convertUploadedFiles($files);
     }
 
     /**
@@ -373,9 +392,9 @@ trait InteractsWithInput
      * Retrieve a file from the request.
 	 * 从请求中检索文件
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  mixed  $default
-     * @return \Illuminate\Http\UploadedFile|array|null
+     * @return \Illuminate\Http\UploadedFile|\Illuminate\Http\UploadedFile[]|array|null
      */
     public function file($key = null, $default = null)
     {
@@ -389,7 +408,7 @@ trait InteractsWithInput
      * @param  string  $source
      * @param  string  $key
      * @param  string|array|null  $default
-     * @return string|array
+     * @return string|array|null
      */
     protected function retrieveItem($source, $key, $default)
     {

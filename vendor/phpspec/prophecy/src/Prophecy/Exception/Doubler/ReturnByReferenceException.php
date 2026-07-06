@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，异常，倍频器，返回参考异常
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -29,11 +32,17 @@ class ReturnByReferenceException extends DoubleException
         $this->methodName = $methodName;
     }
 
+    /**
+     * @return string
+     */
     public function getClassname()
     {
         return $this->classname;
     }
 
+    /**
+     * @return string
+     */
     public function getMethodName()
     {
         return $this->methodName;

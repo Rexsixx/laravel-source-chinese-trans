@@ -5,10 +5,12 @@
 
 namespace Illuminate\Cache;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\InteractsWithTime;
+use Illuminate\Contracts\Cache\Lock as LockContract;
 use Illuminate\Contracts\Cache\LockTimeoutException;
 
-abstract class Lock
+abstract class Lock implements LockContract
 {
     use InteractsWithTime;
 
@@ -29,16 +31,30 @@ abstract class Lock
     protected $seconds;
 
     /**
+     * The scope identifier of this lock.
+	 * 此锁的作用域标识符
+     *
+     * @var string
+     */
+    protected $owner;
+
+    /**
      * Create a new lock instance.
 	 * 创建一个新的锁实例
      *
      * @param  string  $name
      * @param  int  $seconds
+     * @param  string|null  $owner
      * @return void
      */
-    public function __construct($name, $seconds)
+    public function __construct($name, $seconds, $owner = null)
     {
+        if (is_null($owner)) {
+            $owner = Str::random();
+        }
+
         $this->name = $name;
+        $this->owner = $owner;
         $this->seconds = $seconds;
     }
 
@@ -51,20 +67,38 @@ abstract class Lock
     abstract public function acquire();
 
     /**
+     * Release the lock.
+	 * 释放锁
+     *
+     * @return void
+     */
+    abstract public function release();
+
+    /**
+     * Returns the owner value written into the driver for this lock.
+	 * 返回写入此锁的驱动程序的所有者值
+     *
+     * @return string
+     */
+    abstract protected function getCurrentOwner();
+
+    /**
      * Attempt to acquire the lock.
 	 * 尝试获取锁
      *
      * @param  callable|null  $callback
-     * @return bool
+     * @return mixed
      */
     public function get($callback = null)
     {
         $result = $this->acquire();
 
         if ($result && is_callable($callback)) {
-            return tap($callback(), function () {
+            try {
+                return $callback();
+            } finally {
                 $this->release();
-            });
+            }
         }
 
         return $result;
@@ -77,6 +111,7 @@ abstract class Lock
      * @param  int  $seconds
      * @param  callable|null  $callback
      * @return bool
+     *
      * @throws \Illuminate\Contracts\Cache\LockTimeoutException
      */
     public function block($seconds, $callback = null)
@@ -92,11 +127,35 @@ abstract class Lock
         }
 
         if (is_callable($callback)) {
-            return tap($callback(), function () {
+            try {
+                return $callback();
+            } finally {
                 $this->release();
-            });
+            }
         }
 
         return true;
+    }
+
+    /**
+     * Returns the current owner of the lock.
+	 * 返回锁的当前所有者
+     *
+     * @return string
+     */
+    public function owner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * Determines whether this lock is allowed to release the lock in the driver.
+	 * 确定是否允许此锁释放驱动程序中的锁
+     *
+     * @return bool
+     */
+    protected function isOwnedByCurrentProcess()
+    {
+        return $this->getCurrentOwner() === $this->owner;
     }
 }

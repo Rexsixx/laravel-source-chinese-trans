@@ -1,12 +1,13 @@
 <?php
 /**
- * Illuminate，视图，编译器，Blade 编译器
+ * Illuminate，视图，编译，Blade 编译器
  */
 
 namespace Illuminate\View\Compilers;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 class BladeCompiler extends Compiler implements CompilerInterface
 {
@@ -15,6 +16,8 @@ class BladeCompiler extends Compiler implements CompilerInterface
         Concerns\CompilesComponents,
         Concerns\CompilesConditionals,
         Concerns\CompilesEchos,
+        Concerns\CompilesErrors,
+        Concerns\CompilesHelpers,
         Concerns\CompilesIncludes,
         Concerns\CompilesInjections,
         Concerns\CompilesJson,
@@ -95,6 +98,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * The "regular" / legacy echo string format.
+	 * “常规”/遗留回显字符串格式
      *
      * @var string
      */
@@ -120,7 +124,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      * Compile the view at the given path.
 	 * 在给定路径编译视图
      *
-     * @param  string  $path
+     * @param  string|null  $path
      * @return void
      */
     public function compile($path = null)
@@ -130,10 +134,45 @@ class BladeCompiler extends Compiler implements CompilerInterface
         }
 
         if (! is_null($this->cachePath)) {
-            $contents = $this->compileString($this->files->get($this->getPath()));
+            $contents = $this->compileString(
+                $this->files->get($this->getPath())
+            );
 
-            $this->files->put($this->getCompiledPath($this->getPath()), $contents);
+            if (! empty($this->getPath())) {
+                $tokens = $this->getOpenAndClosingPhpTokens($contents);
+
+                // If the tokens we retrieved from the compiled contents have at least
+                // one opening tag and if that last token isn't the closing tag, we
+                // need to close the statement before adding the path at the end.
+				// 如果从编译后的内容中获取的标记至少包含一个起始标签，并且最后一个标记不是结束标签，
+				// 那么在将路径添加到末尾之前，我们需要先关闭该语句。
+                if ($tokens->isNotEmpty() && $tokens->last() !== T_CLOSE_TAG) {
+                    $contents .= ' ?>';
+                }
+
+                $contents .= "<?php /**PATH {$this->getPath()} ENDPATH**/ ?>";
+            }
+
+            $this->files->put(
+                $this->getCompiledPath($this->getPath()), $contents
+            );
         }
+    }
+
+    /**
+     * Get the open and closing PHP tag tokens from the given string.
+	 * 从给定字符串中获取打开和关闭PHP标记令牌
+     *
+     * @param  string  $contents
+     * @return \Illuminate\Support\Collection
+     */
+    protected function getOpenAndClosingPhpTokens($contents)
+    {
+        return collect(token_get_all($contents))
+            ->pluck($tokenNumber = 0)
+            ->filter(function ($token) {
+                return in_array($token, [T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_CLOSE_TAG]);
+            });
     }
 
     /**
@@ -183,6 +222,8 @@ class BladeCompiler extends Compiler implements CompilerInterface
         // Here we will loop through all of the tokens returned by the Zend lexer and
         // parse each one into the corresponding valid PHP. We will then have this
         // template as the correctly rendered PHP that can be rendered natively.
+		// 接下来，我们将遍历 Zend 解析器返回的所有标记，并将每个标记解析为相应的有效的 PHP 代码。
+		// 然后，我们将拥有这样一个模板，它就是经过正确渲染的 PHP 代码，可以直接进行渲染。
         foreach (token_get_all($value) as $token) {
             $result .= is_array($token) ? $this->parseToken($token) : $token;
         }
@@ -194,6 +235,8 @@ class BladeCompiler extends Compiler implements CompilerInterface
         // If there are any footer lines that need to get added to a template we will
         // add them here at the end of the template. This gets used mainly for the
         // template inheritance via the extends keyword that should be appended.
+		// 如果需要在模板中添加任何页脚内容，我们将在此处（在模板末尾）进行添加。
+		// 这种做法主要用于通过“extends”关键字实现模板继承，该关键字也应一并添加。
         if (count($this->footer) > 0) {
             $result = $this->addFooters($result);
         }
@@ -295,7 +338,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     protected function parseToken($token)
     {
-        list($id, $content) = $token;
+        [$id, $content] = $token;
 
         if ($id == T_INLINE_HTML) {
             foreach ($this->compilers as $type) {
@@ -427,13 +470,13 @@ class BladeCompiler extends Compiler implements CompilerInterface
         $this->conditions[$name] = $callback;
 
         $this->directive($name, function ($expression) use ($name) {
-            return $expression
+            return $expression !== ''
                     ? "<?php if (\Illuminate\Support\Facades\Blade::check('{$name}', {$expression})): ?>"
                     : "<?php if (\Illuminate\Support\Facades\Blade::check('{$name}')): ?>";
         });
 
         $this->directive('else'.$name, function ($expression) use ($name) {
-            return $expression
+            return $expression !== ''
                 ? "<?php elseif (\Illuminate\Support\Facades\Blade::check('{$name}', {$expression})): ?>"
                 : "<?php elseif (\Illuminate\Support\Facades\Blade::check('{$name}')): ?>";
         });
@@ -457,6 +500,48 @@ class BladeCompiler extends Compiler implements CompilerInterface
     }
 
     /**
+     * Register a component alias directive.
+	 * 注册一个组件别名指令
+     *
+     * @param  string  $path
+     * @param  string|null  $alias
+     * @return void
+     */
+    public function component($path, $alias = null)
+    {
+        $alias = $alias ?: Arr::last(explode('.', $path));
+
+        $this->directive($alias, function ($expression) use ($path) {
+            return $expression
+                        ? "<?php \$__env->startComponent('{$path}', {$expression}); ?>"
+                        : "<?php \$__env->startComponent('{$path}'); ?>";
+        });
+
+        $this->directive('end'.$alias, function ($expression) {
+            return '<?php echo $__env->renderComponent(); ?>';
+        });
+    }
+
+    /**
+     * Register an include alias directive.
+	 * 注册一个包含别名指令
+     *
+     * @param  string  $path
+     * @param  string|null  $alias
+     * @return void
+     */
+    public function include($path, $alias = null)
+    {
+        $alias = $alias ?: Arr::last(explode('.', $path));
+
+        $this->directive($alias, function ($expression) use ($path) {
+            $expression = $this->stripParentheses($expression) ?: '[]';
+
+            return "<?php echo \$__env->make('{$path}', {$expression}, \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>";
+        });
+    }
+
+    /**
      * Register a handler for custom directives.
 	 * 为自定义指令注册一个处理程序
      *
@@ -466,6 +551,10 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     public function directive($name, callable $handler)
     {
+        if (! preg_match('/^\w+(?:::\w+)?$/x', $name)) {
+            throw new InvalidArgumentException("The directive name [{$name}] is not valid. Directive names must only contain alphanumeric characters and underscores.");
+        }
+
         $this->customDirectives[$name] = $handler;
     }
 
@@ -493,13 +582,24 @@ class BladeCompiler extends Compiler implements CompilerInterface
     }
 
     /**
-     * Set the echo format to double encode entities.
-	 * 将echo格式设置为双编码实体
+     * Set the "echo" format to double encode entities.
+	 * 将“echo”格式设置为对实体进行双编码
      *
      * @return void
      */
-    public function doubleEncode()
+    public function withDoubleEncoding()
     {
         $this->setEchoFormat('e(%s, true)');
+    }
+
+    /**
+     * Set the "echo" format to not double encode entities.
+	 * 将“echo”格式设置为不对实体进行双重编码
+     *
+     * @return void
+     */
+    public function withoutDoubleEncoding()
+    {
+        $this->setEchoFormat('e(%s, false)');
     }
 }

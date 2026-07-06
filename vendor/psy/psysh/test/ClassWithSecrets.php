@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，测试，秘密的类
+ */
 
 /*
  * This file is part of Psy Shell.

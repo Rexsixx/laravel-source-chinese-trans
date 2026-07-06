@@ -8,6 +8,7 @@ namespace Illuminate\Http;
 use Illuminate\Support\Arr;
 use Illuminate\Container\Container;
 use Illuminate\Support\Traits\Macroable;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
 use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
 
@@ -95,6 +96,34 @@ class UploadedFile extends SymfonyUploadedFile
     }
 
     /**
+     * Get the contents of the uploaded file.
+	 * 获取上传文件的内容
+     *
+     * @return bool|string
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function get()
+    {
+        if (! $this->isValid()) {
+            throw new FileNotFoundException("File does not exist at path {$this->getPathname()}");
+        }
+
+        return file_get_contents($this->getPathname());
+    }
+
+    /**
+     * Get the file's extension supplied by the client.
+	 * 获取客户端提供的文件扩展名
+     *
+     * @return string
+     */
+    public function clientExtension()
+    {
+        return $this->guessClientExtension();
+    }
+
+    /**
      * Create a new file instance from a base instance.
 	 * 从基本实例创建新的文件实例
      *
@@ -108,7 +137,6 @@ class UploadedFile extends SymfonyUploadedFile
             $file->getPathname(),
             $file->getClientOriginalName(),
             $file->getClientMimeType(),
-            $file->getClientSize(),
             $file->getError(),
             $test
         );

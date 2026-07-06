@@ -7,11 +7,13 @@ namespace Illuminate\Redis\Connections;
 
 use Redis;
 use Closure;
+use RedisCluster;
+use Illuminate\Contracts\Redis\Connection as ConnectionContract;
 
 /**
  * @mixin \Redis
  */
-class PhpRedisConnection extends Connection
+class PhpRedisConnection extends Connection implements ConnectionContract
 {
     /**
      * Create a new PhpRedis connection.
@@ -34,7 +36,7 @@ class PhpRedisConnection extends Connection
      */
     public function get($key)
     {
-        $result = $this->client->get($key);
+        $result = $this->command('get', [$key]);
 
         return $result !== false ? $result : null;
     }
@@ -50,7 +52,7 @@ class PhpRedisConnection extends Connection
     {
         return array_map(function ($value) {
             return $value !== false ? $value : null;
-        }, $this->client->mget($keys));
+        }, $this->command('mget', [$keys]));
     }
 
     /**
@@ -99,7 +101,7 @@ class PhpRedisConnection extends Connection
      */
     public function setnx($key, $value)
     {
-        return (int) $this->client->setnx($key, $value);
+        return (int) $this->command('setnx', [$key, $value]);
     }
 
     /**
@@ -108,11 +110,11 @@ class PhpRedisConnection extends Connection
      *
      * @param  string  $key
      * @param  dynamic  $dictionary
-     * @return int
+     * @return array
      */
     public function hmget($key, ...$dictionary)
     {
-        if (count($dictionary) == 1) {
+        if (count($dictionary) === 1) {
             $dictionary = $dictionary[0];
         }
 
@@ -129,7 +131,7 @@ class PhpRedisConnection extends Connection
      */
     public function hmset($key, ...$dictionary)
     {
-        if (count($dictionary) == 1) {
+        if (count($dictionary) === 1) {
             $dictionary = $dictionary[0];
         } else {
             $input = collect($dictionary);
@@ -151,7 +153,7 @@ class PhpRedisConnection extends Connection
      */
     public function hsetnx($hash, $key, $value)
     {
-        return (int) $this->client->hsetnx($hash, $key, $value);
+        return (int) $this->command('hsetnx', [$hash, $key, $value]);
     }
 
     /**
@@ -160,12 +162,40 @@ class PhpRedisConnection extends Connection
      *
      * @param  string  $key
      * @param  int  $count
-     * @param  $value  $value
+     * @param  mixed  $value
      * @return int|false
      */
     public function lrem($key, $count, $value)
     {
         return $this->command('lrem', [$key, $value, $count]);
+    }
+
+    /**
+     * Removes and returns the first element of the list stored at key.
+	 * 移除并返回存储在key处的列表的第一个元素
+     *
+     * @param  dynamic  $arguments
+     * @return array|null
+     */
+    public function blpop(...$arguments)
+    {
+        $result = $this->command('blpop', $arguments);
+
+        return empty($result) ? null : $result;
+    }
+
+    /**
+     * Removes and returns the last element of the list stored at key.
+	 * 删除并返回存储在key处的列表的最后一个元素
+     *
+     * @param  dynamic  $arguments
+     * @return array|null
+     */
+    public function brpop(...$arguments)
+    {
+        $result = $this->command('brpop', $arguments);
+
+        return empty($result) ? null : $result;
     }
 
     /**
@@ -211,7 +241,7 @@ class PhpRedisConnection extends Connection
      * @param  mixed  $min
      * @param  mixed  $max
      * @param  array  $options
-     * @return int
+     * @return array
      */
     public function zrangebyscore($key, $min, $max, $options = [])
     {
@@ -233,7 +263,7 @@ class PhpRedisConnection extends Connection
      * @param  mixed  $min
      * @param  mixed  $max
      * @param  array  $options
-     * @return int
+     * @return array
      */
     public function zrevrangebyscore($key, $min, $max, $options = [])
     {
@@ -258,10 +288,10 @@ class PhpRedisConnection extends Connection
      */
     public function zinterstore($output, $keys, $options = [])
     {
-        return $this->zInter($output, $keys,
+        return $this->command('zinterstore', [$output, $keys,
             $options['weights'] ?? null,
-            $options['aggregate'] ?? 'sum'
-        );
+            $options['aggregate'] ?? 'sum',
+        ]);
     }
 
     /**
@@ -275,17 +305,17 @@ class PhpRedisConnection extends Connection
      */
     public function zunionstore($output, $keys, $options = [])
     {
-        return $this->zUnion($output, $keys,
+        return $this->command('zunionstore', [$output, $keys,
             $options['weights'] ?? null,
-            $options['aggregate'] ?? 'sum'
-        );
+            $options['aggregate'] ?? 'sum',
+        ]);
     }
 
     /**
      * Execute commands in a pipeline.
 	 * 在管道中执行命令
      *
-     * @param  callable  $callback
+     * @param  callable|null  $callback
      * @return \Redis|array
      */
     public function pipeline(callable $callback = null)
@@ -301,7 +331,7 @@ class PhpRedisConnection extends Connection
      * Execute commands in a transaction.
 	 * 在事务中执行命令
      *
-     * @param  callable  $callback
+     * @param  callable|null  $callback
      * @return \Redis|array
      */
     public function transaction(callable $callback = null)
@@ -340,7 +370,7 @@ class PhpRedisConnection extends Connection
      */
     public function eval($script, $numberOfKeys, ...$arguments)
     {
-        return $this->client->eval($script, $arguments, $numberOfKeys);
+        return $this->command('eval', [$script, $arguments, $numberOfKeys]);
     }
 
     /**
@@ -385,6 +415,23 @@ class PhpRedisConnection extends Connection
     public function createSubscription($channels, Closure $callback, $method = 'subscribe')
     {
         //
+    }
+
+    /**
+     * Flush the selected Redis database.
+	 * 刷新所选Redis数据库
+     *
+     * @return void
+     */
+    public function flushdb()
+    {
+        if (! $this->client instanceof RedisCluster) {
+            return $this->command('flushdb');
+        }
+
+        foreach ($this->client->_masters() as [$host, $port]) {
+            tap(new Redis)->connect($host, $port)->flushDb();
+        }
     }
 
     /**
@@ -434,8 +481,6 @@ class PhpRedisConnection extends Connection
      */
     public function __call($method, $parameters)
     {
-        $method = strtolower($method);
-
-        return parent::__call($method, $parameters);
+        return parent::__call(strtolower($method), $parameters);
     }
 }

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，编码解码器，时间戳最早Comb Codec
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE

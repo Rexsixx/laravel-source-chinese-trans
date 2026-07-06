@@ -27,6 +27,14 @@ class ModelIdentifier
     public $id;
 
     /**
+     * The relationships loaded on the model.
+	 * 关系加载到模型上
+     *
+     * @var array
+     */
+    public $relations;
+
+    /**
      * The connection name of the model.
 	 * 模型的连接名称
      *
@@ -40,13 +48,15 @@ class ModelIdentifier
      *
      * @param  string  $class
      * @param  mixed  $id
+     * @param  array  $relations
      * @param  mixed  $connection
      * @return void
      */
-    public function __construct($class, $id, $connection)
+    public function __construct($class, $id, array $relations, $connection)
     {
         $this->id = $id;
         $this->class = $class;
+        $this->relations = $relations;
         $this->connection = $connection;
     }
 }

@@ -1,26 +1,30 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，建造者
+ * Illuminate，数据库，Eloquent，构建器
  */
 
 namespace Illuminate\Database\Eloquent;
 
 use Closure;
+use Exception;
 use BadMethodCallException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Database\Concerns\BuildsQueries;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
+ * @property-read HigherOrderBuilderProxy $orWhere
+ *
  * @mixin \Illuminate\Database\Query\Builder
  */
 class Builder
 {
-    use BuildsQueries, Concerns\QueriesRelationships;
+    use BuildsQueries, Concerns\QueriesRelationships, ForwardsCalls;
 
     /**
      * The base query builder instance.
@@ -77,8 +81,8 @@ class Builder
      * @var array
      */
     protected $passthru = [
-        'insert', 'insertGetId', 'getBindings', 'toSql',
-        'exists', 'doesntExist', 'count', 'min', 'max', 'avg', 'sum', 'getConnection',
+        'insert', 'insertOrIgnore', 'insertGetId', 'insertUsing', 'getBindings', 'toSql', 'dump', 'dd',
+        'exists', 'doesntExist', 'count', 'min', 'max', 'avg', 'average', 'sum', 'getConnection',
     ];
 
     /**
@@ -169,12 +173,12 @@ class Builder
      */
     public function withoutGlobalScopes(array $scopes = null)
     {
-        if (is_array($scopes)) {
-            foreach ($scopes as $scope) {
-                $this->withoutGlobalScope($scope);
-            }
-        } else {
-            $this->scopes = [];
+        if (! is_array($scopes)) {
+            $scopes = array_keys($this->scopes);
+        }
+
+        foreach ($scopes as $scope) {
+            $this->withoutGlobalScope($scope);
         }
 
         return $this;
@@ -232,8 +236,8 @@ class Builder
 	 * 向查询添加一个基本的where子句
      *
      * @param  string|array|\Closure  $column
-     * @param  string  $operator
-     * @param  mixed  $value
+     * @param  mixed   $operator
+     * @param  mixed   $value
      * @param  string  $boolean
      * @return $this
      */
@@ -255,17 +259,53 @@ class Builder
 	 * 向查询添加“or where”子句
      *
      * @param  \Closure|array|string  $column
-     * @param  string  $operator
+     * @param  mixed  $operator
      * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
     public function orWhere($column, $operator = null, $value = null)
     {
-        list($value, $operator) = $this->query->prepareValueAndOperator(
-            $value, $operator, func_num_args() == 2
+        [$value, $operator] = $this->query->prepareValueAndOperator(
+            $value, $operator, func_num_args() === 2
         );
 
         return $this->where($column, $operator, $value, 'or');
+    }
+
+    /**
+     * Add an "order by" clause for a timestamp to the query.
+	 * 在查询中为时间戳添加“order by”子句
+     *
+     * @param  string  $column
+     * @return $this
+     */
+    public function latest($column = null)
+    {
+        if (is_null($column)) {
+            $column = $this->model->getCreatedAtColumn() ?? 'created_at';
+        }
+
+        $this->query->latest($column);
+
+        return $this;
+    }
+
+    /**
+     * Add an "order by" clause for a timestamp to the query.
+	 * 在查询中为时间戳添加“order by”子句
+     *
+     * @param  string  $column
+     * @return $this
+     */
+    public function oldest($column = null)
+    {
+        if (is_null($column)) {
+            $column = $this->model->getCreatedAtColumn() ?? 'created_at';
+        }
+
+        $this->query->oldest($column);
+
+        return $this;
     }
 
     /**
@@ -326,6 +366,8 @@ class Builder
      */
     public function findMany($ids, $columns = ['*'])
     {
+        $ids = $ids instanceof Arrayable ? $ids->toArray() : $ids;
+
         if (empty($ids)) {
             return $this->model->newCollection();
         }
@@ -339,7 +381,7 @@ class Builder
      *
      * @param  mixed  $id
      * @param  array  $columns
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|static|static[]
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
@@ -348,7 +390,7 @@ class Builder
         $result = $this->find($id, $columns);
 
         if (is_array($id)) {
-            if (count($result) == count(array_unique($id))) {
+            if (count($result) === count(array_unique($id))) {
                 return $result;
             }
         } elseif (! is_null($result)) {
@@ -366,7 +408,7 @@ class Builder
      *
      * @param  mixed  $id
      * @param  array  $columns
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|static
      */
     public function findOrNew($id, $columns = ['*'])
     {
@@ -383,7 +425,7 @@ class Builder
      *
      * @param  array  $attributes
      * @param  array  $values
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|static
      */
     public function firstOrNew(array $attributes, array $values = [])
     {
@@ -400,7 +442,7 @@ class Builder
      *
      * @param  array  $attributes
      * @param  array  $values
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|static
      */
     public function firstOrCreate(array $attributes, array $values = [])
     {
@@ -419,7 +461,7 @@ class Builder
      *
      * @param  array  $attributes
      * @param  array  $values
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|static
      */
     public function updateOrCreate(array $attributes, array $values = [])
     {
@@ -497,6 +539,8 @@ class Builder
         // If we actually found models we will also eager load any relationships that
         // have been specified as needing to be eager loaded, which will solve the
         // n+1 query issue for the developers to avoid running a lot of queries.
+		// 如果我们真的找到了相应的模型，我们还会自动加载那些已被指定需要进行“懒加载”的关系，
+		// 这样就能解决“n+1 查询”问题，从而让开发人员无需执行过多的查询操作。
         if (count($models = $builder->getModels($columns)) > 0) {
             $models = $builder->eagerLoadRelations($models);
         }
@@ -506,10 +550,10 @@ class Builder
 
     /**
      * Get the hydrated models without eager loading.
-	 * 得到水合模型，没有急切加载。
+	 * 得到hydrated模型，没有急切加载。
      *
      * @param  array  $columns
-     * @return \Illuminate\Database\Eloquent\Model[]
+     * @return \Illuminate\Database\Eloquent\Model[]|static[]
      */
     public function getModels($columns = ['*'])
     {
@@ -531,6 +575,8 @@ class Builder
             // For nested eager loads we'll skip loading them here and they will be set as an
             // eager load on the query to retrieve the relation so that they will be eager
             // loaded on that query, because that is where they get hydrated as models.
+			// 对于嵌套的即时加载操作，我们在此阶段会跳过加载它们的步骤，而是将它们设置为查询中的即时加载项，
+			// 以便在获取关系时也能实现即时加载，这样它们就会在该查询中被即时加载，因为只有在该查询中它们才会被转换为模型形式。
             if (strpos($name, '.') === false) {
                 $models = $this->eagerLoadRelation($models, $name, $constraints);
             }
@@ -553,6 +599,8 @@ class Builder
         // First we will "back up" the existing where conditions on the query so we can
         // add our eager constraints. Then we will merge the wheres that were on the
         // query back to it in order that any where conditions might be specified.
+		// 首先，我们将对查询中的现有“where”条件进行“备份”，以便我们能够添加“联接”约束条件。
+		// 然后，我们将把查询中的那些“where”语句重新整合到查询中，以便能够指定任何“where”条件。
         $relation = $this->getRelation($name);
 
         $relation->addEagerConstraints($models);
@@ -562,6 +610,8 @@ class Builder
         // Once we have the results, we just match those back up to their parent models
         // using the relationship instance. Then we just return the finished arrays
         // of models which have been eagerly hydrated and are readied for return.
+		// 一旦我们得到结果，我们就会利用关系实例将这些结果与各自的父模型进行匹配。
+		// 然后，我们只需返回那些已经经过“快速填充”处理并准备好返回的模型数组即可。
         return $relation->match(
             $relation->initRelation($models, $name),
             $relation->getEager(), $name
@@ -580,6 +630,8 @@ class Builder
         // We want to run a relationship query without any constrains so that we will
         // not have to remove these where clauses manually which gets really hacky
         // and error prone. We don't want constraints because we add eager ones.
+		// 我们希望执行一个关系查询，且不设置任何限制条件，这样就不必手动删除这些“where”子句了，因为那样做会显得非常繁琐且容易出错。
+		// 我们不需要约束，因为我们添加了急切约束。
         $relation = Relation::noConstraints(function () use ($name) {
             try {
                 return $this->getModel()->newInstance()->$name();
@@ -593,6 +645,8 @@ class Builder
         // If there are nested relationships set on the query, we will put those onto
         // the query instances so that they can be handled after this relationship
         // is loaded. In this way they will all trickle down as they are loaded.
+		// 如果查询中设置了嵌套关系，我们将把这些关系转移到查询实例中，以便在加载该关系后对其进行处理。
+		// 通过这种方式，它们都将在加载时向下滴入。
         if (count($nested) > 0) {
             $relation->getQuery()->with($nested);
         }
@@ -614,6 +668,8 @@ class Builder
         // We are basically looking for any relationships that are nested deeper than
         // the given top-level relationship. We will just check for any relations
         // that start with the given top relations and adds them to our arrays.
+		// 我们主要是在寻找那些层级比给定的顶层关系更深的各类关系。
+		// 我们将只检查那些以给定的顶级关系开头的关系，并将它们添加到我们的数组中。
         foreach ($this->eagerLoad as $name => $constraints) {
             if ($this->isNestedUnder($relation, $name)) {
                 $nested[substr($name, strlen($relation.'.'))] = $constraints;
@@ -645,7 +701,7 @@ class Builder
     public function cursor()
     {
         foreach ($this->applyScopes()->query->cursor() as $record) {
-            yield $this->model->newFromBuilder($record);
+            yield $this->newModelInstance()->newFromBuilder($record);
         }
     }
 
@@ -655,7 +711,7 @@ class Builder
      *
      * @param  int  $count
      * @param  callable  $callback
-     * @param  string  $column
+     * @param  string|null  $column
      * @param  string|null  $alias
      * @return bool
      */
@@ -665,7 +721,7 @@ class Builder
 
         $alias = is_null($alias) ? $column : $alias;
 
-        $lastId = 0;
+        $lastId = null;
 
         do {
             $clone = clone $this;
@@ -673,6 +729,8 @@ class Builder
             // We'll execute the query for the given page and get the results. If there are
             // no results we can just break and return from here. When there are results
             // we will call the callback with the current chunk of these results here.
+			// 我们将针对给定的页面执行查询并获取结果。如果没有结果，我们就可以提前终止并从这里返回。
+			// 一旦有了结果，我们就会使用这里的当前结果块来调用回调函数。
             $results = $clone->forPageAfterId($count, $lastId, $column)->get();
 
             $countResults = $results->count();
@@ -684,6 +742,8 @@ class Builder
             // On each chunk result set, we will pass them to the callback and then let the
             // developer take care of everything within the callback, which allows us to
             // keep the memory low for spinning through large result sets for working.
+			// 对于每个分块的结果集，我们都会将其传递给回调函数，
+			// 然后让开发人员在回调函数中处理所有相关事宜，这样就能使我们在处理大型结果集时保持较低的内存占用。
             if ($callback($results) === false) {
                 return false;
             }
@@ -724,6 +784,8 @@ class Builder
         // If the model has a mutator for the requested column, we will spin through
         // the results and mutate the values so that the mutated version of these
         // columns are returned as you would expect from these Eloquent models.
+		// 如果该模型针对所请求的列具有修改器，我们将遍历结果并修改其值，
+		// 以便返回这些列的修改后版本，其形式与您从这些 Eloquent 模型中预期的输出一致。
         if (! $this->model->hasGetMutator($column) &&
             ! $this->model->hasCast($column) &&
             ! in_array($column, $this->model->getDates())) {
@@ -782,6 +844,8 @@ class Builder
         // Next we will set the limit and offset for this query so that when we get the
         // results we get the proper section of results. Then, we'll create the full
         // paginator instances for these results with the given page and per page.
+		// 接下来，我们将为此次查询设定限制条件和偏移量，以便在获取结果时能够得到正确的部分结果。
+		// 然后，我们将根据给定的页数和每页显示的条数，为这些结果创建完整的分页器实例。
         $this->skip(($page - 1) * $perPage)->take($perPage + 1);
 
         return $this->simplePaginator($this->get($columns), $perPage, $page, [
@@ -835,7 +899,7 @@ class Builder
 	 * 将列的值增加给定的量
      *
      * @param  string  $column
-     * @param  int  $amount
+     * @param  float|int  $amount
      * @param  array  $extra
      * @return int
      */
@@ -851,7 +915,7 @@ class Builder
 	 * 将列的值递减给定的量
      *
      * @param  string  $column
-     * @param  int  $amount
+     * @param  float|int  $amount
      * @param  array  $extra
      * @return int
      */
@@ -871,14 +935,27 @@ class Builder
      */
     protected function addUpdatedAtColumn(array $values)
     {
-        if (! $this->model->usesTimestamps()) {
+        if (! $this->model->usesTimestamps() ||
+            is_null($this->model->getUpdatedAtColumn())) {
             return $values;
         }
 
-        return Arr::add(
-            $values, $this->model->getUpdatedAtColumn(),
-            $this->model->freshTimestampString()
+        $column = $this->model->getUpdatedAtColumn();
+
+        $values = array_merge(
+            [$column => $this->model->freshTimestampString()],
+            $values
         );
+
+        $segments = preg_split('/\s+as\s+/i', $this->query->from);
+
+        $qualifiedColumn = end($segments).'.'.$column;
+
+        $values[$qualifiedColumn] = $values[$column];
+
+        unset($values[$column]);
+
+        return $values;
     }
 
     /**
@@ -901,6 +978,7 @@ class Builder
 	 * 在构建器上运行默认的删除函数。
      *
      * Since we do not apply scopes here, the row will actually be deleted.
+	 * 由于我们在这里没有应用作用域，因此该行实际上将被删除。
      *
      * @return mixed
      */
@@ -926,7 +1004,7 @@ class Builder
 	 * 调用给定的局部模型范围
      *
      * @param  array  $scopes
-     * @return mixed
+     * @return static|mixed
      */
     public function scopes(array $scopes)
     {
@@ -936,13 +1014,16 @@ class Builder
             // If the scope key is an integer, then the scope was passed as the value and
             // the parameter list is empty, so we will format the scope name and these
             // parameters here. Then, we'll be ready to call the scope on the model.
+			// 如果作用域键是一个整数，那么该作用域就是作为值被传递过来的，而参数列表为空，所以我们将在这里格式化作用域名称以及这些参数。
             if (is_int($scope)) {
-                list($scope, $parameters) = [$parameters, []];
+                [$scope, $parameters] = [$parameters, []];
             }
 
             // Next we'll pass the scope callback to the callScope method which will take
             // care of grouping the "wheres" properly so the logical order doesn't get
             // messed up when adding scopes. Then we'll return back out the builder.
+			// 接下来，我们将把范围回调函数传递给 callScope 方法。
+			// 该方法将负责对“where”条件进行正确分组，以确保在添加范围时逻辑顺序不会被打乱。
             $builder = $builder->callScope(
                 [$this->model, 'scope'.ucfirst($scope)],
                 (array) $parameters
@@ -956,7 +1037,7 @@ class Builder
      * Apply the scopes to the Eloquent builder instance and return it.
 	 * 将作用域应用于Eloquent构建器实例并返回它
      *
-     * @return \Illuminate\Database\Eloquent\Builder|static
+     * @return static
      */
     public function applyScopes()
     {
@@ -975,6 +1056,8 @@ class Builder
                 // If the scope is a Closure we will just go ahead and call the scope with the
                 // builder instance. The "callScope" method will properly group the clauses
                 // that are added to this query so "where" clauses maintain proper logic.
+				// 如果该作用域是一个闭包，我们就会直接使用构建器实例来调用该闭包。
+				// “callScope”方法会将添加到此查询中的语句进行合理分组，从而确保“where”语句具有正确的逻辑关系。
                 if ($scope instanceof Closure) {
                     $scope($builder);
                 }
@@ -982,6 +1065,8 @@ class Builder
                 // If the scope is a scope object, we will call the apply method on this scope
                 // passing in the builder and the model instance. After we run all of these
                 // scopes we will return back the builder instance to the outside caller.
+				// 如果该范围是一个作用域对象，我们将调用此作用域的 apply 方法，并将构建器和模型实例作为参数传入。
+				// 在我们完成所有这些操作后，我们将把构建器实例返回给外部调用者。
                 if ($scope instanceof Scope) {
                     $scope->apply($builder, $this->getModel());
                 }
@@ -1008,6 +1093,8 @@ class Builder
         // We will keep track of how many wheres are on the query before running the
         // scope so that we can properly group the added scope constraints in the
         // query as their own isolated nested where statement and avoid issues.
+		// 在运行查询范围之前，我们会先统计查询中“where”子句的数量，
+		// 这样就能在查询中将添加的范围约束单独作为一个独立的嵌套“where”语句进行分组处理，从而避免出现任何问题。
         $originalWhereCount = is_null($query->wheres)
                     ? 0 : count($query->wheres);
 
@@ -1033,6 +1120,8 @@ class Builder
         // Here, we totally remove all of the where clauses since we are going to
         // rebuild them as nested queries by slicing the groups of wheres into
         // their own sections. This is to prevent any confusing logic order.
+		// 在这里，我们完全删除了所有的“where”子句，因为我们将把它们重新构建为嵌套查询，
+		// 方法是将“where”条件语句分组并分别置于各自的独立部分中。
         $allWheres = $query->wheres;
 
         $query->wheres = [];
@@ -1061,6 +1150,8 @@ class Builder
         // Here we'll check if the given subset of where clauses contains any "or"
         // booleans and in this case create a nested where expression. That way
         // we don't add any unnecessary nesting thus keeping the query clean.
+		// 接下来，我们将检查给定的“where”子句集合中是否包含任何“或”布尔值，并在这种情况下去创建一个嵌套的“where”表达式。
+		// 这样我们就不会添加任何不必要的嵌套结构，从而保持查询的简洁性。
         if ($whereBooleans->contains('or')) {
             $query->wheres[] = $this->createNestedWhere(
                 $whereSlice, $whereBooleans->first()
@@ -1124,7 +1215,7 @@ class Builder
 	 * 创建正在查询的模型的新实例
      *
      * @param  array  $attributes
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|static
      */
     public function newModelInstance($attributes = [])
     {
@@ -1145,22 +1236,26 @@ class Builder
         $results = [];
 
         foreach ($relations as $name => $constraints) {
-            // If the "relation" value is actually a numeric key, we can assume that no
-            // constraints have been specified for the eager load and we'll just put
-            // an empty Closure with the loader so that we can treat all the same.
+            // If the "name" value is a numeric key, we can assume that no
+            // constraints have been specified. We'll just put an empty
+            // Closure there, so that we can treat them all the same.
+			// 如果“名称”值是一个数字键，那么我们可以推断出并未指定任何约束条件。
+			// 我们就在这儿放一个空的闭包即可，这样就能对它们一视同仁地进行处理了。
             if (is_numeric($name)) {
                 $name = $constraints;
 
-                list($name, $constraints) = Str::contains($name, ':')
+                [$name, $constraints] = Str::contains($name, ':')
                             ? $this->createSelectWithConstraint($name)
                             : [$name, function () {
                                 //
                             }];
             }
 
-            // We need to separate out any nested includes. Which allows the developers
+            // We need to separate out any nested includes, which allows the developers
             // to load deep relationships using "dots" without stating each level of
-            // the relationship with its own key in the array of eager load names.
+            // the relationship with its own key in the array of eager-load names.
+			// 我们需要将任何嵌套的包含部分分离出来，这样开发人员就可以通过“点”来加载深层次的关系，
+			// 而无需在“懒加载名称”数组中为每个关系层级都单独指定其对应的键。
             $results = $this->addNestedWiths($name, $results);
 
             $results[$name] = $constraints;
@@ -1198,6 +1293,8 @@ class Builder
         // If the relation has already been set on the result array, we will not set it
         // again, since that would override any constraints that were already placed
         // on the relationships. We will only set the ones that are not specified.
+		// 如果该关系已经在结果数组中设定过，我们则不会再次设定，因为那样会覆盖掉之前对这些关系所设定的任何约束条件。
+		// 我们将只设置那些没有指定的。
         foreach (explode('.', $name) as $segment) {
             $progress[] = $segment;
 
@@ -1276,7 +1373,7 @@ class Builder
      * Get the model instance being queried.
 	 * 获取正在查询的模型实例
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|static
      */
     public function getModel()
     {
@@ -1324,6 +1421,24 @@ class Builder
     }
 
     /**
+     * Dynamically access builder proxies.
+	 * 动态访问构建器代理
+     *
+     * @param  string  $key
+     * @return mixed
+     *
+     * @throws \Exception
+     */
+    public function __get($key)
+    {
+        if ($key === 'orWhere') {
+            return new HigherOrderBuilderProxy($this, $key);
+        }
+
+        throw new Exception("Property [{$key}] does not exist on the Eloquent builder instance.");
+    }
+
+    /**
      * Dynamically handle calls into the query instance.
 	 * 动态处理对查询实例的调用
      *
@@ -1361,7 +1476,7 @@ class Builder
             return $this->toBase()->{$method}(...$parameters);
         }
 
-        $this->query->{$method}(...$parameters);
+        $this->forwardCallTo($this->query, $method, $parameters);
 
         return $this;
     }
@@ -1385,7 +1500,7 @@ class Builder
         }
 
         if (! isset(static::$macros[$method])) {
-            throw new BadMethodCallException("Method {$method} does not exist.");
+            static::throwBadMethodCallException($method);
         }
 
         if (static::$macros[$method] instanceof Closure) {

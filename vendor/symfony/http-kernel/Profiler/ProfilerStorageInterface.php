@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，分析器，分析器存储接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,15 @@ namespace Symfony\Component\HttpKernel\Profiler;
 
 /**
  * ProfilerStorageInterface.
+ * 分析器存储接口。
+ *
+ * This interface exists for historical reasons. The only supported
+ * implementation is FileProfilerStorage.
+ *
+ * As the profiler must only be used on non-production servers, the file storage
+ * is more than enough and no other implementations will ever be supported.
+ *
+ * @internal since 4.2
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -20,6 +32,7 @@ interface ProfilerStorageInterface
 {
     /**
      * Finds profiler tokens for the given criteria.
+	 * 查找给定标准的profiler令牌
      *
      * @param string   $ip     The IP
      * @param string   $url    The URL
@@ -30,7 +43,7 @@ interface ProfilerStorageInterface
      *
      * @return array An array of tokens
      */
-    public function find($ip, $url, $limit, $method, $start = null, $end = null);
+    public function find($ip, $url, $limit, $method, $start = null, $end = null): array;
 
     /**
      * Reads data associated with the given token.
@@ -41,14 +54,14 @@ interface ProfilerStorageInterface
      *
      * @return Profile|null The profile associated with token
      */
-    public function read($token);
+    public function read($token): ?Profile;
 
     /**
      * Saves a Profile.
      *
      * @return bool Write operation successful
      */
-    public function write(Profile $profile);
+    public function write(Profile $profile): bool;
 
     /**
      * Purges all data from the database.

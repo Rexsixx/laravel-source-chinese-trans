@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由选择，生成器，可配置需求接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +23,7 @@ namespace Symfony\Component\Routing\Generator;
  * The possible configurations and use-cases:
  * - setStrictRequirements(true): Throw an exception for mismatching requirements. This
  *   is mostly useful in development environment.
- * - setStrictRequirements(false): Don't throw an exception but return null as URL for
+ * - setStrictRequirements(false): Don't throw an exception but return an empty string as URL for
  *   mismatching requirements and log the problem. Useful when you cannot control all
  *   params because they come from third party libs but don't want to have a 404 in
  *   production environment. It should log the mismatch so one can review it.
@@ -40,6 +43,8 @@ interface ConfigurableRequirementsInterface
     /**
      * Enables or disables the exception on incorrect parameters.
      * Passing null will deactivate the requirements check completely.
+	 * 在不正确的参数上启用或禁用异常。
+	 * 传递空将完全取消需求检查。
      *
      * @param bool|null $enabled
      */

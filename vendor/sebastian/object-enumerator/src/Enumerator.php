@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，对象计数器，计数器
+ */
+
 /*
  * This file is part of Object Enumerator.
  *
@@ -16,12 +20,14 @@ use SebastianBergmann\RecursionContext\Context;
 /**
  * Traverses array structures and object graphs
  * to enumerate all referenced objects.
+ * 遍历数组结构和对象图来枚举所有引用的对象。
  */
 class Enumerator
 {
     /**
      * Returns an array of all objects referenced either
      * directly or indirectly by a variable.
+	 * 返回由变量直接或间接引用的所有对象的数组
      *
      * @param array|object $variable
      *

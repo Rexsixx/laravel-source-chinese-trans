@@ -1,22 +1,15 @@
 <?php
 /**
- * Illuminate，Auth，密码，密码重置服务提供商
+ * Illuminate，认证，密码，密码重置服务提供商
  */
 
 namespace Illuminate\Auth\Passwords;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Support\DeferrableProvider;
 
-class PasswordResetServiceProvider extends ServiceProvider
+class PasswordResetServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * Indicates if loading of the provider is deferred.
-	 * 指示是否延迟加载提供程序
-     *
-     * @var bool
-     */
-    protected $defer = true;
-
     /**
      * Register the service provider.
 	 * 注册服务提供者

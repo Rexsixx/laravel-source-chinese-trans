@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，呼叫，Call
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -25,22 +28,31 @@ class Call
     private $arguments;
     private $returnValue;
     private $exception;
+    /**
+     * @var string|null
+     */
     private $file;
+    /**
+     * @var int|null
+     */
     private $line;
+    /**
+     * @var \SplObjectStorage<ArgumentsWildcard, int|false>
+     */
     private $scores;
 
     /**
      * Initializes call.
      *
      * @param string      $methodName
-     * @param array       $arguments
+     * @param array<mixed> $arguments
      * @param mixed       $returnValue
-     * @param Exception   $exception
+     * @param Exception|null $exception
      * @param null|string $file
      * @param null|int    $line
      */
     public function __construct($methodName, array $arguments, $returnValue,
-                                Exception $exception = null, $file, $line)
+        ?Exception $exception, $file, $line)
     {
         $this->methodName  = $methodName;
         $this->arguments   = $arguments;
@@ -67,7 +79,7 @@ class Call
     /**
      * Returns called method arguments.
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getArguments()
     {
@@ -97,7 +109,7 @@ class Call
     /**
      * Returns callee filename.
      *
-     * @return string
+     * @return string|null
      */
     public function getFile()
     {
@@ -107,7 +119,7 @@ class Call
     /**
      * Returns callee line number.
      *
-     * @return int
+     * @return int|null
      */
     public function getLine()
     {

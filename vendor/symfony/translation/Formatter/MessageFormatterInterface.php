@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，格式化程序，消息格式化接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ interface MessageFormatterInterface
 {
     /**
      * Formats a localized message pattern with given arguments.
+	 * 使用给定参数格式化本地化消息模式
      *
      * @param string $message    The message (may also be an object that can be cast to string)
      * @param string $locale     The message locale

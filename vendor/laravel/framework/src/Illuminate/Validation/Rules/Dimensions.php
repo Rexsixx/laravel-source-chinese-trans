@@ -127,7 +127,7 @@ class Dimensions
 
     /**
      * Convert the rule to a validation string.
-	 * 将规则转换为验证字符串
+	 * 转换规则为验证字符串
      *
      * @return string
      */

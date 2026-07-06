@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由选择，加载程序，目录加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -52,6 +55,7 @@ class DirectoryLoader extends FileLoader
     public function supports($resource, $type = null)
     {
         // only when type is forced to directory, not to conflict with AnnotationLoader
+		// 只有当类型被强制到目录时,不要与注释加载器冲突。
 
         return 'directory' === $type;
     }

@@ -1,4 +1,8 @@
 <?php
+/**
+ * PharIo，Manifest，捆绑组件收集迭代器
+ */
+
 /*
  * This file is part of PharIo\Manifest.
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由签名参数
+ * Illuminate，路由选择，路由签名参数
  */
 
 namespace Illuminate\Routing;
@@ -13,10 +13,10 @@ class RouteSignatureParameters
 {
     /**
      * Extract the route action's signature parameters.
-	 * 提取路由动作的签名参数。
+	 * 提取路由动作的签名参数
      *
      * @param  array  $action
-     * @param  string  $subClass
+     * @param  string|null  $subClass
      * @return array
      */
     public static function fromAction(array $action, $subClass = null)
@@ -39,7 +39,7 @@ class RouteSignatureParameters
      */
     protected static function fromClassMethodString($uses)
     {
-        list($class, $method) = Str::parseCallback($uses);
+        [$class, $method] = Str::parseCallback($uses);
 
         if (! method_exists($class, $method) && is_callable($class, $method)) {
             return [];

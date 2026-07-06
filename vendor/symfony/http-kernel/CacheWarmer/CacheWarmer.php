@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，CacheWarmer，Cache Warmer
+ */
 
 /*
  * This file is part of the Symfony package.

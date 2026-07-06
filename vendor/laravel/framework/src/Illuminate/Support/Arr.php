@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，数组
+ * Illuminate，支持，Arr
  */
 
 namespace Illuminate\Support;
@@ -61,10 +61,10 @@ class Arr
                 continue;
             }
 
-            $results = array_merge($results, $values);
+            $results[] = $values;
         }
 
-        return $results;
+        return array_merge([], ...$results);
     }
 
     /**
@@ -227,10 +227,14 @@ class Arr
 
             if (! is_array($item)) {
                 $result[] = $item;
-            } elseif ($depth === 1) {
-                $result = array_merge($result, array_values($item));
             } else {
-                $result = array_merge($result, static::flatten($item, $depth - 1));
+                $values = $depth === 1
+                    ? array_values($item)
+                    : static::flatten($item, $depth - 1);
+
+                foreach ($values as $value) {
+                    $result[] = $value;
+                }
             }
         }
 
@@ -287,7 +291,7 @@ class Arr
 	 * 使用“点”符号从数组中获取项
      *
      * @param  \ArrayAccess|array  $array
-     * @param  string  $key
+     * @param  string|int  $key
      * @param  mixed   $default
      * @return mixed
      */
@@ -330,17 +334,9 @@ class Arr
      */
     public static function has($array, $keys)
     {
-        if (is_null($keys)) {
-            return false;
-        }
-
         $keys = (array) $keys;
 
-        if (! $array) {
-            return false;
-        }
-
-        if ($keys === []) {
+        if (! $array || $keys === []) {
             return false;
         }
 
@@ -368,6 +364,7 @@ class Arr
 	 * 确定数组是否是关联的。
      *
      * An array is "associative" if it doesn't have sequential numerical keys beginning with zero.
+	 * 如果数组没有以零开头的顺序数字键，则该数组是“关联的”。
      *
      * @param  array  $array
      * @return bool
@@ -405,7 +402,7 @@ class Arr
     {
         $results = [];
 
-        list($value, $key) = static::explodePluckParameters($value, $key);
+        [$value, $key] = static::explodePluckParameters($value, $key);
 
         foreach ($array as $item) {
             $itemValue = data_get($item, $value);
@@ -413,6 +410,8 @@ class Arr
             // If the key is "null", we will just append the value to the array and keep
             // looping. Otherwise we will key the array using the value of the key we
             // received from the developer. Then we'll return the final array form.
+			// 如果键为“null”，我们就会将该值添加到数组中，并继续循环操作。
+			// 否则，我们将根据从开发人员那里收到的键值来为数组赋值。然后，我们将返回最终的数组形式。
             if (is_null($key)) {
                 $results[] = $itemValue;
             } else {
@@ -530,6 +529,7 @@ class Arr
 	 * 使用“点”表示法将数组项设置为给定值。
      *
      * If no key is given to the method, the entire array will be replaced.
+	 * 如果没有给方法提供键，整个数组将被替换。
      *
      * @param  array   $array
      * @param  string  $key
@@ -550,6 +550,8 @@ class Arr
             // If the key doesn't exist at this depth, we will just create an empty array
             // to hold the next value, allowing us to create the arrays to hold final
             // values at the correct depth. Then we'll keep digging into the array.
+			// 如果在当前深度找不到该键，我们就只需创建一个空数组来存放下一个值，
+			// 这样我们就能在正确的深度创建用于存放最终值的数组了。然后我们再继续深入该数组中进行查找。
             if (! isset($array[$key]) || ! is_array($array[$key])) {
                 $array[$key] = [];
             }
@@ -567,11 +569,18 @@ class Arr
 	 * 打乱给定的数组并返回结果
      *
      * @param  array  $array
+     * @param  int|null  $seed
      * @return array
      */
-    public static function shuffle($array)
+    public static function shuffle($array, $seed = null)
     {
-        shuffle($array);
+        if (is_null($seed)) {
+            shuffle($array);
+        } else {
+            mt_srand($seed);
+            shuffle($array);
+            mt_srand();
+        }
 
         return $array;
     }
@@ -614,6 +623,18 @@ class Arr
     }
 
     /**
+     * Convert the array into a query string.
+	 * 将数组转换为查询字符串
+     *
+     * @param  array  $array
+     * @return string
+     */
+    public static function query($array)
+    {
+        return http_build_query($array, null, '&', PHP_QUERY_RFC3986);
+    }
+
+    /**
      * Filter the array using the given callback.
 	 * 使用给定的回调筛选数组
      *
@@ -627,14 +648,18 @@ class Arr
     }
 
     /**
-     * If the given value is not an array, wrap it in one.
-	 * 如果给定的值不是数组，则将其封装在一个数组中。
+     * If the given value is not an array and not null, wrap it in one.
+	 * 如果给定的值不是数组，也不为空，则将其封装在一个数组中。
      *
      * @param  mixed  $value
      * @return array
      */
     public static function wrap($value)
     {
-        return ! is_array($value) ? [$value] : $value;
+        if (is_null($value)) {
+            return [];
+        }
+
+        return is_array($value) ? $value : [$value];
     }
 }

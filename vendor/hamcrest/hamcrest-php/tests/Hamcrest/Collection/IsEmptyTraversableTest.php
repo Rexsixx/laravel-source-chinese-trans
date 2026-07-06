@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，采集，是空的穿越测试
+ */
+
 namespace Hamcrest\Collection;
 
 use Hamcrest\AbstractMatcherTest;

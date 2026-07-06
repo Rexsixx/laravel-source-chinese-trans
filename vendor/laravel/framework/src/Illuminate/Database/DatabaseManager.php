@@ -9,6 +9,7 @@ use PDO;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use Illuminate\Support\ConfigurationUrlParser;
 use Illuminate\Database\Connectors\ConnectionFactory;
 
 /**
@@ -18,9 +19,9 @@ class DatabaseManager implements ConnectionResolverInterface
 {
     /**
      * The application instance.
-	 * 应用实例
+	 * 程序实例
      *
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
@@ -49,10 +50,18 @@ class DatabaseManager implements ConnectionResolverInterface
     protected $extensions = [];
 
     /**
+     * The callback to be executed to reconnect to a database.
+	 * 为重新连接数据库而执行的回调
+     *
+     * @var callable
+     */
+    protected $reconnector;
+
+    /**
      * Create a new database manager instance.
 	 * 创建一个新的数据库管理器实例
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  \Illuminate\Database\Connectors\ConnectionFactory  $factory
      * @return void
      */
@@ -60,24 +69,30 @@ class DatabaseManager implements ConnectionResolverInterface
     {
         $this->app = $app;
         $this->factory = $factory;
+
+        $this->reconnector = function ($connection) {
+            $this->reconnect($connection->getName());
+        };
     }
 
     /**
      * Get a database connection instance.
 	 * 获取数据库连接实例
      *
-     * @param  string  $name
+     * @param  string|null  $name
      * @return \Illuminate\Database\Connection
      */
     public function connection($name = null)
     {
-        list($database, $type) = $this->parseConnectionName($name);
+        [$database, $type] = $this->parseConnectionName($name);
 
         $name = $name ?: $database;
 
         // If we haven't created this connection, we'll create it based on the config
         // provided in the application. Once we've created the connections we will
         // set the "fetch mode" for PDO which determines the query return types.
+		// 如果我们尚未建立这种联系，我们将根据应用程序中提供的配置来建立它。
+		// 一旦建立了这些连接，我们就会为 PDO 设置“获取模式”，该模式决定了查询返回的数据类型。
         if (! isset($this->connections[$name])) {
             $this->connections[$name] = $this->configure(
                 $this->makeConnection($database), $type
@@ -116,6 +131,8 @@ class DatabaseManager implements ConnectionResolverInterface
         // First we will check by the connection name to see if an extension has been
         // registered specifically for that connection. If it has we will call the
         // Closure and pass it the config allowing it to resolve the connection.
+		// 首先，我们将通过连接名称来检查，看是否已为该连接专门注册了扩展功能。
+		// 如果具备该功能，我们将调用“闭包”并将其传入配置中，以便它能够建立连接。
         if (isset($this->extensions[$name])) {
             return call_user_func($this->extensions[$name], $config, $name);
         }
@@ -123,6 +140,8 @@ class DatabaseManager implements ConnectionResolverInterface
         // Next we will check to see if an extension has been registered for a driver
         // and will call the Closure if so, which allows us to have a more generic
         // resolver for the drivers themselves which applies to all connections.
+		// 接下来，我们将检查是否已为某个驱动程序注册了扩展，并在有注册的情况下调用闭包，
+		// 这样我们就能为驱动程序本身创建一个更具通用性的解析器，该解析器适用于所有连接。
         if (isset($this->extensions[$driver = $config['driver']])) {
             return call_user_func($this->extensions[$driver], $config, $name);
         }
@@ -146,13 +165,16 @@ class DatabaseManager implements ConnectionResolverInterface
         // To get the database connection configuration, we will just pull each of the
         // connection configurations and get the configurations for the given name.
         // If the configuration doesn't exist, we'll throw an exception and bail.
+		// 为了获取数据库连接配置，我们将逐一提取每一条连接配置，并获取具有指定名称的配置。
+		// 如果该配置不存在，我们将抛出异常并终止程序。
         $connections = $this->app['config']['database.connections'];
 
         if (is_null($config = Arr::get($connections, $name))) {
-            throw new InvalidArgumentException("Database [$name] not configured.");
+            throw new InvalidArgumentException("Database [{$name}] not configured.");
         }
 
-        return $config;
+        return (new ConfigurationUrlParser)
+                    ->parseConfiguration($config);
     }
 
     /**
@@ -170,6 +192,8 @@ class DatabaseManager implements ConnectionResolverInterface
         // First we'll set the fetch mode and a few other dependencies of the database
         // connection. This method basically just configures and prepares it to get
         // used by the application. Once we're finished we'll return it back out.
+		// 首先，我们将设置数据库连接的获取模式以及一些其他相关依赖项。
+		// 此方法主要是对数据库连接进行配置和准备，以便供应用程序使用。完成这些操作后，我们将将其返回。
         if ($this->app->bound('events')) {
             $connection->setEventDispatcher($this->app['events']);
         }
@@ -177,9 +201,9 @@ class DatabaseManager implements ConnectionResolverInterface
         // Here we'll set a reconnector callback. This reconnector can be any callable
         // so we will set a Closure to reconnect from this manager with the name of
         // the connection, which will allow us to reconnect from the connections.
-        $connection->setReconnector(function ($connection) {
-            $this->reconnect($connection->getName());
-        });
+		// 这里我们将设置一个重新连接回调函数。这个重新连接器可以是任何可调用的对象，
+		// 因此我们将设置一个闭包来从这个管理器中重新连接，并附上连接的名称，这样就能让我们从这些连接中重新连接了。
+        $connection->setReconnector($this->reconnector);
 
         return $connection;
     }
@@ -189,14 +213,14 @@ class DatabaseManager implements ConnectionResolverInterface
 	 * 为数据库连接实例准备读写模式
      *
      * @param  \Illuminate\Database\Connection  $connection
-     * @param  string  $type
+     * @param  string|null  $type
      * @return \Illuminate\Database\Connection
      */
     protected function setPdoForType(Connection $connection, $type = null)
     {
-        if ($type == 'read') {
+        if ($type === 'read') {
             $connection->setPdo($connection->getReadPdo());
-        } elseif ($type == 'write') {
+        } elseif ($type === 'write') {
             $connection->setReadPdo($connection->getPdo());
         }
 
@@ -207,7 +231,7 @@ class DatabaseManager implements ConnectionResolverInterface
      * Disconnect from the given database and remove from local cache.
 	 * 断开与给定数据库的连接，并从本地缓存中删除。
      *
-     * @param  string  $name
+     * @param  string|null  $name
      * @return void
      */
     public function purge($name = null)
@@ -223,7 +247,7 @@ class DatabaseManager implements ConnectionResolverInterface
      * Disconnect from the given database.
 	 * 断开与给定数据库的连接
      *
-     * @param  string  $name
+     * @param  string|null  $name
      * @return void
      */
     public function disconnect($name = null)
@@ -237,7 +261,7 @@ class DatabaseManager implements ConnectionResolverInterface
      * Reconnect to the given database.
 	 * 重新连接到给定的数据库
      *
-     * @param  string  $name
+     * @param  string|null  $name
      * @return \Illuminate\Database\Connection
      */
     public function reconnect($name = null)
@@ -292,7 +316,7 @@ class DatabaseManager implements ConnectionResolverInterface
 
     /**
      * Get all of the support drivers.
-	 * 找所有的支持司机
+	 * 找所有的支持驱动
      *
      * @return array
      */
@@ -337,6 +361,18 @@ class DatabaseManager implements ConnectionResolverInterface
     public function getConnections()
     {
         return $this->connections;
+    }
+
+    /**
+     * Set the database reconnector callback.
+	 * 设置数据库重接器回调
+     *
+     * @param  callable  $reconnector
+     * @return void
+     */
+    public function setReconnector(callable $reconnector)
+    {
+        $this->reconnector = $reconnector;
     }
 
     /**

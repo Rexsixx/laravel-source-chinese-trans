@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，Caster，Frame Caster
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,7 +24,7 @@ class FrameStub extends EnumStub
     public $keepArgs;
     public $inTraceStub;
 
-    public function __construct(array $frame, $keepArgs = true, $inTraceStub = false)
+    public function __construct(array $frame, bool $keepArgs = true, bool $inTraceStub = false)
     {
         $this->value = $frame;
         $this->keepArgs = $keepArgs;

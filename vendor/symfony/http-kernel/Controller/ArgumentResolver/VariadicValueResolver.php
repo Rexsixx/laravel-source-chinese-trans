@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，控制器，参数解析器，可变值解析器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -25,7 +28,7 @@ final class VariadicValueResolver implements ArgumentValueResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(Request $request, ArgumentMetadata $argument)
+    public function supports(Request $request, ArgumentMetadata $argument): bool
     {
         return $argument->isVariadic() && $request->attributes->has($argument->getName());
     }
@@ -33,7 +36,7 @@ final class VariadicValueResolver implements ArgumentValueResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function resolve(Request $request, ArgumentMetadata $argument)
+    public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         $values = $request->attributes->get($argument->getName());
 
@@ -41,8 +44,6 @@ final class VariadicValueResolver implements ArgumentValueResolverInterface
             throw new \InvalidArgumentException(sprintf('The action argument "...$%1$s" is required to be an array, the request attribute "%1$s" contains a type of "%2$s" instead.', $argument->getName(), \gettype($values)));
         }
 
-        foreach ($values as $value) {
-            yield $value;
-        }
+        yield from $values;
     }
 }

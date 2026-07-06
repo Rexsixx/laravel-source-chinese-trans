@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件，为控制器结果事件得到响应
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,15 +18,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
- * Allows to create a response for the return value of a controller.
- *
- * Call setResponse() to set the response that will be returned for the
- * current request. The propagation of this event is stopped as soon as a
- * response is set.
- *
- * @author Bernhard Schussek <bschussek@gmail.com>
+ * @deprecated since Symfony 4.3, use ViewEvent instead
  */
-class GetResponseForControllerResultEvent extends GetResponseEvent
+class GetResponseForControllerResultEvent extends RequestEvent
 {
     /**
      * The return value of the controller.
@@ -32,7 +29,7 @@ class GetResponseForControllerResultEvent extends GetResponseEvent
      */
     private $controllerResult;
 
-    public function __construct(HttpKernelInterface $kernel, Request $request, $requestType, $controllerResult)
+    public function __construct(HttpKernelInterface $kernel, Request $request, int $requestType, $controllerResult)
     {
         parent::__construct($kernel, $request, $requestType);
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，Http缓存，代理接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ interface SurrogateInterface
 {
     /**
      * Returns surrogate name.
+	 * 返回代理名称
      *
      * @return string
      */
@@ -78,10 +82,9 @@ interface SurrogateInterface
     /**
      * Handles a Surrogate from the cache.
      *
-     * @param HttpCache $cache        An HttpCache instance
-     * @param string    $uri          The main URI
-     * @param string    $alt          An alternative URI
-     * @param bool      $ignoreErrors Whether to ignore errors or not
+     * @param string $uri          The main URI
+     * @param string $alt          An alternative URI
+     * @param bool   $ignoreErrors Whether to ignore errors or not
      *
      * @return string
      *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * 深拷贝，匹配程序，Matcher
+ */
 
 namespace DeepCopy\Matcher;
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译器，问题，编译循环
+ * Illuminate，视图，编译，问题，编译循环
  */
 
 namespace Illuminate\View\Compilers\Concerns;
@@ -59,7 +59,7 @@ trait CompilesLoops
 
     /**
      * Compile the end-for-else statements into valid PHP.
-	 * end-for-else语句编译成有效的PHP
+	 * 将end-for-else语句编译成有效的PHP
      *
      * @return string
      */

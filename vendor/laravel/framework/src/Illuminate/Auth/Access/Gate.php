@@ -5,6 +5,9 @@
 
 namespace Illuminate\Auth\Access;
 
+use Exception;
+use ReflectionClass;
+use ReflectionFunction;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
@@ -64,6 +67,22 @@ class Gate implements GateContract
     protected $afterCallbacks = [];
 
     /**
+     * All of the defined abilities using class@method notation.
+	 * 所有已定义的能力都使用class@method符号
+     *
+     * @var array
+     */
+    protected $stringCallbacks = [];
+
+    /**
+     * The callback to be used to guess policy names.
+	 * 用于猜测策略名称的回调
+     *
+     * @var callable|null
+     */
+    protected $guessPolicyNamesUsingCallback;
+
+    /**
      * Create a new gate instance.
 	 * 创建一个新的门实例
      *
@@ -73,10 +92,12 @@ class Gate implements GateContract
      * @param  array  $policies
      * @param  array  $beforeCallbacks
      * @param  array  $afterCallbacks
+     * @param  callable|null  $guessPolicyNamesUsingCallback
      * @return void
      */
     public function __construct(Container $container, callable $userResolver, array $abilities = [],
-                                array $policies = [], array $beforeCallbacks = [], array $afterCallbacks = [])
+                                array $policies = [], array $beforeCallbacks = [], array $afterCallbacks = [],
+                                callable $guessPolicyNamesUsingCallback = null)
     {
         $this->policies = $policies;
         $this->container = $container;
@@ -84,6 +105,7 @@ class Gate implements GateContract
         $this->userResolver = $userResolver;
         $this->afterCallbacks = $afterCallbacks;
         $this->beforeCallbacks = $beforeCallbacks;
+        $this->guessPolicyNamesUsingCallback = $guessPolicyNamesUsingCallback;
     }
 
     /**
@@ -120,7 +142,9 @@ class Gate implements GateContract
     {
         if (is_callable($callback)) {
             $this->abilities[$ability] = $callback;
-        } elseif (is_string($callback) && Str::contains($callback, '@')) {
+        } elseif (is_string($callback)) {
+            $this->stringCallbacks[$ability] = $callback;
+
             $this->abilities[$ability] = $this->buildAbilityCallback($ability, $callback);
         } else {
             throw new InvalidArgumentException("Callback must be a callable or a 'Class@method' string.");
@@ -135,16 +159,17 @@ class Gate implements GateContract
      *
      * @param  string  $name
      * @param  string  $class
-     * @param  array   $abilities
+     * @param  array|null   $abilities
      * @return $this
      */
     public function resource($name, $class, array $abilities = null)
     {
         $abilities = $abilities ?: [
-            'view'   => 'view',
-            'create' => 'create',
-            'update' => 'update',
-            'delete' => 'delete',
+            'viewAny' => 'viewAny',
+            'view'    => 'view',
+            'create'  => 'create',
+            'update'  => 'update',
+            'delete'  => 'delete',
         ];
 
         foreach ($abilities as $ability => $method) {
@@ -165,7 +190,11 @@ class Gate implements GateContract
     protected function buildAbilityCallback($ability, $callback)
     {
         return function () use ($ability, $callback) {
-            list($class, $method) = Str::parseCallback($callback);
+            if (Str::contains($callback, '@')) {
+                [$class, $method] = Str::parseCallback($callback);
+            } else {
+                $class = $callback;
+            }
 
             $policy = $this->resolvePolicy($class);
 
@@ -181,7 +210,9 @@ class Gate implements GateContract
                 return $result;
             }
 
-            return $policy->{$method}(...func_get_args());
+            return isset($method)
+                    ? $policy->{$method}(...func_get_args())
+                    : $policy(...func_get_args());
         };
     }
 
@@ -216,7 +247,7 @@ class Gate implements GateContract
 
     /**
      * Register a callback to run after all Gate checks.
-	 * 注册一个回调，在所有Gate检查之后运行。
+	 * 注册一个回调，在所有Gate检查之后运行
      *
      * @param  callable  $callback
      * @return $this
@@ -289,6 +320,19 @@ class Gate implements GateContract
     }
 
     /**
+     * Determine if all of the given abilities should be denied for the current user.
+	 * 确定是否应该拒绝当前用户的所有给定能力
+     *
+     * @param  iterable|string  $abilities
+     * @param  array|mixed  $arguments
+     * @return bool
+     */
+    public function none($abilities, $arguments = [])
+    {
+        return ! $this->any($abilities, $arguments);
+    }
+
+    /**
      * Determine if the given ability should be granted for the current user.
 	 * 确定是否应该为当前用户授予给定的能力
      *
@@ -317,17 +361,16 @@ class Gate implements GateContract
      * @param  array|mixed  $arguments
      * @return mixed
      */
-    protected function raw($ability, $arguments = [])
+    public function raw($ability, $arguments = [])
     {
-        if (! $user = $this->resolveUser()) {
-            return false;
-        }
-
         $arguments = Arr::wrap($arguments);
+
+        $user = $this->resolveUser();
 
         // First we will call the "before" callbacks for the Gate. If any of these give
         // back a non-null response, we will immediately return that result in order
         // to let the developers override all checks for some authorization cases.
+		// 首先，我们将调用Gate的“before”回调。
         $result = $this->callBeforeCallbacks(
             $user, $ability, $arguments
         );
@@ -339,18 +382,101 @@ class Gate implements GateContract
         // After calling the authorization callback, we will call the "after" callbacks
         // that are registered with the Gate, which allows a developer to do logging
         // if that is required for this application. Then we'll return the result.
-        $this->callAfterCallbacks(
+		// 在调用授权回调之后，我们将调用与闸门关联的“之后”回调函数，这样开发人员就可以根据应用程序的需求进行日志记录。然后，我们将返回结果。
+        return $this->callAfterCallbacks(
             $user, $ability, $arguments, $result
         );
+    }
 
-        return $result;
+    /**
+     * Determine whether the callback/method can be called with the given user.
+	 * 确定是否可以用给定的用户调用回调/方法
+     *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable|null  $user
+     * @param  \Closure|string|array  $class
+     * @param  string|null $method
+     * @return bool
+     */
+    protected function canBeCalledWithUser($user, $class, $method = null)
+    {
+        if (! is_null($user)) {
+            return true;
+        }
+
+        if (! is_null($method)) {
+            return $this->methodAllowsGuests($class, $method);
+        }
+
+        if (is_array($class)) {
+            $className = is_string($class[0]) ? $class[0] : get_class($class[0]);
+
+            return $this->methodAllowsGuests($className, $class[1]);
+        }
+
+        return $this->callbackAllowsGuests($class);
+    }
+
+    /**
+     * Determine if the given class method allows guests.
+	 * 确定给定的类方法是否允许来宾
+     *
+     * @param  string  $class
+     * @param  string  $method
+     * @return bool
+     */
+    protected function methodAllowsGuests($class, $method)
+    {
+        try {
+            $reflection = new ReflectionClass($class);
+
+            $method = $reflection->getMethod($method);
+        } catch (Exception $e) {
+            return false;
+        }
+
+        if ($method) {
+            $parameters = $method->getParameters();
+
+            return isset($parameters[0]) && $this->parameterAllowsGuests($parameters[0]);
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine if the callback allows guests.
+	 * 确定回调是否允许来宾
+     *
+     * @param  callable  $callback
+     * @return bool
+     *
+     * @throws \ReflectionException
+     */
+    protected function callbackAllowsGuests($callback)
+    {
+        $parameters = (new ReflectionFunction($callback))->getParameters();
+
+        return isset($parameters[0]) && $this->parameterAllowsGuests($parameters[0]);
+    }
+
+    /**
+     * Determine if the given parameter allows guests.
+	 * 确定给定参数是否允许来宾
+     *
+     * @param  \ReflectionParameter  $parameter
+     * @return bool
+     */
+    protected function parameterAllowsGuests($parameter)
+    {
+        return ($parameter->getClass() && $parameter->allowsNull()) ||
+               ($parameter->isDefaultValueAvailable() && is_null($parameter->getDefaultValue()));
     }
 
     /**
      * Resolve and call the appropriate authorization callback.
 	 * 解析并调用适当的授权回调
      *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @param  \Illuminate\Contracts\Auth\Authenticatable|null  $user
      * @param  string  $ability
      * @param  array  $arguments
      * @return bool
@@ -366,17 +492,19 @@ class Gate implements GateContract
      * Call all of the before callbacks and return if a result is given.
 	 * 调用所有的before回调函数，并在给出结果时返回。
      *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @param  \Illuminate\Contracts\Auth\Authenticatable|null  $user
      * @param  string  $ability
      * @param  array  $arguments
      * @return bool|null
      */
     protected function callBeforeCallbacks($user, $ability, array $arguments)
     {
-        $arguments = array_merge([$user, $ability], [$arguments]);
-
         foreach ($this->beforeCallbacks as $before) {
-            if (! is_null($result = $before(...$arguments))) {
+            if (! $this->canBeCalledWithUser($user, $before)) {
+                continue;
+            }
+
+            if (! is_null($result = $before($user, $ability, $arguments))) {
                 return $result;
             }
         }
@@ -390,22 +518,28 @@ class Gate implements GateContract
      * @param  string  $ability
      * @param  array  $arguments
      * @param  bool  $result
-     * @return void
+     * @return bool|null
      */
     protected function callAfterCallbacks($user, $ability, array $arguments, $result)
     {
-        $arguments = array_merge([$user, $ability, $result], [$arguments]);
-
         foreach ($this->afterCallbacks as $after) {
-            $after(...$arguments);
+            if (! $this->canBeCalledWithUser($user, $after)) {
+                continue;
+            }
+
+            $afterResult = $after($user, $ability, $result, $arguments);
+
+            $result = $result ?? $afterResult;
         }
+
+        return $result;
     }
 
     /**
      * Resolve the callable for the given ability and arguments.
 	 * 解析给定能力和参数的可调用对象
      *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @param  \Illuminate\Contracts\Auth\Authenticatable|null  $user
      * @param  string  $ability
      * @param  array  $arguments
      * @return callable
@@ -418,12 +552,20 @@ class Gate implements GateContract
             return $callback;
         }
 
-        if (isset($this->abilities[$ability])) {
+        if (isset($this->stringCallbacks[$ability])) {
+            [$class, $method] = Str::parseCallback($this->stringCallbacks[$ability]);
+
+            if ($this->canBeCalledWithUser($user, $class, $method ?: '__invoke')) {
+                return $this->abilities[$ability];
+            }
+        }
+
+        if (isset($this->abilities[$ability]) &&
+            $this->canBeCalledWithUser($user, $this->abilities[$ability])) {
             return $this->abilities[$ability];
         }
 
         return function () {
-            return false;
         };
     }
 
@@ -448,6 +590,12 @@ class Gate implements GateContract
             return $this->resolvePolicy($this->policies[$class]);
         }
 
+        foreach ($this->guessPolicyName($class) as $guessedPolicy) {
+            if (class_exists($guessedPolicy)) {
+                return $this->resolvePolicy($guessedPolicy);
+            }
+        }
+
         foreach ($this->policies as $expected => $policy) {
             if (is_subclass_of($class, $expected)) {
                 return $this->resolvePolicy($policy);
@@ -456,11 +604,45 @@ class Gate implements GateContract
     }
 
     /**
+     * Guess the policy name for the given class.
+	 * 猜测给定类的策略名称
+     *
+     * @param  string  $class
+     * @return array
+     */
+    protected function guessPolicyName($class)
+    {
+        if ($this->guessPolicyNamesUsingCallback) {
+            return Arr::wrap(call_user_func($this->guessPolicyNamesUsingCallback, $class));
+        }
+
+        $classDirname = str_replace('/', '\\', dirname(str_replace('\\', '/', $class)));
+
+        return [$classDirname.'\\Policies\\'.class_basename($class).'Policy'];
+    }
+
+    /**
+     * Specify a callback to be used to guess policy names.
+	 * 指定一个用于猜测策略名称的回调
+     *
+     * @param  callable  $callback
+     * @return $this
+     */
+    public function guessPolicyNamesUsing(callable $callback)
+    {
+        $this->guessPolicyNamesUsingCallback = $callback;
+
+        return $this;
+    }
+
+    /**
      * Build a policy class instance of the given type.
 	 * 构建给定类型的策略类实例
      *
      * @param  object|string  $class
      * @return mixed
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function resolvePolicy($class)
     {
@@ -487,6 +669,7 @@ class Gate implements GateContract
             // This callback will be responsible for calling the policy's before method and
             // running this policy method if necessary. This is used to when objects are
             // mapped to policy objects in the user's configurations or on this class.
+			// 此回调函数将负责调用策略的“前置”方法，并在必要时运行此策略方法。
             $result = $this->callPolicyBefore(
                 $policy, $user, $ability, $arguments
             );
@@ -494,22 +677,14 @@ class Gate implements GateContract
             // When we receive a non-null result from this before method, we will return it
             // as the "final" results. This will allow developers to override the checks
             // in this policy to return the result for all rules defined in the class.
+			// 当此“前向”方法返回非空结果时，我们将将其作为“最终”结果予以返回。
             if (! is_null($result)) {
                 return $result;
             }
 
-            $ability = $this->formatAbilityToMethod($ability);
+            $method = $this->formatAbilityToMethod($ability);
 
-            // If this first argument is a string, that means they are passing a class name
-            // to the policy. We will remove the first argument from this argument array
-            // because this policy already knows what type of models it can authorize.
-            if (isset($arguments[0]) && is_string($arguments[0])) {
-                array_shift($arguments);
-            }
-
-            return is_callable([$policy, $ability])
-                        ? $policy->{$ability}($user, ...$arguments)
-                        : false;
+            return $this->callPolicyMethod($policy, $method, $user, $arguments);
         };
     }
 
@@ -525,8 +700,42 @@ class Gate implements GateContract
      */
     protected function callPolicyBefore($policy, $user, $ability, $arguments)
     {
-        if (method_exists($policy, 'before')) {
+        if (! method_exists($policy, 'before')) {
+            return;
+        }
+
+        if ($this->canBeCalledWithUser($user, $policy, 'before')) {
             return $policy->before($user, $ability, ...$arguments);
+        }
+    }
+
+    /**
+     * Call the appropriate method on the given policy.
+	 * 在给定策略上调用适当的方法
+     *
+     * @param  mixed  $policy
+     * @param  string  $method
+     * @param  \Illuminate\Contracts\Auth\Authenticatable|null  $user
+     * @param  array  $arguments
+     * @return mixed
+     */
+    protected function callPolicyMethod($policy, $method, $user, array $arguments)
+    {
+        // If this first argument is a string, that means they are passing a class name
+        // to the policy. We will remove the first argument from this argument array
+        // because this policy already knows what type of models it can authorize.
+		// 如果这个第一个参数是一个字符串，那就意味着他们正在向策略传递一个类名。
+		// 我们将从这个参数数组中删除第一个参数,因为该策略已经知道它可以授权的模型类型。
+        if (isset($arguments[0]) && is_string($arguments[0])) {
+            array_shift($arguments);
+        }
+
+        if (! is_callable([$policy, $method])) {
+            return;
+        }
+
+        if ($this->canBeCalledWithUser($user, $policy, $method)) {
+            return $policy->{$method}($user, ...$arguments);
         }
     }
 
@@ -557,7 +766,8 @@ class Gate implements GateContract
 
         return new static(
             $this->container, $callback, $this->abilities,
-            $this->policies, $this->beforeCallbacks, $this->afterCallbacks
+            $this->policies, $this->beforeCallbacks, $this->afterCallbacks,
+            $this->guessPolicyNamesUsingCallback
         );
     }
 

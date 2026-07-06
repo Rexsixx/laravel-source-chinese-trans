@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，倍频器，类补丁，类补丁接口
+ */
 
 /*
  * This file is part of the Prophecy.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件监听器，代理监听器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,8 +22,11 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * SurrogateListener adds a Surrogate-Control HTTP header when the Response needs to be parsed for Surrogates.
+ * 当响应需要解析为Surrogates时,代流式监听器添加了一个超向控制的HTTP头。
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @final since Symfony 4.3
  */
 class SurrogateListener implements EventSubscriberInterface
 {
@@ -33,6 +39,7 @@ class SurrogateListener implements EventSubscriberInterface
 
     /**
      * Filters the Response.
+	 * 过滤响应
      */
     public function onKernelResponse(FilterResponseEvent $event)
     {

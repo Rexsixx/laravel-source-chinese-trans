@@ -9,7 +9,9 @@ use Illuminate\Contracts\Cache\Store;
 
 class TaggedCache extends Repository
 {
-    use RetrievesMultipleKeys;
+    use RetrievesMultipleKeys {
+        putMany as putManyAlias;
+    }
 
     /**
      * The tag set instance.
@@ -35,11 +37,28 @@ class TaggedCache extends Repository
     }
 
     /**
+     * Store multiple items in the cache for a given number of seconds.
+	 * 在给定的秒数内将多个项存储在缓存中
+     *
+     * @param  array  $values
+     * @param  int|null  $ttl
+     * @return bool
+     */
+    public function putMany(array $values, $ttl = null)
+    {
+        if ($ttl === null) {
+            return $this->putManyForever($values);
+        }
+
+        return $this->putManyAlias($values, $ttl);
+    }
+
+    /**
      * Increment the value of an item in the cache.
-	 * 在缓存中增加一个项目的值
+	 * 增加缓存中项的值
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return void
      */
     public function increment($key, $value = 1)
@@ -48,11 +67,11 @@ class TaggedCache extends Repository
     }
 
     /**
-     * Increment the value of an item in the cache.
-	 * 增加缓存中项的值
+     * Decrement the value of an item in the cache.
+	 * 递减缓存中项的值。
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return void
      */
     public function decrement($key, $value = 1)
@@ -64,11 +83,13 @@ class TaggedCache extends Repository
      * Remove all items from the cache.
 	 * 从缓存中删除所有项
      *
-     * @return void
+     * @return bool
      */
     public function flush()
     {
         $this->tags->reset();
+
+        return true;
     }
 
     /**
@@ -81,7 +102,7 @@ class TaggedCache extends Repository
 
     /**
      * Get a fully qualified key for a tagged item.
-	 * 在缓存中增加一个项目的值
+	 * 获取标记项的完全限定键
      *
      * @param  string  $key
      * @return string
@@ -101,5 +122,16 @@ class TaggedCache extends Repository
     protected function event($event)
     {
         parent::event($event->setTags($this->tags->getNames()));
+    }
+
+    /**
+     * Get the tag set instance.
+	 * 获取标记集实例
+     *
+     * @return \Illuminate\Cache\TagSet
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 }

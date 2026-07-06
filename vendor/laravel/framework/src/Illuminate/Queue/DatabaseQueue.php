@@ -5,7 +5,6 @@
 
 namespace Illuminate\Queue;
 
-use Throwable;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Connection;
 use Illuminate\Queue\Jobs\DatabaseJob;
@@ -68,7 +67,7 @@ class DatabaseQueue extends Queue implements QueueContract
      * Get the size of the queue.
 	 * 获取队列的大小
      *
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return int
      */
     public function size($queue = null)
@@ -84,12 +83,14 @@ class DatabaseQueue extends Queue implements QueueContract
      *
      * @param  string  $job
      * @param  mixed   $data
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return mixed
      */
     public function push($job, $data = '', $queue = null)
     {
-        return $this->pushToDatabase($queue, $this->createPayload($job, $data));
+        return $this->pushToDatabase($queue, $this->createPayload(
+            $job, $this->getQueue($queue), $data
+        ));
     }
 
     /**
@@ -97,7 +98,7 @@ class DatabaseQueue extends Queue implements QueueContract
 	 * 将原始有效负载推入队列
      *
      * @param  string  $payload
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @param  array   $options
      * @return mixed
      */
@@ -113,12 +114,14 @@ class DatabaseQueue extends Queue implements QueueContract
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job
      * @param  mixed   $data
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return void
      */
     public function later($delay, $job, $data = '', $queue = null)
     {
-        return $this->pushToDatabase($queue, $this->createPayload($job, $data), $delay);
+        return $this->pushToDatabase($queue, $this->createPayload(
+            $job, $this->getQueue($queue), $data
+        ), $delay);
     }
 
     /**
@@ -127,7 +130,7 @@ class DatabaseQueue extends Queue implements QueueContract
      *
      * @param  array   $jobs
      * @param  mixed   $data
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return mixed
      */
     public function bulk($jobs, $data = '', $queue = null)
@@ -138,7 +141,7 @@ class DatabaseQueue extends Queue implements QueueContract
 
         return $this->database->table($this->table)->insert(collect((array) $jobs)->map(
             function ($job) use ($queue, $data, $availableAt) {
-                return $this->buildDatabaseRecord($queue, $this->createPayload($job, $data), $availableAt);
+                return $this->buildDatabaseRecord($queue, $this->createPayload($job, $this->getQueue($queue), $data), $availableAt);
             }
         )->all());
     }
@@ -200,27 +203,20 @@ class DatabaseQueue extends Queue implements QueueContract
      * Pop the next job off of the queue.
 	 * 将下一个作业从队列中弹出
      *
-     * @param  string  $queue
+     * @param  string|null  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
+     *
      * @throws \Exception|\Throwable
      */
     public function pop($queue = null)
     {
         $queue = $this->getQueue($queue);
 
-        try {
-            $this->database->beginTransaction();
-
+        return $this->database->transaction(function () use ($queue) {
             if ($job = $this->getNextAvailableJob($queue)) {
                 return $this->marshalJob($queue, $job);
             }
-
-            $this->database->commit();
-        } catch (Throwable $e) {
-            $this->database->rollBack();
-
-            throw $e;
-        }
+        });
     }
 
     /**
@@ -288,8 +284,6 @@ class DatabaseQueue extends Queue implements QueueContract
     {
         $job = $this->markJobAsReserved($job);
 
-        $this->database->commit();
-
         return new DatabaseJob(
             $this->container, $this, $job, $this->connectionName, $queue
         );
@@ -319,6 +313,7 @@ class DatabaseQueue extends Queue implements QueueContract
      * @param  string  $queue
      * @param  string  $id
      * @return void
+     *
      * @throws \Exception|\Throwable
      */
     public function deleteReserved($queue, $id)

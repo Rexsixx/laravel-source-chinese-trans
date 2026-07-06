@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，异常，Exception
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -17,10 +20,4 @@ namespace Prophecy\Exception;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Exception
-{
-    /**
-     * @return string
-     */
-    public function getMessage();
-}
+interface Exception extends \Throwable {}

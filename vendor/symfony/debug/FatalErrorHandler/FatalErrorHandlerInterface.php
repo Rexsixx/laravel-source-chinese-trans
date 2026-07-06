@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，致命错误处理程序，致命错误处理程序接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,18 +16,21 @@ namespace Symfony\Component\Debug\FatalErrorHandler;
 
 use Symfony\Component\Debug\Exception\FatalErrorException;
 
+@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.4, use "%s" instead.', FatalErrorHandlerInterface::class, \Symfony\Component\ErrorHandler\FatalErrorHandler\FatalErrorHandlerInterface::class), \E_USER_DEPRECATED);
+
 /**
  * Attempts to convert fatal errors to exceptions.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @deprecated since Symfony 4.4, use Symfony\Component\ErrorHandler\FatalErrorHandler\FatalErrorHandlerInterface instead.
  */
 interface FatalErrorHandlerInterface
 {
     /**
      * Attempts to convert an error into an exception.
      *
-     * @param array               $error     An array as returned by error_get_last()
-     * @param FatalErrorException $exception A FatalErrorException instance
+     * @param array $error An array as returned by error_get_last()
      *
      * @return FatalErrorException|null A FatalErrorException instance if the class is able to convert the error, null otherwise
      */

@@ -18,10 +18,10 @@ interface Store
 
     /**
      * Retrieve multiple items from the cache by key.
-	 * 按键从缓存中检索多个项
+	 * 按键从缓存中检索多个项。
      *
      * Items not found in the cache will have a null value.
-	 * 在缓存中找不到的项将具有空值
+	 * 在缓存中找不到的项将具有空值。
      *
      * @param  array  $keys
      * @return array
@@ -29,32 +29,32 @@ interface Store
     public function many(array $keys);
 
     /**
-     * Store an item in the cache for a given number of minutes.
-	 * 将项存储在缓存中给定的分钟数
+     * Store an item in the cache for a given number of seconds.
+	 * 将项存储在缓存中给定的秒数
      *
      * @param  string  $key
-     * @param  mixed   $value
-     * @param  float|int  $minutes
-     * @return void
+     * @param  mixed  $value
+     * @param  int  $seconds
+     * @return bool
      */
-    public function put($key, $value, $minutes);
+    public function put($key, $value, $seconds);
 
     /**
-     * Store multiple items in the cache for a given number of minutes.
-	 * 在给定的分钟数内将多个项存储在缓存中
+     * Store multiple items in the cache for a given number of seconds.
+	 * 在给定的秒数内将多个项存储在缓存中
      *
      * @param  array  $values
-     * @param  float|int  $minutes
-     * @return void
+     * @param  int  $seconds
+     * @return bool
      */
-    public function putMany(array $values, $minutes);
+    public function putMany(array $values, $seconds);
 
     /**
      * Increment the value of an item in the cache.
 	 * 增加缓存中项的值
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return int|bool
      */
     public function increment($key, $value = 1);
@@ -64,7 +64,7 @@ interface Store
 	 * 递减缓存中项的值
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return int|bool
      */
     public function decrement($key, $value = 1);
@@ -74,8 +74,8 @@ interface Store
 	 * 将项无限期地存储在缓存中
      *
      * @param  string  $key
-     * @param  mixed   $value
-     * @return void
+     * @param  mixed  $value
+     * @return bool
      */
     public function forever($key, $value);
 

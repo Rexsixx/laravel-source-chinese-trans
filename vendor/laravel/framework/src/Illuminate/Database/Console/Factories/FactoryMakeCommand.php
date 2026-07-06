@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，控制台，工厂，工厂制造指令 make:factory
+ * Illuminate，数据库，控制台，工厂，工厂制造指令
  */
 
 namespace Illuminate\Database\Console\Factories;
@@ -20,7 +20,7 @@ class FactoryMakeCommand extends GeneratorCommand
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -54,12 +54,22 @@ class FactoryMakeCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $model = $this->option('model')
+        $namespaceModel = $this->option('model')
                         ? $this->qualifyClass($this->option('model'))
-                        : 'Model';
+                        : trim($this->rootNamespace(), '\\').'\\Model';
+
+        $model = class_basename($namespaceModel);
 
         return str_replace(
-            'DummyModel', $model, parent::buildClass($name)
+            [
+                'NamespacedDummyModel',
+                'DummyModel',
+            ],
+            [
+                $namespaceModel,
+                $model,
+            ],
+            parent::buildClass($name)
         );
     }
 

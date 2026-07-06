@@ -5,7 +5,7 @@
 
 namespace Illuminate\Database\Eloquent\Concerns;
 
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 
 trait HasTimestamps
 {
@@ -48,13 +48,15 @@ trait HasTimestamps
             $this->setUpdatedAt($time);
         }
 
-        if (! $this->exists && ! $this->isDirty(static::CREATED_AT)) {
+        if (! $this->exists && ! is_null(static::CREATED_AT) &&
+            ! $this->isDirty(static::CREATED_AT)) {
             $this->setCreatedAt($time);
         }
     }
 
     /**
      * Set the value of the "created at" attribute.
+	 * 设置“created at”属性的值
      *
      * @param  mixed  $value
      * @return $this
@@ -68,6 +70,7 @@ trait HasTimestamps
 
     /**
      * Set the value of the "updated at" attribute.
+	 * 设置“更新时间”属性的值
      *
      * @param  mixed  $value
      * @return $this
@@ -87,7 +90,7 @@ trait HasTimestamps
      */
     public function freshTimestamp()
     {
-        return new Carbon;
+        return Date::now();
     }
 
     /**

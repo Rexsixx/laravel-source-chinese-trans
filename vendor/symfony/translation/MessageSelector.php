@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，消息选择器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -11,12 +14,13 @@
 
 namespace Symfony\Component\Translation;
 
-@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.2, use IdentityTranslator instead.', MessageSelector::class), E_USER_DEPRECATED);
+@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.2, use IdentityTranslator instead.', MessageSelector::class), \E_USER_DEPRECATED);
 
 use Symfony\Component\Translation\Exception\InvalidArgumentException;
 
 /**
  * MessageSelector.
+ * 消息选择器
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Bernhard Schussek <bschussek@gmail.com>
@@ -30,6 +34,7 @@ class MessageSelector
      * pipe (|), this method returns the correct portion of the message based
      * on the given number, locale and the pluralization rules in the message
      * itself.
+	 * 给定一个由竖线（|）分隔的、具有不同复数形式的翻译消息，此方法将根据指定的数字、区域设置以及消息本身中的复数规则，返回正确的消息部分。
      *
      * The message supports two different types of pluralization rules:
      *
@@ -75,6 +80,7 @@ class MessageSelector
         }
 
         // try to match an explicit rule, then fallback to the standard ones
+		// 尝试匹配显式规则，然后退回到标准规则。
         foreach ($explicitRules as $interval => $m) {
             if (Interval::test($number, $interval)) {
                 return $m;

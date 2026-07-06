@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，问题，管理栈
+ * Illuminate，视图，问题，管理堆栈
  */
 
 namespace Illuminate\View\Concerns;
@@ -11,7 +11,7 @@ trait ManagesStacks
 {
     /**
      * All of the finished, captured push sections.
-	 * 所有完成的，捕获的推段。
+	 * 所有完成的，捕获的片段。
      *
      * @var array
      */
@@ -57,6 +57,7 @@ trait ManagesStacks
 	 * 停止向推送部分注入内容
      *
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     public function stopPush()
@@ -115,6 +116,7 @@ trait ManagesStacks
 	 * 停止在推送部分添加内容
      *
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     public function stopPrepend()

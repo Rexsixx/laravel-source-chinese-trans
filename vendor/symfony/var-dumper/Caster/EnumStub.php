@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，Caster，Enum存根
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -22,7 +25,7 @@ class EnumStub extends Stub
 {
     public $dumpKeys = true;
 
-    public function __construct(array $values, $dumpKeys = true)
+    public function __construct(array $values, bool $dumpKeys = true)
     {
         $this->value = $values;
         $this->dumpKeys = $dumpKeys;

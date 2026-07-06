@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，采集，大小是可穿越的
+ */
+
 namespace Hamcrest\Collection;
 
 /*

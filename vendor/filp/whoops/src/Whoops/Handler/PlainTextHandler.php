@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，处理者，纯文本处理程序
+ */
+
+/**
 * Whoops - php errors for cool kids
 * @author Filipe Dobreira <http://github.com/filp>
 * Plaintext handler for command line and logs.
@@ -16,6 +20,7 @@ use Whoops\Exception\Frame;
 * Handler outputing plaintext error messages. Can be used
 * directly, or will be instantiated automagically by Whoops\Run
 * if passed to Run::pushHandler
+* 输出明文错误消息的处理程序。
 */
 class PlainTextHandler extends Handler
 {

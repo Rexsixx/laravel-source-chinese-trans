@@ -1,4 +1,8 @@
 <?php
+/**
+ * 随机
+ */
+
 $dist = dirname(__DIR__).'/dist';
 if (!is_dir($dist)) {
     mkdir($dist, 0755);

@@ -1,10 +1,13 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，警告，CFWS Near At
+ */
 
 namespace Egulias\EmailValidator\Warning;
 
 class CFWSNearAt extends Warning
 {
-    public const CODE = 49;
+    const CODE = 49;
 
     public function __construct()
     {

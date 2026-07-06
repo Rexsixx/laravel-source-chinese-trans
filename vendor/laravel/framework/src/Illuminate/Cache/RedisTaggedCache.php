@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Redis 标记缓存
+ * Illuminate，缓存，Redis 已标记缓存
  */
 
 namespace Illuminate\Cache;
@@ -29,14 +29,48 @@ class RedisTaggedCache extends TaggedCache
      *
      * @param  string  $key
      * @param  mixed   $value
-     * @param  \DateTime|float|int  $minutes
+     * @param  \DateTimeInterface|\DateInterval|int|null  $ttl
+     * @return bool
+     */
+    public function put($key, $value, $ttl = null)
+    {
+        if ($ttl === null) {
+            return $this->forever($key, $value);
+        }
+
+        $this->pushStandardKeys($this->tags->getNamespace(), $key);
+
+        return parent::put($key, $value, $ttl);
+    }
+
+    /**
+     * Increment the value of an item in the cache.
+	 * 增加缓存中项的值
+     *
+     * @param  string  $key
+     * @param  mixed  $value
      * @return void
      */
-    public function put($key, $value, $minutes = null)
+    public function increment($key, $value = 1)
     {
         $this->pushStandardKeys($this->tags->getNamespace(), $key);
 
-        parent::put($key, $value, $minutes);
+        parent::increment($key, $value);
+    }
+
+    /**
+     * Decrement the value of an item in the cache.
+	 * 递减缓存中项的值
+     *
+     * @param  string  $key
+     * @param  mixed  $value
+     * @return void
+     */
+    public function decrement($key, $value = 1)
+    {
+        $this->pushStandardKeys($this->tags->getNamespace(), $key);
+
+        parent::decrement($key, $value);
     }
 
     /**
@@ -44,28 +78,28 @@ class RedisTaggedCache extends TaggedCache
 	 * 将项无限期地存储在缓存中
      *
      * @param  string  $key
-     * @param  mixed   $value
-     * @return void
+     * @param  mixed  $value
+     * @return bool
      */
     public function forever($key, $value)
     {
         $this->pushForeverKeys($this->tags->getNamespace(), $key);
 
-        parent::forever($key, $value);
+        return parent::forever($key, $value);
     }
 
     /**
      * Remove all items from the cache.
 	 * 从缓存中删除所有项
      *
-     * @return void
+     * @return bool
      */
     public function flush()
     {
         $this->deleteForeverKeys();
         $this->deleteStandardKeys();
 
-        parent::flush();
+        return parent::flush();
     }
 
     /**

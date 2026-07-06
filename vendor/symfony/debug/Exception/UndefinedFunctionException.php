@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，异常，未定义的方法异常
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -11,14 +14,18 @@
 
 namespace Symfony\Component\Debug\Exception;
 
+@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.4, use "%s" instead.', UndefinedFunctionException::class, \Symfony\Component\ErrorHandler\Error\UndefinedFunctionError::class), \E_USER_DEPRECATED);
+
 /**
  * Undefined Function Exception.
  *
  * @author Konstanton Myakshin <koc-dp@yandex.ru>
+ *
+ * @deprecated since Symfony 4.4, use Symfony\Component\ErrorHandler\Error\UndefinedFunctionError instead.
  */
 class UndefinedFunctionException extends FatalErrorException
 {
-    public function __construct($message, \ErrorException $previous)
+    public function __construct(string $message, \ErrorException $previous)
     {
         parent::__construct(
             $message,

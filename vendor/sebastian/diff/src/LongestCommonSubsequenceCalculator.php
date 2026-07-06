@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，差速器，最长公共子序列计算器
+ */
+
 /*
  * This file is part of sebastian/diff.
  *
@@ -14,6 +19,7 @@ interface LongestCommonSubsequenceCalculator
 {
     /**
      * Calculates the longest common subsequence of two arrays.
+	 * 计算两个数组的最长公共子序列
      *
      * @param array $from
      * @param array $to

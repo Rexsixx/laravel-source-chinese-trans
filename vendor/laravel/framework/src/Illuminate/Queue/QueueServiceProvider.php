@@ -5,6 +5,8 @@
 
 namespace Illuminate\Queue;
 
+use Illuminate\Support\Str;
+use Opis\Closure\SerializableClosure;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Queue\Connectors\SqsConnector;
 use Illuminate\Queue\Connectors\NullConnector;
@@ -13,19 +15,12 @@ use Illuminate\Queue\Connectors\RedisConnector;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Queue\Connectors\DatabaseConnector;
 use Illuminate\Queue\Failed\NullFailedJobProvider;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Queue\Connectors\BeanstalkdConnector;
 use Illuminate\Queue\Failed\DatabaseFailedJobProvider;
 
-class QueueServiceProvider extends ServiceProvider
+class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * Indicates if loading of the provider is deferred.
-	 * 指示是否延迟加载提供程序
-     *
-     * @var bool
-     */
-    protected $defer = true;
-
     /**
      * Register the service provider.
 	 * 注册服务提供者
@@ -35,14 +30,11 @@ class QueueServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerManager();
-
         $this->registerConnection();
-
         $this->registerWorker();
-
         $this->registerListener();
-
         $this->registerFailedJobServices();
+        $this->registerOpisSecurityKey();
     }
 
     /**
@@ -57,6 +49,8 @@ class QueueServiceProvider extends ServiceProvider
             // Once we have an instance of the queue manager, we will register the various
             // resolvers for the queue connectors. These connectors are responsible for
             // creating the classes that accept queue configs and instantiate queues.
+			// 一旦我们获得了队列管理器的实例，我们就会为队列连接器注册各种解析器。
+			// 这些连接器负责创建那些能够接收队列配置并实例化队列的类。
             return tap(new QueueManager($app), function ($manager) {
                 $this->registerConnectors($manager);
             });
@@ -231,6 +225,21 @@ class QueueServiceProvider extends ServiceProvider
         return new DatabaseFailedJobProvider(
             $this->app['db'], $config['database'], $config['table']
         );
+    }
+
+    /**
+     * Configure Opis Closure signing for security.
+	 * 为安全性配置Opis闭包签名
+     *
+     * @return void
+     */
+    protected function registerOpisSecurityKey()
+    {
+        if (Str::startsWith($key = $this->app['config']->get('app.key'), 'base64:')) {
+            $key = base64_decode(substr($key, 7));
+        }
+
+        SerializableClosure::setSecretKey($key);
     }
 
     /**

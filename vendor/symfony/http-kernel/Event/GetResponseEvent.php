@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件，获取响应事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -14,13 +17,7 @@ namespace Symfony\Component\HttpKernel\Event;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Allows to create a response for a request.
- *
- * Call setResponse() to set the response that will be returned for the
- * current request. The propagation of this event is stopped as soon as a
- * response is set.
- *
- * @author Bernhard Schussek <bschussek@gmail.com>
+ * @deprecated since Symfony 4.3, use RequestEvent instead
  */
 class GetResponseEvent extends KernelEvent
 {

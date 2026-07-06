@@ -16,11 +16,11 @@ class RetryCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'queue:retry {id* : The ID of the failed job or "all" to retry all jobs.}';
+    protected $signature = 'queue:retry {id* : The ID of the failed job or "all" to retry all jobs}';
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * console命令说明
      *
      * @var string
      */
@@ -28,7 +28,7 @@ class RetryCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */

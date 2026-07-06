@@ -7,8 +7,10 @@ namespace Illuminate\Console\Scheduling;
 
 use Closure;
 use Cron\CronExpression;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use GuzzleHttp\Client as HttpClient;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Contracts\Mail\Mailer;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Traits\Macroable;
@@ -32,7 +34,7 @@ class Event
      *
      * @var string
      */
-    public $expression = '* * * * * *';
+    public $expression = '* * * * *';
 
     /**
      * The timezone the date should be evaluated on.
@@ -73,6 +75,14 @@ class Event
      * @var bool
      */
     public $withoutOverlapping = false;
+
+    /**
+     * Indicates if the command should only be allowed to run on one server for each cron expression.
+	 * 指示是否应该只允许对每个cron表达式在一台服务器上运行该命令
+     *
+     * @var bool
+     */
+    public $onOneServer = false;
 
     /**
      * The amount of time the mutex should be valid.
@@ -147,25 +157,36 @@ class Event
     public $description;
 
     /**
-     * The mutex implementation.
-	 * 互斥锁的实现
+     * The event mutex implementation.
+	 * 事件互斥锁的实现
      *
-     * @var \Illuminate\Console\Scheduling\Mutex
+     * @var \Illuminate\Console\Scheduling\EventMutex
      */
     public $mutex;
 
     /**
-     * Create a new event instance.
-	 * 创建一个新的事件实例
+     * The exit status code of the command.
+	 * 命令的退出状态码
      *
-     * @param  \Illuminate\Console\Scheduling\Mutex  $mutex
+     * @var int|null
+     */
+    public $exitCode;
+
+    /**
+     * Create a new event instance.
+	 * 创建一个新的事件实例。
+     *
+     * @param  \Illuminate\Console\Scheduling\EventMutex  $mutex
      * @param  string  $command
+     * @param  \DateTimeZone|string|null $timezone
      * @return void
      */
-    public function __construct(Mutex $mutex, $command)
+    public function __construct(EventMutex $mutex, $command, $timezone = null)
     {
         $this->mutex = $mutex;
         $this->command = $command;
+        $this->timezone = $timezone;
+
         $this->output = $this->getDefaultOutput();
     }
 
@@ -177,7 +198,7 @@ class Event
      */
     public function getDefaultOutput()
     {
-        return (DIRECTORY_SEPARATOR == '\\') ? 'NUL' : '/dev/null';
+        return (DIRECTORY_SEPARATOR === '\\') ? 'NUL' : '/dev/null';
     }
 
     /**
@@ -221,9 +242,7 @@ class Event
     {
         $this->callBeforeCallbacks($container);
 
-        (new Process(
-            $this->buildCommand(), base_path(), null, null, null
-        ))->run();
+        $this->exitCode = Process::fromShellCommandline($this->buildCommand(), base_path(), null, null, null)->run();
 
         $this->callAfterCallbacks($container);
     }
@@ -239,9 +258,7 @@ class Event
     {
         $this->callBeforeCallbacks($container);
 
-        (new Process(
-            $this->buildCommand(), base_path(), null, null, null
-        ))->run();
+        Process::fromShellCommandline($this->buildCommand(), base_path(), null, null, null)->run();
     }
 
     /**
@@ -365,6 +382,19 @@ class Event
     }
 
     /**
+     * Ensure that the output is stored on disk in a log file.
+	 * 确保输出以日志文件的形式存储在磁盘上
+     *
+     * @return $this
+     */
+    public function storeOutput()
+    {
+        $this->ensureOutputIsBeingCaptured();
+
+        return $this;
+    }
+
+    /**
      * Send the output of the command to a given location.
 	 * 将命令的输出发送到给定位置
      *
@@ -405,9 +435,9 @@ class Event
      */
     public function emailOutputTo($addresses, $onlyIfOutputExists = false)
     {
-        $this->ensureOutputIsBeingCapturedForEmail();
+        $this->ensureOutputIsBeingCaptured();
 
-        $addresses = is_array($addresses) ? $addresses : [$addresses];
+        $addresses = Arr::wrap($addresses);
 
         return $this->then(function (Mailer $mailer) use ($addresses, $onlyIfOutputExists) {
             $this->emailOutput($mailer, $addresses, $onlyIfOutputExists);
@@ -429,12 +459,30 @@ class Event
     }
 
     /**
-     * Ensure that output is being captured for email.
-	 * 确保为电子邮件捕获输出
+     * E-mail the results of the scheduled operation if it fails.
+	 * 如果计划操作失败，则通过电子邮件发送其结果。
+     *
+     * @param  array|mixed  $addresses
+     * @return $this
+     */
+    public function emailOutputOnFailure($addresses)
+    {
+        $this->ensureOutputIsBeingCaptured();
+
+        $addresses = Arr::wrap($addresses);
+
+        return $this->onFailure(function (Mailer $mailer) use ($addresses) {
+            $this->emailOutput($mailer, $addresses, false);
+        });
+    }
+
+    /**
+     * Ensure that the command output is being captured.
+	 * 确保正在捕获命令输出
      *
      * @return void
      */
-    protected function ensureOutputIsBeingCapturedForEmail()
+    protected function ensureOutputIsBeingCaptured()
     {
         if (is_null($this->output) || $this->output == $this->getDefaultOutput()) {
             $this->sendOutputTo(storage_path('logs/schedule-'.sha1($this->mutexName()).'.log'));
@@ -493,6 +541,19 @@ class Event
     }
 
     /**
+     * Register a callback to ping a given URL before the job runs if the given condition is true.
+	 * 注册一个回调函数，如果给定的条件为真，则在作业运行之前ping给定的URL。
+     *
+     * @param  bool  $value
+     * @param  string  $url
+     * @return $this
+     */
+    public function pingBeforeIf($value, $url)
+    {
+        return $value ? $this->pingBefore($url) : $this;
+    }
+
+    /**
      * Register a callback to ping a given URL after the job runs.
 	 * 注册一个回调函数，以便在作业运行后ping给定的URL。
      *
@@ -502,6 +563,47 @@ class Event
     public function thenPing($url)
     {
         return $this->then(function () use ($url) {
+            (new HttpClient)->get($url);
+        });
+    }
+
+    /**
+     * Register a callback to ping a given URL after the job runs if the given condition is true.
+	 * 如果给定的条件为真，则在作业运行后注册一个回调来ping给定的URL。
+     *
+     * @param  bool  $value
+     * @param  string  $url
+     * @return $this
+     */
+    public function thenPingIf($value, $url)
+    {
+        return $value ? $this->thenPing($url) : $this;
+    }
+
+    /**
+     * Register a callback to ping a given URL if the operation succeeds.
+	 * 如果操作成功，注册一个回调来ping给定的URL。
+     *
+     * @param  string  $url
+     * @return $this
+     */
+    public function pingOnSuccess($url)
+    {
+        return $this->onSuccess(function () use ($url) {
+            (new HttpClient)->get($url);
+        });
+    }
+
+    /**
+     * Register a callback to ping a given URL if the operation fails.
+	 * 如果操作失败，注册一个回调来ping给定的URL。
+     *
+     * @param  string  $url
+     * @return $this
+     */
+    public function pingOnFailure($url)
+    {
+        return $this->onFailure(function () use ($url) {
             (new HttpClient)->get($url);
         });
     }
@@ -581,6 +683,19 @@ class Event
     }
 
     /**
+     * Allow the event to only run on one server for each cron expression.
+	 * 对于每个cron表达式，允许事件仅在一台服务器上运行。
+     *
+     * @return $this
+     */
+    public function onOneServer()
+    {
+        $this->onOneServer = true;
+
+        return $this;
+    }
+
+    /**
      * Register a callback to further filter the schedule.
 	 * 注册回调以进一步筛选计划
      *
@@ -653,6 +768,38 @@ class Event
     }
 
     /**
+     * Register a callback to be called if the operation succeeds.
+	 * 注册一个回调函数，在操作成功时调用。
+     *
+     * @param  \Closure  $callback
+     * @return $this
+     */
+    public function onSuccess(Closure $callback)
+    {
+        return $this->then(function (Container $container) use ($callback) {
+            if (0 === $this->exitCode) {
+                $container->call($callback);
+            }
+        });
+    }
+
+    /**
+     * Register a callback to be called if the operation fails.
+	 * 注册一个回调函数，以便在操作失败时调用。
+     *
+     * @param  \Closure  $callback
+     * @return $this
+     */
+    public function onFailure(Closure $callback)
+    {
+        return $this->then(function (Container $container) use ($callback) {
+            if (0 !== $this->exitCode) {
+                $container->call($callback);
+            }
+        });
+    }
+
+    /**
      * Set the human-friendly description of the event.
 	 * 设置事件的人性化描述
      *
@@ -697,16 +844,16 @@ class Event
      * Determine the next due date for an event.
 	 * 确定事件的下一个截止日期
      *
-     * @param  \DateTime|string  $currentTime
+     * @param  \DateTimeInterface|string  $currentTime
      * @param  int  $nth
      * @param  bool  $allowCurrentDate
      * @return \Illuminate\Support\Carbon
      */
     public function nextRunDate($currentTime = 'now', $nth = 0, $allowCurrentDate = false)
     {
-        return Carbon::instance(CronExpression::factory(
+        return Date::instance(CronExpression::factory(
             $this->getExpression()
-        )->getNextRunDate($currentTime, $nth, $allowCurrentDate));
+        )->getNextRunDate($currentTime, $nth, $allowCurrentDate, $this->timezone));
     }
 
     /**
@@ -721,13 +868,13 @@ class Event
     }
 
     /**
-     * Set the mutex implementation to be used.
-	 * 设置要使用的互斥锁实现
+     * Set the event mutex implementation to be used.
+	 * 设置要使用的事件互斥锁实现
      *
-     * @param  \Illuminate\Console\Scheduling\Mutex  $mutex
+     * @param  \Illuminate\Console\Scheduling\EventMutex  $mutex
      * @return $this
      */
-    public function preventOverlapsUsing(Mutex $mutex)
+    public function preventOverlapsUsing(EventMutex $mutex)
     {
         $this->mutex = $mutex;
 

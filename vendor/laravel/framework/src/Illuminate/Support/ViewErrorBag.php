@@ -47,7 +47,7 @@ class ViewErrorBag implements Countable
 
     /**
      * Get all the bags.
-	 * 拿上所有的包
+	 * 获得所有包
      *
      * @return array
      */

@@ -11,7 +11,7 @@ interface Factory
      * Get a Redis connection by name.
 	 * 通过名称获取Redis连接
      *
-     * @param  string  $name
+     * @param  string|null  $name
      * @return \Illuminate\Redis\Connections\Connection
      */
     public function connection($name = null);

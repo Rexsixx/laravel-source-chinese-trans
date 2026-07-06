@@ -6,17 +6,10 @@
 namespace Illuminate\Validation;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Support\DeferrableProvider;
 
-class ValidationServiceProvider extends ServiceProvider
+class ValidationServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * Indicates if loading of the provider is deferred.
-	 * 指示是否延迟加载提供程序
-     *
-     * @var bool
-     */
-    protected $defer = true;
-
     /**
      * Register the service provider.
 	 * 注册服务提供者
@@ -44,6 +37,8 @@ class ValidationServiceProvider extends ServiceProvider
             // The validation presence verifier is responsible for determining the existence of
             // values in a given data collection which is typically a relational database or
             // other persistent data stores. It is used to check for "uniqueness" as well.
+			// 验证存在性验证器负责确定给定数据集合（通常是关系型数据库或其他持久性数据存储）中是否存在特定的值。
+			// 它也用于检查“唯一性”。
             if (isset($app['db'], $app['validation.presence'])) {
                 $validator->setPresenceVerifier($app['validation.presence']);
             }
@@ -67,7 +62,7 @@ class ValidationServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
-	 * 获取提供者提供的服务
+	 * 获取提供者提供的服务。
      *
      * @return array
      */

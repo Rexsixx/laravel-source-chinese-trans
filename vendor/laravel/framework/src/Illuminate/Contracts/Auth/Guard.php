@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，认证，守卫
+ * Illuminate，契约，认证，警卫
  */
 
 namespace Illuminate\Contracts\Auth;
@@ -35,7 +35,7 @@ interface Guard
      * Get the ID for the currently authenticated user.
 	 * 获取当前经过身份验证的用户的ID
      *
-     * @return int|null
+     * @return int|string|null
      */
     public function id();
 

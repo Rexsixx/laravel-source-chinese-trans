@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件，内核事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Base class for events thrown in the HttpKernel component.
+ * 在HttpKernel组件中抛出的事件的基类。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
@@ -27,12 +31,10 @@ class KernelEvent extends Event
     private $requestType;
 
     /**
-     * @param HttpKernelInterface $kernel      The kernel in which this event was thrown
-     * @param Request             $request     The request the kernel is currently processing
-     * @param int                 $requestType The request type the kernel is currently processing; one of
-     *                                         HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST
+     * @param int $requestType The request type the kernel is currently processing; one of
+     *                         HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST
      */
-    public function __construct(HttpKernelInterface $kernel, Request $request, $requestType)
+    public function __construct(HttpKernelInterface $kernel, Request $request, ?int $requestType)
     {
         $this->kernel = $kernel;
         $this->request = $request;

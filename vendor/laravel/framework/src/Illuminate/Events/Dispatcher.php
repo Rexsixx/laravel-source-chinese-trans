@@ -43,6 +43,14 @@ class Dispatcher implements DispatcherContract
     protected $wildcards = [];
 
     /**
+     * The cached wildcard listeners.
+	 * 缓存的通配符侦听器
+     *
+     * @var array
+     */
+    protected $wildcardsCache = [];
+
+    /**
      * The queue resolver instance.
 	 * 队列解析器实例
      *
@@ -92,6 +100,8 @@ class Dispatcher implements DispatcherContract
     protected function setupWildcardListen($event, $listener)
     {
         $this->wildcards[$event][] = $this->makeListener($listener, true);
+
+        $this->wildcardsCache = [];
     }
 
     /**
@@ -149,7 +159,7 @@ class Dispatcher implements DispatcherContract
 
     /**
      * Resolve the subscriber instance.
-	 * 解析订户实例
+	 * 解析订阅者实例
      *
      * @param  object|string  $subscriber
      * @return mixed
@@ -185,26 +195,14 @@ class Dispatcher implements DispatcherContract
      * @param  bool  $halt
      * @return array|null
      */
-    public function fire($event, $payload = [], $halt = false)
-    {
-        return $this->dispatch($event, $payload, $halt);
-    }
-
-    /**
-     * Fire an event and call the listeners.
-	 * 触发一个事件并调用侦听器
-     *
-     * @param  string|object  $event
-     * @param  mixed  $payload
-     * @param  bool  $halt
-     * @return array|null
-     */
     public function dispatch($event, $payload = [], $halt = false)
     {
         // When the given "event" is actually an object we will assume it is an event
         // object and use the class as the event name and this event itself as the
         // payload to the handler, which makes object based events quite simple.
-        list($event, $payload) = $this->parseEventAndPayload(
+		// 当给定的“事件”实际上是一个对象时，我们将假定它是一个事件对象，
+		// 并使用该类作为事件名称，同时将这个事件本身作为参数传递给处理程序，这样一来基于对象的事件就变得非常简单了。
+        [$event, $payload] = $this->parseEventAndPayload(
             $event, $payload
         );
 
@@ -220,6 +218,8 @@ class Dispatcher implements DispatcherContract
             // If a response is returned from the listener and event halting is enabled
             // we will just return this response, and not call the rest of the event
             // listeners. Otherwise we will add the response on the response list.
+			// 如果从监听者处收到了响应，并且事件暂停功能已启用，那么我们将直接返回此响应，
+			// 而不会调用其余的事件监听器。否则，我们将把该响应添加到响应列表中。
             if ($halt && ! is_null($response)) {
                 return $response;
             }
@@ -227,6 +227,8 @@ class Dispatcher implements DispatcherContract
             // If a boolean false is returned from a listener, we will stop propagating
             // the event to any further listeners down in the chain, else we keep on
             // looping through the listeners and firing every one in our sequence.
+			// 如果某个监听器返回了布尔值“false”，则我们将停止将该事件向下传递给链中的其他监听器，
+			// 否则我们将继续遍历这些监听器，并依次触发它们在我们序列中的操作。
             if ($response === false) {
                 break;
             }
@@ -248,7 +250,7 @@ class Dispatcher implements DispatcherContract
     protected function parseEventAndPayload($event, $payload)
     {
         if (is_object($event)) {
-            list($payload, $event) = [[$event], get_class($event)];
+            [$payload, $event] = [[$event], get_class($event)];
         }
 
         return [$event, Arr::wrap($payload)];
@@ -305,7 +307,8 @@ class Dispatcher implements DispatcherContract
         $listeners = $this->listeners[$eventName] ?? [];
 
         $listeners = array_merge(
-            $listeners, $this->getWildcardListeners($eventName)
+            $listeners,
+            $this->wildcardsCache[$eventName] ?? $this->getWildcardListeners($eventName)
         );
 
         return class_exists($eventName, false)
@@ -330,7 +333,7 @@ class Dispatcher implements DispatcherContract
             }
         }
 
-        return $wildcards;
+        return $this->wildcardsCache[$eventName] = $wildcards;
     }
 
     /**
@@ -407,7 +410,7 @@ class Dispatcher implements DispatcherContract
      */
     protected function createClassCallable($listener)
     {
-        list($class, $method) = $this->parseClassCallable($listener);
+        [$class, $method] = $this->parseClassCallable($listener);
 
         if ($this->handlerShouldBeQueued($class)) {
             return $this->createQueuedHandlerCallable($class, $method);
@@ -495,7 +498,7 @@ class Dispatcher implements DispatcherContract
      */
     protected function queueHandler($class, $method, $arguments)
     {
-        list($listener, $job) = $this->createListenerAndJob($class, $method, $arguments);
+        [$listener, $job] = $this->createListenerAndJob($class, $method, $arguments);
 
         $connection = $this->resolveQueue()->connection(
             $listener->connection ?? null

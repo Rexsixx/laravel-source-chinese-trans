@@ -8,6 +8,7 @@ namespace Illuminate\View;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\View\Engines\EngineResolver;
@@ -16,7 +17,8 @@ use Illuminate\Contracts\View\Factory as FactoryContract;
 
 class Factory implements FactoryContract
 {
-    use Concerns\ManagesComponents,
+    use Macroable,
+        Concerns\ManagesComponents,
         Concerns\ManagesEvents,
         Concerns\ManagesLayouts,
         Concerns\ManagesLoops,
@@ -33,7 +35,7 @@ class Factory implements FactoryContract
 
     /**
      * The view finder implementation.
-	 * 取景器实现
+	 * 视图查找器实现
      *
      * @var \Illuminate\View\ViewFinderInterface
      */
@@ -73,11 +75,12 @@ class Factory implements FactoryContract
         'blade.php' => 'blade',
         'php' => 'php',
         'css' => 'file',
+        'html' => 'file',
     ];
 
     /**
      * The view composer events.
-	 * 视图编写器事件
+	 * 视图composer事件
      *
      * @var array
      */
@@ -114,7 +117,7 @@ class Factory implements FactoryContract
 	 * 获取给定视图的求值视图内容
      *
      * @param  string  $path
-     * @param  array   $data
+     * @param  \Illuminate\Contracts\Support\Arrayable|array   $data
      * @param  array   $mergeData
      * @return \Illuminate\Contracts\View\View
      */
@@ -132,7 +135,7 @@ class Factory implements FactoryContract
 	 * 获取给定视图的求值视图内容
      *
      * @param  string  $view
-     * @param  array   $data
+     * @param  \Illuminate\Contracts\Support\Arrayable|array   $data
      * @param  array   $mergeData
      * @return \Illuminate\Contracts\View\View
      */
@@ -145,6 +148,8 @@ class Factory implements FactoryContract
         // Next, we will create the view instance and call the view creator for the view
         // which can set any data, etc. Then we will return the view instance back to
         // the caller for rendering or performing other view manipulations on this.
+		// 接下来，我们将创建视图实例，并调用视图创建器来创建该视图，视图创建器可以设置任何数据等。
+		// 然后，我们将将视图实例返回给调用者，以便进行渲染或其他对视图的操作。
         $data = array_merge($mergeData, $this->parseData($data));
 
         return tap($this->viewInstance($view, $path, $data), function ($view) {
@@ -157,13 +162,15 @@ class Factory implements FactoryContract
 	 * 从给定列表中获取实际存在的第一个视图
      *
      * @param  array  $views
-     * @param  array   $data
+     * @param  \Illuminate\Contracts\Support\Arrayable|array   $data
      * @param  array   $mergeData
      * @return \Illuminate\Contracts\View\View
+     *
+     * @throws \InvalidArgumentException
      */
     public function first(array $views, $data = [], $mergeData = [])
     {
-        $view = collect($views)->first(function ($view) {
+        $view = Arr::first($views, function ($view) {
             return $this->exists($view);
         });
 
@@ -180,7 +187,7 @@ class Factory implements FactoryContract
      *
      * @param  bool  $condition
      * @param  string  $view
-     * @param  array   $data
+     * @param  \Illuminate\Contracts\Support\Arrayable|array   $data
      * @param  array   $mergeData
      * @return string
      */
@@ -210,6 +217,8 @@ class Factory implements FactoryContract
         // If is actually data in the array, we will loop through the data and append
         // an instance of the partial view to the final result HTML passing in the
         // iterated value of this data array, allowing the views to access them.
+		// 如果数组中的确实是数据的话，我们将遍历这些数据，并将部分视图的实例添加到最终的结果 HTML 中，
+		// 同时传入此数据数组的迭代值，以便视图能够访问这些数据。
         if (count($data) > 0) {
             foreach ($data as $key => $value) {
                 $result .= $this->make(
@@ -221,6 +230,8 @@ class Factory implements FactoryContract
         // If there is no data in the array, we will render the contents of the empty
         // view. Alternatively, the "empty view" could be a raw string that begins
         // with "raw|" for convenience and to let this know that it is a string.
+		// 如果数组中没有数据，我们将显示空视图的内容。
+		// 或者，“空视图”也可以是一个以“raw”开头的原始字符串，这样做既方便又能让用户明白这是一个字符串。
         else {
             $result = Str::startsWith($empty, 'raw|')
                         ? substr($empty, 4)
@@ -260,7 +271,7 @@ class Factory implements FactoryContract
      *
      * @param  string  $view
      * @param  string  $path
-     * @param  array  $data
+     * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
      * @return \Illuminate\Contracts\View\View
      */
     protected function viewInstance($view, $path, $data)
@@ -298,7 +309,7 @@ class Factory implements FactoryContract
     public function getEngineFromPath($path)
     {
         if (! $extension = $this->getExtension($path)) {
-            throw new InvalidArgumentException("Unrecognized extension in file: $path");
+            throw new InvalidArgumentException("Unrecognized extension in file: {$path}");
         }
 
         $engine = $this->extensions[$extension];
@@ -327,7 +338,7 @@ class Factory implements FactoryContract
 	 * 向环境中添加一段共享数据
      *
      * @param  array|string  $key
-     * @param  mixed  $value
+     * @param  mixed|null  $value
      * @return mixed
      */
     public function share($key, $value = null)
@@ -418,7 +429,7 @@ class Factory implements FactoryContract
 
     /**
      * Replace the namespace hints for the given namespace.
-	 * 替换给定名称空间的名称空间提示
+	 * 替换给定命名空间的命名空间提示
      *
      * @param  string  $namespace
      * @param  string|array  $hints
@@ -437,7 +448,7 @@ class Factory implements FactoryContract
      *
      * @param  string    $extension
      * @param  string    $engine
-     * @param  \Closure  $resolver
+     * @param  \Closure|null  $resolver
      * @return void
      */
     public function addExtension($extension, $engine, $resolver = null)
@@ -515,7 +526,7 @@ class Factory implements FactoryContract
 
     /**
      * Set the view finder instance.
-	 * 设置取景器实例
+	 * 设置视图查找器实例
      *
      * @param  \Illuminate\View\ViewFinderInterface  $finder
      * @return void

@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，采集，是空的可穿越的
+ */
+
 namespace Hamcrest\Collection;
 
 /*
@@ -9,6 +13,7 @@ use Hamcrest\Description;
 
 /**
  * Matches if traversable is empty or non-empty.
+ * 匹配的匹配是空的或非空的。
  */
 class IsEmptyTraversable extends BaseMatcher
 {

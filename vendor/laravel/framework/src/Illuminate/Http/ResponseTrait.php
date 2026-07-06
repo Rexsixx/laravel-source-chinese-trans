@@ -13,7 +13,7 @@ trait ResponseTrait
 {
     /**
      * The original content of the response.
-	 * 响应的原始内容
+	 * 回复的原始内容
      *
      * @var mixed
      */
@@ -126,6 +126,17 @@ trait ResponseTrait
         $this->headers->setCookie($cookie);
 
         return $this;
+    }
+
+    /**
+     * Get the callback of the response.
+	 * 获取响应的回调
+     *
+     * @return string|null
+     */
+    public function getCallback()
+    {
+        return $this->callback ?? null;
     }
 
     /**

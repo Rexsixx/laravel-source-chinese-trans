@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，数组，是否数组包含
+ */
+
 namespace Hamcrest\Arrays;
 
 /*

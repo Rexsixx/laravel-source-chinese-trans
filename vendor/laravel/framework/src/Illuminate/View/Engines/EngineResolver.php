@@ -31,6 +31,7 @@ class EngineResolver
 	 * 注册一个新的引擎解析器。
      *
      * The engine string typically corresponds to a file extension.
+	 * 引擎字符串通常对应于文件扩展名
      *
      * @param  string   $engine
      * @param  \Closure  $resolver
@@ -49,6 +50,7 @@ class EngineResolver
      *
      * @param  string  $engine
      * @return \Illuminate\Contracts\View\Engine
+     *
      * @throws \InvalidArgumentException
      */
     public function resolve($engine)
@@ -61,6 +63,6 @@ class EngineResolver
             return $this->resolved[$engine] = call_user_func($this->resolvers[$engine]);
         }
 
-        throw new InvalidArgumentException("Engine $engine not found.");
+        throw new InvalidArgumentException("Engine [{$engine}] not found.");
     }
 }

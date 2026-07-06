@@ -26,8 +26,8 @@ trait DatabaseRule
     protected $column;
 
     /**
-     * There extra where clauses for the query.
-	 * 还有额外的where子句用于查询
+     * The extra where clauses for the query.
+	 * 查询的额外where子句
      *
      * @var array
      */
@@ -165,7 +165,7 @@ trait DatabaseRule
 
     /**
      * Get the custom query callbacks for the rule.
-	 * 获取规则的自定义查询回调
+	 * 获取规则的自定义查询回调。
      *
      * @return array
      */
@@ -183,7 +183,7 @@ trait DatabaseRule
     protected function formatWheres()
     {
         return collect($this->wheres)->map(function ($where) {
-            return $where['column'].','.$where['value'];
+            return $where['column'].','.'"'.str_replace('"', '""', $where['value']).'"';
         })->implode(',');
     }
 }

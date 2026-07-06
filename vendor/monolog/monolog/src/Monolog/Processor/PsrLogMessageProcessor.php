@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理器，PsrLog 消息处理程序
+ */
 
 /*
  * This file is part of the Monolog package.

@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，比较器，资源比较器
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -7,7 +11,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Comparator;
 
 /**

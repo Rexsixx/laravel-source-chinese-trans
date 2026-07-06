@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，安全存储器
+ */
 
 namespace League\Flysystem;
 

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psr，日志，零记录器
+ */
 
 namespace Psr\Log;
 

@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，GlobalState，恢复测试
+ */
+
 /*
  * This file is part of sebastian/global-state.
  *
@@ -16,6 +20,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class Restorer.
+ * 恢复测试
  */
 class RestorerTest extends TestCase
 {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，异常，无效参数异常
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -11,6 +14,4 @@
 
 namespace Prophecy\Exception;
 
-class InvalidArgumentException extends \InvalidArgumentException implements Exception
-{
-}
+class InvalidArgumentException extends \InvalidArgumentException implements Exception {}

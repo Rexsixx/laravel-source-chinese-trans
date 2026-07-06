@@ -28,7 +28,7 @@ class SimpleMessage
 
     /**
      * The notification's greeting.
-	 * 通知的问候
+	 * 通知的招呼
      *
      * @var string
      */

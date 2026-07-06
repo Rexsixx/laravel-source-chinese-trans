@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，Http缓存，Ssi
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Esi implements the ESI capabilities to Request and Response instances.
+ * Esi实现了请求和响应实例的Esi功能。
  *
  * For more information, read the following W3C notes:
  *
@@ -37,7 +41,7 @@ class Esi extends AbstractSurrogate
      */
     public function addSurrogateControl(Response $response)
     {
-        if (false !== strpos($response->getContent(), '<esi:include')) {
+        if (str_contains($response->getContent(), '<esi:include')) {
             $response->headers->set('Surrogate-Control', 'content="ESI/1.0"');
         }
     }
@@ -97,7 +101,7 @@ class Esi extends AbstractSurrogate
 
             $chunks[$i] = sprintf('<?php echo $this->surrogate->handle($this, %s, %s, %s) ?>'."\n",
                 var_export($options['src'], true),
-                var_export(isset($options['alt']) ? $options['alt'] : '', true),
+                var_export($options['alt'] ?? '', true),
                 isset($options['onerror']) && 'continue' === $options['onerror'] ? 'true' : 'false'
             );
             ++$i;

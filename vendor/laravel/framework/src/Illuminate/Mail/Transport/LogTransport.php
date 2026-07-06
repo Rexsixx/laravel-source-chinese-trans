@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，运送，日志运送
+ * Illuminate，电子邮件，传送，日志传送
  */
 
 namespace Illuminate\Mail\Transport;
@@ -61,5 +61,16 @@ class LogTransport extends Transport
         }
 
         return $string;
+    }
+
+    /**
+     * Get the logger for the LogTransport instance.
+	 * 获取LogTransport实例的记录器
+     *
+     * @return \Psr\Log\LoggerInterface
+     */
+    public function logger()
+    {
+        return $this->logger;
     }
 }

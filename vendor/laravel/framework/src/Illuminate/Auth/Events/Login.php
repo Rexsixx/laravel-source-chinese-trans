@@ -12,6 +12,14 @@ class Login
     use SerializesModels;
 
     /**
+     * The authentication guard name.
+	 * 认证守卫名称
+     *
+     * @var string
+     */
+    public $guard;
+
+    /**
      * The authenticated user.
 	 * 通过身份验证的用户
      *
@@ -21,7 +29,7 @@ class Login
 
     /**
      * Indicates if the user should be "remembered".
-	 * 指示是否需要"记住"用户
+	 * 指示是否需要“记住”用户
      *
      * @var bool
      */
@@ -31,13 +39,15 @@ class Login
      * Create a new event instance.
 	 * 创建一个新的事件实例
      *
+     * @param  string $guard
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  bool  $remember
      * @return void
      */
-    public function __construct($user, $remember)
+    public function __construct($guard, $user, $remember)
     {
         $this->user = $user;
+        $this->guard = $guard;
         $this->remember = $remember;
     }
 }

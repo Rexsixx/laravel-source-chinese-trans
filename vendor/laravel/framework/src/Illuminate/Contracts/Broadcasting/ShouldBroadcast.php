@@ -5,15 +5,13 @@
 
 namespace Illuminate\Contracts\Broadcasting;
 
-use Illuminate\Broadcasting\Channel;
-
 interface ShouldBroadcast
 {
     /**
      * Get the channels the event should broadcast on.
 	 * 获取该事件应该播放的频道
      *
-     * @return Channel|Channel[]
+     * @return \Illuminate\Broadcasting\Channel|\Illuminate\Broadcasting\Channel[]
      */
     public function broadcastOn();
 }

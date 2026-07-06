@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，视图，视图
+ * Illuminate，契约，视图，View
  */
 
 namespace Illuminate\Contracts\View;
@@ -26,4 +26,12 @@ interface View extends Renderable
      * @return $this
      */
     public function with($key, $value = null);
+
+    /**
+     * Get the array of view data.
+	 * 获取视图数据数组
+     *
+     * @return array
+     */
+    public function getData();
 }

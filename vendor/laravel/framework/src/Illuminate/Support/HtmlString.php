@@ -11,7 +11,7 @@ class HtmlString implements Htmlable
 {
     /**
      * The HTML string.
-	 * HTML字符串
+	 * Html字符串
      *
      * @var string
      */

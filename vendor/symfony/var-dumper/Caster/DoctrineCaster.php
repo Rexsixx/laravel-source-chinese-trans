@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，Caster，Doctrine Caster
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,8 @@ use Symfony\Component\VarDumper\Cloner\Stub;
  * Casts Doctrine related classes to array representation.
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ *
+ * @final since Symfony 4.4
  */
 class DoctrineCaster
 {

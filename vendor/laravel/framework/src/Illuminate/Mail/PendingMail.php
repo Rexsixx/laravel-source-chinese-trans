@@ -1,11 +1,14 @@
 <?php
 /**
- * Illuminate，电子邮件，等待邮件
+ * Illuminate，电子邮件，待处理的邮件
  */
 
 namespace Illuminate\Mail;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Mail\Mailer as MailerContract;
+use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Contracts\Mail\Mailable as MailableContract;
 
 class PendingMail
 {
@@ -13,9 +16,17 @@ class PendingMail
      * The mailer instance.
 	 * 邮件实例
      *
-     * @var \Illuminate\Mail\Mailer
+     * @var \Illuminate\Contracts\Mail\Mailer
      */
     protected $mailer;
+
+    /**
+     * The locale of the message.
+	 * 消息的区域设置
+     *
+     * @var string
+     */
+    protected $locale;
 
     /**
      * The "to" recipients of the message.
@@ -43,14 +54,28 @@ class PendingMail
 
     /**
      * Create a new mailable mailer instance.
-	 * 创建一个新的可邮件邮件实例。
+	 * 创建一个新的可邮件邮件实例
      *
-     * @param  \Illuminate\Mail\Mailer  $mailer
+     * @param  \Illuminate\Contracts\Mail\Mailer  $mailer
      * @return void
      */
-    public function __construct(Mailer $mailer)
+    public function __construct(MailerContract $mailer)
     {
         $this->mailer = $mailer;
+    }
+
+    /**
+     * Set the locale of the message.
+	 * 设置消息的区域设置
+     *
+     * @param  string  $locale
+     * @return $this
+     */
+    public function locale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
     }
 
     /**
@@ -63,6 +88,10 @@ class PendingMail
     public function to($users)
     {
         $this->to = $users;
+
+        if (! $this->locale && $users instanceof HasLocalePreference) {
+            $this->locale($users->preferredLocale());
+        }
 
         return $this;
     }
@@ -99,10 +128,11 @@ class PendingMail
      * Send a new mailable message instance.
 	 * 发送一个新的可邮件消息实例
      *
-     * @param  \Illuminate\Mail\Mailable  $mailable
+     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
+     *
      * @return mixed
      */
-    public function send(Mailable $mailable)
+    public function send(MailableContract $mailable)
     {
         if ($mailable instanceof ShouldQueue) {
             return $this->queue($mailable);
@@ -115,10 +145,10 @@ class PendingMail
      * Send a mailable message immediately.
 	 * 立即发送可发送的消息
      *
-     * @param  \Illuminate\Mail\Mailable  $mailable
+     * @param  \Illuminate\Contracts\Mail\Mailable $mailable;
      * @return mixed
      */
-    public function sendNow(Mailable $mailable)
+    public function sendNow(MailableContract $mailable)
     {
         return $this->mailer->send($this->fill($mailable));
     }
@@ -127,10 +157,10 @@ class PendingMail
      * Push the given mailable onto the queue.
 	 * 将给定的可邮件推送到队列中
      *
-     * @param  \Illuminate\Mail\Mailable  $mailable
+     * @param  \Illuminate\Contracts\Mail\Mailable $mailable;
      * @return mixed
      */
-    public function queue(Mailable $mailable)
+    public function queue(MailableContract $mailable)
     {
         $mailable = $this->fill($mailable);
 
@@ -146,10 +176,10 @@ class PendingMail
 	 * 在给定的延迟之后交付排队消息
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
-     * @param  \Illuminate\Mail\Mailable  $mailable
+     * @param  \Illuminate\Contracts\Mail\Mailable $mailable;
      * @return mixed
      */
-    public function later($delay, Mailable $mailable)
+    public function later($delay, MailableContract $mailable)
     {
         return $this->mailer->later($delay, $this->fill($mailable));
     }
@@ -158,13 +188,14 @@ class PendingMail
      * Populate the mailable with the addresses.
 	 * 用地址填充邮件
      *
-     * @param  \Illuminate\Mail\Mailable  $mailable
+     * @param  \Illuminate\Contracts\Mail\Mailable $mailable;
      * @return \Illuminate\Mail\Mailable
      */
-    protected function fill(Mailable $mailable)
+    protected function fill(MailableContract $mailable)
     {
         return $mailable->to($this->to)
                         ->cc($this->cc)
-                        ->bcc($this->bcc);
+                        ->bcc($this->bcc)
+                        ->locale($this->locale);
     }
 }

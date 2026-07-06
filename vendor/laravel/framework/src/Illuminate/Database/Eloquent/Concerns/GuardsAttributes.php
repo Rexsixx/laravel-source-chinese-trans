@@ -34,14 +34,6 @@ trait GuardsAttributes
     protected static $unguarded = false;
 
     /**
-     * The actual columns that exist on the database and can be guarded.
-	 * 存在于数据库中并且可以被保护的实际列
-     *
-     * @var array
-     */
-    protected static $guardableColumns = [];
-
-    /**
      * Get the fillable attributes for the model.
 	 * 获取模型的可填充属性
      *
@@ -93,7 +85,7 @@ trait GuardsAttributes
 
     /**
      * Disable all mass assignable restrictions.
-	 * 禁用所有可批量分配的限制
+	 * 禁用所有可批量分配的限制。
      *
      * @param  bool  $state
      * @return void
@@ -163,6 +155,7 @@ trait GuardsAttributes
         // If the key is in the "fillable" array, we can of course assume that it's
         // a fillable attribute. Otherwise, we will check the guarded array when
         // we need to determine if the attribute is black-listed on the model.
+		// 如果该键存在于“可填充”数组中，那么我们就可以肯定它是一个可填充的属性。
         if (in_array($key, $this->getFillable())) {
             return true;
         }
@@ -170,12 +163,12 @@ trait GuardsAttributes
         // If the attribute is explicitly listed in the "guarded" array then we can
         // return false immediately. This means this attribute is definitely not
         // fillable and there is no point in going any further in this method.
+		// 如果该属性明确列在“受保护”数组中，那么我们就可以立即返回“false”。
         if ($this->isGuarded($key)) {
             return false;
         }
 
         return empty($this->getFillable()) &&
-            strpos($key, '.') === false &&
             ! Str::startsWith($key, '_');
     }
 
@@ -188,31 +181,7 @@ trait GuardsAttributes
      */
     public function isGuarded($key)
     {
-        if (empty($this->getGuarded())) {
-            return false;
-        }
-
-        return $this->getGuarded() == ['*'] ||
-               ! empty(preg_grep('/^'.preg_quote($key).'$/i', $this->getGuarded())) ||
-               ! $this->isGuardableColumn($key);
-    }
-
-    /**
-     * Determine if the given column is a valid, guardable column.
-	 * 确定给定的列是否是有效的、可保护的列。
-     *
-     * @param  string  $key
-     * @return bool
-     */
-    protected function isGuardableColumn($key)
-    {
-        if (! isset(static::$guardableColumns[get_class($this)])) {
-            static::$guardableColumns[get_class($this)] = $this->getConnection()
-                        ->getSchemaBuilder()
-                        ->getColumnListing($this->getTable());
-        }
-
-        return in_array($key, static::$guardableColumns[get_class($this)]);
+        return in_array($key, $this->getGuarded()) || $this->getGuarded() == ['*'];
     }
 
     /**
@@ -223,12 +192,12 @@ trait GuardsAttributes
      */
     public function totallyGuarded()
     {
-        return count($this->getFillable()) == 0 && $this->getGuarded() == ['*'];
+        return count($this->getFillable()) === 0 && $this->getGuarded() == ['*'];
     }
 
     /**
      * Get the fillable attributes of a given array.
-	 * 获取给定数组的可填充属性
+	 * 获取给定数组的可填充属性。
      *
      * @param  array  $attributes
      * @return array

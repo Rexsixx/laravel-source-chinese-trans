@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，无效根异常
+ */
 
 namespace League\Flysystem;
 

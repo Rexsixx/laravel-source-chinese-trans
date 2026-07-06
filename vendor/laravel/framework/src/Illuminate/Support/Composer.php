@@ -23,7 +23,7 @@ class Composer
      * The working path to regenerate from.
 	 * 要重新生成的工作路径
      *
-     * @var string
+     * @var string|null
      */
     protected $workingPath;
 
@@ -45,16 +45,16 @@ class Composer
      * Regenerate the Composer autoloader files.
 	 * 重新生成Composer自动加载器文件
      *
-     * @param  string  $extra
+     * @param  string|array  $extra
      * @return void
      */
     public function dumpAutoloads($extra = '')
     {
-        $process = $this->getProcess();
+        $extra = $extra ? (array) $extra : [];
 
-        $process->setCommandLine(trim($this->findComposer().' dump-autoload '.$extra));
+        $command = array_merge($this->findComposer(), ['dump-autoload'], $extra);
 
-        $process->run();
+        $this->getProcess($command)->run();
     }
 
     /**
@@ -72,31 +72,43 @@ class Composer
      * Get the composer command for the environment.
 	 * 获取环境的编写器命令
      *
-     * @return string
+     * @return array
      */
     protected function findComposer()
     {
         if ($this->files->exists($this->workingPath.'/composer.phar')) {
-            return ProcessUtils::escapeArgument((new PhpExecutableFinder)->find(false)).' composer.phar';
+            return [$this->phpBinary(), 'composer.phar'];
         }
 
-        return 'composer';
+        return ['composer'];
+    }
+
+    /**
+     * Get the PHP binary.
+	 * 获取PHP二进制文件
+     *
+     * @return string
+     */
+    protected function phpBinary()
+    {
+        return ProcessUtils::escapeArgument((new PhpExecutableFinder)->find(false));
     }
 
     /**
      * Get a new Symfony process instance.
 	 * 获取一个新的Symfony流程实例
      *
+     * @param  array  $command
      * @return \Symfony\Component\Process\Process
      */
-    protected function getProcess()
+    protected function getProcess(array $command)
     {
-        return (new Process('', $this->workingPath))->setTimeout(null);
+        return (new Process($command, $this->workingPath))->setTimeout(null);
     }
 
     /**
      * Set the working path used by the class.
-	 * 置类使用的工作路径
+	 * 设置类使用的工作路径
      *
      * @param  string  $path
      * @return $this

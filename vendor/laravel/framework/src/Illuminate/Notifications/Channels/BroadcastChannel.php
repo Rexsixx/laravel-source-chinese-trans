@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，频道，广播频道
+ * Illuminate，通知，通道，广播通道
  */
 
 namespace Illuminate\Notifications\Channels;
@@ -77,8 +77,6 @@ class BroadcastChannel
             return $notification->toArray($notifiable);
         }
 
-        throw new RuntimeException(
-            'Notification is missing toArray method.'
-        );
+        throw new RuntimeException('Notification is missing toArray method.');
     }
 }

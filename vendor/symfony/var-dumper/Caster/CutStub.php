@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Var Dumper，Caster，Cut 存根
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -28,6 +31,11 @@ class CutStub extends Stub
             case 'object':
                 $this->type = self::TYPE_OBJECT;
                 $this->class = \get_class($value);
+
+                if ($value instanceof \Closure) {
+                    ReflectionCaster::castClosure($value, [], $this, true, Caster::EXCLUDE_VERBOSE);
+                }
+
                 $this->cut = -1;
                 break;
 

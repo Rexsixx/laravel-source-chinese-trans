@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，事件调度程序，Legacy 事件调度程序代理
+ */
 
 /*
  * This file is part of the Symfony package.

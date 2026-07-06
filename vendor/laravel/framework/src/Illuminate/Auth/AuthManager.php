@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，身份验证管理器
+ * Illuminate，认证，身份验证管理器
  */
 
 namespace Illuminate\Auth;
@@ -17,7 +17,7 @@ class AuthManager implements FactoryContract
      * The application instance.
 	 * 应用实例
      *
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
@@ -42,7 +42,6 @@ class AuthManager implements FactoryContract
 	 * 各种服务共享的用户解析器。
      *
      * Determines the default user for Gate, Request, and the Authenticatable contract.
-	 * 确定Gate、Request和Authenticatable契约的默认用户。
      *
      * @var \Closure
      */
@@ -50,9 +49,9 @@ class AuthManager implements FactoryContract
 
     /**
      * Create a new Auth manager instance.
-	 * 创建一个新的Auth管理器实例
+	 * 创建一个新的Auth管理器实例。
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
      */
     public function __construct($app)
@@ -68,7 +67,7 @@ class AuthManager implements FactoryContract
      * Attempt to get the guard from the local cache.
 	 * 尝试从本地缓存中获取保护
      *
-     * @param  string  $name
+     * @param  string|null  $name
      * @return \Illuminate\Contracts\Auth\Guard|\Illuminate\Contracts\Auth\StatefulGuard
      */
     public function guard($name = null)
@@ -105,7 +104,9 @@ class AuthManager implements FactoryContract
             return $this->{$driverMethod}($name, $config);
         }
 
-        throw new InvalidArgumentException("Auth guard driver [{$name}] is not defined.");
+        throw new InvalidArgumentException(
+            "Auth driver [{$config['driver']}] for guard [{$name}] is not defined."
+        );
     }
 
     /**
@@ -138,6 +139,8 @@ class AuthManager implements FactoryContract
         // When using the remember me functionality of the authentication services we
         // will need to be set the encryption instance of the guard, which allows
         // secure, encrypted cookie values to get generated for those cookies.
+		// 在使用认证服务的“记住我”功能时，我们需要设置防护措施的加密实例，
+		// 这样就能为这些 Cookie 生成安全的、加密的值。
         if (method_exists($guard, 'setCookieJar')) {
             $guard->setCookieJar($this->app['cookie']);
         }
@@ -166,9 +169,14 @@ class AuthManager implements FactoryContract
         // The token guard implements a basic API token based guard implementation
         // that takes an API token field from the request and matches it to the
         // user in the database or another persistence layer where users are.
+		// 该令牌守护程序实现了基于 API 令牌的基本守护程序实现，
+		// 它从请求中获取 API 令牌字段，并将其与数据库或另一个保存用户信息的持久层中的用户进行匹配。
         $guard = new TokenGuard(
             $this->createUserProvider($config['provider'] ?? null),
-            $this->app['request']
+            $this->app['request'],
+            $config['input_key'] ?? 'api_token',
+            $config['storage_key'] ?? 'api_token',
+            $config['hash'] ?? false
         );
 
         $this->app->refresh('request', $guard, 'setRequest');
@@ -275,7 +283,7 @@ class AuthManager implements FactoryContract
 
     /**
      * Register a custom driver creator Closure.
-	 * 注册自定义驱动程序创建器Closure
+	 * 册自定义驱动程序创建器Closure
      *
      * @param  string  $driver
      * @param  \Closure  $callback

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，调试，致命错误处理程序，类未发现致命错误处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,10 +20,15 @@ use Symfony\Component\Debug\DebugClassLoader;
 use Symfony\Component\Debug\Exception\ClassNotFoundException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 
+@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.4, use "%s" instead.', ClassNotFoundFatalErrorHandler::class, \Symfony\Component\ErrorHandler\FatalErrorHandler\ClassNotFoundFatalErrorHandler::class), \E_USER_DEPRECATED);
+
 /**
  * ErrorHandler for classes that do not exist.
+ * 那些不存在的类的ErrorHandler。
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @deprecated since Symfony 4.4, use Symfony\Component\ErrorHandler\FatalErrorHandler\ClassNotFoundFatalErrorHandler instead.
  */
 class ClassNotFoundFatalErrorHandler implements FatalErrorHandlerInterface
 {
@@ -69,7 +77,7 @@ class ClassNotFoundFatalErrorHandler implements FatalErrorHandlerInterface
      *
      * @return array An array of possible fully qualified class names
      */
-    private function getClassCandidates($class)
+    private function getClassCandidates(string $class): array
     {
         if (!\is_array($functions = spl_autoload_functions())) {
             return [];
@@ -110,14 +118,7 @@ class ClassNotFoundFatalErrorHandler implements FatalErrorHandlerInterface
         return array_unique($classes);
     }
 
-    /**
-     * @param string $path
-     * @param string $class
-     * @param string $prefix
-     *
-     * @return array
-     */
-    private function findClassInPath($path, $class, $prefix)
+    private function findClassInPath(string $path, string $class, string $prefix): array
     {
         if (!$path = realpath($path.'/'.strtr($prefix, '\\_', '//')) ?: realpath($path.'/'.\dirname(strtr($prefix, '\\_', '//'))) ?: realpath($path)) {
             return [];
@@ -134,14 +135,7 @@ class ClassNotFoundFatalErrorHandler implements FatalErrorHandlerInterface
         return $classes;
     }
 
-    /**
-     * @param string $path
-     * @param string $file
-     * @param string $prefix
-     *
-     * @return string|null
-     */
-    private function convertFileToClass($path, $file, $prefix)
+    private function convertFileToClass(string $path, string $file, string $prefix): ?string
     {
         $candidates = [
             // namespaced class
@@ -186,12 +180,7 @@ class ClassNotFoundFatalErrorHandler implements FatalErrorHandlerInterface
         return null;
     }
 
-    /**
-     * @param string $class
-     *
-     * @return bool
-     */
-    private function classExists($class)
+    private function classExists(string $class): bool
     {
         return class_exists($class, false) || interface_exists($class, false) || trait_exists($class, false);
     }

@@ -12,7 +12,7 @@ class CommandStarting
 {
     /**
      * The command name.
-	 * 命令名称
+	 * 命令名
      *
      * @var string
      */

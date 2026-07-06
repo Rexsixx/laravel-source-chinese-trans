@@ -1,11 +1,14 @@
 <?php
 /**
- * Illuminate，队列，作业，作业
+ * Illuminate，队列，作业，Job
  */
 
 namespace Illuminate\Queue\Jobs;
 
+use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\InteractsWithTime;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Queue\ManuallyFailedException;
 
 abstract class Job
 {
@@ -54,6 +57,8 @@ abstract class Job
     /**
      * The name of the connection the job belongs to.
 	 * 作业所属的连接的名称
+     *
+     * @var string
      */
     protected $connectionName;
 
@@ -66,8 +71,16 @@ abstract class Job
     protected $queue;
 
     /**
+     * Get the job identifier.
+	 * 获取工作标识符
+     *
+     * @return string
+     */
+    abstract public function getJobId();
+
+    /**
      * Get the raw body of the job.
-	 * 得到工作的原始主体
+	 * 得到工作的原始身体
      *
      * @return string
      */
@@ -83,7 +96,7 @@ abstract class Job
     {
         $payload = $this->payload();
 
-        list($class, $method) = JobName::parse($payload['job']);
+        [$class, $method] = JobName::parse($payload['job']);
 
         ($this->instance = $this->resolve($class))->{$method}($this, $payload['data']);
     }
@@ -157,7 +170,7 @@ abstract class Job
 
     /**
      * Mark the job as "failed".
-	 * 把这项作业标记为“失败”
+	 * 标记这个作业为“失败”
      *
      * @return void
      */
@@ -167,19 +180,48 @@ abstract class Job
     }
 
     /**
-     * Process an exception that caused the job to fail.
-	 * 处理导致作业失败的异常
+     * Delete the job, call the "failed" method, and raise the failed job event.
+	 * 删除作业，调用“failed”方法，并引发失败的作业事件。
      *
-     * @param  \Exception  $e
+     * @param  \Throwable|null $e
      * @return void
      */
-    public function failed($e)
+    public function fail($e = null)
     {
         $this->markAsFailed();
 
+        if ($this->isDeleted()) {
+            return;
+        }
+
+        try {
+            // If the job has failed, we will delete it, call the "failed" method and then call
+            // an event indicating the job has failed so it can be logged if needed. This is
+            // to allow every developer to better keep monitor of their failed queue jobs.
+			// 如果任务执行失败，我们将删除该任务，调用“失败”方法，然后调用一个事件来表明任务已失败，以便在需要时进行记录。
+			// 这是为了让每位开发人员能够更有效地监控其失败的队列任务。
+            $this->delete();
+
+            $this->failed($e);
+        } finally {
+            $this->resolve(Dispatcher::class)->dispatch(new JobFailed(
+                $this->connectionName, $this, $e ?: new ManuallyFailedException
+            ));
+        }
+    }
+
+    /**
+     * Process an exception that caused the job to fail.
+	 * 处理导致作业失败的异常
+     *
+     * @param  \Throwable|null $e
+     * @return void
+     */
+    protected function failed($e)
+    {
         $payload = $this->payload();
 
-        list($class, $method) = JobName::parse($payload['job']);
+        [$class, $method] = JobName::parse($payload['job']);
 
         if (method_exists($this->instance = $this->resolve($class), 'failed')) {
             $this->instance->failed($payload['data'], $e);
@@ -200,7 +242,7 @@ abstract class Job
 
     /**
      * Get the decoded body of the job.
-	 * 拿到解码后的主体
+	 * 拿到解码后的文件
      *
      * @return array
      */
@@ -218,6 +260,17 @@ abstract class Job
     public function maxTries()
     {
         return $this->payload()['maxTries'] ?? null;
+    }
+
+    /**
+     * Get the number of seconds to delay a failed job before retrying it.
+	 * 获取在重试失败作业之前延迟该作业的秒数
+     *
+     * @return int|null
+     */
+    public function delaySeconds()
+    {
+        return $this->payload()['delay'] ?? null;
     }
 
     /**
@@ -258,6 +311,7 @@ abstract class Job
 	 * 获取排队作业类的解析名称。
      *
      * Resolves the name of "wrapped" jobs such as class-based handlers.
+	 * 解析“包装”作业（如基于类的处理程序）的名称。
      *
      * @return string
      */

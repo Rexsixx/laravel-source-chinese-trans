@@ -28,9 +28,9 @@ trait SerializesModels
             ));
         }
 
-        return array_map(function ($p) {
-            return $p->getName();
-        }, $properties);
+        return array_values(array_filter(array_map(function ($p) {
+            return $p->isStatic() ? null : $p->getName();
+        }, $properties)));
     }
 
     /**
@@ -42,6 +42,10 @@ trait SerializesModels
     public function __wakeup()
     {
         foreach ((new ReflectionClass($this))->getProperties() as $property) {
+            if ($property->isStatic()) {
+                continue;
+            }
+
             $property->setValue($this, $this->getRestoredPropertyValue(
                 $this->getPropertyValue($property)
             ));

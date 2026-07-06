@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，测试，代码清洁器，有效功能名称通过测试
+ */
 
 /*
  * This file is part of Psy Shell.

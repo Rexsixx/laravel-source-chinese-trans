@@ -65,6 +65,8 @@ class PasswordBroker implements PasswordBrokerContract
         // First we will check to see if we found a user at the given credentials and
         // if we did not we will redirect back to this current URI with a piece of
         // "flash" data in the session to indicate to the developers the errors.
+		// 首先，我们会检查是否找到了与给定凭证匹配的用户。
+		// 如果没有找到，我们将返回到当前的 URI，并在会话中添加一段“提示”数据，以便向开发人员指示出现的错误。
         $user = $this->getUser($credentials);
 
         if (is_null($user)) {
@@ -74,6 +76,8 @@ class PasswordBroker implements PasswordBrokerContract
         // Once we have the reset token, we are ready to send the message out to this
         // user with a link to reset their password. We will then redirect back to
         // the current URI having nothing set in the session to indicate errors.
+		// 一旦我们获得了重置令牌，就可以向该用户发送消息，并附上一个重置密码的链接了。
+		// 然后,我们将重定向回当前URI,在会话中没有设置错误。
         $user->sendPasswordResetNotification(
             $this->tokens->create($user)
         );
@@ -94,6 +98,8 @@ class PasswordBroker implements PasswordBrokerContract
         // If the responses from the validate method is not a user instance, we will
         // assume that it is a redirect and simply return it from this method and
         // the user is properly redirected having an error message on the post.
+		// 如果验证方法的返回值不是用户实例，我们将假定这是一个重定向操作，
+		// 并直接从该方法中返回它，这样用户就会被正确地重定向，并且在页面上会显示错误信息。
         $user = $this->validateReset($credentials);
 
         if (! $user instanceof CanResetPasswordContract) {
@@ -105,6 +111,8 @@ class PasswordBroker implements PasswordBrokerContract
         // Once the reset has been validated, we'll call the given callback with the
         // new password. This gives the user an opportunity to store the password
         // in their persistent storage. Then we'll delete the token and return.
+		// 一旦重置操作得到验证，我们将调用给定的回调函数，并传入新的密码。
+		// 这给了用户一个在持久化存储中存储密码的机会。然后我们将删除令牌和返回。
         $callback($user, $password);
 
         $this->tokens->delete($user);
@@ -158,7 +166,7 @@ class PasswordBroker implements PasswordBrokerContract
     public function validateNewPassword(array $credentials)
     {
         if (isset($this->passwordValidator)) {
-            list($password, $confirm) = [
+            [$password, $confirm] = [
                 $credentials['password'],
                 $credentials['password_confirmation'],
             ];
@@ -180,12 +188,12 @@ class PasswordBroker implements PasswordBrokerContract
      */
     protected function validatePasswordWithDefaults(array $credentials)
     {
-        list($password, $confirm) = [
+        [$password, $confirm] = [
             $credentials['password'],
             $credentials['password_confirmation'],
         ];
 
-        return $password === $confirm && mb_strlen($password) >= 6;
+        return $password === $confirm && mb_strlen($password) >= 8;
     }
 
     /**

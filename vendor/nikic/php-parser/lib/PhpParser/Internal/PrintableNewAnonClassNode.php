@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，内部的，可打印的新Anon类节点
+ */
+
 namespace PhpParser\Internal;
 
 use PhpParser\Node;

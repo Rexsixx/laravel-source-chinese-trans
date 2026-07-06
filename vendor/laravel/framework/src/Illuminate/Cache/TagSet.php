@@ -11,7 +11,7 @@ class TagSet
 {
     /**
      * The cache store implementation.
-	 * 缓存存储实现。
+	 * 缓存存储实现
      *
      * @var \Illuminate\Contracts\Cache\Store
      */

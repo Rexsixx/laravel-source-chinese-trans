@@ -1,27 +1,27 @@
 
 =========================================================================
-最后更新：2022-06-20
+最后更新：2024-08-15
 说明：这里是版本升级记录
 =========================================================================
 当前版本：
-Laravel Version: 5.5.50
+Laravel Version: 5.8.38
 PHP Version: 7.2
-Frame Date: 2017-08-30
-Start Date: 2022-03-20
-Version2: v1.0.2
+Frame Date: 2019-02-26
+Start Date: 2024-08-15
+Version2: v1.0.3
 ===============================
 下一版本：
-Laravel Version: 5.6
+Laravel Version: 5.8
 PHP Version: 7.2
-Frame Date: 2018-02-08
-Start Date: 2022-08-25 计划启动
+Frame Date: 2019-02-26
+Start Date: 2024-08-08 计划启动
 Version2: v1.0.3
 ===============================
 上一版本：
-Laravel Version: 5.5.50
+Laravel Version: 5.7.29
 PHP Version: 7.2
-Frame Date: 2017-08-30
-Start Date: 2022-03-20
+Frame Date: 2018-09-04
+Start Date: 2024-02-15
 Version2: v1.0.2
 ===============================
 主要版本与php要求：

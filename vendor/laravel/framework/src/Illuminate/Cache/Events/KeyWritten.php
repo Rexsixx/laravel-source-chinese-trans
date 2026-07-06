@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，事件，主键写入
+ * Illuminate，缓存，事件，密钥写入
  */
 
 namespace Illuminate\Cache\Events;
@@ -16,12 +16,12 @@ class KeyWritten extends CacheEvent
     public $value;
 
     /**
-     * The number of minutes the key should be valid.
-	 * 密钥应该有效的分钟数
+     * The number of seconds the key should be valid.
+	 * 密钥有效的秒数
      *
-     * @var int
+     * @var int|null
      */
-    public $minutes;
+    public $seconds;
 
     /**
      * Create a new event instance.
@@ -29,15 +29,15 @@ class KeyWritten extends CacheEvent
      *
      * @param  string  $key
      * @param  mixed  $value
-     * @param  int  $minutes
+     * @param  int|null  $seconds
      * @param  array  $tags
      * @return void
      */
-    public function __construct($key, $value, $minutes, $tags = [])
+    public function __construct($key, $value, $seconds = null, $tags = [])
     {
         parent::__construct($key, $tags);
 
         $this->value = $value;
-        $this->minutes = $minutes;
+        $this->seconds = $seconds;
     }
 }

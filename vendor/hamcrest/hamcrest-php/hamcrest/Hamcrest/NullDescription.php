@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，零描述
+ */
+
 namespace Hamcrest;
 
 /*

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，载入程序，Mo File 加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,25 +22,29 @@ use Symfony\Component\Translation\Exception\InvalidResourceException;
 class MoFileLoader extends FileLoader
 {
     /**
-     * Magic used for validating the format of a MO file as well as
+     * Magic used for validating the format of an MO file as well as
      * detecting if the machine used to create that file was little endian.
+	 * 用于验证MO文件格式，以及检测创建该文件所用的机器是否为小端序。
      */
-    const MO_LITTLE_ENDIAN_MAGIC = 0x950412de;
+    public const MO_LITTLE_ENDIAN_MAGIC = 0x950412DE;
 
     /**
-     * Magic used for validating the format of a MO file as well as
+     * Magic used for validating the format of an MO file as well as
      * detecting if the machine used to create that file was big endian.
+	 * 用于验证MO文件格式的魔法,以及检测用于创建该文件的机器是否非常大。
      */
-    const MO_BIG_ENDIAN_MAGIC = 0xde120495;
+    public const MO_BIG_ENDIAN_MAGIC = 0xDE120495;
 
     /**
-     * The size of the header of a MO file in bytes.
+     * The size of the header of an MO file in bytes.
+	 * 一个MO文件的头的大小
      */
-    const MO_HEADER_SIZE = 28;
+    public const MO_HEADER_SIZE = 28;
 
     /**
      * Parses machine object (MO) format, independent of the machine's endian it
      * was created on. Both 32bit and 64bit systems are supported.
+	 * 解析机器对象(MO)格式,独立于机器的endian。支持32bit和64bit系统。
      *
      * {@inheritdoc}
      */
@@ -89,8 +96,8 @@ class MoFileLoader extends FileLoader
             fseek($stream, $offset);
             $singularId = fread($stream, $length);
 
-            if (false !== strpos($singularId, "\000")) {
-                list($singularId, $pluralId) = explode("\000", $singularId);
+            if (str_contains($singularId, "\000")) {
+                [$singularId, $pluralId] = explode("\000", $singularId);
             }
 
             fseek($stream, $offsetTranslated + $i * 8);
@@ -104,7 +111,7 @@ class MoFileLoader extends FileLoader
             fseek($stream, $offset);
             $translated = fread($stream, $length);
 
-            if (false !== strpos($translated, "\000")) {
+            if (str_contains($translated, "\000")) {
                 $translated = explode("\000", $translated);
             }
 

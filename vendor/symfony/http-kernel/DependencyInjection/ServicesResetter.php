@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，依赖注入，服务重置器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -11,6 +14,8 @@
 
 namespace Symfony\Component\HttpKernel\DependencyInjection;
 
+use Symfony\Contracts\Service\ResetInterface;
+
 /**
  * Resets provided services.
  *
@@ -19,7 +24,7 @@ namespace Symfony\Component\HttpKernel\DependencyInjection;
  *
  * @internal
  */
-class ServicesResetter
+class ServicesResetter implements ResetInterface
 {
     private $resettableServices;
     private $resetMethods;
@@ -33,7 +38,9 @@ class ServicesResetter
     public function reset()
     {
         foreach ($this->resettableServices as $id => $service) {
-            $service->{$this->resetMethods[$id]}();
+            foreach ((array) $this->resetMethods[$id] as $resetMethod) {
+                $service->$resetMethod();
+            }
         }
     }
 }

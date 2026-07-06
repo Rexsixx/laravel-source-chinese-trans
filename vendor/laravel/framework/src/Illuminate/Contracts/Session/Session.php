@@ -44,7 +44,7 @@ interface Session
      * Save the session data to storage.
 	 * 将会话数据保存到存储中
      *
-     * @return bool
+     * @return void
      */
     public function save();
 

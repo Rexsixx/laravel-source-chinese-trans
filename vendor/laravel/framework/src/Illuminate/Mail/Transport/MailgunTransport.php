@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，运送，Mailgun 运送
+ * Illuminate，电子邮件，传送，Mailgun 传送
  */
 
 namespace Illuminate\Mail\Transport;
@@ -27,15 +27,15 @@ class MailgunTransport extends Transport
     protected $key;
 
     /**
-     * The Mailgun domain.
-	 * Mailgun域
+     * The Mailgun email domain.
+	 * Mailgun电子邮件域
      *
      * @var string
      */
     protected $domain;
 
     /**
-     * The Mailgun API end-point.
+     * The Mailgun API endpoint.
 	 * Mailgun API端点
      *
      * @var string
@@ -72,10 +72,14 @@ class MailgunTransport extends Transport
 
         $message->setBcc([]);
 
-        $this->client->request(
+        $response = $this->client->request(
             'POST',
             "https://{$this->endpoint}/v3/{$this->domain}/messages.mime",
             $this->payload($message, $to)
+        );
+
+        $message->getHeaders()->addTextHeader(
+            'X-Mailgun-Message-ID', $this->getMessageId($response)
         );
 
         $this->sendPerformed($message);
@@ -114,6 +118,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the "to" payload field for the API request.
+	 * 获取API请求的“to”有效负载字段
      *
      * @param  \Swift_Mime_SimpleMessage  $message
      * @return string
@@ -136,6 +141,20 @@ class MailgunTransport extends Transport
     {
         return array_merge(
             (array) $message->getTo(), (array) $message->getCc(), (array) $message->getBcc()
+        );
+    }
+
+    /**
+     * Get the message ID from the response.
+	 * 从响应中获取消息ID
+     *
+     * @param  \Psr\Http\Message\ResponseInterface  $response
+     * @return string
+     */
+    protected function getMessageId($response)
+    {
+        return object_get(
+            json_decode($response->getBody()->getContents()), 'id'
         );
     }
 
@@ -183,5 +202,28 @@ class MailgunTransport extends Transport
     public function setDomain($domain)
     {
         return $this->domain = $domain;
+    }
+
+    /**
+     * Get the API endpoint being used by the transport.
+	 * 获取传输所使用的API端点
+     *
+     * @return string
+     */
+    public function getEndpoint()
+    {
+        return $this->endpoint;
+    }
+
+    /**
+     * Set the API endpoint being used by the transport.
+	 * 设置传输所使用的API端点
+     *
+     * @param  string  $endpoint
+     * @return string
+     */
+    public function setEndpoint($endpoint)
+    {
+        return $this->endpoint = $endpoint;
     }
 }

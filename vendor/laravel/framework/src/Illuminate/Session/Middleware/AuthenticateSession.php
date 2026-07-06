@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，会话，中间件，身份验证会话
+ * Illuminate，Session，中间件，身份验证会话
  */
 
 namespace Illuminate\Session\Middleware;

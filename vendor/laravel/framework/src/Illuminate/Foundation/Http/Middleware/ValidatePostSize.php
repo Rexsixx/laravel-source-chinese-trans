@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，中间件，验证Post大小
+ * Illuminate，基础，Http，中间件，验证 Post大小
  */
 
 namespace Illuminate\Foundation\Http\Middleware;

@@ -14,7 +14,7 @@ use function trait_exists;
 
 /**
  * Exception for invalid arguments provided to the instantiator
- * 提供给实例化器的无效参数异常
+ * 为实例化器提供的无效参数异常
  */
 class InvalidArgumentException extends BaseInvalidArgumentException implements ExceptionInterface
 {

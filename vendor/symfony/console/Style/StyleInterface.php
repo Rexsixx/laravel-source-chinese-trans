@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，样式，样式接口
+ */
 
 /*
  * This file is part of the Symfony package.

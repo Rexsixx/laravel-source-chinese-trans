@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，代码覆盖率，无意中覆盖代码异常
+ */
+
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -7,22 +11,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\CodeCoverage;
 
 /**
  * Exception that is raised when code is unintentionally covered.
  */
-class UnintentionallyCoveredCodeException extends RuntimeException
+final class UnintentionallyCoveredCodeException extends RuntimeException
 {
     /**
      * @var array
      */
     private $unintentionallyCoveredUnits = [];
 
-    /**
-     * @param array $unintentionallyCoveredUnits
-     */
     public function __construct(array $unintentionallyCoveredUnits)
     {
         $this->unintentionallyCoveredUnits = $unintentionallyCoveredUnits;
@@ -30,18 +30,12 @@ class UnintentionallyCoveredCodeException extends RuntimeException
         parent::__construct($this->toString());
     }
 
-    /**
-     * @return array
-     */
-    public function getUnintentionallyCoveredUnits()
+    public function getUnintentionallyCoveredUnits(): array
     {
         return $this->unintentionallyCoveredUnits;
     }
 
-    /**
-     * @return string
-     */
-    private function toString()
+    private function toString(): string
     {
         $message = '';
 

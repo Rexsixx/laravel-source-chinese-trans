@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，Http内核接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,8 +24,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 interface HttpKernelInterface
 {
-    const MASTER_REQUEST = 1;
-    const SUB_REQUEST = 2;
+    public const MASTER_REQUEST = 1;
+    public const SUB_REQUEST = 2;
 
     /**
      * Handles a Request to convert it to a Response.
@@ -30,10 +33,9 @@ interface HttpKernelInterface
      * When $catch is true, the implementation must catch all exceptions
      * and do its best to convert them to a Response instance.
      *
-     * @param Request $request A Request instance
-     * @param int     $type    The type of the request
-     *                         (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
-     * @param bool    $catch   Whether to catch exceptions or not
+     * @param int  $type  The type of the request
+     *                    (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
+     * @param bool $catch Whether to catch exceptions or not
      *
      * @return Response A Response instance
      *

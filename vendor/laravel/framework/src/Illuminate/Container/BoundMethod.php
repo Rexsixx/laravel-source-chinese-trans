@@ -21,6 +21,9 @@ class BoundMethod
      * @param  array  $parameters
      * @param  string|null  $defaultMethod
      * @return mixed
+     *
+     * @throws \ReflectionException
+     * @throws \InvalidArgumentException
      */
     public static function call($container, $callback, array $parameters = [], $defaultMethod = null)
     {
@@ -54,7 +57,8 @@ class BoundMethod
         // We will assume an @ sign is used to delimit the class name from the method
         // name. We will split on this @ sign and then build a callable array that
         // we can pass right back into the "call" method for dependency binding.
-        $method = count($segments) == 2
+		// 我们将假定“@”符号用于将类名与方法名分隔开来。
+        $method = count($segments) === 2
                         ? $segments[1] : $defaultMethod;
 
         if (is_null($method)) {
@@ -84,6 +88,8 @@ class BoundMethod
         // Here we need to turn the array callable into a Class@method string we can use to
         // examine the container and see if there are any method bindings for this given
         // method. If there are, we can call this method binding callback immediately.
+		// 在这里，我们需要将数组可调用对象转换为一个类方法字符串，以便我们能够使用它来检查容器，
+		// 并查看是否存在针对此给定方法的任何方法绑定。
         $method = static::normalizeMethod($callback);
 
         if ($container->hasMethodBinding($method)) {
@@ -115,6 +121,8 @@ class BoundMethod
      * @param  callable|string  $callback
      * @param  array  $parameters
      * @return array
+     *
+     * @throws \ReflectionException
      */
     protected static function getMethodDependencies($container, $callback, array $parameters = [])
     {
@@ -131,8 +139,10 @@ class BoundMethod
      * Get the proper reflection instance for the given callback.
 	 * 获取给定回调的适当反射实例
      *
-     * @param  callable|string  $callback
+     * @param  callable|string $callback
      * @return \ReflectionFunctionAbstract
+     *
+     * @throws \ReflectionException
      */
     protected static function getCallReflector($callback)
     {
@@ -153,7 +163,7 @@ class BoundMethod
      * @param  \ReflectionParameter  $parameter
      * @param  array  $parameters
      * @param  array  $dependencies
-     * @return mixed
+     * @return void
      */
     protected static function addDependencyForCallParameter($container, $parameter,
                                                             array &$parameters, &$dependencies)
@@ -162,6 +172,10 @@ class BoundMethod
             $dependencies[] = $parameters[$parameter->name];
 
             unset($parameters[$parameter->name]);
+        } elseif ($parameter->getClass() && array_key_exists($parameter->getClass()->name, $parameters)) {
+            $dependencies[] = $parameters[$parameter->getClass()->name];
+
+            unset($parameters[$parameter->getClass()->name]);
         } elseif ($parameter->getClass()) {
             $dependencies[] = $container->make($parameter->getClass()->name);
         } elseif ($parameter->isDefaultValueAvailable()) {

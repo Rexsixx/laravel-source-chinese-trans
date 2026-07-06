@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，Url 生成器
+ * Illuminate，路由选择，Url 生成器
  */
 
 namespace Illuminate\Routing;
@@ -10,13 +10,15 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Traits\Macroable;
+use Illuminate\Support\InteractsWithTime;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Contracts\Routing\UrlGenerator as UrlGeneratorContract;
 
 class UrlGenerator implements UrlGeneratorContract
 {
-    use Macroable;
+    use InteractsWithTime, Macroable;
 
     /**
      * The route collection.
@@ -35,6 +37,14 @@ class UrlGenerator implements UrlGeneratorContract
     protected $request;
 
     /**
+     * The asset root URL.
+	 * 资产根URL
+     *
+     * @var string
+     */
+    protected $assetRoot;
+
+    /**
      * The forced URL root.
 	 * 强制URL根
      *
@@ -43,8 +53,8 @@ class UrlGenerator implements UrlGeneratorContract
     protected $forcedRoot;
 
     /**
-     * The forced schema for URLs.
-	 * url的强制模式
+     * The forced scheme for URLs.
+	 * url的强制方案
      *
      * @var string
      */
@@ -59,12 +69,12 @@ class UrlGenerator implements UrlGeneratorContract
     protected $cachedRoot;
 
     /**
-     * A cached copy of the URL schema for the current request.
-	 * 当前请求的URL模式的缓存副本
+     * A cached copy of the URL scheme for the current request.
+	 * 当前请求的URL方案的缓存副本
      *
      * @var string|null
      */
-    protected $cachedSchema;
+    protected $cachedScheme;
 
     /**
      * The root namespace being applied to controller actions.
@@ -81,6 +91,14 @@ class UrlGenerator implements UrlGeneratorContract
      * @var callable
      */
     protected $sessionResolver;
+
+    /**
+     * The encryption key resolver callable.
+	 * 可调用的加密密钥解析器
+     *
+     * @var callable
+     */
+    protected $keyResolver;
 
     /**
      * The callback to use to format hosts.
@@ -112,11 +130,13 @@ class UrlGenerator implements UrlGeneratorContract
      *
      * @param  \Illuminate\Routing\RouteCollection  $routes
      * @param  \Illuminate\Http\Request  $request
+     * @param  string|null  $assetRoot
      * @return void
      */
-    public function __construct(RouteCollection $routes, Request $request)
+    public function __construct(RouteCollection $routes, Request $request, $assetRoot = null)
     {
         $this->routes = $routes;
+        $this->assetRoot = $assetRoot;
 
         $this->setRequest($request);
     }
@@ -192,6 +212,8 @@ class UrlGenerator implements UrlGeneratorContract
         // First we will check if the URL is already a valid URL. If it is we will not
         // try to generate a new one but will simply return the URL as is, which is
         // convenient since developers do not always have to check if it's valid.
+		// 首先，我们会检查该 URL 是否已经是一个有效的 URL。如果它是有效的，我们就不会尝试生成一个新的 URL，
+		// 而是直接返回该 URL 的原样，这样做比较方便，因为开发人员并不总是需要检查其是否有效。
         if ($this->isValidUrl($path)) {
             return $path;
         }
@@ -203,9 +225,11 @@ class UrlGenerator implements UrlGeneratorContract
         // Once we have the scheme we will compile the "tail" by collapsing the values
         // into a single string delimited by slashes. This just makes it convenient
         // for passing the array of parameters to this URL as a list of segments.
+		// 一旦我们制定了方案，就会通过将各项值合并成一个由斜杠分隔的字符串的方式来完成“尾部”部分的编写工作。
+		// 这使得将参数数组以一系列片段的形式传递到这个 URL 就变得十分方便了。
         $root = $this->formatRoot($this->formatScheme($secure));
 
-        list($path, $query) = $this->extractQueryString($path);
+        [$path, $query] = $this->extractQueryString($path);
 
         return $this->format(
             $root, '/'.trim($path.'/'.$tail, '/')
@@ -242,7 +266,11 @@ class UrlGenerator implements UrlGeneratorContract
         // Once we get the root URL, we will check to see if it contains an index.php
         // file in the paths. If it does, we will remove it since it is not needed
         // for asset paths, but only for routes to endpoints in the application.
-        $root = $this->formatRoot($this->formatScheme($secure));
+		// 一旦我们获取到根 URL，我们就会检查该路径中是否包含名为“index.php”的文件。
+		// 如果确实如此，我们将将其删除，因为它对于资产路径来说并非必需，而只是用于应用程序中到端点的路径。
+        $root = $this->assetRoot
+                    ? $this->assetRoot
+                    : $this->formatRoot($this->formatScheme($secure));
 
         return $this->removeIndex($root).'/'.trim($path, '/');
     }
@@ -273,6 +301,8 @@ class UrlGenerator implements UrlGeneratorContract
         // Once we get the root URL, we will check to see if it contains an index.php
         // file in the paths. If it does, we will remove it since it is not needed
         // for asset paths, but only for routes to endpoints in the application.
+		// 一旦我们获取到根 URL，我们就会检查该路径中是否包含名为“index.php”的文件。
+		// 如果确实如此，我们将将其删除，因为它对于资产路径来说并非必需，而只是用于应用程序中到端点的路径。
         $root = $this->formatRoot($this->formatScheme($secure), $root);
 
         return $this->removeIndex($root).'/'.trim($path, '/');
@@ -299,17 +329,83 @@ class UrlGenerator implements UrlGeneratorContract
      * @param  bool|null  $secure
      * @return string
      */
-    public function formatScheme($secure)
+    public function formatScheme($secure = null)
     {
         if (! is_null($secure)) {
             return $secure ? 'https://' : 'http://';
         }
 
-        if (is_null($this->cachedSchema)) {
-            $this->cachedSchema = $this->forceScheme ?: $this->request->getScheme().'://';
+        if (is_null($this->cachedScheme)) {
+            $this->cachedScheme = $this->forceScheme ?: $this->request->getScheme().'://';
         }
 
-        return $this->cachedSchema;
+        return $this->cachedScheme;
+    }
+
+    /**
+     * Create a signed route URL for a named route.
+	 * 为命名路由创建签名路由URL
+     *
+     * @param  string  $name
+     * @param  array  $parameters
+     * @param  \DateTimeInterface|\DateInterval|int|null  $expiration
+     * @param  bool  $absolute
+     * @return string
+     */
+    public function signedRoute($name, $parameters = [], $expiration = null, $absolute = true)
+    {
+        $parameters = $this->formatParameters($parameters);
+
+        if ($expiration) {
+            $parameters = $parameters + ['expires' => $this->availableAt($expiration)];
+        }
+
+        ksort($parameters);
+
+        $key = call_user_func($this->keyResolver);
+
+        return $this->route($name, $parameters + [
+            'signature' => hash_hmac('sha256', $this->route($name, $parameters, $absolute), $key),
+        ], $absolute);
+    }
+
+    /**
+     * Create a temporary signed route URL for a named route.
+	 * 为命名路由创建临时签名路由URL
+     *
+     * @param  string  $name
+     * @param  \DateTimeInterface|\DateInterval|int  $expiration
+     * @param  array  $parameters
+     * @param  bool  $absolute
+     * @return string
+     */
+    public function temporarySignedRoute($name, $expiration, $parameters = [], $absolute = true)
+    {
+        return $this->signedRoute($name, $parameters, $expiration, $absolute);
+    }
+
+    /**
+     * Determine if the given request has a valid signature.
+	 * 确定给定请求是否具有有效签名
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  bool  $absolute
+     * @return bool
+     */
+    public function hasValidSignature(Request $request, $absolute = true)
+    {
+        $url = $absolute ? $request->url() : '/'.$request->path();
+
+        $original = rtrim($url.'?'.Arr::query(
+            Arr::except($request->query(), 'signature')
+        ), '?');
+
+        $expires = $request->query('expires');
+
+        $signature = hash_hmac('sha256', $original, call_user_func($this->keyResolver));
+
+        return hash_equals($signature, (string) $request->query('signature', '')) &&
+               ! ($expires && Carbon::now()->getTimestamp() > $expires);
     }
 
     /**
@@ -354,7 +450,7 @@ class UrlGenerator implements UrlGeneratorContract
      * Get the URL to a controller action.
 	 * 获取一个控制器动作的URL
      *
-     * @param  string  $action
+     * @param  string|array  $action
      * @param  mixed   $parameters
      * @param  bool    $absolute
      * @return string
@@ -374,12 +470,16 @@ class UrlGenerator implements UrlGeneratorContract
      * Format the given controller action.
 	 * 格式化给定的控制器动作
      *
-     * @param  string  $action
+     * @param  string|array  $action
      * @return string
      */
     protected function formatAction($action)
     {
-        if ($this->rootNamespace && ! (strpos($action, '\\') === 0)) {
+        if (is_array($action)) {
+            $action = '\\'.implode('@', $action);
+        }
+
+        if ($this->rootNamespace && strpos($action, '\\') !== 0) {
             return $this->rootNamespace.'\\'.$action;
         } else {
             return trim($action, '\\');
@@ -430,7 +530,7 @@ class UrlGenerator implements UrlGeneratorContract
 	 * 获取请求的基URL
      *
      * @param  string  $scheme
-     * @param  string  $root
+     * @param  string|null  $root
      * @return string
      */
     public function formatRoot($scheme, $root = null)
@@ -454,18 +554,19 @@ class UrlGenerator implements UrlGeneratorContract
      *
      * @param  string  $root
      * @param  string  $path
+     * @param  \Illuminate\Routing\Route|null  $route
      * @return string
      */
-    public function format($root, $path)
+    public function format($root, $path, $route = null)
     {
         $path = '/'.trim($path, '/');
 
         if ($this->formatHostUsing) {
-            $root = call_user_func($this->formatHostUsing, $root);
+            $root = call_user_func($this->formatHostUsing, $root, $route);
         }
 
         if ($this->formatPathUsing) {
-            $path = call_user_func($this->formatPathUsing, $path);
+            $path = call_user_func($this->formatPathUsing, $path, $route);
         }
 
         return trim($root.$path, '/');
@@ -529,14 +630,14 @@ class UrlGenerator implements UrlGeneratorContract
      * Force the scheme for URLs.
 	 * 强制url的方案
      *
-     * @param  string  $schema
+     * @param  string  $scheme
      * @return void
      */
-    public function forceScheme($schema)
+    public function forceScheme($scheme)
     {
-        $this->cachedSchema = null;
+        $this->cachedScheme = null;
 
-        $this->forceScheme = $schema.'://';
+        $this->forceScheme = $scheme.'://';
     }
 
     /**
@@ -617,7 +718,7 @@ class UrlGenerator implements UrlGeneratorContract
         $this->request = $request;
 
         $this->cachedRoot = null;
-        $this->cachedSchema = null;
+        $this->cachedScheme = null;
         $this->routeGenerator = null;
     }
 
@@ -658,6 +759,20 @@ class UrlGenerator implements UrlGeneratorContract
     public function setSessionResolver(callable $sessionResolver)
     {
         $this->sessionResolver = $sessionResolver;
+
+        return $this;
+    }
+
+    /**
+     * Set the encryption key resolver.
+	 * 设置加密密钥解析器
+     *
+     * @param  callable  $keyResolver
+     * @return $this
+     */
+    public function setKeyResolver(callable $keyResolver)
+    {
+        $this->keyResolver = $keyResolver;
 
         return $this;
     }

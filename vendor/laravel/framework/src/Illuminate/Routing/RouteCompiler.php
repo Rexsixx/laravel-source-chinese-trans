@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由编译器
+ * Illuminate，路由选择，路由编译器
  */
 
 namespace Illuminate\Routing;
@@ -42,7 +42,7 @@ class RouteCompiler
         $uri = preg_replace('/\{(\w+?)\?\}/', '{$1}', $this->route->uri());
 
         return (
-            new SymfonyRoute($uri, $optionals, $this->route->wheres, [], $this->route->getDomain() ?: '')
+            new SymfonyRoute($uri, $optionals, $this->route->wheres, ['utf8' => true], $this->route->getDomain() ?: '')
         )->compile();
     }
 

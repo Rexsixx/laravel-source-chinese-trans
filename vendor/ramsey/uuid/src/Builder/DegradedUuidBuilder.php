@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，构建器，被降级的 Uuid构建器
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -20,6 +24,7 @@ use Ramsey\Uuid\DegradedUuid;
 
 /**
  * DegradedUuidBuilder builds instances of DegradedUuid
+ * DegradedUuidBuilder构建DegradedUuid实例
  */
 class DegradedUuidBuilder implements UuidBuilderInterface
 {

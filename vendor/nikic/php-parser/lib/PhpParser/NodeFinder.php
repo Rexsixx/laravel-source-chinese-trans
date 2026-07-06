@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点查找器
+ */
+
 namespace PhpParser;
 
 use PhpParser\NodeVisitor\FindingVisitor;

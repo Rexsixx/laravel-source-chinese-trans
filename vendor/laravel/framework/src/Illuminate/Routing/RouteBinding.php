@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由绑定
+ * Illuminate，路由选择，路由绑定
  */
 
 namespace Illuminate\Routing;
@@ -42,7 +42,9 @@ class RouteBinding
             // If the binding has an @ sign, we will assume it's being used to delimit
             // the class name from the bind method name. This allows for bindings
             // to run multiple bind methods in a single class for convenience.
-            list($class, $method) = Str::parseCallback($binding, 'bind');
+			// 如果绑定中带有“@”符号，我们就认为它是用于将类名与绑定方法名分隔开的。
+			// 这样可以方便地在一个类中调用多个绑定方法。
+            [$class, $method] = Str::parseCallback($binding, 'bind');
 
             $callable = [$container->make($class), $method];
 
@@ -69,6 +71,8 @@ class RouteBinding
             // For model binders, we will attempt to retrieve the models using the first
             // method on the model instance. If we cannot retrieve the models we'll
             // throw a not found exception otherwise we will return the instance.
+			// 对于模型绑定器而言，我们将尝试使用模型实例上的第一种方法来获取模型。
+			// 如果我们无法获取这些模型，就会抛出“未找到”的异常；否则，我们将返回该实例。
             $instance = $container->make($class);
 
             if ($model = $instance->resolveRouteBinding($value)) {
@@ -78,6 +82,8 @@ class RouteBinding
             // If a callback was supplied to the method we will call that to determine
             // what we should do when the model is not found. This just gives these
             // developer a little greater flexibility to decide what will happen.
+			// 如果为该方法提供了回调函数，我们将调用该回调函数来确定当模型未找到时我们应采取何种行动。
+			// 这只是为这些开发者提供了一定程度的灵活性，以便他们能够自行决定会发生何种情况。
             if ($callback instanceof Closure) {
                 return call_user_func($callback, $value);
             }

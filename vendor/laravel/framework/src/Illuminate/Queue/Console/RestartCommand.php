@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，控制台，重启命令
+ * Illuminate，队列，控制台，重启动命令
  */
 
 namespace Illuminate\Queue\Console;
@@ -14,7 +14,7 @@ class RestartCommand extends Command
 
     /**
      * The console command name.
-	 * 控制台名称
+	 * 控制台命令名
      *
      * @var string
      */

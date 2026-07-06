@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，碎片，片段处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\HttpKernel\Controller\ControllerReference;
 
 /**
  * Renders a URI that represents a resource fragment.
+ * 呈现表示资源片段的URI。
  *
  * This class handles the rendering of resource fragments that are included into
  * a main resource. The handling of the rendering is managed by specialized renderers.
@@ -33,11 +37,10 @@ class FragmentHandler
     private $requestStack;
 
     /**
-     * @param RequestStack                $requestStack The Request stack that controls the lifecycle of requests
-     * @param FragmentRendererInterface[] $renderers    An array of FragmentRendererInterface instances
-     * @param bool                        $debug        Whether the debug mode is enabled or not
+     * @param FragmentRendererInterface[] $renderers An array of FragmentRendererInterface instances
+     * @param bool                        $debug     Whether the debug mode is enabled or not
      */
-    public function __construct(RequestStack $requestStack, array $renderers = [], $debug = false)
+    public function __construct(RequestStack $requestStack, array $renderers = [], bool $debug = false)
     {
         $this->requestStack = $requestStack;
         foreach ($renderers as $renderer) {
@@ -63,7 +66,6 @@ class FragmentHandler
      *
      * @param string|ControllerReference $uri      A URI as a string or a ControllerReference instance
      * @param string                     $renderer The renderer name
-     * @param array                      $options  An array of options
      *
      * @return string|null The Response content or null when the Response is streamed
      *

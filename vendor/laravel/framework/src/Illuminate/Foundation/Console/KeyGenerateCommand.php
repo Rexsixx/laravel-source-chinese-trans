@@ -1,4 +1,7 @@
 <?php
+/**
+ * Illuminate，基础，控制台，密钥生成命令
+ */
 
 namespace Illuminate\Foundation\Console;
 
@@ -12,6 +15,7 @@ class KeyGenerateCommand extends Command
 
     /**
      * The name and signature of the console command.
+	 * console命令的名称和签名
      *
      * @var string
      */
@@ -21,6 +25,7 @@ class KeyGenerateCommand extends Command
 
     /**
      * The console command description.
+	 * console命令说明
      *
      * @var string
      */
@@ -28,6 +33,7 @@ class KeyGenerateCommand extends Command
 
     /**
      * Execute the console command.
+	 * 执行console命令
      *
      * @return void
      */
@@ -42,17 +48,20 @@ class KeyGenerateCommand extends Command
         // Next, we will replace the application key in the environment file so it is
         // automatically setup for this developer. This key gets generated using a
         // secure random byte generator and is later base64 encoded for storage.
+		// 接下来，我们将替换环境文件中的应用程序密钥，以便为该开发者自动完成设置。
+		// 此密钥是通过一个安全的随机字节生成器生成的，之后会进行 base64 编码以便存储。
         if (! $this->setKeyInEnvironmentFile($key)) {
             return;
         }
 
         $this->laravel['config']['app.key'] = $key;
 
-        $this->info("Application key [$key] set successfully.");
+        $this->info('Application key set successfully.');
     }
 
     /**
      * Generate a random key for the application.
+	 * 为应用程序生成一个随机密钥
      *
      * @return string
      */
@@ -65,6 +74,7 @@ class KeyGenerateCommand extends Command
 
     /**
      * Set the application key in the environment file.
+	 * 在环境文件中设置应用程序密钥
      *
      * @param  string  $key
      * @return bool
@@ -84,6 +94,7 @@ class KeyGenerateCommand extends Command
 
     /**
      * Write a new environment file with the given key.
+	 * 用给定的键写一个新的环境文件
      *
      * @param  string  $key
      * @return void
@@ -99,6 +110,7 @@ class KeyGenerateCommand extends Command
 
     /**
      * Get a regex pattern that will match env APP_KEY with any random key.
+	 * 获取一个将env APP_KEY与任意随机键匹配的正则表达式模式
      *
      * @return string
      */

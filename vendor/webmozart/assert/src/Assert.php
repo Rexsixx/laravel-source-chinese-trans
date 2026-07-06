@@ -1,4 +1,7 @@
 <?php
+/**
+ * Webmozart，Assert，Assert
+ */
 
 /*
  * This file is part of the webmozart/assert package.
@@ -25,6 +28,7 @@ use Traversable;
 
 /**
  * Efficient assertions to validate the input/output of your methods.
+ * 有效的断言来验证方法的输入/输出。
  *
  * @since  1.0
  *
@@ -1526,6 +1530,7 @@ class Assert
 
     /**
      * Inclusive min.
+	 * 包含的最小值
      *
      * @psalm-pure
      *
@@ -1550,6 +1555,7 @@ class Assert
 
     /**
      * Inclusive max.
+	 * 包含的最大值
      *
      * @psalm-pure
      *
@@ -1574,6 +1580,7 @@ class Assert
 
     /**
      * Inclusive , so Assert::lengthBetween('asd', 3, 5); passes the assertion.
+	 * 包括，所以Assert::lengthBetween('asd', 3,5)；传递断言。
      *
      * @psalm-pure
      *

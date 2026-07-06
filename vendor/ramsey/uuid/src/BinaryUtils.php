@@ -1,9 +1,13 @@
 <?php
+/**
+ * Ramsey，Uuid，二进制 Utils
+ */
 
 namespace Ramsey\Uuid;
 
 /**
  * Provides binary math utilities
+ * 提供二进制数学实用程序
  */
 class BinaryUtils
 {

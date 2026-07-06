@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，令牌警卫
+ * Illuminate，认证，令牌警卫
  */
 
 namespace Illuminate\Auth;
@@ -38,19 +38,36 @@ class TokenGuard implements Guard
     protected $storageKey;
 
     /**
+     * Indicates if the API token is hashed in storage.
+	 * 指示API令牌是否在存储中散列
+     *
+     * @var bool
+     */
+    protected $hash = false;
+
+    /**
      * Create a new authentication guard.
 	 * 创建一个新的身份验证保护
      *
      * @param  \Illuminate\Contracts\Auth\UserProvider  $provider
      * @param  \Illuminate\Http\Request  $request
+     * @param  string  $inputKey
+     * @param  string  $storageKey
+     * @param  bool  $hash
      * @return void
      */
-    public function __construct(UserProvider $provider, Request $request)
+    public function __construct(
+        UserProvider $provider,
+        Request $request,
+        $inputKey = 'api_token',
+        $storageKey = 'api_token',
+        $hash = false)
     {
+        $this->hash = $hash;
         $this->request = $request;
         $this->provider = $provider;
-        $this->inputKey = 'api_token';
-        $this->storageKey = 'api_token';
+        $this->inputKey = $inputKey;
+        $this->storageKey = $storageKey;
     }
 
     /**
@@ -64,6 +81,8 @@ class TokenGuard implements Guard
         // If we've already retrieved the user for the current request we can just
         // return it back immediately. We do not want to fetch the user data on
         // every call to this method because that would be tremendously slow.
+		// 如果我们在当前请求中已经获取到了用户信息，那么我们就可以直接将其立即返回。
+		// 我们不希望在每次调用这个方法的每一个调用中获取用户数据,因为这将非常缓慢。
         if (! is_null($this->user)) {
             return $this->user;
         }
@@ -73,9 +92,9 @@ class TokenGuard implements Guard
         $token = $this->getTokenForRequest();
 
         if (! empty($token)) {
-            $user = $this->provider->retrieveByCredentials(
-                [$this->storageKey => $token]
-            );
+            $user = $this->provider->retrieveByCredentials([
+                $this->storageKey => $this->hash ? hash('sha256', $token) : $token,
+            ]);
         }
 
         return $this->user = $user;

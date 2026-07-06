@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，请求警卫
+ * Illuminate，认证，请求警卫
  */
 
 namespace Illuminate\Auth;
@@ -57,6 +57,8 @@ class RequestGuard implements Guard
         // If we've already retrieved the user for the current request we can just
         // return it back immediately. We do not want to fetch the user data on
         // every call to this method because that would be tremendously slow.
+		// 如果我们已经为当前请求获取了用户，就可以直接立即将其返回。
+		// 我们不希望在每次调用这个方法的每一个调用中获取用户数据,因为这将非常缓慢。
         if (! is_null($this->user)) {
             return $this->user;
         }

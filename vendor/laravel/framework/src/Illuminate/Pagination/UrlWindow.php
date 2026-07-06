@@ -34,23 +34,23 @@ class UrlWindow
 	 * 创建一个新的URL窗口实例
      *
      * @param  \Illuminate\Contracts\Pagination\LengthAwarePaginator  $paginator
-     * @param  int  $onEachSide
      * @return array
      */
-    public static function make(PaginatorContract $paginator, $onEachSide = 3)
+    public static function make(PaginatorContract $paginator)
     {
-        return (new static($paginator))->get($onEachSide);
+        return (new static($paginator))->get();
     }
 
     /**
      * Get the window of URLs to be shown.
 	 * 获取要显示的url窗口
      *
-     * @param  int  $onEachSide
      * @return array
      */
-    public function get($onEachSide = 3)
+    public function get()
     {
+        $onEachSide = $this->paginator->onEachSide;
+
         if ($this->paginator->lastPage() < ($onEachSide * 2) + 6) {
             return $this->getSmallSlider();
         }
@@ -91,6 +91,8 @@ class UrlWindow
         // If the current page is very close to the beginning of the page range, we will
         // just render the beginning of the page range, followed by the last 2 of the
         // links in this list, since we will not have room to create a full slider.
+		// 如果当前页面距离页面范围的起始位置非常近，我们将只渲染页面范围的起始部分，
+		// 然后展示此列表中的最后两个链接，因为我们没有足够的空间来创建完整的滑块。
         if ($this->currentPage() <= $window) {
             return $this->getSliderTooCloseToBeginning($window);
         }
@@ -98,6 +100,8 @@ class UrlWindow
         // If the current page is close to the ending of the page range we will just get
         // this first couple pages, followed by a larger window of these ending pages
         // since we're too close to the end of the list to create a full on slider.
+		// 如果当前页面接近页面范围的末尾，我们将只获取这开头的几页，
+		// 然后接着显示这部分末尾的更多页面，因为此时我们距离列表的末尾太近了，无法创建完整的滑动窗口。
         elseif ($this->currentPage() > ($this->lastPage() - $window)) {
             return $this->getSliderTooCloseToEnding($window);
         }
@@ -105,6 +109,8 @@ class UrlWindow
         // If we have enough room on both sides of the current page to build a slider we
         // will surround it with both the beginning and ending caps, with this window
         // of pages in the middle providing a Google style sliding paginator setup.
+		// 如果当前页面两侧有足够的空间来设置滑动条，我们将用起始和结束的帽状装饰将其环绕起来，
+		// 而在中间的这一段页面区域则会形成类似谷歌风格的滑动分页器布局。
         return $this->getFullSlider($onEachSide);
     }
 

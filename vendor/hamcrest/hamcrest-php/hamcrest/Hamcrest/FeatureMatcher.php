@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，特性匹配程序
+ */
+
 namespace Hamcrest;
 
 /*
@@ -9,6 +13,7 @@ namespace Hamcrest;
  * Supporting class for matching a feature of an object. Implement
  * <code>featureValueOf()</code> in a subclass to pull out the feature to be
  * matched against.
+ * 支持类,用于匹配对象的特性。
  */
 abstract class FeatureMatcher extends TypeSafeDiagnosingMatcher
 {

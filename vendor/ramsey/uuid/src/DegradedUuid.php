@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，退化 Uuid
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -21,6 +25,7 @@ use Ramsey\Uuid\Exception\UnsupportedOperationException;
 
 /**
  * DegradedUuid represents an RFC 4122 UUID on 32-bit systems
+ * DegradedUuid在32位系统上表示RFC 4122 UUID。
  *
  * @see Uuid
  */

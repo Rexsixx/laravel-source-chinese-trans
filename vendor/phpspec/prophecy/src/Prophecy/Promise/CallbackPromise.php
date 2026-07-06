@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，承诺，回调承诺
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -15,9 +18,10 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\Prophecy\MethodProphecy;
 use Prophecy\Exception\InvalidArgumentException;
 use Closure;
+use ReflectionFunction;
 
 /**
- * Callback promise.
+ * Evaluates promise callback.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -44,21 +48,12 @@ class CallbackPromise implements PromiseInterface
         $this->callback = $callback;
     }
 
-    /**
-     * Evaluates promise callback.
-     *
-     * @param array          $args
-     * @param ObjectProphecy $object
-     * @param MethodProphecy $method
-     *
-     * @return mixed
-     */
     public function execute(array $args, ObjectProphecy $object, MethodProphecy $method)
     {
         $callback = $this->callback;
 
-        if ($callback instanceof Closure && method_exists('Closure', 'bind')) {
-            $callback = Closure::bind($callback, $object);
+        if ($callback instanceof Closure && method_exists('Closure', 'bind') && (new ReflectionFunction($callback))->getClosureThis() !== null) {
+            $callback = Closure::bind($callback, $object) ?? $this->callback;
         }
 
         return call_user_func($callback, $args, $object, $method);

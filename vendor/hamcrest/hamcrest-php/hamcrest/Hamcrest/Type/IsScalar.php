@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，类型，是否标量
+ */
+
 namespace Hamcrest\Type;
 
 /*
@@ -8,6 +12,7 @@ use Hamcrest\Core\IsTypeOf;
 
 /**
  * Tests whether the value is a scalar (boolean, integer, double, or string).
+ * 测试值是否为标量(布尔、整数、double或string)。
  */
 class IsScalar extends IsTypeOf
 {

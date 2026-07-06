@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，Mount 管理器
+ */
 
 namespace League\Flysystem;
 

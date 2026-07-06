@@ -14,6 +14,31 @@ use Illuminate\Database\Schema\Grammars\SQLiteGrammar as SchemaGrammar;
 class SQLiteConnection extends Connection
 {
     /**
+     * Create a new database connection instance.
+	 * 创建一个新的数据库连接实例
+     *
+     * @param  \PDO|\Closure     $pdo
+     * @param  string   $database
+     * @param  string   $tablePrefix
+     * @param  array    $config
+     * @return void
+     */
+    public function __construct($pdo, $database = '', $tablePrefix = '', array $config = [])
+    {
+        parent::__construct($pdo, $database, $tablePrefix, $config);
+
+        $enableForeignKeyConstraints = $this->getForeignKeyConstraintsConfigurationValue();
+
+        if ($enableForeignKeyConstraints === null) {
+            return;
+        }
+
+        $enableForeignKeyConstraints
+            ? $this->getSchemaBuilder()->enableForeignKeyConstraints()
+            : $this->getSchemaBuilder()->disableForeignKeyConstraints();
+    }
+
+    /**
      * Get the default query grammar instance.
 	 * 获取默认查询语法实例
      *
@@ -70,5 +95,16 @@ class SQLiteConnection extends Connection
     protected function getDoctrineDriver()
     {
         return new DoctrineDriver;
+    }
+
+    /**
+     * Get the database connection foreign key constraints configuration option.
+	 * 获取数据库连接外键约束配置选项
+     *
+     * @return bool|null
+     */
+    protected function getForeignKeyConstraintsConfigurationValue()
+    {
+        return $this->getConfig('foreign_key_constraints');
     }
 }

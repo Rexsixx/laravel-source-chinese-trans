@@ -76,20 +76,6 @@ abstract class MorphOneOrMany extends HasOneOrMany
     }
 
     /**
-     * Attach a model instance to the parent model.
-	 * 将模型实例附加到父模型上
-     *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    public function save(Model $model)
-    {
-        $model->setAttribute($this->getMorphType(), $this->morphClass);
-
-        return parent::save($model);
-    }
-
-    /**
      * Set the foreign ID and type for creating a related model.
 	 * 为创建相关模型设置外部ID和类型
      *
@@ -115,7 +101,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
     public function getRelationExistenceQuery(Builder $query, Builder $parentQuery, $columns = ['*'])
     {
         return parent::getRelationExistenceQuery($query, $parentQuery, $columns)->where(
-            $this->morphType, $this->morphClass
+            $query->qualifyColumn($this->getMorphType()), $this->morphClass
         );
     }
 

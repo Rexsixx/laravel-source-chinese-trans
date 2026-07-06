@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，漂亮打印机抽象
+ */
+
 namespace PhpParser;
 
 use PhpParser\Internal\DiffElem;

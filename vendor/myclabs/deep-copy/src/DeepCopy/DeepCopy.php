@@ -1,4 +1,7 @@
 <?php
+/**
+ * 深拷贝，Deep Copy
+ */
 
 namespace DeepCopy;
 
@@ -34,6 +37,7 @@ class DeepCopy
 
     /**
      * Filters to apply.
+	 * 使用过滤器
      *
      * @var array Array of ['filter' => Filter, 'matcher' => Matcher] pairs.
      */
@@ -41,6 +45,7 @@ class DeepCopy
 
     /**
      * Type Filters to apply.
+	 * 键入要应用的筛选器
      *
      * @var array Array of ['filter' => Filter, 'matcher' => Matcher] pairs.
      */
@@ -72,6 +77,7 @@ class DeepCopy
 
     /**
      * If enabled, will not throw an exception when coming across an uncloneable property.
+	 * 如果启用,将不会抛出一个异常,当它遇到一个不可处理的属性时。
      *
      * @param $skipUncloneable
      *

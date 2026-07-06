@@ -1,4 +1,7 @@
 <?php
+/**
+ * League，Flysystem，适配器，抽象 Ftp适配器
+ */
 
 namespace League\Flysystem\Adapter;
 
@@ -78,6 +81,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * True to enable timestamps for FTP servers that return unix-style listings.
+	 * True为返回unix样式列表的FTP服务器启用时间戳
      *
      * @var bool
      */
@@ -96,6 +100,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the config.
+	 * 设置配置
      *
      * @param array $config
      *
@@ -120,6 +125,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the host.
+	 * 返回主机
      *
      * @return string
      */

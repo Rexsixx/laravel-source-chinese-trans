@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，计时命令，时间访问
+ */
 
 /*
  * This file is part of Psy Shell.

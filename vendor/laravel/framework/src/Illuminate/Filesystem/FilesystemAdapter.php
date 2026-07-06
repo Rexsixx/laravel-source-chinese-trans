@@ -7,6 +7,7 @@ namespace Illuminate\Filesystem;
 
 use RuntimeException;
 use Illuminate\Http\File;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Illuminate\Support\Carbon;
@@ -14,6 +15,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use League\Flysystem\AdapterInterface;
 use PHPUnit\Framework\Assert as PHPUnit;
+use League\Flysystem\FileExistsException;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Cached\CachedAdapter;
@@ -23,6 +25,7 @@ use League\Flysystem\Adapter\Local as LocalAdapter;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Contracts\Filesystem\Cloud as CloudFilesystemContract;
 use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
+use Illuminate\Contracts\Filesystem\FileExistsException as ContractFileExistsException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException as ContractFileNotFoundException;
 
 /**
@@ -54,28 +57,40 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
      * Assert that the given file exists.
 	 * 断言给定的文件存在
      *
-     * @param  string  $path
-     * @return void
+     * @param  string|array  $path
+     * @return $this
      */
     public function assertExists($path)
     {
-        PHPUnit::assertTrue(
-            $this->exists($path), "Unable to find a file at path [{$path}]."
-        );
+        $paths = Arr::wrap($path);
+
+        foreach ($paths as $path) {
+            PHPUnit::assertTrue(
+                $this->exists($path), "Unable to find a file at path [{$path}]."
+            );
+        }
+
+        return $this;
     }
 
     /**
      * Assert that the given file does not exist.
 	 * 断言给定的文件不存在
      *
-     * @param  string  $path
-     * @return void
+     * @param  string|array  $path
+     * @return $this
      */
     public function assertMissing($path)
     {
-        PHPUnit::assertFalse(
-            $this->exists($path), "Found unexpected file at path [{$path}]."
-        );
+        $paths = Arr::wrap($path);
+
+        foreach ($paths as $path) {
+            PHPUnit::assertFalse(
+                $this->exists($path), "Found unexpected file at path [{$path}]."
+            );
+        }
+
+        return $this;
     }
 
     /**
@@ -134,7 +149,11 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
     {
         $response = new StreamedResponse;
 
-        $disposition = $response->headers->makeDisposition($disposition, $name ?? basename($path));
+        $filename = $name ?? basename($path);
+
+        $disposition = $response->headers->makeDisposition(
+            $disposition, $filename, $this->fallbackName($filename)
+        );
 
         $response->headers->replace($headers + [
             'Content-Type' => $this->mimeType($path),
@@ -143,7 +162,7 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
         ]);
 
         $response->setCallback(function () use ($path) {
-            $stream = $this->driver->readStream($path);
+            $stream = $this->readStream($path);
             fpassthru($stream);
             fclose($stream);
         });
@@ -166,6 +185,18 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
     }
 
     /**
+     * Convert the string to ASCII characters that are equivalent to the given name.
+	 * 将字符串转换为与给定名称等效的ASCII字符
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function fallbackName($name)
+    {
+        return str_replace('%', '', Str::ascii($name));
+    }
+
+    /**
      * Write the contents of a file.
 	 * 写入文件的内容
      *
@@ -183,6 +214,8 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
         // If the given contents is actually a file or uploaded file instance than we will
         // automatically store the file using a stream. This provides a convenient path
         // for the developer to store streams without managing them manually in code.
+		// 如果给定的内容实际上是一个文件或上传的文件实例，那么我们将使用流自动存储该文件。
+		// 这为开发者提供了一种便捷的方式来存储流，而无需在代码中手动进行管理。
         if ($contents instanceof File ||
             $contents instanceof UploadedFile) {
             return $this->putFile($path, $contents, $options);
@@ -219,11 +252,13 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
      */
     public function putFileAs($path, $file, $name, $options = [])
     {
-        $stream = fopen($file->getRealPath(), 'r+');
+        $stream = fopen($file->getRealPath(), 'r');
 
         // Next, we will format the path of the file and store the file using a stream since
         // they provide better performance than alternatives. Once we write the file this
         // stream will get closed automatically by us so the developer doesn't have to.
+		// 接下来，我们将对文件路径进行格式化，并使用流来存储该文件，因为这种方式比其他方法具有更高的性能。
+		// 一旦我们完成文件的写入操作，这个流就会自动由我们关闭，这样开发人员就无需手动关闭了。
         $result = $this->put(
             $path = trim($path.'/'.$name, '/'), $stream, $options
         );
@@ -257,7 +292,7 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
      *
      * @param  string  $path
      * @param  string  $visibility
-     * @return void
+     * @return bool
      */
     public function setVisibility($path, $visibility)
     {
@@ -271,7 +306,7 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
      * @param  string  $path
      * @param  string  $data
      * @param  string  $separator
-     * @return int
+     * @return bool
      */
     public function prepend($path, $data, $separator = PHP_EOL)
     {
@@ -289,7 +324,7 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
      * @param  string  $path
      * @param  string  $data
      * @param  string  $separator
-     * @return int
+     * @return bool
      */
     public function append($path, $data, $separator = PHP_EOL)
     {
@@ -394,6 +429,8 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
      *
      * @param  string  $path
      * @return string
+     *
+     * @throws \RuntimeException
      */
     public function url($path)
     {
@@ -405,6 +442,8 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
 
         if (method_exists($adapter, 'getUrl')) {
             return $adapter->getUrl($path);
+        } elseif (method_exists($this->driver, 'getUrl')) {
+            return $this->driver->getUrl($path);
         } elseif ($adapter instanceof AwsS3Adapter) {
             return $this->getAwsUrl($adapter, $path);
         } elseif ($adapter instanceof RackspaceAdapter) {
@@ -413,6 +452,30 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
             return $this->getLocalUrl($path);
         } else {
             throw new RuntimeException('This driver does not support retrieving URLs.');
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function readStream($path)
+    {
+        try {
+            return $this->driver->readStream($path) ?: null;
+        } catch (FileNotFoundException $e) {
+            throw new ContractFileNotFoundException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function writeStream($path, $resource, array $options = [])
+    {
+        try {
+            return $this->driver->writeStream($path, $resource, $options);
+        } catch (FileExistsException $e) {
+            throw new ContractFileExistsException($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -429,6 +492,8 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
         // If an explicit base URL has been set on the disk configuration then we will use
         // it as the base URL instead of the default path. This allows the developer to
         // have full control over the base path for this filesystem's generated URLs.
+		// 如果在磁盘配置中已设置了明确的基 URL，那么我们将使用该基 URL 而非默认路径作为基础 URL。
+		// 这使得开发人员能够完全掌控此文件系统生成的 URL 的基础路径。
         if (! is_null($url = $this->driver->getConfig()->get('url'))) {
             return $this->concatPathToUrl($url, $adapter->getPathPrefix().$path);
         }
@@ -465,6 +530,8 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
         // If an explicit base URL has been set on the disk configuration then we will use
         // it as the base URL instead of the default path. This allows the developer to
         // have full control over the base path for this filesystem's generated URLs.
+		// 如果在磁盘配置中已设置了明确的基 URL，那么我们将使用该基 URL 而非默认路径作为基础 URL。
+		// 这使得开发人员能够完全掌控此文件系统生成的 URL 的基础路径。
         if ($config->has('url')) {
             return $this->concatPathToUrl($config->get('url'), $path);
         }
@@ -474,6 +541,7 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
         // If the path contains "storage/public", it probably means the developer is using
         // the default disk to generate the path instead of the "public" disk like they
         // are really supposed to use. We will remove the public from this path here.
+		// 如果路径中包含“storage/public”，这很可能意味着开发者使用的是默认磁盘来生成该路径，而并非他们本应使用的“public”磁盘。
         if (Str::contains($path, '/storage/public/')) {
             return Str::replaceFirst('/public/', '/', $path);
         }
@@ -489,6 +557,8 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
      * @param  \DateTimeInterface  $expiration
      * @param  array  $options
      * @return string
+     *
+     * @throws \RuntimeException
      */
     public function temporaryUrl($path, $expiration, array $options = [])
     {
@@ -621,7 +691,7 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
 
     /**
      * Create a directory.
-	 * 创建目录
+	 * 创建一个目录
      *
      * @param  string  $path
      * @return bool
@@ -708,7 +778,7 @@ class FilesystemAdapter implements FilesystemContract, CloudFilesystemContract
                 return AdapterInterface::VISIBILITY_PRIVATE;
         }
 
-        throw new InvalidArgumentException('Unknown visibility: '.$visibility);
+        throw new InvalidArgumentException("Unknown visibility: {$visibility}");
     }
 
     /**

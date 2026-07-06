@@ -8,8 +8,24 @@ namespace Illuminate\Contracts\Queue;
 interface Job
 {
     /**
+     * Get the job identifier.
+	 * 获取作业标识符
+     *
+     * @return string
+     */
+    public function getJobId();
+
+    /**
+     * Get the decoded body of the job.
+	 * 拿到解码后的文件
+     *
+     * @return array
+     */
+    public function payload();
+
+    /**
      * Fire the job.
-	 * 点火作业
+	 * 点火这个作业
      *
      * @return void
      */
@@ -17,12 +33,23 @@ interface Job
 
     /**
      * Release the job back into the queue.
-	 * 将作业释放回队列
+	 * 将作业释放回队列。
+     *
+     * Accepts a delay specified in seconds.
+	 * 接受以秒为单位指定的延迟。
      *
      * @param  int   $delay
-     * @return mixed
+     * @return void
      */
     public function release($delay = 0);
+
+    /**
+     * Determine if the job was released back into the queue.
+	 * 确定作业是否被释放回队列
+     *
+     * @return bool
+     */
+    public function isReleased();
 
     /**
      * Delete the job from the queue.
@@ -57,13 +84,29 @@ interface Job
     public function attempts();
 
     /**
-     * Process an exception that caused the job to fail.
-	 * 处理导致作业失败的异常
+     * Determine if the job has been marked as a failure.
+	 * 确定作业是否已被标记为失败
      *
-     * @param  \Throwable  $e
+     * @return bool
+     */
+    public function hasFailed();
+
+    /**
+     * Mark the job as "failed".
+	 * 把这项工作标记为“失败”
+     *
      * @return void
      */
-    public function failed($e);
+    public function markAsFailed();
+
+    /**
+     * Delete the job, call the "failed" method, and raise the failed job event.
+	 * 删除作业，调用“failed”方法，并引发失败的作业事件。
+     *
+     * @param  \Throwable|null $e
+     * @return void
+     */
+    public function fail($e = null);
 
     /**
      * Get the number of times to attempt a job.
@@ -83,7 +126,7 @@ interface Job
 
     /**
      * Get the timestamp indicating when the job should timeout.
-	 * 获取指示作业何时应该超时的时间戳。
+	 * 获取指示作业何时应超时的时间戳
      *
      * @return int|null
      */

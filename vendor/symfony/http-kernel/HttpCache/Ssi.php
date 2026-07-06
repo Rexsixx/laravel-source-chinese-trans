@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，Http缓存，Ssi
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Ssi implements the SSI capabilities to Request and Response instances.
+ * Ssi实现了Ssi的请求和响应实例。
  *
  * @author Sebastian Krebs <krebs.seb@gmail.com>
  */
@@ -34,7 +38,7 @@ class Ssi extends AbstractSurrogate
      */
     public function addSurrogateControl(Response $response)
     {
-        if (false !== strpos($response->getContent(), '<!--#include')) {
+        if (str_contains($response->getContent(), '<!--#include')) {
             $response->headers->set('Surrogate-Control', 'content="SSI/1.0"');
         }
     }

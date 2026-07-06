@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，容器
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -30,6 +34,7 @@ class Container
 
     /**
      * Store of mock objects
+	 * 模拟对象存储
      *
      * @var array
      */
@@ -37,6 +42,7 @@ class Container
 
     /**
      * Order number of allocation
+	 * 分配顺序
      *
      * @var int
      */
@@ -44,6 +50,7 @@ class Container
 
     /**
      * Current ordered number
+	 * 当前顺序数
      *
      * @var int
      */

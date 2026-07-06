@@ -105,8 +105,8 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      *
      * @param  string  $key
      * @param  array   $replace
-     * @param  string  $locale
-     * @return string|array|null
+     * @param  string|null  $locale
+     * @return string|array
      */
     public function trans($key, array $replace = [], $locale = null)
     {
@@ -121,15 +121,18 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      * @param  array   $replace
      * @param  string|null  $locale
      * @param  bool  $fallback
-     * @return string|array|null
+     * @return string|array
      */
     public function get($key, array $replace = [], $locale = null, $fallback = true)
     {
-        list($namespace, $group, $item) = $this->parseKey($key);
+        [$namespace, $group, $item] = $this->parseKey($key);
 
         // Here we will get the locale that should be used for the language line. If one
         // was not passed, we will use the default locales which was given to us when
         // the translator was instantiated. Then, we can load the lines and return.
+		// 在这里，我们将获取用于该语言行的应使用的具体语言环境。
+		// 如果未成功传递，则我们将使用在翻译器实例化时为其设定的默认语言环境。
+		// 然后，我们可以加载这些行并返回。
         $locales = $fallback ? $this->localeArray($locale)
                              : [$locale ?: $this->locale];
 
@@ -144,11 +147,9 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // If the line doesn't exist, we will return back the key which was requested as
         // that will be quick to spot in the UI if language keys are wrong or missing
         // from the application's language files. Otherwise we can return the line.
-        if (isset($line)) {
-            return $line;
-        }
-
-        return $key;
+		// 如果该行不存在，我们将返回用户所请求的键，因为如果应用程序的语言文件中存在语言键错误或缺失的情况，
+		// 那么在用户界面中很容易就能发现这一点。否则，我们可以返回该行内容。
+        return $line ?? $key;
     }
 
     /**
@@ -157,8 +158,8 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      *
      * @param  string  $key
      * @param  array  $replace
-     * @param  string  $locale
-     * @return string|array|null
+     * @param  string|null  $locale
+     * @return string|array
      */
     public function getFromJson($key, array $replace = [], $locale = null)
     {
@@ -167,6 +168,8 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // For JSON translations, there is only one file per locale, so we will simply load
         // that file and then we will be ready to check the array for the key. These are
         // only one level deep so we do not need to do any fancy searching through it.
+		// 对于 JSON 格式的翻译，每个语言环境只有一份文件，所以我们只需加载该文件，然后就可以开始检查数组中的键值了。
+		// 这些层级只有这么一层，所以我们无需对其进行任何复杂的搜索操作。
         $this->load('*', '*', $locale);
 
         $line = $this->loaded['*']['*'][$locale][$key] ?? null;
@@ -174,6 +177,8 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // If we can't find a translation for the JSON key, we will attempt to translate it
         // using the typical translation file. This way developers can always just use a
         // helper such as __ instead of having to pick between trans or __ with views.
+		// 如果无法为 JSON 键找到对应的翻译，我们将尝试使用常规的翻译文件来进行翻译。
+		// 这样一来，开发人员就可以直接使用诸如“__”这样的辅助符号，而无需在视图中选择“trans”或“__”之间的差异。
         if (! isset($line)) {
             $fallback = $this->get($key, $replace, $locale);
 
@@ -192,7 +197,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      * @param  string  $key
      * @param  int|array|\Countable  $number
      * @param  array   $replace
-     * @param  string  $locale
+     * @param  string|null  $locale
      * @return string
      */
     public function transChoice($key, $number, array $replace = [], $locale = null)
@@ -207,7 +212,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      * @param  string  $key
      * @param  int|array|\Countable  $number
      * @param  array   $replace
-     * @param  string  $locale
+     * @param  string|null  $locale
      * @return string
      */
     public function choice($key, $number, array $replace = [], $locale = null)
@@ -219,6 +224,8 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // If the given "number" is actually an array or countable we will simply count the
         // number of elements in an instance. This allows developers to pass an array of
         // items without having to count it on their end first which gives bad syntax.
+		// 如果给定的“数字”实际上是一个数组或可计数的序列，我们将直接计算该实例中的元素数量。
+		// 这使得开发人员能够直接传递一个项目数组，而无需在自己这边先进行计数操作，这样就不会出现不规范的语法问题了。
         if (is_array($number) || $number instanceof Countable) {
             $number = count($number);
         }
@@ -262,6 +269,10 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         if (is_string($line)) {
             return $this->makeReplacements($line, $replace);
         } elseif (is_array($line) && count($line) > 0) {
+            foreach ($line as $key => $value) {
+                $line[$key] = $this->makeReplacements($value, $replace);
+            }
+
             return $line;
         }
     }
@@ -319,7 +330,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
     public function addLines(array $lines, $locale, $namespace = '*')
     {
         foreach ($lines as $key => $value) {
-            list($group, $item) = explode('.', $key, 2);
+            [$group, $item] = explode('.', $key, 2);
 
             Arr::set($this->loaded, "$namespace.$group.$locale.$item", $value);
         }
@@ -343,6 +354,8 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // The loader is responsible for returning the array of language lines for the
         // given namespace, group, and locale. We'll set the lines in this array of
         // lines that have already been loaded so that we can easily access them.
+		// 加载器的任务是返回给定命名空间、组和区域设置下的语言行数组。
+		// 我们将对这些已加载的线条数组中的线条进行排序，以便能够方便地访问它们。
         $lines = $this->loader->load($locale, $group, $namespace);
 
         $this->loaded[$namespace][$group][$locale] = $lines;
@@ -457,7 +470,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the default locale being used.
-	 * 获取正在使用的默认区域设置
+	 * 获取正在使用的默认区域设置。
      *
      * @return string
      */
@@ -510,5 +523,17 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
     public function setFallback($fallback)
     {
         $this->fallback = $fallback;
+    }
+
+    /**
+     * Set the loaded translation groups.
+	 * 设置加载的翻译组
+     *
+     * @param  array  $loaded
+     * @return void
+     */
+    public function setLoaded(array $loaded)
+    {
+        $this->loaded = $loaded;
     }
 }

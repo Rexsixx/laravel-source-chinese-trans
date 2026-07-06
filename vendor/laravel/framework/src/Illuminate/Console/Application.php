@@ -12,6 +12,7 @@ use Illuminate\Contracts\Container\Container;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -19,6 +20,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Illuminate\Contracts\Console\Application as ApplicationContract;
 
 class Application extends SymfonyApplication implements ApplicationContract
@@ -41,7 +43,7 @@ class Application extends SymfonyApplication implements ApplicationContract
 
     /**
      * The console application bootstrappers.
-	 * 控制台应用程序引导器
+	 * 控制台应用程序引导程序
      *
      * @var array
      */
@@ -49,7 +51,7 @@ class Application extends SymfonyApplication implements ApplicationContract
 
     /**
      * The Event Dispatcher.
-	 * 事件调度员
+	 * 事件调度程序
      *
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
@@ -87,7 +89,7 @@ class Application extends SymfonyApplication implements ApplicationContract
             $input = $input ?: new ArgvInput
         );
 
-        $this->events->fire(
+        $this->events->dispatch(
             new Events\CommandStarting(
                 $commandName, $input, $output = $output ?: new ConsoleOutput
             )
@@ -95,7 +97,7 @@ class Application extends SymfonyApplication implements ApplicationContract
 
         $exitCode = parent::run($input, $output);
 
-        $this->events->fire(
+        $this->events->dispatch(
             new Events\CommandFinished($commandName, $input, $output, $exitCode)
         );
 
@@ -178,22 +180,49 @@ class Application extends SymfonyApplication implements ApplicationContract
      *
      * @param  string  $command
      * @param  array  $parameters
-     * @param  \Symfony\Component\Console\Output\OutputInterface  $outputBuffer
+     * @param  \Symfony\Component\Console\Output\OutputInterface|null  $outputBuffer
      * @return int
+     *
+     * @throws \Symfony\Component\Console\Exception\CommandNotFoundException
      */
     public function call($command, array $parameters = [], $outputBuffer = null)
     {
-        $parameters = collect($parameters)->prepend($command);
+        [$command, $input] = $this->parseCommand($command, $parameters);
 
-        $this->lastOutput = $outputBuffer ?: new BufferedOutput;
+        if (! $this->has($command)) {
+            throw new CommandNotFoundException(sprintf('The command "%s" does not exist.', $command));
+        }
 
-        $this->setCatchExceptions(false);
+        return $this->run(
+            $input, $this->lastOutput = $outputBuffer ?: new BufferedOutput
+        );
+    }
 
-        $result = $this->run(new ArrayInput($parameters->toArray()), $this->lastOutput);
+    /**
+     * Parse the incoming Artisan command and its input.
+	 * 解析传入的Artisan命令及其输入
+     *
+     * @param  string  $command
+     * @param  array  $parameters
+     * @return array
+     */
+    protected function parseCommand($command, $parameters)
+    {
+        if (is_subclass_of($command, SymfonyCommand::class)) {
+            $callingClass = true;
 
-        $this->setCatchExceptions(true);
+            $command = $this->laravel->make($command)->getName();
+        }
 
-        return $result;
+        if (! isset($callingClass) && empty($parameters)) {
+            $command = $this->getCommandName($input = new StringInput($command));
+        } else {
+            array_unshift($parameters, $command);
+
+            $input = new ArrayInput($parameters);
+        }
+
+        return [$command, $input ?? null];
     }
 
     /**
@@ -204,7 +233,9 @@ class Application extends SymfonyApplication implements ApplicationContract
      */
     public function output()
     {
-        return $this->lastOutput ? $this->lastOutput->fetch() : '';
+        return $this->lastOutput && method_exists($this->lastOutput, 'fetch')
+                        ? $this->lastOutput->fetch()
+                        : '';
     }
 
     /**
@@ -266,8 +297,8 @@ class Application extends SymfonyApplication implements ApplicationContract
     }
 
     /**
-     * Get the default input definitions for the applications.
-	 * 获取应用程序的默认输入定义
+     * Get the default input definition for the application.
+	 * 获取应用程序的默认输入定义。
      *
      * This is used to add the --env option to every available command.
      *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，过程，可执行程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\Process;
 
 /**
  * Generic executable finder.
+ * 通用可执行程序查找器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
@@ -50,8 +54,8 @@ class ExecutableFinder
      */
     public function find($name, $default = null, array $extraDirs = [])
     {
-        if (ini_get('open_basedir')) {
-            $searchPath = array_merge(explode(\PATH_SEPARATOR, ini_get('open_basedir')), $extraDirs);
+        if (\ini_get('open_basedir')) {
+            $searchPath = array_merge(explode(\PATH_SEPARATOR, \ini_get('open_basedir')), $extraDirs);
             $dirs = [];
             foreach ($searchPath as $path) {
                 // Silencing against https://bugs.php.net/69240

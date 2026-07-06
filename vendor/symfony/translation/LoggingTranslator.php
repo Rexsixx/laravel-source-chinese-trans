@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，日志翻译
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -35,7 +38,7 @@ class LoggingTranslator implements TranslatorInterface, LegacyTranslatorInterfac
     public function __construct($translator, LoggerInterface $logger)
     {
         if (!$translator instanceof LegacyTranslatorInterface && !$translator instanceof TranslatorInterface) {
-            throw new \TypeError(sprintf('Argument 1 passed to %s() must be an instance of %s, %s given.', __METHOD__, TranslatorInterface::class, \is_object($translator) ? \get_class($translator) : \gettype($translator)));
+            throw new \TypeError(sprintf('Argument 1 passed to "%s()" must be an instance of "%s", "%s" given.', __METHOD__, TranslatorInterface::class, \is_object($translator) ? \get_class($translator) : \gettype($translator)));
         }
         if (!$translator instanceof TranslatorBagInterface || !$translator instanceof LocaleAwareInterface) {
             throw new InvalidArgumentException(sprintf('The Translator "%s" must implement TranslatorInterface, TranslatorBagInterface and LocaleAwareInterface.', \get_class($translator)));
@@ -63,7 +66,7 @@ class LoggingTranslator implements TranslatorInterface, LegacyTranslatorInterfac
      */
     public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
     {
-        @trigger_error(sprintf('The "%s()" method is deprecated since Symfony 4.2, use the trans() one instead with a "%%count%%" parameter.', __METHOD__), E_USER_DEPRECATED);
+        @trigger_error(sprintf('The "%s()" method is deprecated since Symfony 4.2, use the trans() one instead with a "%%count%%" parameter.', __METHOD__), \E_USER_DEPRECATED);
 
         if ($this->translator instanceof TranslatorInterface) {
             $trans = $this->translator->trans($id, ['%count%' => $number] + $parameters, $domain, $locale);
@@ -108,6 +111,7 @@ class LoggingTranslator implements TranslatorInterface, LegacyTranslatorInterfac
 
     /**
      * Gets the fallback locales.
+	 * 获取备用区域设置
      *
      * @return array The fallback locales
      */
@@ -122,6 +126,7 @@ class LoggingTranslator implements TranslatorInterface, LegacyTranslatorInterfac
 
     /**
      * Passes through all unknown calls onto the translator object.
+	 * 将所有未知调用传递给translator对象
      */
     public function __call($method, $args)
     {
@@ -130,12 +135,9 @@ class LoggingTranslator implements TranslatorInterface, LegacyTranslatorInterfac
 
     /**
      * Logs for missing translations.
-     *
-     * @param string      $id
-     * @param string|null $domain
-     * @param string|null $locale
+	 * 缺少翻译的日志
      */
-    private function log($id, $domain, $locale)
+    private function log(?string $id, ?string $domain, ?string $locale)
     {
         if (null === $domain) {
             $domain = 'messages';

@@ -1,18 +1,19 @@
 <?php
 /**
- * 配置，广播
+ * 配置，broadcasting
  */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Broadcaster	默认广播员
+    | Default Broadcaster	默认广播程序
     |--------------------------------------------------------------------------
     |
     | This option controls the default broadcaster that will be used by the
     | framework when an event needs to be broadcast. You may set this to
     | any of the connections defined in the "connections" array below.
+	| 在下面的“连接”数组中定义的任何连接。
     |
     | Supported: "pusher", "redis", "log", "null"
     |
@@ -28,6 +29,8 @@ return [
     | Here you may define all of the broadcast connections that will be used
     | to broadcast events to other systems or over websockets. Samples of
     | each available type of connection are provided inside this array.
+	| 在这里,您可以定义所有的广播连接,这些连接将被用来将事件传播到其他系统或网络接口。
+	| 在这个数组中提供了每个可用类型的连接的示例。
     |
     */
 
@@ -40,7 +43,7 @@ return [
             'app_id' => env('PUSHER_APP_ID'),
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
-                'encrypted' => true,
+                'useTLS' => true,
             ],
         ],
 

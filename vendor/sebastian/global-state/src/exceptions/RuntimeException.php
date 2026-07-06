@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，GlobalState，运行时异常
+ */
+
 /*
  * This file is part of sebastian/global-state.
  *

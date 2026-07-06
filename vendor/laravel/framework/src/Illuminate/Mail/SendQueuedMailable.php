@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，发送队列可发送
+ * Illuminate，电子邮件，发送队列可邮寄的
  */
 
 namespace Illuminate\Mail;
@@ -14,7 +14,7 @@ class SendQueuedMailable
      * The mailable message instance.
 	 * 可邮件消息实例
      *
-     * @var Mailable
+     * @var \Illuminate\Contracts\Mail\Mailable
      */
     public $mailable;
 
@@ -83,6 +83,21 @@ class SendQueuedMailable
         if (method_exists($this->mailable, 'failed')) {
             $this->mailable->failed($e);
         }
+    }
+
+    /**
+     * Get the retry delay for the mailable object.
+	 * 获取可邮寄对象的重试延迟
+     *
+     * @return mixed
+     */
+    public function retryAfter()
+    {
+        if (! method_exists($this->mailable, 'retryAfter') && ! isset($this->mailable->retryAfter)) {
+            return;
+        }
+
+        return $this->mailable->retryAfter ?? $this->mailable->retryAfter();
     }
 
     /**

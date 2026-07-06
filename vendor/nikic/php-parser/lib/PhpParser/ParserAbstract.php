@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，解析器
+ */
+
 namespace PhpParser;
 
 /*

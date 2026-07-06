@@ -9,7 +9,7 @@ trait RedirectsUsers
 {
     /**
      * Get the post register / login redirect path.
-	 * 获取post register / login重定向路径
+	 * 获取post register/login重定向路径
      *
      * @return string
      */

@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，字符串描述测试
+ */
+
 namespace Hamcrest;
 
 use PHPUnit\Framework\TestCase;

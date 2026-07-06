@@ -11,7 +11,7 @@ interface Factory
      * Get a filesystem implementation.
 	 * 获取文件系统实现
      *
-     * @param  string  $name
+     * @param  string|null  $name
      * @return \Illuminate\Contracts\Filesystem\Filesystem
      */
     public function disk($name = null);

@@ -19,24 +19,28 @@ trait InteractsWithAuthentication
      */
     public function actingAs(UserContract $user, $driver = null)
     {
-        $this->be($user, $driver);
-
-        return $this;
+        return $this->be($user, $driver);
     }
 
     /**
      * Set the currently logged in user for the application.
-	 * 为应用程序设置当前登录的用户
+	 * 禁用模拟控制台输出
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string|null  $driver
-     * @return void
+     * @return $this
      */
     public function be(UserContract $user, $driver = null)
     {
+        if (isset($user->wasRecentlyCreated) && $user->wasRecentlyCreated) {
+            $user->wasRecentlyCreated = false;
+        }
+
         $this->app['auth']->guard($driver)->setUser($user);
 
         $this->app['auth']->shouldUse($driver);
+
+        return $this;
     }
 
     /**

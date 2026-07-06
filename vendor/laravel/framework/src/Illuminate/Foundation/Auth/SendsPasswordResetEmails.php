@@ -35,12 +35,14 @@ trait SendsPasswordResetEmails
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we
         // need to show to the user. Finally, we'll send out a proper response.
+		// 我们将向该用户发送密码重置链接。在尝试发送链接之后，我们会查看响应结果，
+		// 然后确定需要向用户展示的提示信息。最后，我们会给出恰当的回复。
         $response = $this->broker()->sendResetLink(
-            $request->only('email')
+            $this->credentials($request)
         );
 
         return $response == Password::RESET_LINK_SENT
-                    ? $this->sendResetLinkResponse($response)
+                    ? $this->sendResetLinkResponse($request, $response)
                     : $this->sendResetLinkFailedResponse($request, $response);
     }
 
@@ -53,17 +55,30 @@ trait SendsPasswordResetEmails
      */
     protected function validateEmail(Request $request)
     {
-        $this->validate($request, ['email' => 'required|email']);
+        $request->validate(['email' => 'required|email']);
+    }
+
+    /**
+     * Get the needed authentication credentials from the request.
+	 * 从请求中获取所需的身份验证凭据
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        return $request->only('email');
     }
 
     /**
      * Get the response for a successful password reset link.
 	 * 获取成功的密码重置链接的响应
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  string  $response
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-    protected function sendResetLinkResponse($response)
+    protected function sendResetLinkResponse(Request $request, $response)
     {
         return back()->with('status', trans($response));
     }
@@ -78,9 +93,9 @@ trait SendsPasswordResetEmails
      */
     protected function sendResetLinkFailedResponse(Request $request, $response)
     {
-        return back()->withErrors(
-            ['email' => trans($response)]
-        );
+        return back()
+                ->withInput($request->only('email'))
+                ->withErrors(['email' => trans($response)]);
     }
 
     /**

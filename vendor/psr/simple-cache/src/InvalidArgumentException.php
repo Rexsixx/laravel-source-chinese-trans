@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psr，简单缓存，无效参数异常
+ */
 
 namespace Psr\SimpleCache;
 

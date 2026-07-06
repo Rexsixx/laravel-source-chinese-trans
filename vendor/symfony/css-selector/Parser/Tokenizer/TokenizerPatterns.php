@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Css选择器，分析程序，Tokenizer，Tokenizer模式
+ */
 
 /*
  * This file is part of the Symfony package.

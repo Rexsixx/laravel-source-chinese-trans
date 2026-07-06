@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，复数的词缀
+ * Illuminate，支持，构成复数的词缀
  */
 
 namespace Illuminate\Support;
@@ -49,6 +49,8 @@ class Pluralizer
         'pokemon',
         'police',
         'rain',
+        'recommended',
+        'related',
         'rice',
         'series',
         'sheep',
@@ -69,7 +71,7 @@ class Pluralizer
      */
     public static function plural($value, $count = 2)
     {
-        if ((int) $count === 1 || static::uncountable($value)) {
+        if ((int) abs($count) === 1 || static::uncountable($value)) {
             return $value;
         }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，关系
+ * Illuminate，数据库，Eloquent，关系，Relation
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -12,13 +12,14 @@ use Illuminate\Support\Traits\Macroable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Traits\ForwardsCalls;
 
 /**
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
 abstract class Relation
 {
-    use Macroable {
+    use ForwardsCalls, Macroable {
         __call as macroCall;
     }
 
@@ -95,6 +96,8 @@ abstract class Relation
         // When resetting the relation where clause, we want to shift the first element
         // off of the bindings, leaving only the constraints that the developers put
         // as "extra" on the relationships, and not original relation constraints.
+		// 在重置关系条件子句时，我们需要将第一个元素从绑定列表中移除，
+		// 只保留开发人员在关系中添加的“额外”约束条件，而不再保留原始的关系约束条件。
         try {
             return call_user_func($callback);
         } finally {
@@ -179,9 +182,13 @@ abstract class Relation
      */
     public function touch()
     {
-        $column = $this->getRelated()->getUpdatedAtColumn();
+        $model = $this->getRelated();
 
-        $this->rawUpdate([$column => $this->getRelated()->freshTimestampString()]);
+        if (! $model::isIgnoringTouch()) {
+            $this->rawUpdate([
+                $model->getUpdatedAtColumn() => $model->freshTimestampString(),
+            ]);
+        }
     }
 
     /**
@@ -216,6 +223,7 @@ abstract class Relation
 	 * 为内部关系存在性查询添加约束。
      *
      * Essentially, these queries compare on column names like whereColumn.
+	 * 本质上,这些查询与类似在哪里的列名称进行比较。
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
@@ -241,7 +249,7 @@ abstract class Relation
     {
         return collect($models)->map(function ($value) use ($key) {
             return $key ? $value->getAttribute($key) : $value->getKey();
-        })->values()->unique()->sort()->all();
+        })->values()->unique(null, true)->sort()->all();
     }
 
     /**
@@ -312,6 +320,7 @@ abstract class Relation
 
     /**
      * Get the name of the "updated at" column.
+	 * 获取“更新时间”列的名称
      *
      * @return string
      */
@@ -322,12 +331,30 @@ abstract class Relation
 
     /**
      * Get the name of the related model's "updated at" column.
+	 * 获取相关模型的“更新时间”列的名称
      *
      * @return string
      */
     public function relatedUpdatedAt()
     {
         return $this->related->getUpdatedAtColumn();
+    }
+
+    /**
+     * Get the name of the "where in" method for eager loading.
+	 * 获取即时加载的“where in”方法的名称
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  string  $key
+     * @return string
+     */
+    protected function whereInMethod(Model $model, $key)
+    {
+        return $model->getKeyName() === last(explode('.', $key))
+                    && $model->getIncrementing()
+                    && in_array($model->getKeyType(), ['int', 'integer'])
+                        ? 'whereIntegerInRaw'
+                        : 'whereIn';
     }
 
     /**
@@ -377,9 +404,7 @@ abstract class Relation
      */
     public static function getMorphedModel($alias)
     {
-        return array_key_exists($alias, self::$morphMap)
-                        ? self::$morphMap[$alias]
-                        : null;
+        return static::$morphMap[$alias] ?? null;
     }
 
     /**
@@ -396,7 +421,7 @@ abstract class Relation
             return $this->macroCall($method, $parameters);
         }
 
-        $result = $this->query->{$method}(...$parameters);
+        $result = $this->forwardCallTo($this->query, $method, $parameters);
 
         if ($result === $this->query) {
             return $this;

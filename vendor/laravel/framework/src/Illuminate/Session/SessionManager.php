@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，会话，会话管理器
+ * Illuminate，Session，会话处理程序
  */
 
 namespace Illuminate\Session;
@@ -10,7 +10,7 @@ use Illuminate\Support\Manager;
 class SessionManager extends Manager
 {
     /**
-     * Call a custom driver creator.
+     * Call a custom driver creator
 	 * 调用自定义驱动程序创建者
      *
      * @param  string  $driver
@@ -103,7 +103,7 @@ class SessionManager extends Manager
 
     /**
      * Create an instance of the APC session driver.
-	 * 创建APC会话驱动程序的实例。
+	 * 创建APC会话驱动程序的实例
      *
      * @return \Illuminate\Session\Store
      */
@@ -138,6 +138,17 @@ class SessionManager extends Manager
         );
 
         return $this->buildSession($handler);
+    }
+
+    /**
+     * Create an instance of the DynamoDB session driver.
+	 * 创建DynamoDB会话驱动程序的实例
+     *
+     * @return \Illuminate\Session\Store
+     */
+    protected function createDynamodbDriver()
+    {
+        return $this->createCacheBased('dynamodb');
     }
 
     /**
@@ -178,11 +189,9 @@ class SessionManager extends Manager
      */
     protected function buildSession($handler)
     {
-        if ($this->app['config']['session.encrypt']) {
-            return $this->buildEncryptedSession($handler);
-        }
-
-        return new Store($this->app['config']['session.cookie'], $handler);
+        return $this->app['config']['session.encrypt']
+                ? $this->buildEncryptedSession($handler)
+                : new Store($this->app['config']['session.cookie'], $handler);
     }
 
     /**

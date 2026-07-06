@@ -1,11 +1,12 @@
 <?php
 /**
- * Illuminate，会话，存储
+ * Illuminate，Session，存储
  */
 
 namespace Illuminate\Session;
 
 use Closure;
+use stdClass;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use SessionHandlerInterface;
@@ -132,7 +133,7 @@ class Store implements Session
      * Save the session data to storage.
 	 * 将会话数据保存到存储中
      *
-     * @return bool
+     * @return void
      */
     public function save()
     {
@@ -184,6 +185,18 @@ class Store implements Session
     }
 
     /**
+     * Get a subset of the session data.
+	 * 获取会话数据的子集
+     *
+     * @param  array  $keys
+     * @return array
+     */
+    public function only(array $keys)
+    {
+        return Arr::only($this->attributes, $keys);
+    }
+
+    /**
      * Checks if a key exists.
 	 * 检查是否存在密钥
      *
@@ -192,8 +205,10 @@ class Store implements Session
      */
     public function exists($key)
     {
-        return ! collect(is_array($key) ? $key : func_get_args())->contains(function ($key) {
-            return ! Arr::exists($this->attributes, $key);
+        $placeholder = new stdClass;
+
+        return ! collect(is_array($key) ? $key : func_get_args())->contains(function ($key) use ($placeholder) {
+            return $this->get($key, $placeholder) === $placeholder;
         });
     }
 
@@ -229,7 +244,7 @@ class Store implements Session
 	 * 获取给定键的值，然后忘记它。
      *
      * @param  string  $key
-     * @param  string  $default
+     * @param  string|null  $default
      * @return mixed
      */
     public function pull($key, $default = null)
@@ -241,7 +256,7 @@ class Store implements Session
      * Determine if the session contains old input.
 	 * 确定会话是否包含旧的输入
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @return bool
      */
     public function hasOldInput($key = null)
@@ -255,7 +270,7 @@ class Store implements Session
      * Get the requested item from the flashed input array.
 	 * 从闪过的输入数组中获取请求的项
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  mixed   $default
      * @return mixed
      */
@@ -513,7 +528,9 @@ class Store implements Session
      */
     public function regenerate($destroy = false)
     {
-        return $this->migrate($destroy);
+        return tap($this->migrate($destroy), function () {
+            $this->regenerateToken();
+        });
     }
 
     /**

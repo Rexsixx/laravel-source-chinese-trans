@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，验证，规则，不属于
+ * Illuminate，验证，规则，Not In
  */
 
 namespace Illuminate\Validation\Rules;

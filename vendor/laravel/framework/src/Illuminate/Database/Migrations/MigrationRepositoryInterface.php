@@ -8,8 +8,8 @@ namespace Illuminate\Database\Migrations;
 interface MigrationRepositoryInterface
 {
     /**
-     * Get the ran migrations for a given package.
-	 * 获取给定包的已运行迁移
+     * Get the completed migrations.
+	 * 获取完成的迁移
      *
      * @return array
      */
@@ -33,11 +33,19 @@ interface MigrationRepositoryInterface
     public function getLast();
 
     /**
+     * Get the completed migrations with their batch numbers.
+	 * 获取已完成的迁移及其批号
+     *
+     * @return array
+     */
+    public function getMigrationBatches();
+
+    /**
      * Log that a migration was run.
 	 * 运行迁移的日志
      *
      * @param  string  $file
-     * @param  int     $batch
+     * @param  int  $batch
      * @return void
      */
     public function log($file, $batch);

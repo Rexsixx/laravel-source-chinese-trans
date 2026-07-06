@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，管道，管道
+ * Illuminate，契约，管道，Pipeline
  */
 
 namespace Illuminate\Contracts\Pipeline;
@@ -20,7 +20,7 @@ interface Pipeline
 
     /**
      * Set the stops of the pipeline.
-	 * 设置管道的止水带
+	 * 设置管道停止
      *
      * @param  dynamic|array  $stops
      * @return $this

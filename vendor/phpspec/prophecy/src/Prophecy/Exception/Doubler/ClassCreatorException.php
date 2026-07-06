@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，异常，倍频器，类创建者异常
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -17,6 +20,10 @@ class ClassCreatorException extends \RuntimeException implements DoublerExceptio
 {
     private $node;
 
+    /**
+     * @param string    $message
+     * @param ClassNode $node
+     */
     public function __construct($message, ClassNode $node)
     {
         parent::__construct($message);
@@ -24,6 +31,9 @@ class ClassCreatorException extends \RuntimeException implements DoublerExceptio
         $this->node = $node;
     }
 
+    /**
+     * @return ClassNode
+     */
     public function getClassNode()
     {
         return $this->node;

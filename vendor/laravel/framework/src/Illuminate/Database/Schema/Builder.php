@@ -1,12 +1,14 @@
 <?php
 /**
- * Illuminate，数据库，架构，生成器
+ * Illuminate，数据库，架构，构建器
  */
 
 namespace Illuminate\Database\Schema;
 
 use Closure;
 use LogicException;
+use RuntimeException;
+use Doctrine\DBAL\Types\Type;
 use Illuminate\Database\Connection;
 
 class Builder
@@ -79,7 +81,7 @@ class Builder
     {
         $table = $this->connection->getTablePrefix().$table;
 
-        return count($this->connection->select(
+        return count($this->connection->selectFromWriteConnection(
             $this->grammar->compileTableExists(), [$table]
         )) > 0;
     }
@@ -144,7 +146,7 @@ class Builder
      */
     public function getColumnListing($table)
     {
-        $results = $this->connection->select($this->grammar->compileColumnListing(
+        $results = $this->connection->selectFromWriteConnection($this->grammar->compileColumnListing(
             $this->connection->getTablePrefix().$table
         ));
 
@@ -223,6 +225,32 @@ class Builder
     }
 
     /**
+     * Drop all views from the database.
+	 * 从数据库中删除所有视图
+     *
+     * @return void
+     *
+     * @throws \LogicException
+     */
+    public function dropAllViews()
+    {
+        throw new LogicException('This database driver does not support dropping all views.');
+    }
+
+    /**
+     * Drop all types from the database.
+	 * 从数据库中删除所有类型
+     *
+     * @return void
+     *
+     * @throws \LogicException
+     */
+    public function dropAllTypes()
+    {
+        throw new LogicException('This database driver does not support dropping all types.');
+    }
+
+    /**
      * Rename a table on the schema.
 	 * 重命名模式上的表
      *
@@ -285,11 +313,44 @@ class Builder
      */
     protected function createBlueprint($table, Closure $callback = null)
     {
+        $prefix = $this->connection->getConfig('prefix_indexes')
+                    ? $this->connection->getConfig('prefix')
+                    : '';
+
         if (isset($this->resolver)) {
-            return call_user_func($this->resolver, $table, $callback);
+            return call_user_func($this->resolver, $table, $callback, $prefix);
         }
 
-        return new Blueprint($table, $callback);
+        return new Blueprint($table, $callback, $prefix);
+    }
+
+    /**
+     * Register a custom Doctrine mapping type.
+	 * 注册一个自定义Doctrine映射类型
+     *
+     * @param  string  $class
+     * @param  string  $name
+     * @param  string  $type
+     * @return void
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function registerCustomDoctrineType($class, $name, $type)
+    {
+        if (! $this->connection->isDoctrineAvailable()) {
+            throw new RuntimeException(
+                'Registering a custom Doctrine type requires Doctrine DBAL (doctrine/dbal).'
+            );
+        }
+
+        if (! Type::hasType($name)) {
+            Type::addType($name, $class);
+
+            $this->connection
+                ->getDoctrineSchemaManager()
+                ->getDatabasePlatform()
+                ->registerDoctrineTypeMapping($type, $name);
+        }
     }
 
     /**

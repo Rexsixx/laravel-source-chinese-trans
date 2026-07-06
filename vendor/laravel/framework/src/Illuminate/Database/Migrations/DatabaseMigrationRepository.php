@@ -48,8 +48,8 @@ class DatabaseMigrationRepository implements MigrationRepositoryInterface
     }
 
     /**
-     * Get the ran migrations.
-	 * 获取运行迁移
+     * Get the completed migrations.
+	 * 获取完成的迁移
      *
      * @return array
      */
@@ -91,11 +91,25 @@ class DatabaseMigrationRepository implements MigrationRepositoryInterface
     }
 
     /**
+     * Get the completed migrations with their batch numbers.
+	 * 获取已完成的迁移及其批号
+     *
+     * @return array
+     */
+    public function getMigrationBatches()
+    {
+        return $this->table()
+                ->orderBy('batch', 'asc')
+                ->orderBy('migration', 'asc')
+                ->pluck('batch', 'migration')->all();
+    }
+
+    /**
      * Log that a migration was run.
 	 * 运行迁移的日志
      *
      * @param  string  $file
-     * @param  int     $batch
+     * @param  int  $batch
      * @return void
      */
     public function log($file, $batch)
@@ -153,6 +167,8 @@ class DatabaseMigrationRepository implements MigrationRepositoryInterface
             // The migrations table is responsible for keeping track of which of the
             // migrations have actually run for the application. We'll create the
             // table to hold the migration file's path as well as the batch ID.
+			// “迁移表”用于记录应用程序中哪些迁移操作已经实际执行完毕。
+			// 我们将创建一个表格，用于存储迁移文件的路径以及批次编号。
             $table->increments('id');
             $table->string('migration');
             $table->integer('batch');

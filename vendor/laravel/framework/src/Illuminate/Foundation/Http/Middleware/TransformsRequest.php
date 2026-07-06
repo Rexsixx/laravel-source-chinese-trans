@@ -11,14 +11,6 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class TransformsRequest
 {
     /**
-     * The additional attributes passed to the middleware.
-	 * 传递给中间件的附加属性
-     *
-     * @var array
-     */
-    protected $attributes = [];
-
-    /**
      * Handle an incoming request.
 	 * 处理传入请求
      *
@@ -26,10 +18,8 @@ class TransformsRequest
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, ...$attributes)
+    public function handle($request, Closure $next)
     {
-        $this->attributes = $attributes;
-
         $this->clean($request);
 
         return $next($request);
@@ -48,14 +38,14 @@ class TransformsRequest
 
         if ($request->isJson()) {
             $this->cleanParameterBag($request->json());
-        } else {
+        } elseif ($request->request !== $request->query) {
             $this->cleanParameterBag($request->request);
         }
     }
 
     /**
      * Clean the data in the parameter bag.
-	 * 清理参数袋中的数据。
+	 * 清理参数包中的数据
      *
      * @param  \Symfony\Component\HttpFoundation\ParameterBag  $bag
      * @return void
@@ -70,12 +60,13 @@ class TransformsRequest
 	 * 清除给定数组中的数据
      *
      * @param  array  $data
+     * @param  string  $keyPrefix
      * @return array
      */
-    protected function cleanArray(array $data)
+    protected function cleanArray(array $data, $keyPrefix = '')
     {
-        return collect($data)->map(function ($value, $key) {
-            return $this->cleanValue($key, $value);
+        return collect($data)->map(function ($value, $key) use ($keyPrefix) {
+            return $this->cleanValue($keyPrefix.$key, $value);
         })->all();
     }
 
@@ -90,7 +81,7 @@ class TransformsRequest
     protected function cleanValue($key, $value)
     {
         if (is_array($value)) {
-            return $this->cleanArray($value);
+            return $this->cleanArray($value, $key.'.');
         }
 
         return $this->transform($key, $value);

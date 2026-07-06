@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，重定向控制器
+ * Illuminate，路由选择，重定向控制器
  */
 
 namespace Illuminate\Routing;
@@ -18,7 +18,7 @@ class RedirectController extends Controller
      */
     public function __invoke(...$args)
     {
-        list($destination, $status) = array_slice($args, -2);
+        [$destination, $status] = array_slice($args, -2);
 
         return new RedirectResponse($destination, $status);
     }

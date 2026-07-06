@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psr，简单缓存，缓存接口
+ */
 
 namespace Psr\SimpleCache;
 

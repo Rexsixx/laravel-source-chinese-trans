@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，探测器，迭代器，日期范围过滤器迭代器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +21,7 @@ use Symfony\Component\Finder\Comparator\DateComparator;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class DateRangeFilterIterator extends FilterIterator
+class DateRangeFilterIterator extends \FilterIterator
 {
     private $comparators = [];
 
@@ -38,6 +41,7 @@ class DateRangeFilterIterator extends FilterIterator
      *
      * @return bool true if the value should be kept, false otherwise
      */
+    #[\ReturnTypeWillChange]
     public function accept()
     {
         $fileinfo = $this->current();

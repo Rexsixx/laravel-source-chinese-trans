@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，事件调度程序，事件签署者调度程序接口
+ */
 
 /*
  * This file is part of the Symfony package.

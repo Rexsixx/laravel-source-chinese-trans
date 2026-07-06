@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，匹配，Uri 验证器
+ * Illuminate，路由选择，匹配，Uri 验证器
  */
 
 namespace Illuminate\Routing\Matching;
@@ -20,7 +20,7 @@ class UriValidator implements ValidatorInterface
      */
     public function matches(Route $route, Request $request)
     {
-        $path = $request->path() == '/' ? '/' : '/'.$request->path();
+        $path = $request->path() === '/' ? '/' : '/'.$request->path();
 
         return preg_match($route->getCompiled()->getRegex(), rawurldecode($path));
     }

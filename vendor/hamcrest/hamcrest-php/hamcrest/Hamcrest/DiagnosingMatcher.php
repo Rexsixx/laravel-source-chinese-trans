@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，诊断匹配程序
+ */
+
 namespace Hamcrest;
 
 /*
@@ -7,6 +11,7 @@ namespace Hamcrest;
 
 /**
  * Official documentation for this class is missing.
+ * 这个类的官方文档丢失了。
  */
 abstract class DiagnosingMatcher extends BaseMatcher
 {

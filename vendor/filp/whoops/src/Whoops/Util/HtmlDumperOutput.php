@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，工具，Html dump输出
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */

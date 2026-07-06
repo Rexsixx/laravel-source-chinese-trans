@@ -1,5 +1,9 @@
 <?php
 /**
+ * Whoops，处理者，漂亮页面处理程序
+ */
+
+/**
  * Whoops - php errors for cool kids
  * @author Filipe Dobreira <http://github.com/filp>
  */
@@ -32,6 +36,7 @@ class PrettyPageHandler extends Handler
 
     /**
      * Search paths to be scanned for resources.
+	 * 搜索需要扫描的资源路径。
      *
      * Stored in the reverse order they're declared.
      *
@@ -41,6 +46,7 @@ class PrettyPageHandler extends Handler
 
     /**
      * Fast lookup cache for known resource locations.
+	 * 为已知的资源位置快速查找缓存
      *
      * @var array
      */
@@ -48,6 +54,7 @@ class PrettyPageHandler extends Handler
 
     /**
      * The name of the custom css file.
+	 * 自定义css文件的名称
      *
      * @var string|null
      */
@@ -55,6 +62,7 @@ class PrettyPageHandler extends Handler
 
     /**
      * The name of the custom js file.
+	 * 自定义js文件的名称
      *
      * @var string|null
      */

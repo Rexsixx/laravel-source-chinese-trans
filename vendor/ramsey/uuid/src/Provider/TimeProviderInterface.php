@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，提供者，时间提供者接口
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE

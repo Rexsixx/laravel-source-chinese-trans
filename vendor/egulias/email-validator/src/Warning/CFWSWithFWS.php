@@ -1,10 +1,13 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，警告，CFWS与FWS
+ */
 
 namespace Egulias\EmailValidator\Warning;
 
 class CFWSWithFWS extends Warning
 {
-    public const CODE = 18;
+    const CODE = 18;
 
     public function __construct()
     {

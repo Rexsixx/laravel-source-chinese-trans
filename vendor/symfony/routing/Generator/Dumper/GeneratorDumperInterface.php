@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由选择，生成器，Dumper，生成器Dumper接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * GeneratorDumperInterface is the interface that all generator dumper classes must implement.
+ * GeneratorDumperInterface是所有生成器dumper类必须实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -23,8 +27,6 @@ interface GeneratorDumperInterface
     /**
      * Dumps a set of routes to a string representation of executable code
      * that can then be used to generate a URL of such a route.
-     *
-     * @param array $options An array of options
      *
      * @return string Executable code
      */

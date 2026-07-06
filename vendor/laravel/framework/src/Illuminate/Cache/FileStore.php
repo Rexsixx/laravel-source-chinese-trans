@@ -57,21 +57,23 @@ class FileStore implements Store
     }
 
     /**
-     * Store an item in the cache for a given number of minutes.
-	 * 将项存储在缓存中给定的分钟数
+     * Store an item in the cache for a given number of seconds.
+	 * 将项存储在缓存中给定的秒数
      *
      * @param  string  $key
      * @param  mixed   $value
-     * @param  float|int  $minutes
-     * @return void
+     * @param  int  $seconds
+     * @return bool
      */
-    public function put($key, $value, $minutes)
+    public function put($key, $value, $seconds)
     {
         $this->ensureCacheDirectoryExists($path = $this->path($key));
 
-        $this->files->put(
-            $path, $this->expiration($minutes).serialize($value), true
+        $result = $this->files->put(
+            $path, $this->expiration($seconds).serialize($value), true
         );
+
+        return $result !== false && $result > 0;
     }
 
     /**
@@ -101,7 +103,7 @@ class FileStore implements Store
         $raw = $this->getPayload($key);
 
         return tap(((int) $raw['data']) + $value, function ($newValue) use ($key, $raw) {
-            $this->put($key, $newValue, $raw['time']);
+            $this->put($key, $newValue, $raw['time'] ?? 0);
         });
     }
 
@@ -124,11 +126,11 @@ class FileStore implements Store
      *
      * @param  string  $key
      * @param  mixed   $value
-     * @return void
+     * @return bool
      */
     public function forever($key, $value)
     {
-        $this->put($key, $value, 0);
+        return $this->put($key, $value, 0);
     }
 
     /**
@@ -182,6 +184,8 @@ class FileStore implements Store
         // If the file doesn't exist, we obviously cannot return the cache so we will
         // just return null. Otherwise, we'll get the contents of the file and get
         // the expiration UNIX timestamps from the start of the file's contents.
+		// 如果文件不存在，显然无法返回缓存，因此我们直接返回 null。
+		// 否则,我们将得到文件的内容,并从文件的内容开始获得过期的UNIX时间戳。
         try {
             $expire = substr(
                 $contents = $this->files->get($path, true), 0, 10
@@ -193,18 +197,27 @@ class FileStore implements Store
         // If the current time is greater than expiration timestamps we will delete
         // the file and return null. This helps clean up the old files and keeps
         // this directory much cleaner for us as old files aren't hanging out.
+		// 如果当前时间大于过期时间戳，我们将删除该文件并返回 null。
+		// 这有助于清理旧文件,并保持这个目录对我们来说更干净,因为旧文件不会挂在外面。
         if ($this->currentTime() >= $expire) {
             $this->forget($key);
 
             return $this->emptyPayload();
         }
 
-        $data = unserialize(substr($contents, 10));
+        try {
+            $data = unserialize(substr($contents, 10));
+        } catch (Exception $e) {
+            $this->forget($key);
 
-        // Next, we'll extract the number of minutes that are remaining for a cache
+            return $this->emptyPayload();
+        }
+
+        // Next, we'll extract the number of seconds that are remaining for a cache
         // so that we can properly retain the time for things like the increment
         // operation that may be performed on this cache on a later operation.
-        $time = ($expire - $this->currentTime()) / 60;
+		// 接下来，我们将提取缓存剩余的秒数，以便能够准确地保存诸如对这个缓存进行的增量操作等后续操作所需的时间信息。
+        $time = $expire - $this->currentTime();
 
         return compact('data', 'time');
     }
@@ -235,17 +248,17 @@ class FileStore implements Store
     }
 
     /**
-     * Get the expiration time based on the given minutes.
-	 * 获取基于给定分钟的过期时间
+     * Get the expiration time based on the given seconds.
+	 * 根据给定的秒获取过期时间
      *
-     * @param  float|int  $minutes
+     * @param  int  $seconds
      * @return int
      */
-    protected function expiration($minutes)
+    protected function expiration($seconds)
     {
-        $time = $this->availableAt((int) ($minutes * 60));
+        $time = $this->availableAt($seconds);
 
-        return $minutes === 0 || $time > 9999999999 ? 9999999999 : (int) $time;
+        return $seconds === 0 || $time > 9999999999 ? 9999999999 : $time;
     }
 
     /**

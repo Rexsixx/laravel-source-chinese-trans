@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，执行闭包
+ */
 
 /*
  * This file is part of Psy Shell.

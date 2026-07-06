@@ -36,13 +36,13 @@ class ListFailedCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */
     public function handle()
     {
-        if (count($jobs = $this->getFailedJobs()) == 0) {
+        if (count($jobs = $this->getFailedJobs()) === 0) {
             return $this->info('No failed jobs!');
         }
 
@@ -109,11 +109,7 @@ class ListFailedCommand extends Command
     {
         preg_match('/"([^"]+)"/', $payload['data']['command'], $matches);
 
-        if (isset($matches[1])) {
-            return $matches[1];
-        }
-
-        return $payload['job'] ?? null;
+        return $matches[1] ?? $payload['job'] ?? null;
     }
 
     /**

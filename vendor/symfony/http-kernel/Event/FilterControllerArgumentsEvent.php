@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件，过滤器控制器参数事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,22 +18,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
- * Allows filtering of controller arguments.
- *
- * You can call getController() to retrieve the controller and getArguments
- * to retrieve the current arguments. With setArguments() you can replace
- * arguments that are used to call the controller.
- *
- * Arguments set in the event must be compatible with the signature of the
- * controller.
- *
- * @author Christophe Coevoet <stof@notk.org>
+ * @deprecated since Symfony 4.3, use ControllerArgumentsEvent instead
  */
 class FilterControllerArgumentsEvent extends FilterControllerEvent
 {
     private $arguments;
 
-    public function __construct(HttpKernelInterface $kernel, callable $controller, array $arguments, Request $request, $requestType)
+    public function __construct(HttpKernelInterface $kernel, callable $controller, array $arguments, Request $request, ?int $requestType)
     {
         parent::__construct($kernel, $controller, $request, $requestType);
 

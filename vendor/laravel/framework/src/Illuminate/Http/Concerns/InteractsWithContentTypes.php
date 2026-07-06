@@ -47,12 +47,12 @@ trait InteractsWithContentTypes
      */
     public function expectsJson()
     {
-        return ($this->ajax() && ! $this->pjax()) || $this->wantsJson();
+        return ($this->ajax() && ! $this->pjax() && $this->acceptsAnyContentType()) || $this->wantsJson();
     }
 
     /**
-     * Determine if the current request is asking for JSON in return.
-	 * 确定当前请求是否请求JSON作为返回
+     * Determine if the current request is asking for JSON.
+	 * 确定当前请求是否请求JSON
      *
      * @return bool
      */
@@ -125,6 +125,21 @@ trait InteractsWithContentTypes
                 }
             }
         }
+    }
+
+    /**
+     * Determine if the current request accepts any content type.
+	 * 确定当前请求是否接受任何内容类型
+     *
+     * @return bool
+     */
+    public function acceptsAnyContentType()
+    {
+        $acceptable = $this->getAcceptableContentTypes();
+
+        return count($acceptable) === 0 || (
+            isset($acceptable[0]) && ($acceptable[0] === '*/*' || $acceptable[0] === '*')
+        );
     }
 
     /**

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，翻译，翻译特点
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
 
 /**
  * A trait to help implement TranslatorInterface and LocaleAwareInterface.
+ * 帮助实现TranslatorInterface和LocaleAwareInterface的trait。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -25,13 +29,15 @@ trait TranslatorTrait
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale)
     {
-        $this->locale = (string) $locale;
+        $this->locale = $locale;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return string
      */
     public function getLocale()
     {
@@ -41,9 +47,9 @@ trait TranslatorTrait
     /**
      * {@inheritdoc}
      */
-    public function trans($id, array $parameters = [], $domain = null, $locale = null)
+    public function trans(?string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
-        if ('' === $id = (string) $id) {
+        if (null === $id || '' === $id) {
             return '';
         }
 
@@ -52,7 +58,7 @@ trait TranslatorTrait
         }
 
         $number = (float) $parameters['%count%'];
-        $locale = (string) $locale ?: $this->getLocale();
+        $locale = $locale ?: $this->getLocale();
 
         $parts = [];
         if (preg_match('/^\|++$/', $id)) {
@@ -113,6 +119,7 @@ EOF;
         if (!isset($standardRules[$position])) {
             // when there's exactly one rule given, and that rule is a standard
             // rule, use this rule
+			// 当给出恰好一条规则，且该规则为标准规则时，使用此规则。
             if (1 === \count($parts) && isset($standardRules[0])) {
                 return strtr($standardRules[0], $parameters);
             }
@@ -131,6 +138,7 @@ EOF;
 
     /**
      * Returns the plural position to use for the given locale and number.
+	 * 返回要用于给定区域设置和数字的复数位置。
      *
      * The plural rules are derived from code of the Zend Framework (2010-09-25),
      * which is subject to the new BSD license (http://framework.zend.com/license/new-bsd).

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，格式化程序，Chrome PHP格式化程序
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -15,6 +18,7 @@ use Monolog\Logger;
 
 /**
  * Formats a log message according to the ChromePHP array format
+ * 根据ChromePHP数组格式格式化日志消息
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
@@ -40,6 +44,7 @@ class ChromePHPFormatter implements FormatterInterface
     public function format(array $record)
     {
         // Retrieve the line and file if set and remove them from the formatted extra
+		// 如果设置并从格式化的额外文件中删除行和文件
         $backtrace = 'unknown';
         if (isset($record['extra']['file'], $record['extra']['line'])) {
             $backtrace = $record['extra']['file'].' : '.$record['extra']['line'];

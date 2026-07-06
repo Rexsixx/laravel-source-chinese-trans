@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Memcached 连接
+ * Illuminate，缓存，Memcached 连接器
  */
 
 namespace Illuminate\Cache;
@@ -11,7 +11,7 @@ class MemcachedConnector
 {
     /**
      * Create a new Memcached connection.
-	 * 创建新的Memcached连接。
+	 * 创建一个新的Memcached连接
      *
      * @param  array  $servers
      * @param  string|null  $connectionId
@@ -29,6 +29,7 @@ class MemcachedConnector
             // For each server in the array, we'll just extract the configuration and add
             // the server to the Memcached connection. Once we have added all of these
             // servers we'll verify the connection is successful and return it back.
+			// 对于数组中的每一台服务器，我们都会提取其配置信息，并将该服务器添加到 Memcached 连接中。
             foreach ($servers as $server) {
                 $memcached->addServer(
                     $server['host'], $server['port'], $server['weight']
@@ -52,7 +53,7 @@ class MemcachedConnector
     {
         $memcached = $this->createMemcachedInstance($connectionId);
 
-        if (count($credentials) == 2) {
+        if (count($credentials) === 2) {
             $this->setCredentials($memcached, $credentials);
         }
 
@@ -85,7 +86,7 @@ class MemcachedConnector
      */
     protected function setCredentials($memcached, $credentials)
     {
-        list($username, $password) = $credentials;
+        [$username, $password] = $credentials;
 
         $memcached->setOption(Memcached::OPT_BINARY_PROTOCOL, true);
 

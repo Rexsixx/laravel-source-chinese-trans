@@ -29,9 +29,9 @@ interface Mailable
 
     /**
      * Deliver the queued message after the given delay.
-	 * 在给定的延迟之后交付排队消息。
+	 * 在给定的延迟之后交付排队消息
      *
-     * @param  \DateTime|int  $delay
+     * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  \Illuminate\Contracts\Queue\Factory  $queue
      * @return mixed
      */

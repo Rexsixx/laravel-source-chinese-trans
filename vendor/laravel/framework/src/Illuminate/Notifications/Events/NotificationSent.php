@@ -1,12 +1,17 @@
 <?php
 /**
- * Illuminate，通知，事件，通知已发送
+ * Illuminate，通知，事件，广播通知已发送
  */
 
 namespace Illuminate\Notifications\Events;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+
 class NotificationSent
 {
+    use Queueable, SerializesModels;
+
     /**
      * The notifiable entity who received the notification.
 	 * 收到通知的应通知实体
@@ -25,7 +30,7 @@ class NotificationSent
 
     /**
      * The channel name.
-	 * 渠道名称
+	 * 通道名称
      *
      * @var string
      */
@@ -33,7 +38,7 @@ class NotificationSent
 
     /**
      * The channel's response.
-	 * 频道的响应
+	 * 通道的响应
      *
      * @var mixed
      */

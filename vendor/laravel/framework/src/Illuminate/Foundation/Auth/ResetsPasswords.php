@@ -18,9 +18,10 @@ trait ResetsPasswords
 
     /**
      * Display the password reset view for the given token.
-	 * 显示给定令牌的密码重置视图
+	 * 显示给定令牌的密码重置视图。
      *
      * If no token is present, display the link request form.
+	 * 如果没有令牌，则显示链接请求表单。
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string|null  $token
@@ -42,11 +43,13 @@ trait ResetsPasswords
      */
     public function reset(Request $request)
     {
-        $this->validate($request, $this->rules(), $this->validationErrorMessages());
+        $request->validate($this->rules(), $this->validationErrorMessages());
 
         // Here we will attempt to reset the user's password. If it is successful we
         // will update the password on an actual user model and persist it to the
         // database. Otherwise we will parse the error and return the response.
+		// 在此，我们将尝试重置用户的密码。如果操作成功，我们将更新实际用户模型中的密码，并将其保存至数据库中。
+		// 否则，我们将解析错误并返回响应。
         $response = $this->broker()->reset(
             $this->credentials($request), function ($user, $password) {
                 $this->resetPassword($user, $password);
@@ -56,8 +59,10 @@ trait ResetsPasswords
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
+		// 如果密码重置成功，我们将引导用户返回到应用程序的主认证页面。
+		// 如果出现错误，我们可以将他们重新引导回他们最初访问的位置，并附上错误信息。
         return $response == Password::PASSWORD_RESET
-                    ? $this->sendResetResponse($response)
+                    ? $this->sendResetResponse($request, $response)
                     : $this->sendResetFailedResponse($request, $response);
     }
 
@@ -72,7 +77,7 @@ trait ResetsPasswords
         return [
             'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|confirmed|min:8',
         ];
     }
 
@@ -126,10 +131,11 @@ trait ResetsPasswords
      * Get the response for a successful password reset.
 	 * 获取成功重置密码的响应
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  string  $response
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-    protected function sendResetResponse($response)
+    protected function sendResetResponse(Request $request, $response)
     {
         return redirect($this->redirectPath())
                             ->with('status', trans($response));

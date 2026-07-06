@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点转存器
+ */
+
 namespace PhpParser;
 
 use PhpParser\Node\Expr\Include_;

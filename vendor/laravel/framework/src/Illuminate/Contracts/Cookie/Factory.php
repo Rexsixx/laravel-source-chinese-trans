@@ -14,13 +14,15 @@ interface Factory
      * @param  string  $name
      * @param  string  $value
      * @param  int     $minutes
-     * @param  string  $path
-     * @param  string  $domain
-     * @param  bool    $secure
+     * @param  string|null  $path
+     * @param  string|null  $domain
+     * @param  bool|null    $secure
      * @param  bool    $httpOnly
+     * @param  bool         $raw
+     * @param  string|null  $sameSite
      * @return \Symfony\Component\HttpFoundation\Cookie
      */
-    public function make($name, $value, $minutes = 0, $path = null, $domain = null, $secure = false, $httpOnly = true);
+    public function make($name, $value, $minutes = 0, $path = null, $domain = null, $secure = null, $httpOnly = true, $raw = false, $sameSite = null);
 
     /**
      * Create a cookie that lasts "forever" (five years).
@@ -28,21 +30,23 @@ interface Factory
      *
      * @param  string  $name
      * @param  string  $value
-     * @param  string  $path
-     * @param  string  $domain
-     * @param  bool    $secure
+     * @param  string|null  $path
+     * @param  string|null  $domain
+     * @param  bool|null    $secure
      * @param  bool    $httpOnly
+     * @param  bool         $raw
+     * @param  string|null  $sameSite
      * @return \Symfony\Component\HttpFoundation\Cookie
      */
-    public function forever($name, $value, $path = null, $domain = null, $secure = false, $httpOnly = true);
+    public function forever($name, $value, $path = null, $domain = null, $secure = null, $httpOnly = true, $raw = false, $sameSite = null);
 
     /**
      * Expire the given cookie.
 	 * 使给定的cookie过期
      *
      * @param  string  $name
-     * @param  string  $path
-     * @param  string  $domain
+     * @param  string|null  $path
+     * @param  string|null  $domain
      * @return \Symfony\Component\HttpFoundation\Cookie
      */
     public function forget($name, $path = null, $domain = null);

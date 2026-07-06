@@ -7,11 +7,10 @@ namespace Illuminate\Cache;
 
 use Memcached;
 use ReflectionMethod;
-use Illuminate\Contracts\Cache\Store;
 use Illuminate\Support\InteractsWithTime;
 use Illuminate\Contracts\Cache\LockProvider;
 
-class MemcachedStore extends TaggableStore implements LockProvider, Store
+class MemcachedStore extends TaggableStore implements LockProvider
 {
     use InteractsWithTime;
 
@@ -74,7 +73,7 @@ class MemcachedStore extends TaggableStore implements LockProvider, Store
 
     /**
      * Retrieve multiple items from the cache by key.
-	 * 按键从缓存中检索多个项。
+	 * 按键从缓存中检索多个项
      *
      * Items not found in the cache will have a null value.
 	 * 在缓存中找不到的项将具有空值。
@@ -104,28 +103,30 @@ class MemcachedStore extends TaggableStore implements LockProvider, Store
     }
 
     /**
-     * Store an item in the cache for a given number of minutes.
-	 * 将项存储在缓存中给定的分钟数
+     * Store an item in the cache for a given number of seconds.
+	 * 将项存储在缓存中给定的秒数
      *
      * @param  string  $key
      * @param  mixed   $value
-     * @param  float|int  $minutes
-     * @return void
+     * @param  int  $seconds
+     * @return bool
      */
-    public function put($key, $value, $minutes)
+    public function put($key, $value, $seconds)
     {
-        $this->memcached->set($this->prefix.$key, $value, $this->toTimestamp($minutes));
+        return $this->memcached->set(
+            $this->prefix.$key, $value, $this->calculateExpiration($seconds)
+        );
     }
 
     /**
-     * Store multiple items in the cache for a given number of minutes.
-	 * 在给定的分钟数内将多个项存储在缓存中
+     * Store multiple items in the cache for a given number of seconds.
+	 * 在给定的秒数内将多个项存储在缓存中
      *
      * @param  array  $values
-     * @param  float|int  $minutes
-     * @return void
+     * @param  int  $seconds
+     * @return bool
      */
-    public function putMany(array $values, $minutes)
+    public function putMany(array $values, $seconds)
     {
         $prefixedValues = [];
 
@@ -133,7 +134,9 @@ class MemcachedStore extends TaggableStore implements LockProvider, Store
             $prefixedValues[$this->prefix.$key] = $value;
         }
 
-        $this->memcached->setMulti($prefixedValues, $this->toTimestamp($minutes));
+        return $this->memcached->setMulti(
+            $prefixedValues, $this->calculateExpiration($seconds)
+        );
     }
 
     /**
@@ -142,12 +145,14 @@ class MemcachedStore extends TaggableStore implements LockProvider, Store
      *
      * @param  string  $key
      * @param  mixed   $value
-     * @param  float|int  $minutes
+     * @param  int  $seconds
      * @return bool
      */
-    public function add($key, $value, $minutes)
+    public function add($key, $value, $seconds)
     {
-        return $this->memcached->add($this->prefix.$key, $value, $this->toTimestamp($minutes));
+        return $this->memcached->add(
+            $this->prefix.$key, $value, $this->calculateExpiration($seconds)
+        );
     }
 
     /**
@@ -182,24 +187,38 @@ class MemcachedStore extends TaggableStore implements LockProvider, Store
      *
      * @param  string  $key
      * @param  mixed   $value
-     * @return void
+     * @return bool
      */
     public function forever($key, $value)
     {
-        $this->put($key, $value, 0);
+        return $this->put($key, $value, 0);
     }
 
     /**
      * Get a lock instance.
 	 * 获取一个锁实例
      *
-     * @param  string  $name
-     * @param  int  $seconds
+     * @param  string $name
+     * @param  int $seconds
+     * @param  string|null $owner
      * @return \Illuminate\Contracts\Cache\Lock
      */
-    public function lock($name, $seconds = 0)
+    public function lock($name, $seconds = 0, $owner = null)
     {
-        return new MemcachedLock($this->memcached, $this->prefix.$name, $seconds);
+        return new MemcachedLock($this->memcached, $this->prefix.$name, $seconds, $owner);
+    }
+
+    /**
+     * Restore a lock instance using the owner identifier.
+	 * 使用所有者标识符恢复锁实例
+     *
+     * @param  string  $name
+     * @param  string  $owner
+     * @return \Illuminate\Contracts\Cache\Lock
+     */
+    public function restoreLock($name, $owner)
+    {
+        return $this->lock($name, 0, $owner);
     }
 
     /**
@@ -226,15 +245,27 @@ class MemcachedStore extends TaggableStore implements LockProvider, Store
     }
 
     /**
-     * Get the UNIX timestamp for the given number of minutes.
-	 * 获取给定分钟数的UNIX时间戳
+     * Get the expiration time of the key.
+	 * 获取密钥的过期时间
      *
-     * @param  int  $minutes
+     * @param  int  $seconds
      * @return int
      */
-    protected function toTimestamp($minutes)
+    protected function calculateExpiration($seconds)
     {
-        return $minutes > 0 ? $this->availableAt($minutes * 60) : 0;
+        return $this->toTimestamp($seconds);
+    }
+
+    /**
+     * Get the UNIX timestamp for the given number of seconds.
+	 * 获取给定秒数的UNIX时间戳
+     *
+     * @param  int  $seconds
+     * @return int
+     */
+    protected function toTimestamp($seconds)
+    {
+        return $seconds > 0 ? $this->availableAt($seconds) : 0;
     }
 
     /**

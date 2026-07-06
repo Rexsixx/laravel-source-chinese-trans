@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由选择，生成器，Url 生成器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Routing\RequestContextAwareInterface;
 
 /**
  * UrlGeneratorInterface is the interface that all URL generator classes must implement.
+ * UrlGeneratorInterface是所有URL生成器类都必须实现的接口。
  *
  * The constants in this interface define the different types of resource references that
  * are declared in RFC 3986: http://tools.ietf.org/html/rfc3986
@@ -34,25 +38,25 @@ interface UrlGeneratorInterface extends RequestContextAwareInterface
     /**
      * Generates an absolute URL, e.g. "http://example.com/dir/file".
      */
-    const ABSOLUTE_URL = 0;
+    public const ABSOLUTE_URL = 0;
 
     /**
      * Generates an absolute path, e.g. "/dir/file".
      */
-    const ABSOLUTE_PATH = 1;
+    public const ABSOLUTE_PATH = 1;
 
     /**
      * Generates a relative path based on the current request path, e.g. "../parent-file".
      *
      * @see UrlGenerator::getRelativePath()
      */
-    const RELATIVE_PATH = 2;
+    public const RELATIVE_PATH = 2;
 
     /**
      * Generates a network path, e.g. "//example.com/dir/file".
      * Such reference reuses the current scheme but specifies the host.
      */
-    const NETWORK_PATH = 3;
+    public const NETWORK_PATH = 3;
 
     /**
      * Generates a URL or path for a specific route based on the given parameters.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，过程，输入流
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Process\Exception\RuntimeException;
 
 /**
  * Provides a way to continuously write to the input of a Process until the InputStream is closed.
+ * 提供一种持续写入程序输入的方法,直到InputStream关闭为止。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -27,6 +31,7 @@ class InputStream implements \IteratorAggregate
 
     /**
      * Sets a callback that is called when the write buffer becomes empty.
+	 * 设置一个回调,当写入缓冲区变为空时调用。
      */
     public function onEmpty(callable $onEmpty = null)
     {
@@ -66,6 +71,10 @@ class InputStream implements \IteratorAggregate
         return !$this->open;
     }
 
+    /**
+     * @return \Traversable
+     */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         $this->open = true;
@@ -78,9 +87,7 @@ class InputStream implements \IteratorAggregate
             $current = array_shift($this->input);
 
             if ($current instanceof \Iterator) {
-                foreach ($current as $cur) {
-                    yield $cur;
-                }
+                yield from $current;
             } else {
                 yield $current;
             }

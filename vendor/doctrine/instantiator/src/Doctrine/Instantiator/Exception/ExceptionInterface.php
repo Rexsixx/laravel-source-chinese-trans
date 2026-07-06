@@ -9,7 +9,7 @@ use Throwable;
 
 /**
  * Base exception marker interface for the instantiator component
- * 实例化组件的基本异常标记接口
+ * 实例化器组件的基异常标记接口
  */
 interface ExceptionInterface extends Throwable
 {

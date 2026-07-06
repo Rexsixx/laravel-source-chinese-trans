@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，视图控制器
+ * Illuminate，路由选择，视图控制器
  */
 
 namespace Illuminate\Routing;
@@ -38,7 +38,7 @@ class ViewController extends Controller
      */
     public function __invoke(...$args)
     {
-        list($view, $data) = array_slice($args, -2);
+        [$view, $data] = array_slice($args, -2);
 
         return $this->view->make($view, $data);
     }

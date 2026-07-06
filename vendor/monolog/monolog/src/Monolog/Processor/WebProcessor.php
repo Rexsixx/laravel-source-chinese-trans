@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理器，Web 处理器
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -13,6 +16,7 @@ namespace Monolog\Processor;
 
 /**
  * Injects url/method and remote IP of the current web request in all records
+ * 在所有记录中输入当前web请求的url /方法和远程IP
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */

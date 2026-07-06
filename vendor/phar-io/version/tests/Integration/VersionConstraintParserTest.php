@@ -1,4 +1,8 @@
 <?php
+/**
+ * PharIo，版本，版本约束解析器测试
+ */
+
 /*
  * This file is part of PharIo\Version.
  *
@@ -19,7 +23,7 @@ class VersionConstraintParserTest extends TestCase {
     /**
      * @dataProvider versionStringProvider
      *
-     * @param string            $versionString
+     * @param string $versionString
      * @param VersionConstraint $expectedConstraint
      */
     public function testReturnsExpectedConstraint($versionString, VersionConstraint $expectedConstraint) {
@@ -107,6 +111,27 @@ class VersionConstraintParserTest extends TestCase {
                                 new SpecificMajorVersionConstraint('^7.0', 7)
                             ]
                         )
+                    ]
+                )
+            ],
+            ['7.0.28-1', new ExactVersionConstraint('7.0.28-1')],
+            [
+                '^3.0.0-alpha1',
+                new AndVersionConstraintGroup(
+                    '^3.0.0-alpha1',
+                    [
+                        new GreaterThanOrEqualToVersionConstraint('^3.0.0-alpha1', new Version('3.0.0-alpha1')),
+                        new SpecificMajorVersionConstraint('^3.0.0-alpha1', 3)
+                    ]
+                )
+            ],
+            [
+                '^3.0.0-alpha.1',
+                new AndVersionConstraintGroup(
+                    '^3.0.0-alpha.1',
+                    [
+                        new GreaterThanOrEqualToVersionConstraint('^3.0.0-alpha.1', new Version('3.0.0-alpha.1')),
+                        new SpecificMajorVersionConstraint('^3.0.0-alpha.1', 3)
                     ]
                 )
             ]

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http基础，File，流
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +23,10 @@ class Stream extends File
 {
     /**
      * {@inheritdoc}
+     *
+     * @return int|false
      */
+    #[\ReturnTypeWillChange]
     public function getSize()
     {
         return false;

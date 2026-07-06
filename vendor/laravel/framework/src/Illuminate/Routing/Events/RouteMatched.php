@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，事件，路由匹配
+ * Illuminate，路由选择，事件，路由已匹配
  */
 
 namespace Illuminate\Routing\Events;

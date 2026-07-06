@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，广播，广播装置，Pusher 广播员
+ * Illuminate，广播，广播员，Pusher 广播员
  */
 
 namespace Illuminate\Broadcasting\Broadcasters;
@@ -13,6 +13,8 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class PusherBroadcaster extends Broadcaster
 {
+    use UsePusherChannelConventions;
+
     /**
      * The Pusher SDK instance.
 	 * Pusher SDK实例
@@ -39,18 +41,17 @@ class PusherBroadcaster extends Broadcaster
      *
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
      */
     public function auth($request)
     {
-        if (Str::startsWith($request->channel_name, ['private-', 'presence-']) &&
-            ! $request->user()) {
+        $channelName = $this->normalizeChannelName($request->channel_name);
+
+        if ($this->isGuardedChannel($request->channel_name) &&
+            ! $this->retrieveUser($request, $channelName)) {
             throw new AccessDeniedHttpException;
         }
-
-        $channelName = Str::startsWith($request->channel_name, 'private-')
-                            ? Str::replaceFirst('private-', '', $request->channel_name)
-                            : Str::replaceFirst('presence-', '', $request->channel_name);
 
         return parent::verifyUserCanAccessChannel(
             $request, $channelName
@@ -69,13 +70,18 @@ class PusherBroadcaster extends Broadcaster
     {
         if (Str::startsWith($request->channel_name, 'private')) {
             return $this->decodePusherResponse(
-                $this->pusher->socket_auth($request->channel_name, $request->socket_id)
+                $request, $this->pusher->socket_auth($request->channel_name, $request->socket_id)
             );
         }
 
+        $channelName = $this->normalizeChannelName($request->channel_name);
+
         return $this->decodePusherResponse(
+            $request,
             $this->pusher->presence_auth(
-                $request->channel_name, $request->socket_id, $request->user()->getAuthIdentifier(), $result)
+                $request->channel_name, $request->socket_id,
+                $this->retrieveUser($request, $channelName)->getAuthIdentifier(), $result
+            )
         );
     }
 
@@ -83,12 +89,18 @@ class PusherBroadcaster extends Broadcaster
      * Decode the given Pusher response.
 	 * 解码给定的pushher响应
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $response
      * @return array
      */
-    protected function decodePusherResponse($response)
+    protected function decodePusherResponse($request, $response)
     {
-        return json_decode($response, true);
+        if (! $request->input('callback', false)) {
+            return json_decode($response, true);
+        }
+
+        return response()->json(json_decode($response, true))
+                    ->withCallback($request->callback);
     }
 
     /**

@@ -5,7 +5,7 @@
 
 namespace Illuminate\Queue\Failed;
 
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Database\ConnectionResolverInterface;
 
 class DatabaseFailedJobProvider implements FailedJobProviderInterface
@@ -62,7 +62,7 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface
      */
     public function log($connection, $queue, $payload, $exception)
     {
-        $failed_at = Carbon::now();
+        $failed_at = Date::now();
 
         $exception = (string) $exception;
 
@@ -84,7 +84,7 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * Get a single failed job.
-	 * 找一份失败的工作
+	 * 找一份失败的作业
      *
      * @param  mixed  $id
      * @return object|null

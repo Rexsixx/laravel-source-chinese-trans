@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，广播
+ * Illuminate，支持，门面，Broadcast
  */
 
 namespace Illuminate\Support\Facades;
@@ -8,6 +8,10 @@ namespace Illuminate\Support\Facades;
 use Illuminate\Contracts\Broadcasting\Factory as BroadcastingFactoryContract;
 
 /**
+ * @method static void connection($name = null);
+ * @method static \Illuminate\Broadcasting\Broadcasters\Broadcaster channel(string $channel, callable|string  $callback)
+ * @method static mixed auth(\Illuminate\Http\Request $request)
+ *
  * @see \Illuminate\Contracts\Broadcasting\Factory
  */
 class Broadcast extends Facade

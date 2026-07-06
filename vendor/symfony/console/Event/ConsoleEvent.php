@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，事件，控制台事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -28,7 +31,7 @@ class ConsoleEvent extends Event
     private $input;
     private $output;
 
-    public function __construct(Command $command = null, InputInterface $input, OutputInterface $output)
+    public function __construct(?Command $command, InputInterface $input, OutputInterface $output)
     {
         $this->command = $command;
         $this->input = $input;

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，路由选择，加载程序，注释文件加载器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Symfony\Component\Routing\RouteCollection;
 /**
  * AnnotationFileLoader loads routing information from annotations set
  * on a PHP class and its methods.
+ * AnnotationFileLoader加载了从PHP类和它的方法设置的注释中路由信息。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -26,13 +30,10 @@ class AnnotationFileLoader extends FileLoader
 {
     protected $loader;
 
-    /**
-     * @throws \RuntimeException
-     */
     public function __construct(FileLocatorInterface $locator, AnnotationClassLoader $loader)
     {
         if (!\function_exists('token_get_all')) {
-            throw new \RuntimeException('The Tokenizer extension is required for the routing annotation loaders.');
+            throw new \LogicException('The Tokenizer extension is required for the routing annotation loaders.');
         }
 
         parent::__construct($locator);
@@ -42,6 +43,7 @@ class AnnotationFileLoader extends FileLoader
 
     /**
      * Loads from annotations from a file.
+	 * 从文件中加载的注释负载
      *
      * @param string      $file A PHP file path
      * @param string|null $type The resource type
@@ -64,10 +66,8 @@ class AnnotationFileLoader extends FileLoader
             $collection->addResource(new FileResource($path));
             $collection->addCollection($this->loader->load($class, $type));
         }
-        if (\PHP_VERSION_ID >= 70000) {
-            // PHP 7 memory manager will not release after token_get_all(), see https://bugs.php.net/70098
-            gc_mem_caches();
-        }
+
+        gc_mem_caches();
 
         return $collection;
     }
@@ -99,12 +99,10 @@ class AnnotationFileLoader extends FileLoader
 
         $nsTokens = [\T_NS_SEPARATOR => true, \T_STRING => true];
         if (\defined('T_NAME_QUALIFIED')) {
-            $nsTokens[T_NAME_QUALIFIED] = true;
+            $nsTokens[\T_NAME_QUALIFIED] = true;
         }
-
         for ($i = 0; isset($tokens[$i]); ++$i) {
             $token = $tokens[$i];
-
             if (!isset($token[1])) {
                 continue;
             }
@@ -126,6 +124,9 @@ class AnnotationFileLoader extends FileLoader
                 $skipClassToken = false;
                 for ($j = $i - 1; $j > 0; --$j) {
                     if (!isset($tokens[$j][1])) {
+                        if ('(' === $tokens[$j] || ',' === $tokens[$j]) {
+                            $skipClassToken = true;
+                        }
                         break;
                     }
 

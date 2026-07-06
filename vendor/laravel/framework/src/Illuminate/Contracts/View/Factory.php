@@ -21,7 +21,7 @@ interface Factory
 	 * 获取给定路径的求值视图内容
      *
      * @param  string  $path
-     * @param  array  $data
+     * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
      * @param  array  $mergeData
      * @return \Illuminate\Contracts\View\View
      */
@@ -32,7 +32,7 @@ interface Factory
 	 * 获取给定视图的求值视图内容
      *
      * @param  string  $view
-     * @param  array  $data
+     * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
      * @param  array  $mergeData
      * @return \Illuminate\Contracts\View\View
      */

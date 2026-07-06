@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，引导，加载配置
+ * Illuminate，基础，引导程序，加载配置
  */
 
 namespace Illuminate\Foundation\Bootstrap;
@@ -28,6 +28,8 @@ class LoadConfiguration
         // First we will see if we have a cache configuration file. If we do, we'll load
         // the configuration items from that file so that it is very quick. Otherwise
         // we will need to spin through every configuration file and load them all.
+		// 首先，我们会检查是否存在缓存配置文件。如果存在，我们将从该文件中加载配置项，这样会非常快速。
+		// 否则，我们就需要逐一检查每一个配置文件并将其全部加载进来。
         if (file_exists($cached = $app->getCachedConfigPath())) {
             $items = require $cached;
 
@@ -37,6 +39,8 @@ class LoadConfiguration
         // Next we will spin through all of the configuration files in the configuration
         // directory and load each one into the repository. This will make all of the
         // options available to the developer for use in various parts of this app.
+		// 接下来，我们将遍历配置目录中的所有配置文件，并将每个文件加载到存储库中。
+		// 这样，所有选项都将可供开发人员在该应用程序的各个部分使用。
         $app->instance('config', $config = new Repository($items));
 
         if (! isset($loadedFromCache)) {
@@ -46,6 +50,8 @@ class LoadConfiguration
         // Finally, we will set the application's environment based on the configuration
         // values that were loaded. We will pass a callback which will be used to get
         // the environment in a web context where an "--env" switch is not present.
+		// 最后，我们将根据已加载的配置值来设定应用程序的运行环境。
+		// 我们将传递一个回调函数，该函数将用于在不存在“--env”开关的网络环境中获取环境信息。
         $app->detectEnvironment(function () use ($config) {
             return $config->get('app.env', 'production');
         });
@@ -62,6 +68,7 @@ class LoadConfiguration
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  \Illuminate\Contracts\Config\Repository  $repository
      * @return void
+     *
      * @throws \Exception
      */
     protected function loadConfigurationFiles(Application $app, RepositoryContract $repository)

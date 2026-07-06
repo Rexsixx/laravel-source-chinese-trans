@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，Php文档，方法标记检索接口
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -11,7 +14,6 @@
 
 namespace Prophecy\PhpDocumentor;
 
-use phpDocumentor\Reflection\DocBlock\Tag\MethodTag as LegacyMethodTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Method;
 
 /**
@@ -22,9 +24,9 @@ use phpDocumentor\Reflection\DocBlock\Tags\Method;
 interface MethodTagRetrieverInterface
 {
     /**
-     * @param \ReflectionClass $reflectionClass
+     * @param \ReflectionClass<object> $reflectionClass
      *
-     * @return LegacyMethodTag[]|Method[]
+     * @return list<Method>
      */
     public function getTagList(\ReflectionClass $reflectionClass);
 }

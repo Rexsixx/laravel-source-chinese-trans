@@ -1,22 +1,15 @@
 <?php
 /**
- * Illuminate，哈希，哈希服务提供者
+ * Illuminate，哈希算法，哈希服务提供商
  */
 
 namespace Illuminate\Hashing;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Support\DeferrableProvider;
 
-class HashServiceProvider extends ServiceProvider
+class HashServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * Indicates if loading of the provider is deferred.
-	 * 指示是否延迟加载提供程序
-     *
-     * @var bool
-     */
-    protected $defer = true;
-
     /**
      * Register the service provider.
 	 * 注册服务提供者
@@ -25,8 +18,12 @@ class HashServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('hash', function () {
-            return new BcryptHasher;
+        $this->app->singleton('hash', function ($app) {
+            return new HashManager($app);
+        });
+
+        $this->app->singleton('hash.driver', function ($app) {
+            return $app['hash']->driver();
         });
     }
 
@@ -38,6 +35,6 @@ class HashServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['hash'];
+        return ['hash', 'hash.driver'];
     }
 }

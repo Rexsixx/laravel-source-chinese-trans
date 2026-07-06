@@ -74,8 +74,8 @@ class Markdown
     }
 
     /**
-     * Render the Markdown template into HTML.
-	 * 将Markdown模板呈现为HTML
+     * Render the Markdown template into text.
+	 * 将Markdown模板呈现为文本
      *
      * @param  string  $view
      * @param  array  $data
@@ -86,7 +86,7 @@ class Markdown
         $this->view->flushFinderCache();
 
         $contents = $this->view->replaceNamespace(
-            'mail', $this->markdownComponentPaths()
+            'mail', $this->textComponentPaths()
         )->make($view, $data)->render();
 
         return new HtmlString(
@@ -122,15 +122,15 @@ class Markdown
     }
 
     /**
-     * Get the Markdown component paths.
-	 * 获取Markdown组件路径
+     * Get the text component paths.
+	 * 获取文本组件路径
      *
      * @return array
      */
-    public function markdownComponentPaths()
+    public function textComponentPaths()
     {
         return array_map(function ($path) {
-            return $path.'/markdown';
+            return $path.'/text';
         }, $this->componentPaths());
     }
 

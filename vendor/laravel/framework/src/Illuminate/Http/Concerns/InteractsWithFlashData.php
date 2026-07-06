@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，问题，与快闪数据交互
+ * Illuminate，Http，问题，与 Flash数据交互
  */
 
 namespace Illuminate\Http\Concerns;
@@ -11,7 +11,7 @@ trait InteractsWithFlashData
      * Retrieve an old input item.
 	 * 检索旧的输入项
      *
-     * @param  string  $key
+     * @param  string|null  $key
      * @param  string|array|null  $default
      * @return string|array
      */

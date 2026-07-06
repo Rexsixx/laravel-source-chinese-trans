@@ -33,9 +33,10 @@ interface ConnectionInterface
      *
      * @param  string  $query
      * @param  array   $bindings
+     * @param  bool  $useReadPdo
      * @return mixed
      */
-    public function selectOne($query, $bindings = []);
+    public function selectOne($query, $bindings = [], $useReadPdo = true);
 
     /**
      * Run a select statement against the database.
@@ -43,9 +44,21 @@ interface ConnectionInterface
      *
      * @param  string  $query
      * @param  array   $bindings
+     * @param  bool  $useReadPdo
      * @return array
      */
-    public function select($query, $bindings = []);
+    public function select($query, $bindings = [], $useReadPdo = true);
+
+    /**
+     * Run a select statement against the database and returns a generator.
+	 * 对数据库运行select语句并返回生成器
+     *
+     * @param  string  $query
+     * @param  array  $bindings
+     * @param  bool  $useReadPdo
+     * @return \Generator
+     */
+    public function cursor($query, $bindings = [], $useReadPdo = true);
 
     /**
      * Run an insert statement against the database.
@@ -161,7 +174,7 @@ interface ConnectionInterface
 
     /**
      * Execute the given callback in "dry run" mode.
-	 * 以"预演"模式执行给定的回调函数
+	 * 以“预演”模式执行给定的回调函数
      *
      * @param  \Closure  $callback
      * @return array

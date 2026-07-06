@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，差速器，分析程序
+ */
+
 /*
  * This file is part of sebastian/diff.
  *
@@ -12,6 +17,7 @@ namespace SebastianBergmann\Diff;
 
 /**
  * Unified diff parser.
+ * 统一的diff解析器。
  */
 final class Parser
 {
@@ -64,7 +70,7 @@ final class Parser
         return $diffs;
     }
 
-    private function parseFileDiff(Diff $diff, array $lines)
+    private function parseFileDiff(Diff $diff, array $lines): void
     {
         $chunks = [];
         $chunk  = null;

@@ -107,6 +107,16 @@ interface Gate
     public function authorize($ability, $arguments = []);
 
     /**
+     * Get the raw result from the authorization callback.
+	 * 从授权回调获取原始结果
+     *
+     * @param  string  $ability
+     * @param  array|mixed  $arguments
+     * @return mixed
+     */
+    public function raw($ability, $arguments = []);
+
+    /**
      * Get a policy instance for a given class.
 	 * 获取给定类的策略实例
      *

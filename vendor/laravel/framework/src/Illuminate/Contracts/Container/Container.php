@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，容器，容器
+ * Illuminate，契约，容器，Container
  */
 
 namespace Illuminate\Contracts\Container;
@@ -26,6 +26,8 @@ interface Container extends ContainerInterface
      * @param  string  $abstract
      * @param  string  $alias
      * @return void
+     *
+     * @throws \LogicException
      */
     public function alias($abstract, $alias);
 
@@ -44,7 +46,7 @@ interface Container extends ContainerInterface
 	 * 解析给定标记的所有绑定
      *
      * @param  string  $tag
-     * @return array
+     * @return iterable
      */
     public function tagged($tag);
 
@@ -103,10 +105,21 @@ interface Container extends ContainerInterface
     public function instance($abstract, $instance);
 
     /**
+     * Add a contextual binding to the container.
+	 * 向容器添加上下文绑定
+     *
+     * @param  string  $concrete
+     * @param  string  $abstract
+     * @param  \Closure|string  $implementation
+     * @return void
+     */
+    public function addContextualBinding($concrete, $abstract, $implementation);
+
+    /**
      * Define a contextual binding.
 	 * 定义上下文绑定
      *
-     * @param  string  $concrete
+     * @param  string|array  $concrete
      * @return \Illuminate\Contracts\Container\ContextualBindingBuilder
      */
     public function when($concrete);
@@ -121,12 +134,22 @@ interface Container extends ContainerInterface
     public function factory($abstract);
 
     /**
+     * Flush the container of all bindings and resolved instances.
+	 * 刷新所有绑定和解析实例的容器
+     *
+     * @return void
+     */
+    public function flush();
+
+    /**
      * Resolve the given type from the container.
 	 * 从容器中解析给定的类型
      *
      * @param  string  $abstract
      * @param  array  $parameters
      * @return mixed
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function make($abstract, array $parameters = []);
 

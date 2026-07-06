@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件监听器，碎片监听器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ use Symfony\Component\HttpKernel\UriSigner;
 
 /**
  * Handles content fragments represented by special URIs.
+ * 处理由特殊uri表示的内容片段。
  *
  * All URL paths starting with /_fragment are handled as
  * content fragments by this listener.
@@ -28,6 +32,8 @@ use Symfony\Component\HttpKernel\UriSigner;
  * is not signed or if it is not an internal sub-request.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @final since Symfony 4.3
  */
 class FragmentListener implements EventSubscriberInterface
 {
@@ -35,10 +41,9 @@ class FragmentListener implements EventSubscriberInterface
     private $fragmentPath;
 
     /**
-     * @param UriSigner $signer       A UriSigner instance
-     * @param string    $fragmentPath The path that triggers this listener
+     * @param string $fragmentPath The path that triggers this listener
      */
-    public function __construct(UriSigner $signer, $fragmentPath = '/_fragment')
+    public function __construct(UriSigner $signer, string $fragmentPath = '/_fragment')
     {
         $this->signer = $signer;
         $this->fragmentPath = $fragmentPath;
@@ -77,7 +82,7 @@ class FragmentListener implements EventSubscriberInterface
     protected function validateRequest(Request $request)
     {
         // is the Request safe?
-        if (!$request->isMethodSafe(false)) {
+        if (!$request->isMethodSafe()) {
             throw new AccessDeniedHttpException();
         }
 

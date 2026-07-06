@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，GlobalState，恢复器
+ */
+
 /*
  * This file is part of sebastian/global-state.
  *
@@ -16,11 +20,13 @@ use ReflectionProperty;
 
 /**
  * Restorer of snapshots of global state.
+ * 全局国家的快照恢复器。
  */
 class Restorer
 {
     /**
      * Deletes function definitions that are not defined in a snapshot.
+	 * 删除未在快照中定义的函数定义
      *
      * @throws RuntimeException when the uopz_delete() function is not available
      *
@@ -41,6 +47,7 @@ class Restorer
 
     /**
      * Restores all global and super-global variables from a snapshot.
+	 * 从快照中恢复所有全局和超全局变量
      */
     public function restoreGlobalVariables(Snapshot $snapshot)
     {

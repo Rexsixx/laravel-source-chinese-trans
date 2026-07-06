@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，比较器，Spl对象存储比较器
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -7,11 +11,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Comparator;
 
 /**
  * Compares \SplObjectStorage instances for equality.
+ * 比较\ SplObjectStorage实例的等式。
  */
 class SplObjectStorageComparator extends Comparator
 {
@@ -42,7 +46,7 @@ class SplObjectStorageComparator extends Comparator
     public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
     {
         foreach ($actual as $object) {
-            if (!$expected->contains($object)) {
+            if (!$expected->offsetExists($object)) {
                 throw new ComparisonFailure(
                     $expected,
                     $actual,
@@ -55,7 +59,7 @@ class SplObjectStorageComparator extends Comparator
         }
 
         foreach ($expected as $object) {
-            if (!$actual->contains($object)) {
+            if (!$actual->offsetExists($object)) {
                 throw new ComparisonFailure(
                     $expected,
                     $actual,

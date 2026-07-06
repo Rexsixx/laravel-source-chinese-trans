@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，翻译，间隔
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -11,12 +14,13 @@
 
 namespace Symfony\Component\Translation;
 
-@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.2, use IdentityTranslator instead.', Interval::class), E_USER_DEPRECATED);
+@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.2, use IdentityTranslator instead.', Interval::class), \E_USER_DEPRECATED);
 
 use Symfony\Component\Translation\Exception\InvalidArgumentException;
 
 /**
  * Tests if a given number belongs to a given math interval.
+ * 测试给定的数字是否属于给定的数学区间。
  *
  * An interval can represent a finite set of numbers:
  *
@@ -40,6 +44,7 @@ class Interval
 {
     /**
      * Tests if the given number is in the math interval.
+	 * 测试给定的数字是否在数学区间内
      *
      * @param int    $number   A number
      * @param string $interval An interval
@@ -77,6 +82,7 @@ class Interval
 
     /**
      * Returns a Regexp that matches valid intervals.
+	 * 返回与有效间隔匹配的Regexp
      *
      * @return string A Regexp (without the delimiters)
      */
@@ -99,7 +105,7 @@ class Interval
 EOF;
     }
 
-    private static function convertNumber($number)
+    private static function convertNumber(string $number): float
     {
         if ('-Inf' === $number) {
             return log(0);

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，测试，版本Updater，GitHub检查测试
+ */
 
 /*
  * This file is part of Psy Shell.

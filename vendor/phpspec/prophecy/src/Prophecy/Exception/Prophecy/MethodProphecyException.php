@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，异常，预言，方法预言异常
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -17,6 +20,9 @@ class MethodProphecyException extends ObjectProphecyException
 {
     private $methodProphecy;
 
+    /**
+     * @param string $message
+     */
     public function __construct($message, MethodProphecy $methodProphecy)
     {
         parent::__construct($message, $methodProphecy->getObjectProphecy());

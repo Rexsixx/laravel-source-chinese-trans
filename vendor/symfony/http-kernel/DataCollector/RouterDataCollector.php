@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，数据收集器，路由器数据收集器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,8 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 /**
- * RouterDataCollector.
- *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class RouterDataCollector extends DataCollector
@@ -35,8 +36,12 @@ class RouterDataCollector extends DataCollector
 
     /**
      * {@inheritdoc}
+     *
+     * @param \Throwable|null $exception
+     *
+     * @final since Symfony 4.4
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response/* , \Throwable $exception = null */)
     {
         if ($response instanceof RedirectResponse) {
             $this->data['redirect'] = true;
@@ -68,6 +73,8 @@ class RouterDataCollector extends DataCollector
 
     /**
      * Remembers the controller associated to each request.
+     *
+     * @final since Symfony 4.3
      */
     public function onKernelController(FilterControllerEvent $event)
     {

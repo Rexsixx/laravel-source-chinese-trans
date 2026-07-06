@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，类型，是否字符串
+ */
+
 namespace Hamcrest\Type;
 
 /*
@@ -8,6 +12,7 @@ use Hamcrest\Core\IsTypeOf;
 
 /**
  * Tests whether the value is a string.
+ * 测试值是否为字符串。
  */
 class IsString extends IsTypeOf
 {

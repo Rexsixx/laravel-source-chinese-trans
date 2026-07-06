@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，应通知的
+ * Illuminate，通知，应通知的
  */
 
 namespace Illuminate\Notifications;

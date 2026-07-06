@@ -1,10 +1,13 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，警告，域文字
+ */
 
 namespace Egulias\EmailValidator\Warning;
 
 class DomainLiteral extends Warning
 {
-    public const CODE = 70;
+    const CODE = 70;
 
     public function __construct()
     {

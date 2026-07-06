@@ -1,4 +1,7 @@
 <?php
+/**
+ * Prophecy，异常，倍频器，类镜像异常
+ */
 
 /*
  * This file is part of the Prophecy.
@@ -17,6 +20,10 @@ class ClassMirrorException extends \RuntimeException implements DoublerException
 {
     private $class;
 
+    /**
+     * @param string                  $message
+     * @param ReflectionClass<object> $class
+     */
     public function __construct($message, ReflectionClass $class)
     {
         parent::__construct($message);
@@ -24,6 +31,9 @@ class ClassMirrorException extends \RuntimeException implements DoublerException
         $this->class = $class;
     }
 
+    /**
+     * @return ReflectionClass<object>
+     */
     public function getReflectedClass()
     {
         return $this->class;

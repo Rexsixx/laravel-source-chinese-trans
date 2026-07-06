@@ -1,5 +1,9 @@
 <?php
 /**
+ * Ramsey，Uuid，编码解码器，有序时间编解码器
+ */
+
+/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -25,6 +29,7 @@ class OrderedTimeCodec extends StringCodec
 
     /**
      * Encodes a UuidInterface as an optimized binary representation of a UUID
+	 * 将uuuidinterface编码为UUID的优化的二进制表示
      *
      * @param UuidInterface $uuid
      * @return string Binary string representation of a UUID

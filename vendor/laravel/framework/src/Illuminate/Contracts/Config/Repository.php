@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，配置，资源库
+ * Illuminate，契约，配置，版本库
  */
 
 namespace Illuminate\Contracts\Config;

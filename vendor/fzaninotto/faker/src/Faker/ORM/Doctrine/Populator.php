@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，Doctrine，Populator
+ */
 
 namespace Faker\ORM\Doctrine;
 
@@ -8,6 +11,7 @@ use Faker\Generator;
 /**
  * Service class for populating a database using the Doctrine ORM or ODM.
  * A Populator can populate several tables using ActiveRecord classes.
+ * 服务类,用于填充一个使用“ORM或ODM”的数据库。
  */
 class Populator
 {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，异常，不允许Http异常的方法
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,14 +20,14 @@ namespace Symfony\Component\HttpKernel\Exception;
 class MethodNotAllowedHttpException extends HttpException
 {
     /**
-     * @param array      $allow    An array of allowed methods
-     * @param string     $message  The internal exception message
-     * @param \Exception $previous The previous exception
-     * @param int        $code     The internal exception code
+     * @param string[]        $allow    An array of allowed methods
+     * @param string|null     $message  The internal exception message
+     * @param \Throwable|null $previous The previous exception
+     * @param int|null        $code     The internal exception code
      */
-    public function __construct(array $allow, $message = null, \Exception $previous = null, $code = 0)
+    public function __construct(array $allow, ?string $message = '', \Throwable $previous = null, ?int $code = 0, array $headers = [])
     {
-        $headers = ['Allow' => strtoupper(implode(', ', $allow))];
+        $headers['Allow'] = strtoupper(implode(', ', $allow));
 
         parent::__construct(405, $message, $previous, $headers, $code);
     }

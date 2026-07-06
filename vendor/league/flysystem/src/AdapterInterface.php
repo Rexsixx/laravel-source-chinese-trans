@@ -19,7 +19,7 @@ interface AdapterInterface extends ReadInterface
 
     /**
      * Write a new file.
-	 * 写一个新文件
+	 * 编写一个新文件
      *
      * @param string $path
      * @param string $contents
@@ -31,6 +31,7 @@ interface AdapterInterface extends ReadInterface
 
     /**
      * Write a new file using a stream.
+	 * 使用流编写新文件
      *
      * @param string   $path
      * @param resource $resource
@@ -42,6 +43,7 @@ interface AdapterInterface extends ReadInterface
 
     /**
      * Update a file.
+	 * 更新文件
      *
      * @param string $path
      * @param string $contents

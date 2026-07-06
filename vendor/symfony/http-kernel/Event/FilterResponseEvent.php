@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，Http内核，事件，过滤器响应事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,19 +19,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
- * Allows to filter a Response object.
- *
- * You can call getResponse() to retrieve the current response. With
- * setResponse() you can set a new response that will be returned to the
- * browser.
- *
- * @author Bernhard Schussek <bschussek@gmail.com>
+ * @deprecated since Symfony 4.3, use ResponseEvent instead
  */
 class FilterResponseEvent extends KernelEvent
 {
     private $response;
 
-    public function __construct(HttpKernelInterface $kernel, Request $request, $requestType, Response $response)
+    public function __construct(HttpKernelInterface $kernel, Request $request, int $requestType, Response $response)
     {
         parent::__construct($kernel, $request, $requestType);
 

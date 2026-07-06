@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，广播，广播管理员
+ * Illuminate，广播，广播管理器
  */
 
 namespace Illuminate\Broadcasting;
@@ -23,15 +23,15 @@ class BroadcastManager implements FactoryContract
 {
     /**
      * The application instance.
-	 * 应用实例
+	 * 程序实例
      *
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
     /**
      * The array of resolved broadcast drivers.
-	 * 解析的广播驱动程序的数组
+	 * 已解析的广播驱动程序数组
      *
      * @var array
      */
@@ -49,7 +49,7 @@ class BroadcastManager implements FactoryContract
      * Create a new manager instance.
 	 * 创建一个新的管理器实例
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
      */
     public function __construct($app)
@@ -73,7 +73,10 @@ class BroadcastManager implements FactoryContract
         $attributes = $attributes ?: ['middleware' => ['web']];
 
         $this->app['router']->group($attributes, function ($router) {
-            $router->post('/broadcasting/auth', '\\'.BroadcastController::class.'@authenticate');
+            $router->match(
+                ['get', 'post'], '/broadcasting/auth',
+                '\\'.BroadcastController::class.'@authenticate'
+            );
         });
     }
 
@@ -141,7 +144,7 @@ class BroadcastManager implements FactoryContract
      * Get a driver instance.
 	 * 获取驱动程序实例
      *
-     * @param  string  $driver
+     * @param  string|null  $driver
      * @return mixed
      */
     public function connection($driver = null)
@@ -153,7 +156,7 @@ class BroadcastManager implements FactoryContract
      * Get a driver instance.
 	 * 获取驱动程序实例
      *
-     * @param  string  $name
+     * @param  string|null  $name
      * @return mixed
      */
     public function driver($name = null)
@@ -176,8 +179,8 @@ class BroadcastManager implements FactoryContract
     }
 
     /**
-     * Resolve the given store.
-	 * 解析给定的存储
+     * Resolve the given broadcaster.
+	 * 解析给定的广播器
      *
      * @param  string  $name
      * @return \Illuminate\Contracts\Broadcasting\Broadcaster
@@ -187,10 +190,6 @@ class BroadcastManager implements FactoryContract
     protected function resolve($name)
     {
         $config = $this->getConfig($name);
-
-        if (is_null($config)) {
-            throw new InvalidArgumentException("Broadcaster [{$name}] is not defined.");
-        }
 
         if (isset($this->customCreators[$config['driver']])) {
             return $this->callCustomCreator($config);
@@ -226,10 +225,16 @@ class BroadcastManager implements FactoryContract
      */
     protected function createPusherDriver(array $config)
     {
-        return new PusherBroadcaster(
-            new Pusher($config['key'], $config['secret'],
-            $config['app_id'], $config['options'] ?? [])
+        $pusher = new Pusher(
+            $config['key'], $config['secret'],
+            $config['app_id'], $config['options'] ?? []
         );
+
+        if ($config['log'] ?? false) {
+            $pusher->setLogger($this->app->make(LoggerInterface::class));
+        }
+
+        return new PusherBroadcaster($pusher);
     }
 
     /**
@@ -281,7 +286,11 @@ class BroadcastManager implements FactoryContract
      */
     protected function getConfig($name)
     {
-        return $this->app['config']["broadcasting.connections.{$name}"];
+        if (! is_null($name) && $name !== 'null') {
+            return $this->app['config']["broadcasting.connections.{$name}"];
+        }
+
+        return ['driver' => 'null'];
     }
 
     /**

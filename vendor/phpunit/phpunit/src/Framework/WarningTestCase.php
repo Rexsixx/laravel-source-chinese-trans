@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，框架，警告测试用例
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -48,29 +52,24 @@ class WarningTestCase extends TestCase
         parent::__construct('Warning');
     }
 
-    /**
-     * @throws Exception
-     */
-    protected function runTest()
-    {
-        throw new Warning($this->message);
-    }
-
-    /**
-     * @return string
-     */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
 
     /**
      * Returns a string representation of the test case.
-     *
-     * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'Warning';
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function runTest(): void
+    {
+        throw new Warning($this->message);
     }
 }

@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，GlobalState，黑名单测试
+ */
+
 /*
  * This file is part of sebastian/global-state.
  *

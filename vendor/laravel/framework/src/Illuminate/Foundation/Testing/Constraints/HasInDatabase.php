@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，约束，在数据库中
+ * Illuminate，基础，测试，约束条件，在数据库中
  */
 
 namespace Illuminate\Foundation\Testing\Constraints;
@@ -56,7 +56,7 @@ class HasInDatabase extends Constraint
      * @param  string  $table
      * @return bool
      */
-    public function matches($table)
+    public function matches($table): bool
     {
         return $this->database->table($table)->where($this->data)->count() > 0;
     }
@@ -68,7 +68,7 @@ class HasInDatabase extends Constraint
      * @param  string  $table
      * @return string
      */
-    public function failureDescription($table)
+    public function failureDescription($table): string
     {
         return sprintf(
             "a row in the table [%s] matches the attributes %s.\n\n%s",
@@ -107,7 +107,7 @@ class HasInDatabase extends Constraint
      * @param  int  $options
      * @return string
      */
-    public function toString($options = 0)
+    public function toString($options = 0): string
     {
         return json_encode($this->data, $options);
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由，路由参数绑定器
+ * Illuminate，路由选择，路由参数绑定器
  */
 
 namespace Illuminate\Routing;
@@ -41,11 +41,15 @@ class RouteParameterBinder
         // If the route has a regular expression for the host part of the URI, we will
         // compile that and get the parameter matches for this domain. We will then
         // merge them into this parameters array so that this array is completed.
+		// 如果该路由对 URI 中的主机部分有正则表达式匹配规则，我们将对其进行编译，并获取此域名的参数匹配结果。
+		// 然后我们将把它们合并到这个参数数组中，以使该数组完整。
         $parameters = $this->bindPathParameters($request);
 
         // If the route has a regular expression for the host part of the URI, we will
         // compile that and get the parameter matches for this domain. We will then
         // merge them into this parameters array so that this array is completed.
+		// 如果该路由对 URI 中的主机部分有正则表达式匹配规则，我们将对其进行编译，并获取此域名的参数匹配结果。
+		// 我们将把它们合并到这个参数数组中，以使该数组完整。
         if (! is_null($this->route->compiled->getHostRegex())) {
             $parameters = $this->bindHostParameters(
                 $request, $parameters
@@ -88,7 +92,7 @@ class RouteParameterBinder
 
     /**
      * Combine a set of parameter matches with the route's keys.
-	 * 将一组参数匹配与路由的关键字组合起来。
+	 * 将一组参数匹配与路由的关键字组合起来
      *
      * @param  array  $matches
      * @return array

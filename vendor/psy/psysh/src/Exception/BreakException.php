@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，Break Exception
+ */
 
 /*
  * This file is part of Psy Shell.

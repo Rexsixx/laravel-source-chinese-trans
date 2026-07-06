@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，视图探测器接口
+ * Illuminate，视图，视图查找器接口
  */
 
 namespace Illuminate\View;
@@ -59,7 +59,7 @@ interface ViewFinderInterface
      *
      * @param  string  $namespace
      * @param  string|array  $hints
-     * @return $this
+     * @return void
      */
     public function replaceNamespace($namespace, $hints);
 

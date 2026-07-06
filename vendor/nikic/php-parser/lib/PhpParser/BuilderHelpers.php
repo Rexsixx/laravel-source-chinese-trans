@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，构建者辅助
+ */
+
 namespace PhpParser;
 
 use PhpParser\Node\ComplexType;
@@ -13,6 +17,7 @@ use PhpParser\Node\Stmt;
 
 /**
  * This class defines helpers used in the implementation of builders. Don't use it directly.
+ * 这个类定义了在实现构建器中使用的助手。不要直接使用它。
  *
  * @internal
  */
