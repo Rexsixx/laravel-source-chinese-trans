@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理程序，Slack，Slack 记录
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -18,6 +21,7 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Slack record utility helping to log to Slack webhooks or API.
+ * Slack记录实用工具,帮助登录到松弛的网络钩子或API。
  *
  * @author Greg Kedzierski <greg@gregkedzierski.com>
  * @author Haralan Dobrev <hkdobrev@gmail.com>

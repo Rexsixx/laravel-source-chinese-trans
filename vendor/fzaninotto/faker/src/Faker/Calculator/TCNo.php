@@ -12,6 +12,7 @@ class TCNo
     /**
      * Generates Turkish Identity Number Checksum
      * Gets first 9 digit as prefix and calcuates checksums
+	 * 生成土耳其恒等式号码校验和以前9位作为前缀和计算校验和。
      *
      * https://en.wikipedia.org/wiki/Turkish_Identification_Number
      *

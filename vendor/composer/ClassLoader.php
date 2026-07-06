@@ -1,4 +1,7 @@
 <?php
+/**
+ * Composer，自动加载，类加载器
+ */
 
 /*
  * This file is part of Composer.
@@ -14,6 +17,7 @@ namespace Composer\Autoload;
 
 /**
  * ClassLoader implements a PSR-0, PSR-4 and classmap class loader.
+ * ClassLoader实现了PSR-0、PSR-4和classmap类装入器。
  *
  *     $loader = new \Composer\Autoload\ClassLoader();
  *
@@ -170,6 +174,7 @@ class ClassLoader
     /**
      * Registers a set of PSR-0 directories for a given prefix, either
      * appending or prepending to the ones previously set for this prefix.
+	 * 为指定前缀注册一组 PSR-0 目录，可选择在之前已设置的目录后添加或前置。
      *
      * @param string              $prefix  The prefix
      * @param list<string>|string $paths   The PSR-0 root directories
@@ -218,6 +223,7 @@ class ClassLoader
     /**
      * Registers a set of PSR-4 directories for a given namespace, either
      * appending or prepending to the ones previously set for this namespace.
+	 * 为给定命名空间注册一组 PSR-4 目录，可选择在之前已设置的目录之后添加或前置。
      *
      * @param string              $prefix  The prefix/namespace, with trailing '\\'
      * @param list<string>|string $paths   The PSR-4 base directories
@@ -269,6 +275,7 @@ class ClassLoader
     /**
      * Registers a set of PSR-0 directories for a given prefix,
      * replacing any others previously set for this prefix.
+	 * 为给定的前缀注册一组PSR-0目录，替换之前为此前缀设置的其他对象。
      *
      * @param string              $prefix The prefix
      * @param list<string>|string $paths  The PSR-0 base directories

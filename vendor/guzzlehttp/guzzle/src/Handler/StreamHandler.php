@@ -196,6 +196,7 @@ class StreamHandler
 
     /**
      * Drains the source stream into the "sink" client option.
+	 * 将源流排放到“sink”客户端选项中
      *
      * @param StreamInterface $source
      * @param StreamInterface $sink
@@ -228,6 +229,7 @@ class StreamHandler
 
     /**
      * Create a resource and check to ensure it was created successfully
+	 * 创建一个资源并检查确保它成功创建
      *
      * @param callable $callback Callable that returns stream resource
      *

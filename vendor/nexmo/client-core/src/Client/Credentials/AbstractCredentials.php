@@ -1,5 +1,9 @@
 <?php
 /**
+ * Nexmo，客户端，证书，抽象证书
+ */
+
+/**
  * Nexmo Client Library for PHP
  *
  * @copyright Copyright (c) 2016 Nexmo, Inc. (http://nexmo.com)

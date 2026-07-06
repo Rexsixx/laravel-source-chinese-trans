@@ -10,6 +10,7 @@ use Psr\Http\Message\StreamInterface;
 /**
  * Provides a buffer stream that can be written to to fill a buffer, and read
  * from to remove bytes from the buffer.
+ * 提供一个缓冲流，可写入以填充缓冲区，并从中读取以移除缓冲区中的字节。
  *
  * This stream returns a "hwm" metadata value that tells upstream consumers
  * what the configured high water mark of the stream is, or the maximum

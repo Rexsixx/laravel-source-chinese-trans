@@ -1,4 +1,7 @@
 <?php
+/**
+ * Lcobucci，JWT，签名者，键，FileCouldNotBeRead
+ */
 
 namespace Lcobucci\JWT\Signer\Key;
 

@@ -14,6 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * Middleware that retries requests based on the boolean result of
  * invoking the provided "decider" function.
+ * 根据调用提供的“决策函数”返回的布尔值，重新尝试请求的中间件。
  */
 class RetryMiddleware
 {
@@ -48,6 +49,7 @@ class RetryMiddleware
 
     /**
      * Default exponential backoff delay function.
+	 * 默认指数回退延迟函数
      *
      * @param int $retries
      *
@@ -80,6 +82,7 @@ class RetryMiddleware
 
     /**
      * Execute fulfilled closure
+	 * 执行完成的闭包
      *
      * @return mixed
      */
@@ -101,6 +104,7 @@ class RetryMiddleware
 
     /**
      * Execute rejected closure
+	 * 执行被拒绝的闭包
      *
      * @return callable
      */

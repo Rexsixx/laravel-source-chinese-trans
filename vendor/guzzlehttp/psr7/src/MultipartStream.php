@@ -10,6 +10,7 @@ use Psr\Http\Message\StreamInterface;
 /**
  * Stream that when read returns bytes for a streaming multipart or
  * multipart/form-data stream.
+ * 当读取时返回字节，用于流式多部分或多部分/表单数据流。
  *
  * @final
  */
@@ -39,6 +40,7 @@ class MultipartStream implements StreamInterface
 
     /**
      * Get the boundary
+	 * 得到边界
      *
      * @return string
      */

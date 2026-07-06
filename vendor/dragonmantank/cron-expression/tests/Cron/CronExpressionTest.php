@@ -561,6 +561,7 @@ class CronExpressionTest extends TestCase
      * Ranges with large steps should "wrap around" to the appropriate value
      * cronie allows for steps that are larger than the range of a field, with it wrapping around like a ring buffer. We
      * should do the same.
+	 * 步长较大的范围应“循环”到cronie允许的适当值，对于大于字段范围的步长，它会像环形缓冲区一样进行循环。我们也应该这样做。
      *
      * @see https://github.com/dragonmantank/cron-expression/issues/6
      */

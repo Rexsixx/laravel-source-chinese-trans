@@ -116,6 +116,7 @@ class Deprecation
 
     /**
      * Trigger a deprecation for the given package and identifier when called from outside.
+	 * 从外部调用时触发对给定包和标识符的弃用。
      *
      * "Outside" means we assume that $package is currently installed as a
      * dependency and the caller is not a file in that package. When $package
@@ -285,6 +286,7 @@ class Deprecation
 
     /**
      * Returns each triggered deprecation link identifier and the amount of occurrences.
+	 * 返回每个被触发的弃用链接标识符和出现次数
      *
      * @return array<string,int>
      */

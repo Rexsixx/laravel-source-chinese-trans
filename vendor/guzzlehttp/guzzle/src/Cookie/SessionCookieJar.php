@@ -36,6 +36,7 @@ class SessionCookieJar extends CookieJar
 
     /**
      * Saves cookies to session when shutting down
+	 * 关闭时将cookie保存到会话中
      */
     public function __destruct()
     {
@@ -44,6 +45,7 @@ class SessionCookieJar extends CookieJar
 
     /**
      * Save cookies to the client session
+	 * 将cookie保存到客户端会话
      */
     public function save()
     {
@@ -60,6 +62,7 @@ class SessionCookieJar extends CookieJar
 
     /**
      * Load the contents of the client session into the data array
+	 * 将客户端会话的内容加载到数据数组中
      */
     protected function load()
     {

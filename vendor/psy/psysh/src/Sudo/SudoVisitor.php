@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，Sudo，Sudo 访客
+ */
 
 /*
  * This file is part of Psy Shell.

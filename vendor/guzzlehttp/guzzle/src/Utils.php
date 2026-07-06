@@ -86,6 +86,7 @@ final class Utils
 
         /*
          * The Idn class is marked as @internal. Verify that class and method exists.
+		 * Idn类标记为@ inner。验证类和方法存在。
          */
         if (method_exists(Idn::class, 'idn_to_ascii')) {
             return Idn::idn_to_ascii($domain, $options, Idn::INTL_IDNA_VARIANT_UTS46, $info);

@@ -58,6 +58,7 @@ interface CookieJarInterface extends \Countable, \IteratorAggregate
 
     /**
      * Remove cookies currently held in the cookie jar.
+	 * 移除目前保存在cookie jar中的cookies。
      *
      * Invoking this method without arguments will empty the whole cookie jar.
      * If given a $domain argument only cookies belonging to that domain will
@@ -76,6 +77,7 @@ interface CookieJarInterface extends \Countable, \IteratorAggregate
 
     /**
      * Discard all sessions cookies.
+	 * 丢弃所有会话cookie。
      *
      * Removes cookies that don't have an expire field or a have a discard
      * field set to true. To be called when the user agent shuts down according
@@ -85,6 +87,7 @@ interface CookieJarInterface extends \Countable, \IteratorAggregate
 
     /**
      * Converts the cookie jar to an array.
+	 * 将cookie jar转换为数组
      *
      * @return array
      */

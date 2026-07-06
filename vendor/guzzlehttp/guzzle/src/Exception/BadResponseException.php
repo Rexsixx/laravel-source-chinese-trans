@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，异常，坏反应异常
+ * GuzzleHttp，异常，不良响应异常
  */
 
 namespace GuzzleHttp\Exception;

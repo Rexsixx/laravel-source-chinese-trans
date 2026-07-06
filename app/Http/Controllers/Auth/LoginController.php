@@ -18,6 +18,8 @@ class LoginController extends Controller
     | This controller handles authenticating users for the application and
     | redirecting them to your home screen. The controller uses a trait
     | to conveniently provide its functionality to your applications.
+	| 这个控制器负责为应用程序进行身份验证,并将其重新定向到主屏幕。
+	| 控制器使用一个特性来方便地向应用程序提供它的功能。
     |
     */
 

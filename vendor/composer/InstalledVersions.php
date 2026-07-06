@@ -1,4 +1,7 @@
 <?php
+/**
+ * Composer，安装的版本
+ */
 
 /*
  * This file is part of Composer.
@@ -17,6 +20,7 @@ use Composer\Semver\VersionParser;
 
 /**
  * This class is copied in every Composer installed project and available to all
+ * 该类复制到每个安装的Composer项目中，并可供所有人使用。
  *
  * See also https://getcomposer.org/doc/07-runtime.md#installed-versions
  *
@@ -56,6 +60,7 @@ class InstalledVersions
 
     /**
      * Returns a list of all package names which are present, either by being installed, replaced or provided
+	 * 返回已安装、替换或提供的所有包名的列表。
      *
      * @return string[]
      * @psalm-return list<string>
@@ -76,6 +81,7 @@ class InstalledVersions
 
     /**
      * Returns a list of all package names with a specific type e.g. 'library'
+	 * 返回具有特定类型的所有包名的列表。“library”
      *
      * @param  string   $type
      * @return string[]

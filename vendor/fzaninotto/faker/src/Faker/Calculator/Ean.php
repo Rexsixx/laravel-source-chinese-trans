@@ -7,6 +7,7 @@ namespace Faker\Calculator;
 
 /**
  * Utility class for validating EAN-8 and EAN-13 numbers
+ * 实用类验证EAN-8和EAN-13数字
  *
  * @package Faker\Calculator
  */
@@ -44,6 +45,7 @@ class Ean
     /**
      * Checks whether the provided number is an EAN compliant number and that
      * the checksum is correct.
+	 * 检查所提供的号码是否符合指令,校验和是正确的。
      *
      * @param string $ean An EAN number
      * @return boolean

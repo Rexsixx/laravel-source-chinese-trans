@@ -14,6 +14,7 @@ return [
     | reset options for your application. You may change these defaults
     | as required, but they're a perfect start for most applications.
 	| 该选项控制默认的身份验证“保护”和密码重置选项。
+	| 您可以根据需要更改这些默认值,但对于大多数应用程序来说,它们是一个完美的开始。
     |
     */
 
@@ -30,11 +31,14 @@ return [
     | Next, you may define every authentication guard for your application.
     | Of course, a great default configuration has been defined for you
     | here which uses session storage and the Eloquent user provider.
-	| 接下来,您可以为应用程序定义每个身份验证器。当然,在这里为您定义了一个巨大的默认配置,它使用会话存储和有能力的用户提供者。
+	| 接下来,您可以为应用程序定义每个身份验证器。
+	| 当然,在这里为您定义了一个巨大的默认配置,它使用会话存储和有能力的用户提供者。
     |
     | All authentication drivers have a user provider. This defines how the
     | users are actually retrieved out of your database or other storage
     | mechanisms used by this application to persist your user's data.
+	| 所有身份验证驱动程序都具有一个用户提供程序。
+	| 该程序定义了如何从数据库或其他应用程序用于持久化用户数据的存储机制中实际获取用户信息。
     |
     | Supported: "session", "token"
     |
@@ -61,10 +65,13 @@ return [
     | users are actually retrieved out of your database or other storage
     | mechanisms used by this application to persist your user's data.
 	| 所有身份验证驱动程序都有一个用户提供者。
+	| 这定义了如何从您的数据库或应用程序使用的其他存储机制中检索到用户的数据。
     |
     | If you have multiple user tables or models you may configure multiple
     | sources which represent each model / table. These sources may then
     | be assigned to any extra authentication guards you have defined.
+	| 如果您有多个用户表或模型，可以配置多个数据源，每个数据源对应一个模型或表。
+	| 这些源随后可以分配给您已定义的任何额外身份验证守护程序。
     |
     | Supported: "database", "eloquent"
     |
@@ -90,11 +97,14 @@ return [
     | You may specify multiple password reset configurations if you have more
     | than one user table or model in the application and you want to have
     | separate password reset settings based on the specific user types.
-	| 如果在应用程序中有多个用户表或模型,您可以指定多个密码重置配置,并且您希望根据特定的用户类型进行单独的密码重置设置。
+	| 如果在应用程序中有多个用户表或模型,您可以指定多个密码重置配置,
+	| 并且您希望根据特定的用户类型进行单独的密码重置设置。
     |
     | The expire time is the number of minutes that the reset token should be
     | considered valid. This security feature keeps tokens short-lived so
     | they have less time to be guessed. You may change this as needed.
+	| 过期时间是指重置令牌应被视为有效的分钟数。
+	| 此安全功能可使令牌生命周期较短，从而减少被猜测的时间。您可以根据需要调整此设置。
     |
     */
 

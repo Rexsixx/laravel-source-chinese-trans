@@ -22,6 +22,7 @@ class Uri implements UriInterface
      * but in generic URIs the host can be empty. So for http(s) URIs
      * we apply this default host when no host is given yet to form a
      * valid URI.
+	 * 根据 RFC 7230 第 2.777 节，绝对 HTTP 和 HTTPS URI URI URI 需要主机，但在通用 URI 中，主机可以为空。
      */
     const HTTP_DEFAULT_HOST = 'localhost';
 
@@ -135,6 +136,7 @@ class Uri implements UriInterface
 
     /**
      * Composes a URI reference string from its various components.
+	 * 从它的各个组件组成一个URI引用字符串。
      *
      * Usually this method does not need to be called manually but instead is used indirectly via
      * `Psr\Http\Message\UriInterface::__toString`.

@@ -19,6 +19,7 @@ class ResetPasswordController extends Controller
     | and uses a simple trait to include this behavior. You're free to
     | explore this trait and override any methods you wish to tweak.
 	| 该控制器负责处理密码重置请求，并使用一个简单的trait来包含此行为。
+	| 你可以自由地探索这个特质,并覆盖任何你想要调整的方法。
     |
     */
 

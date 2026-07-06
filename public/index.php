@@ -22,6 +22,7 @@ define('LARAVEL_START', microtime(true));
 | into the script here so that we don't have to worry about manual
 | loading any of our classes later on. It feels great to relax.
 | Composer为我们的应用提供了一个方便的、自动生成的类加载器。
+| 我们只需要利用它!我们只需要把它输入到脚本中,这样我们就不用担心以后的作业了。放松一下感觉很好。
 |
 */
 

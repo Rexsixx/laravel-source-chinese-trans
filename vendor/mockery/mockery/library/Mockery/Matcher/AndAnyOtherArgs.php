@@ -28,6 +28,7 @@ class AndAnyOtherArgs extends MatcherAbstract
 {
     /**
      * Check if the actual value matches the expected.
+	 * 检查实际值是否符合预期
      *
      * @param mixed $actual
      * @return bool

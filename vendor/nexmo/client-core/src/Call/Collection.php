@@ -1,5 +1,9 @@
 <?php
 /**
+ * Nexmo，呼叫，采集
+ */
+
+/**
  * Nexmo Client Library for PHP
  *
  * @copyright Copyright (c) 2016 Nexmo, Inc. (http://nexmo.com)

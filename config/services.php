@@ -15,6 +15,7 @@ return [
     | default location for this type of information, allowing packages
     | to have a conventional place to find your various credentials.
 	| 该文件用于存储第三方服务的凭证,如条纹、邮枪、SparkPost等。
+	| 这个文件为这种类型的信息提供了一个正常的默认位置,允许包有一个传统的地方来找到您的各种凭证。
     |
     */
 

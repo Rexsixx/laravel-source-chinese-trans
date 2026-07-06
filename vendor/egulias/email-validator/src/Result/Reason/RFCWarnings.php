@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，电子邮件验证器，结果，理由，RFC 警告
+ */
 
 namespace Egulias\EmailValidator\Result\Reason;
 

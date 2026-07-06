@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，Psr7，惰开流
+ * GuzzleHttp，Psr7，懒惰的开放流
  */
 
 namespace GuzzleHttp\Psr7;
@@ -10,6 +10,7 @@ use Psr\Http\Message\StreamInterface;
 /**
  * Lazily reads or writes to a file that is opened only after an IO operation
  * take place on the stream.
+ * 懒惰地读取或写入文件，该文件仅在流上执行IO操作后才会被打开。
  *
  * @final
  */
@@ -35,6 +36,7 @@ class LazyOpenStream implements StreamInterface
 
     /**
      * Creates the underlying stream lazily when required.
+	 * 在需要时惰性地创建底层流
      *
      * @return StreamInterface
      */

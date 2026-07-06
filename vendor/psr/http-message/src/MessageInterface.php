@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psr，Http，消息，消息接口
+ */
 
 declare(strict_types=1);
 

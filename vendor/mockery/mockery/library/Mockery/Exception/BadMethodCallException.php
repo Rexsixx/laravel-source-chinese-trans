@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，异常，坏方法调用异常
+ * Mockery，异常，不良方法调用异常
  */
 
 namespace Mockery\Exception;

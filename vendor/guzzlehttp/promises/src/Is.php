@@ -31,6 +31,7 @@ final class Is
 
     /**
      * Returns true if a promise is fulfilled.
+	 * 如果实现了承诺，则返回true。
      *
      * @return bool
      */
@@ -41,6 +42,7 @@ final class Is
 
     /**
      * Returns true if a promise is rejected.
+	 * 如果承诺被拒绝，返回true。
      *
      * @return bool
      */

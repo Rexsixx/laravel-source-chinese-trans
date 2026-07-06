@@ -61,6 +61,7 @@ function describe_type($input)
 
 /**
  * Parses an array of header lines into an associative array of headers.
+ * 将标题行数组解析成一个关联数组的头
  *
  * @param iterable $lines Header lines array of strings in the following
  *                     format: "Name: Value"
@@ -82,6 +83,7 @@ function headers_from_lines($lines)
 
 /**
  * Returns a debug stream based on the provided variable.
+ * 根据所提供的变量返回一个调试流
  *
  * @param mixed $value Optional value
  *

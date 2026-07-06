@@ -1,5 +1,9 @@
 <?php
 /**
+ * Nexmo，客户端，异常，Exception
+ */
+
+/**
  * Nexmo Client Library for PHP
  *
  * @copyright Copyright (c) 2016 Nexmo, Inc. (http://nexmo.com)

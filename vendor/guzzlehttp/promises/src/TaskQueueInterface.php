@@ -24,6 +24,7 @@ interface TaskQueueInterface
 
     /**
      * Execute all of the pending task in the queue.
+	 * 执行队列中所有挂起的任务
      */
     public function run();
 }

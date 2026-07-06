@@ -52,6 +52,7 @@ class StreamWrapper
 
     /**
      * Creates a stream context that can be used to open a stream as a php stream resource.
+	 * 创建一个流上下文，该上下文可用于作为php流资源打开流。
      *
      * @param StreamInterface $stream
      *
@@ -66,6 +67,7 @@ class StreamWrapper
 
     /**
      * Registers the stream wrapper if needed
+	 * 如果需要，注册流包装器。
      */
     public static function register()
     {

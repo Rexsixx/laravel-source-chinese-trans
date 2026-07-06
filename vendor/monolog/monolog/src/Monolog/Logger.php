@@ -39,6 +39,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Interesting events
+	 * 有趣的事件
      *
      * Examples: User logs in, SQL logs.
      */

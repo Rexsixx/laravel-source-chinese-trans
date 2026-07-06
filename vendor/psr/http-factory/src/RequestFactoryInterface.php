@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psr，Http，消息，请求工厂接口
+ */
 
 namespace Psr\Http\Message;
 

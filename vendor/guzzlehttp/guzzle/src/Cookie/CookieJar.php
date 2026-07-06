@@ -73,6 +73,7 @@ class CookieJar implements CookieJarInterface
     /**
      * Evaluate if this cookie should be persisted to storage
      * that survives between requests.
+	 * 评估该cookie是否应该保存在请求之间的存储中
      *
      * @param SetCookie $cookie Being evaluated.
      * @param bool $allowSessionCookies If we should persist session cookies
@@ -93,6 +94,7 @@ class CookieJar implements CookieJarInterface
 
     /**
      * Finds and returns the cookie based on the name
+	 * 根据名称查找并返回cookie
      *
      * @param string $name cookie name to search for
      * @return SetCookie|null cookie that was found or null if not found
@@ -309,6 +311,7 @@ class CookieJar implements CookieJarInterface
     /**
      * If a cookie already exists and the server asks to set it again with a
      * null value, the cookie must be deleted.
+	 * 如果Cookie已存在，且服务器要求将其设置为null值，则必须删除该Cookie。
      *
      * @param SetCookie $cookie
      */

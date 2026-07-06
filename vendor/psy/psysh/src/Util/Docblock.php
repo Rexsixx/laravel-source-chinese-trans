@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，工具，Docb lock
+ */
 
 /*
  * This file is part of Psy Shell.

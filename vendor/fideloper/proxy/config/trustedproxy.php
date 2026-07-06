@@ -24,6 +24,7 @@ return [
     /*
      * To trust one or more specific proxies that connect
      * directly to your server, use an array or a string separated by comma of IP addresses:
+	 * 要信任直接连接到服务器的一个或多个特定的代理,使用一个数组或一个由IP地址逗号分隔的字符串:
      */
     // 'proxies' => ['192.168.1.1'],
     // 'proxies' => '192.168.1.1, 192.168.1.2',
@@ -36,6 +37,7 @@ return [
 
     /*
      * Which headers to use to detect proxy related data (For, Host, Proto, Port)
+	 * 用于检测代理相关数据的头(For,Host,Proto,Port)
      *
      * Options include:
      *

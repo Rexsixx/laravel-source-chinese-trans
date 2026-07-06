@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，Mandango，列式猜测器
+ */
 
 namespace Faker\ORM\Mandango;
 
@@ -43,6 +46,7 @@ class ColumnTypeGuesser
                 };
             default:
                 // no smart way to guess what the user expects here
+				// 没有一个聪明的方法来猜测用户的期望
                 return null;
         }
     }

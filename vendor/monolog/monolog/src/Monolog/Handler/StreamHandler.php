@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理程序，Stream 处理程序
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -16,6 +19,7 @@ use Monolog\Utils;
 
 /**
  * Stores to any stream resource
+ * 存储到任何流资源
  *
  * Can be used to store into php://stderr, remote and local files, etc.
  *
@@ -74,6 +78,7 @@ class StreamHandler extends AbstractProcessingHandler
 
     /**
      * Return the currently active stream if it is open
+	 * 如果它是开放的,返回当前的活动流。
      *
      * @return resource|null
      */

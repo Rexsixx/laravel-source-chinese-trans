@@ -99,6 +99,7 @@ class Inspector implements InspectorInterface
 
     /**
      * Returns a url to the php-manual related to the underlying error - when available.
+	 * 在可用的时候,将url返回到与基本错误相关的phop手动。
      *
      * @return string|null
      */

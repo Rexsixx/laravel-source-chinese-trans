@@ -1,5 +1,9 @@
 <?php
 /**
+ * Nexmo，呼叫，Hangup
+ */
+
+/**
  * Nexmo Client Library for PHP
  *
  * @copyright Copyright (c) 2017 Nexmo, Inc. (http://nexmo.com)

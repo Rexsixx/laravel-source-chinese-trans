@@ -128,6 +128,8 @@ final class Run implements RunInterface
     /**
      * Register your handler as the last of all currently registered handlers (to be executed first).
      * Prefer using appendHandler and prependHandler for clarity.
+	 * 将您的处理程序注册为最后一个已注册的处理程序(要先执行)。
+	 * 更喜欢使用appendHandler和prependHandler来清晰地使用。
      *
      * @param callable|HandlerInterface $handler
      *
@@ -156,6 +158,7 @@ final class Run implements RunInterface
 
     /**
      * Removes the first handler.
+	 * 删除第一个处理程序
      *
      * @return void
      */

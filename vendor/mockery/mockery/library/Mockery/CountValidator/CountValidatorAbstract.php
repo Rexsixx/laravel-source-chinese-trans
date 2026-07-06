@@ -36,6 +36,7 @@ abstract class CountValidatorAbstract
 
     /**
      * Call count limit
+	 * 呼叫计数极限
      *
      * @var int
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Zend，Diactoros，parse
+ * Zend，Diactoros，parseCookieHeader
  */
 
 /**

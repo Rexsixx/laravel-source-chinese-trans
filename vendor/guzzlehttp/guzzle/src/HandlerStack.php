@@ -1,6 +1,6 @@
 <?php
 /**
- * GuzzleHttp，处理栈
+ * GuzzleHttp，处理堆栈
  */
 
 namespace GuzzleHttp;
@@ -65,6 +65,7 @@ class HandlerStack
 
     /**
      * Invokes the handler stack as a composed handler
+	 * 作为组合处理程序调用处理程序堆栈
      *
      * @param RequestInterface $request
      * @param array            $options
@@ -80,6 +81,7 @@ class HandlerStack
 
     /**
      * Dumps a string representation of the stack.
+	 * 转储堆栈的字符串表示形式
      *
      * @return string
      */
@@ -109,6 +111,7 @@ class HandlerStack
 
     /**
      * Set the HTTP handler that actually returns a promise.
+	 * 设置实际返回承诺的HTTP处理程序
      *
      * @param callable $handler Accepts a request and array of options and
      *                          returns a Promise.

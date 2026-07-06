@@ -13,6 +13,7 @@ interface Filter
 {
     /**
      * Applies the filter to the object.
+	 * 将过滤器应用于对象
      *
      * @param object   $object
      * @param string   $property

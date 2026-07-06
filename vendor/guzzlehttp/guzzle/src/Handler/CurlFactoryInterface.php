@@ -26,6 +26,7 @@ interface CurlFactoryInterface
 	 * 释放一个简单的句柄,允许它被重用或关闭。
      *
      * This function must call unset on the easy handle's "handle" property.
+	 * 这个函数必须调用不设置在简单句柄的“句柄”属性。
      *
      * @param EasyHandle $easy
      */

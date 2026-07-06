@@ -20,6 +20,7 @@ class EntityPopulator
 
     /**
      * Class constructor.
+	 * 类构造函数
      *
      * @param string $class A Propel ActiveRecord classname
      */
@@ -177,6 +178,7 @@ class EntityPopulator
 
     /**
      * Insert one new record using the Entity class.
+	 * 使用实体类插入一个新记录
      */
     public function execute($con, $insertedEntities)
     {

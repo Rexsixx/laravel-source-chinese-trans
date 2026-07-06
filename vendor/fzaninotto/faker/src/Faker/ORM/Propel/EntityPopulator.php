@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，Propel，实体普及器
+ */
 
 namespace Faker\ORM\Propel;
 
@@ -7,6 +10,7 @@ use \ColumnMap;
 
 /**
  * Service class for populating a table through a Propel ActiveRecord class.
+ * 服务类通过推动ActiveRecord类填充表。
  */
 class EntityPopulator
 {
@@ -16,6 +20,7 @@ class EntityPopulator
 
     /**
      * Class constructor.
+	 * 类构造函数
      *
      * @param string $class A Propel ActiveRecord classname
      */

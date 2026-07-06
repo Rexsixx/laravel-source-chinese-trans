@@ -22,11 +22,13 @@ interface Result
 
     /**
      * Short description of the result, human readable.
+	 * 对结果的简短描述,人类的可读性。
      */
     public function description() : string;
 
     /**
      * Code for user land to act upon.
+	 * 用户的代码
      */
     public function code() : int;
 }

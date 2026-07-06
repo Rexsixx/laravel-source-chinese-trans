@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，发生器，参数
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -42,6 +46,7 @@ class Parameter
 
     /**
      * Get the reflection class for the parameter type, if it exists.
+	 * 如果存在,则获取参数类型的反射类。
      *
      * This will be null if there was no type, or it was a scalar or a union.
      *

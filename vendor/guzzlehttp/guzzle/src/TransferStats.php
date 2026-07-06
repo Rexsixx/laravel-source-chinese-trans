@@ -12,6 +12,7 @@ use Psr\Http\Message\UriInterface;
 /**
  * Represents data at the point after it was transferred either successfully
  * or after a network error.
+ * 表示数据在被传输到网络错误之后。
  */
 final class TransferStats
 {
@@ -52,6 +53,7 @@ final class TransferStats
 
     /**
      * Returns the response that was received (if any).
+	 * 返回被接收的响应(如果有的话)
      *
      * @return ResponseInterface|null
      */

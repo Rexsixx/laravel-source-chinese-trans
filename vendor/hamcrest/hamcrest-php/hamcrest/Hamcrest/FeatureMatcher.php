@@ -13,6 +13,7 @@ namespace Hamcrest;
  * Supporting class for matching a feature of an object. Implement
  * <code>featureValueOf()</code> in a subclass to pull out the feature to be
  * matched against.
+ * 支持类,用于匹配对象的特性。
  */
 abstract class FeatureMatcher extends TypeSafeDiagnosingMatcher
 {
@@ -42,6 +43,7 @@ abstract class FeatureMatcher extends TypeSafeDiagnosingMatcher
 
     /**
      * Implement this to extract the interesting feature.
+	 * 实现这一点来提取这个有趣的特性
      *
      * @param mixed $actual the target object
      *

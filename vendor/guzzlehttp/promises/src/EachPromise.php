@@ -166,6 +166,7 @@ class EachPromise implements PromisorInterface
 
         // Iterable keys may not be unique, so we use a counter to
         // guarantee uniqueness
+		// 可迭代键可能不是唯一的,所以我们使用一个计数器来保证惟一性。
         $idx = $this->nextPendingIndex++;
 
         $this->pending[$idx] = $promise->then(

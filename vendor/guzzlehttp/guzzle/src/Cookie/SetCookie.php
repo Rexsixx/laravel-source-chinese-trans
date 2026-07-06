@@ -38,6 +38,7 @@ class SetCookie
     public static function fromString($cookie)
     {
         // Create the default return array
+		// 创建默认返回数组
         $data = self::$defaults;
         // Explode the cookie string using a series of semicolons
         $pieces = array_filter(array_map('trim', explode(';', $cookie)));
@@ -110,6 +111,7 @@ class SetCookie
 
     /**
      * Get the cookie name
+	 * 获取cookie名称
      *
      * @return string
      */
@@ -120,6 +122,7 @@ class SetCookie
 
     /**
      * Set the cookie name
+	 * 设置cookie名称
      *
      * @param string $name Cookie name
      */
@@ -130,6 +133,7 @@ class SetCookie
 
     /**
      * Get the cookie value
+	 * 获取cookie值
      *
      * @return string
      */

@@ -17,6 +17,7 @@ use Hamcrest\Matcher;
  * Matches if XPath applied to XML/HTML/XHTML document either
  * evaluates to result matching the matcher or returns at least
  * one node, matching the matcher if present.
+ * 如果XPath应用于XML / HTML / XHTML文档,则匹配匹配matcher的结果,或者至少返回一个节点,匹配matcher。
  */
 class HasXPath extends DiagnosingMatcher
 {
@@ -32,6 +33,7 @@ class HasXPath extends DiagnosingMatcher
     /**
      * Optional matcher to apply to the XPath expression result
      * or the content of the returned nodes.
+	 * 可选的matcher应用于XPath表达式结果或返回节点的内容
      *
      * @var Matcher
      */
@@ -45,6 +47,7 @@ class HasXPath extends DiagnosingMatcher
 
     /**
      * Matches if the XPath matches against the DOM node and the matcher.
+	 * 如果XPath匹配与DOM节点和matcher匹配
      *
      * @param string|\DOMNode $actual
      * @param Description $mismatchDescription

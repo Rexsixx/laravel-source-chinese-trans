@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，异常，路径无效异常
+ * Dotenv，异常，无效路径异常
  */
 
 namespace Dotenv\Exception;

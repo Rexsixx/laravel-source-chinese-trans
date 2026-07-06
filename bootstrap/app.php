@@ -29,6 +29,7 @@ $app = new Illuminate\Foundation\Application(
 | we will be able to resolve them when needed. The kernels serve the
 | incoming requests to this application from both the web and CLI.
 | 接下来，我们需要将一些重要的接口绑定到容器中，以便在需要时能够调用它们。
+| 内核从web和CLI中服务于该应用程序的传入请求。
 |
 */
 

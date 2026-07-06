@@ -47,6 +47,7 @@ class CombinableMatcher extends BaseMatcher
 
     /**
      * This is useful for fluently combining matchers that must both pass.
+	 * 这对于熟练地结合匹配者来说是有用的。
      * For example:
      * <pre>
      *   assertThat($string, both(containsString("a"))->andAlso(containsString("b")));

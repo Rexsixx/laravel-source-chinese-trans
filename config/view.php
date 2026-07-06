@@ -14,6 +14,7 @@ return [
     | an array of paths that should be checked for your views. Of course
     | the usual Laravel view path has already been registered for you.
 	| 大多数模板系统都是从磁盘加载模板的。在这里，您可以指定一系列需要检查的路径，以确定您的视图文件所在的位置。
+	| 当然，常规的 Laravel 视图路径已经为您注册好了。
     |
     */
 
@@ -29,7 +30,8 @@ return [
     | This option determines where all the compiled Blade templates will be
     | stored for your application. Typically, this is within the storage
     | directory. However, as usual, you are free to change this value.
-	| 这个选项决定了所有编译后的刀片模板将在哪里存储到您的应用程序中。
+	| 这个选项决定了所有编译后的Blade模板将在哪里存储到您的应用程序中。
+	| 通常，这个值位于存储目录中。但和往常一样，你可以自由修改此值。
     |
     */
 

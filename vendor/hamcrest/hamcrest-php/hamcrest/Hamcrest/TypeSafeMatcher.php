@@ -37,6 +37,7 @@ abstract class TypeSafeMatcher extends BaseMatcher
 
     /**
      * The subtype (e.g. class for objects) that is required
+	 * 需要的子类型(例如对象类)
      *
      * @var string
      */

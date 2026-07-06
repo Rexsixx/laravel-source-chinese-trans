@@ -37,6 +37,7 @@ class Stream implements StreamInterface
 
     /**
      * This constructor accepts an associative array of options.
+	 * 这个构造函数接受一个关联数组的选项。
      *
      * - size: (int) If a read stream would otherwise have an indeterminate
      *   size, but the size is known due to foreknowledge, then you can
@@ -73,6 +74,7 @@ class Stream implements StreamInterface
 
     /**
      * Closes the stream when the destructed
+	 * 对象被销毁时关闭流
      */
     public function __destruct()
     {
@@ -141,6 +143,7 @@ class Stream implements StreamInterface
         }
 
         // Clear the stat cache if the stream has a URI
+		// 如果流有URI，则清除stat缓存。
         if ($this->uri) {
             clearstatcache(true, $this->uri);
         }

@@ -22,6 +22,7 @@ class DNSGetRecordWrapper
         );
         try {
             // Get all MX, A and AAAA DNS records for host
+			// 获取主机的所有MX、A和AAAA DNS记录。
             return new DNSRecords(dns_get_record($host, $type));
         } catch (\RuntimeException $exception) {
             return new DNSRecords([], true);

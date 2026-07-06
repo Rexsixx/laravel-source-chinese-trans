@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理程序，Chrome PHP 处理程序
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -17,6 +20,7 @@ use Monolog\Utils;
 
 /**
  * Handler sending logs to the ChromePHP extension (http://www.chromephp.com/)
+ * 处理将日志发送到ChromePHP扩展的处理程序
  *
  * This also works out of the box with Firefox 43+
  *
@@ -26,6 +30,7 @@ class ChromePHPHandler extends AbstractProcessingHandler
 {
     /**
      * Version of the extension
+	 * 扩展版本
      */
     const VERSION = '4.0';
 

@@ -77,6 +77,7 @@ class Pool implements PromisorInterface
 
     /**
      * Get promise
+	 * 得到承诺
      *
      * @return PromiseInterface
      */
@@ -88,6 +89,7 @@ class Pool implements PromisorInterface
     /**
      * Sends multiple requests concurrently and returns an array of responses
      * and exceptions that uses the same ordering as the provided requests.
+	 * 同时发送多个请求，并返回一个包含响应和异常的数组，其顺序与提供的请求相同。
      *
      * IMPORTANT: This method keeps every request and response in memory, and
      * as such, is NOT recommended when sending a large number or an
@@ -119,6 +121,7 @@ class Pool implements PromisorInterface
 
     /**
      * Execute callback(s)
+	 * 执行回调
      *
      * @return void
      */

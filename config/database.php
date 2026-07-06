@@ -14,6 +14,7 @@ return [
     | to use as your default connection for all database work. Of course
     | you may use many connections at once using the Database library.
 	| 在此您可以指定以下数据库连接中，您希望将其设为所有数据库操作的默认连接。
+	| 当然,您可以使用数据库库使用许多连接。
     |
     */
 
@@ -34,6 +35,8 @@ return [
     | All database work in Laravel is done through the PHP PDO facilities
     | so make sure you have the driver for your particular database of
     | choice installed on your machine before you begin development.
+	| 在Laravel中的所有数据库工作都是通过PHP PDO设备完成的,
+	| 所以要确保在开始开发之前,您的机器上安装了特定的选择数据库。
     |
     */
 
@@ -98,7 +101,8 @@ return [
     | This table keeps track of all the migrations that have already run for
     | your application. Using this information, we can determine which of
     | the migrations on disk haven't actually been run in the database.
-	| 此表跟踪已经运行的所有应用程序的迁移。
+	| 此表用于记录您应用程序已执行的所有迁移。
+	|利用这些信息，我们可以确定磁盘上的哪些迁移实际上并未在数据库中执行。
     |
     */
 
@@ -113,6 +117,7 @@ return [
     | provides a richer body of commands than a typical key-value system
     | such as APC or Memcached. Laravel makes it easy to dig right in.
 	| Redis是一个开源的、快速的、先进的键值存储库,它提供了比典型的密钥值系统(如APC或Memcached)更丰富的命令。
+	| Laravel让你很容易就能深入挖掘。
     |
     */
 

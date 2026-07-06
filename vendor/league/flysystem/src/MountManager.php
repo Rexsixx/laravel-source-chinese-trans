@@ -49,6 +49,7 @@ class MountManager implements FilesystemInterface
 
     /**
      * Mount filesystems.
+	 * 安装文件系统
      *
      * @param FilesystemInterface[] $filesystems [:prefix => Filesystem,]
      *

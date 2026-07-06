@@ -23,6 +23,7 @@ class MultipleValidationWithAnd implements EmailValidation
     /**
      * All of validations will be invoked even if one of them got failure.
      * So MultipleErrors will contain all causes.
+	 * 即使其中一个失败了,所有的验证都将被调用。所以多路误差将包含所有原因。
      */
     public const ALLOW_ALL_ERRORS = 1;
 
@@ -106,6 +107,7 @@ class MultipleValidationWithAnd implements EmailValidation
 
     /**
      * Returns the validation errors.
+	 * 返回验证错误
      */
     public function getError() : ?InvalidEmail
     {

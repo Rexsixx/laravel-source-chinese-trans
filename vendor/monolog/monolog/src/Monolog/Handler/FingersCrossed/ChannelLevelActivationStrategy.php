@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理程序，Fingers Crossed，通道级激活策略
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -17,6 +20,7 @@ use Monolog\Logger;
  * Channel and Error level based monolog activation strategy. Allows to trigger activation
  * based on level per channel. e.g. trigger activation on level 'ERROR' by default, except
  * for records of the 'sql' channel; those should trigger activation on level 'WARN'.
+ * 通道和错误水平的独白激活策略。
  *
  * Example:
  *

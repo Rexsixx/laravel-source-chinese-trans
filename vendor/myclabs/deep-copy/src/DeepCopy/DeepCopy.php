@@ -92,6 +92,7 @@ class DeepCopy
 
     /**
      * Deep copies the given object.
+	 * 深入复制给定的对象
      *
      * @template TObject
      *

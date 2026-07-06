@@ -81,6 +81,7 @@ final class Coroutine implements PromiseInterface
 
     /**
      * Create a new coroutine.
+	 * 创建一个新的coroutine
      *
      * @return self
      */

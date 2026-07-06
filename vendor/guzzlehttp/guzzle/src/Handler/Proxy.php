@@ -38,6 +38,7 @@ class Proxy
     /**
      * Sends streaming requests to a streaming compatible handler while sending
      * all other requests to a default handler.
+	 * 将流式请求发送到支持流式的处理器，而将所有其他请求发送到默认处理器。
      *
      * This, for example, could be useful for taking advantage of the
      * performance benefits of curl while still supporting true streaming

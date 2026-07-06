@@ -79,6 +79,7 @@ final class EasyHandle
         }
 
         // Attach a response to the easy handle with the parsed headers.
+		// 将响应与解析后的标头附加到easy句柄
         $this->response = new Response(
             $startLine[1],
             $headers,

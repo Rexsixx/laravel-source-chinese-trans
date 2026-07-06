@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，异常，没有匹配的期望异常
+ */
+
+/**
  * Mockery
  *
  * LICENSE

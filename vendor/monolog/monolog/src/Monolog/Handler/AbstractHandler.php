@@ -66,6 +66,7 @@ abstract class AbstractHandler implements HandlerInterface, ResettableInterface
 
     /**
      * Closes the handler.
+	 * 关闭处理器
      *
      * This will be called automatically when the object is destroyed
      */

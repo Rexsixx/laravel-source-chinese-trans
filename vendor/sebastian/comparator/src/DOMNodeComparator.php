@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，比较器，DOM节点比较器
+ */
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -14,6 +18,7 @@ use DOMNode;
 
 /**
  * Compares DOMNode instances for equality.
+ * 比较DOMNode实例相等。
  */
 class DOMNodeComparator extends ObjectComparator
 {

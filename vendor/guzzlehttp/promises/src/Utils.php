@@ -69,6 +69,7 @@ final class Utils
     /**
      * Synchronously waits on a promise to resolve and returns an inspection
      * state array.
+	 * 同步地等待一个承诺解析，并返回一个检查状态数组。
      *
      * Returns a state associative array containing a "state" key mapping to a
      * valid promise state. If the state of the promise is "fulfilled", the
@@ -99,6 +100,7 @@ final class Utils
     /**
      * Waits on all of the provided promises, but does not unwrap rejected
      * promises as thrown exception.
+	 * 等待所有提供的承诺,但不打开拒绝的承诺,就像抛出的异常一样。
      *
      * Returns an array of inspection state arrays.
      *

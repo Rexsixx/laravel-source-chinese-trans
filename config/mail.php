@@ -14,6 +14,7 @@ return [
     | sending of e-mail. You may specify which one you're using throughout
     | your application here. By default, Laravel is setup for SMTP mail.
 	| Laravel支持SMTP和PHP的“邮件”功能作为发送电子邮件的驱动程序。
+	| 您可以指定在您的应用程序中使用哪一个。默认情况下,Laravel将为SMTP邮件设置。
     |
     | Supported: "smtp", "sendmail", "mailgun", "mandrill", "ses",
     |            "sparkpost", "log", "array"
@@ -31,6 +32,7 @@ return [
     | applications. A default option is provided that is compatible with
     | the Mailgun mail service which will provide reliable deliveries.
 	| 在这里,您可以提供应用程序使用的SMTP服务器的主机地址。
+	| 提供的默认选项与Mailgun邮件服务兼容,该服务将提供可靠的交付。
     |
     */
 
@@ -45,6 +47,7 @@ return [
     | users of the application. Like the host we have set this value to
     | stay compatible with the Mailgun e-mail application by default.
 	| 这是您的应用程序使用的SMTP端口,向应用程序的用户发送电子邮件。
+	| 与主机一样,我们已经设置了这个值,在默认情况下与Mailgun电子邮件应用程序兼容。
     |
     */
 
@@ -59,6 +62,7 @@ return [
     | the same address. Here, you may specify a name and address that is
     | used globally for all e-mails that are sent by your application.
 	| 您可能希望您的应用程序发送的所有电子邮件都从同一个地址发送。
+	| 在这里,您可以指定一个名称和地址,用于全局用于您的应用程序发送的所有电子邮件。
     |
     */
 
@@ -76,6 +80,7 @@ return [
     | the application send e-mail messages. A sensible default using the
     | transport layer security protocol should provide great security.
 	| 在这里,您可以指定在应用程序发送电子邮件消息时使用的加密协议。
+	| 使用传输层安全协议的合理默认应该提供巨大的安全性。
     |
     */
 
@@ -90,6 +95,7 @@ return [
     | set it here. This will get used to authenticate with your server on
     | connection. You may also set the "password" value below this one.
 	| 如果您的SMTP服务器需要一个身份验证的用户名,您应该在这里设置它。
+	| 这将被用来与您的服务器在连接上进行身份验证。你也可以在这个下面设置“密码”值。
     |
     */
 

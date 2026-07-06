@@ -42,6 +42,7 @@ interface RunInterface
     /**
      * Returns an array with all handlers, in the
      * order they were added to the stack.
+	 * 返回一个数组与所有处理程序,按顺序添加到堆栈。
      *
      * @return array
      */
@@ -50,6 +51,7 @@ interface RunInterface
     /**
      * Clears all handlers in the handlerStack, including
      * the default PrettyPage handler.
+	 * 清除handlerStack中的所有处理程序,包括默认的PrettyPage处理程序。
      *
      * @return Run
      */
@@ -75,6 +77,7 @@ interface RunInterface
 
     /**
      * Unregisters all handlers registered by this Whoops\Run instance
+	 * 取消注册在这个Whoops \运行实例中注册的所有处理程序
      *
      * @return Run
      */
@@ -82,6 +85,7 @@ interface RunInterface
 
     /**
      * Should Whoops allow Handlers to force the script to quit?
+	 * 谁应该允许处理程序强制脚本退出?
      *
      * @param  bool|int $exit
      * @return bool
@@ -90,6 +94,7 @@ interface RunInterface
 
     /**
      * Silence particular errors in particular files
+	 * 在特定文件中保持特定的错误
      *
      * @param  array|string $patterns List or a single regex pattern to match
      * @param  int          $levels   Defaults to E_STRICT | E_DEPRECATED

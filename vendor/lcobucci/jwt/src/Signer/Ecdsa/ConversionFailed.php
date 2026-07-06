@@ -1,4 +1,7 @@
 <?php
+/**
+ * Lcobucci，JWT，签名者，Ecdsa，转换失败
+ */
 
 namespace Lcobucci\JWT\Signer\Ecdsa;
 

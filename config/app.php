@@ -14,7 +14,7 @@ return [
     | framework needs to place the application's name in a notification or
     | any other location as required by the application or its packages.
 	| 这个值是应用程序的名称。
-    |
+    | 当框架需要将应用程序的名称放置在通知或应用程序或其包所需的任何其他位置时,使用此值。
     */
 
     'name' => env('APP_NAME', 'Laravel'),
@@ -28,6 +28,7 @@ return [
     | running in. This may determine how you prefer to configure various
     | services the application utilizes. Set this in your ".env" file.
 	| 这个值决定了当前应用程序正在运行的“环境”。
+	| 这可能决定如何配置应用程序使用的各种服务。把这个设置在你的".env"文件。
     |
     */
 
@@ -104,6 +105,7 @@ return [
     | is not available. You may change the value to correspond to any of
     | the language folders that are provided through your application.
 	| 当不可用时,回退语言环境确定使用的区域设置。
+	| 您可以将该值更改为与通过您的应用程序提供的任何语言文件夹相对应的值。
     |
     */
 

@@ -133,6 +133,7 @@ class RedirectMiddleware
 
     /**
      * Enable tracking on promise.
+	 * 启用承诺跟踪
      *
      * @return PromiseInterface
      */
@@ -155,6 +156,7 @@ class RedirectMiddleware
 
     /**
      * Check for too many redirects.
+	 * 检查太多重定向
      *
      * @return void
      *
@@ -234,6 +236,7 @@ class RedirectMiddleware
 
     /**
      * Set the appropriate URL on the request based on the location header.
+	 * 根据位置标头在请求上设置适当的URL
      *
      * @param RequestInterface  $request
      * @param ResponseInterface $response

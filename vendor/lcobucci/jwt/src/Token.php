@@ -47,6 +47,7 @@ class Token
 
     /**
      * The token claim set
+	 * 令牌需要集
      *
      * @var DataSet
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，Log，记录器特征
+ */
 
 namespace Psr\Log;
 

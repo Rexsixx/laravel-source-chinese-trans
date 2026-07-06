@@ -18,6 +18,7 @@ use Monolog\Logger;
 
 /**
  * Serializes a log message according to Wildfire's header requirements
+ * Wildfire's头要求序列化日志消息
  *
  * @author Eric Clemmons (@ericclemmons) <eric@uxdriven.com>
  * @author Christophe Coevoet <stof@notk.org>

@@ -76,6 +76,7 @@ final class Utils
     /**
      * Copy the contents of a stream into a string until the given number of
      * bytes have been read.
+	 * 将流的内容复制到字符串中，直到读取指定的字字节数为止。
      *
      * @param StreamInterface $stream Stream to read
      * @param int             $maxLen Maximum number of bytes to read. Pass -1
@@ -117,6 +118,7 @@ final class Utils
 
     /**
      * Calculate a hash of a stream.
+	 * 计算流的哈希值。
      *
      * This method reads the entire stream to calculate a rolling hash, based
      * on PHP's `hash_init` functions.
@@ -150,6 +152,7 @@ final class Utils
 
     /**
      * Clone and modify a request with the given changes.
+	 * 使用给定的更改克隆和修改请求。
      *
      * This method is useful for reducing the number of clones needed to mutate
      * a message.
@@ -243,6 +246,7 @@ final class Utils
 
     /**
      * Read a line from the stream up to the maximum allowed buffer length.
+	 * 从流中读取一行，直到允许的最大缓冲区长度。
      *
      * @param StreamInterface $stream    Stream to read from
      * @param int|null        $maxLength Maximum buffer length
@@ -271,6 +275,7 @@ final class Utils
 
     /**
      * Create a new stream based on the input type.
+	 * 基于输入类型创建一个新的流。
      *
      * Options is an associative array that can contain the following keys:
      * - metadata: Array of custom metadata.

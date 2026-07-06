@@ -31,6 +31,7 @@ class DomainComment implements CommentStrategy
         }
         //add warning
         //Address is valid within the message but cannot be used unmodified for the envelope
+		// 地址在邮件中有效，但不能在未修改的情况下用于信封。
         return new ValidEmail();
     }
 

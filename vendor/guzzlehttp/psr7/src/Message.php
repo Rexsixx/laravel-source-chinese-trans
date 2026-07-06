@@ -51,6 +51,7 @@ final class Message
 
     /**
      * Get a short summary of the message body.
+	 * 对消息主体进行简短的总结。
      *
      * Will return `null` if the response is not printable.
      *

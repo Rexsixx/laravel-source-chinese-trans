@@ -62,6 +62,7 @@ final class Query
 
     /**
      * Build a query string from an array of key value pairs.
+	 * 从键值对数组生成查询字符串。
      *
      * This function can use the return value of `parse()` to build a query
      * string. This function does not modify the provided keys when an array is

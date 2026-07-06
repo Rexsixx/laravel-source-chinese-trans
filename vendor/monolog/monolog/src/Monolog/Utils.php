@@ -59,6 +59,7 @@ class Utils
 
     /**
      * Return the JSON representation of a value
+	 * 返回一个值的JSON表示
      *
      * @param  mixed             $data
      * @param  int               $encodeFlags flags to pass to json encode, defaults to JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE

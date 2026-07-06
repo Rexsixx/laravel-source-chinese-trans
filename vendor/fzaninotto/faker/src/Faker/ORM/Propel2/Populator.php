@@ -11,6 +11,8 @@ use Propel\Runtime\ServiceContainer\ServiceContainerInterface;
 /**
  * Service class for populating a database using the Propel ORM.
  * A Populator can populate several tables using ActiveRecord classes.
+ * 使用驱动ORM填充数据库的服务类。
+ * 一个填充器可以使用ActiveRecord类填充几个表。
  */
 class Populator
 {

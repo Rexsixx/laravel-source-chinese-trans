@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，处理程序，去复制处理程序
+ */
 
 /*
  * This file is part of the Monolog package.

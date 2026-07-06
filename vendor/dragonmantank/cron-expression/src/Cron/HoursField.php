@@ -47,7 +47,7 @@ class HoursField extends AbstractField
         // Change timezone to UTC temporarily. This will
         // allow us to go back or forwards and hour even
         // if DST will be changed between the hours.
-		// 暂时更改时区。这将允许我们在时间和时间之间改变时间,即使是在时间时间之间。
+		// 暂时更改时区。这将允许我们向后或向前，甚至小时,即使DST将在小时之间改变。
         if (is_null($parts) || $parts == '*') {
             $timezone = $date->getTimezone();
             $date = $date->setTimezone(new DateTimeZone('UTC'));

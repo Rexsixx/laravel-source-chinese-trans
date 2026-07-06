@@ -1,6 +1,6 @@
 <?php
 /**
- * Monolog，处理器，日志消息处理器
+ * Monolog，处理器，日志消息处理机
  */
 
 /*
@@ -18,6 +18,7 @@ use Monolog\Utils;
 
 /**
  * Processes a record's message according to PSR-3 rules
+ * 根据PSR-3规则处理记录的信息。
  *
  * It replaces {foo} with the value from $context['foo']
  *

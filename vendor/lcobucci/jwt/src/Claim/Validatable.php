@@ -26,6 +26,7 @@ interface Validatable
 {
     /**
      * Returns if claim is valid according with given data
+	 * 返回声称根据给定的数据有效
      *
      * @param ValidationData $data
      *

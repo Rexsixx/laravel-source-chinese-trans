@@ -1,4 +1,7 @@
 <?php
+/**
+ * Faker，ORM，Mandango，Populator
+ */
 
 namespace Faker\ORM\Mandango;
 
@@ -7,6 +10,7 @@ use Mandango\Mandango;
 /**
  * Service class for populating a database using Mandango.
  * A Populator can populate several tables using ActiveRecord classes.
+ * 使用Mandango填充数据库的服务类。
  */
 class Populator
 {
@@ -27,6 +31,7 @@ class Populator
 
     /**
      * Add an order for the generation of $number records for $entity.
+	 * 为$entity的生成值的生成添加一个订单
      *
      * @param mixed $entity A Propel ActiveRecord classname, or a \Faker\ORM\Propel\EntityPopulator instance
      * @param int   $number The number of entities to populate

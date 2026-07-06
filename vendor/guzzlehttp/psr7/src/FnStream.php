@@ -41,6 +41,7 @@ class FnStream implements StreamInterface
 
     /**
      * Lazily determine which methods are not implemented.
+	 * 惰性地确定哪些方法没有实现
      *
      * @throws \BadMethodCallException
      */

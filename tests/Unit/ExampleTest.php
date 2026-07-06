@@ -1,6 +1,6 @@
 <?php
 /**
- * 测试，特征，示例测试
+ * 测试，单元，示例测试
  */
 
 namespace Tests\Unit;

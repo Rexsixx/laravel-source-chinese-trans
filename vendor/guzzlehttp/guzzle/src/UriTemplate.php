@@ -97,6 +97,7 @@ class UriTemplate
 
     /**
      * Process an expansion
+	 * 展开扩展
      *
      * @param array $matches Matches met in the preg_replace_callback
      *
@@ -213,6 +214,7 @@ class UriTemplate
 
     /**
      * Determines if an array is associative.
+	 * 确定数组是否关联。
      *
      * This makes the assumption that input arrays are sequences or hashes.
      * This assumption is a tradeoff for accuracy in favor of speed, but it

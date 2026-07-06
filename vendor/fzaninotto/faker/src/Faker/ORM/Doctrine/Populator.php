@@ -11,6 +11,8 @@ use Faker\Generator;
 /**
  * Service class for populating a database using the Doctrine ORM or ODM.
  * A Populator can populate several tables using ActiveRecord classes.
+ * 服务类,用于填充一个使用“ORM或ODM”的数据库。
+ * 一个填充器可以使用ActiveRecord类填充几个表。
  */
 class Populator
 {
@@ -34,6 +36,7 @@ class Populator
 
     /**
      * Populator constructor.
+	 * Populator构造函数
      * @param Generator $generator
      * @param ObjectManager|null $manager
      * @param int $batchSize
@@ -47,6 +50,7 @@ class Populator
 
     /**
      * Add an order for the generation of $number records for $entity.
+	 * 为$entity的生成值的生成添加一个顺序
      *
      * @param mixed $entity A Doctrine classname, or a \Faker\ORM\Doctrine\EntityPopulator instance
      * @param int   $number The number of entities to populate
@@ -73,6 +77,7 @@ class Populator
 
     /**
      * Populate the database using all the Entity classes previously added.
+	 * 使用之前添加的所有实体类填充数据库。
      *
      * Please note that large amounts of data will result in more memory usage since the the Populator will return
      * all newly created primary keys after executing.

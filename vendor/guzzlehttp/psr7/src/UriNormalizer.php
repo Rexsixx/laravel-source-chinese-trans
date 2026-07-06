@@ -35,6 +35,7 @@ final class UriNormalizer
 
     /**
      * Decodes percent-encoded octets of unreserved characters.
+	 * 解码非保留字符的百分比编码八位元组。
      *
      * For consistency, percent-encoded octets in the ranges of ALPHA (%41–%5A and %61–%7A), DIGIT (%30–%39),
      * hyphen (%2D), period (%2E), underscore (%5F), or tilde (%7E) should not be created by URI producers and,
@@ -46,6 +47,7 @@ final class UriNormalizer
 
     /**
      * Converts the empty path to "/" for http and https URIs.
+	 * 将http和https uri的空路径转换为“/”。
      *
      * Example: http://example.org → http://example.org/
      */
@@ -53,6 +55,7 @@ final class UriNormalizer
 
     /**
      * Removes the default host of the given URI scheme from the URI.
+	 * 从URI中移除给定URI方案的默认主机。
      *
      * Only the "file" scheme defines the default host "localhost".
      * All of `file:/myfile`, `file:///myfile`, and `file://localhost/myfile`
@@ -66,6 +69,7 @@ final class UriNormalizer
 
     /**
      * Removes the default port of the given URI scheme from the URI.
+	 * 从URI中移除给定URI方案的默认端口。
      *
      * Example: http://example.org:80/ → http://example.org/
      */
@@ -73,6 +77,7 @@ final class UriNormalizer
 
     /**
      * Removes unnecessary dot-segments.
+	 * 删除不必要的点段。
      *
      * Dot-segments in relative-path references are not removed as it would
      * change the semantics of the URI reference.
@@ -83,6 +88,7 @@ final class UriNormalizer
 
     /**
      * Paths which include two or more adjacent slashes are converted to one.
+	 * 包含两个或多个相邻斜杠的路径将转换为一个斜杠。
      *
      * Webservers usually ignore duplicate slashes and treat those URIs equivalent.
      * But in theory those URIs do not need to be equivalent. So this normalization
@@ -94,6 +100,7 @@ final class UriNormalizer
 
     /**
      * Sort query parameters with their values in alphabetical order.
+	 * 按字母顺序排序查询参数。
      *
      * However, the order of parameters in a URI may be significant (this is not defined by the standard).
      * So this normalization is not safe and may change the semantics of the URI.
