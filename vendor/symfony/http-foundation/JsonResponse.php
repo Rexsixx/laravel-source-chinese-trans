@@ -1,4 +1,8 @@
 <?php
+/**
+ * Symfony，组件，Http基础，Json 响应
+ */
+
 
 /*
  * This file is part of the Symfony package.

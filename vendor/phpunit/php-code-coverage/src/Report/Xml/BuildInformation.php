@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，代码覆盖率，报告，Xml，构建信息
+ */
+
 /*
  * This file is part of the php-code-coverage package.
  *

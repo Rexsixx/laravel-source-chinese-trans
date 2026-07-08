@@ -39,6 +39,7 @@ class Util
 
     /**
      * Throws an exception if any item in $matchers is not a Hamcrest\Matcher.
+	 * 抛出一个异常,如果项目在$matchers中，而不是Hamcrest\Matcher。
      *
      * @param array $matchers expected to contain only matchers
      * @throws \InvalidArgumentException if any item is not a matcher

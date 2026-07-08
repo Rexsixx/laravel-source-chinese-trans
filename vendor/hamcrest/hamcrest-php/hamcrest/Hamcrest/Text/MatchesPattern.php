@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，Text，匹配模式
+ */
+
 namespace Hamcrest\Text;
 
 /*
@@ -7,6 +11,7 @@ namespace Hamcrest\Text;
 
 /**
  * Tests if the argument is a string that matches a regular expression.
+ * 测试如果参数是匹配正则表达式的字符串。
  */
 class MatchesPattern extends SubstringMatcher
 {
@@ -18,6 +23,7 @@ class MatchesPattern extends SubstringMatcher
 
     /**
      * Matches if value is a string that matches regular expression $pattern.
+	 * 匹配如果值是匹配正则表达式$pattern的字符串
      *
      * @factory
      */

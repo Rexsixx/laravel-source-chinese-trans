@@ -47,6 +47,7 @@ abstract class AbstractProcessingHandler extends AbstractHandler
 
     /**
      * Writes the record down to the log of the implementing handler
+	 * 将记录写入实现处理程序的日志
      *
      * @param  array $record
      * @return void

@@ -1,6 +1,6 @@
 <?php
 /**
- * Opis，闭包，安全供应商
+ * Opis，闭包，安全异常
  */
 
 /* ===========================================================================
@@ -15,6 +15,7 @@ use Exception;
 
 /**
  * Security exception class
+ * 安全异常类
  */
 class SecurityException extends Exception
 {

@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * Request stack that controls the lifecycle of requests.
+ * 控制请求生命周期的请求堆栈。
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */

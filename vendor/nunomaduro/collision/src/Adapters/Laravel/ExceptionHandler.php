@@ -32,6 +32,7 @@ class ExceptionHandler implements ExceptionHandlerContract
 {
     /**
      * Holds an instance of the application exception handler.
+	 * 保存应用程序异常处理程序的实例
      *
      * @var \Illuminate\Contracts\Debug\ExceptionHandler
      */

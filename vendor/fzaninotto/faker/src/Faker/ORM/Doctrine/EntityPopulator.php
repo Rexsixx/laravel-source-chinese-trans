@@ -10,6 +10,7 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 
 /**
  * Service class for populating a table through a Doctrine Entity class.
+ * 服务类通过一个教条实体类填充表。
  */
 class EntityPopulator
 {
@@ -28,6 +29,7 @@ class EntityPopulator
 
     /**
      * Class constructor.
+	 * 类构造函数
      *
      * @param ClassMetadata $class
      */
@@ -173,6 +175,7 @@ class EntityPopulator
 
     /**
      * Insert one new record using the Entity class.
+	 * 使用实体类插入一个新记录。
      * @param ObjectManager $manager
      * @param bool $generateId
      * @return EntityPopulator

@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，类型，可调用测试
+ */
+
 namespace Hamcrest\Type;
 
 class IsCallableTest extends \Hamcrest\AbstractMatcherTest

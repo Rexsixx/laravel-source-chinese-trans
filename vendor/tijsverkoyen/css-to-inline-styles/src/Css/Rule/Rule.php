@@ -49,6 +49,7 @@ final class Rule
 
     /**
      * Get selector
+	 * 获取选择器
      *
      * @return string
      */

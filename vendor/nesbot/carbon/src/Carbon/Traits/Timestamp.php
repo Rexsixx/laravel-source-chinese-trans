@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特征，时间戳
+ */
 
 /**
  * This file is part of the Carbon package.

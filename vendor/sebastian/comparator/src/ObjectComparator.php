@@ -15,6 +15,7 @@ namespace SebastianBergmann\Comparator;
 
 /**
  * Compares objects for equality.
+ * 比较对象相等。
  */
 class ObjectComparator extends ArrayComparator
 {

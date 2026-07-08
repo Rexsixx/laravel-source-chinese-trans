@@ -18,6 +18,7 @@ use Monolog\Logger;
 
 /**
  * Serializes a log message according to Wildfire's header requirements
+ * 根据Wildfire的头要求序列化日志消息
  *
  * @author Eric Clemmons (@ericclemmons) <eric@uxdriven.com>
  * @author Christophe Coevoet <stof@notk.org>
@@ -29,6 +30,7 @@ class WildfireFormatter extends NormalizerFormatter
 
     /**
      * Translates Monolog log levels to Wildfire levels.
+	 * 转换Monolog日志级别为Wildfire级别
      */
     private $logLevels = array(
         Logger::DEBUG     => 'LOG',

@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，类型，可调用的
+ */
+
 namespace Hamcrest\Type;
 
 /*
@@ -8,12 +12,14 @@ use Hamcrest\Core\IsTypeOf;
 
 /**
  * Tests whether the value is callable.
+ * 测试值是否可调用。
  */
 class IsCallable extends IsTypeOf
 {
 
     /**
      * Creates a new instance of IsCallable
+	 * 创建一个可调用的新实例
      */
     public function __construct()
     {

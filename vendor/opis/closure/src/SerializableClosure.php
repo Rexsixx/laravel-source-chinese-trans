@@ -18,6 +18,7 @@ use ReflectionObject;
 
 /**
  * Provides a wrapper for serialization of closures
+ * 为闭包的序列化提供包装。
  */
 class SerializableClosure implements Serializable
 {

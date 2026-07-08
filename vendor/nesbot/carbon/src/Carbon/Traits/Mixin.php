@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特征，Mixin
+ */
 
 /**
  * This file is part of the Carbon package.

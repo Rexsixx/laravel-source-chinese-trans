@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，框架，期望失败错误
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -13,6 +17,7 @@ use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
  * Exception for expectations which failed their check.
+ * 预期失败的异常。
  *
  * The exception contains the error message and optionally a
  * SebastianBergmann\Comparator\ComparisonFailure which is used to

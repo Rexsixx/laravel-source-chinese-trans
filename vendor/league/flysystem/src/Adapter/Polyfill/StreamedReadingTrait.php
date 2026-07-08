@@ -38,6 +38,7 @@ trait StreamedReadingTrait
 
     /**
      * Reads a file.
+	 * 读取文件
      *
      * @param string $path
      *

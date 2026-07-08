@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特征，创建者
+ */
 
 /**
  * This file is part of the Carbon package.

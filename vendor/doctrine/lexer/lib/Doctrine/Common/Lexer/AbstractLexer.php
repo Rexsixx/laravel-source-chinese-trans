@@ -114,6 +114,7 @@ abstract class AbstractLexer
 
     /**
      * Resets the lexer.
+	 * 重新设置词典
      *
      * @return void
      */

@@ -19,6 +19,7 @@ use Monolog\Utils;
 
 /**
  * Formats incoming records into an HTML table
+ * 将传入的记录格式格式化成HTML表。
  *
  * This is especially useful for html email logging
  *

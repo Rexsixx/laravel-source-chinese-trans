@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，转化器，Sodium 随机发生器
+ * Ramsey，Uuid，发生器，Sodium 随机发生器
  */
 
 /**

@@ -21,6 +21,7 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Slack record utility helping to log to Slack webhooks or API.
+ * Slack记录实用工具,帮助登录到松弛的网络钩子或API。
  *
  * @author Greg Kedzierski <greg@gregkedzierski.com>
  * @author Haralan Dobrev <hkdobrev@gmail.com>
@@ -182,6 +183,7 @@ class SlackRecord
     /**
      * Returned a Slack message attachment color associated with
      * provided level.
+	 * 返回一个与提供级别相关的松弛消息附件颜色
      *
      * @param  int    $level
      * @return string

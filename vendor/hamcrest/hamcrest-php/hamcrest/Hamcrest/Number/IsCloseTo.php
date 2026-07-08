@@ -14,6 +14,7 @@ use Hamcrest\TypeSafeMatcher;
 /**
  * Is the value a number equal to a value within some range of
  * acceptable error?
+ * 在一些可接受的错误范围内,值等于一个值吗?
  */
 class IsCloseTo extends TypeSafeMatcher
 {
@@ -54,6 +55,7 @@ class IsCloseTo extends TypeSafeMatcher
     /**
      * Matches if value is a number equal to $value within some range of
      * acceptable error $delta.
+	 * 匹配如果值是一个数字,等于在一些可接受的误差范围内的$delta。
      *
      * @factory
      */

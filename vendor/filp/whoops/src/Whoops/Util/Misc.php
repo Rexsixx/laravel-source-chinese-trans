@@ -67,6 +67,7 @@ class Misc
     
     /**
      * Determine if an error level is fatal (halts execution)
+	 * 确定错误级别是否为致命(halts执行)
      *
      * @param int $level
      * @return bool

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，格式化程序，可格式化的处理程序接口
+ */
+
 /*
  * This file is part of the Monolog package.
  *

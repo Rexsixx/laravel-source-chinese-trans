@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，框架，断言失败错误
+ */
+
 /*
  * This file is part of PHPUnit.
  *

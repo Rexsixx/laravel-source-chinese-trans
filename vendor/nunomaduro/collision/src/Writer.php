@@ -24,6 +24,7 @@ use NunoMaduro\Collision\Contracts\ArgumentFormatter as ArgumentFormatterContrac
 
 /**
  * This is an Collision Writer implementation.
+ * 这是一个冲突作者的实现。
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */

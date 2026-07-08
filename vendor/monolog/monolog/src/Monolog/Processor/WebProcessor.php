@@ -29,6 +29,7 @@ class WebProcessor implements ProcessorInterface
 
     /**
      * Default fields
+	 * 默认字段
      *
      * Array is structured as [key in record.extra => key in $serverData]
      *

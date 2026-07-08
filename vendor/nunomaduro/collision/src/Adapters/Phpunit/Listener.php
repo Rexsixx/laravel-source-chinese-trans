@@ -31,6 +31,7 @@ if (class_exists(\PHPUnit\Runner\Version::class) && intval(substr(\PHPUnit\Runne
 
     /**
      * This is an Collision Phpunit Adapter implementation.
+	 * 这是一个碰撞Phpunit适配器实现。
      *
      * @author Nuno Maduro <enunomaduro@gmail.com>
      */

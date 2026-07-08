@@ -1,4 +1,8 @@
 <?php
+/**
+ * Monolog，处理程序，Chrome PHP 处理程序
+ */
+
 
 /*
  * This file is part of the Monolog package.
@@ -26,6 +30,7 @@ class ChromePHPHandler extends AbstractProcessingHandler
 {
     /**
      * Version of the extension
+	 * 扩展版本
      */
     const VERSION = '4.0';
 

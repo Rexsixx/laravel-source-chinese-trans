@@ -16,6 +16,7 @@ namespace NunoMaduro\Collision\Contracts;
 
 /**
  * This is an Collision Provider contract.
+ * 这是一个碰撞供应商契约。
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */

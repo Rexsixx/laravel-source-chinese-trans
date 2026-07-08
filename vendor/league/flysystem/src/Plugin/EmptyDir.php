@@ -20,6 +20,7 @@ class EmptyDir extends AbstractPlugin
 
     /**
      * Empty a directory's contents.
+	 * 清空目录的内容
      *
      * @param string $dirname
      */

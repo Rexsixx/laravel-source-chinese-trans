@@ -17,6 +17,7 @@ abstract class AbstractLogger implements LoggerInterface
 {
     /**
      * System is unusable.
+	 * 系统是不可用的
      *
      * @param string  $message
      * @param mixed[] $context

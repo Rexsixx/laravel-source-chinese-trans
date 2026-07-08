@@ -23,6 +23,7 @@ class HasXPath extends DiagnosingMatcher
 
     /**
      * XPath to apply to the DOM.
+	 * XPath适用于DOM。
      *
      * @var string
      */

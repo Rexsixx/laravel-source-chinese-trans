@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * This is an Collision Handler contract.
- * 这是一个碰撞处理合同。
+ * 这是一个冲突处理契约。
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */

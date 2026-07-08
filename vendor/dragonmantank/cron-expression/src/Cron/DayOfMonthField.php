@@ -41,6 +41,7 @@ class DayOfMonthField extends AbstractField
 
     /**
      * Get the nearest day of the week for a given day in a month
+	 * 在一个月的一个月里度过一个星期的最近的一天
      *
      * @param int $currentYear  Current year
      * @param int $currentMonth Current month
@@ -84,11 +85,13 @@ class DayOfMonthField extends AbstractField
         $fieldValue = $date->format('d');
 
         // Check to see if this is the last day of the month
+		// 检查看看是否是这个月的最后一天
         if ($value == 'L') {
             return $fieldValue == $date->format('t');
         }
 
         // Check to see if this is the nearest weekday to a particular value
+		// 检查看看这是否是最近的一个特别的工作日
         if (strpos($value, 'W')) {
             // Parse the target day
             $targetDay = substr($value, 0, strpos($value, 'W'));

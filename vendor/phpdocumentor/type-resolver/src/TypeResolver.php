@@ -130,6 +130,7 @@ final class TypeResolver
 
     /**
      * Initializes this TypeResolver with the means to create and resolve Fqsen objects.
+	 * 初始化这个TypeResolver,以创建和解决Fqsen对象。
      */
     public function __construct(?FqsenResolver $fqsenResolver = null)
     {

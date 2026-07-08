@@ -1,4 +1,8 @@
 <?php
+/**
+ * PharIo，版本，SpecificMajorAndMinorVersionConstraint
+ */
+
 /*
  * This file is part of PharIo\Version.
  *

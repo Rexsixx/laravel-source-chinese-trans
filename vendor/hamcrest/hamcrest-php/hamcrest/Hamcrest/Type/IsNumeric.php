@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，类型，是数字的
+ */
+
 namespace Hamcrest\Type;
 
 /*
@@ -8,6 +12,7 @@ use Hamcrest\Core\IsTypeOf;
 
 /**
  * Tests whether the value is numeric.
+ * 测试值是否为数字。
  */
 class IsNumeric extends IsTypeOf
 {
@@ -29,6 +34,7 @@ class IsNumeric extends IsTypeOf
     /**
      * Return if the string passed is a valid hexadecimal number.
      * This check is necessary because PHP 7 doesn't recognize hexadecimal string as numeric anymore.
+	 * 如果字符串通过,返回是一个有效的十六进制数。
      *
      * @param mixed $item
      * @return boolean

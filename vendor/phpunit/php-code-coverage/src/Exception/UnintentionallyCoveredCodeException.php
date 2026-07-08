@@ -15,6 +15,7 @@ namespace SebastianBergmann\CodeCoverage;
 
 /**
  * Exception that is raised when code is unintentionally covered.
+ * 上升异常当代码没有被故意覆盖时。
  */
 final class UnintentionallyCoveredCodeException extends RuntimeException
 {

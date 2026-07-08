@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，契约，Http客户端，异常，解码异常接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Contracts\HttpClient\Exception;
 
 /**
  * When a content-type cannot be decoded to the expected representation.
+ * 当一个内容类型不能被解码到预期的表示时。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

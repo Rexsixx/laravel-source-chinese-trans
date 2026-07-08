@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，发生器，目标类接口
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -26,6 +30,7 @@ interface TargetClassInterface
      * Returns a new instance of the current
      * TargetClassInterface's
      * implementation.
+	 * 返回当前TargetClassInterface实现的新实例。
      *
      * @param string $name
      * @return TargetClassInterface
@@ -34,6 +39,7 @@ interface TargetClassInterface
 
     /**
      * Returns the targetClass's name.
+	 * 返回targetClass的名称
      *
      * @return string
      */

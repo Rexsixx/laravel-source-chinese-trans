@@ -19,6 +19,7 @@ class IsString extends IsTypeOf
 
     /**
      * Creates a new instance of IsString
+	 * 创建一个新的IsString实例
      */
     public function __construct()
     {

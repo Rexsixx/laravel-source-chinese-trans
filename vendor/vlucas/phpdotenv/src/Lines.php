@@ -67,6 +67,7 @@ class Lines
 
     /**
      * Determine if the given line can be the start of a multiline variable.
+	 * 确定给定的行是否可以成为多行变量的开始
      *
      * @param string $line
      *

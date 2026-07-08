@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，框架，约束，异常
+ */
+
 /*
  * This file is part of PHPUnit.
  *

@@ -53,6 +53,7 @@ class Luhn
 
     /**
      * Checks whether a number (partial number + check digit) is Luhn compliant
+	 * 检查一个数字(偏号+校验位)是否兼容
      *
      * @param string $number
      * @return bool
@@ -64,6 +65,7 @@ class Luhn
 
     /**
      * Generate a Luhn compliant number.
+	 * 生成一条兼容的Luhn连接的数字
      *
      * @param string $partialValue
      *

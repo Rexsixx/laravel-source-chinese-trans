@@ -40,6 +40,7 @@ class Mockery
 
     /**
      * Global container to hold all mocks for the current unit test running.
+	 * 全球容器,以控制当前单元测试运行的所有模拟。
      *
      * @var \Mockery\Container|null
      */

@@ -13,6 +13,7 @@
 
 /**
  * General utility class in Swift Mailer, not to be instantiated.
+ * Swift Mailer的通用实用程序类,不需要实例化。
  *
  * @author Chris Corbyn
  */

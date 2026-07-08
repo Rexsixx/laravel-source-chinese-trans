@@ -89,6 +89,7 @@ class Inflector
 
     /**
      * Converts a word into the format for a Doctrine class name. Converts 'table_name' to 'TableName'.
+	 * 将一个单词转换为教条类名的格式。将“table_name”转换为“TableName”。
      */
     public static function classify(string $word) : string
     {
@@ -99,6 +100,7 @@ class Inflector
 
     /**
      * Camelizes a word. This uses the classify() method and turns the first character to lowercase.
+	 * 用Camelizes一个词。这使用了分类()方法,将第一个字符转换为小写。
      *
      * @deprecated
      */
@@ -147,6 +149,7 @@ class Inflector
     /**
      * Clears Inflectors inflected value caches, and resets the inflection
      * rules to the initial values.
+	 * 清除偏转器弯曲的值缓存,并将弯曲规则重新设置为初始值。
      *
      * @deprecated
      */

@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，框架，约束，数组有键
+ */
+
 /*
  * This file is part of PHPUnit.
  *

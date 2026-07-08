@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mockery，匹配程序，Not Any Of
+ */
+
+/**
  * Mockery
  *
  * LICENSE
@@ -25,6 +29,7 @@ class NotAnyOf extends MatcherAbstract
     /**
      * Check if the actual value does not match the expected (in this
      * case it's specifically NOT expected).
+	 * 检查实际值是否与预期相匹配(在这种情况下,它是特别不期望的)。
      *
      * @param mixed $actual
      * @return bool

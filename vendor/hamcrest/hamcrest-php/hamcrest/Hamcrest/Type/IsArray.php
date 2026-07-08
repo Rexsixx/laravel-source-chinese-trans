@@ -19,6 +19,7 @@ class IsArray extends IsTypeOf
 
     /**
      * Creates a new instance of IsArray
+	 * 创建一个新的IsArray实例
      */
     public function __construct()
     {

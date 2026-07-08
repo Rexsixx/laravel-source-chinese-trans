@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，格式化程序，DynamoDB 处理程序
+ */
 
 /*
  * This file is part of the Monolog package.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Monolog，格式化程序，过滤器处理程序
+ */
 
 /*
  * This file is part of the Monolog package.
@@ -16,6 +19,7 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Simple handler wrapper that filters records based on a list of levels
+ * 简单的处理器包装器,它根据一个级别列表过滤记录。
  *
  * It can be configured with an exact list of levels to allow, or a min/max level.
  *

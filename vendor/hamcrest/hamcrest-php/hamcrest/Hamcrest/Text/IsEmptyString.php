@@ -45,6 +45,7 @@ class IsEmptyString extends BaseMatcher
 
     /**
      * Matches if value is a zero-length string.
+	 * 匹配如果值是零长度字符串
      *
      * @factory emptyString
      */
@@ -59,6 +60,7 @@ class IsEmptyString extends BaseMatcher
 
     /**
      * Matches if value is null or a zero-length string.
+	 * 匹配如果值为null或零长度字符串
      *
      * @factory nullOrEmptyString
      */

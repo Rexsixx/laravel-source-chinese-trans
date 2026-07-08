@@ -77,6 +77,7 @@ class ElasticaFormatter extends NormalizerFormatter
 
     /**
      * Convert a log message into an Elastica Document
+	 * 将日志消息转换为Elastica文档
      *
      * @param  array    $record Log message
      * @return Document

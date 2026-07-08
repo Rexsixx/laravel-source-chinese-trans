@@ -1,6 +1,6 @@
 <?php
 /**
- // * Prophecy，预言，Revealer 接口
+ * Prophecy，预言，Revealer 接口
  */
 
 /*

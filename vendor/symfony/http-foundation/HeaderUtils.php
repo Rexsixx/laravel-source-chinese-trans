@@ -1,4 +1,8 @@
 <?php
+/**
+ * Symfony，组件，Http基础，Header Utils
+ */
+
 
 /*
  * This file is part of the Symfony package.

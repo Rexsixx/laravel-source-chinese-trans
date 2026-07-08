@@ -15,6 +15,7 @@ interface ContainerInterface
 {
     /**
      * Finds an entry of the container by its identifier and returns it.
+	 * 通过它的标识符找到一个容器的条目并返回它
      *
      * @param string $id Identifier of the entry to look for.
      *

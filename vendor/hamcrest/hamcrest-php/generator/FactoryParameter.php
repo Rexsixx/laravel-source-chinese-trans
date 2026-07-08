@@ -27,6 +27,7 @@ class FactoryParameter
 
     /**
      * Compute the declaration code.
+	 * 计算声明代码
      *
      * @return string
      */
@@ -58,6 +59,7 @@ class FactoryParameter
 
     /**
      * Compute the type code for the paramater.
+	 * 计算参数的类型代码
      *
      * @return string
      */
@@ -87,6 +89,7 @@ class FactoryParameter
 
     /**
      * Compute qualified name for the given type.
+	 * 计算给定类型的合格名称。
      *
      * This function knows how to prefix class names with a leading slash and
      * also how to handle PHP 8's union types.
@@ -114,6 +117,7 @@ class FactoryParameter
 
     /**
      * Compute the invocation code.
+	 * 计算调用代码
      *
      * @return string
      */
@@ -124,6 +128,7 @@ class FactoryParameter
 
     /**
      * Compute the method name.
+	 * 计算方法名称
      *
      * @return string
      */

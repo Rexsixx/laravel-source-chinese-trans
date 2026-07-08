@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，转化器，节点提供接口
+ * Ramsey，Uuid，供应者，节点提供接口
  */
 
 /**

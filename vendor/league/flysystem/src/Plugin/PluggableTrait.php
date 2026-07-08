@@ -40,6 +40,7 @@ trait PluggableTrait
 
     /**
      * Find a specific plugin.
+	 * 找到一个特定的插件
      *
      * @param string $method
      *
@@ -58,6 +59,7 @@ trait PluggableTrait
 
     /**
      * Invoke a plugin by method name.
+	 * 通过方法名称调用一个插件
      *
      * @param string              $method
      * @param array               $arguments

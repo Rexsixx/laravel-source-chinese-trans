@@ -80,6 +80,7 @@ interface FilesystemInterface
 
     /**
      * Get a file's mime-type.
+	 * 获取文件的mime-type
      *
      * @param string $path The path to the file.
      *

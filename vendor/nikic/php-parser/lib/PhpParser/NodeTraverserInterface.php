@@ -10,6 +10,7 @@ interface NodeTraverserInterface
 {
     /**
      * Adds a visitor.
+	 * 添加访客
      *
      * @param NodeVisitor $visitor Visitor to add
      */

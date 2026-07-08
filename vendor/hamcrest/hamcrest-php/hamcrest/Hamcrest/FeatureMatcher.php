@@ -24,6 +24,7 @@ abstract class FeatureMatcher extends TypeSafeDiagnosingMatcher
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * @param string $type
      * @param string $subtype

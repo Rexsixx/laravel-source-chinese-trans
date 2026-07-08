@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，Text_Template
+ * phpunit，Text_Template
  */
 
 /*

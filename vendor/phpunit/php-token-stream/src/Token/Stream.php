@@ -1,6 +1,6 @@
 <?php
 /**
- * SebastianBergmann，PHP_Token_Stream
+ * phpunit，PHP_Token_Stream
  */
 
 /*

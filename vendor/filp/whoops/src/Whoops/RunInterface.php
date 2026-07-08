@@ -51,6 +51,7 @@ interface RunInterface
     /**
      * Clears all handlers in the handlerStack, including
      * the default PrettyPage handler.
+	 * 清除handlerStack中的所有处理程序,包括默认的PrettyPage处理程序。
      *
      * @return Run
      */
@@ -68,6 +69,7 @@ interface RunInterface
 
     /**
      * Registers this instance as an error handler.
+	 * 将此实例注册为错误处理程序
      *
      * @return Run
      */

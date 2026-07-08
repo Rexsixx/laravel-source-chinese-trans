@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，框架，模拟对象，发生器
+ */
+
 /*
  * This file is part of PHPUnit.
  *

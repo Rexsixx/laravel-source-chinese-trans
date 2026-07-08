@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，框架，警告
+ */
+
 /*
  * This file is part of PHPUnit.
  *

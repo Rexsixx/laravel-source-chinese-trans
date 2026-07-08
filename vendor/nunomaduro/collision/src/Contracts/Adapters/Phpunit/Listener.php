@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestListener;
 
 /**
  * This is an Collision Phpunit Adapter contract.
+ * 这是一个冲突Phpunit适配器契约。
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */

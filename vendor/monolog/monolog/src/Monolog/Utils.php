@@ -92,6 +92,7 @@ class Utils
 
     /**
      * Handle a json_encode failure.
+	 * 处理json_encode失败
      *
      * If the failure is due to invalid string encoding, try to clean the
      * input and encode again. If the second encoding attempt fails, the

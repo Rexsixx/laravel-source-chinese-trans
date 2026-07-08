@@ -1,4 +1,8 @@
 <?php
+/**
+ * PHPUnit，框架，约束，可穿越只包含
+ */
+
 /*
  * This file is part of PHPUnit.
  *

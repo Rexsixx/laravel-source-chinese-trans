@@ -1,4 +1,8 @@
 <?php
+/**
+ * SebastianBergmann，代码覆盖率，缺失覆盖注释异常
+ */
+
 /*
  * This file is part of the php-code-coverage package.
  *

@@ -1,7 +1,7 @@
 <?php declare(strict_types = 1);
 
 /**
- * TheSeer，Tokenizer，名称空间 Uri
+ * TheSeer，Tokenizer，命名空间 Uri
  */
 
 namespace TheSeer\Tokenizer;

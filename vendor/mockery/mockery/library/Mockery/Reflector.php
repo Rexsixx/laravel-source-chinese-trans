@@ -50,6 +50,7 @@ class Reflector
 
     /**
      * Compute the string representation for the paramater type.
+	 * 计算履佩式类型的字符串表示
      *
      * @param \ReflectionParameter $param
      * @param bool $withoutNullable

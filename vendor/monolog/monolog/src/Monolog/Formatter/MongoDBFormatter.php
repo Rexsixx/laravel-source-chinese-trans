@@ -18,6 +18,7 @@ use Monolog\Utils;
 
 /**
  * Formats a record for use with the MongoDBHandler.
+ * 为MongoDBHandler使用一个记录。
  *
  * @author Florian Plattner <me@florianplattner.de>
  */

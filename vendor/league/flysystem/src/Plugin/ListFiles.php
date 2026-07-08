@@ -20,6 +20,7 @@ class ListFiles extends AbstractPlugin
 
     /**
      * List all files in the directory.
+	 * 列出目录中的所有文件
      *
      * @param string $directory
      * @param bool   $recursive

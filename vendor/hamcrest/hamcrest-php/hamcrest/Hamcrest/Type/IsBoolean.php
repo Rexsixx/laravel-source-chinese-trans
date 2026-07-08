@@ -19,6 +19,7 @@ class IsBoolean extends IsTypeOf
 
     /**
      * Creates a new instance of IsBoolean
+	 * 创建IsBoolean的新实例
      */
     public function __construct()
     {
