@@ -1,26 +1,29 @@
 <?php
 /**
- * Illuminate，基础，测试，测试响应
+ * 基础，测试响应
  */
 
 namespace Illuminate\Foundation\Testing;
 
+use ArrayAccess;
 use Closure;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Cookie\CookieValuePrefix;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Traits\Tappable;
-use Illuminate\Support\Traits\Macroable;
 use Illuminate\Foundation\Testing\Assert as PHPUnit;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Foundation\Testing\Constraints\SeeInOrder;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
+use Illuminate\Support\Traits\Tappable;
+use LogicException;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * @mixin \Illuminate\Http\Response
  */
-class TestResponse
+class TestResponse implements ArrayAccess
 {
     use Tappable, Macroable {
         __call as macroCall;
@@ -44,7 +47,7 @@ class TestResponse
 
     /**
      * Create a new test response instance.
-	 * 创建一个新的测试响应实例
+	 * 创建新的测试响应实例
      *
      * @param  \Illuminate\Http\Response  $response
      * @return void
@@ -56,7 +59,7 @@ class TestResponse
 
     /**
      * Create a new TestResponse from another response.
-	 * 从另一个响应创建一个新的TestResponse
+	 * 创建一个新的TestResponse从另一个响应
      *
      * @param  \Illuminate\Http\Response  $response
      * @return static
@@ -94,6 +97,40 @@ class TestResponse
             $this->isOk(),
             'Response status code ['.$this->getStatusCode().'] does not match expected 200 status code.'
         );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the response has a 201 status code.
+	 * 断言响应具有201状态码
+     *
+     * @return $this
+     */
+    public function assertCreated()
+    {
+        $actual = $this->getStatusCode();
+
+        PHPUnit::assertTrue(
+            201 === $actual,
+            'Response status code ['.$actual.'] does not match expected 201 status code.'
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the response has the given status code and no content.
+	 * 断言响应具有给定的状态码而没有内容
+     *
+     * @param  int  $status
+     * @return $this
+     */
+    public function assertNoContent($status = 204)
+    {
+        $this->assertStatus($status);
+
+        PHPUnit::assertEmpty($this->getContent(), 'Response content is not empty.');
 
         return $this;
     }
@@ -284,7 +321,8 @@ class TestResponse
         $cookieValue = $cookie->getValue();
 
         $actual = $encrypted
-            ? app('encrypter')->decrypt($cookieValue, $unserialize) : $cookieValue;
+            ? CookieValuePrefix::remove(app('encrypter')->decrypt($cookieValue, $unserialize))
+            : $cookieValue;
 
         PHPUnit::assertEquals(
             $value, $actual,
@@ -361,7 +399,7 @@ class TestResponse
 
     /**
      * Get the given cookie from the response.
-	 * 从响应中获取给定的cookie
+	 * 得到给定的cookie从响应中
      *
      * @param  string  $cookieName
      * @return \Symfony\Component\HttpFoundation\Cookie|null
@@ -478,7 +516,7 @@ class TestResponse
 
     /**
      * Get the assertion message for assertJson.
-	 * 获取assertJson的断言消息
+	 * 得到assertJson的断言消息
      *
      * @param  array  $data
      * @return string
@@ -493,6 +531,26 @@ class TestResponse
             "[{$expected}]".PHP_EOL.PHP_EOL.
             'within response JSON:'.PHP_EOL.PHP_EOL.
             "[{$actual}].".PHP_EOL.PHP_EOL;
+    }
+
+    /**
+     * Assert that the expected value exists at the given path in the response.
+	 * 断言期望的值存在于响应的给定路径中
+     *
+     * @param  string  $path
+     * @param  mixed  $expect
+     * @param  bool  $strict
+     * @return $this
+     */
+    public function assertJsonPath($path, $expect, $strict = false)
+    {
+        if ($strict) {
+            PHPUnit::assertSame($expect, $this->json($path));
+        } else {
+            PHPUnit::assertEquals($expect, $this->json($path));
+        }
+
+        return $this;
     }
 
     /**
@@ -546,7 +604,7 @@ class TestResponse
 	 * 断言响应不包含给定的JSON片段
      *
      * @param  array  $data
-     * @param  bool   $exact
+     * @param  bool  $exact
      * @return $this
      */
     public function assertJsonMissing(array $data, $exact = false)
@@ -605,7 +663,7 @@ class TestResponse
 
     /**
      * Get the strings we need to search for when examining the JSON.
-	 * 获取我们在检查JSON时需要搜索的字符串
+	 * 得到我们在检查JSON时需要搜索的字符串
      *
      * @param  string  $key
      * @param  string  $value
@@ -669,7 +727,7 @@ class TestResponse
      */
     public function assertJsonCount(int $count, $key = null)
     {
-        if ($key) {
+        if (! is_null($key)) {
             PHPUnit::assertCount(
                 $count, data_get($this->json(), $key),
                 "Failed to assert that the response count matched the expected {$count}"
@@ -691,15 +749,16 @@ class TestResponse
 	 * 断言响应具有给定的JSON验证错误
      *
      * @param  string|array  $errors
+     * @param  string  $responseKey
      * @return $this
      */
-    public function assertJsonValidationErrors($errors)
+    public function assertJsonValidationErrors($errors, $responseKey = 'errors')
     {
         $errors = Arr::wrap($errors);
 
         PHPUnit::assertNotEmpty($errors, 'No validation errors were provided.');
 
-        $jsonErrors = $this->json()['errors'] ?? [];
+        $jsonErrors = $this->json()[$responseKey] ?? [];
 
         $errorMessage = $jsonErrors
                 ? 'Response has the following JSON validation errors:'.
@@ -740,9 +799,10 @@ class TestResponse
 	 * 断言响应对于给定的键没有JSON验证错误
      *
      * @param  string|array|null  $keys
+     * @param  string  $responseKey
      * @return $this
      */
-    public function assertJsonMissingValidationErrors($keys = null)
+    public function assertJsonMissingValidationErrors($keys = null, $responseKey = 'errors')
     {
         if ($this->getContent() === '') {
             PHPUnit::assertTrue(true);
@@ -752,13 +812,13 @@ class TestResponse
 
         $json = $this->json();
 
-        if (! array_key_exists('errors', $json)) {
-            PHPUnit::assertArrayNotHasKey('errors', $json);
+        if (! array_key_exists($responseKey, $json)) {
+            PHPUnit::assertArrayNotHasKey($responseKey, $json);
 
             return $this;
         }
 
-        $errors = $json['errors'];
+        $errors = $json[$responseKey];
 
         if (is_null($keys) && count($errors) > 0) {
             PHPUnit::fail(
@@ -815,7 +875,7 @@ class TestResponse
      * Assert that the response view equals the given value.
 	 * 断言响应视图等于给定的值
      *
-     * @param  string $value
+     * @param  string  $value
      * @return $this
      */
     public function assertViewIs($value)
@@ -844,13 +904,13 @@ class TestResponse
         $this->ensureResponseHasView();
 
         if (is_null($value)) {
-            PHPUnit::assertArrayHasKey($key, $this->original->gatherData());
+            PHPUnit::assertTrue(Arr::has($this->original->gatherData(), $key));
         } elseif ($value instanceof Closure) {
-            PHPUnit::assertTrue($value($this->original->gatherData()[$key]));
+            PHPUnit::assertTrue($value(Arr::get($this->original->gatherData(), $key)));
         } elseif ($value instanceof Model) {
-            PHPUnit::assertTrue($value->is($this->original->gatherData()[$key]));
+            PHPUnit::assertTrue($value->is(Arr::get($this->original->gatherData(), $key)));
         } else {
-            PHPUnit::assertEquals($value, $this->original->gatherData()[$key]);
+            PHPUnit::assertEquals($value, Arr::get($this->original->gatherData(), $key));
         }
 
         return $this;
@@ -878,7 +938,7 @@ class TestResponse
 
     /**
      * Get a piece of data from the original view.
-	 * 从原始视图获取一段数据
+	 * 得到一段数据从原始视图
      *
      * @param  string  $key
      * @return mixed
@@ -901,7 +961,7 @@ class TestResponse
     {
         $this->ensureResponseHasView();
 
-        PHPUnit::assertArrayNotHasKey($key, $this->original->gatherData());
+        PHPUnit::assertFalse(Arr::has($this->original->gatherData(), $key));
 
         return $this;
     }
@@ -993,7 +1053,7 @@ class TestResponse
 
         if (is_null($value)) {
             PHPUnit::assertTrue(
-                $this->session()->getOldInput($key),
+                $this->session()->hasOldInput($key),
                 "Session is missing expected key [{$key}]."
             );
         } elseif ($value instanceof Closure) {
@@ -1026,7 +1086,7 @@ class TestResponse
             if (is_int($key)) {
                 PHPUnit::assertTrue($errors->has($value), "Session missing error: $value");
             } else {
-                PHPUnit::assertContains($value, $errors->get($key, $format));
+                PHPUnit::assertContains(is_bool($value) ? (string) $value : $value, $errors->get($key, $format));
             }
         }
 
@@ -1129,7 +1189,7 @@ class TestResponse
 
     /**
      * Get the current session store.
-	 * 获取当前会话存储
+	 * 得到当前会话存储
      *
      * @return \Illuminate\Session\Store
      */
@@ -1140,7 +1200,7 @@ class TestResponse
 
     /**
      * Dump the content from the response.
-	 * 从响应中转储内容
+	 * 转储内容从响应中
      *
      * @return $this
      */
@@ -1161,7 +1221,7 @@ class TestResponse
 
     /**
      * Dump the headers from the response.
-	 * 从响应中转储报头
+	 * 转储报头从响应中
      *
      * @return $this
      */
@@ -1173,8 +1233,28 @@ class TestResponse
     }
 
     /**
+     * Dump the session from the response.
+	 * 转储会话从响应中
+     *
+     * @param  string|array  $keys
+     * @return $this
+     */
+    public function dumpSession($keys = [])
+    {
+        $keys = (array) $keys;
+
+        if (empty($keys)) {
+            dump($this->session()->all());
+        } else {
+            dump($this->session()->only($keys));
+        }
+
+        return $this;
+    }
+
+    /**
      * Get the streamed content from the response.
-	 * 从响应中获取流内容
+	 * 得到流内容从响应中
      *
      * @return string
      */
@@ -1209,7 +1289,7 @@ class TestResponse
 
     /**
      * Proxy isset() checks to the underlying base response.
-	 * 代理isset（）检查底层基本响应
+	 * 代理isset()检查底层基本响应
      *
      * @param  string  $key
      * @return mixed
@@ -1220,8 +1300,61 @@ class TestResponse
     }
 
     /**
+     * Determine if the given offset exists.
+	 * 确定给定的偏移量是否存在
+     *
+     * @param  string  $offset
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->json()[$offset]);
+    }
+
+    /**
+     * Get the value for a given offset.
+	 * 得到给定偏移量的值
+     *
+     * @param  string  $offset
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return $this->json()[$offset];
+    }
+
+    /**
+     * Set the value at the given offset.
+	 * 设置值在给定的偏移量
+     *
+     * @param  string  $offset
+     * @param  mixed  $value
+     * @return void
+     *
+     * @throws \LogicException
+     */
+    public function offsetSet($offset, $value)
+    {
+        throw new LogicException('Response data may not be mutated using array access.');
+    }
+
+    /**
+     * Unset the value at the given offset.
+	 * 取消值的设置在给定偏移量处
+     *
+     * @param  string  $offset
+     * @return void
+     *
+     * @throws \LogicException
+     */
+    public function offsetUnset($offset)
+    {
+        throw new LogicException('Response data may not be mutated using array access.');
+    }
+
+    /**
      * Handle dynamic calls into macros or pass missing methods to the base response.
-	 * 将动态调用处理为宏或将缺少的方法传递给基本响应
+	 * 处理动态调用
      *
      * @param  string  $method
      * @param  array  $args

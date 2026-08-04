@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，终端机
+ * Symfony，组件，控制台，Terminal
  */
 
 /*
@@ -22,6 +22,7 @@ class Terminal
 
     /**
      * Gets the terminal width.
+	 * 得到终端宽度
      *
      * @return int
      */

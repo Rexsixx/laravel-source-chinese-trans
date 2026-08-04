@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Var Dumper，Caster，Pdo Caster
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts PDO related classes to array representation.
- * 将PDO相关类强制转换为数组表示。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *

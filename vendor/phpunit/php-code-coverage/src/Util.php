@@ -1,6 +1,7 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
- * SebastianBergmann，代码覆盖率，工具
+ * SebastianBergmann，代码覆盖率，Util
  */
 
 /*

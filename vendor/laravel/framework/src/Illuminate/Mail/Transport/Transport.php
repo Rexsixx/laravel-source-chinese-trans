@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，电子邮件，传送，Transport
+ * 邮件，传输，传输抽象类
  */
 
 namespace Illuminate\Mail\Transport;
 
-use Swift_Transport;
+use Swift_Events_EventListener;
 use Swift_Events_SendEvent;
 use Swift_Mime_SimpleMessage;
-use Swift_Events_EventListener;
+use Swift_Transport;
 
 abstract class Transport implements Swift_Transport
 {
@@ -102,7 +102,7 @@ abstract class Transport implements Swift_Transport
 
     /**
      * Get the number of recipients.
-	 * 获取收件人的数量
+	 * 得到收件人的数量
      *
      * @param  \Swift_Mime_SimpleMessage  $message
      * @return int

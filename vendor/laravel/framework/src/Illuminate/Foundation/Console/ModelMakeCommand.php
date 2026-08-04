@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，基础，控制台，模型 Make 命令
+ * 基础，模型生成命令
  */
 
 namespace Illuminate\Foundation\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 class ModelMakeCommand extends GeneratorCommand
@@ -29,7 +29,7 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成的类的类型
+	 * 生成类的类型
      *
      * @var string
      */
@@ -37,7 +37,7 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -49,6 +49,7 @@ class ModelMakeCommand extends GeneratorCommand
 
         if ($this->option('all')) {
             $this->input->setOption('factory', true);
+            $this->input->setOption('seed', true);
             $this->input->setOption('migration', true);
             $this->input->setOption('controller', true);
             $this->input->setOption('resource', true);
@@ -62,14 +63,18 @@ class ModelMakeCommand extends GeneratorCommand
             $this->createMigration();
         }
 
-        if ($this->option('controller') || $this->option('resource')) {
+        if ($this->option('seed')) {
+            $this->createSeeder();
+        }
+
+        if ($this->option('controller') || $this->option('resource') || $this->option('api')) {
             $this->createController();
         }
     }
 
     /**
      * Create a model factory for the model.
-	 * 为模型创建一个模型工厂
+	 * 创建一个工厂模型
      *
      * @return void
      */
@@ -85,7 +90,7 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * Create a migration file for the model.
-	 * 为模型创建一个迁移文件
+	 * 创建一个迁移文件为模型
      *
      * @return void
      */
@@ -104,8 +109,23 @@ class ModelMakeCommand extends GeneratorCommand
     }
 
     /**
+     * Create a seeder file for the model.
+	 * 创建一个种子文件为模型
+     *
+     * @return void
+     */
+    protected function createSeeder()
+    {
+        $seeder = Str::studly(class_basename($this->argument('name')));
+
+        $this->call('make:seed', [
+            'name' => "{$seeder}Seeder",
+        ]);
+    }
+
+    /**
      * Create a controller for the model.
-	 * 为模型创建一个控制器
+	 * 创建一个控制器为模型
      *
      * @return void
      */
@@ -115,15 +135,16 @@ class ModelMakeCommand extends GeneratorCommand
 
         $modelName = $this->qualifyClass($this->getNameInput());
 
-        $this->call('make:controller', [
-            'name' => "{$controller}Controller",
-            '--model' => $this->option('resource') ? $modelName : null,
-        ]);
+        $this->call('make:controller', array_filter([
+            'name'  => "{$controller}Controller",
+            '--model' => $this->option('resource') || $this->option('api') ? $modelName : null,
+            '--api' => $this->option('api'),
+        ]));
     }
 
     /**
      * Get the stub file for the generator.
-	 * 获取生成器的存根文件
+	 * 得到生成器的存根文件
      *
      * @return string
      */
@@ -138,26 +159,22 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * Get the console command options.
-	 * 获取控制台命令选项
+	 * 得到控制台命令选项
      *
      * @return array
      */
     protected function getOptions()
     {
         return [
-            ['all', 'a', InputOption::VALUE_NONE, 'Generate a migration, factory, and resource controller for the model'],
-
+            ['all', 'a', InputOption::VALUE_NONE, 'Generate a migration, seeder, factory, and resource controller for the model'],
             ['controller', 'c', InputOption::VALUE_NONE, 'Create a new controller for the model'],
-
             ['factory', 'f', InputOption::VALUE_NONE, 'Create a new factory for the model'],
-
             ['force', null, InputOption::VALUE_NONE, 'Create the class even if the model already exists'],
-
             ['migration', 'm', InputOption::VALUE_NONE, 'Create a new migration file for the model'],
-
+            ['seed', 's', InputOption::VALUE_NONE, 'Create a new seeder file for the model'],
             ['pivot', 'p', InputOption::VALUE_NONE, 'Indicates if the generated model should be a custom intermediate table model'],
-
             ['resource', 'r', InputOption::VALUE_NONE, 'Indicates if the generated controller should be a resource controller'],
+            ['api', null, InputOption::VALUE_NONE, 'Indicates if the generated controller should be an API controller'],
         ];
     }
 }

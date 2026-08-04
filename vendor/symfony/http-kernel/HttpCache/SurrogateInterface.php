@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，Http缓存，代理接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -21,7 +18,6 @@ interface SurrogateInterface
 {
     /**
      * Returns surrogate name.
-	 * 返回代理名称
      *
      * @return string
      */

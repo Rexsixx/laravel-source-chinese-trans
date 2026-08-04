@@ -1,17 +1,17 @@
 <?php
 /**
- * Illuminate，队列，控制台，存根，失败作业
+ * 队列，需要自己修改注释
  */
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class Create{{tableClassName}}Table extends Migration
 {
     /**
      * Run the migrations.
-	 * 运行迁移
+     * 运行迁移
      *
      * @return void
      */
@@ -29,7 +29,7 @@ class Create{{tableClassName}}Table extends Migration
 
     /**
      * Reverse the migrations.
-	 * 逆转迁移
+     * 回转迁移
      *
      * @return void
      */

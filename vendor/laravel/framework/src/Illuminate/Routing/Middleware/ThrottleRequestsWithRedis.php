@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，路由选择，中间件，节流请求与 Redis
+ * 路由，中间件节流请求与Redis
  */
 
 namespace Illuminate\Routing\Middleware;
 
 use Closure;
-use Illuminate\Redis\Limiters\DurationLimiter;
 use Illuminate\Contracts\Redis\Factory as Redis;
+use Illuminate\Redis\Limiters\DurationLimiter;
 
 class ThrottleRequestsWithRedis extends ThrottleRequests
 {
@@ -37,7 +37,7 @@ class ThrottleRequestsWithRedis extends ThrottleRequests
 
     /**
      * Create a new request throttler.
-	 * 创建一个新的请求节流器
+	 * 创建新的请求节流
      *
      * @param  \Illuminate\Contracts\Redis\Factory  $redis
      * @return void
@@ -55,13 +55,14 @@ class ThrottleRequestsWithRedis extends ThrottleRequests
      * @param  \Closure  $next
      * @param  int|string  $maxAttempts
      * @param  float|int  $decayMinutes
+     * @param  string  $prefix
      * @return mixed
      *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      */
-    public function handle($request, Closure $next, $maxAttempts = 60, $decayMinutes = 1)
+    public function handle($request, Closure $next, $maxAttempts = 60, $decayMinutes = 1, $prefix = '')
     {
-        $key = $this->resolveRequestSignature($request);
+        $key = $prefix.$this->resolveRequestSignature($request);
 
         $maxAttempts = $this->resolveMaxAttempts($request, $maxAttempts);
 
@@ -79,7 +80,7 @@ class ThrottleRequestsWithRedis extends ThrottleRequests
 
     /**
      * Determine if the given key has been "accessed" too many times.
-	 * 确定给定的键是否被“访问”了太多次
+	 * 确定给定的键是否被访问了太多次
      *
      * @param  string  $key
      * @param  int  $maxAttempts
@@ -119,7 +120,7 @@ class ThrottleRequestsWithRedis extends ThrottleRequests
 
     /**
      * Get the number of seconds until the lock is released.
-	 * 获取锁被释放前的秒数
+	 * 得到锁被释放前的秒数
      *
      * @param  string  $key
      * @return int

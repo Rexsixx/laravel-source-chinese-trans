@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，记录，记录器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +17,6 @@ use Psr\Log\LogLevel;
 
 /**
  * Minimalist PSR-3 logger designed to write in stderr or any other stream.
- * Minimalist PSR-3 logger设计在stderr或任何其他流中编写。
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
  */
@@ -48,14 +44,10 @@ class Logger extends AbstractLogger
 
             if (isset($_ENV['SHELL_VERBOSITY']) || isset($_SERVER['SHELL_VERBOSITY'])) {
                 switch ((int) ($_ENV['SHELL_VERBOSITY'] ?? $_SERVER['SHELL_VERBOSITY'])) {
-                    case -1: $minLevel = LogLevel::ERROR;
-                        break;
-                    case 1: $minLevel = LogLevel::NOTICE;
-                        break;
-                    case 2: $minLevel = LogLevel::INFO;
-                        break;
-                    case 3: $minLevel = LogLevel::DEBUG;
-                        break;
+                    case -1: $minLevel = LogLevel::ERROR; break;
+                    case 1: $minLevel = LogLevel::NOTICE; break;
+                    case 2: $minLevel = LogLevel::INFO; break;
+                    case 3: $minLevel = LogLevel::DEBUG; break;
                 }
             }
         }
@@ -88,7 +80,7 @@ class Logger extends AbstractLogger
 
         $formatter = $this->formatter;
         if ($this->handle) {
-            @fwrite($this->handle, $formatter($level, $message, $context).\PHP_EOL);
+            @fwrite($this->handle, $formatter($level, $message, $context));
         } else {
             error_log($formatter($level, $message, $context, false));
         }
@@ -99,7 +91,7 @@ class Logger extends AbstractLogger
         if (str_contains($message, '{')) {
             $replacements = [];
             foreach ($context as $key => $val) {
-                if (null === $val || \is_scalar($val) || (\is_object($val) && method_exists($val, '__toString'))) {
+                if (null === $val || is_scalar($val) || (\is_object($val) && method_exists($val, '__toString'))) {
                     $replacements["{{$key}}"] = $val;
                 } elseif ($val instanceof \DateTimeInterface) {
                     $replacements["{{$key}}"] = $val->format(\DateTime::RFC3339);
@@ -113,7 +105,7 @@ class Logger extends AbstractLogger
             $message = strtr($message, $replacements);
         }
 
-        $log = sprintf('[%s] %s', $level, $message);
+        $log = sprintf('[%s] %s', $level, $message).\PHP_EOL;
         if ($prefixDate) {
             $log = date(\DateTime::RFC3339).' '.$log;
         }

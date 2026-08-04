@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，视图缓存命令
+ * 基础，查看Cache命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -14,7 +14,7 @@ class ViewCacheCommand extends Command
 {
     /**
      * The name and signature of the console command.
-	 * console命令的名称和签名
+	 * 控制台命令的名称和签名
      *
      * @var string
      */
@@ -30,7 +30,7 @@ class ViewCacheCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return mixed
      */
@@ -63,7 +63,7 @@ class ViewCacheCommand extends Command
 
     /**
      * Get the Blade files in the given path.
-	 * 获取指定路径下的Blade文件
+	 * 得到指定路径下的Blade文件
      *
      * @param  array  $paths
      * @return \Illuminate\Support\Collection
@@ -81,7 +81,7 @@ class ViewCacheCommand extends Command
 
     /**
      * Get all of the possible view paths.
-	 * 获取所有可能的视图路径
+	 * 得到所有可能的视图路径
      *
      * @return \Illuminate\Support\Collection
      */

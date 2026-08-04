@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，工厂类
+ * Factory 类
  */
 
 /*

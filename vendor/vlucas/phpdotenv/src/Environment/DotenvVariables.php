@@ -36,7 +36,6 @@ class DotenvVariables extends AbstractVariables
 
     /**
      * Get an environment variable.
-	 * 获取一个环境变量。
      *
      * We do this by querying our adapters sequentially.
      *
@@ -56,7 +55,6 @@ class DotenvVariables extends AbstractVariables
 
     /**
      * Set an environment variable.
-	 * 设置环境变量
      *
      * @param string      $name
      * @param string|null $value
@@ -72,7 +70,6 @@ class DotenvVariables extends AbstractVariables
 
     /**
      * Clear an environment variable.
-	 * 清除环境变量
      *
      * @param string $name
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，转储，Html 转储器
+ * Symfony，组件，Var Dumper，转储，Html转储
  */
 
 /*
@@ -19,7 +19,6 @@ use Symfony\Component\VarDumper\Cloner\Data;
 
 /**
  * HtmlDumper dumps variables as HTML.
- * HtmlDumper转储变量作为HTML。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -85,7 +84,7 @@ class HtmlDumper extends CliDumper
     {
         AbstractDumper::__construct($output, $charset, $flags);
         $this->dumpId = 'sf-dump-'.mt_rand();
-        $this->displayOptions['fileLinkFormat'] = \ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format');
+        $this->displayOptions['fileLinkFormat'] = ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format');
         $this->styles = static::$themes['dark'] ?? self::$themes['dark'];
     }
 
@@ -109,7 +108,6 @@ class HtmlDumper extends CliDumper
 
     /**
      * Configures display options.
-	 * 配置显示选项
      *
      * @param array $displayOptions A map of display options to customize the behavior
      */
@@ -121,7 +119,6 @@ class HtmlDumper extends CliDumper
 
     /**
      * Sets an HTML header that will be dumped once in the output stream.
-	 * 设置一个HTML头，它将在输出流中转储一次。
      *
      * @param string $header An HTML string
      */
@@ -132,7 +129,6 @@ class HtmlDumper extends CliDumper
 
     /**
      * Sets an HTML prefix and suffix that will encapse every single dump.
-	 * 设置一个HTML前缀和后缀，用于封装每个转储文件。
      *
      * @param string $prefix The prepended HTML string
      * @param string $suffix The appended HTML string
@@ -157,7 +153,6 @@ class HtmlDumper extends CliDumper
 
     /**
      * Dumps the HTML header.
-	 * 转储HTML头
      */
     protected function getDumpHeader()
     {
@@ -890,7 +885,7 @@ EOHTML
         }
 
         if ('const' === $style && isset($attr['value'])) {
-            $style .= sprintf(' title="%s"', esc(\is_scalar($attr['value']) ? $attr['value'] : json_encode($attr['value'])));
+            $style .= sprintf(' title="%s"', esc(is_scalar($attr['value']) ? $attr['value'] : json_encode($attr['value'])));
         } elseif ('public' === $style) {
             $style .= sprintf(' title="%s"', empty($attr['dynamic']) ? 'Public property' : 'Runtime added dynamic property');
         } elseif ('str' === $style && 1 < $attr['length']) {
@@ -986,7 +981,7 @@ EOHTML
         }
         $this->lastDepth = $depth;
 
-        $this->line = mb_encode_numericentity($this->line, [0x80, 0x10FFFF, 0, 0x1FFFFF], 'UTF-8');
+        $this->line = mb_encode_numericentity($this->line, [0x80, 0xFFFF, 0, 0xFFFF], 'UTF-8');
 
         if (-1 === $depth) {
             AbstractDumper::dumpLine(0);

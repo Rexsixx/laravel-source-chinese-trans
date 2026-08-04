@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，广播，广播服务提供商
+ * 广播，广播服务提供者
  */
 
 namespace Illuminate\Broadcasting;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Support\DeferrableProvider;
-use Illuminate\Contracts\Broadcasting\Factory as BroadcastingFactory;
 use Illuminate\Contracts\Broadcasting\Broadcaster as BroadcasterContract;
+use Illuminate\Contracts\Broadcasting\Factory as BroadcastingFactory;
+use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Support\ServiceProvider;
 
 class BroadcastServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -35,7 +35,7 @@ class BroadcastServiceProvider extends ServiceProvider implements DeferrableProv
 
     /**
      * Get the services provided by the provider.
-	 * 获取提供者提供的服务
+	 * 得到服务提供者
      *
      * @return array
      */

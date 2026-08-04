@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，翻译，阅读器，翻译阅读器接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * TranslationReader reads translation messages from translation files.
- * 翻译阅读器从翻译文件读取翻译消息。
  *
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
@@ -26,7 +22,6 @@ interface TranslationReaderInterface
 {
     /**
      * Reads translation messages from a directory to the catalogue.
-	 * 从目录到目录读取翻译消息
      *
      * @param string $directory
      */

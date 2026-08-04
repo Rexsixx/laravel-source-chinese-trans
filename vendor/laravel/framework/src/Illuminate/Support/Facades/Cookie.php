@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，Cookie
+ * 支持，门面Cookie
  */
 
 namespace Illuminate\Support\Facades;
@@ -30,8 +30,8 @@ class Cookie extends Facade
      * Retrieve a cookie from the request.
 	 * 从请求中检索cookie
      *
-     * @param  string  $key
-     * @param  mixed   $default
+     * @param  string|null  $key
+     * @param  mixed  $default
      * @return string|array|null
      */
     public static function get($key = null, $default = null)
@@ -41,7 +41,7 @@ class Cookie extends Facade
 
     /**
      * Get the registered name of the component.
-	 * 获取组件的注册名称
+	 * 得到组件注册名
      *
      * @return string
      */

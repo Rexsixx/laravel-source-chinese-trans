@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，Http，Redis 服务提供商
+ * Redis，Redis服务提供者
  */
 
 namespace Illuminate\Redis;
 
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Support\DeferrableProvider;
 
 class RedisServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -22,7 +22,7 @@ class RedisServiceProvider extends ServiceProvider implements DeferrableProvider
         $this->app->singleton('redis', function ($app) {
             $config = $app->make('config')->get('database.redis', []);
 
-            return new RedisManager($app, Arr::pull($config, 'client', 'predis'), $config);
+            return new RedisManager($app, Arr::pull($config, 'client', 'phpredis'), $config);
         });
 
         $this->app->bind('redis.connection', function ($app) {
@@ -32,7 +32,7 @@ class RedisServiceProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Get the services provided by the provider.
-	 * 获取提供者提供的服务
+	 * 得到提供者的服务通过提供者
      *
      * @return array
      */

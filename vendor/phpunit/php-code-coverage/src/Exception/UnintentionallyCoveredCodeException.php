@@ -1,8 +1,4 @@
-<?php
-/**
- * SebastianBergmann，代码覆盖率，无意中覆盖代码异常
- */
-
+<?php declare(strict_types=1);
 /*
  * This file is part of the php-code-coverage package.
  *

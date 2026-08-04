@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，容器，Container
+ * 契约，容器接口
  */
 
 namespace Illuminate\Contracts\Container;
@@ -12,7 +12,7 @@ interface Container extends ContainerInterface
 {
     /**
      * Determine if the given abstract type has been bound.
-	 * 确定给定的抽象类型是否已被绑定
+	 * 确定抽象类是否已被绑定
      *
      * @param  string  $abstract
      * @return bool
@@ -21,7 +21,7 @@ interface Container extends ContainerInterface
 
     /**
      * Alias a type to a different name.
-	 * 将类型别名为不同的名称
+	 * 别名类型为不同的名称
      *
      * @param  string  $abstract
      * @param  string  $alias
@@ -33,10 +33,10 @@ interface Container extends ContainerInterface
 
     /**
      * Assign a set of tags to a given binding.
-	 * 为给定的绑定分配一组标记
+	 * 分配一组标记为给定的绑定
      *
      * @param  array|string  $abstracts
-     * @param  array|mixed   ...$tags
+     * @param  array|mixed  ...$tags
      * @return void
      */
     public function tag($abstracts, $tags);
@@ -52,7 +52,7 @@ interface Container extends ContainerInterface
 
     /**
      * Register a binding with the container.
-	 * 向容器注册绑定
+	 * 注册绑定至容器
      *
      * @param  string  $abstract
      * @param  \Closure|string|null  $concrete
@@ -63,7 +63,7 @@ interface Container extends ContainerInterface
 
     /**
      * Register a binding if it hasn't already been registered.
-	 * 如果绑定尚未注册，请注册它。
+	 * 注册绑定是否没有注册
      *
      * @param  string  $abstract
      * @param  \Closure|string|null  $concrete
@@ -74,7 +74,7 @@ interface Container extends ContainerInterface
 
     /**
      * Register a shared binding in the container.
-	 * 在容器中注册一个共享绑定
+	 * 注册一个共享绑定在容器中
      *
      * @param  string  $abstract
      * @param  \Closure|string|null  $concrete
@@ -83,10 +83,20 @@ interface Container extends ContainerInterface
     public function singleton($abstract, $concrete = null);
 
     /**
-     * "Extend" an abstract type in the container.
-	 * “扩展”容器中的抽象类型
+     * Register a shared binding if it hasn't already been registered.
+	 * 注册一个共享绑定如果尚未注册共享绑定
      *
-     * @param  string    $abstract
+     * @param  string  $abstract
+     * @param  \Closure|string|null  $concrete
+     * @return void
+     */
+    public function singletonIf($abstract, $concrete = null);
+
+    /**
+     * "Extend" an abstract type in the container.
+	 * 扩展容器中的抽象类型
+     *
+     * @param  string  $abstract
      * @param  \Closure  $closure
      * @return void
      *
@@ -96,17 +106,17 @@ interface Container extends ContainerInterface
 
     /**
      * Register an existing instance as shared in the container.
-	 * 将现有实例注册为容器中的共享实例
+	 * 注册一个已存在的实例为共享在容器中
      *
      * @param  string  $abstract
-     * @param  mixed   $instance
+     * @param  mixed  $instance
      * @return mixed
      */
     public function instance($abstract, $instance);
 
     /**
      * Add a contextual binding to the container.
-	 * 向容器添加上下文绑定
+	 * 添加上下文绑定至容器
      *
      * @param  string  $concrete
      * @param  string  $abstract
@@ -126,7 +136,7 @@ interface Container extends ContainerInterface
 
     /**
      * Get a closure to resolve the given type from the container.
-	 * 获取闭包以从容器中解析给定类型
+	 * 得到闭包并从容器中解析给定类型
      *
      * @param  string  $abstract
      * @return \Closure
@@ -135,7 +145,7 @@ interface Container extends ContainerInterface
 
     /**
      * Flush the container of all bindings and resolved instances.
-	 * 刷新所有绑定和解析实例的容器
+	 * 清空容器的所有绑定和已解析实例
      *
      * @return void
      */
@@ -143,7 +153,7 @@ interface Container extends ContainerInterface
 
     /**
      * Resolve the given type from the container.
-	 * 从容器中解析给定的类型
+	 * 解析给定的抽象类从容器中
      *
      * @param  string  $abstract
      * @param  array  $parameters
@@ -155,7 +165,7 @@ interface Container extends ContainerInterface
 
     /**
      * Call the given Closure / class@method and inject its dependencies.
-	 * 调用给定的Closure / class@method并注入它的依赖项
+	 * 调取给定闭包并注入依赖
      *
      * @param  callable|string  $callback
      * @param  array  $parameters
@@ -166,9 +176,9 @@ interface Container extends ContainerInterface
 
     /**
      * Determine if the given abstract type has been resolved.
-	 * 确定给定的抽象类型是否已解析
+	 * 确定给定的抽象类型是否已被解析
      *
-     * @param  string $abstract
+     * @param  string  $abstract
      * @return bool
      */
     public function resolved($abstract);
@@ -185,7 +195,7 @@ interface Container extends ContainerInterface
 
     /**
      * Register a new after resolving callback.
-	 * 在解析回调后注册一个new
+	 * 注册一个新的在解析回调后
      *
      * @param  \Closure|string  $abstract
      * @param  \Closure|null  $callback

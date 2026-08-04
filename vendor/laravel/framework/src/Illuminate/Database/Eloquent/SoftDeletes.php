@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，软删除
+ * 数据库，Eloquent, 软删除
  */
 
 namespace Illuminate\Database\Eloquent;
@@ -14,7 +14,7 @@ trait SoftDeletes
 {
     /**
      * Indicates if the model is currently force deleting.
-	 * 指示模型当前是否正在强制删除
+	 * 指明模型当前是否正在强制删除
      *
      * @var bool
      */
@@ -33,7 +33,7 @@ trait SoftDeletes
 
     /**
      * Initialize the soft deleting trait for an instance.
-	 * 初始化实例的软删除特性
+	 * 初始化实例的软删除特征
      *
      * @return void
      */
@@ -44,7 +44,7 @@ trait SoftDeletes
 
     /**
      * Force a hard delete on a soft deleted model.
-	 * 对已软删除的模型强制执行硬删除
+	 * 强制执行硬删除对已软删除的模型
      *
      * @return bool|null
      */
@@ -63,7 +63,7 @@ trait SoftDeletes
 
     /**
      * Perform the actual delete query on this model instance.
-	 * 对这个模型实例执行实际的删除查询
+	 * 执行实际的删除查询对这个模型实例
      *
      * @return mixed
      */
@@ -80,7 +80,7 @@ trait SoftDeletes
 
     /**
      * Perform the actual delete query on this model instance.
-	 * 对这个模型实例执行实际的删除查询
+	 * 执行实际的删除查询对这个模型实例
      *
      * @return void
      */
@@ -101,6 +101,8 @@ trait SoftDeletes
         }
 
         $query->update($columns);
+
+        $this->syncOriginalAttributes(array_keys($columns));
     }
 
     /**
@@ -114,8 +116,8 @@ trait SoftDeletes
         // If the restoring event does not return false, we will proceed with this
         // restore operation. Otherwise, we bail out so the developer will stop
         // the restore totally. We will clear the deleted timestamp and save.
-		// 如果恢复事件未返回“false”值，我们将继续执行此次恢复操作。
-		// 否则，我们将终止操作，以便开发人员能够完全停止恢复过程。我们将清除已删除的时间戳并保存。
+		// 如果还原事件没有返回false，我们将继续此还原操作。
+		// 否则，我们将退出，这样开发商将完全停止恢复。我们将清除已删除的时间戳并保存。
         if ($this->fireModelEvent('restoring') === false) {
             return false;
         }
@@ -125,8 +127,8 @@ trait SoftDeletes
         // Once we have saved the model, we will fire the "restored" event so this
         // developer will do anything they need to after a restore operation is
         // totally finished. Then we will return the result of the save call.
-		// 一旦我们完成了模型的保存操作，我们就会触发“已恢复”事件，
-		// 以便该开发人员在恢复操作完全结束之后能够执行任何他们需要的操作。然后，我们将返回保存调用的结果。
+		// 一旦我们保存了模型，我们将触发“恢复”事件，
+		// 这样这个开发人员就可以在恢复操作完全完成后做任何他们需要做的事情。然后我们将返回save调用的结果。
         $this->exists = true;
 
         $result = $this->save();
@@ -149,7 +151,7 @@ trait SoftDeletes
 
     /**
      * Register a restoring model event with the dispatcher.
-	 * 向调度程序注册一个恢复模型事件
+	 * 注册一个恢复模型事件向调度程序
      *
      * @param  \Closure|string  $callback
      * @return void
@@ -161,7 +163,7 @@ trait SoftDeletes
 
     /**
      * Register a restored model event with the dispatcher.
-	 * 向调度程序注册已恢复的模型事件
+	 * 注册已恢复的模型事件向调度程序
      *
      * @param  \Closure|string  $callback
      * @return void
@@ -184,7 +186,7 @@ trait SoftDeletes
 
     /**
      * Get the name of the "deleted at" column.
-	 * 获取“删除位置”列的名称
+	 * 得到"删除位置"列的名称
      *
      * @return string
      */
@@ -195,7 +197,7 @@ trait SoftDeletes
 
     /**
      * Get the fully qualified "deleted at" column.
-	 * 获取完全限定的“deleted at”列
+	 * 得到完全限定的"deleted at"列
      *
      * @return string
      */

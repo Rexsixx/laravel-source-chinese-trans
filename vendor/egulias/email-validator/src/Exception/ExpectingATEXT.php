@@ -1,7 +1,4 @@
 <?php
-/**
- * Egulias，电子邮件验证器，异常，期待 ATEXT
- */
 
 namespace Egulias\EmailValidator\Exception;
 

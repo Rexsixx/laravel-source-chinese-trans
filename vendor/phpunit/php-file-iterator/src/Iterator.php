@@ -1,8 +1,4 @@
 <?php
-/**
- * SebastianBergmann，文件迭代器，迭代器
- */
-
 /*
  * This file is part of php-file-iterator.
  *

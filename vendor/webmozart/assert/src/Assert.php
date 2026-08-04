@@ -1,6 +1,6 @@
 <?php
 /**
- * Webmozart，Assert，Assert
+ * Webmozart，断言，Assert
  */
 
 /*
@@ -40,13 +40,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert string $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -62,13 +59,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert non-empty-string $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -80,13 +74,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert int $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -102,13 +93,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert numeric $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -124,13 +112,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert positive-int $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -146,13 +131,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert float $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -168,13 +150,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert numeric $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -190,13 +169,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert positive-int|0 $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -212,13 +188,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert bool $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -234,13 +207,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert scalar $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -256,13 +226,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert object $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -278,14 +245,11 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert resource $value
      *
      * @param mixed       $value
      * @param string|null $type    type of resource this should be. @see https://www.php.net/manual/en/function.get-resource-type.php
      * @param string      $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -294,8 +258,7 @@ class Assert
         if (!\is_resource($value)) {
             static::reportInvalidArgument(\sprintf(
                 $message ?: 'Expected a resource. Got: %s',
-                static::typeToString($value),
-                $type // User supplied message might include the second placeholder.
+                static::typeToString($value)
             ));
         }
 
@@ -310,13 +273,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert callable $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -332,13 +292,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert array $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -354,15 +311,12 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert iterable $value
      *
      * @deprecated use "isIterable" or "isInstanceOf" instead
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -386,13 +340,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert array|ArrayAccess $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -408,13 +359,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert countable $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -435,13 +383,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert iterable $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -457,18 +402,13 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-template ExpectedType of object
-     *
      * @psalm-param class-string<ExpectedType> $class
-     *
      * @psalm-assert ExpectedType $value
      *
      * @param mixed         $value
      * @param string|object $class
      * @param string        $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -485,18 +425,13 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-template ExpectedType of object
-     *
      * @psalm-param class-string<ExpectedType> $class
-     *
      * @psalm-assert !ExpectedType $value
      *
      * @param mixed         $value
      * @param string|object $class
      * @param string        $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -513,14 +448,11 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-param array<class-string> $classes
      *
      * @param mixed                $value
      * @param array<object|string> $classes
      * @param string               $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -535,24 +467,19 @@ class Assert
         static::reportInvalidArgument(\sprintf(
             $message ?: 'Expected an instance of any of %2$s. Got: %s',
             static::typeToString($value),
-            \implode(', ', \array_map(array(static::class, 'valueToString'), $classes))
+            \implode(', ', \array_map(array('static', 'valueToString'), $classes))
         ));
     }
 
     /**
      * @psalm-pure
-     *
      * @psalm-template ExpectedType of object
-     *
      * @psalm-param class-string<ExpectedType> $class
-     *
      * @psalm-assert ExpectedType|class-string<ExpectedType> $value
      *
      * @param object|string $value
      * @param string        $class
      * @param string        $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -562,8 +489,8 @@ class Assert
 
         if (!\is_a($value, $class, \is_string($value))) {
             static::reportInvalidArgument(sprintf(
-                $message ?: 'Expected an instance of this class or to this class among its parents "%2$s". Got: %s',
-                static::valueToString($value),
+                $message ?: 'Expected an instance of this class or to this class among his parents %2$s. Got: %s',
+                static::typeToString($value),
                 $class
             ));
         }
@@ -571,19 +498,14 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-template UnexpectedType of object
-     *
      * @psalm-param class-string<UnexpectedType> $class
-     *
      * @psalm-assert !UnexpectedType $value
      * @psalm-assert !class-string<UnexpectedType> $value
      *
      * @param object|string $value
      * @param string        $class
      * @param string        $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -593,8 +515,8 @@ class Assert
 
         if (\is_a($value, $class, \is_string($value))) {
             static::reportInvalidArgument(sprintf(
-                $message ?: 'Expected an instance of this class or to this class among its parents other than "%2$s". Got: %s',
-                static::valueToString($value),
+                $message ?: 'Expected an instance of this class or to this class among his parents other than %2$s. Got: %s',
+                static::typeToString($value),
                 $class
             ));
         }
@@ -602,14 +524,11 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-param array<class-string> $classes
      *
      * @param object|string $value
      * @param string[]      $classes
      * @param string        $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -624,21 +543,18 @@ class Assert
         }
 
         static::reportInvalidArgument(sprintf(
-            $message ?: 'Expected an instance of any of this classes or any of those classes among their parents "%2$s". Got: %s',
-            static::valueToString($value),
-            \implode(', ', $classes)
+            $message ?: 'Expected an any of instance of this class or to this class among his parents other than %2$s. Got: %s',
+            static::typeToString($value),
+            \implode(', ', \array_map(array('static', 'valueToString'), $classes))
         ));
     }
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert empty $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -654,13 +570,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert !empty $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -676,13 +589,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert null $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -698,13 +608,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert !null $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -719,13 +626,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert true $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -741,13 +645,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert false $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -763,13 +664,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert !false $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -785,8 +683,6 @@ class Assert
     /**
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -804,8 +700,6 @@ class Assert
      * @param mixed  $value
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function ipv4($value, $message = '')
@@ -822,8 +716,6 @@ class Assert
      * @param mixed  $value
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function ipv6($value, $message = '')
@@ -839,8 +731,6 @@ class Assert
     /**
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -860,8 +750,6 @@ class Assert
      * @param array  $values
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function uniqueValues(array $values, $message = '')
@@ -875,7 +763,7 @@ class Assert
             static::reportInvalidArgument(\sprintf(
                 $message ?: 'Expected an array of unique values, but %s of them %s duplicated',
                 $difference,
-                1 === $difference ? 'is' : 'are'
+                (1 === $difference ? 'is' : 'are')
             ));
         }
     }
@@ -884,8 +772,6 @@ class Assert
      * @param mixed  $value
      * @param mixed  $expect
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -905,8 +791,6 @@ class Assert
      * @param mixed  $expect
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function notEq($value, $expect, $message = '')
@@ -925,8 +809,6 @@ class Assert
      * @param mixed  $value
      * @param mixed  $expect
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -948,8 +830,6 @@ class Assert
      * @param mixed  $expect
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function notSame($value, $expect, $message = '')
@@ -968,8 +848,6 @@ class Assert
      * @param mixed  $value
      * @param mixed  $limit
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -991,8 +869,6 @@ class Assert
      * @param mixed  $limit
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function greaterThanEq($value, $limit, $message = '')
@@ -1013,8 +889,6 @@ class Assert
      * @param mixed  $limit
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function lessThan($value, $limit, $message = '')
@@ -1034,8 +908,6 @@ class Assert
      * @param mixed  $value
      * @param mixed  $limit
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1060,8 +932,6 @@ class Assert
      * @param mixed  $max
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function range($value, $min, $max, $message = '')
@@ -1085,8 +955,6 @@ class Assert
      * @param array  $values
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function oneOf($value, array $values, $message = '')
@@ -1103,8 +971,6 @@ class Assert
      * @param array  $values
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function inArray($value, array $values, $message = '')
@@ -1113,7 +979,7 @@ class Assert
             static::reportInvalidArgument(\sprintf(
                 $message ?: 'Expected one of: %2$s. Got: %s',
                 static::valueToString($value),
-                \implode(', ', \array_map(array(static::class, 'valueToString'), $values))
+                \implode(', ', \array_map(array('static', 'valueToString'), $values))
             ));
         }
     }
@@ -1124,8 +990,6 @@ class Assert
      * @param string $value
      * @param string $subString
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1147,8 +1011,6 @@ class Assert
      * @param string $subString
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function notContains($value, $subString, $message = '')
@@ -1168,8 +1030,6 @@ class Assert
      * @param string $value
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function notWhitespaceOnly($value, $message = '')
@@ -1188,8 +1048,6 @@ class Assert
      * @param string $value
      * @param string $prefix
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1211,8 +1069,6 @@ class Assert
      * @param string $prefix
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function notStartsWith($value, $prefix, $message = '')
@@ -1231,8 +1087,6 @@ class Assert
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1264,8 +1118,6 @@ class Assert
      * @param string $suffix
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function endsWith($value, $suffix, $message = '')
@@ -1285,8 +1137,6 @@ class Assert
      * @param string $value
      * @param string $suffix
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1308,8 +1158,6 @@ class Assert
      * @param string $pattern
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function regex($value, $pattern, $message = '')
@@ -1328,8 +1176,6 @@ class Assert
      * @param string $value
      * @param string $pattern
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1351,8 +1197,6 @@ class Assert
      * @param mixed  $value
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function unicodeLetters($value, $message = '')
@@ -1372,8 +1216,6 @@ class Assert
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1400,14 +1242,10 @@ class Assert
      * @param string $value
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function digits($value, $message = '')
     {
-        static::string($value);
-
         $locale = \setlocale(LC_CTYPE, 0);
         \setlocale(LC_CTYPE, 'C');
         $valid = !\ctype_digit($value);
@@ -1427,14 +1265,10 @@ class Assert
      * @param string $value
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function alnum($value, $message = '')
     {
-        static::string($value);
-
         $locale = \setlocale(LC_CTYPE, 0);
         \setlocale(LC_CTYPE, 'C');
         $valid = !\ctype_alnum($value);
@@ -1450,20 +1284,15 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert lowercase-string $value
      *
      * @param string $value
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function lower($value, $message = '')
     {
-        static::string($value);
-
         $locale = \setlocale(LC_CTYPE, 0);
         \setlocale(LC_CTYPE, 'C');
         $valid = !\ctype_lower($value);
@@ -1479,20 +1308,15 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert !lowercase-string $value
      *
      * @param string $value
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function upper($value, $message = '')
     {
-        static::string($value);
-
         $locale = \setlocale(LC_CTYPE, 0);
         \setlocale(LC_CTYPE, 'C');
         $valid = !\ctype_upper($value);
@@ -1513,8 +1337,6 @@ class Assert
      * @param int    $length
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function length($value, $length, $message = '')
@@ -1530,15 +1352,12 @@ class Assert
 
     /**
      * Inclusive min.
-	 * 包含的最小值
      *
      * @psalm-pure
      *
      * @param string    $value
      * @param int|float $min
      * @param string    $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1555,15 +1374,12 @@ class Assert
 
     /**
      * Inclusive max.
-	 * 包含的最大值
      *
      * @psalm-pure
      *
      * @param string    $value
      * @param int|float $max
      * @param string    $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1580,7 +1396,6 @@ class Assert
 
     /**
      * Inclusive , so Assert::lengthBetween('asd', 3, 5); passes the assertion.
-	 * 包括，所以Assert::lengthBetween('asd', 3,5)；传递断言。
      *
      * @psalm-pure
      *
@@ -1588,8 +1403,6 @@ class Assert
      * @param int|float $min
      * @param int|float $max
      * @param string    $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1613,15 +1426,15 @@ class Assert
      * @param mixed  $value
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function fileExists($value, $message = '')
     {
+        static::string($value);
+
         if (!\file_exists($value)) {
             static::reportInvalidArgument(\sprintf(
-                $message ?: 'The path %s does not exist.',
+                $message ?: 'The file %s does not exist.',
                 static::valueToString($value)
             ));
         }
@@ -1631,12 +1444,12 @@ class Assert
      * @param mixed  $value
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function file($value, $message = '')
     {
+        static::fileExists($value, $message);
+
         if (!\is_file($value)) {
             static::reportInvalidArgument(\sprintf(
                 $message ?: 'The path %s is not a file.',
@@ -1649,15 +1462,15 @@ class Assert
      * @param mixed  $value
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function directory($value, $message = '')
     {
+        static::fileExists($value, $message);
+
         if (!\is_dir($value)) {
             static::reportInvalidArgument(\sprintf(
-                $message ?: 'The path %s is not a directory.',
+                $message ?: 'The path %s is no directory.',
                 static::valueToString($value)
             ));
         }
@@ -1666,8 +1479,6 @@ class Assert
     /**
      * @param string $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1684,8 +1495,6 @@ class Assert
     /**
      * @param string $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1705,8 +1514,6 @@ class Assert
      * @param mixed  $value
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function classExists($value, $message = '')
@@ -1721,18 +1528,13 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-template ExpectedType of object
-     *
      * @psalm-param class-string<ExpectedType> $class
-     *
      * @psalm-assert class-string<ExpectedType>|ExpectedType $value
      *
      * @param mixed         $value
      * @param string|object $class
      * @param string        $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1753,8 +1555,6 @@ class Assert
      * @param mixed  $value
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function interfaceExists($value, $message = '')
@@ -1769,18 +1569,13 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-template ExpectedType of object
-     *
      * @psalm-param class-string<ExpectedType> $interface
-     *
-     * @psalm-assert class-string<ExpectedType>|ExpectedType $value
+     * @psalm-assert class-string<ExpectedType> $value
      *
      * @param mixed  $value
      * @param mixed  $interface
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1797,14 +1592,11 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-param class-string|object $classOrObject
      *
      * @param string|object $classOrObject
      * @param mixed         $property
      * @param string        $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1820,14 +1612,11 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-param class-string|object $classOrObject
      *
      * @param string|object $classOrObject
      * @param mixed         $property
      * @param string        $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1843,14 +1632,11 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-param class-string|object $classOrObject
      *
      * @param string|object $classOrObject
      * @param mixed         $method
      * @param string        $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1866,14 +1652,11 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-param class-string|object $classOrObject
      *
      * @param string|object $classOrObject
      * @param mixed         $method
      * @param string        $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1894,8 +1677,6 @@ class Assert
      * @param string|int $key
      * @param string     $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function keyExists($array, $key, $message = '')
@@ -1915,8 +1696,6 @@ class Assert
      * @param string|int $key
      * @param string     $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function keyNotExists($array, $key, $message = '')
@@ -1933,13 +1712,10 @@ class Assert
      * Checks if a value is a valid array key (int or string).
      *
      * @psalm-pure
-     *
      * @psalm-assert array-key $value
      *
      * @param mixed  $value
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1959,8 +1735,6 @@ class Assert
      * @param Countable|array $array
      * @param int             $number
      * @param string          $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -1984,8 +1758,6 @@ class Assert
      * @param int|float       $min
      * @param string          $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function minCount($array, $min, $message = '')
@@ -2005,8 +1777,6 @@ class Assert
      * @param Countable|array $array
      * @param int|float       $max
      * @param string          $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -2029,8 +1799,6 @@ class Assert
      * @param int|float       $max
      * @param string          $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function countBetween($array, $min, $max, $message = '')
@@ -2049,40 +1817,16 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert list $array
      *
      * @param mixed  $array
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function isList($array, $message = '')
     {
-        if (!\is_array($array)) {
-            static::reportInvalidArgument(
-                $message ?: 'Expected list - non-associative array.'
-            );
-        }
-
-        if (\function_exists('array_is_list')) {
-            if (!\array_is_list($array)) {
-                static::reportInvalidArgument(
-                    $message ?: 'Expected list - non-associative array.'
-                );
-            }
-
-            return;
-        }
-
-        if (array() === $array) {
-            return;
-        }
-
-        $keys = array_keys($array);
-        if (array_keys($keys) !== $keys) {
+        if (!\is_array($array) || $array !== \array_values($array)) {
             static::reportInvalidArgument(
                 $message ?: 'Expected list - non-associative array.'
             );
@@ -2091,13 +1835,10 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-assert non-empty-list $array
      *
      * @param mixed  $array
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -2109,25 +1850,20 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-template T
-     *
      * @psalm-param mixed|array<T> $array
-     *
      * @psalm-assert array<string, T> $array
      *
      * @param mixed  $array
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
     public static function isMap($array, $message = '')
     {
         if (
-            !\is_array($array)
-            || \array_keys($array) !== \array_filter(\array_keys($array), '\is_string')
+            !\is_array($array) ||
+            \array_keys($array) !== \array_filter(\array_keys($array), '\is_string')
         ) {
             static::reportInvalidArgument(
                 $message ?: 'Expected map - associative array with string keys.'
@@ -2137,18 +1873,13 @@ class Assert
 
     /**
      * @psalm-pure
-     *
      * @psalm-template T
-     *
      * @psalm-param mixed|array<T> $array
-     *
      * @psalm-assert array<string, T> $array
      * @psalm-assert !empty $array
      *
      * @param mixed  $array
      * @param string $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -2164,8 +1895,6 @@ class Assert
      * @param string $value
      * @param string $message
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
      */
     public static function uuid($value, $message = '')
@@ -2178,7 +1907,7 @@ class Assert
             return;
         }
 
-        if (!\preg_match('/^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$/D', $value)) {
+        if (!\preg_match('/^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$/', $value)) {
             static::reportInvalidArgument(\sprintf(
                 $message ?: 'Value %s is not a valid UUID.',
                 static::valueToString($value)
@@ -2192,8 +1921,6 @@ class Assert
      * @param Closure $expression
      * @param string  $class
      * @param string  $message
-     *
-     * @return void
      *
      * @throws InvalidArgumentException
      */
@@ -2232,7 +1959,7 @@ class Assert
         if ('nullOr' === \substr($name, 0, 6)) {
             if (null !== $arguments[0]) {
                 $method = \lcfirst(\substr($name, 6));
-                \call_user_func_array(array(static::class, $method), $arguments);
+                \call_user_func_array(array('static', $method), $arguments);
             }
 
             return;
@@ -2247,7 +1974,7 @@ class Assert
             foreach ($arguments[0] as $entry) {
                 $args[0] = $entry;
 
-                \call_user_func_array(array(static::class, $method), $args);
+                \call_user_func_array(array('static', $method), $args);
             }
 
             return;
@@ -2288,10 +2015,6 @@ class Assert
                 return \get_class($value).': '.self::valueToString($value->format('c'));
             }
 
-            if (\function_exists('enum_exists') && \enum_exists(\get_class($value))) {
-                return \get_class($value).'::'.$value->name;
-            }
-
             return \get_class($value);
         }
 
@@ -2307,8 +2030,6 @@ class Assert
     }
 
     /**
-     * @psalm-pure
-     *
      * @param mixed $value
      *
      * @return string
@@ -2337,8 +2058,6 @@ class Assert
      * @throws InvalidArgumentException
      *
      * @psalm-pure this method is not supposed to perform side-effects
-     *
-     * @psalm-return never
      */
     protected static function reportInvalidArgument($message)
     {

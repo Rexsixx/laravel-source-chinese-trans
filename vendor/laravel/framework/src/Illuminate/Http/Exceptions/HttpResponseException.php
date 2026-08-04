@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，异常，Http 响应异常
+ * Http，异常响应
  */
 
 namespace Illuminate\Http\Exceptions;
@@ -20,7 +20,7 @@ class HttpResponseException extends RuntimeException
 
     /**
      * Create a new HTTP response exception instance.
-	 * 创建一个新的HTTP响应异常实例
+	 * 创建新的http异常响应实例
      *
      * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @return void
@@ -32,7 +32,7 @@ class HttpResponseException extends RuntimeException
 
     /**
      * Get the underlying response instance.
-	 * 获取底层响应实例
+	 * 得到底层响应实例
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */

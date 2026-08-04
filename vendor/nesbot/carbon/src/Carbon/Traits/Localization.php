@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，本地化
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -23,7 +26,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface as ContractsTranslatorInterface;
 
-// @codeCoverageIgnoreStart
 if (interface_exists('Symfony\\Contracts\\Translation\\TranslatorInterface') &&
     !interface_exists('Symfony\\Component\\Translation\\TranslatorInterface')
 ) {
@@ -32,7 +34,6 @@ if (interface_exists('Symfony\\Contracts\\Translation\\TranslatorInterface') &&
         'Symfony\\Component\\Translation\\TranslatorInterface'
     );
 }
-// @codeCoverageIgnoreEnd
 
 /**
  * Trait Localization.
@@ -359,13 +360,6 @@ trait Localization
             $weekdays = $messages['weekdays'] ?? [];
             $meridiem = $messages['meridiem'] ?? ['AM', 'PM'];
 
-            if (isset($messages['ordinal_words'])) {
-                $timeString = self::replaceOrdinalWords(
-                    $timeString,
-                    $key === 'from' ? array_flip($messages['ordinal_words']) : $messages['ordinal_words']
-                );
-            }
-
             if ($key === 'from') {
                 foreach (['months', 'weekdays'] as $variable) {
                     $list = $messages[$variable.'_standalone'] ?? null;
@@ -444,7 +438,7 @@ trait Localization
      *
      * @return $this|string
      */
-    public function locale(?string $locale = null, ...$fallbackLocales)
+    public function locale(string $locale = null, ...$fallbackLocales)
     {
         if ($locale === null) {
             return $this->getTranslatorLocale();
@@ -741,7 +735,7 @@ trait Localization
         }
 
         if ($translator && !($translator instanceof LocaleAwareInterface || method_exists($translator, 'getLocale'))) {
-            throw new NotLocaleAwareException($translator); // @codeCoverageIgnore
+            throw new NotLocaleAwareException($translator);
         }
 
         return $translator;
@@ -829,12 +823,5 @@ trait Localization
         }
 
         return $list;
-    }
-
-    private static function replaceOrdinalWords(string $timeString, array $ordinalWords): string
-    {
-        return preg_replace_callback('/(?<![a-z])[a-z]+(?![a-z])/i', function (array $match) use ($ordinalWords) {
-            return $ordinalWords[mb_strtolower($match[0])] ?? $match[0];
-        }, $timeString);
     }
 }

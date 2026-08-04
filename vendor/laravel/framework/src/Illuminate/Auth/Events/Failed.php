@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，事件，失败的
+ * 授权，事件，失败
  */
 
 namespace Illuminate\Auth\Events;
@@ -33,7 +33,7 @@ class Failed
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  string  $guard
      * @param  \Illuminate\Contracts\Auth\Authenticatable|null  $user

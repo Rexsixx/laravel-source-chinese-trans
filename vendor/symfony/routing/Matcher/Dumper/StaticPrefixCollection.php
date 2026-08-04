@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，匹配程序，转储，静态前缀集合
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Prefix tree of routes preserving routes order.
- * 保留路线秩序的路线树。
  *
  * @author Frank de Jonge <info@frankdejonge.nl>
  * @author Nicolas Grekas <p@tchwork.com>
@@ -64,7 +60,6 @@ class StaticPrefixCollection
 
     /**
      * Adds a route to a group.
-	 * 给一个小组添加一条路线
      *
      * @param array|self $route
      */
@@ -130,7 +125,6 @@ class StaticPrefixCollection
 
     /**
      * Linearizes back a set of nested routes into a collection.
-	 * 将一组嵌套路由返回到集合中
      */
     public function populateCollection(RouteCollection $routes): RouteCollection
     {
@@ -147,7 +141,6 @@ class StaticPrefixCollection
 
     /**
      * Gets the full and static common prefixes between two route patterns.
-	 * 获取两条路由模式之间的完整和静态的前缀。
      *
      * The static prefix stops at last at the first opening bracket.
      */

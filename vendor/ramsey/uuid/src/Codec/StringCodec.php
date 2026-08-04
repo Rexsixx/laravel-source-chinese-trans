@@ -1,9 +1,5 @@
 <?php
 /**
- * Ramsey，Uuid，编码解码器，字符串解码器
- */
-
-/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -38,7 +34,6 @@ class StringCodec implements CodecInterface
 
     /**
      * Constructs a StringCodec for use encoding and decoding UUIDs
-	 * 构建一个用于使用编码和解码UUIDs的StringCodec
      *
      * @param UuidBuilderInterface $builder The UUID builder to use when encoding UUIDs
      */

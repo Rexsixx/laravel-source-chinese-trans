@@ -10,5 +10,4 @@ use LogicException;
 class PluginNotFoundException extends LogicException
 {
     // This exception doesn't require additional information.
-	// 这个异常不需要额外的信息
 }

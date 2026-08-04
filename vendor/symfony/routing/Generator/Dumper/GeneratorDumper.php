@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，生成器，Dumper，生成器Dumper
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * GeneratorDumper is the base class for all built-in generator dumpers.
- * GeneratorDumper是所有内置发电机dumpers的基类。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，基础，引导程序，处理异常
+ * 基础，异常处理
  */
 
 namespace Illuminate\Foundation\Bootstrap;
 
-use Exception;
 use ErrorException;
+use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Foundation\Application;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -17,7 +17,7 @@ class HandleExceptions
 {
     /**
      * Reserved memory so that errors can be displayed properly on memory exhaustion.
-	 * 预留内存，以便在内存耗尽时正确显示错误。
+	 * 预留内存，以便在内存耗尽时显示错误
      *
      * @var string
      */
@@ -25,7 +25,7 @@ class HandleExceptions
 
     /**
      * The application instance.
-	 * 程序实例
+	 * 应用实例
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -33,7 +33,7 @@ class HandleExceptions
 
     /**
      * Bootstrap the given application.
-	 * 引导给定的应用程序
+	 * 引导给定的应用
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -59,7 +59,7 @@ class HandleExceptions
 
     /**
      * Convert PHP errors to ErrorException instances.
-	 * 将PHP错误转换为ErrorException实例
+	 * 转换PHP错误至错误异常实例
      *
      * @param  int  $level
      * @param  string  $message
@@ -79,7 +79,7 @@ class HandleExceptions
 
     /**
      * Handle an uncaught exception from the application.
-	 * 处理应用程序中未捕获的异常。
+	 * 处理应用程序中未捕获的异常
      *
      * Note: Most exceptions can be handled via the try / catch block in
      * the HTTP and Console kernels. But, fatal error exceptions must
@@ -110,9 +110,9 @@ class HandleExceptions
     }
 
     /**
-     * Render an exception to the console.
-	 * 向控制台呈现一个异常
-     *
+     * Render an exception to the console. 
+	 * 呈现一个异常至控制台
+	 * 
      * @param  \Exception  $e
      * @return void
      */
@@ -123,7 +123,7 @@ class HandleExceptions
 
     /**
      * Render an exception as an HTTP response and send it.
-	 * 将异常呈现为HTTP响应并发送
+	 * 呈现异常为HTTP响应并发送
      *
      * @param  \Exception  $e
      * @return void
@@ -148,7 +148,7 @@ class HandleExceptions
 
     /**
      * Create a new fatal exception instance from an error array.
-	 * 从错误数组创建一个新的致命异常实例
+	 * 创建一个新的致命异常实例从错误数组
      *
      * @param  array  $error
      * @param  int|null  $traceOffset
@@ -175,7 +175,7 @@ class HandleExceptions
 
     /**
      * Get an instance of the exception handler.
-	 * 获取异常处理程序的实例
+	 * 得到异常处理实例
      *
      * @return \Illuminate\Contracts\Debug\ExceptionHandler
      */

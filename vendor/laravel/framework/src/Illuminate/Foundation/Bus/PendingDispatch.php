@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，总线，等待调度
+ * 基础，总线等待调度
  */
 
 namespace Illuminate\Foundation\Bus;
@@ -19,7 +19,7 @@ class PendingDispatch
 
     /**
      * Create a new pending job dispatch.
-	 * 创建一个新的挂起作业调度
+	 * 创建新的等待任务
      *
      * @param  mixed  $job
      * @return void
@@ -31,7 +31,7 @@ class PendingDispatch
 
     /**
      * Set the desired connection for the job.
-	 * 为作业设置所需的连接
+	 * 设置所需的连接为作业
      *
      * @param  string|null  $connection
      * @return $this
@@ -45,7 +45,7 @@ class PendingDispatch
 
     /**
      * Set the desired queue for the job.
-	 * 为作业设置所需的队列
+	 * 设置所需的队列为作业
      *
      * @param  string|null  $queue
      * @return $this
@@ -59,7 +59,7 @@ class PendingDispatch
 
     /**
      * Set the desired connection for the chain.
-	 * 为链条设置所需的连接
+	 * 设置所需的连接为链条
      *
      * @param  string|null  $connection
      * @return $this
@@ -73,7 +73,7 @@ class PendingDispatch
 
     /**
      * Set the desired queue for the chain.
-	 * 为链设置所需的队列
+	 * 设置所需的队列为链
      *
      * @param  string|null  $queue
      * @return $this
@@ -87,7 +87,7 @@ class PendingDispatch
 
     /**
      * Set the desired delay for the job.
-	 * 为作业设置所需的延迟
+	 * 设置所需的延迟为作业
      *
      * @param  \DateTimeInterface|\DateInterval|int|null  $delay
      * @return $this
@@ -101,7 +101,8 @@ class PendingDispatch
 
     /**
      * Set the jobs that should run if this job is successful.
-	 * 设置作业成功时应该运行的作业
+	 * 设置应该运行的作业当作业成功时
+	 * 
      *
      * @param  array  $chain
      * @return $this

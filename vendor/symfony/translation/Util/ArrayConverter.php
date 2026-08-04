@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，工具，数组变换器
+ * Symfony，组件，翻译，Util，数组变换器
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\Translation\Util;
 
 /**
  * ArrayConverter generates tree like structure from a message catalogue.
- * array转换器从消息目录中生成类似结构的树。
  * e.g. this
  *   'foo.bar1' => 'test1',
  *   'foo.bar2' => 'test2'
@@ -32,7 +31,6 @@ class ArrayConverter
     /**
      * Converts linear messages array to tree-like array.
      * For example this array('foo.bar' => 'value') will be converted to ['foo' => ['bar' => 'value']].
-	 * 将线性消息数组转换为树状数组。
      *
      * @param array $messages Linear messages array
      *

@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，Http缓存，HttpCache
- */
 
 /*
  * This file is part of the Symfony package.
@@ -721,7 +718,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
             $timeout = $this->options['stale_while_revalidate'];
         }
 
-        return abs($entry->getTtl() ?? 0) < $timeout;
+        return abs($entry->getTtl()) < $timeout;
     }
 
     /**

@@ -1,9 +1,11 @@
 <?php
 /**
- * Illuminate，认证，必须验证电子邮件
+ * 授权，必须验证电子邮件
  */
 
 namespace Illuminate\Auth;
+
+use Illuminate\Auth\Notifications\VerifyEmail;
 
 trait MustVerifyEmail
 {
@@ -20,7 +22,7 @@ trait MustVerifyEmail
 
     /**
      * Mark the given user's email as verified.
-	 * 将给定用户的电子邮件标记为已验证
+	 * 标记给定用户的电子邮件为已验证
      *
      * @return bool
      */
@@ -39,6 +41,17 @@ trait MustVerifyEmail
      */
     public function sendEmailVerificationNotification()
     {
-        $this->notify(new Notifications\VerifyEmail);
+        $this->notify(new VerifyEmail);
+    }
+
+    /**
+     * Get the email address that should be used for verification.
+	 * 得到应该用于验证的电子邮件地址
+     *
+     * @return string
+     */
+    public function getEmailForVerification()
+    {
+        return $this->email;
     }
 }

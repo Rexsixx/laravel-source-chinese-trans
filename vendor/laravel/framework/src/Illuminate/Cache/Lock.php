@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，缓存，锁
+ * 缓存，缓存锁抽象类
  */
 
 namespace Illuminate\Cache;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\InteractsWithTime;
 use Illuminate\Contracts\Cache\Lock as LockContract;
 use Illuminate\Contracts\Cache\LockTimeoutException;
+use Illuminate\Support\InteractsWithTime;
+use Illuminate\Support\Str;
 
 abstract class Lock implements LockContract
 {
@@ -16,7 +16,7 @@ abstract class Lock implements LockContract
 
     /**
      * The name of the lock.
-	 * 锁的名称
+	 * 锁名称
      *
      * @var string
      */
@@ -24,7 +24,7 @@ abstract class Lock implements LockContract
 
     /**
      * The number of seconds the lock should be maintained.
-	 * 应该维护锁的秒数
+	 * 锁定时间秒
      *
      * @var int
      */
@@ -32,7 +32,7 @@ abstract class Lock implements LockContract
 
     /**
      * The scope identifier of this lock.
-	 * 此锁的作用域标识符
+	 * 锁的所有者
      *
      * @var string
      */
@@ -40,7 +40,7 @@ abstract class Lock implements LockContract
 
     /**
      * Create a new lock instance.
-	 * 创建一个新的锁实例
+	 * 创建新的锁实例
      *
      * @param  string  $name
      * @param  int  $seconds
@@ -70,13 +70,13 @@ abstract class Lock implements LockContract
      * Release the lock.
 	 * 释放锁
      *
-     * @return void
+     * @return bool
      */
     abstract public function release();
 
     /**
      * Returns the owner value written into the driver for this lock.
-	 * 返回写入此锁的驱动程序的所有者值
+	 * 返回所有者
      *
      * @return string
      */
@@ -110,7 +110,7 @@ abstract class Lock implements LockContract
      *
      * @param  int  $seconds
      * @param  callable|null  $callback
-     * @return bool
+     * @return mixed
      *
      * @throws \Illuminate\Contracts\Cache\LockTimeoutException
      */

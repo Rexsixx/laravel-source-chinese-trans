@@ -1,9 +1,5 @@
 <?php
 
-/**
- * PhpParser，分析程序，克隆访问者
- */
-
 namespace PhpParser\Parser;
 
 /* GENERATED file based on grammar/tokens.y */

@@ -1,22 +1,22 @@
 <?php
 /**
- * Illuminate，验证，验证规则解析器
+ * 验证，验证规则解析
  */
 
 namespace Illuminate\Validation;
 
 use Closure;
+use Illuminate\Contracts\Validation\Rule as RuleContract;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Exists;
 use Illuminate\Validation\Rules\Unique;
-use Illuminate\Contracts\Validation\Rule as RuleContract;
 
 class ValidationRuleParser
 {
     /**
      * The data being validated.
-	 * 正在验证的数据
+	 * 验证数据
      *
      * @var array
      */
@@ -32,7 +32,7 @@ class ValidationRuleParser
 
     /**
      * Create a new validation rule parser.
-	 * 创建一个新的验证规则解析器
+	 * 创建新的验证规则解析
      *
      * @param  array  $data
      * @return void
@@ -85,7 +85,7 @@ class ValidationRuleParser
 
     /**
      * Explode the explicit rule into an array if necessary.
-	 * 必要时将显式规则分解为一个数组
+	 * 分解显式规则为一个数组必要时
      *
      * @param  mixed  $rule
      * @return array
@@ -103,7 +103,7 @@ class ValidationRuleParser
 
     /**
      * Prepare the given rule for the Validator.
-	 * 为Validator准备给定的规则
+	 * 准备给定的规则为Validator
      *
      * @param  mixed  $rule
      * @return mixed
@@ -142,7 +142,7 @@ class ValidationRuleParser
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, $attribute) || (bool) preg_match('/^'.$pattern.'\z/', $key)) {
                 foreach ((array) $rules as $rule) {
-                    $this->implicitAttributes[$attribute][] = strval($key);
+                    $this->implicitAttributes[$attribute][] = (string) $key;
 
                     $results = $this->mergeRules($results, $key, $rule);
                 }
@@ -178,7 +178,7 @@ class ValidationRuleParser
 
     /**
      * Merge additional rules into a given attribute.
-	 * 将其他规则合并到给定的属性中
+	 * 合并其他规则到给定的属性
      *
      * @param  array  $results
      * @param  string  $attribute
@@ -198,7 +198,7 @@ class ValidationRuleParser
 
     /**
      * Extract the rule name and parameters from a rule.
-	 * 从规则中提取规则名称和参数
+	 * 提取规则名称和参数从规则中
      *
      * @param  array|string  $rules
      * @return array
@@ -222,7 +222,7 @@ class ValidationRuleParser
 
     /**
      * Parse an array based rule.
-	 * 解析一个基于数组的规则
+	 * 解析基于数组的规则
      *
      * @param  array  $rules
      * @return array
@@ -246,8 +246,8 @@ class ValidationRuleParser
         // The format for specifying validation rules and parameters follows an
         // easy {rule}:{parameters} formatting convention. For instance the
         // rule "Max:3" states that the value may only be three letters.
-		// 指定验证规则和参数的格式遵循一种简单的“规则：参数”的格式规范。
-		// 例如，规则“Max:3”表示该值只能为三个字母。
+		// 指定验证规则和参数的格式遵循一个简单的{rule}:{parameters}格式约定。
+		// 例如，规则“Max:3”规定该值只能是三个字母。
         if (strpos($rules, ':') !== false) {
             [$rules, $parameter] = explode(':', $rules, 2);
 

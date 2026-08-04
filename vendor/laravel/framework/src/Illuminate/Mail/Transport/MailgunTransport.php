@@ -1,18 +1,18 @@
 <?php
 /**
- * Illuminate，电子邮件，传送，Mailgun 传送
+ * 邮件，传输，Mailgun传输
  */
 
 namespace Illuminate\Mail\Transport;
 
-use Swift_Mime_SimpleMessage;
 use GuzzleHttp\ClientInterface;
+use Swift_Mime_SimpleMessage;
 
 class MailgunTransport extends Transport
 {
     /**
      * Guzzle client instance.
-	 * Guzzle客户端实例
+	 * 客户端实例
      *
      * @var \GuzzleHttp\ClientInterface
      */
@@ -20,7 +20,7 @@ class MailgunTransport extends Transport
 
     /**
      * The Mailgun API key.
-	 * Mailgun API密钥
+	 * key
      *
      * @var string
      */
@@ -28,7 +28,7 @@ class MailgunTransport extends Transport
 
     /**
      * The Mailgun email domain.
-	 * Mailgun电子邮件域
+	 * 域名
      *
      * @var string
      */
@@ -36,7 +36,7 @@ class MailgunTransport extends Transport
 
     /**
      * The Mailgun API endpoint.
-	 * Mailgun API端点
+	 * 端口
      *
      * @var string
      */
@@ -44,7 +44,7 @@ class MailgunTransport extends Transport
 
     /**
      * Create a new Mailgun transport instance.
-	 * 创建一个新的Mailgun传输实例
+	 * 创建新的Mailgun传输实例
      *
      * @param  \GuzzleHttp\ClientInterface  $client
      * @param  string  $key
@@ -70,6 +70,8 @@ class MailgunTransport extends Transport
 
         $to = $this->getTo($message);
 
+        $bcc = $message->getBcc();
+
         $message->setBcc([]);
 
         $response = $this->client->request(
@@ -82,6 +84,8 @@ class MailgunTransport extends Transport
             'X-Mailgun-Message-ID', $this->getMessageId($response)
         );
 
+        $message->setBcc($bcc);
+
         $this->sendPerformed($message);
 
         return $this->numberOfRecipients($message);
@@ -89,7 +93,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the HTTP payload for sending the Mailgun message.
-	 * 获取用于发送Mailgun消息的HTTP有效负载
+	 * 得到用于发送Mailgun消息的HTTP有效负载
      *
      * @param  \Swift_Mime_SimpleMessage  $message
      * @param  string  $to
@@ -118,7 +122,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the "to" payload field for the API request.
-	 * 获取API请求的“to”有效负载字段
+	 * 得到API请求的"to"有效负载字段
      *
      * @param  \Swift_Mime_SimpleMessage  $message
      * @return string
@@ -132,7 +136,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get all of the contacts for the message.
-	 * 获取该消息的所有联系人
+	 * 得到该消息的所有联系人
      *
      * @param  \Swift_Mime_SimpleMessage  $message
      * @return array
@@ -146,7 +150,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the message ID from the response.
-	 * 从响应中获取消息ID
+	 * 得到响应的消息ID
      *
      * @param  \Psr\Http\Message\ResponseInterface  $response
      * @return string
@@ -160,7 +164,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the API key being used by the transport.
-	 * 获取传输所使用的API密钥
+	 * 得到传输所使用的API密钥
      *
      * @return string
      */
@@ -183,7 +187,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the domain being used by the transport.
-	 * 获取传输所使用的域
+	 * 得到传输所使用的域
      *
      * @return string
      */
@@ -206,7 +210,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the API endpoint being used by the transport.
-	 * 获取传输所使用的API端点
+	 * 得到传输所使用的API端点
      *
      * @return string
      */

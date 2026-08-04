@@ -1,7 +1,4 @@
 <?php
-/**
- * Prophecy，参数，令牌，近似值令牌
- */
 
 /*
  * This file is part of the Prophecy.
@@ -24,10 +21,6 @@ class ApproximateValueToken implements TokenInterface
     private $value;
     private $precision;
 
-    /**
-     * @param float $value
-     * @param int $precision
-     */
     public function __construct($value, $precision = 0)
     {
         $this->value = $value;
@@ -39,11 +32,7 @@ class ApproximateValueToken implements TokenInterface
      */
     public function scoreArgument($argument)
     {
-        if (!\is_float($argument) && !\is_int($argument) && !\is_numeric($argument)) {
-            return false;
-        }
-
-        return round((float) $argument, $this->precision) === round($this->value, $this->precision) ? 10 : false;
+        return round((float)$argument, $this->precision) === round($this->value, $this->precision) ? 10 : false;
     }
 
     /**

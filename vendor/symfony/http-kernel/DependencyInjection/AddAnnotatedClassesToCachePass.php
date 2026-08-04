@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，依赖注入，添加带注释的类来缓存传递
- */
 
 /*
  * This file is part of the Symfony package.
@@ -23,7 +20,6 @@ use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Sets the classes to compile in the cache for the container.
- * 设置在容器的缓存中编译的类。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

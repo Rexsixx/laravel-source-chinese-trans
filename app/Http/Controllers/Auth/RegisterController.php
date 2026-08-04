@@ -1,28 +1,29 @@
 <?php
 /**
- * App，Http，控制器，认证，注册控制器
+ * App，Http，控制器，授权，注册控制器
  */
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
 use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
+use App\User;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Register Controller	注册器控制器
+    | Register Controller   注册控制器
     |--------------------------------------------------------------------------
     |
     | This controller handles the registration of new users as well as their
     | validation and creation. By default this controller uses a trait to
     | provide this functionality without requiring any additional code.
-	| 这个控制器负责处理新用户的注册以及他们的验证和创建。
-	| 默认情况下,该控制器使用一个特性来提供这个功能,而不需要任何额外的代码。
+	| 这个控制器处理新用户和他们的注册验证与创建。
+	| 默认情况下，该控制器使用一个特征，在不需要任何附加代码的情况下提供这个功能。
     |
     */
 
@@ -34,11 +35,11 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
-	 * 创建一个新的控制器实例
+     * 创建新的控制器实例
      *
      * @return void
      */

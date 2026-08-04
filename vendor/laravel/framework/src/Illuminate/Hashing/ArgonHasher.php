@@ -1,18 +1,18 @@
 <?php
 /**
- * Illuminate，哈希算法，Argon 哈希
+ * 哈希，哈希散列
  */
 
 namespace Illuminate\Hashing;
 
-use RuntimeException;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
+use RuntimeException;
 
 class ArgonHasher extends AbstractHasher implements HasherContract
 {
     /**
      * The default memory cost factor.
-	 * 默认内存成本因子
+	 * 默认内存
      *
      * @var int
      */
@@ -44,7 +44,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 
     /**
      * Create a new hasher instance.
-	 * 创建一个新的散列实例
+	 * 创建新的哈希实例
      *
      * @param  array  $options
      * @return void
@@ -59,7 +59,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 
     /**
      * Hash the given value.
-	 * 对给定值进行散列
+	 * 哈希值
      *
      * @param  string  $value
      * @param  array  $options
@@ -69,13 +69,13 @@ class ArgonHasher extends AbstractHasher implements HasherContract
      */
     public function make($value, array $options = [])
     {
-        $hash = password_hash($value, $this->algorithm(), [
+        $hash = @password_hash($value, $this->algorithm(), [
             'memory_cost' => $this->memory($options),
             'time_cost' => $this->time($options),
             'threads' => $this->threads($options),
         ]);
 
-        if ($hash === false) {
+        if (! is_string($hash)) {
             throw new RuntimeException('Argon2 hashing not supported.');
         }
 
@@ -84,7 +84,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 
     /**
      * Get the algorithm that should be used for hashing.
-	 * 获取应该用于散列的算法
+	 * 得到应该用于散列的算法
      *
      * @return int
      */
@@ -95,12 +95,14 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 
     /**
      * Check the given plain value against a hash.
-	 * 根据散列检查给定的普通值
+	 * 检查给定的普通值
      *
      * @param  string  $value
      * @param  string  $hashedValue
      * @param  array  $options
      * @return bool
+     *
+     * @throws \RuntimeException
      */
     public function check($value, $hashedValue, array $options = [])
     {
@@ -130,7 +132,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 
     /**
      * Set the default password memory factor.
-	 * 设置默认密码内存系数
+	 * 设置默认密码内存
      *
      * @param  int  $memory
      * @return $this
@@ -172,7 +174,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 
     /**
      * Extract the memory cost value from the options array.
-	 * 从选项数组中提取内存成本值
+	 * 提取内存成本值从选项数组中
      *
      * @param  array  $options
      * @return int
@@ -184,7 +186,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 
     /**
      * Extract the time cost value from the options array.
-	 * 从选项数组中提取时间成本值
+	 * 提取内存成本值从选项数组中
      *
      * @param  array  $options
      * @return int
@@ -196,7 +198,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 
     /**
      * Extract the threads value from the options array.
-	 * 从选项数组中提取线程值
+	 * 提取线程值从选项数组
      *
      * @param  array  $options
      * @return int

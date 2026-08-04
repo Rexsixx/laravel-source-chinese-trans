@@ -21,7 +21,7 @@ use Closure;
 use ReflectionFunction;
 
 /**
- * Evaluates promise callback.
+ * Callback promise.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -48,12 +48,21 @@ class CallbackPromise implements PromiseInterface
         $this->callback = $callback;
     }
 
+    /**
+     * Evaluates promise callback.
+     *
+     * @param array          $args
+     * @param ObjectProphecy $object
+     * @param MethodProphecy $method
+     *
+     * @return mixed
+     */
     public function execute(array $args, ObjectProphecy $object, MethodProphecy $method)
     {
         $callback = $this->callback;
 
         if ($callback instanceof Closure && method_exists('Closure', 'bind') && (new ReflectionFunction($callback))->getClosureThis() !== null) {
-            $callback = Closure::bind($callback, $object) ?? $this->callback;
+            $callback = Closure::bind($callback, $object);
         }
 
         return call_user_func($callback, $args, $object, $method);

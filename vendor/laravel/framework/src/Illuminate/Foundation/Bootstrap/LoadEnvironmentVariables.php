@@ -1,25 +1,22 @@
 <?php
 /**
- * Illuminate，基础，引导程序，加载环境变量
+ * 基础，加载环境变量
  */
 
 namespace Illuminate\Foundation\Bootstrap;
 
 use Dotenv\Dotenv;
-use Dotenv\Environment\DotenvFactory;
 use Dotenv\Exception\InvalidFileException;
-use Dotenv\Environment\Adapter\PutenvAdapter;
-use Symfony\Component\Console\Input\ArgvInput;
-use Dotenv\Environment\Adapter\EnvConstAdapter;
 use Illuminate\Contracts\Foundation\Application;
-use Dotenv\Environment\Adapter\ServerConstAdapter;
+use Illuminate\Support\Env;
+use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class LoadEnvironmentVariables
 {
     /**
      * Bootstrap the given application.
-	 * 引导给定的应用程序
+	 * 引导给定应用 
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -56,18 +53,20 @@ class LoadEnvironmentVariables
             }
         }
 
-        if (! env('APP_ENV')) {
+        $environment = Env::get('APP_ENV');
+
+        if (! $environment) {
             return;
         }
 
         $this->setEnvironmentFilePath(
-            $app, $app->environmentFile().'.'.env('APP_ENV')
+            $app, $app->environmentFile().'.'.$environment
         );
     }
 
     /**
      * Load a custom environment file.
-	 * 加载自定义环境文件
+	 * 加载自下定义环境文件
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  string  $file
@@ -86,7 +85,7 @@ class LoadEnvironmentVariables
 
     /**
      * Create a Dotenv instance.
-	 * 创建一个Dotenv实例
+	 * 创建env实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return \Dotenv\Dotenv
@@ -96,13 +95,13 @@ class LoadEnvironmentVariables
         return Dotenv::create(
             $app->environmentPath(),
             $app->environmentFile(),
-            new DotenvFactory([new EnvConstAdapter, new ServerConstAdapter, new PutenvAdapter])
+            Env::getFactory()
         );
     }
 
     /**
      * Write the error information to the screen and exit.
-	 * 将错误信息写入屏幕并退出
+	 * 写入错误信息至屏幕并退出
      *
      * @param  \Dotenv\Exception\InvalidFileException  $e
      * @return void
@@ -114,6 +113,6 @@ class LoadEnvironmentVariables
         $output->writeln('The environment file is invalid!');
         $output->writeln($e->getMessage());
 
-        die(1);
+        exit(1);
     }
 }

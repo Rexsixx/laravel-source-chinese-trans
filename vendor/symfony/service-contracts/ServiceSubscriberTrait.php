@@ -20,7 +20,6 @@ use Symfony\Contracts\Service\Attribute\SubscribedService;
 /**
  * Implementation of ServiceSubscriberInterface that determines subscribed services from
  * method return types. Service ids are available as "ClassName::methodName".
- * 实现ServiceSubscriberInterface,它决定了来自方法返回类型的订阅服务。
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
@@ -34,6 +33,12 @@ trait ServiceSubscriberTrait
      */
     public static function getSubscribedServices(): array
     {
+        static $services;
+
+        if (null !== $services) {
+            return $services;
+        }
+
         $services = method_exists(get_parent_class(self::class) ?: '', __FUNCTION__) ? parent::getSubscribedServices() : [];
         $attributeOptIn = false;
 
@@ -102,13 +107,12 @@ trait ServiceSubscriberTrait
      */
     public function setContainer(ContainerInterface $container)
     {
-        $ret = null;
-        if (method_exists(get_parent_class(self::class) ?: '', __FUNCTION__)) {
-            $ret = parent::setContainer($container);
-        }
-
         $this->container = $container;
 
-        return $ret;
+        if (method_exists(get_parent_class(self::class) ?: '', __FUNCTION__)) {
+            return parent::setContainer($container);
+        }
+
+        return null;
     }
 }

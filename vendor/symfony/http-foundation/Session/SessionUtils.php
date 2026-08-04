@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，会话，Session Utils
+ * Symfony，组件，Http基础，会话，Session
  */
 
 /*

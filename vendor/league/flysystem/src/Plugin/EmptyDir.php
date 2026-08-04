@@ -9,7 +9,6 @@ class EmptyDir extends AbstractPlugin
 {
     /**
      * Get the method name.
-	 * 获取方法名称
      *
      * @return string
      */

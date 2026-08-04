@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，数据库通知集合
+ * 通知，数据库通知
  */
 
 namespace Illuminate\Notifications;
@@ -11,15 +11,13 @@ class DatabaseNotificationCollection extends Collection
 {
     /**
      * Mark all notifications as read.
-	 * 将所有通知标记为已读
+	 * 标记所有通知为已读
      *
      * @return void
      */
     public function markAsRead()
     {
-        $this->each(function ($notification) {
-            $notification->markAsRead();
-        });
+        $this->each->markAsRead();
     }
 
     /**
@@ -30,8 +28,6 @@ class DatabaseNotificationCollection extends Collection
      */
     public function markAsUnread()
     {
-        $this->each(function ($notification) {
-            $notification->markAsUnread();
-        });
+        $this->each->markAsUnread();
     }
 }

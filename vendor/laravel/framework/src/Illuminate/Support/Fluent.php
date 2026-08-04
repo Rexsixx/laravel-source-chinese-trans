@@ -1,20 +1,20 @@
 <?php
 /**
- * Illuminate，支持，Fluent
+ * 支持，流畅
  */
 
 namespace Illuminate\Support;
 
 use ArrayAccess;
-use JsonSerializable;
-use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+use JsonSerializable;
 
-class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
+class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 {
     /**
      * All of the attributes set on the fluent instance.
-	 * 在流畅实例上设置的所有属性
+	 * 设置所有属性在流畅实例上
      *
      * @var array
      */
@@ -22,7 +22,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Create a new fluent instance.
-	 * 创建一个新的流畅实例
+	 * 新建新的流畅实例
      *
      * @param  array|object  $attributes
      * @return void
@@ -36,10 +36,10 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Get an attribute from the fluent instance.
-	 * 从流畅实例获取属性
+	 * 得到属性从流畅实例
      *
      * @param  string  $key
-     * @param  mixed   $default
+     * @param  mixed  $default
      * @return mixed
      */
     public function get($key, $default = null)
@@ -53,7 +53,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Get the attributes from the fluent instance.
-	 * 从流畅实例获取属性
+	 * 得到多个属性从流畅实例
      *
      * @return array
      */
@@ -64,7 +64,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Convert the fluent instance to an array.
-	 * 将fluent实例转换为数组
+	 * 转换fluent实例为数组
      *
      * @return array
      */
@@ -75,7 +75,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Convert the object into something JSON serializable.
-	 * 将对象转换为JSON可序列化的对象
+	 * 转换对象为JSON可序列化的对象
      *
      * @return array
      */
@@ -86,7 +86,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Convert the fluent instance to JSON.
-	 * 将fluent实例转换为JSON
+	 * 转换fluent实例为JSON
      *
      * @param  int  $options
      * @return string
@@ -110,7 +110,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Get the value for a given offset.
-	 * 获取给定偏移量的值
+	 * 得到给定偏移量的值
      *
      * @param  string  $offset
      * @return mixed
@@ -122,10 +122,10 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Set the value at the given offset.
-	 * 在给定的偏移量处设置值
+	 * 设置给定偏移量的值
      *
      * @param  string  $offset
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return void
      */
     public function offsetSet($offset, $value)
@@ -135,7 +135,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Unset the value at the given offset.
-	 * 在给定偏移量处取消值的设置
+	 * 注销给定偏移量的值
      *
      * @param  string  $offset
      * @return void
@@ -150,7 +150,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 	 * 处理对fluent实例的动态调用以设置属性
      *
      * @param  string  $method
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return $this
      */
     public function __call($method, $parameters)
@@ -174,10 +174,10 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Dynamically set the value of an attribute.
-	 * 动态设置属性的值
+	 * 动态设置属性值
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return void
      */
     public function __set($key, $value)
@@ -187,7 +187,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Dynamically check if an attribute is set.
-	 * 动态检查是否设置了属性
+	 * 动态检查属性是否设置
      *
      * @param  string  $key
      * @return bool
@@ -199,7 +199,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 
     /**
      * Dynamically unset an attribute.
-	 * 动态取消设置属性
+	 * 动态注册属性
      *
      * @param  string  $key
      * @return void

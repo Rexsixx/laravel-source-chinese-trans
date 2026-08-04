@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，动态类
+ * 基础，虚拟类根文件
  */
 
 namespace DummyNamespace;
@@ -11,7 +11,6 @@ class DummyClass extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-	 * 确定用户是否被授权发出此请求
      *
      * @return bool
      */
@@ -22,7 +21,6 @@ class DummyClass extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-	 * 获取应用于请求的验证规则
      *
      * @return array
      */

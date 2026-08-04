@@ -16,6 +16,7 @@ namespace Symfony\Component\Console;
 
 /**
  * Contains all events dispatched by an Application.
+ * 包含应用程序发送的所有事件。
  *
  * @author Francesco Levorato <git@flevour.net>
  */

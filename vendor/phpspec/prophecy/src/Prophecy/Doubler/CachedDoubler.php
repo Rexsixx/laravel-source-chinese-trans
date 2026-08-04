@@ -1,6 +1,6 @@
 <?php
 /**
- * Prophecy，倍频器，缓存倍频器
+ * Prophecy，倍频器，缓存的倍频器
  */
 
 /*
@@ -24,12 +24,12 @@ use ReflectionClass;
  */
 class CachedDoubler extends Doubler
 {
-    /**
-     * @var array<string, class-string>
-     */
     private static $classes = array();
 
-    protected function createDoubleClass(?ReflectionClass $class, array $interfaces)
+    /**
+     * {@inheritdoc}
+     */
+    protected function createDoubleClass(ReflectionClass $class = null, array $interfaces)
     {
         $classId = $this->generateClassId($class, $interfaces);
         if (isset(self::$classes[$classId])) {
@@ -40,12 +40,12 @@ class CachedDoubler extends Doubler
     }
 
     /**
-     * @param ReflectionClass<object>|null $class
-     * @param ReflectionClass<object>[]    $interfaces
+     * @param ReflectionClass   $class
+     * @param ReflectionClass[] $interfaces
      *
      * @return string
      */
-    private function generateClassId(?ReflectionClass $class, array $interfaces)
+    private function generateClassId(ReflectionClass $class = null, array $interfaces)
     {
         $parts = array();
         if (null !== $class) {
@@ -62,9 +62,6 @@ class CachedDoubler extends Doubler
         return md5(implode('', $parts));
     }
 
-    /**
-     * @return void
-     */
     public function resetCache()
     {
         self::$classes = array();

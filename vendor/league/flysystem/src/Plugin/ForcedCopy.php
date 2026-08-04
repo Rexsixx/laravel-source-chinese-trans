@@ -20,7 +20,6 @@ class ForcedCopy extends AbstractPlugin
 
     /**
      * Copies a file, overwriting any existing files.
-	 * 复制一个文件,覆盖任何现有文件。
      *
      * @param string $path    Path to the existing file.
      * @param string $newpath The new path of the file.

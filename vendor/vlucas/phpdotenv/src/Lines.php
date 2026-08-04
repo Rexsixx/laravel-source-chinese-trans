@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，Lines
+ * Dotenv，行
  */
 
 namespace Dotenv;
@@ -37,7 +37,6 @@ class Lines
 
     /**
      * Used to make all multiline variable process.
-	 * 用于使所有的多行变量进程
      *
      * @param bool     $multiline
      * @param string   $line

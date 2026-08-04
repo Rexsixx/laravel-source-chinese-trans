@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，ORM，Propel，列式猜测器
+ * Faker，ORM，Propel，列类型猜测器
  */
 
 namespace Faker\ORM\Propel;

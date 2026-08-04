@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，翻译，载入程序，Po File 加载器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -22,7 +19,6 @@ class PoFileLoader extends FileLoader
 {
     /**
      * Parses portable object (PO) format.
-	 * Parses便携式对象(PO)格式。
      *
      * From https://www.gnu.org/software/gettext/manual/gettext.html#PO-Files
      * we should be able to parse files having:
@@ -124,7 +120,6 @@ class PoFileLoader extends FileLoader
 
     /**
      * Save a translation item to the messages.
-	 * 将翻译项保存到消息中。
      *
      * A .po file could contain by error missing plural indexes. We need to
      * fix these before saving them.
@@ -139,7 +134,6 @@ class PoFileLoader extends FileLoader
 
             $translated = (array) $item['translated'];
             // PO are by definition indexed so sort by index.
-			// PO是由定义索引的索引
             ksort($translated);
             // Make sure every index is filled.
             end($translated);

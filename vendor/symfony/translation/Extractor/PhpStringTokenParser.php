@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，翻译，提取器，Php字符串令牌解析器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -65,7 +62,6 @@ class PhpStringTokenParser
 
     /**
      * Parses a string token.
-	 * 解析字符串令牌
      *
      * @param string $str String token content
      *
@@ -91,7 +87,6 @@ class PhpStringTokenParser
 
     /**
      * Parses escape sequences in strings (all string types apart from single quoted).
-	 * 在字符串中解析逃避序列(除了单个引用之外的所有字符串类型)。
      *
      * @param string      $str   String without quotes
      * @param string|null $quote Quote type

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，探测器，Spl文件信息
+ * Symfony，组件，探测器，Spl 文件信息
  */
 
 /*

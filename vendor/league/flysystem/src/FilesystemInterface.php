@@ -21,7 +21,6 @@ interface FilesystemInterface
 
     /**
      * Read a file.
-	 * 读取文件
      *
      * @param string $path The path to the file.
      *
@@ -33,7 +32,6 @@ interface FilesystemInterface
 
     /**
      * Retrieves a read-stream for a path.
-	 * 检索路径的读流
      *
      * @param string $path The path to the file.
      *
@@ -45,7 +43,6 @@ interface FilesystemInterface
 
     /**
      * List contents of a directory.
-	 * 列表目录的内容
      *
      * @param string $directory The directory to list.
      * @param bool   $recursive Whether to list recursively.
@@ -56,7 +53,6 @@ interface FilesystemInterface
 
     /**
      * Get a file's metadata.
-	 * 获取文件的元数据
      *
      * @param string $path The path to the file.
      *
@@ -68,7 +64,6 @@ interface FilesystemInterface
 
     /**
      * Get a file's size.
-	 * 获取文件的大小
      *
      * @param string $path The path to the file.
      *
@@ -96,7 +91,7 @@ interface FilesystemInterface
      *
      * @throws FileNotFoundException
      *
-     * @return int|false The timestamp or false on failure.
+     * @return string|false The timestamp or false on failure.
      */
     public function getTimestamp($path);
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，动态类
+ * 基础，虚拟类根文件
  */
 
 namespace DummyNamespace;

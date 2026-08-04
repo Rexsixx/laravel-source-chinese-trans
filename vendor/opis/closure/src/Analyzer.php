@@ -21,7 +21,6 @@ class Analyzer extends ClosureAnalyzer
 {
     /**
      * Analyzer a given closure.
-	 * 分析器一个给定的闭包
      *
      * @param Closure $closure
      *

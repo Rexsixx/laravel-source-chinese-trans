@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，请求生成命令
+ * 基础，请求生成命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -27,7 +27,7 @@ class RequestMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成的类的类型
+	 * 生成类的类型
      *
      * @var string
      */
@@ -35,7 +35,7 @@ class RequestMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 获取生成器的存根文件
+	 * 得到生成器的原始文件
      *
      * @return string
      */
@@ -46,7 +46,7 @@ class RequestMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认名称空间
+	 * 得到类的命名空间
      *
      * @param  string  $rootNamespace
      * @return string

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，问题，管理翻译
+ * 视图，管理翻译
  */
 
 namespace Illuminate\View\Concerns;
@@ -37,7 +37,7 @@ trait ManagesTranslations
      */
     public function renderTranslation()
     {
-        return $this->container->make('translator')->getFromJson(
+        return $this->container->make('translator')->get(
             trim(ob_get_clean()), $this->translationReplacements
         );
     }

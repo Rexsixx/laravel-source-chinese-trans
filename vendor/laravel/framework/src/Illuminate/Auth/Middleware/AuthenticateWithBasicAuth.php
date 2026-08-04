@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，中间件，使用基本认证进行身份验证
+ * 授权，使用基本认证进行身份验证
  */
 
 namespace Illuminate\Auth\Middleware;
@@ -20,7 +20,7 @@ class AuthenticateWithBasicAuth
 
     /**
      * Create a new middleware instance.
-	 * 创建一个新的中间件实例
+	 * 创建新的中间件实例
      *
      * @param  \Illuminate\Contracts\Auth\Factory  $auth
      * @return void

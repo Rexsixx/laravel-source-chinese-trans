@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Var Dumper，Caster，跟踪存根
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Represents a backtrace as returned by debug_backtrace() or Exception->getTrace().
- * 表示由debug_backtrace（）或Exception->getTrace（）返回的回溯。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

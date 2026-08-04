@@ -1,69 +1,26 @@
 <?php
 /**
- * Illuminate，数据库，查询，语法，MySql 语法
+ * 数据库，语法，MySql语法
  */
 
 namespace Illuminate\Database\Query\Grammars;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Query\Builder;
-use Illuminate\Database\Query\JsonExpression;
+use Illuminate\Support\Str;
 
 class MySqlGrammar extends Grammar
 {
     /**
      * The grammar specific operators.
-	 * 语法特定的操作符
+	 * 语法特定操作符
      *
      * @var array
      */
     protected $operators = ['sounds like'];
 
     /**
-     * The components that make up a select clause.
-	 * 组成select子句的组件
-     *
-     * @var array
-     */
-    protected $selectComponents = [
-        'aggregate',
-        'columns',
-        'from',
-        'joins',
-        'wheres',
-        'groups',
-        'havings',
-        'orders',
-        'limit',
-        'offset',
-        'lock',
-    ];
-
-    /**
-     * Compile a select query into SQL.
-	 * 将一个选择查询编译成SQL
-     *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     * @return string
-     */
-    public function compileSelect(Builder $query)
-    {
-        if ($query->unions && $query->aggregate) {
-            return $this->compileUnionAggregate($query);
-        }
-
-        $sql = parent::compileSelect($query);
-
-        if ($query->unions) {
-            $sql = '('.$sql.') '.$this->compileUnions($query);
-        }
-
-        return $sql;
-    }
-
-    /**
      * Compile an insert ignore statement into SQL.
-	 * 将插入忽略语句编译成SQL
+	 * 编译插入忽略语句成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
@@ -76,7 +33,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile a "JSON contains" statement into SQL.
-	 * 将“JSON contains”语句编译成SQL
+	 * 编译"JSON contains”语句成SQL
      *
      * @param  string  $column
      * @param  string  $value
@@ -91,7 +48,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile a "JSON length" statement into SQL.
-	 * 将“JSON长度”语句编译成SQL
+	 * 编译"JSON length"语句成SQL
      *
      * @param  string  $column
      * @param  string  $operator
@@ -106,22 +63,8 @@ class MySqlGrammar extends Grammar
     }
 
     /**
-     * Compile a single union statement.
-	 * 编译单个联合语句
-     *
-     * @param  array  $union
-     * @return string
-     */
-    protected function compileUnion(array $union)
-    {
-        $conjunction = $union['all'] ? ' union all ' : ' union ';
-
-        return $conjunction.'('.$union['query']->toSql().')';
-    }
-
-    /**
      * Compile the random statement into SQL.
-	 * 将随机语句编译成SQL
+	 * 编译附机语句为SQL
      *
      * @param  string  $seed
      * @return string
@@ -133,7 +76,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile the lock into SQL.
-	 * 将锁编译成SQL
+	 * 编译锁为SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  bool|string  $value
@@ -149,77 +92,35 @@ class MySqlGrammar extends Grammar
     }
 
     /**
-     * Compile an update statement into SQL.
-	 * 将update语句编译成SQL
+     * Compile an insert statement into SQL.
+	 * 编译插入语句为SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
      * @return string
      */
-    public function compileUpdate(Builder $query, $values)
+    public function compileInsert(Builder $query, array $values)
     {
-        $table = $this->wrapTable($query->from);
-
-        // Each one of the columns in the update statements needs to be wrapped in the
-        // keyword identifiers, also a place-holder needs to be created for each of
-        // the values in the list of bindings so we can make the sets statements.
-		// 在更新语句中的每一列都需要用关键字标识符进行包裹，
-		// 同时还需要为绑定列表中的每个值创建一个占位符，这样我们才能编写集合语句。
-        $columns = $this->compileUpdateColumns($values);
-
-        // If the query has any "join" clauses, we will setup the joins on the builder
-        // and compile them so we can attach them to this update, as update queries
-        // can get join statements to attach to other tables when they're needed.
-		// 如果查询中包含任何“连接”条件，我们将先在构建器中设置这些连接条件，
-		// 然后对其进行编译，以便将其附加到此次更新操作中。因为更新查询在需要时能够生成连接语句并将其附加到其他表上。
-        $joins = '';
-
-        if (isset($query->joins)) {
-            $joins = ' '.$this->compileJoins($query, $query->joins);
+        if (empty($values)) {
+            $values = [[]];
         }
 
-        // Of course, update queries may also be constrained by where clauses so we'll
-        // need to compile the where clauses and attach it to the query so only the
-        // intended records are updated by the SQL statements we generate to run.
-		// 当然，更新查询也可能受到“where”子句的限制，因此我们需要编译“where”子句，
-		// 并将其附加到查询中，这样我们生成的 SQL 语句就能仅更新预期的记录。
-        $where = $this->compileWheres($query);
-
-        $sql = rtrim("update {$table}{$joins} set $columns $where");
-
-        // If the query has an order by clause we will compile it since MySQL supports
-        // order bys on update statements. We'll compile them using the typical way
-        // of compiling order bys. Then they will be appended to the SQL queries.
-		// 如果查询中包含“按顺序排列”子句，我们将对其进行编译，因为 MySQL 支持在更新语句中使用“按顺序排列”功能。
-		// 我们将用典型的顺序编译它们来编译它们。然后,它们将被附加到SQL查询。
-        if (! empty($query->orders)) {
-            $sql .= ' '.$this->compileOrders($query, $query->orders);
-        }
-
-        // Updates on MySQL also supports "limits", which allow you to easily update a
-        // single record very easily. This is not supported by all database engines
-        // so we have customized this update compiler here in order to add it in.
-		// 关于 MySQL 的更新功能还支持“限制”这一功能，它使您能够轻松地更新单个记录。
-		// 这不是所有数据库引擎支持的,所以我们已经定制了这个更新编译器来添加它。
-        if (isset($query->limit)) {
-            $sql .= ' '.$this->compileLimit($query, $query->limit);
-        }
-
-        return rtrim($sql);
+        return parent::compileInsert($query, $values);
     }
 
     /**
-     * Compile all of the columns for an update statement.
-	 * 编译update语句的所有列
+     * Compile the columns for an update statement.
+	 * 编译更新语句的列
      *
+     * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
      * @return string
      */
-    protected function compileUpdateColumns($values)
+    protected function compileUpdateColumns(Builder $query, array $values)
     {
         return collect($values)->map(function ($value, $key) {
             if ($this->isJsonSelector($key)) {
-                return $this->compileJsonUpdateColumn($key, new JsonExpression($value));
+                return $this->compileJsonUpdateColumn($key, $value);
             }
 
             return $this->wrap($key).' = '.$this->parameter($value);
@@ -227,76 +128,42 @@ class MySqlGrammar extends Grammar
     }
 
     /**
-     * Prepares a JSON column being updated using the JSON_SET function.
-	 * 使用JSON_SET函数准备要更新的JSON列
+     * Prepare a JSON column being updated using the JSON_SET function.
+	 * 使用JSON_SET函数准备要更新的JSON
      *
      * @param  string  $key
-     * @param  \Illuminate\Database\Query\JsonExpression  $value
+     * @param  mixed  $value
      * @return string
      */
-    protected function compileJsonUpdateColumn($key, JsonExpression $value)
+    protected function compileJsonUpdateColumn($key, $value)
     {
+        if (is_bool($value)) {
+            $value = $value ? 'true' : 'false';
+        } elseif (is_array($value)) {
+            $value = 'cast(? as json)';
+        } else {
+            $value = $this->parameter($value);
+        }
+
         [$field, $path] = $this->wrapJsonFieldAndPath($key);
 
-        return "{$field} = json_set({$field}{$path}, {$value->getValue()})";
+        return "{$field} = json_set({$field}{$path}, {$value})";
     }
 
     /**
-     * Prepare the bindings for an update statement.
-	 * 为更新语句准备绑定。
-     *
-     * Booleans, integers, and doubles are inserted into JSON updates as raw values.
-	 * 布尔值、整数和双精度值作为原始值插入JSON更新中。
-     *
-     * @param  array  $bindings
-     * @param  array  $values
-     * @return array
-     */
-    public function prepareBindingsForUpdate(array $bindings, array $values)
-    {
-        $values = collect($values)->reject(function ($value, $column) {
-            return $this->isJsonSelector($column) && is_bool($value);
-        })->all();
-
-        return parent::prepareBindingsForUpdate($bindings, $values);
-    }
-
-    /**
-     * Compile a delete statement into SQL.
-	 * 将delete语句编译成SQL
-     *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     * @return string
-     */
-    public function compileDelete(Builder $query)
-    {
-        $table = $this->wrapTable($query->from);
-
-        $where = is_array($query->wheres) ? $this->compileWheres($query) : '';
-
-        return isset($query->joins)
-                    ? $this->compileDeleteWithJoins($query, $table, $where)
-                    : $this->compileDeleteWithoutJoins($query, $table, $where);
-    }
-
-    /**
-     * Compile a delete query that does not use joins.
-	 * 编译一个不使用连接的删除查询
+     * Compile an update statement without joins into SQL.
+	 * 编译一个没有连接的update语句到SQL中
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $table
+     * @param  string  $columns
      * @param  string  $where
      * @return string
      */
-    protected function compileDeleteWithoutJoins($query, $table, $where)
+    protected function compileUpdateWithoutJoins(Builder $query, $table, $columns, $where)
     {
-        $sql = trim("delete from {$table} {$where}");
+        $sql = parent::compileUpdateWithoutJoins($query, $table, $columns, $where);
 
-        // When using MySQL, delete statements may contain order by statements and limits
-        // so we will compile both of those here. Once we have finished compiling this
-        // we will return the completed SQL statement so it will be executed for us.
-		// 在使用 MySQL 时，删除语句可能会包含“按顺序排列”语句和“限制数量”语句，因此我们将把这两部分都整合到这里进行编译。
-		// 一旦我们完成了编译,我们将返回已完成的SQL语句,这样它就会为我们执行。
         if (! empty($query->orders)) {
             $sql .= ' '.$this->compileOrders($query, $query->orders);
         }
@@ -309,27 +176,58 @@ class MySqlGrammar extends Grammar
     }
 
     /**
-     * Compile a delete query that uses joins.
-	 * 编译一个使用连接的删除查询
+     * Prepare the bindings for an update statement.
+	 * 准备绑定为更新语句
+     *
+     * Booleans, integers, and doubles are inserted into JSON updates as raw values.
+     *
+     * @param  array  $bindings
+     * @param  array  $values
+     * @return array
+     */
+    public function prepareBindingsForUpdate(array $bindings, array $values)
+    {
+        $values = collect($values)->reject(function ($value, $column) {
+            return $this->isJsonSelector($column) && is_bool($value);
+        })->map(function ($value) {
+            return is_array($value) ? json_encode($value) : $value;
+        })->all();
+
+        return parent::prepareBindingsForUpdate($bindings, $values);
+    }
+
+    /**
+     * Compile a delete query that does not use joins.
+	 * 编译一个不使用连接的删除查询
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $table
      * @param  string  $where
      * @return string
      */
-    protected function compileDeleteWithJoins($query, $table, $where)
+    protected function compileDeleteWithoutJoins(Builder $query, $table, $where)
     {
-        $joins = ' '.$this->compileJoins($query, $query->joins);
+        $sql = parent::compileDeleteWithoutJoins($query, $table, $where);
 
-        $alias = stripos($table, ' as ') !== false
-                ? explode(' as ', $table)[1] : $table;
+        // When using MySQL, delete statements may contain order by statements and limits
+        // so we will compile both of those here. Once we have finished compiling this
+        // we will return the completed SQL statement so it will be executed for us.
+		// 用MySQL时，delete语句可能包含order by语句和limits，因此我们将在这里编译这两个语句。
+		// 一旦我们完成编译，我们将返回完整的SQL语句，以便为我们执行。
+        if (! empty($query->orders)) {
+            $sql .= ' '.$this->compileOrders($query, $query->orders);
+        }
 
-        return trim("delete {$alias} from {$table}{$joins} {$where}");
+        if (isset($query->limit)) {
+            $sql .= ' '.$this->compileLimit($query, $query->limit);
+        }
+
+        return $sql;
     }
 
     /**
      * Wrap a single string in keyword identifiers.
-	 * 在关键字标识符中包装单个字符串
+	 * 包装单个字符串在关键字标识符中
      *
      * @param  string  $value
      * @return string
@@ -341,7 +239,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Wrap the given JSON selector.
-	 * 包装给定的JSON选择器
+	 * 包装给定JSON选择器
      *
      * @param  string  $value
      * @return string
@@ -355,7 +253,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Wrap the given JSON selector for boolean values.
-	 * 将给定的JSON选择器包装为布尔值
+	 * 包装给定的JSON选择器为布尔值
      *
      * @param  string  $value
      * @return string

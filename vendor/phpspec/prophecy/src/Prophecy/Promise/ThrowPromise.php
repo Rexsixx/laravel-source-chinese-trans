@@ -1,6 +1,6 @@
 <?php
 /**
- * Prophecy，承诺，Throw承诺
+ * Prophecy，承诺，抛出承诺
  */
 
 /*
@@ -21,7 +21,7 @@ use Prophecy\Exception\InvalidArgumentException;
 use ReflectionClass;
 
 /**
- * Throws predefined exception.
+ * Throw promise.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -30,18 +30,16 @@ class ThrowPromise implements PromiseInterface
     private $exception;
 
     /**
-     * @var Instantiator|null
+     * @var \Doctrine\Instantiator\Instantiator
      */
     private $instantiator;
 
     /**
      * Initializes promise.
      *
-     * @param string|\Throwable $exception Exception class name or instance
+     * @param string|\Exception|\Throwable $exception Exception class name or instance
      *
      * @throws \Prophecy\Exception\InvalidArgumentException
-     *
-     * @phpstan-param class-string<\Throwable>|\Throwable $exception
      */
     public function __construct($exception)
     {
@@ -62,6 +60,15 @@ class ThrowPromise implements PromiseInterface
         $this->exception = $exception;
     }
 
+    /**
+     * Throws predefined exception.
+     *
+     * @param array          $args
+     * @param ObjectProphecy $object
+     * @param MethodProphecy $method
+     *
+     * @throws object
+     */
     public function execute(array $args, ObjectProphecy $object, MethodProphecy $method)
     {
         if (is_string($this->exception)) {
@@ -69,7 +76,7 @@ class ThrowPromise implements PromiseInterface
             $reflection  = new ReflectionClass($classname);
             $constructor = $reflection->getConstructor();
 
-            if ($constructor === null || $constructor->isPublic() && 0 == $constructor->getNumberOfRequiredParameters()) {
+            if ($constructor->isPublic() && 0 == $constructor->getNumberOfRequiredParameters()) {
                 throw $reflection->newInstance();
             }
 

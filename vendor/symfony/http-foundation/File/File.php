@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，File，File
+ * Symfony，组件，Http基础，文件，File
  */
 
 /*
@@ -20,7 +20,6 @@ use Symfony\Component\Mime\MimeTypes;
 
 /**
  * A file in the file system.
- * 文件系统中的文件。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */

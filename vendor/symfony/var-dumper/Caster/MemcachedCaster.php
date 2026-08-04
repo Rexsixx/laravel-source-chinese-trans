@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Var Dumper，Caster，Memcached Caster
- */
 
 /*
  * This file is part of the Symfony package.

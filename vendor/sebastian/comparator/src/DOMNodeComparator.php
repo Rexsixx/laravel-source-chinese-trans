@@ -1,8 +1,4 @@
 <?php
-/**
- * SebastianBergmann，比较器，DOM节点比较器
- */
-
 /*
  * This file is part of sebastian/comparator.
  *

@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，依赖注入，路由解析器传递
- */
 
 /*
  * This file is part of the Symfony package.
@@ -21,7 +18,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Adds tagged routing.loader services to routing.resolver service.
- * 添加标记路由。加载程序服务路由。解析器服务。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

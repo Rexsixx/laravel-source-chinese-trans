@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，多元化的规则
+ * Symfony，组件，翻译，多元规则
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\Translation;
 
 /**
  * Returns the plural rules for a given locale.
- * 返回给定语言环境的复数规则。
+ * 返回给定区域的复数规则。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -35,7 +35,7 @@ class PluralizationRules
      *
      * @return int The plural position
      */
-    public static function get($number, $locale/* , bool $triggerDeprecation = true */)
+    public static function get($number, $locale/*, bool $triggerDeprecation = true*/)
     {
         $number = abs($number);
 

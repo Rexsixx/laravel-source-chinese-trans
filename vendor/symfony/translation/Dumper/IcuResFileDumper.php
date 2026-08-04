@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，翻译，转储，Icu Res File 转储
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * IcuResDumper generates an ICU ResourceBundle formatted string representation of a message catalogue.
- * IcuResDumper生成了一个名为unk bundle格式的消息目录的字符串表示。
  *
  * @author Stealth35
  */
@@ -51,7 +47,7 @@ class IcuResFileDumper extends FileDumper
             $data .= pack('V', \strlen($target))
                 .mb_convert_encoding($target."\0", 'UTF-16LE', 'UTF-8')
                 .$this->writePadding($data)
-            ;
+                  ;
         }
 
         $resOffset = $this->getPosition($data);
@@ -60,7 +56,7 @@ class IcuResFileDumper extends FileDumper
             .$indexes
             .$this->writePadding($data)
             .$resources
-        ;
+              ;
 
         $bundleTop = $this->getPosition($data);
 

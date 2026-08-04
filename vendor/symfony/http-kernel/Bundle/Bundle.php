@@ -22,7 +22,6 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
 /**
  * An implementation of BundleInterface that adds a few conventions for DependencyInjection extensions.
- * 一个实现BundleInterface,它增加了一些依赖于依赖的扩展的惯例。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

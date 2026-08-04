@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，探测器，迭代器，深度范围过滤器迭代器
- */
 
 /*
  * This file is part of the Symfony package.

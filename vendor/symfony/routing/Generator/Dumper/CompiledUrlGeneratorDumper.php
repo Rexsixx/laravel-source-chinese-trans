@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，生成器，Dumper，编译Url生成器Dumper
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Routing\Matcher\Dumper\CompiledUrlMatcherDumper;
 
 /**
  * CompiledUrlGeneratorDumper creates a PHP array to be used with CompiledUrlGenerator.
- * CompiledUrlGeneratorDumper创建了一个用于CompiledUrlGenerator的PHP数组。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>

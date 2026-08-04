@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，事件，作业已失败
+ * 队列，事件，作业失败
  */
 
 namespace Illuminate\Queue\Events;
@@ -9,7 +9,7 @@ class JobFailed
 {
     /**
      * The connection name.
-	 * 连接名称
+	 * 连接名
      *
      * @var string
      */
@@ -33,7 +33,7 @@ class JobFailed
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job

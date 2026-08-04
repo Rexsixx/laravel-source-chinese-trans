@@ -1,13 +1,14 @@
 <?php
 /**
- * Illuminate，路由选择，路由签名参数
+ * 路由，路由签名参数
  */
 
 namespace Illuminate\Routing;
 
-use ReflectionMethod;
-use ReflectionFunction;
+use Illuminate\Support\Reflector;
 use Illuminate\Support\Str;
+use ReflectionFunction;
+use ReflectionMethod;
 
 class RouteSignatureParameters
 {
@@ -26,13 +27,13 @@ class RouteSignatureParameters
                         : (new ReflectionFunction($action['uses']))->getParameters();
 
         return is_null($subClass) ? $parameters : array_filter($parameters, function ($p) use ($subClass) {
-            return $p->getClass() && $p->getClass()->isSubclassOf($subClass);
+            return Reflector::isParameterSubclassOf($p, $subClass);
         });
     }
 
     /**
      * Get the parameters for the given class / method by string.
-	 * 通过字符串获取给定类/方法的参数
+	 * 得到给定类/方法的参数通过字符串
      *
      * @param  string  $uses
      * @return array
@@ -41,7 +42,7 @@ class RouteSignatureParameters
     {
         [$class, $method] = Str::parseCallback($uses);
 
-        if (! method_exists($class, $method) && is_callable($class, $method)) {
+        if (! method_exists($class, $method) && Reflector::isCallable($class, $method)) {
             return [];
         }
 

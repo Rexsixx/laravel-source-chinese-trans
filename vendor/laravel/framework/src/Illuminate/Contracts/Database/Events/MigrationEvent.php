@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，数据库，事件，迁移事件
+ * 契约，迁移事件接口，待完善
  */
 
 namespace Illuminate\Contracts\Database\Events;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，Response
+ * 支持，门面响应
  */
 
 namespace Illuminate\Support\Facades;
@@ -29,7 +29,7 @@ class Response extends Facade
 {
     /**
      * Get the registered name of the component.
-	 * 获取组件的注册名称
+	 * 得到组件注册名
      *
      * @return string
      */

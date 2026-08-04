@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，广播，广播员，Pusher 广播员
+ * 广播，Pusher广播
  */
 
 namespace Illuminate\Broadcasting\Broadcasters;
 
-use Pusher\Pusher;
+use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Broadcasting\BroadcastException;
+use Pusher\Pusher;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class PusherBroadcaster extends Broadcaster
@@ -17,7 +17,7 @@ class PusherBroadcaster extends Broadcaster
 
     /**
      * The Pusher SDK instance.
-	 * Pusher SDK实例
+	 * Pusher SDK 实例
      *
      * @var \Pusher\Pusher
      */
@@ -25,7 +25,7 @@ class PusherBroadcaster extends Broadcaster
 
     /**
      * Create a new broadcaster instance.
-	 * 创建一个新的广播程序实例
+	 * 创建新的广播实例
      *
      * @param  \Pusher\Pusher  $pusher
      * @return void
@@ -87,7 +87,7 @@ class PusherBroadcaster extends Broadcaster
 
     /**
      * Decode the given Pusher response.
-	 * 解码给定的pushher响应
+	 * 解码给定的Pusher响应
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $response
@@ -105,12 +105,14 @@ class PusherBroadcaster extends Broadcaster
 
     /**
      * Broadcast the given event.
-	 * 广播给定的事件
+	 * 广播给定事件
      *
      * @param  array  $channels
      * @param  string  $event
      * @param  array  $payload
      * @return void
+     *
+     * @throws \Illuminate\Broadcasting\BroadcastException
      */
     public function broadcast(array $channels, $event, array $payload = [])
     {
@@ -126,13 +128,15 @@ class PusherBroadcaster extends Broadcaster
         }
 
         throw new BroadcastException(
-            is_bool($response) ? 'Failed to connect to Pusher.' : $response['body']
+            ! empty($response['body'])
+                ? sprintf('Pusher error: %s.', $response['body'])
+                : 'Failed to connect to Pusher.'
         );
     }
 
     /**
      * Get the Pusher SDK instance.
-	 * 获取Pusher SDK实例
+	 * 得到Pusher SDK实例
      *
      * @return \Pusher\Pusher
      */

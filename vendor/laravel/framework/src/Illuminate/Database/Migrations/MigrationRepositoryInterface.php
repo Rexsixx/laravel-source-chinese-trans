@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，迁移，迁移存储库接口
+ * 数据库，迁移仓库接口
  */
 
 namespace Illuminate\Database\Migrations;
@@ -9,7 +9,7 @@ interface MigrationRepositoryInterface
 {
     /**
      * Get the completed migrations.
-	 * 获取完成的迁移
+	 * 得到完成迁移
      *
      * @return array
      */
@@ -17,7 +17,7 @@ interface MigrationRepositoryInterface
 
     /**
      * Get list of migrations.
-	 * 获取迁移列表
+	 * 得到迁移列表
      *
      * @param  int  $steps
      * @return array
@@ -26,7 +26,7 @@ interface MigrationRepositoryInterface
 
     /**
      * Get the last migration batch.
-	 * 获取最后一个迁移批处理
+	 * 得到最后一个迁移批处理
      *
      * @return array
      */
@@ -34,7 +34,7 @@ interface MigrationRepositoryInterface
 
     /**
      * Get the completed migrations with their batch numbers.
-	 * 获取已完成的迁移及其批号
+	 * 得到已完成的迁移及其批号
      *
      * @return array
      */
@@ -42,7 +42,7 @@ interface MigrationRepositoryInterface
 
     /**
      * Log that a migration was run.
-	 * 运行迁移的日志
+	 * 运行迁移日志
      *
      * @param  string  $file
      * @param  int  $batch
@@ -61,7 +61,7 @@ interface MigrationRepositoryInterface
 
     /**
      * Get the next migration batch number.
-	 * 获取下一个迁移批号
+	 * 得到下一个迁移批号
      *
      * @return int
      */

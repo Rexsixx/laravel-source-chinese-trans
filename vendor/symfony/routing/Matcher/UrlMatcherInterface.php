@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，匹配程序，Url 匹配程序接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -21,7 +18,6 @@ use Symfony\Component\Routing\RequestContextAwareInterface;
 
 /**
  * UrlMatcherInterface is the interface that all URL matcher classes must implement.
- * UrlMatcherInterface是所有URL matcher类都必须实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -29,7 +25,6 @@ interface UrlMatcherInterface extends RequestContextAwareInterface
 {
     /**
      * Tries to match a URL path with a set of routes.
-	 * 尝试用一组路由匹配URL路径。
      *
      * If the matcher can not find information, it must throw one of the exceptions documented
      * below.

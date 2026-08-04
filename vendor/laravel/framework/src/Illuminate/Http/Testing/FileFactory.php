@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，测试，文件工厂
+ * Http，文件工厂
  */
 
 namespace Illuminate\Http\Testing;
@@ -11,22 +11,47 @@ class FileFactory
 {
     /**
      * Create a new fake file.
-	 * 创建一个新的假文件
+	 * 创建新的伪装文件
      *
      * @param  string  $name
-     * @param  int  $kilobytes
+     * @param  string|int  $kilobytes
+     * @param  string|null  $mimeType
      * @return \Illuminate\Http\Testing\File
      */
-    public function create($name, $kilobytes = 0)
+    public function create($name, $kilobytes = 0, $mimeType = null)
     {
-        return tap(new File($name, tmpfile()), function ($file) use ($kilobytes) {
+        if (is_string($kilobytes)) {
+            return $this->createWithContent($name, $kilobytes);
+        }
+
+        return tap(new File($name, tmpfile()), function ($file) use ($kilobytes, $mimeType) {
             $file->sizeToReport = $kilobytes * 1024;
+            $file->mimeTypeToReport = $mimeType;
+        });
+    }
+
+    /**
+     * Create a new fake file with content.
+	 * 创建新的伪装文件使用内容
+     *
+     * @param  string  $name
+     * @param  string  $content
+     * @return \Illuminate\Http\Testing\File
+     */
+    public function createWithContent($name, $content)
+    {
+        $tmpfile = tmpfile();
+
+        fwrite($tmpfile, $content);
+
+        return tap(new File($name, $tmpfile), function ($file) use ($tmpfile) {
+            $file->sizeToReport = fstat($tmpfile)['size'];
         });
     }
 
     /**
      * Create a new fake image.
-	 * 创建一个新的假图像
+	 * 创建新的伪装图片
      *
      * @param  string  $name
      * @param  int  $width

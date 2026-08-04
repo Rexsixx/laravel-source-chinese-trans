@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，依赖注入，控制器参数值解析器传递
- */
 
 /*
  * This file is part of the Symfony package.
@@ -24,7 +21,6 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * Gathers and configures the argument value resolvers.
- * 收集和配置参数值解析器。
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */

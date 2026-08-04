@@ -1,13 +1,14 @@
 <?php
 /**
- * Illuminate，路由选择，路由注册
+ * 路由，路由注册器
  */
 
 namespace Illuminate\Routing;
 
-use Closure;
 use BadMethodCallException;
+use Closure;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Reflector;
 use InvalidArgumentException;
 
 /**
@@ -30,7 +31,7 @@ class RouteRegistrar
 {
     /**
      * The router instance.
-	 * 路由器实例
+	 * 路由实例
      *
      * @var \Illuminate\Routing\Router
      */
@@ -38,7 +39,7 @@ class RouteRegistrar
 
     /**
      * The attributes to pass on to the router.
-	 * 要传递给路由器的属性
+	 * 路由属性
      *
      * @var array
      */
@@ -46,7 +47,7 @@ class RouteRegistrar
 
     /**
      * The methods to dynamically pass through to the router.
-	 * 动态传递给路由器的方法
+	 * 动态传递给路由的方法
      *
      * @var array
      */
@@ -56,7 +57,7 @@ class RouteRegistrar
 
     /**
      * The attributes that can be set through this class.
-	 * 可以通过该类设置的属性
+	 * 允许属性
      *
      * @var array
      */
@@ -66,7 +67,7 @@ class RouteRegistrar
 
     /**
      * The attributes that are aliased.
-	 * 使用别名的属性
+	 * 属性别名
      *
      * @var array
      */
@@ -76,7 +77,7 @@ class RouteRegistrar
 
     /**
      * Create a new route registrar instance.
-	 * 创建一个新的路由注册器实例
+	 * 创建新的路由注册实例
      *
      * @param  \Illuminate\Routing\Router  $router
      * @return void
@@ -88,7 +89,7 @@ class RouteRegistrar
 
     /**
      * Set the value for a given attribute.
-	 * 设置给定属性的值
+	 * 设置给定属性值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -135,7 +136,7 @@ class RouteRegistrar
 
     /**
      * Register a new route with the given verbs.
-	 * 用给定的动词注册一条新路由
+	 * 注册一条新路线用给定的动词
      *
      * @param  array|string  $methods
      * @param  string  $uri
@@ -149,7 +150,7 @@ class RouteRegistrar
 
     /**
      * Register a new route with the router.
-	 * 向路由器注册一条新路由
+	 * 注册一条新路线使用路由
      *
      * @param  string  $method
      * @param  string  $uri
@@ -167,7 +168,7 @@ class RouteRegistrar
 
     /**
      * Compile the action into an array including the attributes.
-	 * 将动作编译成包含属性的数组
+	 * 编译动作成包含属性的数组
      *
      * @param  \Closure|array|string|null  $action
      * @return array
@@ -182,12 +183,21 @@ class RouteRegistrar
             $action = ['uses' => $action];
         }
 
+        if (is_array($action) &&
+            ! Arr::isAssoc($action) &&
+            Reflector::isCallable($action)) {
+            $action = [
+                'uses' => $action[0].'@'.$action[1],
+                'controller' => $action[0].'@'.$action[1],
+            ];
+        }
+
         return array_merge($this->attributes, $action);
     }
 
     /**
      * Dynamically handle calls into the route registrar.
-	 * 动态处理对路由注册器的调用
+	 * 动态调取方法
      *
      * @param  string  $method
      * @param  array  $parameters

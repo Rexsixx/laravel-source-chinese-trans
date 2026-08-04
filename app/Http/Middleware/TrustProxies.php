@@ -1,18 +1,18 @@
 <?php
 /**
- * App，Http，中间件，信托代理人
+ * App，Http，中间件，真实代理
  */
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Request;
 use Fideloper\Proxy\TrustProxies as Middleware;
+use Illuminate\Http\Request;
 
 class TrustProxies extends Middleware
 {
     /**
      * The trusted proxies for this application.
-	 * 该应用程序的可信代理
+     * 应用的可信代理
      *
      * @var array|string
      */
@@ -20,7 +20,7 @@ class TrustProxies extends Middleware
 
     /**
      * The headers that should be used to detect proxies.
-	 * 应该用来检测代理的头
+     * 应该被用来检测代理头
      *
      * @var int
      */

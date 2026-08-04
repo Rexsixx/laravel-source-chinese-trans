@@ -1,12 +1,12 @@
 <?php
 /**
- * Psy，代码清除器，被呼叫类通过
+ * Psy，代码清理器，调用类通行证
  */
 
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2018 Justin Hileman
+ * (c) 2012-2022 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -20,6 +20,7 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Trait_;
+use PhpParser\Node\VariadicPlaceholder;
 use Psy\Exception\ErrorException;
 
 /**
@@ -64,7 +65,7 @@ class CalledClassPass extends CodeCleanerPass
             $name = \strtolower($node->name);
             if (\in_array($name, ['get_class', 'get_called_class'])) {
                 $msg = \sprintf('%s() called without object from outside a class', $name);
-                throw new ErrorException($msg, 0, E_USER_WARNING, null, $node->getLine());
+                throw new ErrorException($msg, 0, \E_USER_WARNING, null, $node->getLine());
             }
         }
     }
@@ -79,8 +80,12 @@ class CalledClassPass extends CodeCleanerPass
         }
     }
 
-    private function isNull(Node $node)
+    private function isNull(Node $node): bool
     {
+        if ($node instanceof VariadicPlaceholder) {
+            return false;
+        }
+
         return $node->value instanceof ConstFetch && \strtolower($node->value->name) === 'null';
     }
 }

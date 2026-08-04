@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，作者，翻译器作者
+ * Symfony，组件，翻译，作者，翻译作者
  */
 
 /*
@@ -21,7 +21,6 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * TranslationWriter writes translation messages.
- * TranslationWriter编写翻译消息
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
@@ -31,7 +30,6 @@ class TranslationWriter implements TranslationWriterInterface
 
     /**
      * Adds a dumper to the writer.
-	 * 向写入器添加一个转储器
      *
      * @param string $format The format of the dumper
      */
@@ -42,7 +40,6 @@ class TranslationWriter implements TranslationWriterInterface
 
     /**
      * Disables dumper backup.
-	 * 禁用转储备份
      *
      * @deprecated since Symfony 4.1
      */
@@ -59,7 +56,6 @@ class TranslationWriter implements TranslationWriterInterface
 
     /**
      * Obtains the list of supported formats.
-	 * 获得支持格式的列表
      *
      * @return array
      */

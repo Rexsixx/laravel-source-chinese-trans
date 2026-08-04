@@ -1,8 +1,4 @@
-<?php
-/**
- * PharIo，Manifest，作者集合迭代器
- */
-
+<?php declare(strict_types = 1);
 /*
  * This file is part of PharIo\Manifest.
  *
@@ -11,50 +7,36 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PharIo\Manifest;
 
 class AuthorCollectionIterator implements \Iterator {
-    /**
-     * @var Author[]
-     */
-    private $authors = [];
+    /** @var Author[] */
+    private $authors;
 
-    /**
-     * @var int
-     */
-    private $position;
+    /** @var int */
+    private $position = 0;
 
     public function __construct(AuthorCollection $authors) {
         $this->authors = $authors->getAuthors();
     }
 
-    public function rewind() {
+    public function rewind(): void {
         $this->position = 0;
     }
 
-    /**
-     * @return bool
-     */
-    public function valid() {
-        return $this->position < count($this->authors);
+    public function valid(): bool {
+        return $this->position < \count($this->authors);
     }
 
-    /**
-     * @return int
-     */
-    public function key() {
+    public function key(): int {
         return $this->position;
     }
 
-    /**
-     * @return Author
-     */
-    public function current() {
+    public function current(): Author {
         return $this->authors[$this->position];
     }
 
-    public function next() {
+    public function next(): void {
         $this->position++;
     }
 }

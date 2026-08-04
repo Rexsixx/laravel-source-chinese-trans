@@ -1,48 +1,19 @@
 <?php
 /**
- * Illuminate，支持，收集
+ * 支持，集合
  */
 
 namespace Illuminate\Support;
 
-use stdClass;
-use Countable;
-use Exception;
 use ArrayAccess;
-use Traversable;
 use ArrayIterator;
-use CachingIterator;
-use JsonSerializable;
-use IteratorAggregate;
+use Illuminate\Support\Traits\EnumeratesValues;
 use Illuminate\Support\Traits\Macroable;
-use Illuminate\Contracts\Support\Jsonable;
-use Symfony\Component\VarDumper\VarDumper;
-use Illuminate\Contracts\Support\Arrayable;
+use stdClass;
 
-/**
- * @property-read HigherOrderCollectionProxy $average
- * @property-read HigherOrderCollectionProxy $avg
- * @property-read HigherOrderCollectionProxy $contains
- * @property-read HigherOrderCollectionProxy $each
- * @property-read HigherOrderCollectionProxy $every
- * @property-read HigherOrderCollectionProxy $filter
- * @property-read HigherOrderCollectionProxy $first
- * @property-read HigherOrderCollectionProxy $flatMap
- * @property-read HigherOrderCollectionProxy $groupBy
- * @property-read HigherOrderCollectionProxy $keyBy
- * @property-read HigherOrderCollectionProxy $map
- * @property-read HigherOrderCollectionProxy $max
- * @property-read HigherOrderCollectionProxy $min
- * @property-read HigherOrderCollectionProxy $partition
- * @property-read HigherOrderCollectionProxy $reject
- * @property-read HigherOrderCollectionProxy $sortBy
- * @property-read HigherOrderCollectionProxy $sortByDesc
- * @property-read HigherOrderCollectionProxy $sum
- * @property-read HigherOrderCollectionProxy $unique
- */
-class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate, Jsonable, JsonSerializable
+class Collection implements ArrayAccess, Enumerable
 {
-    use Macroable;
+    use EnumeratesValues, Macroable;
 
     /**
      * The items contained in the collection.
@@ -53,20 +24,8 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     protected $items = [];
 
     /**
-     * The methods that can be proxied.
-	 * 可以被代理的方法
-     *
-     * @var array
-     */
-    protected static $proxies = [
-        'average', 'avg', 'contains', 'each', 'every', 'filter', 'first',
-        'flatMap', 'groupBy', 'keyBy', 'map', 'max', 'min', 'partition',
-        'reject', 'some', 'sortBy', 'sortByDesc', 'sum', 'unique',
-    ];
-
-    /**
      * Create a new collection.
-	 * 创建一个新集合
+	 * 创建新的集合
      *
      * @param  mixed  $items
      * @return void
@@ -77,46 +36,8 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Create a new collection instance if the value isn't one already.
-	 * 如果该值还没有，则创建一个新的集合实例。
-     *
-     * @param  mixed  $items
-     * @return static
-     */
-    public static function make($items = [])
-    {
-        return new static($items);
-    }
-
-    /**
-     * Wrap the given value in a collection if applicable.
-	 * 如果适用，将给定值包装在集合中。
-     *
-     * @param  mixed  $value
-     * @return static
-     */
-    public static function wrap($value)
-    {
-        return $value instanceof self
-            ? new static($value)
-            : new static(Arr::wrap($value));
-    }
-
-    /**
-     * Get the underlying items from the given collection if applicable.
-	 * 从给定集合中获取基础项（如果适用）
-     *
-     * @param  array|static  $value
-     * @return array
-     */
-    public static function unwrap($value)
-    {
-        return $value instanceof self ? $value->all() : $value;
-    }
-
-    /**
      * Create a new collection by invoking the callback a given amount of times.
-	 * 通过调用给定次数的回调来创建新集合
+	 * 创建新集合通过调用给定次数的回调
      *
      * @param  int  $number
      * @param  callable  $callback
@@ -137,7 +58,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Get all of the items in the collection.
-	 * 获取集合中的所有项
+	 * 得到集合中的所有项
      *
      * @return array
      */
@@ -147,8 +68,19 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
+     * Get a lazy collection for the items in this collection.
+	 * 得到此集合中的项的惰性集合
+     *
+     * @return \Illuminate\Support\LazyCollection
+     */
+    public function lazy()
+    {
+        return new LazyCollection($this->items);
+    }
+
+    /**
      * Get the average value of a given key.
-	 * 获取给定键的平均值
+	 * 得到给定键的平均值
      *
      * @param  callable|string|null  $callback
      * @return mixed
@@ -169,22 +101,10 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Alias for the "avg" method.
-	 * “avg”方法的别名
-     *
-     * @param  callable|string|null  $callback
-     * @return mixed
-     */
-    public function average($callback = null)
-    {
-        return $this->avg($callback);
-    }
-
-    /**
      * Get the median of a given key.
-	 * 求给定键的中值
+	 * 得到定键的中值
      *
-     * @param  string|array|null $key
+     * @param  string|array|null  $key
      * @return mixed
      */
     public function median($key = null)
@@ -213,7 +133,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Get the mode of a given key.
-	 * 获取给定键的模式
+	 * 得到给定键的模式
      *
      * @param  string|array|null  $key
      * @return array|null
@@ -243,27 +163,13 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Collapse the collection of items into a single array.
-	 * 将项目集合折叠成单个数组
+	 * 折叠项目集合成单个数组
      *
      * @return static
      */
     public function collapse()
     {
         return new static(Arr::collapse($this->items));
-    }
-
-    /**
-     * Alias for the "contains" method.
-	 * contains方法的别名
-     *
-     * @param  mixed  $key
-     * @param  mixed  $operator
-     * @param  mixed  $value
-     * @return bool
-     */
-    public function some($key, $operator = null, $value = null)
-    {
-        return $this->contains(...func_get_args());
     }
 
     /**
@@ -291,31 +197,8 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Determine if an item exists in the collection using strict comparison.
-	 * 使用严格比较确定集合中是否存在项
-     *
-     * @param  mixed  $key
-     * @param  mixed  $value
-     * @return bool
-     */
-    public function containsStrict($key, $value = null)
-    {
-        if (func_num_args() === 2) {
-            return $this->contains(function ($item) use ($key, $value) {
-                return data_get($item, $key) === $value;
-            });
-        }
-
-        if ($this->useAsCallable($key)) {
-            return ! is_null($this->first($key));
-        }
-
-        return in_array($key, $this->items, true);
-    }
-
-    /**
      * Cross join with the given lists, returning all possible permutations.
-	 * 与给定列表交叉连接，返回所有可能的排列。
+	 * 交叉连接给定列表，返回所有可能的排列。
      *
      * @param  mixed  ...$lists
      * @return static
@@ -328,39 +211,8 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Dump the collection and end the script.
-	 * 转储集合并结束脚本
-     *
-     * @param  mixed  ...$args
-     * @return void
-     */
-    public function dd(...$args)
-    {
-        call_user_func_array([$this, 'dump'], $args);
-
-        die(1);
-    }
-
-    /**
-     * Dump the collection.
-	 * 转储集合
-     *
-     * @return $this
-     */
-    public function dump()
-    {
-        (new static(func_get_args()))
-            ->push($this)
-            ->each(function ($item) {
-                VarDumper::dump($item);
-            });
-
-        return $this;
-    }
-
-    /**
      * Get the items in the collection that are not present in the given items.
-	 * 获取集合中未出现在给定项中的项
+	 * 得到集合中未出现在给定项中的项
      *
      * @param  mixed  $items
      * @return static
@@ -371,8 +223,8 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Get the items in the collection that are not present in the given items.
-	 * 获取集合中未出现在给定项中的项
+     * Get the items in the collection that are not present in the given items, using the callback.
+	 * 得到集合中未出现在给定项中的项使用回调
      *
      * @param  mixed  $items
      * @param  callable  $callback
@@ -385,7 +237,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Get the items in the collection whose keys and values are not present in the given items.
-	 * 获取集合中键和值未出现在给定项中的项
+	 * 得到集合中键和值未出现在给定项中的项
      *
      * @param  mixed  $items
      * @return static
@@ -396,8 +248,8 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Get the items in the collection whose keys and values are not present in the given items.
-	 * 获取集合中键和值未出现在给定项中的项
+     * Get the items in the collection whose keys and values are not present in the given items, using the callback.
+	 * 使用回调获取集合中键和值未出现在给定项中的项
      *
      * @param  mixed  $items
      * @param  callable  $callback
@@ -410,7 +262,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Get the items in the collection whose keys are not present in the given items.
-	 * 获取集合中键不存在于给定项中的项
+	 * 得到集合中键不存在于给定项中的项
      *
      * @param  mixed  $items
      * @return static
@@ -421,10 +273,10 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Get the items in the collection whose keys are not present in the given items.
-	 * 获取集合中键不存在于给定项中的项
+     * Get the items in the collection whose keys are not present in the given items, using the callback.
+	 * 得到集合中键不存在于给定项中的项使用回调
      *
-     * @param  mixed   $items
+     * @param  mixed  $items
      * @param  callable  $callback
      * @return static
      */
@@ -435,7 +287,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Retrieve duplicate items from the collection.
-	 * 从集合中检索重复的项
+	 * 检索重复的项从集合中
      *
      * @param  callable|null  $callback
      * @param  bool  $strict
@@ -464,7 +316,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Retrieve duplicate items from the collection using strict comparison.
-	 * 使用严格比较从集合中检索重复项
+	 * 检索重复项从集合中使用严格比较
      *
      * @param  callable|null  $callback
      * @return static
@@ -476,7 +328,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Get the comparison function to detect duplicates.
-	 * 获取比较函数以检测重复项
+	 * 得到比较函数以检测重复项
      *
      * @param  bool  $strict
      * @return \Closure
@@ -495,75 +347,15 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Execute a callback over each item.
-	 * 对每个项目执行回调
-     *
-     * @param  callable  $callback
-     * @return $this
-     */
-    public function each(callable $callback)
-    {
-        foreach ($this->items as $key => $item) {
-            if ($callback($item, $key) === false) {
-                break;
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Execute a callback over each nested chunk of items.
-	 * 对每个嵌套的项块执行回调
-     *
-     * @param  callable  $callback
-     * @return static
-     */
-    public function eachSpread(callable $callback)
-    {
-        return $this->each(function ($chunk, $key) use ($callback) {
-            $chunk[] = $key;
-
-            return $callback(...$chunk);
-        });
-    }
-
-    /**
-     * Determine if all items in the collection pass the given test.
-	 * 确定集合中的所有项是否都通过了给定的测试
-     *
-     * @param  string|callable  $key
-     * @param  mixed  $operator
-     * @param  mixed  $value
-     * @return bool
-     */
-    public function every($key, $operator = null, $value = null)
-    {
-        if (func_num_args() === 1) {
-            $callback = $this->valueRetriever($key);
-
-            foreach ($this->items as $k => $v) {
-                if (! $callback($v, $k)) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        return $this->every($this->operatorForWhere(...func_get_args()));
-    }
-
-    /**
      * Get all items except for those with the specified keys.
-	 * 获取除具有指定键的项之外的所有项
+	 * 得到除具有指定键的项之外的所有项
      *
      * @param  \Illuminate\Support\Collection|mixed  $keys
      * @return static
      */
     public function except($keys)
     {
-        if ($keys instanceof self) {
+        if ($keys instanceof Enumerable) {
             $keys = $keys->all();
         } elseif (! is_array($keys)) {
             $keys = func_get_args();
@@ -574,7 +366,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Run a filter over each of the items.
-	 * 对每个项目运行一个过滤器
+	 * 运行一个过滤器对每个项目
      *
      * @param  callable|null  $callback
      * @return static
@@ -589,275 +381,8 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Apply the callback if the value is truthy.
-	 * 如果值为真，则应用回调。
-     *
-     * @param  bool  $value
-     * @param  callable  $callback
-     * @param  callable  $default
-     * @return static|mixed
-     */
-    public function when($value, callable $callback, callable $default = null)
-    {
-        if ($value) {
-            return $callback($this, $value);
-        } elseif ($default) {
-            return $default($this, $value);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Apply the callback if the collection is empty.
-	 * 如果集合为空，则应用回调。
-     *
-     * @param  callable  $callback
-     * @param  callable  $default
-     * @return static|mixed
-     */
-    public function whenEmpty(callable $callback, callable $default = null)
-    {
-        return $this->when($this->isEmpty(), $callback, $default);
-    }
-
-    /**
-     * Apply the callback if the collection is not empty.
-	 * 如果集合不为空，则应用回调。
-     *
-     * @param  callable  $callback
-     * @param  callable  $default
-     * @return static|mixed
-     */
-    public function whenNotEmpty(callable $callback, callable $default = null)
-    {
-        return $this->when($this->isNotEmpty(), $callback, $default);
-    }
-
-    /**
-     * Apply the callback if the value is falsy.
-	 * 如果值为false，则应用回调。
-     *
-     * @param  bool  $value
-     * @param  callable  $callback
-     * @param  callable  $default
-     * @return static|mixed
-     */
-    public function unless($value, callable $callback, callable $default = null)
-    {
-        return $this->when(! $value, $callback, $default);
-    }
-
-    /**
-     * Apply the callback unless the collection is empty.
-	 * 除非集合为空，否则应用回调。
-     *
-     * @param  callable  $callback
-     * @param  callable  $default
-     * @return static|mixed
-     */
-    public function unlessEmpty(callable $callback, callable $default = null)
-    {
-        return $this->whenNotEmpty($callback, $default);
-    }
-
-    /**
-     * Apply the callback unless the collection is not empty.
-	 * 除非集合不为空，否则应用回调。
-     *
-     * @param  callable  $callback
-     * @param  callable  $default
-     * @return static|mixed
-     */
-    public function unlessNotEmpty(callable $callback, callable $default = null)
-    {
-        return $this->whenEmpty($callback, $default);
-    }
-
-    /**
-     * Filter items by the given key value pair.
-	 * 根据给定的键值对筛选项
-     *
-     * @param  string  $key
-     * @param  mixed  $operator
-     * @param  mixed  $value
-     * @return static
-     */
-    public function where($key, $operator = null, $value = null)
-    {
-        return $this->filter($this->operatorForWhere(...func_get_args()));
-    }
-
-    /**
-     * Get an operator checker callback.
-	 * 获取一个操作符检查器回调
-     *
-     * @param  string  $key
-     * @param  string  $operator
-     * @param  mixed  $value
-     * @return \Closure
-     */
-    protected function operatorForWhere($key, $operator = null, $value = null)
-    {
-        if (func_num_args() === 1) {
-            $value = true;
-
-            $operator = '=';
-        }
-
-        if (func_num_args() === 2) {
-            $value = $operator;
-
-            $operator = '=';
-        }
-
-        return function ($item) use ($key, $operator, $value) {
-            $retrieved = data_get($item, $key);
-
-            $strings = array_filter([$retrieved, $value], function ($value) {
-                return is_string($value) || (is_object($value) && method_exists($value, '__toString'));
-            });
-
-            if (count($strings) < 2 && count(array_filter([$retrieved, $value], 'is_object')) == 1) {
-                return in_array($operator, ['!=', '<>', '!==']);
-            }
-
-            switch ($operator) {
-                default:
-                case '=':
-                case '==':  return $retrieved == $value;
-                case '!=':
-                case '<>':  return $retrieved != $value;
-                case '<':   return $retrieved < $value;
-                case '>':   return $retrieved > $value;
-                case '<=':  return $retrieved <= $value;
-                case '>=':  return $retrieved >= $value;
-                case '===': return $retrieved === $value;
-                case '!==': return $retrieved !== $value;
-            }
-        };
-    }
-
-    /**
-     * Filter items by the given key value pair using strict comparison.
-	 * 使用严格比较按给定的键值对筛选项
-     *
-     * @param  string  $key
-     * @param  mixed  $value
-     * @return static
-     */
-    public function whereStrict($key, $value)
-    {
-        return $this->where($key, '===', $value);
-    }
-
-    /**
-     * Filter items by the given key value pair.
-	 * 根据给定的键值对筛选项
-     *
-     * @param  string  $key
-     * @param  mixed  $values
-     * @param  bool  $strict
-     * @return static
-     */
-    public function whereIn($key, $values, $strict = false)
-    {
-        $values = $this->getArrayableItems($values);
-
-        return $this->filter(function ($item) use ($key, $values, $strict) {
-            return in_array(data_get($item, $key), $values, $strict);
-        });
-    }
-
-    /**
-     * Filter items by the given key value pair using strict comparison.
-	 * 使用严格比较按给定的键值对筛选项
-     *
-     * @param  string  $key
-     * @param  mixed  $values
-     * @return static
-     */
-    public function whereInStrict($key, $values)
-    {
-        return $this->whereIn($key, $values, true);
-    }
-
-    /**
-     * Filter items such that the value of the given key is between the given values.
-	 * 筛选项，使给定键的值在给定值之间。
-     *
-     * @param  string  $key
-     * @param  array  $values
-     * @return static
-     */
-    public function whereBetween($key, $values)
-    {
-        return $this->where($key, '>=', reset($values))->where($key, '<=', end($values));
-    }
-
-    /**
-     * Filter items such that the value of the given key is not between the given values.
-	 * 筛选项，使给定键的值不在给定值之间。
-     *
-     * @param  string  $key
-     * @param  array  $values
-     * @return static
-     */
-    public function whereNotBetween($key, $values)
-    {
-        return $this->filter(function ($item) use ($key, $values) {
-            return data_get($item, $key) < reset($values) || data_get($item, $key) > end($values);
-        });
-    }
-
-    /**
-     * Filter items by the given key value pair.
-	 * 根据给定的键值对筛选项
-     *
-     * @param  string  $key
-     * @param  mixed  $values
-     * @param  bool  $strict
-     * @return static
-     */
-    public function whereNotIn($key, $values, $strict = false)
-    {
-        $values = $this->getArrayableItems($values);
-
-        return $this->reject(function ($item) use ($key, $values, $strict) {
-            return in_array(data_get($item, $key), $values, $strict);
-        });
-    }
-
-    /**
-     * Filter items by the given key value pair using strict comparison.
-	 * 使用严格比较按给定的键值对筛选项
-     *
-     * @param  string  $key
-     * @param  mixed  $values
-     * @return static
-     */
-    public function whereNotInStrict($key, $values)
-    {
-        return $this->whereNotIn($key, $values, true);
-    }
-
-    /**
-     * Filter the items, removing any items that don't match the given type.
-	 * 筛选项目，删除与给定类型不匹配的任何项目。
-     *
-     * @param  string  $type
-     * @return static
-     */
-    public function whereInstanceOf($type)
-    {
-        return $this->filter(function ($value) use ($type) {
-            return $value instanceof $type;
-        });
-    }
-
-    /**
      * Get the first item from the collection passing the given truth test.
-	 * 从集合中获取通过给定真值测试的第一项
+	 * 得到第一项从集合中通过给定真值测试
      *
      * @param  callable|null  $callback
      * @param  mixed  $default
@@ -869,22 +394,8 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Get the first item by the given key value pair.
-	 * 根据给定的键值对获取第一项
-     *
-     * @param  string  $key
-     * @param  mixed  $operator
-     * @param  mixed  $value
-     * @return mixed
-     */
-    public function firstWhere($key, $operator = null, $value = null)
-    {
-        return $this->first($this->operatorForWhere(...func_get_args()));
-    }
-
-    /**
      * Get a flattened array of the items in the collection.
-	 * 获取集合中项的扁平数组
+	 * 得到集合中项的扁平数组
      *
      * @param  int  $depth
      * @return static
@@ -923,7 +434,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Get an item from the collection by key.
-	 * 按键从集合中获取项
+	 * 得到项按键从集合中
      *
      * @param  mixed  $key
      * @param  mixed  $default
@@ -948,7 +459,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
      */
     public function groupBy($groupBy, $preserveKeys = false)
     {
-        if (is_array($groupBy)) {
+        if (! $this->useAsCallable($groupBy) && is_array($groupBy)) {
             $nextGroups = $groupBy;
 
             $groupBy = array_shift($nextGroups);
@@ -1013,7 +524,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Determine if an item exists in the collection by key.
-	 * 根据键确定集合中是否存在项
+	 * 确定集合中是否存在项根据键
      *
      * @param  mixed  $key
      * @return bool
@@ -1088,29 +599,6 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Determine if the collection is not empty.
-	 * 确定集合是否为空
-     *
-     * @return bool
-     */
-    public function isNotEmpty()
-    {
-        return ! $this->isEmpty();
-    }
-
-    /**
-     * Determine if the given value is callable, but not a string.
-	 * 确定给定的值是否是可调用的，而不是字符串。
-     *
-     * @param  mixed  $value
-     * @return bool
-     */
-    protected function useAsCallable($value)
-    {
-        return ! is_string($value) && is_callable($value);
-    }
-
-    /**
      * Join all items from the collection using a string. The final items can use a separate glue string.
 	 * 使用字符串连接集合中的所有项。最后的项目可以使用一个单独的胶水线。
      *
@@ -1143,7 +631,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Get the keys of the collection items.
-	 * 获得收集项目的密钥
+	 * 得到收集项目的钥匙
      *
      * @return static
      */
@@ -1154,7 +642,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Get the last item from the collection.
-	 * 从集合中获取最后一项
+	 * 得到最后一项从集合中
      *
      * @param  callable|null  $callback
      * @param  mixed  $default
@@ -1167,7 +655,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Get the values of a given key.
-	 * 获取给定键的值
+	 * 得到给定键的值
      *
      * @param  string|array  $value
      * @param  string|null  $key
@@ -1180,7 +668,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Run a map over each of the items.
-	 * 在每个项目上运行一个映射
+	 * 在每个项目上运行一张地图
      *
      * @param  callable  $callback
      * @return static
@@ -1195,27 +683,10 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Run a map over each nested chunk of items.
-	 * 在每个嵌套的项目块上运行一个映射
-     *
-     * @param  callable  $callback
-     * @return static
-     */
-    public function mapSpread(callable $callback)
-    {
-        return $this->map(function ($chunk, $key) use ($callback) {
-            $chunk[] = $key;
-
-            return $callback(...$chunk);
-        });
-    }
-
-    /**
      * Run a dictionary map over the items.
-	 * 在条目上运行字典映射。
+	 * 在条目上运行字典映射
      *
      * The callback should return an associative array with a single key/value pair.
-	 * 回调函数应该返回一个具有单个键/值对的关联数组。
      *
      * @param  callable  $callback
      * @return static
@@ -1242,28 +713,10 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Run a grouping map over the items.
-	 * 在项目上运行分组映射。
-     *
-     * The callback should return an associative array with a single key/value pair.
-	 * 回调函数应该返回一个具有单个键/值对的关联数组。
-     *
-     * @param  callable  $callback
-     * @return static
-     */
-    public function mapToGroups(callable $callback)
-    {
-        $groups = $this->mapToDictionary($callback);
-
-        return $groups->map([$this, 'make']);
-    }
-
-    /**
      * Run an associative map over each of the items.
-	 * 在每个项目上运行一个关联映射。
+	 * 在每个项目上运行一个关联映射
      *
      * The callback should return an associative array with a single key/value pair.
-	 * 回调函数应该返回一个具有单个键/值对的关联数组。
      *
      * @param  callable  $callback
      * @return static
@@ -1284,54 +737,8 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Map a collection and flatten the result by a single level.
-	 * 映射一个集合并将结果平铺一个级别
-     *
-     * @param  callable  $callback
-     * @return static
-     */
-    public function flatMap(callable $callback)
-    {
-        return $this->map($callback)->collapse();
-    }
-
-    /**
-     * Map the values into a new class.
-	 * 将值映射到一个新类
-     *
-     * @param  string  $class
-     * @return static
-     */
-    public function mapInto($class)
-    {
-        return $this->map(function ($value, $key) use ($class) {
-            return new $class($value, $key);
-        });
-    }
-
-    /**
-     * Get the max value of a given key.
-	 * 获取给定键的最大值
-     *
-     * @param  callable|string|null  $callback
-     * @return mixed
-     */
-    public function max($callback = null)
-    {
-        $callback = $this->valueRetriever($callback);
-
-        return $this->filter(function ($value) {
-            return ! is_null($value);
-        })->reduce(function ($result, $item) use ($callback) {
-            $value = $callback($item);
-
-            return is_null($result) || $value > $result ? $value : $result;
-        });
-    }
-
-    /**
      * Merge the collection with the given items.
-	 * 将集合与给定的项合并
+	 * 合并集合与给定的项
      *
      * @param  mixed  $items
      * @return static
@@ -1378,26 +785,6 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Get the min value of a given key.
-	 * 获取给定键的最小值
-     *
-     * @param  callable|string|null  $callback
-     * @return mixed
-     */
-    public function min($callback = null)
-    {
-        $callback = $this->valueRetriever($callback);
-
-        return $this->map(function ($value) use ($callback) {
-            return $callback($value);
-        })->filter(function ($value) {
-            return ! is_null($value);
-        })->reduce(function ($result, $value) {
-            return is_null($result) || $value < $result ? $value : $result;
-        });
-    }
-
-    /**
      * Create a new collection consisting of every n-th element.
 	 * 创建一个包含每n个元素的新集合
      *
@@ -1424,7 +811,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Get the items with the specified keys.
-	 * 获取具有指定键的项
+	 * 得到具有指定键的项
      *
      * @param  mixed  $keys
      * @return static
@@ -1435,7 +822,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
             return new static($this->items);
         }
 
-        if ($keys instanceof self) {
+        if ($keys instanceof Enumerable) {
             $keys = $keys->all();
         }
 
@@ -1445,59 +832,8 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * "Paginate" the collection by slicing it into a smaller collection.
-	 * 通过将集合切片为更小的集合来“分页”集合
-     *
-     * @param  int  $page
-     * @param  int  $perPage
-     * @return static
-     */
-    public function forPage($page, $perPage)
-    {
-        $offset = max(0, ($page - 1) * $perPage);
-
-        return $this->slice($offset, $perPage);
-    }
-
-    /**
-     * Partition the collection into two arrays using the given callback or key.
-	 * 使用给定的回调或键将集合划分为两个数组
-     *
-     * @param  callable|string  $key
-     * @param  mixed  $operator
-     * @param  mixed  $value
-     * @return static
-     */
-    public function partition($key, $operator = null, $value = null)
-    {
-        $partitions = [new static, new static];
-
-        $callback = func_num_args() === 1
-                ? $this->valueRetriever($key)
-                : $this->operatorForWhere(...func_get_args());
-
-        foreach ($this->items as $key => $item) {
-            $partitions[(int) ! $callback($item, $key)][$key] = $item;
-        }
-
-        return new static($partitions);
-    }
-
-    /**
-     * Pass the collection to the given callback and return the result.
-	 * 将集合传递给给定的回调函数并返回结果
-     *
-     * @param  callable $callback
-     * @return mixed
-     */
-    public function pipe(callable $callback)
-    {
-        return $callback($this);
-    }
-
-    /**
      * Get and remove the last item from the collection.
-	 * 从集合中获取并删除最后一项
+	 * 得到并删除最后一项从集合中
      *
      * @return mixed
      */
@@ -1530,7 +866,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
      */
     public function push($value)
     {
-        $this->offsetSet(null, $value);
+        $this->items[] = $value;
 
         return $this;
     }
@@ -1613,24 +949,6 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Create a collection of all elements that do not pass a given truth test.
-	 * 创建一个未通过给定真值测试的所有元素的集合
-     *
-     * @param  callable|mixed  $callback
-     * @return static
-     */
-    public function reject($callback = true)
-    {
-        $useAsCallable = $this->useAsCallable($callback);
-
-        return $this->filter(function ($value, $key) use ($callback, $useAsCallable) {
-            return $useAsCallable
-                ? ! $callback($value, $key)
-                : $value != $callback;
-        });
-    }
-
-    /**
      * Replace the collection items with the given items.
 	 * 用给定的项替换集合项
      *
@@ -1667,7 +985,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Search the collection for a given value and return the corresponding key if successful.
-	 * 在集合中搜索给定的值，如果成功则返回相应的键。
+	 * 搜索集合中给定的值，如果成功则返回相应的键。
      *
      * @param  mixed  $value
      * @param  bool  $strict
@@ -1680,7 +998,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
         }
 
         foreach ($this->items as $key => $item) {
-            if (call_user_func($value, $item, $key)) {
+            if ($value($item, $key)) {
                 return $key;
             }
         }
@@ -1690,7 +1008,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Get and remove the first item from the collection.
-	 * 从集合中获取并删除第一项
+	 * 得到并删除第一项从集合中
      *
      * @return mixed
      */
@@ -1709,6 +1027,18 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     public function shuffle($seed = null)
     {
         return new static(Arr::shuffle($this->items, $seed));
+    }
+
+    /**
+     * Skip the first {$count} items.
+	 * 跳过第一个{$count}项
+     *
+     * @param  int  $count
+     * @return static
+     */
+    public function skip($count)
+    {
+        return $this->slice($count);
     }
 
     /**
@@ -1763,8 +1093,8 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Chunk the underlying collection array.
-	 * 对底层集合数组进行块处理
+     * Chunk the collection into chunks of the given size.
+	 * 将集合分成给定大小的块
      *
      * @param  int  $size
      * @return static
@@ -1786,7 +1116,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Sort through each item with a callback.
-	 * 使用回调对每个项目进行排序
+	 * 对每个项目进行排序使用回调
      *
      * @param  callable|null  $callback
      * @return static
@@ -1804,7 +1134,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Sort the collection using the given callback.
-	 * 使用给定的回调对集合进行排序
+	 * 对集合进行排序使用给定的回调
      *
      * @param  callable|string  $callback
      * @param  int  $options
@@ -1820,8 +1150,8 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
         // First we will loop through the items and get the comparator from a callback
         // function which we were given. Then, we will sort the returned values and
         // and grab the corresponding values for the sorted keys from this array.
-		// 首先，我们将遍历这些项，并从给定的回调函数中获取比较器。
-		// 然后，我们将对返回的值进行排序，并从这个数组中获取对应于已排序键的值。
+		// 首先，我们将遍历这些项目，并从给定的回调函数中获取比较器。
+		// 然后，我们将对返回的值进行排序，并从该数组中获取排序键的相应值。
         foreach ($this->items as $key => $value) {
             $results[$key] = $callback($value, $key);
         }
@@ -1832,8 +1162,8 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
         // Once we have sorted all of the keys in the array, we will loop through them
         // and grab the corresponding model so we can set the underlying items list
         // to the sorted version. Then we'll just return the collection instance.
-		// 一旦我们完成了对数组中所有键的排序，我们就会遍历这些键，并获取相应的模型，
-		// 以便将底层项目列表设置为排序后的版本。然后，我们将返回这个集合实例。
+		// 一旦我们对数组中的所有键进行了排序，我们将遍历它们并获取相应的模型，
+		// 这样我们就可以将底层项目列表设置为排序后的版本。然后我们只返回集合实例。
         foreach (array_keys($results) as $key) {
             $results[$key] = $this->items[$key];
         }
@@ -1856,7 +1186,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Sort the collection keys.
-	 * 对集合键排序
+	 * 排序集合键
      *
      * @param  int  $options
      * @param  bool  $descending
@@ -1873,9 +1203,9 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Sort the collection keys in descending order.
-	 * 按降序对集合键进行排序
+	 * 对集合键进行排序按降序
      *
-     * @param  int $options
+     * @param  int  $options
      * @return static
      */
     public function sortKeysDesc($options = SORT_REGULAR)
@@ -1902,26 +1232,6 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Get the sum of the given values.
-	 * 得到给定值的和
-     *
-     * @param  callable|string|null  $callback
-     * @return mixed
-     */
-    public function sum($callback = null)
-    {
-        if (is_null($callback)) {
-            return array_sum($this->items);
-        }
-
-        $callback = $this->valueRetriever($callback);
-
-        return $this->reduce(function ($result, $item) use ($callback) {
-            return $result + $callback($item);
-        }, 0);
-    }
-
-    /**
      * Take the first or last {$limit} items.
 	 * 取第一个或最后一个{$limit}项
      *
@@ -1938,22 +1248,8 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Pass the collection to the given callback and then return it.
-	 * 将集合传递给给定的回调函数，然后返回它。
-     *
-     * @param  callable  $callback
-     * @return $this
-     */
-    public function tap(callable $callback)
-    {
-        $callback(new static($this->items));
-
-        return $this;
-    }
-
-    /**
      * Transform each item in the collection using a callback.
-	 * 使用回调转换集合中的每个项
+	 * 转换集合中的每个项使用回调
      *
      * @param  callable  $callback
      * @return $this
@@ -1963,41 +1259,6 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
         $this->items = $this->map($callback)->all();
 
         return $this;
-    }
-
-    /**
-     * Return only unique items from the collection array.
-	 * 只返回集合数组中唯一的项
-     *
-     * @param  string|callable|null  $key
-     * @param  bool  $strict
-     * @return static
-     */
-    public function unique($key = null, $strict = false)
-    {
-        $callback = $this->valueRetriever($key);
-
-        $exists = [];
-
-        return $this->reject(function ($item, $key) use ($callback, $strict, &$exists) {
-            if (in_array($id = $callback($item, $key), $exists, $strict)) {
-                return true;
-            }
-
-            $exists[] = $id;
-        });
-    }
-
-    /**
-     * Return only unique items from the collection array using strict comparison.
-	 * 使用严格比较只返回集合数组中的唯一项
-     *
-     * @param  string|callable|null  $key
-     * @return static
-     */
-    public function uniqueStrict($key = null)
-    {
-        return $this->unique($key, true);
     }
 
     /**
@@ -2012,31 +1273,13 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Get a value retrieving callback.
-	 * 获取一个值检索回调
-     *
-     * @param  callable|string|null  $value
-     * @return callable
-     */
-    protected function valueRetriever($value)
-    {
-        if ($this->useAsCallable($value)) {
-            return $value;
-        }
-
-        return function ($item) use ($value) {
-            return data_get($item, $value);
-        };
-    }
-
-    /**
      * Zip the collection together with one or more arrays.
-	 * 将集合与一个或多个数组压缩在一起。
+	 * 将集合与一个或多个数组压缩在一起
      *
      * e.g. new Collection([1, 2, 3])->zip([4, 5, 6]);
      *      => [[1, 4], [2, 5], [3, 6]]
      *
-     * @param  mixed ...$items
+     * @param  mixed  ...$items
      * @return static
      */
     public function zip($items)
@@ -2049,7 +1292,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
             return new static(func_get_args());
         }, $this->items], $arrayableItems);
 
-        return new static(call_user_func_array('array_map', $params));
+        return new static(array_map(...$params));
     }
 
     /**
@@ -2066,72 +1309,14 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Get the collection of items as a plain array.
-	 * 获取作为普通数组的项集合
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        return array_map(function ($value) {
-            return $value instanceof Arrayable ? $value->toArray() : $value;
-        }, $this->items);
-    }
-
-    /**
-     * Convert the object into something JSON serializable.
-	 * 将对象转换为JSON可序列化的对象
-     *
-     * @return array
-     */
-    public function jsonSerialize()
-    {
-        return array_map(function ($value) {
-            if ($value instanceof JsonSerializable) {
-                return $value->jsonSerialize();
-            } elseif ($value instanceof Jsonable) {
-                return json_decode($value->toJson(), true);
-            } elseif ($value instanceof Arrayable) {
-                return $value->toArray();
-            }
-
-            return $value;
-        }, $this->items);
-    }
-
-    /**
-     * Get the collection of items as JSON.
-	 * 以JSON形式获取项目集合
-     *
-     * @param  int  $options
-     * @return string
-     */
-    public function toJson($options = 0)
-    {
-        return json_encode($this->jsonSerialize(), $options);
-    }
-
-    /**
      * Get an iterator for the items.
-	 * 获取项的迭代器
+	 * 得到项的迭代器
      *
      * @return \ArrayIterator
      */
     public function getIterator()
     {
         return new ArrayIterator($this->items);
-    }
-
-    /**
-     * Get a CachingIterator instance.
-	 * 获取一个CachingIterator实例
-     *
-     * @param  int  $flags
-     * @return \CachingIterator
-     */
-    public function getCachingIterator($flags = CachingIterator::CALL_TOSTRING)
-    {
-        return new CachingIterator($this->getIterator(), $flags);
     }
 
     /**
@@ -2146,28 +1331,8 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * Count the number of items in the collection using a given truth test.
-	 * 使用给定的真值测试计算集合中的项目数量
-     *
-     * @param  callable|null  $callback
-     * @return static
-     */
-    public function countBy($callback = null)
-    {
-        if (is_null($callback)) {
-            $callback = function ($value) {
-                return $value;
-            };
-        }
-
-        return new static($this->groupBy($callback)->map(function ($value) {
-            return $value->count();
-        }));
-    }
-
-    /**
      * Add an item to the collection.
-	 * 向集合中添加项
+	 * 添加项至集合中
      *
      * @param  mixed  $item
      * @return $this
@@ -2181,7 +1346,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Get a base Support collection instance from this collection.
-	 * 从此集合获取基本支持集合实例
+	 * 得到基本支持集合实例从此集合中
      *
      * @return \Illuminate\Support\Collection
      */
@@ -2204,7 +1369,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Get an item at a given offset.
-	 * 获取给定偏移量处的项
+	 * 得到给定偏移量处的项
      *
      * @param  mixed  $key
      * @return mixed
@@ -2233,7 +1398,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 
     /**
      * Unset the item at a given offset.
-	 * 在给定的偏移量处取消项的设置
+	 * 注销一个值
      *
      * @param  string  $key
      * @return void
@@ -2241,72 +1406,5 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     public function offsetUnset($key)
     {
         unset($this->items[$key]);
-    }
-
-    /**
-     * Convert the collection to its string representation.
-	 * 将集合转换为其字符串表示形式
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->toJson();
-    }
-
-    /**
-     * Results array of items from Collection or Arrayable.
-	 * 来自Collection或Arrayable的项的结果数组
-     *
-     * @param  mixed  $items
-     * @return array
-     */
-    protected function getArrayableItems($items)
-    {
-        if (is_array($items)) {
-            return $items;
-        } elseif ($items instanceof self) {
-            return $items->all();
-        } elseif ($items instanceof Arrayable) {
-            return $items->toArray();
-        } elseif ($items instanceof Jsonable) {
-            return json_decode($items->toJson(), true);
-        } elseif ($items instanceof JsonSerializable) {
-            return (array) $items->jsonSerialize();
-        } elseif ($items instanceof Traversable) {
-            return iterator_to_array($items);
-        }
-
-        return (array) $items;
-    }
-
-    /**
-     * Add a method to the list of proxied methods.
-	 * 向代理方法列表中添加一个方法
-     *
-     * @param  string  $method
-     * @return void
-     */
-    public static function proxy($method)
-    {
-        static::$proxies[] = $method;
-    }
-
-    /**
-     * Dynamically access collection proxies.
-	 * 动态访问集合代理
-     *
-     * @param  string  $key
-     * @return mixed
-     *
-     * @throws \Exception
-     */
-    public function __get($key)
-    {
-        if (! in_array($key, static::$proxies)) {
-            throw new Exception("Property [{$key}] does not exist on this collection instance.");
-        }
-
-        return new HigherOrderCollectionProxy($this, $key);
     }
 }

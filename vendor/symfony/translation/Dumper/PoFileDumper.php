@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，翻译，转储，Po File 转储
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * PoFileDumper generates a gettext formatted string representation of a message catalogue.
- * PoFileDumper生成一个消息目录的gettext格式的字符串表示。
  *
  * @author Stealth35
  */

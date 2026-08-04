@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，翻译，异常，逻辑异常
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\Translation\Exception;
 
 /**
  * Base LogicException for Translation component.
- * 翻译组件的基本LogicException。
  *
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
  */

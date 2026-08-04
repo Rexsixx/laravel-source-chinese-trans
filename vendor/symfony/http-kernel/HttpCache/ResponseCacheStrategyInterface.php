@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，Http缓存，响应缓存策略接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -23,7 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * ResponseCacheStrategyInterface implementations know how to compute the
  * Response cache HTTP header based on the different response cache headers.
- * ResponseCacheStrategyInterface 实现知道如何根据不同的响应缓存头来计算响应缓存HTTP头。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -31,13 +27,11 @@ interface ResponseCacheStrategyInterface
 {
     /**
      * Adds a Response.
-	 * 添加响应
      */
     public function add(Response $response);
 
     /**
      * Updates the Response HTTP headers based on the embedded Responses.
-	 * 根据嵌入式响应更新响应HTTP头
      */
     public function update(Response $response);
 }

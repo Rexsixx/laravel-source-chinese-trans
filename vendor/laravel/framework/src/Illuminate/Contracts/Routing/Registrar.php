@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，路由，注册
+ * 契约，路由注册者接口
  */
 
 namespace Illuminate\Contracts\Routing;
@@ -9,7 +9,7 @@ interface Registrar
 {
     /**
      * Register a new GET route with the router.
-	 * 向路由器注册一个新的GET路由
+	 * 注册一个新的get
      *
      * @param  string  $uri
      * @param  \Closure|array|string|callable  $action
@@ -19,7 +19,7 @@ interface Registrar
 
     /**
      * Register a new POST route with the router.
-	 * 向路由器注册一个新的POST路由
+	 * 注册一个新的post
      *
      * @param  string  $uri
      * @param  \Closure|array|string|callable  $action
@@ -29,7 +29,7 @@ interface Registrar
 
     /**
      * Register a new PUT route with the router.
-	 * 向路由器注册一条新的PUT路由
+	 * 注册一个新的put
      *
      * @param  string  $uri
      * @param  \Closure|array|string|callable  $action
@@ -39,7 +39,7 @@ interface Registrar
 
     /**
      * Register a new DELETE route with the router.
-	 * 向路由器注册一条新的DELETE路由
+	 * 注册一个新的delete
      *
      * @param  string  $uri
      * @param  \Closure|array|string|callable  $action
@@ -49,7 +49,7 @@ interface Registrar
 
     /**
      * Register a new PATCH route with the router.
-	 * 向路由器注册一条新的PATCH路由
+	 * 注册一个新的补丁
      *
      * @param  string  $uri
      * @param  \Closure|array|string|callable  $action
@@ -59,7 +59,7 @@ interface Registrar
 
     /**
      * Register a new OPTIONS route with the router.
-	 & 向路由器注册一个新的OPTIONS路由
+	 * 注册一个新的OPTIONS
      *
      * @param  string  $uri
      * @param  \Closure|array|string|callable  $action
@@ -69,7 +69,7 @@ interface Registrar
 
     /**
      * Register a new route with the given verbs.
-	 * 用给定的动词注册一条新路线
+	 * 注册一条新路线
      *
      * @param  array|string  $methods
      * @param  string  $uri
@@ -80,11 +80,11 @@ interface Registrar
 
     /**
      * Route a resource to a controller.
-	 * 将资源路由到控制器
+	 * 路由资源到控制器
      *
      * @param  string  $name
      * @param  string  $controller
-     * @param  array   $options
+     * @param  array  $options
      * @return \Illuminate\Routing\PendingResourceRegistration
      */
     public function resource($name, $controller, array $options = []);
@@ -101,7 +101,7 @@ interface Registrar
 
     /**
      * Substitute the route bindings onto the route.
-	 * 将路由绑定替换到路由上
+	 * 替换路由绑定到路由上
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return \Illuminate\Routing\Route
@@ -110,7 +110,7 @@ interface Registrar
 
     /**
      * Substitute the implicit Eloquent model bindings for the route.
-	 * 将隐式Eloquent模型绑定替换为路由
+	 * 替换隐式Eloquent模型绑定为路由
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return void

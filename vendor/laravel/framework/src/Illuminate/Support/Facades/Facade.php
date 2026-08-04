@@ -1,20 +1,20 @@
 <?php
 /**
- * Illuminate，支持，门面，Facade
+ * 支持，门面抽象类
  */
 
 namespace Illuminate\Support\Facades;
 
 use Closure;
 use Mockery;
-use RuntimeException;
 use Mockery\MockInterface;
+use RuntimeException;
 
 abstract class Facade
 {
     /**
      * The application instance being facaded.
-	 * 正在facade的应用程序实例
+	 * 应用实例正在facade的
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -30,21 +30,27 @@ abstract class Facade
 
     /**
      * Run a Closure when the facade has been resolved.
-	 * 在解决facade时运行Closure
+	 * 运行一个闭包当门面被解决时
      *
      * @param  \Closure  $callback
      * @return void
      */
     public static function resolved(Closure $callback)
     {
-        static::$app->afterResolving(static::getFacadeAccessor(), function ($service) use ($callback) {
+        $accessor = static::getFacadeAccessor();
+
+        if (static::$app->resolved($accessor) === true) {
+            $callback(static::getFacadeRoot());
+        }
+
+        static::$app->afterResolving($accessor, function ($service) use ($callback) {
             $callback($service);
         });
     }
 
     /**
      * Convert the facade into a Mockery spy.
-	 * 把门面变成一个 Mockery spy
+	 * 转换门面为间谍
      *
      * @return \Mockery\MockInterface
      */
@@ -60,8 +66,25 @@ abstract class Facade
     }
 
     /**
+     * Initiate a partial mock on the facade.
+	 * 初始化部分模拟在facade上
+     *
+     * @return \Mockery\MockInterface
+     */
+    public static function partialMock()
+    {
+        $name = static::getFacadeAccessor();
+
+        $mock = static::isMock()
+            ? static::$resolvedInstance[$name]
+            : static::createFreshMockInstance();
+
+        return $mock->makePartial();
+    }
+
+    /**
      * Initiate a mock expectation on the facade.
-	 * 在facade上初始化一个模拟期望
+	 * 初始化一个模拟期望在facade上
      *
      * @return \Mockery\Expectation
      */
@@ -78,9 +101,9 @@ abstract class Facade
 
     /**
      * Create a fresh mock instance for the given class.
-	 * 为给定的类创建一个新的模拟实例
+	 * 创建一个新的模拟实例为给定的类
      *
-     * @return \Mockery\Expectation
+     * @return \Mockery\MockInterface
      */
     protected static function createFreshMockInstance()
     {
@@ -93,7 +116,7 @@ abstract class Facade
 
     /**
      * Create a fresh mock instance for the given class.
-	 * 为给定的类创建一个新的模拟实例
+	 * 创建一个新的模拟实例为给定的类
      *
      * @return \Mockery\MockInterface
      */
@@ -120,7 +143,7 @@ abstract class Facade
 
     /**
      * Get the mockable class for the bound instance.
-	 * 获取绑定实例的可模拟类
+	 * 得到绑定实例的可模拟类
      *
      * @return string|null
      */
@@ -149,7 +172,7 @@ abstract class Facade
 
     /**
      * Get the root object behind the facade.
-	 * 获取facade后面的根对象
+	 * 得到facade后面的根对象
      *
      * @return mixed
      */
@@ -160,7 +183,7 @@ abstract class Facade
 
     /**
      * Get the registered name of the component.
-	 * 获取组件的注册名称
+	 * 得到组件的注册名称
      *
      * @return string
      *
@@ -173,7 +196,7 @@ abstract class Facade
 
     /**
      * Resolve the facade root instance from the container.
-	 * 从容器中解析facade根实例
+	 * 解析facade根实例从容器中
      *
      * @param  object|string  $name
      * @return mixed
@@ -218,7 +241,7 @@ abstract class Facade
 
     /**
      * Get the application instance behind the facade.
-	 * 获取facade后面的应用程序实例
+	 * 得到facade后面的应用程序实例
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */
@@ -241,10 +264,10 @@ abstract class Facade
 
     /**
      * Handle dynamic, static calls to the object.
-	 * 处理对对象的动态、静态调用。
+	 * 处理动态调取方法
      *
      * @param  string  $method
-     * @param  array   $args
+     * @param  array  $args
      * @return mixed
      *
      * @throws \RuntimeException

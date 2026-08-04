@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，基础，控制台，Listener Make 命令
+ * 基础，监听者生成命令
  */
 
 namespace Illuminate\Foundation\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 class ListenerMakeCommand extends GeneratorCommand
@@ -37,7 +37,7 @@ class ListenerMakeCommand extends GeneratorCommand
 
     /**
      * Build the class with the given name.
-	 * 用给定的名称构建类
+	 * 构建类用给定的名称
      *
      * @param  string  $name
      * @return string
@@ -65,7 +65,7 @@ class ListenerMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 获取生成器的存根文件
+	 * 得到生成器的存根文件
      *
      * @return string
      */
@@ -96,7 +96,7 @@ class ListenerMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认名称空间
+	 * 得到类的默认名称空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -108,7 +108,7 @@ class ListenerMakeCommand extends GeneratorCommand
 
     /**
      * Get the console command options.
-	 * 获取控制台命令选项
+	 * 得到控制台命令选项
      *
      * @return array
      */

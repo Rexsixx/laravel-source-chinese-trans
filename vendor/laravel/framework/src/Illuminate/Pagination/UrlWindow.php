@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，分页，Url 窗口
+ * 分页，分页URL窗体
  */
 
 namespace Illuminate\Pagination;
@@ -19,7 +19,7 @@ class UrlWindow
 
     /**
      * Create a new URL window instance.
-	 * 创建一个新的URL窗口实例
+	 * 创建新的URL窗体实例
      *
      * @param  \Illuminate\Contracts\Pagination\LengthAwarePaginator  $paginator
      * @return void
@@ -31,7 +31,7 @@ class UrlWindow
 
     /**
      * Create a new URL window instance.
-	 * 创建一个新的URL窗口实例
+	 * 创建新的URL窗体实例
      *
      * @param  \Illuminate\Contracts\Pagination\LengthAwarePaginator  $paginator
      * @return array
@@ -43,7 +43,7 @@ class UrlWindow
 
     /**
      * Get the window of URLs to be shown.
-	 * 获取要显示的url窗口
+	 * 得到要显示的url窗口
      *
      * @return array
      */
@@ -60,7 +60,7 @@ class UrlWindow
 
     /**
      * Get the slider of URLs there are not enough pages to slide.
-	 * 获取url的滑块，因为没有足够的页面可以滑动。
+	 * 得到URL的滑块，因为没有足够的页面可以滑动
      *
      * @return array
      */
@@ -75,7 +75,7 @@ class UrlWindow
 
     /**
      * Create a URL slider links.
-	 * 创建一个URL滑块链接
+	 * 创建URL滑块链接
      *
      * @param  int  $onEachSide
      * @return array
@@ -91,8 +91,8 @@ class UrlWindow
         // If the current page is very close to the beginning of the page range, we will
         // just render the beginning of the page range, followed by the last 2 of the
         // links in this list, since we will not have room to create a full slider.
-		// 如果当前页面距离页面范围的起始位置非常近，我们将只渲染页面范围的起始部分，
-		// 然后展示此列表中的最后两个链接，因为我们没有足够的空间来创建完整的滑块。
+		// 如果当前页面非常接近页面范围的开头，我们将只呈现页面范围的开始，
+		// 然后是此列表中的最后2个链接，因为我们没有空间创建完整的滑块。
         if ($this->currentPage() <= $window) {
             return $this->getSliderTooCloseToBeginning($window);
         }
@@ -100,8 +100,8 @@ class UrlWindow
         // If the current page is close to the ending of the page range we will just get
         // this first couple pages, followed by a larger window of these ending pages
         // since we're too close to the end of the list to create a full on slider.
-		// 如果当前页面接近页面范围的末尾，我们将只获取这开头的几页，
-		// 然后接着显示这部分末尾的更多页面，因为此时我们距离列表的末尾太近了，无法创建完整的滑动窗口。
+		// 如果当前页面接近页面范围的末尾，我们将只得到前几页，然后是这些结束页面的较大窗口，
+		// 因为我们离列表末尾太近，无法创建完整的滑块。
         elseif ($this->currentPage() > ($this->lastPage() - $window)) {
             return $this->getSliderTooCloseToEnding($window);
         }
@@ -109,14 +109,14 @@ class UrlWindow
         // If we have enough room on both sides of the current page to build a slider we
         // will surround it with both the beginning and ending caps, with this window
         // of pages in the middle providing a Google style sliding paginator setup.
-		// 如果当前页面两侧有足够的空间来设置滑动条，我们将用起始和结束的帽状装饰将其环绕起来，
-		// 而在中间的这一段页面区域则会形成类似谷歌风格的滑动分页器布局。
+		// 如果我们在当前页面的两侧都有足够的空间来构建一个滑块，我们将用首字母和尾字母围绕它，
+		// 中间的页面窗口提供谷歌风格的滑动分页器设置。
         return $this->getFullSlider($onEachSide);
     }
 
     /**
      * Get the slider of URLs when too close to beginning of window.
-	 * 当太接近窗口开始时，获取url的滑动条。
+	 * 得到url的滑动条，当太接近窗口开始时。
      *
      * @param  int  $window
      * @return array
@@ -132,7 +132,7 @@ class UrlWindow
 
     /**
      * Get the slider of URLs when too close to ending of window.
-	 * 当太接近窗口结束时获取url的滑动条
+	 * 得到url的滑动条当太接近窗口结束时
      *
      * @param  int  $window
      * @return array
@@ -153,7 +153,7 @@ class UrlWindow
 
     /**
      * Get the slider of URLs when a full slider can be made.
-	 * 当一个完整的滑块可以制作时，获取url的滑块。
+	 * 得到url的滑块当一个完整的滑块可以制作时
      *
      * @param  int  $onEachSide
      * @return array
@@ -169,7 +169,7 @@ class UrlWindow
 
     /**
      * Get the page range for the current page window.
-	 * 获取当前页窗口的页范围
+	 * 得到当前页窗口的页范围
      *
      * @param  int  $onEachSide
      * @return array
@@ -184,7 +184,7 @@ class UrlWindow
 
     /**
      * Get the starting URLs of a pagination slider.
-	 * 获取分页滑块的起始url
+	 * 得到分页滑块的起始URl
      *
      * @return array
      */
@@ -195,7 +195,7 @@ class UrlWindow
 
     /**
      * Get the ending URLs of a pagination slider.
-	 * 获取分页滑块的结束url
+	 * 得到分页滑块的结束URL
      *
      * @return array
      */
@@ -220,7 +220,7 @@ class UrlWindow
 
     /**
      * Get the current page from the paginator.
-	 * 从分页器获取当前页
+	 * 得到当前页从分页器
      *
      * @return int
      */
@@ -231,7 +231,7 @@ class UrlWindow
 
     /**
      * Get the last page from the paginator.
-	 * 从分页器获取最后一页
+	 * 得到最后一页从分页器
      *
      * @return int
      */

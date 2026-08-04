@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，Http缓存，存储
- */
 
 /*
  * This file is part of the Symfony package.
@@ -22,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Store implements all the logic for storing cache metadata (Request and Response headers).
- * 存储实现存储缓存元数据(请求和响应头)的所有逻辑。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -30,29 +26,19 @@ class Store implements StoreInterface
 {
     protected $root;
     private $keyCache;
-    private $locks = [];
-    private $options;
+    private $locks;
 
     /**
-     * Constructor.
-     *
-     * The available options are:
-     *
-     *   * private_headers  Set of response headers that should not be stored
-     *                      when a response is cached. (default: Set-Cookie)
-     *
      * @throws \RuntimeException
      */
-    public function __construct(string $root, array $options = [])
+    public function __construct(string $root)
     {
         $this->root = $root;
         if (!file_exists($this->root) && !@mkdir($this->root, 0777, true) && !is_dir($this->root)) {
             throw new \RuntimeException(sprintf('Unable to create the store directory (%s).', $this->root));
         }
         $this->keyCache = new \SplObjectStorage();
-        $this->options = array_merge([
-            'private_headers' => ['Set-Cookie'],
-        ], $options);
+        $this->locks = [];
     }
 
     /**
@@ -228,10 +214,6 @@ class Store implements StoreInterface
 
         $headers = $this->persistResponse($response);
         unset($headers['age']);
-
-        foreach ($this->options['private_headers'] as $h) {
-            unset($headers[strtolower($h)]);
-        }
 
         array_unshift($entries, [$storedEnv, $headers]);
 

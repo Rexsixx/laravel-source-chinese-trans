@@ -1,14 +1,15 @@
 <?php
 /**
- * Illuminate，基础，测试，问题，模拟应用程序服务
+ * 基础，模拟应用程序服务
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;
 
-use Mockery;
 use Illuminate\Contracts\Bus\Dispatcher as BusDispatcherContract;
 use Illuminate\Contracts\Events\Dispatcher as EventsDispatcherContract;
 use Illuminate\Contracts\Notifications\Dispatcher as NotificationDispatcher;
+use Illuminate\Support\Facades\Event;
+use Mockery;
 
 trait MocksApplicationServices
 {
@@ -22,7 +23,7 @@ trait MocksApplicationServices
 
     /**
      * All of the fired model events.
-	 * 所有触发的模型事件
+	 * 所有被触发的模型事件
      *
      * @var array
      */
@@ -30,7 +31,7 @@ trait MocksApplicationServices
 
     /**
      * All of the dispatched jobs.
-	 * 所有的派遣工作
+	 * 所有被分派工作
      *
      * @var array
      */
@@ -38,7 +39,7 @@ trait MocksApplicationServices
 
     /**
      * All of the dispatched notifications.
-	 * 所有已调度的通知
+	 * 所有被分派通知
      *
      * @var array
      */
@@ -46,10 +47,9 @@ trait MocksApplicationServices
 
     /**
      * Specify a list of events that should be fired for the given operation.
-	 * 指定应该为给定操作触发的事件列表。
+	 * 指定应该为给定操作触发的事件列表
      *
      * These events will be mocked, so that handlers will not actually be executed.
-	 * 这些事件将被模拟，因此处理程序实际上不会被执行。
      *
      * @param  array|string  $events
      * @return $this
@@ -79,7 +79,6 @@ trait MocksApplicationServices
 	 * 指定不应为给定操作触发的事件列表
      *
      * These events will be mocked, so that handlers will not actually be executed.
-	 * 这些事件将被模拟，因此处理程序实际上不会被执行。
      *
      * @param  array|string  $events
      * @return $this
@@ -102,7 +101,7 @@ trait MocksApplicationServices
 
     /**
      * Mock the event dispatcher so all events are silenced and collected.
-	 * 模拟事件调度程序，以便静默和收集所有事件。
+	 * 模拟事件调度程序，以便静默和收集所有事件
      *
      * @return $this
      */
@@ -113,6 +112,8 @@ trait MocksApplicationServices
         $mock->shouldReceive('dispatch', 'until')->andReturnUsing(function ($called) {
             $this->firedEvents[] = $called;
         });
+
+        Event::clearResolvedInstances();
 
         $this->app->instance('events', $mock);
 
@@ -133,10 +134,9 @@ trait MocksApplicationServices
 
     /**
      * Specify a list of jobs that should be dispatched for the given operation.
-	 * 指定应该为给定操作分派的作业列表。
+	 * 指定应该为给定操作分派的作业列表
      *
      * These jobs will be mocked, so that handlers will not actually be executed.
-	 * 这些作业将被模拟，因此处理程序实际上不会被执行。
      *
      * @param  array|string  $jobs
      * @return $this
@@ -161,10 +161,9 @@ trait MocksApplicationServices
 
     /**
      * Specify a list of jobs that should not be dispatched for the given operation.
-	 * 指定不应为给定操作分派的作业列表。
+	 * 指定不应为给定操作分派的作业列表
      *
      * These jobs will be mocked, so that handlers will not actually be executed.
-	 * 这些作业将被模拟，因此处理程序实际上不会被执行。
      *
      * @param  array|string  $jobs
      * @return $this
@@ -187,7 +186,7 @@ trait MocksApplicationServices
 
     /**
      * Mock the job dispatcher so all jobs are silenced and collected.
-	 * 模拟作业调度器，使所有作业静默并收集。
+	 * 模拟作业调度器，使所有作业静默并收集
      *
      * @return $this
      */
@@ -208,7 +207,7 @@ trait MocksApplicationServices
 
     /**
      * Filter the given jobs against the dispatched jobs.
-	 * 根据分派的作业筛选给定的作业
+	 * 筛选给定的作业根据分派的作业
      *
      * @param  array  $jobs
      * @return array
@@ -220,7 +219,7 @@ trait MocksApplicationServices
 
     /**
      * Filter the given classes against an array of dispatched classes.
-	 * 根据分派的类数组筛选给定的类
+	 * 筛选给定的类根据分派的类数组
      *
      * @param  array  $classes
      * @param  array  $dispatched

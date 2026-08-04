@@ -1,18 +1,18 @@
 <?php
 /**
- * Illuminate，Http，异常，节流请求异常
+ * Http，节流请求异常
  */
 
 namespace Illuminate\Http\Exceptions;
 
 use Exception;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
-class ThrottleRequestsException extends HttpException
+class ThrottleRequestsException extends TooManyRequestsHttpException
 {
     /**
-     * Create a new exception instance.
-	 * 创建一个新的异常实例
+     * Create a new throttle requests exception instance.
+	 * 创建新的节流请求异常实例
      *
      * @param  string|null  $message
      * @param  \Exception|null  $previous
@@ -22,6 +22,6 @@ class ThrottleRequestsException extends HttpException
      */
     public function __construct($message = null, Exception $previous = null, array $headers = [], $code = 0)
     {
-        parent::__construct(429, $message, $previous, $headers, $code);
+        parent::__construct(null, $message, $previous, $code, $headers);
     }
 }

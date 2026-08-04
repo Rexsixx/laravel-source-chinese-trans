@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，翻译，文件加载器
+ * 翻译，文件加载
  */
 
 namespace Illuminate\Translation;
 
-use RuntimeException;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Translation\Loader;
+use Illuminate\Filesystem\Filesystem;
+use RuntimeException;
 
 class FileLoader implements Loader
 {
@@ -21,7 +21,7 @@ class FileLoader implements Loader
 
     /**
      * The default path for the loader.
-	 * 加载器的默认路径
+	 * 默认路径
      *
      * @var string
      */
@@ -29,7 +29,7 @@ class FileLoader implements Loader
 
     /**
      * All of the registered paths to JSON translation files.
-	 * 所有注册到JSON翻译文件的路径
+	 * 所有已注册命名空间的数组
      *
      * @var array
      */
@@ -45,7 +45,7 @@ class FileLoader implements Loader
 
     /**
      * Create a new file loader instance.
-	 * 创建一个新的文件加载器实例
+	 * 创建新的文件加载实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string  $path
@@ -122,7 +122,7 @@ class FileLoader implements Loader
 
     /**
      * Load a locale from a given path.
-	 * 从给定路径加载区域设置
+	 * 加载区域设置从给定路径
      *
      * @param  string  $path
      * @param  string  $locale
@@ -167,7 +167,7 @@ class FileLoader implements Loader
 
     /**
      * Add a new namespace to the loader.
-	 * 向加载器添加一个新的命名空间
+	 * 添加一个新的命名空间至加载器
      *
      * @param  string  $namespace
      * @param  string  $hint
@@ -192,7 +192,7 @@ class FileLoader implements Loader
 
     /**
      * Get an array of all the registered namespaces.
-	 * 获取所有已注册名称空间的数组
+	 * 得到所有已注册名称空间的数组
      *
      * @return array
      */

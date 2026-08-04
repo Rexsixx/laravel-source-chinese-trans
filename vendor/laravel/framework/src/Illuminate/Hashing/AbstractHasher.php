@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，哈希算法，抽象的哈希
+ * 哈希，抽象类
  */
 
 namespace Illuminate\Hashing;
@@ -9,9 +9,9 @@ abstract class AbstractHasher
 {
     /**
      * Get information about the given hashed value.
-	 * 获取有关给定散列值的信息
+	 * 得到信息关于给定哈希值
      *
-     * @param  string $hashedValue
+     * @param  string  $hashedValue
      * @return array
      */
     public function info($hashedValue)
@@ -21,7 +21,7 @@ abstract class AbstractHasher
 
     /**
      * Check the given plain value against a hash.
-	 * 根据散列检查给定的普通值
+	 * 检查散列给定的普通值
      *
      * @param  string  $value
      * @param  string  $hashedValue

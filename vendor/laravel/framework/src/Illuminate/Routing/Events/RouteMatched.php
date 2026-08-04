@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由选择，事件，路由已匹配
+ * 路由，事件，路由匹配
  */
 
 namespace Illuminate\Routing\Events;
@@ -25,7 +25,7 @@ class RouteMatched
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  \Illuminate\Http\Request  $request

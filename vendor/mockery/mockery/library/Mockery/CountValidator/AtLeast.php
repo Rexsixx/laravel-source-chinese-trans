@@ -30,7 +30,6 @@ class AtLeast extends CountValidatorAbstract
 {
     /**
      * Checks if the validator can accept an additional nth call
-	 * 检查验证器是否接受额外的nth调用
      *
      * @param int $n
      * @return bool

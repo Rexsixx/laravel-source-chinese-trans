@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，电子邮件，邮件队列
+ * 契约，邮件队列接口
  */
 
 namespace Illuminate\Contracts\Mail;
@@ -9,9 +9,9 @@ interface MailQueue
 {
     /**
      * Queue a new e-mail message for sending.
-	 * 将要发送的新电子邮件排队
+	 * 队列新邮件待发送
      *
-     * @param  string|array|\Illuminate\Contracts\Mail\Mailable  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
      * @param  string|null  $queue
      * @return mixed
      */
@@ -19,10 +19,10 @@ interface MailQueue
 
     /**
      * Queue a new e-mail message for sending after (n) seconds.
-	 * 等待(n)秒后发送新的电子邮件
+	 * 队列新邮件等待时间
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
-     * @param  string|array|\Illuminate\Contracts\Mail\Mailable  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
      * @param  string|null  $queue
      * @return mixed
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Prophecy，Php文档，类和接口标记检索
+ * Prophecy，Php文件编制程序，类和接口标记检索器
  */
 
 /*
@@ -14,6 +14,7 @@
 
 namespace Prophecy\PhpDocumentor;
 
+use phpDocumentor\Reflection\DocBlock\Tag\MethodTag as LegacyMethodTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Method;
 
 /**
@@ -23,12 +24,9 @@ use phpDocumentor\Reflection\DocBlock\Tags\Method;
  */
 final class ClassAndInterfaceTagRetriever implements MethodTagRetrieverInterface
 {
-    /**
-     * @var MethodTagRetrieverInterface
-     */
     private $classRetriever;
 
-    public function __construct(?MethodTagRetrieverInterface $classRetriever = null)
+    public function __construct(MethodTagRetrieverInterface $classRetriever = null)
     {
         if (null !== $classRetriever) {
             $this->classRetriever = $classRetriever;
@@ -36,9 +34,17 @@ final class ClassAndInterfaceTagRetriever implements MethodTagRetrieverInterface
             return;
         }
 
-        $this->classRetriever = new ClassTagRetriever();
+        $this->classRetriever = class_exists('phpDocumentor\Reflection\DocBlockFactory') && class_exists('phpDocumentor\Reflection\Types\ContextFactory')
+            ? new ClassTagRetriever()
+            : new LegacyClassTagRetriever()
+        ;
     }
 
+    /**
+     * @param \ReflectionClass $reflectionClass
+     *
+     * @return LegacyMethodTag[]|Method[]
+     */
     public function getTagList(\ReflectionClass $reflectionClass)
     {
         return array_merge(
@@ -48,16 +54,16 @@ final class ClassAndInterfaceTagRetriever implements MethodTagRetrieverInterface
     }
 
     /**
-     * @param \ReflectionClass<object> $reflectionClass
+     * @param \ReflectionClass $reflectionClass
      *
-     * @return list<Method>
+     * @return LegacyMethodTag[]|Method[]
      */
     private function getInterfacesTagList(\ReflectionClass $reflectionClass)
     {
         $interfaces = $reflectionClass->getInterfaces();
         $tagList = array();
 
-        foreach ($interfaces as $interface) {
+        foreach($interfaces as $interface) {
             $tagList = array_merge($tagList, $this->classRetriever->getTagList($interface));
         }
 

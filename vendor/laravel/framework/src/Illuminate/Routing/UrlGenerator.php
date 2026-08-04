@@ -1,20 +1,21 @@
 <?php
 /**
- * Illuminate，路由选择，Url 生成器
+ * 路由，URL生成器
  */
 
 namespace Illuminate\Routing;
 
 use Closure;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use InvalidArgumentException;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Traits\Macroable;
-use Illuminate\Support\InteractsWithTime;
-use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Contracts\Routing\UrlGenerator as UrlGeneratorContract;
+use Illuminate\Contracts\Routing\UrlRoutable;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\InteractsWithTime;
+use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
+use InvalidArgumentException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class UrlGenerator implements UrlGeneratorContract
 {
@@ -22,7 +23,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * The route collection.
-	 * 路由集合
+	 * 路由收集
      *
      * @var \Illuminate\Routing\RouteCollection
      */
@@ -38,7 +39,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * The asset root URL.
-	 * 资产根URL
+	 * 资源根URL
      *
      * @var string
      */
@@ -54,7 +55,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * The forced scheme for URLs.
-	 * url的强制方案
+	 * URL强制方案
      *
      * @var string
      */
@@ -86,7 +87,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * The session resolver callable.
-	 * 可调用的会话解析器
+	 * 会话解析器回调
      *
      * @var callable
      */
@@ -94,7 +95,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * The encryption key resolver callable.
-	 * 可调用的加密密钥解析器
+	 * 可调用的加密解析器
      *
      * @var callable
      */
@@ -126,7 +127,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Create a new URL Generator instance.
-	 * 创建一个新的URL生成器实例
+	 * 创建新的URL生成器实例
      *
      * @param  \Illuminate\Routing\RouteCollection  $routes
      * @param  \Illuminate\Http\Request  $request
@@ -143,7 +144,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Get the full URL for the current request.
-	 * 获取当前请求的完整URL
+	 * 得到当前请求的完整URL
      *
      * @return string
      */
@@ -154,7 +155,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Get the current URL for the request.
-	 * 获取请求的当前URL
+	 * 得到当前URL请求
      *
      * @return string
      */
@@ -165,7 +166,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Get the URL for the previous request.
-	 * 获取前一个请求的URL
+	 * 得到前一个请求的URL
      *
      * @param  mixed  $fallback
      * @return string
@@ -187,7 +188,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Get the previous URL from the session if possible.
-	 * 如果可能的话，从会话中获取前一个URL。
+	 * 从会话中得到前一个URL，如果可能的话。
      *
      * @return string|null
      */
@@ -212,8 +213,8 @@ class UrlGenerator implements UrlGeneratorContract
         // First we will check if the URL is already a valid URL. If it is we will not
         // try to generate a new one but will simply return the URL as is, which is
         // convenient since developers do not always have to check if it's valid.
-		// 首先，我们会检查该 URL 是否已经是一个有效的 URL。如果它是有效的，我们就不会尝试生成一个新的 URL，
-		// 而是直接返回该 URL 的原样，这样做比较方便，因为开发人员并不总是需要检查其是否有效。
+		// 首先，我们将检查URL是否已经是有效的URL。
+		// 如果是，我们将不会尝试生成新的URL，而只会按原样返回URL，这很方便，因为开发人员不必总是检查它是否有效。
         if ($this->isValidUrl($path)) {
             return $path;
         }
@@ -225,8 +226,8 @@ class UrlGenerator implements UrlGeneratorContract
         // Once we have the scheme we will compile the "tail" by collapsing the values
         // into a single string delimited by slashes. This just makes it convenient
         // for passing the array of parameters to this URL as a list of segments.
-		// 一旦我们制定了方案，就会通过将各项值合并成一个由斜杠分隔的字符串的方式来完成“尾部”部分的编写工作。
-		// 这使得将参数数组以一系列片段的形式传递到这个 URL 就变得十分方便了。
+		// 一旦我们有了方案，我们将通过将值折叠成一个由斜线分隔的字符串来编译"尾部"。
+		// 这只是为了方便将参数数组作为段列表传递给此URL。
         $root = $this->formatRoot($this->formatScheme($secure));
 
         [$path, $query] = $this->extractQueryString($path);
@@ -241,7 +242,7 @@ class UrlGenerator implements UrlGeneratorContract
 	 * 生成给定路径的安全的绝对URL
      *
      * @param  string  $path
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return string
      */
     public function secure($path, $parameters = [])
@@ -266,8 +267,8 @@ class UrlGenerator implements UrlGeneratorContract
         // Once we get the root URL, we will check to see if it contains an index.php
         // file in the paths. If it does, we will remove it since it is not needed
         // for asset paths, but only for routes to endpoints in the application.
-		// 一旦我们获取到根 URL，我们就会检查该路径中是否包含名为“index.php”的文件。
-		// 如果确实如此，我们将将其删除，因为它对于资产路径来说并非必需，而只是用于应用程序中到端点的路径。
+		// 获取根URL后，我们将检查路径中是否包含index.php文件。
+		// 如果是这样，我们将删除它，因为它不需要用于资产路径，而只需要用于到应用程序中端点的路由。
         $root = $this->assetRoot
                     ? $this->assetRoot
                     : $this->formatRoot($this->formatScheme($secure));
@@ -289,7 +290,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Generate the URL to an asset from a custom root domain such as CDN, etc.
-	 * 从自定义根域（如CDN等）生成到资产的URL
+	 * 从自定义根域(如CDN等)生成到资产的URL
      *
      * @param  string  $root
      * @param  string  $path
@@ -301,8 +302,8 @@ class UrlGenerator implements UrlGeneratorContract
         // Once we get the root URL, we will check to see if it contains an index.php
         // file in the paths. If it does, we will remove it since it is not needed
         // for asset paths, but only for routes to endpoints in the application.
-		// 一旦我们获取到根 URL，我们就会检查该路径中是否包含名为“index.php”的文件。
-		// 如果确实如此，我们将将其删除，因为它对于资产路径来说并非必需，而只是用于应用程序中到端点的路径。
+		// 一旦获取根URL后，我们将检查路径中是否包含index.php文件。
+		// 如果是这样，我们将删除它，因为它不需要用于资产路径，而只需要用于到应用程序中端点的路由。
         $root = $this->formatRoot($this->formatScheme($secure), $root);
 
         return $this->removeIndex($root).'/'.trim($path, '/');
@@ -310,7 +311,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Remove the index.php file from a path.
-	 * 从路径中删除index.php文件
+	 * 删除index.php文件从路径中
      *
      * @param  string  $root
      * @return string
@@ -324,7 +325,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Get the default scheme for a raw URL.
-	 * 获取原始URL的默认模式
+	 * 得到原始URL的默认模式
      *
      * @param  bool|null  $secure
      * @return string
@@ -344,17 +345,21 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Create a signed route URL for a named route.
-	 * 为命名路由创建签名路由URL
+	 * 创建签名路由URL为命名路由
      *
      * @param  string  $name
-     * @param  array  $parameters
+     * @param  mixed  $parameters
      * @param  \DateTimeInterface|\DateInterval|int|null  $expiration
      * @param  bool  $absolute
      * @return string
+     *
+     * @throws \InvalidArgumentException
      */
     public function signedRoute($name, $parameters = [], $expiration = null, $absolute = true)
     {
-        $parameters = $this->formatParameters($parameters);
+        $this->ensureSignedRouteParametersAreNotReserved(
+            $parameters = $this->formatParameters($parameters)
+        );
 
         if ($expiration) {
             $parameters = $parameters + ['expires' => $this->availableAt($expiration)];
@@ -370,8 +375,30 @@ class UrlGenerator implements UrlGeneratorContract
     }
 
     /**
+     * Ensure the given signed route parameters are not reserved.
+	 * 确保给定的签名路由参数不被保留
+     *
+     * @param  mixed  $parameters
+     * @return void
+     */
+    protected function ensureSignedRouteParametersAreNotReserved($parameters)
+    {
+        if (array_key_exists('signature', $parameters)) {
+            throw new InvalidArgumentException(
+                '"Signature" is a reserved parameter when generating signed routes. Please rename your route parameter.'
+            );
+        }
+
+        if (array_key_exists('expires', $parameters)) {
+            throw new InvalidArgumentException(
+                '"Expires" is a reserved parameter when generating signed routes. Please rename your route parameter.'
+            );
+        }
+    }
+
+    /**
      * Create a temporary signed route URL for a named route.
-	 * 为命名路由创建临时签名路由URL
+	 * 创建临时签名路由URL为路由
      *
      * @param  string  $name
      * @param  \DateTimeInterface|\DateInterval|int  $expiration
@@ -394,30 +421,55 @@ class UrlGenerator implements UrlGeneratorContract
      */
     public function hasValidSignature(Request $request, $absolute = true)
     {
+        return $this->hasCorrectSignature($request, $absolute)
+            && $this->signatureHasNotExpired($request);
+    }
+
+    /**
+     * Determine if the signature from the given request matches the URL.
+	 * 确定来自给定请求的签名是否与URL匹配
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  bool  $absolute
+     * @return bool
+     */
+    public function hasCorrectSignature(Request $request, $absolute = true)
+    {
         $url = $absolute ? $request->url() : '/'.$request->path();
 
         $original = rtrim($url.'?'.Arr::query(
             Arr::except($request->query(), 'signature')
         ), '?');
 
-        $expires = $request->query('expires');
-
         $signature = hash_hmac('sha256', $original, call_user_func($this->keyResolver));
 
-        return hash_equals($signature, (string) $request->query('signature', '')) &&
-               ! ($expires && Carbon::now()->getTimestamp() > $expires);
+        return hash_equals($signature, (string) $request->query('signature', ''));
+    }
+
+    /**
+     * Determine if the expires timestamp from the given request is not from the past.
+	 * 确定给定请求的过期时间戳是否不是过去的
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    public function signatureHasNotExpired(Request $request)
+    {
+        $expires = $request->query('expires');
+
+        return ! ($expires && Carbon::now()->getTimestamp() > $expires);
     }
 
     /**
      * Get the URL to a named route.
-	 * 获取一个命名路由的URL
+	 * 得到一个命名路由的URL
      *
      * @param  string  $name
-     * @param  mixed   $parameters
+     * @param  mixed  $parameters
      * @param  bool  $absolute
      * @return string
      *
-     * @throws \InvalidArgumentException
+     * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
      */
     public function route($name, $parameters = [], $absolute = true)
     {
@@ -425,21 +477,21 @@ class UrlGenerator implements UrlGeneratorContract
             return $this->toRoute($route, $parameters, $absolute);
         }
 
-        throw new InvalidArgumentException("Route [{$name}] not defined.");
+        throw new RouteNotFoundException("Route [{$name}] not defined.");
     }
 
     /**
      * Get the URL for a given route instance.
-	 * 获取给定路由实例的URL
+	 * 得到给定路由实例的URL
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  mixed  $parameters
-     * @param  bool   $absolute
+     * @param  bool  $absolute
      * @return string
      *
      * @throws \Illuminate\Routing\Exceptions\UrlGenerationException
      */
-    protected function toRoute($route, $parameters, $absolute)
+    public function toRoute($route, $parameters, $absolute)
     {
         return $this->routeUrl()->to(
             $route, $this->formatParameters($parameters), $absolute
@@ -448,11 +500,11 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Get the URL to a controller action.
-	 * 获取一个控制器动作的URL
+	 * 得到一个控制器动作的URL
      *
      * @param  string|array  $action
-     * @param  mixed   $parameters
-     * @param  bool    $absolute
+     * @param  mixed  $parameters
+     * @param  bool  $absolute
      * @return string
      *
      * @throws \InvalidArgumentException
@@ -508,7 +560,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Extract the query string from the given path.
-	 * 从给定的路径中提取查询字符串
+	 * 提取查询字符串从给定的路径中
      *
      * @param  string  $path
      * @return array
@@ -527,7 +579,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Get the base URL for the request.
-	 * 获取请求的基URL
+	 * 得到请求的基本URL
      *
      * @param  string  $scheme
      * @param  string|null  $root
@@ -581,7 +633,7 @@ class UrlGenerator implements UrlGeneratorContract
      */
     public function isValidUrl($path)
     {
-        if (! preg_match('~^(#|//|https?://|mailto:|tel:)~', $path)) {
+        if (! preg_match('~^(#|//|https?://|(mailto|tel|sms):)~', $path)) {
             return filter_var($path, FILTER_VALIDATE_URL) !== false;
         }
 
@@ -590,7 +642,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Get the Route URL generator instance.
-	 * 获取路由URL生成器实例
+	 * 得到路由URL生成器实例
      *
      * @return \Illuminate\Routing\RouteUrlGenerator
      */
@@ -617,7 +669,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Get the default named parameters used by the URL generator.
-	 * 获取URL生成器使用的默认命名参数
+	 * 得到URL生成器使用的默认命名参数
      *
      * @return array
      */
@@ -628,7 +680,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Force the scheme for URLs.
-	 * 强制url的方案
+	 * 强制URL方案
      *
      * @param  string  $scheme
      * @return void
@@ -684,7 +736,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Get the path formatter being used by the URL generator.
-	 * 获取URL生成器正在使用的路径格式化程序
+	 * 得到URL生成器正在使用的路径格式化程序
      *
      * @return \Closure
      */
@@ -697,7 +749,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Get the request instance.
-	 * 获取请求实例
+	 * 得到请求实例
      *
      * @return \Illuminate\Http\Request
      */
@@ -708,7 +760,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Set the current request instance.
-	 * 设置当前请求实例
+	 * 设置当前请求实例 
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void
@@ -724,7 +776,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Set the route collection.
-	 * 设置路由收集
+	 * 设置路由集合
      *
      * @param  \Illuminate\Routing\RouteCollection  $routes
      * @return $this
@@ -738,7 +790,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Get the session implementation from the resolver.
-	 * 从解析器获取会话实现
+	 * 得到会话实现从解析器
      *
      * @return \Illuminate\Session\Store|null
      */
@@ -751,7 +803,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * Set the session resolver for the generator.
-	 * 为生成器设置会话解析器
+	 * 设置会话解析器为生成器
      *
      * @param  callable  $sessionResolver
      * @return $this

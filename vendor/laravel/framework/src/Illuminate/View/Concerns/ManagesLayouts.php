@@ -1,12 +1,13 @@
 <?php
 /**
- * Illuminate，视图，问题，管理布局
+ * 视图，管理布局
  */
 
 namespace Illuminate\View\Concerns;
 
-use InvalidArgumentException;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 trait ManagesLayouts
 {
@@ -33,6 +34,14 @@ trait ManagesLayouts
      * @var mixed
      */
     protected static $parentPlaceholder = [];
+
+    /**
+     * The parent placeholder salt for the request.
+	 * 请求的父占位符
+     *
+     * @var string
+     */
+    protected static $parentPlaceholderSalt;
 
     /**
      * Start injecting content into a section.
@@ -68,7 +77,7 @@ trait ManagesLayouts
 
     /**
      * Stop injecting content into a section and return its contents.
-	 * 停止向节中注入内容，并返回其内容。
+	 * 停止向节中注入内容并返回其内容
      *
      * @return string
      */
@@ -109,7 +118,7 @@ trait ManagesLayouts
 
     /**
      * Stop injecting content into a section and append it.
-	 * 停止向节中注入内容，并将其追加。
+	 * 停止向节中注入内容并将其追加
      *
      * @return string
      *
@@ -134,7 +143,7 @@ trait ManagesLayouts
 
     /**
      * Append content to a given section.
-	 * 向给定的部分追加内容
+	 * 追加内容向给定的部分
      *
      * @param  string  $section
      * @param  string  $content
@@ -151,7 +160,7 @@ trait ManagesLayouts
 
     /**
      * Get the string contents of a section.
-	 * 获取节的字符串内容
+	 * 得到节的字符串内容
      *
      * @param  string  $section
      * @param  string  $default
@@ -174,7 +183,7 @@ trait ManagesLayouts
 
     /**
      * Get the parent placeholder for the current request.
-	 * 获取当前请求的父占位符
+	 * 得到当前请求的父占位符
      *
      * @param  string  $section
      * @return string
@@ -182,10 +191,27 @@ trait ManagesLayouts
     public static function parentPlaceholder($section = '')
     {
         if (! isset(static::$parentPlaceholder[$section])) {
-            static::$parentPlaceholder[$section] = '##parent-placeholder-'.sha1($section).'##';
+            $salt = static::parentPlaceholderSalt();
+
+            static::$parentPlaceholder[$section] = '##parent-placeholder-'.sha1($salt.$section).'##';
         }
 
         return static::$parentPlaceholder[$section];
+    }
+
+    /**
+     * Get the parent placeholder salt.
+	 * 得到父占位符salt
+     *
+     * @return string
+     */
+    protected static function parentPlaceholderSalt()
+    {
+        if (! static::$parentPlaceholderSalt) {
+            return static::$parentPlaceholderSalt = Str::random(40);
+        }
+
+        return static::$parentPlaceholderSalt;
     }
 
     /**
@@ -202,7 +228,7 @@ trait ManagesLayouts
 
     /**
      * Get the contents of a section.
-	 * 获取一个节的内容
+	 * 得到一个节的内容
      *
      * @param  string  $name
      * @param  string|null  $default
@@ -215,7 +241,7 @@ trait ManagesLayouts
 
     /**
      * Get the entire array of sections.
-	 * 获取整个section数组
+	 * 得到整个section数组
      *
      * @return array
      */
@@ -226,7 +252,7 @@ trait ManagesLayouts
 
     /**
      * Flush all of the sections.
-	 * 冲洗所有的部分
+	 * 刷新所有的部分
      *
      * @return void
      */

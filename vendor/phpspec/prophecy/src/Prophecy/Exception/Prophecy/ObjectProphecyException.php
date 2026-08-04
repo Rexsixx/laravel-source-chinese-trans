@@ -1,7 +1,4 @@
 <?php
-/**
- * Prophecy，异常，预言，对象预言异常
- */
 
 /*
  * This file is part of the Prophecy.
@@ -20,10 +17,6 @@ class ObjectProphecyException extends \RuntimeException implements ProphecyExcep
 {
     private $objectProphecy;
 
-    /**
-     * @param string                 $message
-     * @param ObjectProphecy<object> $objectProphecy
-     */
     public function __construct($message, ObjectProphecy $objectProphecy)
     {
         parent::__construct($message);
@@ -32,7 +25,7 @@ class ObjectProphecyException extends \RuntimeException implements ProphecyExcep
     }
 
     /**
-     * @return ObjectProphecy<object>
+     * @return ObjectProphecy
      */
     public function getObjectProphecy()
     {

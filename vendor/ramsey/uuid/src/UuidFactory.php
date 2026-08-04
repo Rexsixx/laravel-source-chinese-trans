@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，Uuid 工厂
+ * Ramsey，Uuid，Uuid工厂
  */
 
 /**

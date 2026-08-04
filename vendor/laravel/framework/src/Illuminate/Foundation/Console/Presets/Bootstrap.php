@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，预先装置，引导程序
+ * 基础，启动
  */
 
 namespace Illuminate\Foundation\Console\Presets;
@@ -9,7 +9,7 @@ class Bootstrap extends Preset
 {
     /**
      * Install the preset.
-	 * 安装预设
+	 * 安装预先
      *
      * @return void
      */
@@ -22,7 +22,7 @@ class Bootstrap extends Preset
 
     /**
      * Update the given package array.
-	 * 更新给定的包数组
+	 * 更新给定包
      *
      * @param  array  $packages
      * @return array

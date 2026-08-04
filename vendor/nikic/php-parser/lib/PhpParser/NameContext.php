@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，名称上下文
- */
-
 namespace PhpParser;
 
 use PhpParser\Node\Name;
@@ -40,7 +36,7 @@ class NameContext
      *
      * @param Name|null $namespace Null is the global namespace
      */
-    public function startNamespace(?Name $namespace = null) {
+    public function startNamespace(Name $namespace = null) {
         $this->namespace = $namespace;
         $this->origAliases = $this->aliases = [
             Stmt\Use_::TYPE_NORMAL   => [],

@@ -1,9 +1,4 @@
 <?php declare(strict_types=1);
-
-/**
- * SebastianBergmann，Exporter，Exporter
- */
-
 /*
  * This file is part of exporter package.
  *
@@ -18,7 +13,6 @@ use SebastianBergmann\RecursionContext\Context;
 
 /**
  * A nifty utility for visualizing PHP variables.
- * 一种可视化PHP变量的漂亮实用工具。
  *
  * <code>
  * <?php
@@ -32,7 +26,6 @@ class Exporter
 {
     /**
      * Exports a value as a string
-	 * 将值作为字符串导出。
      *
      * The output of this method is similar to the output of print_r(), but
      * improved in various aspects:
@@ -59,7 +52,7 @@ class Exporter
      *
      * @return string
      */
-    public function shortenedRecursiveExport(&$data, ?Context $context = null)
+    public function shortenedRecursiveExport(&$data, Context $context = null)
     {
         $result   = [];
         $exporter = new self();
@@ -91,7 +84,6 @@ class Exporter
 
     /**
      * Exports a value into a single-line string
-	 * 将值导出到单线字符串中。
      *
      * The output of this method is similar to the output of
      * SebastianBergmann\Exporter\Exporter::export().
@@ -142,7 +134,6 @@ class Exporter
     /**
      * Converts an object to an array containing all of its private, protected
      * and public properties.
-	 * 将对象转换为包含其私有、受保护和公共属性的数组。
      *
      * @return array
      */
@@ -218,22 +209,8 @@ class Exporter
             return 'false';
         }
 
-        if (\is_float($value)) {
-            $precisionBackup = \ini_get('precision');
-
-            \ini_set('precision', '-1');
-
-            try {
-                $valueStr = @(string) $value;
-
-                if ((string) @(int) $value === $valueStr) {
-                    return $valueStr . '.0';
-                }
-
-                return $valueStr;
-            } finally {
-                \ini_set('precision', $precisionBackup);
-            }
+        if (\is_float($value) && (float) ((int) $value) === $value) {
+            return "$value.0";
         }
 
         if ($this->isClosedResource($value)) {

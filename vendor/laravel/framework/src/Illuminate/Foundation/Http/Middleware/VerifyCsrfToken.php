@@ -1,17 +1,20 @@
 <?php
 /**
- * Illuminate，基础，Http，中间件，验证 Csrf令牌
+ * 基础，Http中间件，验证令牌
  */
 
 namespace Illuminate\Foundation\Http\Middleware;
 
 use Closure;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Contracts\Encryption\Encrypter;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Cookie\CookieValuePrefix;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Session\TokenMismatchException;
 use Illuminate\Support\InteractsWithTime;
 use Symfony\Component\HttpFoundation\Cookie;
-use Illuminate\Contracts\Encryption\Encrypter;
-use Illuminate\Session\TokenMismatchException;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Cookie\Middleware\EncryptCookies;
 
 class VerifyCsrfToken
 {
@@ -19,7 +22,7 @@ class VerifyCsrfToken
 
     /**
      * The application instance.
-	 * 程序实例
+	 * 应用实例
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -35,7 +38,7 @@ class VerifyCsrfToken
 
     /**
      * The URIs that should be excluded from CSRF verification.
-	 * 应该从CSRF验证中排除的uri
+	 * 应该从CSRF验证中排除的URI
      *
      * @var array
      */
@@ -43,7 +46,7 @@ class VerifyCsrfToken
 
     /**
      * Indicates whether the XSRF-TOKEN cookie should be set on the response.
-	 * 指示是否应该在响应上设置XSRF-TOKEN cookie
+	 * 指明是否应该在响应上设置XSRF-TOKEN cookie
      *
      * @var bool
      */
@@ -51,7 +54,7 @@ class VerifyCsrfToken
 
     /**
      * Create a new middleware instance.
-	 * 创建一个新的中间件实例
+	 * 创建新的中间件实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
@@ -93,7 +96,7 @@ class VerifyCsrfToken
 
     /**
      * Determine if the HTTP request uses a ‘read’ verb.
-	 * 确定HTTP请求是否使用“read”谓词
+	 * 确定HTTP请求是否使用read
      *
      * @param  \Illuminate\Http\Request  $request
      * @return bool
@@ -154,7 +157,7 @@ class VerifyCsrfToken
 
     /**
      * Get the CSRF token from the request.
-	 * 从请求中获取CSRF令牌
+	 * 得到CSRF令牌从请求中
      *
      * @param  \Illuminate\Http\Request  $request
      * @return string
@@ -164,7 +167,11 @@ class VerifyCsrfToken
         $token = $request->input('_token') ?: $request->header('X-CSRF-TOKEN');
 
         if (! $token && $header = $request->header('X-XSRF-TOKEN')) {
-            $token = $this->encrypter->decrypt($header, static::serialized());
+            try {
+                $token = CookieValuePrefix::remove($this->encrypter->decrypt($header, static::serialized()));
+            } catch (DecryptException $e) {
+                $token = '';
+            }
         }
 
         return $token;
@@ -183,7 +190,7 @@ class VerifyCsrfToken
 
     /**
      * Add the CSRF token to the response cookies.
-	 * 将CSRF令牌添加到响应cookie中
+	 * 添加CSRF令牌至响应cookie中
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Symfony\Component\HttpFoundation\Response  $response
@@ -192,6 +199,10 @@ class VerifyCsrfToken
     protected function addCookieToResponse($request, $response)
     {
         $config = config('session');
+
+        if ($response instanceof Responsable) {
+            $response = $response->toResponse($request);
+        }
 
         $response->headers->setCookie(
             new Cookie(

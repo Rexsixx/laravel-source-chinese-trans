@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，异常，Http异常接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\HttpKernel\Exception;
 
 /**
  * Interface for HTTP error exceptions.
- * HTTP错误异常的接口。
  *
  * @author Kris Wallsmith <kris@symfony.com>
  */

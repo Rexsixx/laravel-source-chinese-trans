@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，采集，是空的穿越测试
+ * Hamcrest，集合，是否空可遍历测试
  */
 
 namespace Hamcrest\Collection;

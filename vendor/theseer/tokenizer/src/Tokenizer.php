@@ -1,20 +1,14 @@
 <?php declare(strict_types = 1);
-
-/**
- * TheSeer，Tokenizer，Tokenizer
- */
-
 namespace TheSeer\Tokenizer;
 
 class Tokenizer {
 
     /**
      * Token Map for "non-tokens"
-	 * “非令牌”的令牌映射
      *
      * @var array
      */
-    private const MAP = [
+    private $map = [
         '(' => 'T_OPEN_BRACKET',
         ')' => 'T_CLOSE_BRACKET',
         '[' => 'T_OPEN_SQUARE',
@@ -64,7 +58,7 @@ class Tokenizer {
             if (\is_string($tok)) {
                 $token = new Token(
                     $lastToken->getLine(),
-                    self::MAP[$tok],
+                    $this->map[$tok],
                     $tok
                 );
                 $result->addToken($token);
@@ -75,18 +69,6 @@ class Tokenizer {
 
             $line   = $tok[2];
             $values = \preg_split('/\R+/Uu', $tok[1]);
-
-            if (!$values) {
-                $result->addToken(
-                    new Token(
-                        $line,
-                        \token_name($tok[0]),
-                        '{binary data}'
-                    )
-                );
-
-                continue;
-            }
 
             foreach ($values as $v) {
                 $token = new Token(
@@ -116,37 +98,42 @@ class Tokenizer {
         );
 
         $final = new TokenCollection();
-        $prevLine = $prev->getLine();
 
         foreach ($tokens as $token) {
-            $line = $token->getLine();
-            $gap = $line - $prevLine;
+            if ($prev === null) {
+                $final->addToken($token);
+                $prev = $token;
+
+                continue;
+            }
+
+            $gap = $token->getLine() - $prev->getLine();
 
             while ($gap > 1) {
                 $linebreak = new Token(
-                    $prevLine + 1,
+                    $prev->getLine() + 1,
                     'T_WHITESPACE',
                     ''
                 );
                 $final->addToken($linebreak);
-                $prevLine = $linebreak->getLine();
+                $prev = $linebreak;
                 $gap--;
             }
 
             $final->addToken($token);
-            $prevLine = $line;
+            $prev = $token;
         }
 
-        $gap = $maxLine - $prevLine;
+        $gap = $maxLine - $prev->getLine();
 
         while ($gap > 0) {
             $linebreak = new Token(
-                $prevLine + 1,
+                $prev->getLine() + 1,
                 'T_WHITESPACE',
                 ''
             );
             $final->addToken($linebreak);
-            $prevLine = $linebreak->getLine();
+            $prev = $linebreak;
             $gap--;
         }
 

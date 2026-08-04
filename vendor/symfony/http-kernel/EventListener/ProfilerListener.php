@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，事件监听器，分析器监听器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -15,10 +12,8 @@
 namespace Symfony\Component\HttpKernel\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
@@ -92,21 +87,8 @@ class ProfilerListener implements EventSubscriberInterface
             return;
         }
 
-        $session = method_exists(Request::class, 'getPreferredFormat') && $request->hasPreviousSession() && $request->hasSession() ? $request->getSession() : null;
-
-        if ($session instanceof Session) {
-            $usageIndexValue = $usageIndexReference = &$session->getUsageIndex();
-            $usageIndexReference = \PHP_INT_MIN;
-        }
-
-        try {
-            if (!$profile = $this->profiler->collect($request, $event->getResponse(), $exception)) {
-                return;
-            }
-        } finally {
-            if ($session instanceof Session) {
-                $usageIndexReference = $usageIndexValue;
-            }
+        if (!$profile = $this->profiler->collect($request, $event->getResponse(), $exception)) {
+            return;
         }
 
         $this->profiles[$request] = $profile;

@@ -1,12 +1,13 @@
 <?php
 /**
- * Illuminate，缓存，缓存服务提供商
+ * 缓存，缓存服务提供者
  */
 
 namespace Illuminate\Cache;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Support\ServiceProvider;
+use Symfony\Component\Cache\Adapter\Psr16Adapter;
 
 class CacheServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -26,6 +27,10 @@ class CacheServiceProvider extends ServiceProvider implements DeferrableProvider
             return $app['cache']->driver();
         });
 
+        $this->app->singleton('cache.psr6', function ($app) {
+            return new Psr16Adapter($app['cache.store']);
+        });
+
         $this->app->singleton('memcached.connector', function () {
             return new MemcachedConnector;
         });
@@ -33,14 +38,14 @@ class CacheServiceProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Get the services provided by the provider.
-	 * 获取提供者提供的服务
+	 * 得到已提供服务通过提供者
      *
      * @return array
      */
     public function provides()
     {
         return [
-            'cache', 'cache.store', 'memcached.connector',
+            'cache', 'cache.store', 'cache.psr6', 'memcached.connector',
         ];
     }
 }

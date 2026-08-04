@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，控制台，问题，确认问题
- */
 
 /*
  * This file is part of the Symfony package.

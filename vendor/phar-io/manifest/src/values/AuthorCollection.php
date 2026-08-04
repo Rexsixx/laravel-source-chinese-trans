@@ -1,8 +1,4 @@
-<?php
-/**
- * PharIo，Manifest，作者收集
- */
-
+<?php declare(strict_types = 1);
 /*
  * This file is part of PharIo\Manifest.
  *
@@ -11,37 +7,28 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PharIo\Manifest;
 
 class AuthorCollection implements \Countable, \IteratorAggregate {
-    /**
-     * @var Author[]
-     */
+    /** @var Author[] */
     private $authors = [];
 
-    public function add(Author $author) {
+    public function add(Author $author): void {
         $this->authors[] = $author;
     }
 
     /**
      * @return Author[]
      */
-    public function getAuthors() {
+    public function getAuthors(): array {
         return $this->authors;
     }
 
-    /**
-     * @return int
-     */
-    public function count() {
-        return count($this->authors);
+    public function count(): int {
+        return \count($this->authors);
     }
 
-    /**
-     * @return AuthorCollectionIterator
-     */
-    public function getIterator() {
+    public function getIterator(): AuthorCollectionIterator {
         return new AuthorCollectionIterator($this);
     }
 }

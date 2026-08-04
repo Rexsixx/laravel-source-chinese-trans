@@ -1,20 +1,20 @@
 <?php
 /**
- * Illuminate，基础，测试，问题，与控制台交互
+ * 基础，与控制台交互
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;
 
-use Illuminate\Support\Arr;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\PendingCommand;
+use Illuminate\Support\Arr;
 
 trait InteractsWithConsole
 {
     /**
      * Indicates if the console output should be mocked.
-	 * 指示是否应该模拟控制台输出
+	 * 确定是否应该模拟控制台输出
      *
      * @var bool
      */

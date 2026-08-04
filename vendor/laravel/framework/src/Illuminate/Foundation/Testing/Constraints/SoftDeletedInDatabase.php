@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，约束条件，数据库软删除
+ * 基础，数据库软删除
  */
 
 namespace Illuminate\Foundation\Testing\Constraints;
@@ -35,23 +35,34 @@ class SoftDeletedInDatabase extends Constraint
     protected $data;
 
     /**
+     * The name of the column that indicates soft deletion has occurred.
+	 * 表示已发生软删除的列的名称
+     *
+     * @var string
+     */
+    protected $deletedAtColumn;
+
+    /**
      * Create a new constraint instance.
-	 * 创建一个新的约束实例
+	 * 创建新的约束实例
      *
      * @param  \Illuminate\Database\Connection  $database
      * @param  array  $data
+     * @param  string  $deletedAtColumn
      * @return void
      */
-    public function __construct(Connection $database, array $data)
+    public function __construct(Connection $database, array $data, string $deletedAtColumn)
     {
         $this->data = $data;
 
         $this->database = $database;
+
+        $this->deletedAtColumn = $deletedAtColumn;
     }
 
     /**
      * Check if the data is found in the given table.
-	 * 检查是否在给定的表中找到数据
+	 * 检查是否数据被找到在给定的表中
      *
      * @param  string  $table
      * @return bool
@@ -59,12 +70,14 @@ class SoftDeletedInDatabase extends Constraint
     public function matches($table): bool
     {
         return $this->database->table($table)
-                ->where($this->data)->whereNotNull('deleted_at')->count() > 0;
+                ->where($this->data)
+                ->whereNotNull($this->deletedAtColumn)
+                ->count() > 0;
     }
 
     /**
      * Get the description of the failure.
-	 * 获取故障的描述
+	 * 得到失败描述
      *
      * @param  string  $table
      * @return string
@@ -79,23 +92,25 @@ class SoftDeletedInDatabase extends Constraint
 
     /**
      * Get additional info about the records found in the database table.
-	 * 获取关于在数据库表中找到的记录的其他信息
+	 * 得到关于在数据库表中找到的记录的其他信息
      *
      * @param  string  $table
      * @return string
      */
     protected function getAdditionalInfo($table)
     {
-        $results = $this->database->table($table)->get();
+        $query = $this->database->table($table);
+
+        $results = $query->limit($this->show)->get();
 
         if ($results->isEmpty()) {
             return 'The table is empty';
         }
 
-        $description = 'Found: '.json_encode($results->take($this->show), JSON_PRETTY_PRINT);
+        $description = 'Found: '.json_encode($results, JSON_PRETTY_PRINT);
 
-        if ($results->count() > $this->show) {
-            $description .= sprintf(' and %s others', $results->count() - $this->show);
+        if ($query->count() > $this->show) {
+            $description .= sprintf(' and %s others', $query->count() - $this->show);
         }
 
         return $description;
@@ -103,7 +118,7 @@ class SoftDeletedInDatabase extends Constraint
 
     /**
      * Get a string representation of the object.
-	 * 获取对象的字符串表示形式
+	 * 得到对象的字符串表示形式
      *
      * @return string
      */

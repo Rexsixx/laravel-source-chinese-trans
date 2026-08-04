@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Apc 包装器
+ * 缓存，APC封装器
  */
 
 namespace Illuminate\Cache;
@@ -9,7 +9,7 @@ class ApcWrapper
 {
     /**
      * Indicates if APCu is supported.
-	 * 显示是否支持APCu
+	 * 指明是否APCu是否提供
      *
      * @var bool
      */
@@ -17,7 +17,7 @@ class ApcWrapper
 
     /**
      * Create a new APC wrapper instance.
-	 * 创建一个新的APC包装器实例
+	 * 创建新的APC封装实例
      *
      * @return void
      */
@@ -28,7 +28,7 @@ class ApcWrapper
 
     /**
      * Get an item from the cache.
-	 * 从缓存中获取一个项
+	 * 得到缓存项目
      *
      * @param  string  $key
      * @return mixed
@@ -40,11 +40,11 @@ class ApcWrapper
 
     /**
      * Store an item in the cache.
-	 * 在缓存中存储项
+	 * 存储一个缓存项目
      *
      * @param  string  $key
-     * @param  mixed   $value
-     * @param  int     $seconds
+     * @param  mixed  $value
+     * @param  int  $seconds
      * @return array|bool
      */
     public function put($key, $value, $seconds)
@@ -57,7 +57,7 @@ class ApcWrapper
 	 * 增加缓存中项的值
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return int|bool
      */
     public function increment($key, $value)
@@ -67,10 +67,10 @@ class ApcWrapper
 
     /**
      * Decrement the value of an item in the cache.
-	 * 递减缓存中项的值
+	 * 递减缓存中项目的值
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return int|bool
      */
     public function decrement($key, $value)
@@ -80,7 +80,7 @@ class ApcWrapper
 
     /**
      * Remove an item from the cache.
-	 * 从缓存中删除项
+	 * 从缓存中移除项
      *
      * @param  string  $key
      * @return bool
@@ -92,7 +92,7 @@ class ApcWrapper
 
     /**
      * Remove all items from the cache.
-	 * 从缓存中删除所有项
+	 * 清空缓存
      *
      * @return bool
      */

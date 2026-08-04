@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，工具，模板辅助
+ * Whoops，Util，模板助手
  */
 
 /**
@@ -18,13 +18,11 @@ use Whoops\Exception\Frame;
 
 /**
  * Exposes useful tools for working with/in templates
- * 公开使用/in模板的有用工具
  */
 class TemplateHelper
 {
     /**
      * An array of variables to be passed to all templates
-	 * 将传递给所有模板的变量数组
      * @var array
      */
     private $variables = [];
@@ -57,7 +55,6 @@ class TemplateHelper
 
     /**
      * Escapes a string for output in an HTML document
-	 * 在HTML文档中从字符串中逃脱
      *
      * @param  string $raw
      * @return string
@@ -239,8 +236,9 @@ class TemplateHelper
      * passed to the template.
      *
      * @param string $template
+     * @param array  $additionalVariables
      */
-    public function render($template, ?array $additionalVariables = null)
+    public function render($template, array $additionalVariables = null)
     {
         $variables = $this->getVariables();
 
@@ -260,6 +258,8 @@ class TemplateHelper
     /**
      * Sets the variables to be passed to all templates rendered
      * by this template helper.
+     *
+     * @param array $variables
      */
     public function setVariables(array $variables)
     {

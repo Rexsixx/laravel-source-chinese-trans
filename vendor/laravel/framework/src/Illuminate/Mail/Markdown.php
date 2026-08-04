@@ -1,13 +1,16 @@
 <?php
 /**
- * Illuminate，电子邮件，编辑器
+ * 邮件，Narkdiwb编辑器
  */
 
 namespace Illuminate\Mail;
 
-use Parsedown;
-use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
+use League\CommonMark\CommonMarkConverter;
+use League\CommonMark\Environment;
+use League\CommonMark\Extension\Table\TableExtension;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 class Markdown
@@ -38,7 +41,7 @@ class Markdown
 
     /**
      * Create a new Markdown renderer instance.
-	 * 创建一个新的Markdown渲染器实例
+	 * 创建新的Markdown渲染器实例
      *
      * @param  \Illuminate\Contracts\View\Factory  $view
      * @param  array  $options
@@ -53,7 +56,7 @@ class Markdown
 
     /**
      * Render the Markdown template into HTML.
-	 * 将Markdown模板呈现为HTML
+	 * 呈现Markdown模板为HTML
      *
      * @param  string  $view
      * @param  array  $data
@@ -68,14 +71,18 @@ class Markdown
             'mail', $this->htmlComponentPaths()
         )->make($view, $data)->render();
 
+        $theme = Str::contains($this->theme, '::')
+            ? $this->theme
+            : 'mail::themes.'.$this->theme;
+
         return new HtmlString(($inliner ?: new CssToInlineStyles)->convert(
-            $contents, $this->view->make('mail::themes.'.$this->theme)->render()
+            $contents, $this->view->make($theme, $data)->render()
         ));
     }
 
     /**
      * Render the Markdown template into text.
-	 * 将Markdown模板呈现为文本
+	 * 呈现Markdown模板为文本
      *
      * @param  string  $view
      * @param  array  $data
@@ -103,14 +110,20 @@ class Markdown
      */
     public static function parse($text)
     {
-        $parsedown = new Parsedown;
+        $environment = Environment::createCommonMarkEnvironment();
 
-        return new HtmlString($parsedown->text($text));
+        $environment->addExtension(new TableExtension);
+
+        $converter = new CommonMarkConverter([
+            'allow_unsafe_links' => false,
+        ], $environment);
+
+        return new HtmlString($converter->convertToHtml($text));
     }
 
     /**
      * Get the HTML component paths.
-	 * 获取HTML组件路径
+	 * 得到HTML组件路径
      *
      * @return array
      */
@@ -123,7 +136,7 @@ class Markdown
 
     /**
      * Get the text component paths.
-	 * 获取文本组件路径
+	 * 得到文本组件路径
      *
      * @return array
      */
@@ -136,7 +149,7 @@ class Markdown
 
     /**
      * Get the component paths.
-	 * 获取组件路径
+	 * 得到组件路径
      *
      * @return array
      */
@@ -149,7 +162,7 @@ class Markdown
 
     /**
      * Register new mail component paths.
-	 * 注册新的邮件组件路径
+	 * 注册新邮件组件路径
      *
      * @param  array  $paths
      * @return void

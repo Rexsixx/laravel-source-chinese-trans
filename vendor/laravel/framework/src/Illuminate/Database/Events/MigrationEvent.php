@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，数据库，事件，迁移事件
+ * 数据库，事件，迁移事件抽象类
  */
 
 namespace Illuminate\Database\Events;
 
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Contracts\Database\Events\MigrationEvent as MigrationEventContract;
+use Illuminate\Database\Migrations\Migration;
 
 abstract class MigrationEvent implements MigrationEventContract
 {
@@ -20,7 +20,7 @@ abstract class MigrationEvent implements MigrationEventContract
 
     /**
      * The migration method that was called.
-	 * 被调用的迁移方法
+	 * 迁移方法被调用
      *
      * @var string
      */
@@ -28,7 +28,7 @@ abstract class MigrationEvent implements MigrationEventContract
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  \Illuminate\Database\Migrations\Migration  $migration
      * @param  string  $method

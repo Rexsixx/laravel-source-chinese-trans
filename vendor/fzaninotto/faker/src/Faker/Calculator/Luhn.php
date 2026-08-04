@@ -9,7 +9,6 @@ use InvalidArgumentException;
 
 /**
  * Utility class for generating and validating Luhn numbers.
- * 用于生成和验证Luhn号的实用程序类。
  *
  * Luhn algorithm is used to validate credit card numbers, IMEI numbers, and
  * National Provider Identifier numbers.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，事件，其他设备注销
+ * 授权，事件，其他设备注销
  */
 
 namespace Illuminate\Auth\Events;
@@ -29,7 +29,7 @@ class OtherDeviceLogout
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  string  $guard
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user

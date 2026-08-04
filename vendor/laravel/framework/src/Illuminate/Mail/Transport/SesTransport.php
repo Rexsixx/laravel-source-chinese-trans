@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，电子邮件，传送，Ses 传送
+ * 邮件，传输，Amazon SES传输
  */
 
 namespace Illuminate\Mail\Transport;
@@ -12,7 +12,7 @@ class SesTransport extends Transport
 {
     /**
      * The Amazon SES instance.
-	 * Amazon SES实例
+	 * Amazon SES 实例
      *
      * @var \Aws\Ses\SesClient
      */
@@ -20,7 +20,7 @@ class SesTransport extends Transport
 
     /**
      * The Amazon SES transmission options.
-	 * 亚马逊SES传输选项
+	 * SES传输选项
      *
      * @var array
      */
@@ -28,7 +28,7 @@ class SesTransport extends Transport
 
     /**
      * Create a new SES transport instance.
-	 * 创建一个新的SES传输实例
+	 * 创建新的SES传输实例
      *
      * @param  \Aws\Ses\SesClient  $ses
      * @param  array  $options
@@ -67,7 +67,7 @@ class SesTransport extends Transport
 
     /**
      * Get the Amazon SES client for the SesTransport instance.
-	 * 获取SesTransport实例的Amazon SES客户端
+	 * 得到SesTransport实例
      *
      * @return \Aws\Ses\SesClient
      */
@@ -78,7 +78,7 @@ class SesTransport extends Transport
 
     /**
      * Get the transmission options being used by the transport.
-	 * 获取传输所使用的传输选项
+	 * 得到传输所使用的传输选项
      *
      * @return array
      */

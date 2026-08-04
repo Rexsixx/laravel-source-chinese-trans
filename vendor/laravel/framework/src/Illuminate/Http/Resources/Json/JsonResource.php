@@ -1,18 +1,18 @@
 <?php
 /**
- * Illuminate，Http，资源，Json，Json 资源
+ * Http，Json资源
  */
 
 namespace Illuminate\Http\Resources\Json;
 
 use ArrayAccess;
-use JsonSerializable;
 use Illuminate\Container\Container;
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Routing\UrlRoutable;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Http\Resources\DelegatesToResource;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
+use Illuminate\Http\Resources\DelegatesToResource;
+use JsonSerializable;
 
 class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRoutable
 {
@@ -36,7 +36,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
 
     /**
      * The additional meta data that should be added to the resource response.
-	 * 应该添加到资源响应中的其他元数据。
+	 * 额外的元数据应该被添加到资源响应中的
      *
      * Added during response construction by the developer.
      *
@@ -46,7 +46,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
 
     /**
      * The "data" wrapper that should be applied.
-	 * 应该应用的“数据”包装器
+	 * "数据"包装器应该被应用的
      *
      * @var string
      */
@@ -54,7 +54,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
 
     /**
      * Create a new resource instance.
-	 * 创建一个新的资源实例
+	 * 创建新的资源实例
      *
      * @param  mixed  $resource
      * @return void
@@ -66,7 +66,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
 
     /**
      * Create a new resource instance.
-	 * 创建一个新的资源实例
+	 * 创建新的资源实例
      *
      * @param  mixed  ...$parameters
      * @return static
@@ -94,7 +94,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
 
     /**
      * Resolve the resource to an array.
-	 * 将资源解析为数组
+	 * 解析资源为数组
      *
      * @param  \Illuminate\Http\Request|null  $request
      * @return array
@@ -116,7 +116,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
 
     /**
      * Transform the resource into an array.
-	 * 将资源转换为数组
+	 * 转换资源为数组
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
@@ -134,7 +134,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
 
     /**
      * Get any additional data that should be returned with the resource array.
-	 * 获取应该与资源数组一起返回的任何其他数据
+	 * 得到应该与资源数组一起返回的任何其他数据
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
@@ -146,7 +146,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
 
     /**
      * Add additional meta data to the resource response.
-	 * 向资源响应添加额外的元数据
+	 * 添加额外的元数据至资源响应
      *
      * @param  array  $data
      * @return $this
@@ -196,7 +196,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
 
     /**
      * Transform the resource into an HTTP response.
-	 * 将资源转换为HTTP响应
+	 * 转换资源为HTTP响应
      *
      * @param  \Illuminate\Http\Request|null  $request
      * @return \Illuminate\Http\JsonResponse
@@ -210,7 +210,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
 
     /**
      * Create an HTTP response that represents the object.
-	 * 创建一个表示对象的HTTP响应
+	 * 创建表示对象的HTTP响应
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
@@ -222,7 +222,7 @@ class JsonResource implements ArrayAccess, JsonSerializable, Responsable, UrlRou
 
     /**
      * Prepare the resource for JSON serialization.
-	 * 为JSON序列化准备资源
+	 * 准备资源为JSON序列化
      *
      * @return array
      */

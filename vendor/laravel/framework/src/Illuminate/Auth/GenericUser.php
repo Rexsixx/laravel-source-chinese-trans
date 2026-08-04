@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，认证，普通用户
+ * 授权，普通用户
  */
 
 namespace Illuminate\Auth;
@@ -11,7 +11,7 @@ class GenericUser implements UserContract
 {
     /**
      * All of the user's attributes.
-	 * 用户的所有属性
+	 * 所有用户属性
      *
      * @var array
      */
@@ -19,7 +19,7 @@ class GenericUser implements UserContract
 
     /**
      * Create a new generic User object.
-	 * 创建一个新的通用User对象
+	 * 创建新的普通用户对象
      *
      * @param  array  $attributes
      * @return void
@@ -31,7 +31,7 @@ class GenericUser implements UserContract
 
     /**
      * Get the name of the unique identifier for the user.
-	 * 获取用户的唯一标识符的名称
+	 * 得到用户的唯一标识符的名称
      *
      * @return string
      */
@@ -42,20 +42,18 @@ class GenericUser implements UserContract
 
     /**
      * Get the unique identifier for the user.
-	 * 获取用户的唯一标识符
+	 * 得到用户的唯一标识符
      *
      * @return mixed
      */
     public function getAuthIdentifier()
     {
-        $name = $this->getAuthIdentifierName();
-
-        return $this->attributes[$name];
+        return $this->attributes[$this->getAuthIdentifierName()];
     }
 
     /**
      * Get the password for the user.
-	 * 获取用户的密码
+	 * 得到用户的密码
      *
      * @return string
      */
@@ -66,7 +64,7 @@ class GenericUser implements UserContract
 
     /**
      * Get the "remember me" token value.
-	 * 获取“记住我”令牌值
+	 * 得到"记住我"令牌值
      *
      * @return string
      */
@@ -77,7 +75,7 @@ class GenericUser implements UserContract
 
     /**
      * Set the "remember me" token value.
-	 * 设置“记住我”令牌值
+	 * 设置"记住我"令牌值
      *
      * @param  string  $value
      * @return void
@@ -89,7 +87,7 @@ class GenericUser implements UserContract
 
     /**
      * Get the column name for the "remember me" token.
-	 * 获取“记住我”令牌的列名
+	 * 得到"记住我"令牌的列名
      *
      * @return string
      */
@@ -100,7 +98,7 @@ class GenericUser implements UserContract
 
     /**
      * Dynamically access the user's attributes.
-	 * 动态访问用户的属性
+	 * 动态访问用户属性
      *
      * @param  string  $key
      * @return mixed
@@ -112,7 +110,7 @@ class GenericUser implements UserContract
 
     /**
      * Dynamically set an attribute on the user.
-	 * 动态设置用户的属性
+	 * 动态设置用户属性
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -137,7 +135,7 @@ class GenericUser implements UserContract
 
     /**
      * Dynamically unset a value on the user.
-	 * 动态取消对用户的值设置
+	 * 动态注销用户值
      *
      * @param  string  $key
      * @return void

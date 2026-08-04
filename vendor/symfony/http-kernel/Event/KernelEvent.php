@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，事件，内核事件
- */
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +17,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Base class for events thrown in the HttpKernel component.
- * 在HttpKernel组件中抛出的事件的基类。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */

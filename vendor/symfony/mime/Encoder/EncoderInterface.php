@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Mime，编码器，编码器接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -21,7 +18,6 @@ interface EncoderInterface
 {
     /**
      * Encode a given string to produce an encoded string.
-	 * 编码给定的字符串来生成编码的字符串
      *
      * @param int $firstLineOffset if first line needs to be shorter
      * @param int $maxLineLength   - 0 indicates the default length for this encoding

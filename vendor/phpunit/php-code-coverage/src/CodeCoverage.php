@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * SebastianBergmann，代码覆盖率，Code Coverage
  */
@@ -17,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Test;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
+use SebastianBergmann\CodeCoverage\Driver\PCOV;
 use SebastianBergmann\CodeCoverage\Driver\PHPDBG;
 use SebastianBergmann\CodeCoverage\Driver\Xdebug;
 use SebastianBergmann\CodeCoverage\Node\Builder;
@@ -162,9 +164,7 @@ final class CodeCoverage
     public function getReport(): Directory
     {
         if ($this->report === null) {
-            $builder = new Builder;
-
-            $this->report = $builder->build($this);
+            $this->report = (new Builder)->build($this);
         }
 
         return $this->report;
@@ -666,8 +666,7 @@ final class CodeCoverage
 
             $firstMethod          = \array_shift($classOrTrait['methods']);
             $firstMethodStartLine = $firstMethod['startLine'];
-            $firstMethodEndLine   = $firstMethod['endLine'];
-            $lastMethodEndLine    = $firstMethodEndLine;
+            $lastMethodEndLine    = $firstMethod['endLine'];
 
             do {
                 $lastMethod = \array_pop($classOrTrait['methods']);
@@ -700,7 +699,7 @@ final class CodeCoverage
             switch (\get_class($token)) {
                 case \PHP_Token_COMMENT::class:
                 case \PHP_Token_DOC_COMMENT::class:
-                    $_token = \trim($token);
+                    $_token = \trim((string) $token);
                     $_line  = \trim($lines[$token->getLine() - 1]);
 
                     if ($_token === '// @codeCoverageIgnore' ||
@@ -717,7 +716,7 @@ final class CodeCoverage
 
                     if (!$ignore) {
                         $start = $token->getLine();
-                        $end   = $start + \substr_count($token, "\n");
+                        $end   = $start + \substr_count((string) $token, "\n");
 
                         // Do not ignore the first line when there is a token
                         // before the comment
@@ -744,7 +743,7 @@ final class CodeCoverage
                 case \PHP_Token_FUNCTION::class:
                     /* @var \PHP_Token_Interface $token */
 
-                    $docblock = $token->getDocblock();
+                    $docblock = (string) $token->getDocblock();
 
                     $this->ignoredLines[$fileName][] = $token->getLine();
 
@@ -767,6 +766,7 @@ final class CodeCoverage
                 case \PHP_Token_OPEN_TAG::class:
                 case \PHP_Token_CLOSE_TAG::class:
                 case \PHP_Token_USE::class:
+                case \PHP_Token_USE_FUNCTION::class:
                     $this->ignoredLines[$fileName][] = $token->getLine();
 
                     break;
@@ -897,12 +897,12 @@ final class CodeCoverage
     {
         $runtime = new Runtime;
 
-        if (!$runtime->canCollectCodeCoverage()) {
-            throw new RuntimeException('No code coverage driver available');
+        if ($runtime->hasPHPDBGCodeCoverage()) {
+            return new PHPDBG;
         }
 
-        if ($runtime->isPHPDBG()) {
-            return new PHPDBG;
+        if ($runtime->hasPCOV()) {
+            return new PCOV;
         }
 
         if ($runtime->hasXdebug()) {
@@ -961,10 +961,9 @@ final class CodeCoverage
                 }
             }
 
-            $data     = [];
-            $coverage = $this->driver->stop();
+            $data = [];
 
-            foreach ($coverage as $file => $fileCoverage) {
+            foreach ($this->driver->stop() as $file => $fileCoverage) {
                 if ($this->filter->isFiltered($file)) {
                     continue;
                 }

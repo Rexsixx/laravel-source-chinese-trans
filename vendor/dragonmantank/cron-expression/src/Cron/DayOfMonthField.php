@@ -10,7 +10,6 @@ use DateTimeInterface;
 
 /**
  * Day of month field.  Allows: * , / - ? L W
- * 日期字段。
  *
  * 'L' stands for "last" and specifies the last day of the month.
  *

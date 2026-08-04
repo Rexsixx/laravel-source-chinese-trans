@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，认证，密码代理
+ * 契约，密码破解接口
  */
 
 namespace Illuminate\Contracts\Auth;
@@ -11,7 +11,7 @@ interface PasswordBroker
 {
     /**
      * Constant representing a successfully sent reminder.
-	 * 表示成功发送提醒的常量
+	 * 表示已成功发送提醒的常量
      *
      * @var string
      */
@@ -34,20 +34,20 @@ interface PasswordBroker
     const INVALID_USER = 'passwords.user';
 
     /**
-     * Constant representing an invalid password.
-	 * 表示无效密码的常量
-     *
-     * @var string
-     */
-    const INVALID_PASSWORD = 'passwords.password';
-
-    /**
      * Constant representing an invalid token.
 	 * 表示无效令牌的常量
      *
      * @var string
      */
     const INVALID_TOKEN = 'passwords.token';
+
+    /**
+     * Constant representing a throttled reset attempt.
+	 * 表示节流复位尝试的常量
+     *
+     * @var string
+     */
+    const RESET_THROTTLED = 'passwords.throttled';
 
     /**
      * Send a password reset link to a user.
@@ -62,27 +62,9 @@ interface PasswordBroker
      * Reset the password for the given token.
 	 * 重置给定令牌的密码
      *
-     * @param  array     $credentials
+     * @param  array  $credentials
      * @param  \Closure  $callback
      * @return mixed
      */
     public function reset(array $credentials, Closure $callback);
-
-    /**
-     * Set a custom password validator.
-	 * 设置自定义密码验证器
-     *
-     * @param  \Closure  $callback
-     * @return void
-     */
-    public function validator(Closure $callback);
-
-    /**
-     * Determine if the passwords match for the request.
-	 * 确定密码是否与请求匹配
-     *
-     * @param  array  $credentials
-     * @return bool
-     */
-    public function validateNewPassword(array $credentials);
 }

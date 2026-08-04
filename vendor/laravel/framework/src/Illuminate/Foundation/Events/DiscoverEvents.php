@@ -1,21 +1,23 @@
 <?php
 /**
- * Illuminate，基础，事件，发现事件
+ * 基础，发现事件
  */
 
 namespace Illuminate\Foundation\Events;
 
-use SplFileInfo;
-use ReflectionClass;
-use ReflectionMethod;
+use Illuminate\Support\Reflector;
 use Illuminate\Support\Str;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
+use SplFileInfo;
 use Symfony\Component\Finder\Finder;
 
 class DiscoverEvents
 {
     /**
      * Get all of the events and listeners by searching the given listener directory.
-	 * 通过搜索给定的侦听器目录获取所有事件和侦听器
+	 * 得到所有事件和侦听器
      *
      * @param  string  $listenerPath
      * @param  string  $basePath
@@ -32,7 +34,7 @@ class DiscoverEvents
 
     /**
      * Get all of the listeners and their corresponding events.
-	 * 获取所有的侦听器及其相应的事件
+	 * 得到所有的侦听器及其相应的事件
      *
      * @param  iterable  $listeners
      * @param  string  $basePath
@@ -43,9 +45,13 @@ class DiscoverEvents
         $listenerEvents = [];
 
         foreach ($listeners as $listener) {
-            $listener = new ReflectionClass(
-                static::classFromFile($listener, $basePath)
-            );
+            try {
+                $listener = new ReflectionClass(
+                    static::classFromFile($listener, $basePath)
+                );
+            } catch (ReflectionException $e) {
+                continue;
+            }
 
             if (! $listener->isInstantiable()) {
                 continue;
@@ -58,7 +64,7 @@ class DiscoverEvents
                 }
 
                 $listenerEvents[$listener->name.'@'.$method->name] =
-                                optional($method->getParameters()[0]->getClass())->name;
+                                Reflector::getParameterClassName($method->getParameters()[0]);
             }
         }
 
@@ -67,7 +73,7 @@ class DiscoverEvents
 
     /**
      * Extract the class name from the given file path.
-	 * 从给定的文件路径中提取类名
+	 * 提取类名从给定的文件路径中
      *
      * @param  \SplFileInfo  $file
      * @param  string  $basePath

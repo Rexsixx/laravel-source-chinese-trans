@@ -1,19 +1,19 @@
 <?php
 /**
- * Illuminate，路由选择，路由绑定
+ * 路由，路由绑定
  */
 
 namespace Illuminate\Routing;
 
 use Closure;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
 
 class RouteBinding
 {
     /**
      * Create a Route model binding for a given callback.
-	 * 为给定的回调创建一个Route模型绑定
+	 * 创建路由模型绑定
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  \Closure|string  $binder
@@ -30,7 +30,7 @@ class RouteBinding
 
     /**
      * Create a class based binding using the IoC container.
-	 * 使用IoC容器创建基于类的绑定
+	 * 创建基于类的绑定
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  string  $binding
@@ -42,24 +42,26 @@ class RouteBinding
             // If the binding has an @ sign, we will assume it's being used to delimit
             // the class name from the bind method name. This allows for bindings
             // to run multiple bind methods in a single class for convenience.
-			// 如果绑定中带有“@”符号，我们就认为它是用于将类名与绑定方法名分隔开的。
-			// 这样可以方便地在一个类中调用多个绑定方法。
+			// 如果绑定有@符号，我们将假设它被用来将类名与绑定方法名分隔开来。
+			// 为了方便起见，这允许绑定在单个类中运行多个绑定方法。
             [$class, $method] = Str::parseCallback($binding, 'bind');
 
             $callable = [$container->make($class), $method];
 
-            return call_user_func($callable, $value, $route);
+            return $callable($value, $route);
         };
     }
 
     /**
      * Create a Route model binding for a model.
-	 * 为模型创建一个Route模型绑定
+	 * 创建新的路由绑定模型
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  string  $class
      * @param  \Closure|null  $callback
      * @return \Closure
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public static function forModel($container, $class, $callback = null)
     {
@@ -71,8 +73,8 @@ class RouteBinding
             // For model binders, we will attempt to retrieve the models using the first
             // method on the model instance. If we cannot retrieve the models we'll
             // throw a not found exception otherwise we will return the instance.
-			// 对于模型绑定器而言，我们将尝试使用模型实例上的第一种方法来获取模型。
-			// 如果我们无法获取这些模型，就会抛出“未找到”的异常；否则，我们将返回该实例。
+			// 对于模型绑定器，我们将尝试在模型实例上使用第一种方法检索模型。
+			// 如果我们无法检索模型，我们将抛出一个未找到的异常，否则我们将返回实例。
             $instance = $container->make($class);
 
             if ($model = $instance->resolveRouteBinding($value)) {
@@ -82,10 +84,10 @@ class RouteBinding
             // If a callback was supplied to the method we will call that to determine
             // what we should do when the model is not found. This just gives these
             // developer a little greater flexibility to decide what will happen.
-			// 如果为该方法提供了回调函数，我们将调用该回调函数来确定当模型未找到时我们应采取何种行动。
-			// 这只是为这些开发者提供了一定程度的灵活性，以便他们能够自行决定会发生何种情况。
+			// 如果向该方法提供了回调，我们将调用该回调来确定在找不到模型时应该做什么。
+			// 这只会给这些开发人员更大的灵活性来决定会发生什么。
             if ($callback instanceof Closure) {
-                return call_user_func($callback, $value);
+                return $callback($value);
             }
 
             throw (new ModelNotFoundException)->setModel($class);

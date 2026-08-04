@@ -1,6 +1,6 @@
 <?php
 /**
- * App，供应商，应用服务提供商
+ * App，服务提供者，App服务提供者
  */
 
 namespace App\Providers;

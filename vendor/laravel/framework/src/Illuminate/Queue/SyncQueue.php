@@ -1,22 +1,25 @@
 <?php
 /**
- * Illuminate，队列，同步队列
+ * 队列，Sync队列
  */
 
 namespace Illuminate\Queue;
 
 use Exception;
-use Throwable;
-use Illuminate\Queue\Jobs\SyncJob;
 use Illuminate\Contracts\Queue\Job;
 use Illuminate\Contracts\Queue\Queue as QueueContract;
+use Illuminate\Queue\Events\JobExceptionOccurred;
+use Illuminate\Queue\Events\JobProcessed;
+use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Queue\Jobs\SyncJob;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Throwable;
 
 class SyncQueue extends Queue implements QueueContract
 {
     /**
      * Get the size of the queue.
-	 * 获取队列的大小
+	 * 得到队列大小
      *
      * @param  string|null  $queue
      * @return int
@@ -28,10 +31,10 @@ class SyncQueue extends Queue implements QueueContract
 
     /**
      * Push a new job onto the queue.
-	 * 将新作业推送到队列中
+	 * 推送新作业到队列中
      *
      * @param  string  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @param  string|null  $queue
      * @return mixed
      *
@@ -79,7 +82,7 @@ class SyncQueue extends Queue implements QueueContract
     protected function raiseBeforeJobEvent(Job $job)
     {
         if ($this->container->bound('events')) {
-            $this->container['events']->dispatch(new Events\JobProcessing($this->connectionName, $job));
+            $this->container['events']->dispatch(new JobProcessing($this->connectionName, $job));
         }
     }
 
@@ -93,7 +96,7 @@ class SyncQueue extends Queue implements QueueContract
     protected function raiseAfterJobEvent(Job $job)
     {
         if ($this->container->bound('events')) {
-            $this->container['events']->dispatch(new Events\JobProcessed($this->connectionName, $job));
+            $this->container['events']->dispatch(new JobProcessed($this->connectionName, $job));
         }
     }
 
@@ -108,7 +111,7 @@ class SyncQueue extends Queue implements QueueContract
     protected function raiseExceptionOccurredJobEvent(Job $job, $e)
     {
         if ($this->container->bound('events')) {
-            $this->container['events']->dispatch(new Events\JobExceptionOccurred($this->connectionName, $job, $e));
+            $this->container['events']->dispatch(new JobExceptionOccurred($this->connectionName, $job, $e));
         }
     }
 
@@ -133,11 +136,11 @@ class SyncQueue extends Queue implements QueueContract
 
     /**
      * Push a raw payload onto the queue.
-	 * 将原始有效负载推入队列
+	 * 推入原始有效负载至队列
      *
      * @param  string  $payload
      * @param  string|null  $queue
-     * @param  array   $options
+     * @param  array  $options
      * @return mixed
      */
     public function pushRaw($payload, $queue = null, array $options = [])
@@ -147,11 +150,11 @@ class SyncQueue extends Queue implements QueueContract
 
     /**
      * Push a new job onto the queue after a delay.
-	 * 在延迟后将新作业推入队列
+	 * 推入新作业至队列在延迟后
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @param  string|null  $queue
      * @return mixed
      */
@@ -162,7 +165,7 @@ class SyncQueue extends Queue implements QueueContract
 
     /**
      * Pop the next job off of the queue.
-	 * 将下一个作业从队列中弹出
+	 * 弹出下一个作业从队列中
      *
      * @param  string|null  $queue
      * @return \Illuminate\Contracts\Queue\Job|null

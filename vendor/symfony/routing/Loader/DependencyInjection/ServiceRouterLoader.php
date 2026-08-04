@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，加载程序，服务路由加载器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -22,7 +19,6 @@ use Symfony\Component\Routing\Loader\ObjectRouteLoader;
 
 /**
  * A route loader that executes a service to load the routes.
- * 执行服务加载路由的路由加载程序。
  *
  * @author Ryan Weaver <ryan@knpuniversity.com>
  *

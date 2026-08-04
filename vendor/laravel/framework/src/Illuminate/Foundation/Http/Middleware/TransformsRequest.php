@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，Http，中间件，转换请求
+ * 基础，Http中间件，转换请求
  */
 
 namespace Illuminate\Foundation\Http\Middleware;
@@ -27,7 +27,7 @@ class TransformsRequest
 
     /**
      * Clean the request's data.
-	 * 清理请求的数据
+	 * 清除请求数据
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void
@@ -57,7 +57,7 @@ class TransformsRequest
 
     /**
      * Clean the data in the given array.
-	 * 清除给定数组中的数据
+	 * 清理给定数组的数据
      *
      * @param  array  $data
      * @param  string  $keyPrefix
@@ -72,7 +72,7 @@ class TransformsRequest
 
     /**
      * Clean the given value.
-	 * 清除给定的值
+	 * 清除给定值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -89,7 +89,7 @@ class TransformsRequest
 
     /**
      * Transform the given value.
-	 * 变换给定的值
+	 * 变换给定值
      *
      * @param  string  $key
      * @param  mixed  $value

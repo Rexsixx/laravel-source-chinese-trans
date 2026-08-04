@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，有一个
+ * 数据库，Eloquent只有一个
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Concerns\SupportsDefaultModels;
 
 class HasOne extends HasOneOrMany
@@ -30,9 +30,8 @@ class HasOne extends HasOneOrMany
 
     /**
      * Initialize the relation on a set of models.
-	 * 初始化一组模型上的关系
-     *
-     * @param  array   $models
+     * 初始化一组模型上的关系
+     * @param  array  $models
      * @param  string  $relation
      * @return array
      */

@@ -18,7 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts Reflector related classes to array representation.
- * 将反射器相关的类强制转换为数组表示。
+ * 将反射器相关类转换为数组表示。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *
@@ -85,7 +85,6 @@ class ReflectionCaster
     public static function castGenerator(\Generator $c, array $a, Stub $stub, $isNested)
     {
         // Cannot create ReflectionGenerator based on a terminated Generator
-		// 无法基于终止的生成器创建ReflectionGenerator
         try {
             $reflectionGenerator = new \ReflectionGenerator($c);
         } catch (\Exception $e) {

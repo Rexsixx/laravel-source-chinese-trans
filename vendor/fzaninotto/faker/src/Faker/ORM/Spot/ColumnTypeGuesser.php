@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，ORM，Spot，列式猜测器
+ * Faker，ORM，Spot，列类型猜测器
  */
 
 namespace Faker\ORM\Spot;
@@ -10,6 +10,7 @@ use Faker\Generator;
 class ColumnTypeGuesser
 {
     protected $generator;
+
 
     /**
      * ColumnTypeGuesser constructor.

@@ -1,27 +1,36 @@
 <?php
 /**
- * Illuminate，缓存，数组存储
+ * 缓存，缓存数组存储
  */
 
 namespace Illuminate\Cache;
 
+use Illuminate\Contracts\Cache\LockProvider;
 use Illuminate\Support\InteractsWithTime;
 
-class ArrayStore extends TaggableStore
+class ArrayStore extends TaggableStore implements LockProvider
 {
     use InteractsWithTime, RetrievesMultipleKeys;
 
     /**
      * The array of stored values.
-	 * 存储值的数组
+	 * 存储值数组
      *
      * @var array
      */
     protected $storage = [];
 
     /**
+     * The array of locks.
+	 * 锁定数组
+     *
+     * @var array
+     */
+    public $locks = [];
+
+    /**
      * Retrieve an item from the cache by key.
-	 * 按键从缓存中检索项
+	 * 检索一个项目从cache中
      *
      * @param  string|array  $key
      * @return mixed
@@ -47,10 +56,10 @@ class ArrayStore extends TaggableStore
 
     /**
      * Store an item in the cache for a given number of seconds.
-	 * 将项存储在缓存中给定的秒数
+	 * 存储一个项目至缓存中使用给定秒数
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @param  int  $seconds
      * @return bool
      */
@@ -66,10 +75,10 @@ class ArrayStore extends TaggableStore
 
     /**
      * Increment the value of an item in the cache.
-	 * 增加缓存中项的值
+	 * 增加缓存中某个项
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return int
      */
     public function increment($key, $value = 1)
@@ -87,10 +96,10 @@ class ArrayStore extends TaggableStore
 
     /**
      * Decrement the value of an item in the cache.
-	 * 递减缓存中项的值
+	 * 递减缓存中项目的值
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return int
      */
     public function decrement($key, $value = 1)
@@ -103,7 +112,7 @@ class ArrayStore extends TaggableStore
 	 * 将项无限期地存储在缓存中
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return bool
      */
     public function forever($key, $value)
@@ -113,7 +122,7 @@ class ArrayStore extends TaggableStore
 
     /**
      * Remove an item from the cache.
-	 * 从缓存中删除项
+	 * 移除一条
      *
      * @param  string  $key
      * @return bool
@@ -131,7 +140,7 @@ class ArrayStore extends TaggableStore
 
     /**
      * Remove all items from the cache.
-	 * 从缓存中删除所有项
+	 * 移除所有
      *
      * @return bool
      */
@@ -144,7 +153,7 @@ class ArrayStore extends TaggableStore
 
     /**
      * Get the cache key prefix.
-	 * 获取缓存键前缀
+	 * 得到缓存前缀
      *
      * @return string
      */
@@ -155,7 +164,7 @@ class ArrayStore extends TaggableStore
 
     /**
      * Get the expiration time of the key.
-	 * 获取密钥的过期时间
+	 * 得到密钥的过期时间
      *
      * @param  int  $seconds
      * @return int
@@ -167,7 +176,7 @@ class ArrayStore extends TaggableStore
 
     /**
      * Get the UNIX timestamp for the given number of seconds.
-	 * 获取给定秒数的UNIX时间戳
+	 * 得到给定秒数的UNIX时间戳
      *
      * @param  int  $seconds
      * @return int
@@ -175,5 +184,33 @@ class ArrayStore extends TaggableStore
     protected function toTimestamp($seconds)
     {
         return $seconds > 0 ? $this->availableAt($seconds) : 0;
+    }
+
+    /**
+     * Get a lock instance.
+	 * 得到锁实例
+     *
+     * @param  string  $name
+     * @param  int  $seconds
+     * @param  string|null  $owner
+     * @return \Illuminate\Contracts\Cache\Lock
+     */
+    public function lock($name, $seconds = 0, $owner = null)
+    {
+        return new ArrayLock($this, $name, $seconds, $owner);
+    }
+
+    /**
+     * Restore a lock instance using the owner identifier.
+	 * 恢复锁实例使用所有者标识符
+	 * 
+     *
+     * @param  string  $name
+     * @param  string  $owner
+     * @return \Illuminate\Contracts\Cache\Lock
+     */
+    public function restoreLock($name, $owner)
+    {
+        return $this->lock($name, 0, $owner);
     }
 }

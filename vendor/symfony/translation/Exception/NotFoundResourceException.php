@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，翻译，异常，没有发现资源异常
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\Translation\Exception;
 
 /**
  * Thrown when a resource does not exist.
- * 当资源不存在时抛出。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

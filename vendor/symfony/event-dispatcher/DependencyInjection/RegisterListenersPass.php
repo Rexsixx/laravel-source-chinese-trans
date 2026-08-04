@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，事件调度程序，依赖注入，注册监听器传递
- */
 
 /*
  * This file is part of the Symfony package.

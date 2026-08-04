@@ -1,6 +1,6 @@
 <?php
 /**
- * Prophecy，Util，出口Util
+ * Prophecy，Util，出口工具
  */
 
 namespace Prophecy\Util;
@@ -50,7 +50,7 @@ class ExportUtil
      * and public properties.
      *
      * @param  mixed $value
-     * @return array<mixed>
+     * @return array
      */
     public static function toArray($value)
     {
@@ -81,9 +81,20 @@ class ExportUtil
         // above (fast) mechanism nor with reflection in Zend.
         // Format the output similarly to print_r() in this case
         if ($value instanceof \SplObjectStorage) {
+            // However, the fast method does work in HHVM, and exposes the
+            // internal implementation. Hide it again.
+            if (property_exists('\SplObjectStorage', '__storage')) {
+                unset($array['__storage']);
+            } elseif (property_exists('\SplObjectStorage', 'storage')) {
+                unset($array['storage']);
+            }
+
+            if (property_exists('\SplObjectStorage', '__key')) {
+                unset($array['__key']);
+            }
+
             foreach ($value as $key => $val) {
-                // Use the same identifier that would be printed alongside the object's representation elsewhere.
-                $array[spl_object_id($val)] = array(
+                $array[spl_object_hash($val)] = array(
                     'obj' => $val,
                     'inf' => $value->getInfo(),
                 );
@@ -123,7 +134,7 @@ class ExportUtil
         if (is_resource($value)) {
             return sprintf(
                 'resource(%d) of type (%s)',
-                (int) $value,
+                $value,
                 get_resource_type($value)
             );
         }
@@ -131,26 +142,25 @@ class ExportUtil
         if (is_string($value)) {
             // Match for most non printable chars somewhat taking multibyte chars into account
             if (preg_match('/[^\x09-\x0d\x20-\xff]/', $value)) {
-                return 'Binary String: 0x'.bin2hex($value);
+                return 'Binary String: 0x' . bin2hex($value);
             }
 
-            return "'".
-            str_replace(array("\r\n", "\n\r", "\r"), array("\n", "\n", "\n"), $value).
+            return "'" .
+            str_replace(array("\r\n", "\n\r", "\r"), array("\n", "\n", "\n"), $value) .
             "'";
         }
 
         $whitespace = str_repeat(' ', 4 * $indentation);
 
         if (!$processed) {
-            $processed = new Context();
+            $processed = new Context;
         }
 
         if (is_array($value)) {
             if (($key = $processed->contains($value)) !== false) {
-                return 'Array &'.$key;
+                return 'Array &' . $key;
             }
 
-            \assert(\is_array($value));
             $array  = $value;
             $key    = $processed->add($value);
             $values = '';
@@ -158,14 +168,14 @@ class ExportUtil
             if (count($array) > 0) {
                 foreach ($array as $k => $v) {
                     $values .= sprintf(
-                        '%s    %s => %s'."\n",
+                        '%s    %s => %s' . "\n",
                         $whitespace,
                         self::recursiveExport($k, $indentation),
                         self::recursiveExport($value[$k], $indentation + 1, $processed)
                     );
                 }
 
-                $values = "\n".$values.$whitespace;
+                $values = "\n" . $values . $whitespace;
             }
 
             return sprintf('Array &%s (%s)', $key, $values);
@@ -174,30 +184,28 @@ class ExportUtil
         if (is_object($value)) {
             $class = get_class($value);
 
-            if ($processed->contains($value)) {
-                \assert(\is_object($value));
-                return sprintf('%s#%d Object', $class, spl_object_id($value));
+            if ($hash = $processed->contains($value)) {
+                return sprintf('%s:%s Object', $class, $hash);
             }
 
-            $processed->add($value);
-            \assert(\is_object($value));
+            $hash   = $processed->add($value);
             $values = '';
             $array  = self::toArray($value);
 
             if (count($array) > 0) {
                 foreach ($array as $k => $v) {
                     $values .= sprintf(
-                        '%s    %s => %s'."\n",
+                        '%s    %s => %s' . "\n",
                         $whitespace,
                         self::recursiveExport($k, $indentation),
                         self::recursiveExport($v, $indentation + 1, $processed)
                     );
                 }
 
-                $values = "\n".$values.$whitespace;
+                $values = "\n" . $values . $whitespace;
             }
 
-            return sprintf('%s#%d Object (%s)', $class, spl_object_id($value), $values);
+            return sprintf('%s:%s Object (%s)', $class, $hash, $values);
         }
 
         return var_export($value, true);

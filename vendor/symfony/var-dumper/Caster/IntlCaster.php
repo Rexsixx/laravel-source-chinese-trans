@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Var Dumper，Caster，Intl Caster
- */
 
 /*
  * This file is part of the Symfony package.
@@ -105,7 +102,7 @@ class IntlCaster
                     'SIGNIFICANT_DIGIT_SYMBOL' => $c->getSymbol(\NumberFormatter::SIGNIFICANT_DIGIT_SYMBOL),
                     'MONETARY_GROUPING_SEPARATOR_SYMBOL' => $c->getSymbol(\NumberFormatter::MONETARY_GROUPING_SEPARATOR_SYMBOL),
                 ]
-            ),
+             ),
         ];
 
         return self::castError($c, $a);

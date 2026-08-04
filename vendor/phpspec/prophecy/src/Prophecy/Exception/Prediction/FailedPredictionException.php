@@ -1,7 +1,4 @@
 <?php
-/**
- * Prophecy，异常，预言，失败预测异常
- */
 
 /*
  * This file is part of the Prophecy.
@@ -22,4 +19,6 @@ use RuntimeException;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class FailedPredictionException extends RuntimeException implements PredictionException {}
+class FailedPredictionException extends RuntimeException implements PredictionException
+{
+}

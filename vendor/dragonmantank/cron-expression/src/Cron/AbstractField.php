@@ -13,21 +13,18 @@ abstract class AbstractField implements FieldInterface
 {
     /**
      * Full range of values that are allowed for this field type
-	 * 适用于此字段类型的全部值
      * @var array
      */
     protected $fullRange = [];
 
     /**
      * Literal values we need to convert to integers
-	 * 我们需要将文字值转换为整数
      * @var array
      */
     protected $literals = [];
 
     /**
      * Start value of the full range
-	 * 全范围的起始值
      * @var integer
      */
     protected $rangeStart;

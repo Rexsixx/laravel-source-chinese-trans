@@ -1,9 +1,5 @@
 <?php
 /**
- * Ramsey，Uuid，转化器，默认时间生成器
- */
-
-/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE

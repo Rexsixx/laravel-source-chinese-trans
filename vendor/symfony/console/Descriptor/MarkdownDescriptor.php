@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，描述符，Markdown描述符
+ * Symfony，组件，控制台，描述符号，编辑器描述符号
  */
 
 /*
@@ -24,7 +24,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Markdown descriptor.
- * Markdown描述符。
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  *

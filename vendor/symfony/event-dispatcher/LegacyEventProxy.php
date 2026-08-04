@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，事件调度程序，Legacy 事件代理
+ * Symfony，组件，事件调度器，Legacy 事件代理
  */
 
 /*

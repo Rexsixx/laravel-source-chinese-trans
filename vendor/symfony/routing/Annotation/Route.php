@@ -16,7 +16,6 @@ namespace Symfony\Component\Routing\Annotation;
 
 /**
  * Annotation class for @Route().
- * 注释类用于@Route()。
  *
  * @Annotation
  * @Target({"CLASS", "METHOD"})

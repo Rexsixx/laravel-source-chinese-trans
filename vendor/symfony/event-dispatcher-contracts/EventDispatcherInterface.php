@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，事件调度程序，事件调度程序接口
+ * Symfony，组件，事件调度器，事件调度器接口
  */
 
 /*
@@ -35,7 +35,7 @@ if (interface_exists(PsrEventDispatcherInterface::class)) {
          *
          * @return object The passed $event MUST be returned
          */
-        public function dispatch($event/* , string $eventName = null */);
+        public function dispatch($event/*, string $eventName = null*/);
     }
 } else {
     /**
@@ -56,6 +56,6 @@ if (interface_exists(PsrEventDispatcherInterface::class)) {
          *
          * @return object The passed $event MUST be returned
          */
-        public function dispatch($event/* , string $eventName = null */);
+        public function dispatch($event/*, string $eventName = null*/);
     }
 }

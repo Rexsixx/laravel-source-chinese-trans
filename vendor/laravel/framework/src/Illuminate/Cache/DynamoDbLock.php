@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，DynamoDb 锁
+ * 缓存，缓存DynamoDB锁
  */
 
 namespace Illuminate\Cache;
@@ -17,7 +17,7 @@ class DynamoDbLock extends Lock
 
     /**
      * Create a new lock instance.
-	 * 创建一个新的锁实例
+	 * 创建新的锁实例
      *
      * @param  \Illuminate\Cache\DynamoDbStore  $dynamo
      * @param  string  $name
@@ -49,18 +49,20 @@ class DynamoDbLock extends Lock
      * Release the lock.
 	 * 释放锁
      *
-     * @return void
+     * @return bool
      */
     public function release()
     {
         if ($this->isOwnedByCurrentProcess()) {
-            $this->dynamo->forget($this->name);
+            return $this->dynamo->forget($this->name);
         }
+
+        return false;
     }
 
     /**
      * Release this lock in disregard of ownership.
-	 * 不顾所有权，解除此锁。
+	 * 释放锁，不顾所有权
      *
      * @return void
      */

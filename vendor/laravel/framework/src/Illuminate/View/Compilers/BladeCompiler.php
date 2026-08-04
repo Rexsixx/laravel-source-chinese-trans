@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，编译，Blade 编译器
+ * 视图，Blade编译器
  */
 
 namespace Illuminate\View\Compilers;
@@ -37,7 +37,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * All custom "directive" handlers.
-	 * 所有自定义“指令”处理程序
+	 * 所有自定义"指令"处理程序
      *
      * @var array
      */
@@ -45,7 +45,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * All custom "condition" handlers.
-	 * 所有自定义“条件”处理程序
+	 * 所有自定义"条件"处理程
      *
      * @var array
      */
@@ -98,7 +98,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * The "regular" / legacy echo string format.
-	 * “常规”/遗留回显字符串格式
+	 * "常规"/遗留回显字符串格式
      *
      * @var string
      */
@@ -134,23 +134,10 @@ class BladeCompiler extends Compiler implements CompilerInterface
         }
 
         if (! is_null($this->cachePath)) {
-            $contents = $this->compileString(
-                $this->files->get($this->getPath())
-            );
+            $contents = $this->compileString($this->files->get($this->getPath()));
 
             if (! empty($this->getPath())) {
-                $tokens = $this->getOpenAndClosingPhpTokens($contents);
-
-                // If the tokens we retrieved from the compiled contents have at least
-                // one opening tag and if that last token isn't the closing tag, we
-                // need to close the statement before adding the path at the end.
-				// 如果从编译后的内容中获取的标记至少包含一个起始标签，并且最后一个标记不是结束标签，
-				// 那么在将路径添加到末尾之前，我们需要先关闭该语句。
-                if ($tokens->isNotEmpty() && $tokens->last() !== T_CLOSE_TAG) {
-                    $contents .= ' ?>';
-                }
-
-                $contents .= "<?php /**PATH {$this->getPath()} ENDPATH**/ ?>";
+                $contents = $this->appendFilePath($contents);
             }
 
             $this->files->put(
@@ -160,8 +147,26 @@ class BladeCompiler extends Compiler implements CompilerInterface
     }
 
     /**
+     * Append the file path to the compiled string.
+	 * 附加文件路径到编译后的字符串
+     *
+     * @param  string  $contents
+     * @return string
+     */
+    protected function appendFilePath($contents)
+    {
+        $tokens = $this->getOpenAndClosingPhpTokens($contents);
+
+        if ($tokens->isNotEmpty() && $tokens->last() !== T_CLOSE_TAG) {
+            $contents .= ' ?>';
+        }
+
+        return $contents."<?php /**PATH {$this->getPath()} ENDPATH**/ ?>";
+    }
+
+    /**
      * Get the open and closing PHP tag tokens from the given string.
-	 * 从给定字符串中获取打开和关闭PHP标记令牌
+	 * 得到打开和关闭PHP标记令牌从给定字符串中
      *
      * @param  string  $contents
      * @return \Illuminate\Support\Collection
@@ -169,7 +174,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
     protected function getOpenAndClosingPhpTokens($contents)
     {
         return collect(token_get_all($contents))
-            ->pluck($tokenNumber = 0)
+            ->pluck(0)
             ->filter(function ($token) {
                 return in_array($token, [T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_CLOSE_TAG]);
             });
@@ -177,7 +182,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Get the path currently being compiled.
-	 * 获取当前正在编译的路径
+	 * 得到当前正在编译的路径
      *
      * @return string
      */
@@ -207,23 +212,15 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     public function compileString($value)
     {
-        if (strpos($value, '@verbatim') !== false) {
-            $value = $this->storeVerbatimBlocks($value);
-        }
+        [$this->footer, $result] = [[], ''];
 
-        $this->footer = [];
-
-        if (strpos($value, '@php') !== false) {
-            $value = $this->storePhpBlocks($value);
-        }
-
-        $result = '';
+        $value = $this->storeUncompiledBlocks($value);
 
         // Here we will loop through all of the tokens returned by the Zend lexer and
         // parse each one into the corresponding valid PHP. We will then have this
         // template as the correctly rendered PHP that can be rendered natively.
-		// 接下来，我们将遍历 Zend 解析器返回的所有标记，并将每个标记解析为相应的有效的 PHP 代码。
-		// 然后，我们将拥有这样一个模板，它就是经过正确渲染的 PHP 代码，可以直接进行渲染。
+		// 这里，我们将遍历Zend lexer返回的所有令牌，并将每个令牌解析为相应的有效PHP。
+		// 然后，我们将使用此模板作为可以本地渲染的正确渲染的PHP。
         foreach (token_get_all($value) as $token) {
             $result .= is_array($token) ? $this->parseToken($token) : $token;
         }
@@ -235,13 +232,33 @@ class BladeCompiler extends Compiler implements CompilerInterface
         // If there are any footer lines that need to get added to a template we will
         // add them here at the end of the template. This gets used mainly for the
         // template inheritance via the extends keyword that should be appended.
-		// 如果需要在模板中添加任何页脚内容，我们将在此处（在模板末尾）进行添加。
-		// 这种做法主要用于通过“extends”关键字实现模板继承，该关键字也应一并添加。
+		// 如果有任何页脚行需要添加到模板中，我们将在模板末尾添加它们。
+		// 这主要用于通过应附加的extends关键字进行模板继承。
         if (count($this->footer) > 0) {
             $result = $this->addFooters($result);
         }
 
         return $result;
+    }
+
+    /**
+     * Store the blocks that do not receive compilation.
+	 * 存储不接受编译的块
+     *
+     * @param  string  $value
+     * @return string
+     */
+    protected function storeUncompiledBlocks($value)
+    {
+        if (strpos($value, '@verbatim') !== false) {
+            $value = $this->storeVerbatimBlocks($value);
+        }
+
+        if (strpos($value, '@php') !== false) {
+            $value = $this->storePhpBlocks($value);
+        }
+
+        return $value;
     }
 
     /**
@@ -306,7 +323,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Get a placeholder to temporary mark the position of raw blocks.
-	 * 获取一个占位符来临时标记原始块的位置
+	 * 得到一个占位符来临时标记原始块的位置
      *
      * @param  int|string  $replace
      * @return string
@@ -318,7 +335,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Add the stored footers onto the given content.
-	 * 将存储的页脚添加到给定的内容中
+	 * 添加存储的页脚到给定的内容中
      *
      * @param  string  $result
      * @return string
@@ -359,7 +376,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
     protected function compileExtensions($value)
     {
         foreach ($this->extensions as $compiler) {
-            $value = call_user_func($compiler, $value, $this);
+            $value = $compiler($value, $this);
         }
 
         return $value;
@@ -367,7 +384,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Compile Blade statements that start with "@".
-	 * 编译以“@”开头的Blade语句
+	 * 编译以"@"开头的Blade语句
      *
      * @param  string  $value
      * @return string
@@ -403,7 +420,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Call the given directive with the given value.
-	 * 用给定的值调用给定的指令
+	 * 调用给定的指令用给定的值
      *
      * @param  string  $name
      * @param  string|null  $value
@@ -420,7 +437,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Strip the parentheses from the given expression.
-	 * 从给定表达式中去掉括号
+	 * 去掉括号从给定表达式中
      *
      * @param  string  $expression
      * @return string
@@ -448,7 +465,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Get the extensions used by the compiler.
-	 * 获取编译器使用的扩展名
+	 * 得到编译器使用的扩展名
      *
      * @return array
      */
@@ -459,7 +476,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Register an "if" statement directive.
-	 * 注册一个“if”语句指令
+	 * 注册一个"if"语句指令
      *
      * @param  string  $name
      * @param  callable  $callback
@@ -473,6 +490,12 @@ class BladeCompiler extends Compiler implements CompilerInterface
             return $expression !== ''
                     ? "<?php if (\Illuminate\Support\Facades\Blade::check('{$name}', {$expression})): ?>"
                     : "<?php if (\Illuminate\Support\Facades\Blade::check('{$name}')): ?>";
+        });
+
+        $this->directive('unless'.$name, function ($expression) use ($name) {
+            return $expression !== ''
+                ? "<?php if (! \Illuminate\Support\Facades\Blade::check('{$name}', {$expression})): ?>"
+                : "<?php if (! \Illuminate\Support\Facades\Blade::check('{$name}')): ?>";
         });
 
         $this->directive('else'.$name, function ($expression) use ($name) {
@@ -543,11 +566,13 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Register a handler for custom directives.
-	 * 为自定义指令注册一个处理程序
+	 * 注册一个处理程序为自定义指令
      *
      * @param  string  $name
      * @param  callable  $handler
      * @return void
+     *
+     * @throws \InvalidArgumentException
      */
     public function directive($name, callable $handler)
     {
@@ -560,7 +585,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Get the list of custom directives.
-	 * 获取自定义指令列表
+	 * 得到自定义指令列表
      *
      * @return array
      */
@@ -583,7 +608,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Set the "echo" format to double encode entities.
-	 * 将“echo”格式设置为对实体进行双编码
+	 * 设置"echo"格式为对实体进行双编码
      *
      * @return void
      */
@@ -594,7 +619,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Set the "echo" format to not double encode entities.
-	 * 将“echo”格式设置为不对实体进行双重编码
+	 * 设置"echo"格式为不对实体进行双编码
      *
      * @return void
      */

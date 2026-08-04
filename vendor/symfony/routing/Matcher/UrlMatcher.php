@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，匹配程序，Url 匹配程序
- */
 
 /*
  * This file is part of the Symfony package.
@@ -26,7 +23,6 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * UrlMatcher matches URL based on a set of routes.
- * UrlMatcher基于一组路由匹配URL。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -41,13 +37,11 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Collects HTTP methods that would be allowed for the request.
-	 * 收集可以请求的HTTP方法
      */
     protected $allow = [];
 
     /**
      * Collects URI schemes that would be allowed for the request.
-	 * 收集允许请求的URI方案
      *
      * @internal
      */

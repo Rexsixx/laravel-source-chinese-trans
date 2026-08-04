@@ -1,8 +1,4 @@
 <?php
-/**
- * SebastianBergmann，PHP_Token_ClassTest
- */
-
 /*
  * This file is part of php-token-stream.
  *

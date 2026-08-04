@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，Postgres 构建器
+ * 数据库，结构，pg构建者
  */
 
 namespace Illuminate\Database\Schema;
@@ -9,7 +9,7 @@ class PostgresBuilder extends Builder
 {
     /**
      * Determine if the given table exists.
-	 * 确定给定的表是否存在
+	 * 确定给定表是否存在
      *
      * @param  string  $table
      * @return bool
@@ -27,7 +27,7 @@ class PostgresBuilder extends Builder
 
     /**
      * Drop all tables from the database.
-	 * 从数据库中删除所有表
+	 * 从数据库删除所有表
      *
      * @return void
      */
@@ -35,7 +35,7 @@ class PostgresBuilder extends Builder
     {
         $tables = [];
 
-        $excludedTables = ['spatial_ref_sys'];
+        $excludedTables = $this->connection->getConfig('dont_drop') ?? ['spatial_ref_sys'];
 
         foreach ($this->getAllTables() as $row) {
             $row = (array) $row;
@@ -58,7 +58,7 @@ class PostgresBuilder extends Builder
 
     /**
      * Drop all views from the database.
-	 * 从数据库中删除所有视图
+	 * 从数据库删除所有视图
      *
      * @return void
      */
@@ -83,7 +83,9 @@ class PostgresBuilder extends Builder
 
     /**
      * Drop all types from the database.
-	 * 从数据库中删除所有类型
+	 * 从数据库删除所有类型
+     *
+     * @return void
      */
     public function dropAllTypes()
     {
@@ -106,37 +108,37 @@ class PostgresBuilder extends Builder
 
     /**
      * Get all of the table names for the database.
-	 * 获取数据库的所有表名
+	 * 得到数据库所有表名
      *
      * @return array
      */
-    protected function getAllTables()
+    public function getAllTables()
     {
         return $this->connection->select(
-            $this->grammar->compileGetAllTables($this->connection->getConfig('schema'))
+            $this->grammar->compileGetAllTables((array) $this->connection->getConfig('schema'))
         );
     }
 
     /**
      * Get all of the view names for the database.
-	 * 获取数据库的所有视图名称
+	 * 得到数据库所有视图名
      *
      * @return array
      */
-    protected function getAllViews()
+    public function getAllViews()
     {
         return $this->connection->select(
-            $this->grammar->compileGetAllViews($this->connection->getConfig('schema'))
+            $this->grammar->compileGetAllViews((array) $this->connection->getConfig('schema'))
         );
     }
 
     /**
      * Get all of the type names for the database.
-	 * 获取数据库的所有类型名称
+	 * 得到数据库所有类型名
      *
      * @return array
      */
-    protected function getAllTypes()
+    public function getAllTypes()
     {
         return $this->connection->select(
             $this->grammar->compileGetAllTypes()
@@ -145,7 +147,7 @@ class PostgresBuilder extends Builder
 
     /**
      * Get the column listing for a given table.
-	 * 获取给定表的列清单
+	 * 得到给定表列清单
      *
      * @param  string  $table
      * @return array

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，电子邮件，邮件收发机
+ * 契约，邮件接口
  */
 
 namespace Illuminate\Contracts\Mail;
@@ -9,7 +9,7 @@ interface Mailer
 {
     /**
      * Begin the process of mailing a mailable class instance.
-	 * 开始邮寄可邮寄类实例的过程
+	 * to,开启一个进程去发邮件
      *
      * @param  mixed  $users
      * @return \Illuminate\Mail\PendingMail
@@ -18,7 +18,7 @@ interface Mailer
 
     /**
      * Begin the process of mailing a mailable class instance.
-	 * 开始邮寄可邮寄类实例的过程
+	 * bcc,开启一个进程去发邮件
      *
      * @param  mixed  $users
      * @return \Illuminate\Mail\PendingMail
@@ -27,7 +27,7 @@ interface Mailer
 
     /**
      * Send a new message with only a raw text part.
-	 * 发送一个只有原始文本部分的新消息
+	 * 草稿
      *
      * @param  string  $text
      * @param  mixed  $callback
@@ -37,9 +37,9 @@ interface Mailer
 
     /**
      * Send a new message using a view.
-	 * 使用视图发送新消息
+	 * 发送
      *
-     * @param  string|array|\Illuminate\Contracts\Mail\Mailable  $view
+     * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
      * @param  array  $data
      * @param  \Closure|string|null  $callback
      * @return void
@@ -48,7 +48,7 @@ interface Mailer
 
     /**
      * Get the array of failed recipients.
-	 * 获取失败收件人的数组
+	 * 得到失败收件人
      *
      * @return array
      */

@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，记录，调试记录器接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * DebugLoggerInterface.
- * 调试记录器接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -26,7 +22,6 @@ interface DebugLoggerInterface
 {
     /**
      * Returns an array of logs.
-	 * 返回一个日志数组。
      *
      * A log is an array with the following mandatory keys:
      * timestamp, message, priority, and priorityName.

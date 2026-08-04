@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，中间件，检查修改响应
+ * Http，检查修改响应
  */
 
 namespace Illuminate\Http\Middleware;

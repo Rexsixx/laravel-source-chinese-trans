@@ -1,7 +1,4 @@
 <?php
-/**
- * 深拷贝，类型过滤器，Spl，Spl 双链列表过滤器
- */
 
 namespace DeepCopy\TypeFilter\Spl;
 
@@ -40,7 +37,6 @@ class SplDoublyLinkedListFilter implements TypeFilter
 
         $copy = function (SplDoublyLinkedList $list) use ($copier) {
             // Replace each element in the list with a deep copy of itself
-			// 将列表中的每个元素替换为一个完整的副本
             for ($i = 1; $i <= $list->count(); $i++) {
                 $copy = $copier->recursiveCopy($list->shift());
 

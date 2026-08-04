@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，错误处理程序，可投掷的Utils
+ * Symfony，组件，错误处理器，Throwable工具包
  */
 
 /*

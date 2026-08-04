@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，异常，Post 太大异常
+ * Http，提交过大异常
  */
 
 namespace Illuminate\Http\Exceptions;
@@ -11,8 +11,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class PostTooLargeException extends HttpException
 {
     /**
-     * PostTooLargeException constructor.
-	 * PostTooLargeException构造方法
+     * Create a new "post too large" exception instance.
+	 * 创建新的"post too large"异常实例
      *
      * @param  string|null  $message
      * @param  \Exception|null  $previous

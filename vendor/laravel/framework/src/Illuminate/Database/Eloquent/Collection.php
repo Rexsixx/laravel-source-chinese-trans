@@ -1,23 +1,23 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，集合
+ * 数据库，Eloquent，集合
  */
 
 namespace Illuminate\Database\Eloquent;
 
-use LogicException;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Queue\QueueableEntity;
 use Illuminate\Contracts\Queue\QueueableCollection;
+use Illuminate\Contracts\Queue\QueueableEntity;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection as BaseCollection;
+use Illuminate\Support\Str;
+use LogicException;
 
 class Collection extends BaseCollection implements QueueableCollection
 {
     /**
      * Find a model in the collection by key.
-	 * 按键在集合中查找模型
+	 * 查找集合模型
      *
      * @param  mixed  $key
      * @param  mixed  $default
@@ -143,7 +143,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Load a relationship path if it is not already eager loaded.
-	 * 加载关系路径（如果它还没有被急切加载）
+	 * 加载关系路径(如果它还没有被急切加载)
      *
      * @param  \Illuminate\Database\Eloquent\Collection  $models
      * @param  array  $path
@@ -167,7 +167,7 @@ class Collection extends BaseCollection implements QueueableCollection
             return;
         }
 
-        $models = $models->pluck($name);
+        $models = $models->pluck($name)->whereNotNull();
 
         if ($models->first() instanceof BaseCollection) {
             $models = $models->collapse();
@@ -226,7 +226,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Get the array of primary keys.
-	 * 获取主键数组
+	 * 得到主键数组
      *
      * @return array
      */
@@ -239,7 +239,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Merge the collection with the given items.
-	 * 将集合与给定的项合并
+	 * 合并集合与给定的项
      *
      * @param  \ArrayAccess|array  $items
      * @return static
@@ -257,7 +257,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Run a map over each of the items.
-	 * 在每个项目上运行一张映射
+	 * 运行一张地图在每个项目上
      *
      * @param  callable  $callback
      * @return \Illuminate\Support\Collection|static
@@ -265,6 +265,24 @@ class Collection extends BaseCollection implements QueueableCollection
     public function map(callable $callback)
     {
         $result = parent::map($callback);
+
+        return $result->contains(function ($item) {
+            return ! $item instanceof Model;
+        }) ? $result->toBase() : $result;
+    }
+
+    /**
+     * Run an associative map over each of the items.
+	 * 运行一个关联映射在每个项目上
+     *
+     * The callback should return an associative array with a single key / value pair.
+     *
+     * @param  callable  $callback
+     * @return \Illuminate\Support\Collection|static
+     */
+    public function mapWithKeys(callable $callback)
+    {
+        $result = parent::mapWithKeys($callback);
 
         return $result->contains(function ($item) {
             return ! $item instanceof Model;
@@ -331,6 +349,10 @@ class Collection extends BaseCollection implements QueueableCollection
     {
         $intersect = new static;
 
+        if (empty($items)) {
+            return $intersect;
+        }
+
         $dictionary = $this->getDictionary($items);
 
         foreach ($this->items as $item) {
@@ -348,7 +370,7 @@ class Collection extends BaseCollection implements QueueableCollection
      *
      * @param  string|callable|null  $key
      * @param  bool  $strict
-     * @return static|\Illuminate\Support\Collection
+     * @return static
      */
     public function unique($key = null, $strict = false)
     {
@@ -393,7 +415,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Make the given, typically visible, attributes hidden across the entire collection.
-	 * 将给定的（通常是可见的）属性隐藏在整个集合中
+	 * 将给定的(通常是可见的)属性隐藏在整个集合中
      *
      * @param  array|string  $attributes
      * @return $this
@@ -405,7 +427,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Make the given, typically hidden, attributes visible across the entire collection.
-	 * 使给定的（通常是隐藏的）属性在整个集合中可见
+	 * 使给定的(通常是隐藏的)属性在整个集合中可见
      *
      * @param  array|string  $attributes
      * @return $this
@@ -417,7 +439,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Get a dictionary keyed by primary keys.
-	 * 获取以主键为键的字典
+	 * 得到以主键为键的字典
      *
      * @param  \ArrayAccess|array|null  $items
      * @return array
@@ -437,14 +459,14 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * The following methods are intercepted to always return base collections.
-	 * 截取以下方法以始终返回基集合
+	 * 以下方法以始终返回基集合
      */
 
     /**
      * Get an array with the values of a given key.
-	 * 获取具有给定键值的数组
+	 * 得到具有给定键值的数组
      *
-     * @param  string  $value
+     * @param  string|array  $value
      * @param  string|null  $key
      * @return \Illuminate\Support\Collection
      */
@@ -455,7 +477,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Get the keys of the collection items.
-	 * 获取具有给定键值的数组
+	 * 得到收集项目的钥匙
      *
      * @return \Illuminate\Support\Collection
      */
@@ -468,12 +490,12 @@ class Collection extends BaseCollection implements QueueableCollection
      * Zip the collection together with one or more arrays.
 	 * 将集合与一个或多个数组压缩在一起
      *
-     * @param  mixed ...$items
+     * @param  mixed  ...$items
      * @return \Illuminate\Support\Collection
      */
     public function zip($items)
     {
-        return call_user_func_array([$this->toBase(), 'zip'], func_get_args());
+        return $this->toBase()->zip(...func_get_args());
     }
 
     /**
@@ -489,7 +511,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Get a flattened array of the items in the collection.
-	 * 获取集合中项的扁平数组
+	 * 得到集合中项的扁平数组
      *
      * @param  int  $depth
      * @return \Illuminate\Support\Collection
@@ -512,10 +534,10 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Pad collection to the specified length with a value.
-	 * 使用值将集合垫到指定的长度
+	 * 垫集合至指定的长度使用值
      *
      * @param  int  $size
-     * @param  mixed $value
+     * @param  mixed  $value
      * @return \Illuminate\Support\Collection
      */
     public function pad($size, $value)
@@ -525,7 +547,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Get the comparison function to detect duplicates.
-	 * 获取比较函数以检测重复项
+	 * 得到比较函数以检测重复项
      *
      * @param  bool  $strict
      * @return \Closure
@@ -539,7 +561,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Get the type of the entities being queued.
-	 * 获取正在排队的实体的类型
+	 * 得到正在排队的实体的类型
      *
      * @return string|null
      *
@@ -564,7 +586,7 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Get the identifiers for all of the entities.
-	 * 获取所有实体的标识符
+	 * 得到所有实体的标识符
      *
      * @return array
      */
@@ -581,18 +603,30 @@ class Collection extends BaseCollection implements QueueableCollection
 
     /**
      * Get the relationships of the entities being queued.
-	 * 获取正在排队的实体之间的关系
+	 * 得到正在排队的实体之间的关系
      *
      * @return array
      */
     public function getQueueableRelations()
     {
-        return $this->isNotEmpty() ? $this->first()->getQueueableRelations() : [];
+        if ($this->isEmpty()) {
+            return [];
+        }
+
+        $relations = $this->map->getQueueableRelations()->all();
+
+        if (count($relations) === 0 || $relations === [[]]) {
+            return [];
+        } elseif (count($relations) === 1) {
+            return array_values($relations)[0];
+        } else {
+            return array_intersect(...$relations);
+        }
     }
 
     /**
      * Get the connection of the entities being queued.
-	 * 获取正在排队的实体的连接
+	 * 得到正在排队的实体连接
      *
      * @return string|null
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Prophecy，参数，参数通配符
+ * Prophecy，参数，参数 Wildcard
  */
 
 /*
@@ -22,18 +22,15 @@ namespace Prophecy\Argument;
 class ArgumentsWildcard
 {
     /**
-     * @var list<Token\TokenInterface>
+     * @var Token\TokenInterface[]
      */
     private $tokens = array();
-    /**
-     * @var string|null
-     */
     private $string;
 
     /**
      * Initializes wildcard.
      *
-     * @param array<mixed> $arguments Array of argument tokens or values
+     * @param array $arguments Array of argument tokens or values
      */
     public function __construct(array $arguments)
     {
@@ -49,7 +46,7 @@ class ArgumentsWildcard
     /**
      * Calculates wildcard match score for provided arguments.
      *
-     * @param array<mixed> $arguments
+     * @param array $arguments
      *
      * @return false|int False OR integer score (higher - better)
      */
@@ -98,7 +95,7 @@ class ArgumentsWildcard
     }
 
     /**
-     * @return list<Token\TokenInterface>
+     * @return array
      */
     public function getTokens()
     {

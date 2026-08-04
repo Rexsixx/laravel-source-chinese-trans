@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，Up 命令
+ * 基础，上传命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -28,7 +28,7 @@ class UpCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return int
      */

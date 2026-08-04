@@ -1,43 +1,44 @@
 <?php
 /**
- * Illuminate，基础，异常处理，处理程序
+ * 基础，异常处理
  */
 
 namespace Illuminate\Foundation\Exceptions;
 
 use Exception;
-use Throwable;
-use Whoops\Run as Whoops;
-use Illuminate\Support\Arr;
-use Psr\Log\LoggerInterface;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
+use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Router;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Session\TokenMismatchException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Reflector;
 use Illuminate\Support\ViewErrorBag;
-use Whoops\Handler\HandlerInterface;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Auth\AuthenticationException;
-use Illuminate\Contracts\Container\Container;
-use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Symfony\Component\Debug\Exception\FlattenException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Illuminate\Contracts\Container\BindingResolutionException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application as ConsoleApplication;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\Debug\ExceptionHandler as SymfonyExceptionHandler;
-use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
+use Whoops\Handler\HandlerInterface;
+use Whoops\Run as Whoops;
 
 class Handler implements ExceptionHandlerContract
 {
@@ -51,7 +52,7 @@ class Handler implements ExceptionHandlerContract
 
     /**
      * A list of the exception types that are not reported.
-	 * 未报告的异常类型列表
+	 * 报告的异常类型列表
      *
      * @var array
      */
@@ -59,7 +60,7 @@ class Handler implements ExceptionHandlerContract
 
     /**
      * A list of the internal exception types that should not be reported.
-	 * 不应报告的内部异常类型的列表
+	 * 报告的内部异常类型的列表
      *
      * @var array
      */
@@ -87,7 +88,7 @@ class Handler implements ExceptionHandlerContract
 
     /**
      * Create a new exception handler instance.
-	 * 创建一个新的异常处理程序实例
+	 * 创建新的异常处理实例
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
@@ -102,7 +103,7 @@ class Handler implements ExceptionHandlerContract
 	 * 报告或记录异常
      *
      * @param  \Exception  $e
-     * @return mixed
+     * @return void
      *
      * @throws \Exception
      */
@@ -112,8 +113,10 @@ class Handler implements ExceptionHandlerContract
             return;
         }
 
-        if (is_callable($reportCallable = [$e, 'report'])) {
-            return $this->container->call($reportCallable);
+        if (Reflector::isCallable($reportCallable = [$e, 'report'])) {
+            if (($response = $this->container->call($reportCallable)) !== false) {
+                return $response;
+            }
         }
 
         try {
@@ -124,8 +127,12 @@ class Handler implements ExceptionHandlerContract
 
         $logger->error(
             $e->getMessage(),
-            array_merge($this->context(), ['exception' => $e]
-        ));
+            array_merge(
+                $this->exceptionContext($e),
+                $this->context(),
+                ['exception' => $e]
+            )
+        );
     }
 
     /**
@@ -157,8 +164,20 @@ class Handler implements ExceptionHandlerContract
     }
 
     /**
+     * Get the default exception context variables for logging.
+	 * 得到用于日志记录的默认异常上下文变量
+     *
+     * @param  \Exception  $e
+     * @return array
+     */
+    protected function exceptionContext(Exception $e)
+    {
+        return [];
+    }
+
+    /**
      * Get the default context variables for logging.
-	 * 获取日志记录的默认上下文变量
+	 * 得到日志记录的默认上下文变量
      *
      * @return array
      */
@@ -175,12 +194,14 @@ class Handler implements ExceptionHandlerContract
     }
 
     /**
-     * Render an exception into a response.
-	 * 将异常呈现到响应中
+     * Render an exception into an HTTP response.
+	 * 呈现异常到HTTP响应中
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $e
-     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Exception
      */
     public function render($request, Exception $e)
     {
@@ -201,13 +222,13 @@ class Handler implements ExceptionHandlerContract
         }
 
         return $request->expectsJson()
-                        ? $this->prepareJsonResponse($request, $e)
-                        : $this->prepareResponse($request, $e);
+                    ? $this->prepareJsonResponse($request, $e)
+                    : $this->prepareResponse($request, $e);
     }
 
     /**
      * Prepare exception for rendering.
-	 * 为呈现准备异常
+	 * 准备呈现异常
      *
      * @param  \Exception  $e
      * @return \Exception
@@ -229,7 +250,7 @@ class Handler implements ExceptionHandlerContract
 
     /**
      * Convert an authentication exception into a response.
-	 * 将身份验证异常转换为响应
+	 * 转换身份验证异常为响应
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Auth\AuthenticationException  $exception
@@ -244,7 +265,7 @@ class Handler implements ExceptionHandlerContract
 
     /**
      * Create a response object from the given validation exception.
-	 * 根据给定的验证异常创建响应对象
+	 * 创建响应对象根据给定的验证异常
      *
      * @param  \Illuminate\Validation\ValidationException  $e
      * @param  \Illuminate\Http\Request  $request
@@ -263,7 +284,7 @@ class Handler implements ExceptionHandlerContract
 
     /**
      * Convert a validation exception into a response.
-	 * 将验证异常转换为响应
+	 * 转换验证异常为响应
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Validation\ValidationException  $exception
@@ -278,7 +299,7 @@ class Handler implements ExceptionHandlerContract
 
     /**
      * Convert a validation exception into a JSON response.
-	 * 将验证异常转换为JSON响应
+	 * 转换验证异常为Json响应
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Validation\ValidationException  $exception
@@ -294,10 +315,10 @@ class Handler implements ExceptionHandlerContract
 
     /**
      * Prepare a response for the given exception.
-	 * 为给定的异常准备响应
+	 * 准备响应为给定的异常
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception $e
+     * @param  \Exception  $e
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function prepareResponse($request, Exception $e)
@@ -317,14 +338,14 @@ class Handler implements ExceptionHandlerContract
 
     /**
      * Create a Symfony response for the given exception.
-	 * 为给定的异常创建一个Symfony响应
+	 * 创建一个Symfony响应为给定的异常
      *
      * @param  \Exception  $e
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function convertExceptionToResponse(Exception $e)
     {
-        return SymfonyResponse::create(
+        return new SymfonyResponse(
             $this->renderExceptionContent($e),
             $this->isHttpException($e) ? $e->getStatusCode() : 500,
             $this->isHttpException($e) ? $e->getHeaders() : []
@@ -333,7 +354,7 @@ class Handler implements ExceptionHandlerContract
 
     /**
      * Get the response content for the given exception.
-	 * 获取给定异常的响应内容
+	 * 得到响应内容为给定的异常
      *
      * @param  \Exception  $e
      * @return string
@@ -351,7 +372,7 @@ class Handler implements ExceptionHandlerContract
 
     /**
      * Render an exception to a string using "Whoops".
-	 * 使用“Whoops”将异常呈现给字符串
+	 * 呈现异常给字符串使用"Whoops"
      *
      * @param  \Exception  $e
      * @return string
@@ -359,7 +380,7 @@ class Handler implements ExceptionHandlerContract
     protected function renderExceptionWithWhoops(Exception $e)
     {
         return tap(new Whoops, function ($whoops) {
-            $whoops->pushHandler($this->whoopsHandler());
+            $whoops->appendHandler($this->whoopsHandler());
 
             $whoops->writeToOutput(false);
 
@@ -369,7 +390,7 @@ class Handler implements ExceptionHandlerContract
 
     /**
      * Get the Whoops handler for the application.
-	 * 获取应用程序的Whoops处理程序
+	 * 得到应用程序的Whoops处理程序
      *
      * @return \Whoops\Handler\Handler
      */
@@ -408,7 +429,7 @@ class Handler implements ExceptionHandlerContract
     {
         $this->registerErrorViewPaths();
 
-        if (view()->exists($view = "errors::{$e->getStatusCode()}")) {
+        if (view()->exists($view = $this->getHttpExceptionView($e))) {
             return response()->view($view, [
                 'errors' => new ViewErrorBag,
                 'exception' => $e,
@@ -434,8 +455,20 @@ class Handler implements ExceptionHandlerContract
     }
 
     /**
+     * Get the view used to render HTTP exceptions.
+	 * 得到用于呈现HTTP异常的视图
+     *
+     * @param  \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface  $e
+     * @return string
+     */
+    protected function getHttpExceptionView(HttpExceptionInterface $e)
+    {
+        return "errors::{$e->getStatusCode()}";
+    }
+
+    /**
      * Map the given exception into an Illuminate response.
-	 * 将给定的异常映射到一个照亮响应中
+	 * 映射给定的异常到一个照亮响应中
      *
      * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @param  \Exception  $e
@@ -458,10 +491,10 @@ class Handler implements ExceptionHandlerContract
 
     /**
      * Prepare a JSON response for the given exception.
-	 * 为给定的异常准备一个JSON响应
+	 * 准备一个JSON响应为给定的异常
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception $e
+     * @param  \Exception  $e
      * @return \Illuminate\Http\JsonResponse
      */
     protected function prepareJsonResponse($request, Exception $e)
@@ -476,7 +509,7 @@ class Handler implements ExceptionHandlerContract
 
     /**
      * Convert the given exception to an array.
-	 * 将给定的异常转换为数组
+	 * 转换给定异常为数组
      *
      * @param  \Exception  $e
      * @return array
@@ -498,7 +531,7 @@ class Handler implements ExceptionHandlerContract
 
     /**
      * Render an exception to the console.
-	 * 向控制台呈现一个异常
+	 * 呈现一个异常至控制台
      *
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
      * @param  \Exception  $e

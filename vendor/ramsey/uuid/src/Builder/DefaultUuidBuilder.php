@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，构建器，默认 Uuid构建器
+ * Ramsey，Uuid，异常，默认Uuid生成器
  */
 
 /**

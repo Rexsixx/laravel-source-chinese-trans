@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，错误处理程序，调试类装入器
+ * Symfony，组件，错误处理器，Error Handler
  */
 
 /*
@@ -73,8 +73,6 @@ class DebugClassLoader
         'self' => 'self',
         'parent' => 'parent',
         'mixed' => 'mixed',
-        'list' => 'array',
-        'class-string' => 'string',
     ] + (\PHP_VERSION_ID >= 80000 ? [
         'static' => 'static',
         '$this' => 'static',

@@ -20,7 +20,6 @@ class ForcedRename extends AbstractPlugin
 
     /**
      * Renames a file, overwriting the destination if it exists.
-	 * 重新命名文件,如果存在的话,将目的地重写。
      *
      * @param string $path    Path to the existing file.
      * @param string $newpath The new path of the file.

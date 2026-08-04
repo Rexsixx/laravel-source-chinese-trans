@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由选择，排序的中间件
+ * 路由，排序中间件
  */
 
 namespace Illuminate\Routing;
@@ -11,10 +11,10 @@ class SortedMiddleware extends Collection
 {
     /**
      * Create a new Sorted Middleware container.
-	 * 创建一个新的Sorted Middleware容器
+	 * 创建新的排序中间件容器
      *
      * @param  array  $priorityMap
-     * @param  array|\Illuminate\Support\Collection  $middlewares
+     * @param  \Illuminate\Support\Collection|array  $middlewares
      * @return void
      */
     public function __construct(array $priorityMap, $middlewares)
@@ -28,10 +28,9 @@ class SortedMiddleware extends Collection
 
     /**
      * Sort the middlewares by the given priority map.
-	 * 根据给定的优先级映射对中间件进行排序。
+	 * 排序中间件根据给定的优先级映射
      *
      * Each call to this method makes one discrete middleware movement if necessary.
-	 * 如果需要,每个调用的方法都是一个离散的中间件移动。
      *
      * @param  array  $priorityMap
      * @param  array  $middlewares
@@ -54,9 +53,8 @@ class SortedMiddleware extends Collection
                 // This middleware is in the priority map. If we have encountered another middleware
                 // that was also in the priority map and was at a lower priority than the current
                 // middleware, we will move this middleware to be above the previous encounter.
-				// 此中间件位于优先级映射中。
-				// 如果我们在优先级列表中还遇到了另一个中间件，并且其优先级低于当前的这个中间件，
-				// 那么我们将把这个中间件移到比之前遇到的那个位置更高的位置。
+				// 此中间件位于优先级图中。如果我们遇到了另一个也在优先级映射中并且优先级低于当前中间件的中间件，
+				// 我们将把这个中间件移动到之前遇到的中间件之上。
                 if (isset($lastPriorityIndex) && $priorityIndex < $lastPriorityIndex) {
                     return $this->sortMiddleware(
                         $priorityMap, array_values($this->moveMiddleware($middlewares, $index, $lastIndex))
@@ -66,19 +64,19 @@ class SortedMiddleware extends Collection
                 // This middleware is in the priority map; but, this is the first middleware we have
                 // encountered from the map thus far. We'll save its current index plus its index
                 // from the priority map so we can compare against them on the next iterations.
-				// 此中间件已在优先级列表中；但这是我们在目前所查看的列表中遇到的第一个此类中间件。
-				// 我们将保存其当前索引以及来自优先级列表的索引，以便在后续迭代中与它们进行比较。
+				// 该中间件位于优先级图中；但是，这是我们迄今为止在map中遇到的第一个中间件。
+				// 我们将保存其当前索引以及优先级图中的索引，以便在下一次迭代中与它们进行比较。
                 $lastIndex = $index;
                 $lastPriorityIndex = $priorityIndex;
             }
         }
 
-        return array_values(array_unique($middlewares, SORT_REGULAR));
+        return Router::uniqueMiddleware($middlewares);
     }
 
     /**
      * Splice a middleware into a new position and remove the old entry.
-	 * 将中间件拼接到新位置并删除旧条目
+	 * 拼接中间件到新位置并删除旧条目
      *
      * @param  array  $middlewares
      * @param  int  $from

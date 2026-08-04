@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，过程，管道，Unix 管道
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Process\Process;
 
 /**
  * UnixPipes implementation uses unix pipes as handles.
- * UnixPipes实现使用unix管道作为句柄。
  *
  * @author Romain Neutron <imprec@gmail.com>
  *

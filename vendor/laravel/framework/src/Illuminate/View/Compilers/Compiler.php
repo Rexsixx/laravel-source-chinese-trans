@@ -1,18 +1,18 @@
 <?php
 /**
- * Illuminate，视图，编译，编译程序
+ * 视图，编译器
  */
 
 namespace Illuminate\View\Compilers;
 
-use InvalidArgumentException;
 use Illuminate\Filesystem\Filesystem;
+use InvalidArgumentException;
 
 abstract class Compiler
 {
     /**
      * The Filesystem instance.
-	 * Filesystem实例
+	 * 文件系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -20,7 +20,7 @@ abstract class Compiler
 
     /**
      * Get the cache path for the compiled views.
-	 * 获取编译视图的缓存路径
+	 * 得到编译视图的缓存路径
      *
      * @var string
      */
@@ -28,7 +28,7 @@ abstract class Compiler
 
     /**
      * Create a new compiler instance.
-	 * 创建一个新的编译器实例
+	 * 创建新的编译器实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string  $cachePath
@@ -48,14 +48,14 @@ abstract class Compiler
 
     /**
      * Get the path to the compiled version of a view.
-	 * 获取视图的编译版本的路径
+	 * 得到视图的编译版本的路径
      *
      * @param  string  $path
      * @return string
      */
     public function getCompiledPath($path)
     {
-        return $this->cachePath.'/'.sha1($path).'.php';
+        return $this->cachePath.'/'.sha1('v2'.$path).'.php';
     }
 
     /**
@@ -72,8 +72,8 @@ abstract class Compiler
         // If the compiled file doesn't exist we will indicate that the view is expired
         // so that it can be re-compiled. Else, we will verify the last modification
         // of the views is less than the modification times of the compiled views.
-		// 如果编译后的文件不存在，我们将表明该视图已过期，以便重新进行编译。
-		// 否则，我们将验证这些视图的最后修改时间是否早于已编译视图的修改时间。
+		// 如果编译后的文件不存在，我们将指示视图已过期，以便可以重新编译。
+		// 否则，我们将验证视图的最后一次修改是否小于编译视图的修改时间。
         if (! $this->files->exists($compiled)) {
             return true;
         }

@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，通知，通道，数据库通道
+ * 通知，数据库通道
  */
 
 namespace Illuminate\Notifications\Channels;
 
-use RuntimeException;
 use Illuminate\Notifications\Notification;
+use RuntimeException;
 
 class DatabaseChannel
 {
@@ -27,7 +27,7 @@ class DatabaseChannel
 
     /**
      * Get the data for the notification.
-	 * 获取通知的数据
+	 * 得到通知数据
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -51,7 +51,7 @@ class DatabaseChannel
 
     /**
      * Build an array payload for the DatabaseNotification Model.
-	 * 为DatabaseNotification Model构建一个数组有效负载
+	 * 构建一个数组有效负载
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification

@@ -1,22 +1,22 @@
 <?php
 /**
- * Illuminate，认证，数据库用户提供商
+ * 授权，数据库用户提供者
  */
 
 namespace Illuminate\Auth;
 
-use Illuminate\Support\Str;
+use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\ConnectionInterface;
-use Illuminate\Contracts\Hashing\Hasher as HasherContract;
-use Illuminate\Contracts\Auth\Authenticatable as UserContract;
+use Illuminate\Support\Str;
 
 class DatabaseUserProvider implements UserProvider
 {
     /**
      * The active database connection.
-	 * 活动数据库连接
+	 * 活动的数据库连接
      *
      * @var \Illuminate\Database\ConnectionInterface
      */
@@ -40,7 +40,7 @@ class DatabaseUserProvider implements UserProvider
 
     /**
      * Create a new database user provider.
-	 * 创建新的数据库用户提供程序
+	 * 创建新的数据库用户提供者
      *
      * @param  \Illuminate\Database\ConnectionInterface  $conn
      * @param  \Illuminate\Contracts\Hashing\Hasher  $hasher
@@ -56,7 +56,7 @@ class DatabaseUserProvider implements UserProvider
 
     /**
      * Retrieve a user by their unique identifier.
-	 * 根据用户的唯一标识符检索用户
+	 * 检索用户根据用户的唯一标识符
      *
      * @param  mixed  $identifier
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
@@ -70,7 +70,7 @@ class DatabaseUserProvider implements UserProvider
 
     /**
      * Retrieve a user by their unique identifier and "remember me" token.
-	 * 根据用户的唯一标识符和“记住我”令牌检索用户
+	 * 检索用户根据用户的唯一标识符和"记住我"令牌
      *
      * @param  mixed  $identifier
      * @param  string  $token
@@ -88,7 +88,6 @@ class DatabaseUserProvider implements UserProvider
 
     /**
      * Update the "remember me" token for the given user in storage.
-	 * 更新存储中给定用户的“记住我”令牌
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string  $token
@@ -103,7 +102,7 @@ class DatabaseUserProvider implements UserProvider
 
     /**
      * Retrieve a user by the given credentials.
-	 * 根据给定的凭据检索用户
+	 * 检索用户根据给定的凭据
      *
      * @param  array  $credentials
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
@@ -119,8 +118,9 @@ class DatabaseUserProvider implements UserProvider
         // First we will add each credential element to the query as a where clause.
         // Then we can execute the query and, if we found a user, return it in a
         // generic "user" object that will be utilized by the Guard instances.
-		// 首先，我们将把每个凭证元素添加到查询中作为“where”子句。
-		// 然后，我们可以执行该查询，如果找到了用户，就会将其以通用的“用户”对象的形式返回，该对象将被守护实例所使用。
+		// 首先，我们将把每个凭证元素作为where子句添加到查询中。
+		// 然后我们可以执行查询，如果我们找到一个用户，则将其返回到一个通用的"user"对象中，
+		// 该对象将由Guard实例使用。
         $query = $this->conn->table($this->table);
 
         foreach ($credentials as $key => $value) {
@@ -138,8 +138,8 @@ class DatabaseUserProvider implements UserProvider
         // Now we are ready to execute the query to see if we have an user matching
         // the given credentials. If not, we will just return nulls and indicate
         // that there are no matching users for these given credential arrays.
-		// 现在我们已准备好执行查询，以查看是否有一个用户与所给的凭证信息相匹配。
-		// 如果不是,我们将返回nulls,并表明对于这些给定的凭证数组,没有匹配的用户。
+		// 现在，我们已经准备好执行查询，查看是否有用户与给定的凭据匹配。
+		// 如果没有，我们将只返回null，并指示这些给定的凭据数组没有匹配的用户。
         $user = $query->first();
 
         return $this->getGenericUser($user);
@@ -147,7 +147,7 @@ class DatabaseUserProvider implements UserProvider
 
     /**
      * Get the generic user.
-	 * 获取通用用户
+	 * 得到通用用户
      *
      * @param  mixed  $user
      * @return \Illuminate\Auth\GenericUser|null

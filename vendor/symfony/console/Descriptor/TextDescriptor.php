@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，描述符，文本描述符
+ * Symfony，组件，控制台，描述符号，文本描述符号
  */
 
 /*
@@ -24,7 +24,6 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Text descriptor.
- * 文本描述符。
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  *
@@ -264,7 +263,6 @@ class TextDescriptor extends Descriptor
 
     /**
      * Formats command aliases to show them in the command description.
-	 * 格式命令别名,以显示在命令描述中。
      */
     private function getCommandAliasesText(Command $command): string
     {

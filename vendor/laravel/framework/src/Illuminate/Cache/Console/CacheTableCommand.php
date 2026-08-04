@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，缓存，控制台，缓存表命令
+ * 缓存，控制台，缓存表命令
  */
 
 namespace Illuminate\Cache\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Composer;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Composer;
 
 class CacheTableCommand extends Command
 {
@@ -42,7 +42,7 @@ class CacheTableCommand extends Command
 
     /**
      * Create a new cache table command instance.
-	 * 创建一个新的缓存表命令实例
+	 * 创建新的缓存表命令实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  \Illuminate\Support\Composer  $composer
@@ -58,7 +58,7 @@ class CacheTableCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -75,7 +75,7 @@ class CacheTableCommand extends Command
 
     /**
      * Create a base migration file for the table.
-	 * 为表创建一个基本迁移文件
+	 * 创建一个基本迁移文件为表
      *
      * @return string
      */

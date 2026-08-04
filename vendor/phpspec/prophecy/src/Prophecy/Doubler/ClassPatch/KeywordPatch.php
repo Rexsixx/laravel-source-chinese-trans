@@ -59,7 +59,7 @@ class KeywordPatch implements ClassPatchInterface
     /**
      * Returns array of php keywords.
      *
-     * @return list<string>
+     * @return array
      */
     private function getKeywords()
     {

@@ -94,7 +94,6 @@ class EmailLexer extends AbstractLexer
 
     /**
      * The last matched/seen token.
-	 * 最后一个匹配/见令牌
      *
      * @var array
      *
@@ -104,7 +103,6 @@ class EmailLexer extends AbstractLexer
 
     /**
      * The next token in the input.
-	 * 输入中的下一个令牌
      *
      * @var array|null
      */

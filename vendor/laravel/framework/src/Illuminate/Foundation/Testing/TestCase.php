@@ -1,19 +1,20 @@
 <?php
 /**
- * Illuminate，基础，测试，测试用例
+ * 基础，测试用例
  */
 
 namespace Illuminate\Foundation\Testing;
 
-use Mockery;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Facade;
-use Illuminate\Database\Eloquent\Model;
-use Mockery\Exception\InvalidCountException;
 use Illuminate\Console\Application as Artisan;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Str;
+use Mockery;
+use Mockery\Exception\InvalidCountException;
 use PHPUnit\Framework\TestCase as BaseTestCase;
+use Throwable;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -60,7 +61,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Indicates if we have made it through the base setUp function.
-	 * 指示我们是否通过了基本setUp函数
+	 * 指明我们是否通过了基本setUp函数
      *
      * @var bool
      */
@@ -68,10 +69,9 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Creates the application.
-	 * 创建应用程序
+	 * 创建应用 
      *
      * Needs to be implemented by subclasses.
-	 * 需要由子类实现
      *
      * @return \Symfony\Component\HttpKernel\HttpKernelInterface
      */
@@ -85,6 +85,8 @@ abstract class TestCase extends BaseTestCase
      */
     protected function setUp(): void
     {
+        Facade::clearResolvedInstances();
+
         if (! $this->app) {
             $this->refreshApplication();
         }
@@ -92,10 +94,8 @@ abstract class TestCase extends BaseTestCase
         $this->setUpTraits();
 
         foreach ($this->afterApplicationCreatedCallbacks as $callback) {
-            call_user_func($callback);
+            $callback();
         }
-
-        Facade::clearResolvedInstances();
 
         Model::setEventDispatcher($this->app['events']);
 
@@ -104,7 +104,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Refresh the application instance.
-	 * 刷新应用程序实例
+	 * 刷新应用实例
      *
      * @return void
      */
@@ -152,7 +152,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Clean up the testing environment before the next test.
-	 * 在下次测试前清理测试环境
+	 * 清理测试环境在下次测试前
      *
      * @return void
      */
@@ -220,7 +220,7 @@ abstract class TestCase extends BaseTestCase
         $this->afterApplicationCreatedCallbacks[] = $callback;
 
         if ($this->setUpHasRun) {
-            call_user_func($callback);
+            $callback();
         }
     }
 
@@ -246,8 +246,8 @@ abstract class TestCase extends BaseTestCase
     {
         foreach ($this->beforeApplicationDestroyedCallbacks as $callback) {
             try {
-                call_user_func($callback);
-            } catch (\Throwable $e) {
+                $callback();
+            } catch (Throwable $e) {
                 if (! $this->callbackException) {
                     $this->callbackException = $e;
                 }

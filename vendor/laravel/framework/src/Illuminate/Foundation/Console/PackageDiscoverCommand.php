@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，包发现命令
+ * 基础，包发现命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -28,7 +28,7 @@ class PackageDiscoverCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @param  \Illuminate\Foundation\PackageManifest  $manifest
      * @return void

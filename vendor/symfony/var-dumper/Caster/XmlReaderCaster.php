@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Var Dumper，Caster，Xml阅读器 Caster
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts XmlReader class to array representation.
- * 将XmlReader类转换为数组表示。
  *
  * @author Baptiste Clavié <clavie.b@gmail.com>
  *
@@ -88,7 +84,6 @@ class XmlReaderCaster
 
         $info = Caster::filter($info, Caster::EXCLUDE_EMPTY, [], $count);
         // +2 because hasValue and hasAttributes are always filtered
-		// +2因为hasValue和hasattribute总是被过滤
         $stub->cut += $count + 2;
 
         return $a + $info;

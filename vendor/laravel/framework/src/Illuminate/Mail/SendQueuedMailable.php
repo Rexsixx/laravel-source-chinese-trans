@@ -1,18 +1,18 @@
 <?php
 /**
- * Illuminate，电子邮件，发送队列可邮寄的
+ * 邮件，发送邮件队列
  */
 
 namespace Illuminate\Mail;
 
-use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
+use Illuminate\Contracts\Mail\Mailer as MailerContract;
 
 class SendQueuedMailable
 {
     /**
      * The mailable message instance.
-	 * 可邮件消息实例
+	 * 可用邮件实例
      *
      * @var \Illuminate\Contracts\Mail\Mailable
      */
@@ -36,7 +36,7 @@ class SendQueuedMailable
 
     /**
      * Create a new job instance.
-	 * 创建一个新的作业实例
+	 * 创建新的作业实例
      *
      * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
      * @return void
@@ -62,7 +62,7 @@ class SendQueuedMailable
 
     /**
      * Get the display name for the queued job.
-	 * 获取排队作业的显示名称
+	 * 得到排队作业的显示名称
      *
      * @return string
      */
@@ -73,7 +73,7 @@ class SendQueuedMailable
 
     /**
      * Call the failed method on the mailable instance.
-	 * 在可邮件实例上调用失败的方法
+	 * 调用失败的方法在可邮件实例上
      *
      * @param  \Exception  $e
      * @return void
@@ -87,7 +87,7 @@ class SendQueuedMailable
 
     /**
      * Get the retry delay for the mailable object.
-	 * 获取可邮寄对象的重试延迟
+	 * 得到可邮寄对象的重试延迟
      *
      * @return mixed
      */

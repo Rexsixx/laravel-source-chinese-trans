@@ -1,7 +1,4 @@
 <?php
-/**
- * Dotenv，环境，适配器，数组适配器
- */
 
 namespace Dotenv\Environment\Adapter;
 
@@ -12,7 +9,6 @@ class ArrayAdapter implements AdapterInterface
 {
     /**
      * The variables and their values.
-	 * 变量及其值
      *
      * @return array<string|null>
      */
@@ -20,7 +16,6 @@ class ArrayAdapter implements AdapterInterface
 
     /**
      * Determines if the adapter is supported.
-	 * 确定是否支持适配器
      *
      * @return bool
      */
@@ -31,7 +26,6 @@ class ArrayAdapter implements AdapterInterface
 
     /**
      * Get an environment variable, if it exists.
-	 * 获取环境变量（如果存在）
      *
      * @param string $name
      *
@@ -48,7 +42,6 @@ class ArrayAdapter implements AdapterInterface
 
     /**
      * Set an environment variable.
-	 * 设置环境变量
      *
      * @param string      $name
      * @param string|null $value
@@ -62,7 +55,6 @@ class ArrayAdapter implements AdapterInterface
 
     /**
      * Clear an environment variable.
-	 * 清除一个环境变量
      *
      * @param string $name
      *

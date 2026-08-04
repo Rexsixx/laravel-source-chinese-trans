@@ -1,18 +1,18 @@
 <?php
 /**
- * Illuminate，支持，特性，转发调用
+ * 支持，调用转发
  */
 
 namespace Illuminate\Support\Traits;
 
-use Error;
 use BadMethodCallException;
+use Error;
 
 trait ForwardsCalls
 {
     /**
      * Forward a method call to the given object.
-	 * 将方法调用转发给给定对象
+	 * 转发一个方法调用给给定对象
      *
      * @param  mixed  $object
      * @param  string  $method
@@ -25,7 +25,7 @@ trait ForwardsCalls
     {
         try {
             return $object->{$method}(...$parameters);
-        } catch (Error | BadMethodCallException $e) {
+        } catch (Error|BadMethodCallException $e) {
             $pattern = '~^Call to undefined method (?P<class>[^:]+)::(?P<method>[^\(]+)\(\)$~';
 
             if (! preg_match($pattern, $e->getMessage(), $matches)) {
@@ -43,7 +43,7 @@ trait ForwardsCalls
 
     /**
      * Throw a bad method call exception for the given method.
-	 * 为给定的方法抛出错误的方法调用异常
+	 * 抛出一个坏的方法调用异常对给定的方法
      *
      * @param  string  $method
      * @return void

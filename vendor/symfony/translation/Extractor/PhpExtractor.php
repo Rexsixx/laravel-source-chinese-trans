@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，翻译，提取器，Php 提取器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -19,7 +16,6 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * PhpExtractor extracts translation messages from a PHP template.
- * PhpExtractor从PHP模板中提取翻译消息
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
@@ -31,7 +27,6 @@ class PhpExtractor extends AbstractFileExtractor implements ExtractorInterface
 
     /**
      * Prefix for new found message.
-	 * 新发现信息的前缀
      *
      * @var string
      */
@@ -39,7 +34,6 @@ class PhpExtractor extends AbstractFileExtractor implements ExtractorInterface
 
     /**
      * The sequence that captures translation messages.
-	 * 捕获翻译消息的序列
      *
      * @var array
      */
@@ -103,7 +97,6 @@ class PhpExtractor extends AbstractFileExtractor implements ExtractorInterface
 
     /**
      * Normalizes a token.
-	 * 使令牌正常化
      *
      * @param mixed $token
      *
@@ -120,7 +113,6 @@ class PhpExtractor extends AbstractFileExtractor implements ExtractorInterface
 
     /**
      * Seeks to a non-whitespace token.
-	 * 寻找非空格令牌
      */
     private function seekToNextRelevantToken(\Iterator $tokenIterator)
     {
@@ -219,7 +211,7 @@ class PhpExtractor extends AbstractFileExtractor implements ExtractorInterface
      * @param array  $tokens
      * @param string $filename
      */
-    protected function parseTokens($tokens, MessageCatalogue $catalog/* , string $filename */)
+    protected function parseTokens($tokens, MessageCatalogue $catalog/*, string $filename*/)
     {
         if (\func_num_args() < 3 && __CLASS__ !== static::class && __CLASS__ !== (new \ReflectionMethod($this, __FUNCTION__))->getDeclaringClass()->getName() && !$this instanceof \PHPUnit\Framework\MockObject\MockObject && !$this instanceof \Prophecy\Prophecy\ProphecySubjectInterface && !$this instanceof \Mockery\MockInterface) {
             @trigger_error(sprintf('The "%s()" method will have a new "string $filename" argument in version 5.0, not defining it is deprecated since Symfony 4.3.', __METHOD__), \E_USER_DEPRECATED);

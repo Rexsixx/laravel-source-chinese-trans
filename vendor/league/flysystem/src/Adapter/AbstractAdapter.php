@@ -21,7 +21,6 @@ abstract class AbstractAdapter implements AdapterInterface
 
     /**
      * Set the path prefix.
-	 * 设置路径前缀
      *
      * @param string $prefix
      *
@@ -33,7 +32,6 @@ abstract class AbstractAdapter implements AdapterInterface
 
         if ($prefix === '') {
             $this->pathPrefix = null;
-
             return;
         }
 
@@ -42,7 +40,6 @@ abstract class AbstractAdapter implements AdapterInterface
 
     /**
      * Get the path prefix.
-	 * 获取路径前缀
      *
      * @return string|null path prefix or null if pathPrefix is empty
      */
@@ -53,7 +50,6 @@ abstract class AbstractAdapter implements AdapterInterface
 
     /**
      * Prefix a path.
-	 * 前缀路径
      *
      * @param string $path
      *
@@ -66,7 +62,6 @@ abstract class AbstractAdapter implements AdapterInterface
 
     /**
      * Remove a path prefix.
-	 * 删除路径前缀
      *
      * @param string $path
      *
@@ -74,6 +69,6 @@ abstract class AbstractAdapter implements AdapterInterface
      */
     public function removePathPrefix($path)
     {
-        return substr($path, strlen((string) $this->getPathPrefix()));
+        return substr($path, strlen($this->getPathPrefix()));
     }
 }

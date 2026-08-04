@@ -1,15 +1,15 @@
 <?php
 /**
- * Illuminate，文件系统，Filesystem
+ * 文件系统，文件系统
  */
 
 namespace Illuminate\Filesystem;
 
 use ErrorException;
 use FilesystemIterator;
-use Symfony\Component\Finder\Finder;
-use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Traits\Macroable;
+use Symfony\Component\Finder\Finder;
 
 class Filesystem
 {
@@ -17,7 +17,7 @@ class Filesystem
 
     /**
      * Determine if a file or directory exists.
-	 * 确定文件或目录是否存在
+	 * 确定是否文件或目录存在
      *
      * @param  string  $path
      * @return bool
@@ -28,8 +28,20 @@ class Filesystem
     }
 
     /**
+     * Determine if a file or directory is missing.
+	 * 确定是否文件或目录丢失
+     *
+     * @param  string  $path
+     * @return bool
+     */
+    public function missing($path)
+    {
+        return ! $this->exists($path);
+    }
+
+    /**
      * Get the contents of a file.
-	 * 获取文件的内容
+	 * 得到文件内容
      *
      * @param  string  $path
      * @param  bool  $lock
@@ -48,7 +60,7 @@ class Filesystem
 
     /**
      * Get contents of a file with shared access.
-	 * 获取具有共享访问权限的文件的内容
+	 * 得到有共享权限文件内容
      *
      * @param  string  $path
      * @return string
@@ -78,7 +90,7 @@ class Filesystem
 
     /**
      * Get the returned value of a file.
-	 * 获取文件的返回值
+	 * 得到文件返回值
      *
      * @param  string  $path
      * @return mixed
@@ -96,7 +108,7 @@ class Filesystem
 
     /**
      * Require the given file once.
-	 * 要求给定的文件一次
+	 * 引入文件
      *
      * @param  string  $file
      * @return mixed
@@ -108,7 +120,7 @@ class Filesystem
 
     /**
      * Get the MD5 hash of the file at the given path.
-	 * 获取给定路径上文件的MD5哈希值
+	 * 得到文件MD5哈希
      *
      * @param  string  $path
      * @return string
@@ -120,7 +132,7 @@ class Filesystem
 
     /**
      * Write the contents of a file.
-	 * 写入文件的内容
+	 * 写入文件内容
      *
      * @param  string  $path
      * @param  string  $contents
@@ -134,7 +146,7 @@ class Filesystem
 
     /**
      * Write the contents of a file, replacing it atomically if it already exists.
-	 * 写入文件的内容，如果它已经存在，则自动替换它。
+	 * 写入文件的内容，如果它已经存在，则自动替换它
      *
      * @param  string  $path
      * @param  string  $content
@@ -143,7 +155,7 @@ class Filesystem
     public function replace($path, $content)
     {
         // If the path already exists and is a symlink, get the real path...
-		// 如果路径已经存在并且是符号链接，则获取实际路径。
+		// 如果路径已经存在并且是一个符号链接，则获取真实路径…
         clearstatcache(true, $path);
 
         $path = realpath($path) ?: $path;
@@ -151,6 +163,7 @@ class Filesystem
         $tempPath = tempnam(dirname($path), basename($path));
 
         // Fix permissions of tempPath because `tempnam()` creates it with permissions set to 0600...
+		// 修复临时路径，因为'tempnam()'创建它时权限设置为0600…
         chmod($tempPath, 0777 - umask());
 
         file_put_contents($tempPath, $content);
@@ -160,7 +173,7 @@ class Filesystem
 
     /**
      * Prepend to a file.
-	 * 添加到文件中
+	 * 添加至文件
      *
      * @param  string  $path
      * @param  string  $data
@@ -177,7 +190,7 @@ class Filesystem
 
     /**
      * Append to a file.
-	 * 附加行到一个文件
+	 * 追加文件
      *
      * @param  string  $path
      * @param  string  $data
@@ -190,7 +203,7 @@ class Filesystem
 
     /**
      * Get or set UNIX mode of a file or directory.
-	 * 获取或设置文件或目录的UNIX模式
+	 * 得到或设置文件或目录的UNIX模式
      *
      * @param  string  $path
      * @param  int|null  $mode
@@ -207,7 +220,7 @@ class Filesystem
 
     /**
      * Delete the file at a given path.
-	 * 删除指定路径下的文件
+	 * 删除文件
      *
      * @param  string|array  $paths
      * @return bool
@@ -233,7 +246,7 @@ class Filesystem
 
     /**
      * Move a file to a new location.
-	 * 将文件移动到新位置
+	 * 移动文件到新位置
      *
      * @param  string  $path
      * @param  string  $target
@@ -246,7 +259,7 @@ class Filesystem
 
     /**
      * Copy a file to a new location.
-	 * 将文件复制到新位置
+	 * 复制文件到新位置
      *
      * @param  string  $path
      * @param  string  $target
@@ -258,8 +271,8 @@ class Filesystem
     }
 
     /**
-     * Create a hard link to the target file or directory.
-	 * 创建指向目标文件或目录的硬链接
+     * Create a symlink to the target file or directory. On Windows, a hard link is created if the target is a file.
+	 * 创建指向目标文件或目录的符号链接。在Windows操作系统中，如果目标是文件，则创建硬链接。
      *
      * @param  string  $target
      * @param  string  $link
@@ -278,7 +291,7 @@ class Filesystem
 
     /**
      * Extract the file name from a file path.
-	 * 从文件路径中提取文件名
+	 * 提取文件名从文件路径中
      *
      * @param  string  $path
      * @return string
@@ -290,7 +303,7 @@ class Filesystem
 
     /**
      * Extract the trailing name component from a file path.
-	 * 从文件路径中提取尾随名称组件
+	 * 提取尾随名称组件
      *
      * @param  string  $path
      * @return string
@@ -302,7 +315,7 @@ class Filesystem
 
     /**
      * Extract the parent directory from a file path.
-	 * 从文件路径中提取父目录
+	 * 提取父目录从文件路径
      *
      * @param  string  $path
      * @return string
@@ -314,7 +327,7 @@ class Filesystem
 
     /**
      * Extract the file extension from a file path.
-	 * 从文件路径中提取文件扩展名
+	 * 提取文件扩展名从文件路径
      *
      * @param  string  $path
      * @return string
@@ -326,7 +339,7 @@ class Filesystem
 
     /**
      * Get the file type of a given file.
-	 * 获取给定文件的文件类型
+	 * 得到文件类型
      *
      * @param  string  $path
      * @return string
@@ -338,7 +351,7 @@ class Filesystem
 
     /**
      * Get the mime-type of a given file.
-	 * 获取给定文件的mime类型
+	 * 得到给定文件的mime类型
      *
      * @param  string  $path
      * @return string|false
@@ -350,7 +363,7 @@ class Filesystem
 
     /**
      * Get the file size of a given file.
-	 * 获取给定文件的文件大小
+	 & 得到文件大小
      *
      * @param  string  $path
      * @return int
@@ -362,7 +375,7 @@ class Filesystem
 
     /**
      * Get the file's last modification time.
-	 * 获取文件的最后修改时间
+	 * 得到文档最后修改时间
      *
      * @param  string  $path
      * @return int
@@ -374,7 +387,7 @@ class Filesystem
 
     /**
      * Determine if the given path is a directory.
-	 * 确定给定的路径是否是一个目录
+	 * 确定是否给定路径是目录
      *
      * @param  string  $directory
      * @return bool
@@ -386,7 +399,7 @@ class Filesystem
 
     /**
      * Determine if the given path is readable.
-	 * 确定给定的路径是否可读
+	 * 确定是否给定路径可读
      *
      * @param  string  $path
      * @return bool
@@ -398,7 +411,7 @@ class Filesystem
 
     /**
      * Determine if the given path is writable.
-	 * 确定给定的路径是否可写
+	 * 确定是否给定路径可写
      *
      * @param  string  $path
      * @return bool
@@ -410,7 +423,7 @@ class Filesystem
 
     /**
      * Determine if the given path is a file.
-	 * 确定给定的路径是否是一个文件
+	 * 确定是否给定路径为文件
      *
      * @param  string  $file
      * @return bool
@@ -425,7 +438,7 @@ class Filesystem
 	 * 查找与给定模式匹配的路径名
      *
      * @param  string  $pattern
-     * @param  int     $flags
+     * @param  int  $flags
      * @return array
      */
     public function glob($pattern, $flags = 0)
@@ -435,7 +448,7 @@ class Filesystem
 
     /**
      * Get an array of all files in a directory.
-	 * 获取目录中所有文件的数组
+	 * 得到目录下文件数组
      *
      * @param  string  $directory
      * @param  bool  $hidden
@@ -451,7 +464,7 @@ class Filesystem
 
     /**
      * Get all of the files from the given directory (recursive).
-	 * 从给定目录（递归）获取所有文件
+	 * 得到目录下文件数组(递归)
      *
      * @param  string  $directory
      * @param  bool  $hidden
@@ -467,7 +480,7 @@ class Filesystem
 
     /**
      * Get all of the directories within a given directory.
-	 * 获取给定目录中的所有目录
+	 * 得到目录下所有目录
      *
      * @param  string  $directory
      * @return array
@@ -484,13 +497,29 @@ class Filesystem
     }
 
     /**
+     * Ensure a directory exists.
+	 * 确保目录存在
+     *
+     * @param  string  $path
+     * @param  int  $mode
+     * @param  bool  $recursive
+     * @return void
+     */
+    public function ensureDirectoryExists($path, $mode = 0755, $recursive = true)
+    {
+        if (! $this->isDirectory($path)) {
+            $this->makeDirectory($path, $mode, $recursive);
+        }
+    }
+
+    /**
      * Create a directory.
 	 * 创建目录
      *
      * @param  string  $path
-     * @param  int     $mode
-     * @param  bool    $recursive
-     * @param  bool    $force
+     * @param  int  $mode
+     * @param  bool  $recursive
+     * @param  bool  $force
      * @return bool
      */
     public function makeDirectory($path, $mode = 0755, $recursive = false, $force = false)
@@ -522,7 +551,7 @@ class Filesystem
 
     /**
      * Copy a directory from one location to another.
-	 * 将目录从一个位置复制到另一个位置
+	 * 复制文件至另外
      *
      * @param  string  $directory
      * @param  string  $destination
@@ -540,8 +569,8 @@ class Filesystem
         // If the destination directory does not actually exist, we will go ahead and
         // create it recursively, which just gets the destination prepared to copy
         // the files over. Once we make the directory we'll proceed the copying.
-		// 如果目标目录实际上并不存在，我们将继续递归地创建它，这样就能提前准备好目标目录以便将文件复制过去。
-		// 一旦创建好目录，我们就会开始进行文件的复制操作。
+		// 如果目标目录实际上不存在，我们将继续递归创建它，这会将目标做好复制的准备。
+		// 一旦我们创建了目录，我们将继续复制。
         if (! $this->isDirectory($destination)) {
             $this->makeDirectory($destination, 0777, true);
         }
@@ -552,8 +581,8 @@ class Filesystem
             // As we spin through items, we will check to see if the current file is actually
             // a directory or a file. When it is actually a directory we will need to call
             // back into this function recursively to keep copying these nested folders.
-			// 在逐个处理这些项目的过程中，我们会检查当前文件是否实际上是目录还是文件。
-			// 如果它实际上是目录，我们就需要递归地调用此函数，以便继续复制这些嵌套的文件夹。
+			// 当我们浏览项目时，我们将检查当前文件是否真的是目录或文件。
+			// 当它是一个目录时，我们需要调用递归返回此函数以继续复制这些嵌套文件夹。
             $target = $destination.'/'.$item->getBasename();
 
             if ($item->isDir()) {
@@ -567,8 +596,8 @@ class Filesystem
             // If the current items is just a regular file, we will just copy this to the new
             // location and keep looping. If for some reason the copy fails we'll bail out
             // and return false, so the developer is aware that the copy process failed.
-			// 如果当前项只是一个普通文件，我们将直接将其复制到新位置，并继续循环操作。
-			// 如果由于某种原因复制失败，我们将终止程序并返回“false”，以便开发人员能够知晓复制过程失败的情况。
+			// 如果当前项目人是一个常规文件，我们将只需将其复制到新的定位并保持循环。
+			// 如果出于某种原因，副本失败了，我们将退出并返回false，这样开发人员就知道了。
             else {
                 if (! $this->copy($item->getPathname(), $target)) {
                     return false;
@@ -581,13 +610,12 @@ class Filesystem
 
     /**
      * Recursively delete a directory.
-	 * 递归删除目录。
+	 * 递归删除目录
      *
      * The directory itself may be optionally preserved.
-	 * 可以选择保留目录本身。
      *
      * @param  string  $directory
-     * @param  bool    $preserve
+     * @param  bool  $preserve
      * @return bool
      */
     public function deleteDirectory($directory, $preserve = false)
@@ -602,8 +630,8 @@ class Filesystem
             // If the item is a directory, we can just recurse into the function and
             // delete that sub-directory otherwise we'll just delete the file and
             // keep iterating through each file until the directory is cleaned.
-			// 如果该项是一个目录，我们就可以直接递归调用该函数并删除该子目录；
-			// 否则，我们只需删除该文件，并继续遍历每个文件，直到该目录被清理完毕。
+			// 如果项目是一个目录，我们可以递归到函数中删除该子目录，
+			// 否则我们只能删除文件并不断迭代每个文件，直到目录被清理干净。
             if ($item->isDir() && ! $item->isLink()) {
                 $this->deleteDirectory($item->getPathname());
             }
@@ -611,8 +639,8 @@ class Filesystem
             // If the item is just a file, we can go ahead and delete it since we're
             // just looping through and waxing all of the files in this directory
             // and calling directories recursively, so we delete the real path.
-			// 如果该项目只是一个文件，我们可以直接将其删除，因为我们只是在遍历并处理此目录中的所有文件，
-			// 并且会递归地处理子目录，所以我们会删除其完整路径。
+			// 如果该项目只是一个文件，我们可以继续删除它。
+			// 因为我们只需循环并对该目录中的所有文件递归调用，以至删除真实路径。
             else {
                 $this->delete($item->getPathname());
             }
@@ -627,7 +655,7 @@ class Filesystem
 
     /**
      * Remove all of the directories within a given directory.
-	 * 删除给定目录中的所有目录
+	 * 删除多个目录
      *
      * @param  string  $directory
      * @return bool

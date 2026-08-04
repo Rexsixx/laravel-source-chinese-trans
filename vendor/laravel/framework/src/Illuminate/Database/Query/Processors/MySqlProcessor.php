@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，查询，处理器，MySql 处理器
+ * 数据库，查询，MySql进程
  */
 
 namespace Illuminate\Database\Query\Processors;
@@ -9,7 +9,7 @@ class MySqlProcessor extends Processor
 {
     /**
      * Process the results of a column listing query.
-	 * 处理列清单查询的结果
+	 * 处理列表查询结果
      *
      * @param  array  $results
      * @return array

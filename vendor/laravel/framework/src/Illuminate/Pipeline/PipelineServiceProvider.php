@@ -1,19 +1,19 @@
 <?php
 /**
- * Illuminate，管道，管道服务提供商
+ * 管道，管道服务提供者
  */
 
 namespace Illuminate\Pipeline;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Contracts\Pipeline\Hub as PipelineHubContract;
+use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Support\ServiceProvider;
 
 class PipelineServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * Register the service provider.
-	 * 注册服务提供者
+	 * 注册管道服务提供者
      *
      * @return void
      */
@@ -26,7 +26,7 @@ class PipelineServiceProvider extends ServiceProvider implements DeferrableProvi
 
     /**
      * Get the services provided by the provider.
-	 * 获取提供者提供的服务
+	 * 得到服务提供者
      *
      * @return array
      */

@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，基础，控制台，事件生成命令
+ * 基础，事件生成命令
  */
 
 namespace Illuminate\Foundation\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider;
+use Illuminate\Support\Str;
 
 class EventGenerateCommand extends Command
 {
@@ -29,7 +29,7 @@ class EventGenerateCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -48,7 +48,7 @@ class EventGenerateCommand extends Command
 
     /**
      * Make the event and listeners for the given event.
-	 * 为给定事件创建事件和侦听器
+	 * 创建事件和侦听器为给定事件
      *
      * @param  string  $event
      * @param  array  $listeners
@@ -67,7 +67,7 @@ class EventGenerateCommand extends Command
 
     /**
      * Make the listeners for the given event.
-	 * 为给定事件创建侦听器
+	 * 创建监听器为给定事件
      *
      * @param  string  $event
      * @param  array  $listeners

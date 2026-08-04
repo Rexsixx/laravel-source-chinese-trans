@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，Cookie，排队的工厂
+ * 契约，Cookie排队工厂接口
  */
 
 namespace Illuminate\Contracts\Cookie;
@@ -9,7 +9,7 @@ interface QueueingFactory extends Factory
 {
     /**
      * Queue a cookie to send with the next response.
-	 * 将cookie与下一个响应一起排队发送
+	 * 排队cookie同下个响应一起发送
      *
      * @param  array  $parameters
      * @return void
@@ -18,15 +18,17 @@ interface QueueingFactory extends Factory
 
     /**
      * Remove a cookie from the queue.
-	 * 从队列中删除一个cookie
+	 * 移除一个cookie从队列中
      *
      * @param  string  $name
+     * @param  string|null  $path
+     * @return void
      */
-    public function unqueue($name);
+    public function unqueue($name, $path = null);
 
     /**
      * Get the cookies which have been queued for the next request.
-	 * 获取已为下一个请求排队的cookie
+	 * 得到已为下一个请求排队的cookie
      *
      * @return array
      */

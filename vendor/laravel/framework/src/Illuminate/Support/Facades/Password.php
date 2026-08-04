@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，Password
+ * 支持，门面密码
  */
 
 namespace Illuminate\Support\Facades;
@@ -10,8 +10,6 @@ use Illuminate\Contracts\Auth\PasswordBroker;
 /**
  * @method static string sendResetLink(array $credentials)
  * @method static mixed reset(array $credentials, \Closure $callback)
- * @method static void validator(\Closure $callback)
- * @method static bool validateNewPassword(array $credentials)
  *
  * @see \Illuminate\Auth\Passwords\PasswordBroker
  */
@@ -42,14 +40,6 @@ class Password extends Facade
     const INVALID_USER = PasswordBroker::INVALID_USER;
 
     /**
-     * Constant representing an invalid password.
-	 * 表示无效密码的常量
-     *
-     * @var string
-     */
-    const INVALID_PASSWORD = PasswordBroker::INVALID_PASSWORD;
-
-    /**
      * Constant representing an invalid token.
 	 * 表示无效令牌的常量
      *
@@ -58,8 +48,16 @@ class Password extends Facade
     const INVALID_TOKEN = PasswordBroker::INVALID_TOKEN;
 
     /**
+     * Constant representing a throttled reset attempt.
+	 * 表示节流复位尝试的常量
+     *
+     * @var string
+     */
+    const RESET_THROTTLED = PasswordBroker::RESET_THROTTLED;
+
+    /**
      * Get the registered name of the component.
-	 * 获取组件的注册名称
+	 * 得到组件的注册名称
      *
      * @return string
      */

@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，匹配程序，转储，匹配程序转储
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * MatcherDumper is the abstract class for all built-in matcher dumpers.
- * MatcherDumper是所有内置的matcher dumpers的抽象类。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

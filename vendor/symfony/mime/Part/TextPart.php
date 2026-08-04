@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Mime，部分，文本部分
- */
 
 /*
  * This file is part of the Symfony package.
@@ -45,7 +42,7 @@ class TextPart extends AbstractPart
     /**
      * @param resource|string $body
      */
-    public function __construct($body, ?string $charset = 'utf-8', string $subtype = 'plain', ?string $encoding = null)
+    public function __construct($body, ?string $charset = 'utf-8', string $subtype = 'plain', string $encoding = null)
     {
         unset($this->_headers);
 
@@ -94,7 +91,6 @@ class TextPart extends AbstractPart
 
     /**
      * Sets the name of the file (used by FormDataPart).
-	 * 设置文件的名称(由模板分隔)
      *
      * @return $this
      */
@@ -201,7 +197,6 @@ class TextPart extends AbstractPart
         // convert resources to strings for serialization
         if (null !== $this->seekable) {
             $this->body = $this->getBody();
-            $this->seekable = null;
         }
 
         $this->_headers = $this->getHeaders();

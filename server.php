@@ -1,7 +1,4 @@
 <?php
-/**
- * 服务
- */
 
 /**
  * Laravel - A PHP Framework For Web Artisans
@@ -17,8 +14,8 @@ $uri = urldecode(
 // This file allows us to emulate Apache's "mod_rewrite" functionality from the
 // built-in PHP web server. This provides a convenient way to test a Laravel
 // application without having installed a "real" web server software here.
-// 这个文件允许我们从内置的PHP web服务器中模拟Apache的“mod_重写”功能。
-// 这为测试 Laravel Laravel 应用提供了一种便捷的方式，而无需在此安装“真正的”Web 服务器软件。
+// 此文件允许我们从内置的PHP web服务器模拟Apache的"mod_rewrite"功能。
+// 这提供了一种方便的方法来测试Laravel应用程序，而无需在这里安装"真正的"web服务器软件。
 if ($uri !== '/' && file_exists(__DIR__.'/public'.$uri)) {
     return false;
 }

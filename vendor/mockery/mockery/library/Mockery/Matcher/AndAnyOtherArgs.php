@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，匹配程序，还有其他的 Args
+ * Mockery，匹配程序，以及任何其他参数
  */
 
 /**
@@ -28,7 +28,6 @@ class AndAnyOtherArgs extends MatcherAbstract
 {
     /**
      * Check if the actual value matches the expected.
-	 * 检查实际值是否符合预期
      *
      * @param mixed $actual
      * @return bool

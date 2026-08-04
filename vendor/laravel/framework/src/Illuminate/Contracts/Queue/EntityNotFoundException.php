@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，队列，实体未找到异常
+ * 契约，队列实体未找到异常接口
  */
 
 namespace Illuminate\Contracts\Queue;
@@ -11,7 +11,7 @@ class EntityNotFoundException extends InvalidArgumentException
 {
     /**
      * Create a new exception instance.
-	 * 创建一个新的异常实例
+	 * 创建新异常实例
      *
      * @param  string  $type
      * @param  mixed  $id

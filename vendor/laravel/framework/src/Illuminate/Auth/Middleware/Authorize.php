@@ -1,19 +1,19 @@
 <?php
 /**
- * Illuminate，Auth，中间件，授权
+ * 授权，授权
  */
 
 namespace Illuminate\Auth\Middleware;
 
 use Closure;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Access\Gate;
+use Illuminate\Database\Eloquent\Model;
 
 class Authorize
 {
     /**
      * The gate instance.
-	 * gate实例
+	 * 大门实例
      *
      * @var \Illuminate\Contracts\Auth\Access\Gate
      */
@@ -21,7 +21,7 @@ class Authorize
 
     /**
      * Create a new middleware instance.
-	 * 创建一个新的中间件实例
+	 * 创建新的中间件实例
      *
      * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
      * @return void
@@ -53,11 +53,11 @@ class Authorize
 
     /**
      * Get the arguments parameter for the gate.
-	 * 获取门的参数
+	 * 得到大门的参数
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  array|null  $models
-     * @return array|string|\Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|array|string
      */
     protected function getGateArguments($request, $models)
     {

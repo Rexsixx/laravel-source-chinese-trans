@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，日志翻译
+ * Symfony，组件，翻译，日志翻译器
  */
 
 /*
@@ -111,7 +111,6 @@ class LoggingTranslator implements TranslatorInterface, LegacyTranslatorInterfac
 
     /**
      * Gets the fallback locales.
-	 * 获取备用区域设置
      *
      * @return array The fallback locales
      */
@@ -126,7 +125,6 @@ class LoggingTranslator implements TranslatorInterface, LegacyTranslatorInterfac
 
     /**
      * Passes through all unknown calls onto the translator object.
-	 * 将所有未知调用传递给translator对象
      */
     public function __call($method, $args)
     {
@@ -135,7 +133,6 @@ class LoggingTranslator implements TranslatorInterface, LegacyTranslatorInterfac
 
     /**
      * Logs for missing translations.
-	 * 缺少翻译的日志
      */
     private function log(?string $id, ?string $domain, ?string $locale)
     {

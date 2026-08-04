@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，队列，队列管理程序
+ * 队列，队列管理，队列核心类，接收从门面过来的方法
  */
 
 namespace Illuminate\Queue;
 
 use Closure;
-use InvalidArgumentException;
 use Illuminate\Contracts\Queue\Factory as FactoryContract;
 use Illuminate\Contracts\Queue\Monitor as MonitorContract;
+use InvalidArgumentException;
 
 /**
  * @mixin \Illuminate\Contracts\Queue\Queue
@@ -33,7 +33,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * The array of resolved queue connectors.
-	 * 已解析队列连接器的数组
+	 * 已解析队列连接器数组
      *
      * @var array
      */
@@ -41,7 +41,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Create a new queue manager instance.
-	 * 创建一个新的队列管理器实例
+	 * 创建新的队列管理器实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -149,8 +149,8 @@ class QueueManager implements FactoryContract, MonitorContract
         // If the connection has not been resolved yet we will resolve it now as all
         // of the connections are resolved when they are actually needed so we do
         // not make any unnecessary connection to the various queue end-points.
-		// 如果连接尚未解决，那么我们现在就来解决它。因为所有连接在实际需要时都会被解决，
-		// 所以我们不会与各个队列端点建立任何不必要的连接。
+		// 如果连接尚未解析，我们现在将解析它，因为所有连接都是在实际需要时解析的，
+		// 所以我们不会对各个队列端点进行任何不必要的连接。
         if (! isset($this->connections[$name])) {
             $this->connections[$name] = $this->resolve($name);
 
@@ -178,7 +178,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Get the connector for a given driver.
-	 * 获取给定驱动程序的连接器
+	 * 得到给定驱动程序的连接器
      *
      * @param  string  $driver
      * @return \Illuminate\Queue\Connectors\ConnectorInterface
@@ -198,7 +198,7 @@ class QueueManager implements FactoryContract, MonitorContract
      * Add a queue connection resolver.
 	 * 添加队列连接解析器
      *
-     * @param  string    $driver
+     * @param  string  $driver
      * @param  \Closure  $resolver
      * @return void
      */
@@ -211,7 +211,7 @@ class QueueManager implements FactoryContract, MonitorContract
      * Add a queue connection resolver.
 	 * 添加队列连接解析器
      *
-     * @param  string    $driver
+     * @param  string  $driver
      * @param  \Closure  $resolver
      * @return void
      */
@@ -222,7 +222,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Get the queue connection configuration.
-	 * 获取队列连接配置
+	 * 得到队列连接配置
      *
      * @param  string  $name
      * @return array
@@ -238,7 +238,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Get the name of the default queue connection.
-	 * 获取默认队列连接的名称
+	 * 得到默认队列连接的名称
      *
      * @return string
      */
@@ -261,7 +261,7 @@ class QueueManager implements FactoryContract, MonitorContract
 
     /**
      * Get the full name for the given connection.
-	 * 获取给定连接的全名
+	 * 得到给定连接的全名
      *
      * @param  string|null  $connection
      * @return string
@@ -272,22 +272,11 @@ class QueueManager implements FactoryContract, MonitorContract
     }
 
     /**
-     * Determine if the application is in maintenance mode.
-	 * 确定应用程序是否处于维护模式
-     *
-     * @return bool
-     */
-    public function isDownForMaintenance()
-    {
-        return $this->app->isDownForMaintenance();
-    }
-
-    /**
      * Dynamically pass calls to the default connection.
 	 * 动态地将调用传递给默认连接
      *
      * @param  string  $method
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return mixed
      */
     public function __call($method, $parameters)

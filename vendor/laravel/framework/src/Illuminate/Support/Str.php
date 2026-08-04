@@ -1,15 +1,15 @@
 <?php
 /**
- * Illuminate，支持，字符串
+ * 支持，字符串
  */
 
 namespace Illuminate\Support;
 
+use Illuminate\Support\Traits\Macroable;
+use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
+use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
-use Illuminate\Support\Traits\Macroable;
-use Ramsey\Uuid\Generator\CombGenerator;
-use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 
 class Str
 {
@@ -17,7 +17,7 @@ class Str
 
     /**
      * The cache of snake-cased words.
-	 * 蛇形大小写单词的缓存
+	 * 缓存蛇形单词
      *
      * @var array
      */
@@ -25,7 +25,7 @@ class Str
 
     /**
      * The cache of camel-cased words.
-	 * 驼峰式大小写单词的缓存
+	 * 缓存驼峰单词
      *
      * @var array
      */
@@ -40,8 +40,16 @@ class Str
     protected static $studlyCache = [];
 
     /**
-     * Return the remainder of a string after a given value.
-	 * 返回给定值后字符串的剩余部分
+     * The callback that should be used to generate UUIDs.
+	 * 应该用于生成uid的回调
+     *
+     * @var callable
+     */
+    protected static $uuidFactory;
+
+    /**
+     * Return the remainder of a string after the first occurrence of a given value.
+	 * 返回给定值第一次出现后字符串的剩余部分
      *
      * @param  string  $subject
      * @param  string  $search
@@ -53,8 +61,31 @@ class Str
     }
 
     /**
+     * Return the remainder of a string after the last occurrence of a given value.
+	 * 返回给定值最后一次出现后字符串的剩余部分
+     *
+     * @param  string  $subject
+     * @param  string  $search
+     * @return string
+     */
+    public static function afterLast($subject, $search)
+    {
+        if ($search === '') {
+            return $subject;
+        }
+
+        $position = strrpos($subject, (string) $search);
+
+        if ($position === false) {
+            return $subject;
+        }
+
+        return substr($subject, $position + strlen($search));
+    }
+
+    /**
      * Transliterate a UTF-8 value to ASCII.
-	 * 将UTF-8值音译为ASCII
+	 * 直译UTF-8值为ASCII
      *
      * @param  string  $value
      * @param  string  $language
@@ -76,8 +107,8 @@ class Str
     }
 
     /**
-     * Get the portion of a string before a given value.
-	 * 获取给定值之前的字符串部分
+     * Get the portion of a string before the first occurrence of a given value.
+	 * 得到字符串第一次出现给定值之前的部分
      *
      * @param  string  $subject
      * @param  string  $search
@@ -89,8 +120,31 @@ class Str
     }
 
     /**
+     * Get the portion of a string before the last occurrence of a given value.
+	 * 得到字符串最后一次出现给定值之前的部分
+     *
+     * @param  string  $subject
+     * @param  string  $search
+     * @return string
+     */
+    public static function beforeLast($subject, $search)
+    {
+        if ($search === '') {
+            return $subject;
+        }
+
+        $pos = mb_strrpos($subject, $search);
+
+        if ($pos === false) {
+            return $subject;
+        }
+
+        return static::substr($subject, 0, $pos);
+    }
+
+    /**
      * Convert a value to camel case.
-	 * 将值转换为驼峰形式
+	 * 转换值为驼峰形式
      *
      * @param  string  $value
      * @return string
@@ -109,7 +163,7 @@ class Str
 	 * 确定给定字符串是否包含给定子字符串
      *
      * @param  string  $haystack
-     * @param  string|array  $needles
+     * @param  string|string[]  $needles
      * @return bool
      */
     public static function contains($haystack, $needles)
@@ -128,7 +182,7 @@ class Str
 	 * 确定给定字符串是否包含所有数组值
      *
      * @param  string  $haystack
-     * @param  array  $needles
+     * @param  string[]  $needles
      * @return bool
      */
     public static function containsAll($haystack, array $needles)
@@ -147,7 +201,7 @@ class Str
 	 * 确定给定字符串是否以给定子字符串结束
      *
      * @param  string  $haystack
-     * @param  string|array  $needles
+     * @param  string|string[]  $needles
      * @return bool
      */
     public static function endsWith($haystack, $needles)
@@ -196,8 +250,8 @@ class Str
             // If the given value is an exact match we can of course return true right
             // from the beginning. Otherwise, we will translate asterisks and do an
             // actual pattern match against the two strings to see if they match.
-			// 如果给定的值与目标值完全一致，那么我们当然可以从一开始就返回“真”。
-			// 否则，我们将替换掉星号，并对这两个字符串进行实际的模式匹配，以确定它们是否匹配。
+			// 如果给定的值完全匹配，我们当然可以从一开始就返回true。
+			// 否则，我们将翻译星号，并对这两个字符串进行实际的模式匹配，看看它们是否匹配。
             if ($pattern == $value) {
                 return true;
             }
@@ -207,8 +261,8 @@ class Str
             // Asterisks are translated into zero-or-more regular expression wildcards
             // to make it convenient to check if the strings starts with the given
             // pattern such as "library/*", making any string check convenient.
-			// 星号会被转换为零个或多个正则表达式的通配符，这样便于检查字符串是否以给定的模式（如“library/*”）开头，
-			// 从而使得任何字符串的检查都变得方便。
+			// 星号被转换为零个或多个正则表达式通配符，以方便检查字符串是否以给定的模式开头，
+			// 如"library/*"，从而方便任何字符串检查。
             $pattern = str_replace('\*', '.*', $pattern);
 
             if (preg_match('#^'.$pattern.'\z#u', $value) === 1) {
@@ -220,8 +274,24 @@ class Str
     }
 
     /**
+     * Determine if a given string is a valid UUID.
+	 * 确定给定字符串是否是有效的UUID
+     *
+     * @param  string  $value
+     * @return bool
+     */
+    public static function isUuid($value)
+    {
+        if (! is_string($value)) {
+            return false;
+        }
+
+        return preg_match('/^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/iD', $value) > 0;
+    }
+
+    /**
      * Convert a string to kebab case.
-	 * 将字符串转换为kebab case
+	 * 转换字符串为kebab case
      *
      * @param  string  $value
      * @return string
@@ -233,10 +303,10 @@ class Str
 
     /**
      * Return the length of the given string.
-	 * 返回给定字符串的长度
+	 * 返回给定字符串长度
      *
      * @param  string  $value
-     * @param  string  $encoding
+     * @param  string|null  $encoding
      * @return int
      */
     public static function length($value, $encoding = null)
@@ -253,7 +323,7 @@ class Str
 	 * 限制字符串中的字符数
      *
      * @param  string  $value
-     * @param  int     $limit
+     * @param  int  $limit
      * @param  string  $end
      * @return string
      */
@@ -268,7 +338,7 @@ class Str
 
     /**
      * Convert the given string to lower-case.
-	 * 将给定的字符串转换为小写
+	 * 转换给定字符串为小写
      *
      * @param  string  $value
      * @return string
@@ -283,7 +353,7 @@ class Str
 	 * 限制字符串中的单词数
      *
      * @param  string  $value
-     * @param  int     $words
+     * @param  int  $words
      * @param  string  $end
      * @return string
      */
@@ -299,12 +369,12 @@ class Str
     }
 
     /**
-     * Parse a Class@method style callback into class and method.
-	 * 将Class@method样式的回调解析为类和方法
+     * Parse a Class[@]method style callback into class and method.
+	 * 解析类[@]方法风格回调到类和方法
      *
      * @param  string  $callback
      * @param  string|null  $default
-     * @return array
+     * @return array<int, string|null>
      */
     public static function parseCallback($callback, $default = null)
     {
@@ -316,7 +386,7 @@ class Str
 	 * 了解英语单词的复数形式
      *
      * @param  string  $value
-     * @param  int     $count
+     * @param  int  $count
      * @return string
      */
     public static function plural($value, $count = 2)
@@ -329,7 +399,7 @@ class Str
 	 * 将英语的最后一个单词复数化，注意大小写字符串的大小写。
      *
      * @param  string  $value
-     * @param  int     $count
+     * @param  int  $count
      * @return string
      */
     public static function pluralStudly($value, $count = 2)
@@ -343,7 +413,7 @@ class Str
 
     /**
      * Generate a more truly "random" alpha-numeric string.
-	 * 生成一个更真正“随机”的字母数字字符串
+	 * 生成一个更真正"随机"的字母数字字符串
      *
      * @param  int  $length
      * @return string
@@ -365,10 +435,10 @@ class Str
 
     /**
      * Replace a given value in the string sequentially with an array.
-	 * 将字符串中的给定值依次替换为数组
+	 * 替换字符串中的给定值依次为数组
      *
      * @param  string  $search
-     * @param  array   $replace
+     * @param  array<int|string, string>  $replace
      * @param  string  $subject
      * @return string
      */
@@ -420,6 +490,10 @@ class Str
      */
     public static function replaceLast($search, $replace, $subject)
     {
+        if ($search === '') {
+            return $subject;
+        }
+
         $position = strrpos($subject, $search);
 
         if ($position !== false) {
@@ -431,7 +505,7 @@ class Str
 
     /**
      * Begin a string with a single instance of a given value.
-	 * 以给定值的单个实例开始字符串
+	 * 开始字符串以给定值的单个实例
      *
      * @param  string  $value
      * @param  string  $prefix
@@ -446,7 +520,7 @@ class Str
 
     /**
      * Convert the given string to upper-case.
-	 * 将给定的字符串转换为大写
+	 * 转换给定字符串为大写
      *
      * @param  string  $value
      * @return string
@@ -458,7 +532,7 @@ class Str
 
     /**
      * Convert the given string to title case.
-	 * 将给定的字符串转换为标题大小写
+	 * 转换给定的字符串为标题大小写
      *
      * @param  string  $value
      * @return string
@@ -470,7 +544,7 @@ class Str
 
     /**
      * Get the singular form of an English word.
-	 * 获取英语单词的单数形式
+	 * 得到英语单词的单数形式
      *
      * @param  string  $value
      * @return string
@@ -482,7 +556,7 @@ class Str
 
     /**
      * Generate a URL friendly "slug" from a given string.
-	 * 从给定的字符串生成一个URL友好的“slug”
+	 * 从给定的字符串生成一个URL友好的"slug"
      *
      * @param  string  $title
      * @param  string  $separator
@@ -512,7 +586,7 @@ class Str
 
     /**
      * Convert a string to snake case.
-	 * 将字符串转换为蛇形
+	 * 转换字符串为蛇形
      *
      * @param  string  $value
      * @param  string  $delimiter
@@ -540,7 +614,7 @@ class Str
 	 * 确定给定字符串是否以给定子字符串开头
      *
      * @param  string  $haystack
-     * @param  string|array  $needles
+     * @param  string|string[]  $needles
      * @return bool
      */
     public static function startsWith($haystack, $needles)
@@ -602,24 +676,30 @@ class Str
 
     /**
      * Generate a UUID (version 4).
-	 * 生成UUID（版本4）
+	 * 生成UUID(版本4)
      *
      * @return \Ramsey\Uuid\UuidInterface
      */
     public static function uuid()
     {
-        return Uuid::uuid4();
+        return static::$uuidFactory
+                    ? call_user_func(static::$uuidFactory)
+                    : Uuid::uuid4();
     }
 
     /**
      * Generate a time-ordered UUID (version 4).
-	 * 生成一个按时间排序的UUID（版本4）
+	 * 生成一个按时间排序的UUID(版本4)
      *
      * @return \Ramsey\Uuid\UuidInterface
      */
     public static function orderedUuid()
     {
-        $factory = new UuidFactory;
+        if (static::$uuidFactory) {
+            return call_user_func(static::$uuidFactory);
+        }
+
+        $factory = new UuidFactory();
 
         $factory->setRandomGenerator(new CombGenerator(
             $factory->getRandomGenerator(),
@@ -631,6 +711,29 @@ class Str
         ));
 
         return $factory->uuid4();
+    }
+
+    /**
+     * Set the callable that will be used to generate UUIDs.
+	 * 设置将用于生成uid的可调用对象
+     *
+     * @param  callable  $factory
+     * @return void
+     */
+    public static function createUuidsUsing(callable $factory = null)
+    {
+        static::$uuidFactory = $factory;
+    }
+
+    /**
+     * Indicate that UUIDs should be created normally and not using a custom factory.
+	 * 指示应该正常创建uid，而不是使用自定义工厂。
+     *
+     * @return void
+     */
+    public static function createUuidsNormally()
+    {
+        static::$uuidFactory = null;
     }
 
     /**
@@ -770,7 +873,7 @@ class Str
 
     /**
      * Returns the language specific replacements for the ascii method.
-	 * 返回ascii方法的特定于语言的替换。
+	 * 返回ascii方法的特定于语言的替换
      *
      * Note: Adapted from Stringy\Stringy.
      *

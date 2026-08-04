@@ -1,19 +1,19 @@
 <?php
 /**
- * Illuminate，基础，混合
+ * 基础，混合
  */
 
 namespace Illuminate\Foundation;
 
 use Exception;
-use Illuminate\Support\Str;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 
 class Mix
 {
     /**
      * Get the path to a versioned Mix file.
-	 * 获取版本化Mix文件的路径
+	 * 得到版本的混合文件路径
      *
      * @param  string  $path
      * @param  string  $manifestDirectory

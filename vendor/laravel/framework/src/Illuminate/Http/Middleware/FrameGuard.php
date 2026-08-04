@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，中间件，帧保护
+ * Http，框架防护
  */
 
 namespace Illuminate\Http\Middleware;

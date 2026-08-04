@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，基础，支持，供应商，路由服务提供商
+ * 基础，路由服务提供者
  */
 
 namespace Illuminate\Foundation\Support\Providers;
 
+use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Traits\ForwardsCalls;
-use Illuminate\Contracts\Routing\UrlGenerator;
 
 /**
  * @mixin \Illuminate\Routing\Router
@@ -19,7 +19,7 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * The controller namespace for the application.
-	 * 应用程序的控制器名称空间
+	 * 应用程序的控制器命名空间
      *
      * @var string|null
      */
@@ -27,7 +27,7 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap any application services.
-	 * 引导任何应用程序服务
+	 * 引导任何应用服务
      *
      * @return void
      */
@@ -38,6 +38,7 @@ class RouteServiceProvider extends ServiceProvider
         if ($this->routesAreCached()) {
             $this->loadCachedRoutes();
         } else {
+            // 真正的加载路由
             $this->loadRoutes();
 
             $this->app->booted(function () {
@@ -49,7 +50,7 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Set the root controller namespace for the application.
-	 * 为应用程序设置根控制器命名空间
+	 * 设置根控制器命名空间为应用
      *
      * @return void
      */
@@ -62,7 +63,7 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Determine if the application routes are cached.
-	 * 确定是否缓存了应用程序路由
+	 * 确定是否缓存了应用路由
      *
      * @return bool
      */
@@ -73,7 +74,7 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Load the cached routes for the application.
-	 * 为应用程序加载缓存的路由
+	 * 加载缓存的路由为应用
      *
      * @return void
      */
@@ -86,12 +87,13 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Load the application routes.
-	 * 加载应用程序路由
+	 * 加载应用路由
      *
      * @return void
      */
     protected function loadRoutes()
     {
+        // map方法实际在app/Providers/RouteServiceProvider.php里
         if (method_exists($this, 'map')) {
             $this->app->call([$this, 'map']);
         }
@@ -99,7 +101,7 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Pass dynamic methods onto the router instance.
-	 * 将动态方法传递给路由器实例
+	 * 传递动态方法给路由器实例
      *
      * @param  string  $method
      * @param  array  $parameters

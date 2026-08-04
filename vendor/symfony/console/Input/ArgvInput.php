@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，输入，Argv输入
+ * Symfony，组件，控制台，输入，Argv 输入
  */
 
 /*

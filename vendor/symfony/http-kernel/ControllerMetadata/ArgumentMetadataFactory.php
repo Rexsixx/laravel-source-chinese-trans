@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，控制器元数据，参数元数据工厂
- */
 
 /*
  * This file is part of the Symfony package.

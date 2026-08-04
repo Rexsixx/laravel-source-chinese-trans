@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，环境检测器
+ * 基础，环境检查
  */
 
 namespace Illuminate\Foundation;
@@ -12,7 +12,7 @@ class EnvironmentDetector
 {
     /**
      * Detect the application's current environment.
-	 * 检测应用程序的当前环境
+	 * 检查应用的当前环境
      *
      * @param  \Closure  $callback
      * @param  array|null  $consoleArgs
@@ -29,19 +29,19 @@ class EnvironmentDetector
 
     /**
      * Set the application environment for a web request.
-	 * 设置web请求的应用环境
+	 * 设置web请求环境
      *
      * @param  \Closure  $callback
      * @return string
      */
     protected function detectWebEnvironment(Closure $callback)
     {
-        return call_user_func($callback);
+        return $callback();
     }
 
     /**
      * Set the application environment from command-line arguments.
-	 * 通过命令行参数设置应用程序环境
+	 * 设置控制台环境
      *
      * @param  \Closure  $callback
      * @param  array  $args
@@ -52,8 +52,8 @@ class EnvironmentDetector
         // First we will check if an environment argument was passed via console arguments
         // and if it was that automatically overrides as the environment. Otherwise, we
         // will check the environment as a "web" request like a typical HTTP request.
-		// 首先，我们将检查是否通过控制台参数传递了环境参数，如果是的话，那么该参数将自动作为环境参数被使用。
-		// 否则，我们将像处理常规的 HTTP 请求那样，以“网络”请求的形式来检查环境。
+		// 首先我们将检查环境参数是否通过控制台参数传递，如果是这样它将会自己覆盖环境。
+		// 否则，我们将当作web请求进行环境检查。
         if (! is_null($value = $this->getEnvironmentArgument($args))) {
             return $value;
         }
@@ -63,7 +63,7 @@ class EnvironmentDetector
 
     /**
      * Get the environment argument from the console.
-	 * 从控制台中获取环境参数
+	 * 得到环境参数从控制台
      *
      * @param  array  $args
      * @return string|null

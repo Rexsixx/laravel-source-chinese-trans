@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，连接接口
+ * 数据库，连接接口
  */
 
 namespace Illuminate\Database;
@@ -11,16 +11,17 @@ interface ConnectionInterface
 {
     /**
      * Begin a fluent query against a database table.
-	 * 开始对数据库表进行流畅的查询
+	 * 开始对数据库表进行流畅的查询，执行
      *
-     * @param  string  $table
+     * @param  \Closure|\Illuminate\Database\Query\Builder|string  $table
+     * @param  string|null  $as
      * @return \Illuminate\Database\Query\Builder
      */
-    public function table($table);
+    public function table($table, $as = null);
 
     /**
      * Get a new raw query expression.
-	 * 获取一个新的原始查询表达式
+	 * 得到一个原始查询表达式
      *
      * @param  mixed  $value
      * @return \Illuminate\Database\Query\Expression
@@ -29,10 +30,10 @@ interface ConnectionInterface
 
     /**
      * Run a select statement and return a single result.
-	 * 运行一个select语句并返回一个结果
+	 * 执行一个查询语言返回单个结果
      *
      * @param  string  $query
-     * @param  array   $bindings
+     * @param  array  $bindings
      * @param  bool  $useReadPdo
      * @return mixed
      */
@@ -40,10 +41,10 @@ interface ConnectionInterface
 
     /**
      * Run a select statement against the database.
-	 * 对数据库运行一条选择语句
+	 * 运行查询语句
      *
      * @param  string  $query
-     * @param  array   $bindings
+     * @param  array  $bindings
      * @param  bool  $useReadPdo
      * @return array
      */
@@ -51,7 +52,7 @@ interface ConnectionInterface
 
     /**
      * Run a select statement against the database and returns a generator.
-	 * 对数据库运行select语句并返回生成器
+	 * 运行select语句并返回生成器对数据库
      *
      * @param  string  $query
      * @param  array  $bindings
@@ -62,57 +63,57 @@ interface ConnectionInterface
 
     /**
      * Run an insert statement against the database.
-	 * 对数据库运行一条插入语句
+	 * 运行插入语句
      *
      * @param  string  $query
-     * @param  array   $bindings
+     * @param  array  $bindings
      * @return bool
      */
     public function insert($query, $bindings = []);
 
     /**
      * Run an update statement against the database.
-	 * 对数据库运行一条更新语句
+	 * 运行更新语句
      *
      * @param  string  $query
-     * @param  array   $bindings
+     * @param  array  $bindings
      * @return int
      */
     public function update($query, $bindings = []);
 
     /**
      * Run a delete statement against the database.
-	 * 对数据库运行delete语句
+	 * 运行删除语句
      *
      * @param  string  $query
-     * @param  array   $bindings
+     * @param  array  $bindings
      * @return int
      */
     public function delete($query, $bindings = []);
 
     /**
      * Execute an SQL statement and return the boolean result.
-	 * 执行SQL语句并返回布尔结果
+	 * 执行SQL语句
      *
      * @param  string  $query
-     * @param  array   $bindings
+     * @param  array  $bindings
      * @return bool
      */
     public function statement($query, $bindings = []);
 
     /**
      * Run an SQL statement and get the number of rows affected.
-	 * 运行一条SQL语句，获取受影响的行数。
+	 * 运行SQL语句，返回影响行数
      *
      * @param  string  $query
-     * @param  array   $bindings
+     * @param  array  $bindings
      * @return int
      */
     public function affectingStatement($query, $bindings = []);
 
     /**
      * Run a raw, unprepared query against the PDO connection.
-	 * 对PDO连接运行一个未准备的原始查询
+	 * 运行一个未准备的原始查询对PDO连接
      *
      * @param  string  $query
      * @return bool
@@ -130,7 +131,7 @@ interface ConnectionInterface
 
     /**
      * Execute a Closure within a transaction.
-	 * 在事务中执行闭包
+	 * 执行闭包在事务中
      *
      * @param  \Closure  $callback
      * @param  int  $attempts
@@ -142,7 +143,7 @@ interface ConnectionInterface
 
     /**
      * Start a new database transaction.
-	 * 启动一个新的数据库事务
+	 * 开始一个事务
      *
      * @return void
      */
@@ -150,7 +151,7 @@ interface ConnectionInterface
 
     /**
      * Commit the active database transaction.
-	 * 提交活动数据库事务
+	 * 提交事务
      *
      * @return void
      */
@@ -166,7 +167,7 @@ interface ConnectionInterface
 
     /**
      * Get the number of active transactions.
-	 * 获取活动事务的数量
+	 * 得到事务级别
      *
      * @return int
      */
@@ -174,7 +175,7 @@ interface ConnectionInterface
 
     /**
      * Execute the given callback in "dry run" mode.
-	 * 以“预演”模式执行给定的回调函数
+	 * 以"预演"模式执行给定的回调函数
      *
      * @param  \Closure  $callback
      * @return array

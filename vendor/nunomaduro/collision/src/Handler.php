@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，碰撞，处理者
+ * NunoMaduro，冲突，处理程序
  */
 
 /**

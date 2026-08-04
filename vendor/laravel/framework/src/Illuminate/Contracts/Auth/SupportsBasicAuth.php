@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，认证，支持基本验证
+ * 契约，支持基本验证接口
  */
 
 namespace Illuminate\Contracts\Auth;
@@ -19,7 +19,7 @@ interface SupportsBasicAuth
 
     /**
      * Perform a stateless HTTP Basic login attempt.
-	 * 执行无状态HTTP基本登录尝试
+	 * 进行无状态HTTP基本登录尝试
      *
      * @param  string  $field
      * @param  array  $extraConditions

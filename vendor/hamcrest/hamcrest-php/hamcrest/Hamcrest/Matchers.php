@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，匹配程序
+ * Hamcrest，匹配器
  */
 
 /*
@@ -13,7 +13,7 @@ namespace Hamcrest;
 
 /**
  * A series of static factories for all hamcrest matchers.
- * 一系列静态工厂为所有的hamcrest matchers。
+ * 所有hamcrest匹配器的一系列静态工厂。
  */
 class Matchers
 {

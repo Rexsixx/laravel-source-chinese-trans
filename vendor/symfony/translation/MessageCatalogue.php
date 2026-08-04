@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，翻译，信息目录
- */
 
 /*
  * This file is part of the Symfony package.
@@ -162,14 +159,19 @@ class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterf
      */
     public function add($messages, $domain = 'messages')
     {
-        $altDomain = str_ends_with($domain, self::INTL_DOMAIN_SUFFIX) ? substr($domain, 0, -\strlen(self::INTL_DOMAIN_SUFFIX)) : $domain.self::INTL_DOMAIN_SUFFIX;
-        foreach ($messages as $id => $message) {
-            unset($this->messages[$altDomain][$id]);
-            $this->messages[$domain][$id] = $message;
+        if (!isset($this->messages[$domain])) {
+            $this->messages[$domain] = [];
         }
-
-        if ([] === ($this->messages[$altDomain] ?? null)) {
-            unset($this->messages[$altDomain]);
+        $intlDomain = $domain;
+        if (!str_ends_with($domain, self::INTL_DOMAIN_SUFFIX)) {
+            $intlDomain .= self::INTL_DOMAIN_SUFFIX;
+        }
+        foreach ($messages as $id => $message) {
+            if (isset($this->messages[$intlDomain]) && \array_key_exists($id, $this->messages[$intlDomain])) {
+                $this->messages[$intlDomain][$id] = $message;
+            } else {
+                $this->messages[$domain][$id] = $message;
+            }
         }
     }
 
@@ -302,7 +304,6 @@ class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterf
 
     /**
      * Adds current values with the new values.
-	 * 用新值添加当前值
      *
      * @param array $values Values to add
      */

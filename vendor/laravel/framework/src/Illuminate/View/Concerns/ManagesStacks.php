@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，问题，管理堆栈
+ * 视图，管理栈
  */
 
 namespace Illuminate\View\Concerns;
@@ -11,7 +11,7 @@ trait ManagesStacks
 {
     /**
      * All of the finished, captured push sections.
-	 * 所有完成的，捕获的片段。
+	 * 所有完成的，捕获的推段。
      *
      * @var array
      */
@@ -73,7 +73,7 @@ trait ManagesStacks
 
     /**
      * Append content to a given push section.
-	 * 将内容附加到给定的推送部分
+	 * 附加内容到给定的推送部分
      *
      * @param  string  $section
      * @param  string  $content
@@ -132,7 +132,7 @@ trait ManagesStacks
 
     /**
      * Prepend content to a given stack.
-	 * 将内容预放到给定的堆栈中
+	 * 预放内容到给定的堆栈中
      *
      * @param  string  $section
      * @param  string  $content
@@ -153,7 +153,7 @@ trait ManagesStacks
 
     /**
      * Get the string contents of a push section.
-	 * 获取push部分的字符串内容
+	 * 得到push部分的字符串内容
      *
      * @param  string  $section
      * @param  string  $default

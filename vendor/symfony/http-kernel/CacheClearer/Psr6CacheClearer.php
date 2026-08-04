@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，缓存清洁器，Psr6 缓存清洁器
- */
 
 /*
  * This file is part of the Symfony package.

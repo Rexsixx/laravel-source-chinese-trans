@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，加载程序，Xml 文件加载器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -23,7 +20,6 @@ use Symfony\Component\Routing\RouteCompiler;
 
 /**
  * XmlFileLoader loads XML routing files.
- * XmlFileLoader加载XML路由文件。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
@@ -35,7 +31,6 @@ class XmlFileLoader extends FileLoader
 
     /**
      * Loads an XML file.
-	 * 加载一个XML文件
      *
      * @param string      $file An XML file path
      * @param string|null $type The resource type
@@ -187,7 +182,7 @@ class XmlFileLoader extends FileLoader
         $this->setCurrentDir(\dirname($path));
 
         /** @var RouteCollection[] $imported */
-        $imported = $this->import($resource, '' !== $type ? $type : null, false, $file, $exclude) ?: [];
+        $imported = $this->import($resource, ('' !== $type ? $type : null), false, $file, $exclude) ?: [];
 
         if (!\is_array($imported)) {
             $imported = [$imported];

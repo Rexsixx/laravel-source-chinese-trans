@@ -1,25 +1,24 @@
 <?php
 /**
- * Illuminate，电子邮件，传送管理者
+ * 邮件，邮件传输管理
  */
 
 namespace Illuminate\Mail;
 
 use Aws\Ses\SesClient;
-use Illuminate\Support\Arr;
-use Psr\Log\LoggerInterface;
-use Illuminate\Log\LogManager;
-use Illuminate\Support\Manager;
 use GuzzleHttp\Client as HttpClient;
-use Swift_SmtpTransport as SmtpTransport;
-use Illuminate\Mail\Transport\LogTransport;
-use Illuminate\Mail\Transport\SesTransport;
-use Postmark\Transport as PostmarkTransport;
+use Illuminate\Log\LogManager;
 use Illuminate\Mail\Transport\ArrayTransport;
+use Illuminate\Mail\Transport\LogTransport;
 use Illuminate\Mail\Transport\MailgunTransport;
-use Illuminate\Mail\Transport\MandrillTransport;
-use Illuminate\Mail\Transport\SparkPostTransport;
+use Illuminate\Mail\Transport\SesTransport;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Manager;
+use Postmark\ThrowExceptionOnFailurePlugin;
+use Postmark\Transport as PostmarkTransport;
+use Psr\Log\LoggerInterface;
 use Swift_SendmailTransport as SendmailTransport;
+use Swift_SmtpTransport as SmtpTransport;
 
 class TransportManager extends Manager
 {
@@ -31,24 +30,24 @@ class TransportManager extends Manager
      */
     protected function createSmtpDriver()
     {
-        $config = $this->app->make('config')->get('mail');
+        $config = $this->config->get('mail');
 
         // The Swift SMTP transport instance will allow us to use any SMTP backend
         // for delivering mail such as Sendgrid, Amazon SES, or a custom server
         // a developer has available. We will just pass this configured host.
-		// Swift 的 SMTP 传输实例将使我们能够使用任何 SMTP 后端来发送邮件，
-		// 比如 Sendgrid、亚马逊 SES 或者开发人员可用的任何自定义服务器。我们将直接传递这个已配置的主机。
+		// Swift SMTP传输实例将允许我们使用任何SMTP后端来传递邮件，如Sendgrid、AmazonSES或开发人员可用的自定义服务器。
+		// 我们将只传递此配置的主机。
         $transport = new SmtpTransport($config['host'], $config['port']);
 
-        if (isset($config['encryption'])) {
+        if (! empty($config['encryption'])) {
             $transport->setEncryption($config['encryption']);
         }
 
         // Once we have the transport we will check for the presence of a username
         // and password. If we have it we will set the credentials on the Swift
         // transporter instance so that we'll properly authenticate delivery.
-		// 一旦我们有了传输工具，就会检查是否存在用户名和密码。
-		// 如果有这些信息，就会在 Swift 传输器实例中设置这些凭证，以便正确进行数据传输的认证。
+		// 一旦我们有了传输，我们将检查用户名和密码的存在。如果我们有它，
+		// 我们将在Swifttransporter实例上设置凭据，以便正确验证交付。
         if (isset($config['username'])) {
             $transport->setUsername($config['username']);
 
@@ -91,7 +90,7 @@ class TransportManager extends Manager
      */
     protected function createSendmailDriver()
     {
-        return new SendmailTransport($this->app['config']['mail']['sendmail']);
+        return new SendmailTransport($this->config->get('mail.sendmail'));
     }
 
     /**
@@ -102,7 +101,7 @@ class TransportManager extends Manager
      */
     protected function createSesDriver()
     {
-        $config = array_merge($this->app['config']->get('services.ses', []), [
+        $config = array_merge($this->config->get('services.ses', []), [
             'version' => 'latest', 'service' => 'email',
         ]);
 
@@ -114,7 +113,7 @@ class TransportManager extends Manager
 
     /**
      * Add the SES credentials to the configuration array.
-	 * 将SES凭据添加到配置阵列
+	 * 添加SES凭据到配置阵列
      *
      * @param  array  $config
      * @return array
@@ -147,43 +146,13 @@ class TransportManager extends Manager
      */
     protected function createMailgunDriver()
     {
-        $config = $this->app['config']->get('services.mailgun', []);
+        $config = $this->config->get('services.mailgun', []);
 
         return new MailgunTransport(
             $this->guzzle($config),
             $config['secret'],
             $config['domain'],
             $config['endpoint'] ?? null
-        );
-    }
-
-    /**
-     * Create an instance of the Mandrill Swift Transport driver.
-	 * 创建一个Mandrill Swift Transport驱动程序的实例
-     *
-     * @return \Illuminate\Mail\Transport\MandrillTransport
-     */
-    protected function createMandrillDriver()
-    {
-        $config = $this->app['config']->get('services.mandrill', []);
-
-        return new MandrillTransport(
-            $this->guzzle($config), $config['secret']
-        );
-    }
-
-    /**
-     * Create an instance of the SparkPost Swift Transport driver.
-	 * 创建一个SparkPost Swift Transport驱动程序的实例
-     *
-     * @return \Illuminate\Mail\Transport\SparkPostTransport
-     */
-    protected function createSparkPostDriver()
-    {
-        $config = $this->app['config']->get('services.sparkpost', []);
-
-        return new SparkPostTransport(
-            $this->guzzle($config), $config['secret'], $config['options'] ?? []
         );
     }
 
@@ -195,9 +164,11 @@ class TransportManager extends Manager
      */
     protected function createPostmarkDriver()
     {
-        return new PostmarkTransport(
-            $this->app['config']->get('services.postmark.token')
-        );
+        return tap(new PostmarkTransport(
+            $this->config->get('services.postmark.token')
+        ), function ($transport) {
+            $transport->registerPlugin(new ThrowExceptionOnFailurePlugin());
+        });
     }
 
     /**
@@ -208,10 +179,10 @@ class TransportManager extends Manager
      */
     protected function createLogDriver()
     {
-        $logger = $this->app->make(LoggerInterface::class);
+        $logger = $this->container->make(LoggerInterface::class);
 
         if ($logger instanceof LogManager) {
-            $logger = $logger->channel($this->app['config']['mail.log_channel']);
+            $logger = $logger->channel($this->config->get('mail.log_channel'));
         }
 
         return new LogTransport($logger);
@@ -230,7 +201,7 @@ class TransportManager extends Manager
 
     /**
      * Get a fresh Guzzle HTTP client instance.
-	 * 获取一个新的Guzzle HTTP客户端实例
+	 * 得到新的Guzzle HTTP客户端实例
      *
      * @param  array  $config
      * @return \GuzzleHttp\Client
@@ -244,13 +215,13 @@ class TransportManager extends Manager
 
     /**
      * Get the default mail driver name.
-	 * 获取默认的邮件驱动程序名称
+	 * 得到默认的邮件驱动程序名称
      *
      * @return string
      */
     public function getDefaultDriver()
     {
-        return $this->app['config']['mail.driver'];
+        return $this->config->get('mail.driver');
     }
 
     /**
@@ -262,6 +233,6 @@ class TransportManager extends Manager
      */
     public function setDefaultDriver($name)
     {
-        $this->app['config']['mail.driver'] = $name;
+        $this->config->set('mail.driver', $name);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，碰撞，高光色
+ * NunoMaduro，冲突，高光色
  */
 
 /**
@@ -20,7 +20,6 @@ use NunoMaduro\Collision\Contracts\Highlighter as HighlighterContract;
 
 /**
  * This is an Collision Highlighter implementation.
- * 这是一个碰撞high轻盈的实现。
  *
  * @author Nuno Maduro <enunomaduro@gmail.com>
  */

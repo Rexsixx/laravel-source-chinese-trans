@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由选择，视图控制器
+ * 路由，视图控制器
  */
 
 namespace Illuminate\Routing;
@@ -19,7 +19,7 @@ class ViewController extends Controller
 
     /**
      * Create a new controller instance.
-	 * 创建一个新的控制器实例
+	 * 创建新的控制器实例
      *
      * @param  \Illuminate\Contracts\View\Factory  $view
      * @return void

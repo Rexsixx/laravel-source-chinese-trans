@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，视图，问题，管理事件
+ * 视图，管理事件
  */
 
 namespace Illuminate\View\Concerns;
 
 use Closure;
-use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View as ViewContract;
+use Illuminate\Support\Str;
 
 trait ManagesEvents
 {
@@ -15,7 +15,7 @@ trait ManagesEvents
      * Register a view creator event.
 	 * 注册一个视图创建者事件
      *
-     * @param  array|string     $views
+     * @param  array|string  $views
      * @param  \Closure|string  $callback
      * @return array
      */
@@ -32,7 +32,7 @@ trait ManagesEvents
 
     /**
      * Register multiple view composers via an array.
-	 * 通过一个数组注册多个视图composers
+	 * 注册多个视图composers通过数组
      *
      * @param  array  $composers
      * @return array
@@ -69,7 +69,7 @@ trait ManagesEvents
 
     /**
      * Add an event for a given view.
-	 * 为给定视图添加事件
+	 * 添加事件为给定视图
      *
      * @param  string  $view
      * @param  \Closure|string  $callback
@@ -93,9 +93,9 @@ trait ManagesEvents
      * Register a class based view composer.
 	 * 注册一个基于类的视图编写器
      *
-     * @param  string    $view
-     * @param  string    $class
-     * @param  string    $prefix
+     * @param  string  $view
+     * @param  string  $class
+     * @param  string  $prefix
      * @return \Closure
      */
     protected function addClassEvent($view, $class, $prefix)
@@ -105,8 +105,8 @@ trait ManagesEvents
         // When registering a class based view "composer", we will simply resolve the
         // classes from the application IoC container then call the compose method
         // on the instance. This allows for convenient, testable view composers.
-		// 在注册基于类的视图“composer”时，我们只需从应用程序的依赖注入容器中解析这些类，然后对实例调用“compose”方法即可。
-		// 这允许使用方便的、可测试的视图编写器。
+		// 在注册基于类的视图"composer"时，我们只需从应用程序IoC容器中解析类，然后调用实例上的compose方法。
+		// 这允许方便、可测试的视图编辑器。
         $callback = $this->buildClassEventCallback(
             $class, $prefix
         );
@@ -131,12 +131,10 @@ trait ManagesEvents
         // Once we have the class and method name, we can build the Closure to resolve
         // the instance out of the IoC container and call the method on it with the
         // given arguments that are passed to the Closure as the composer's data.
-		// 一旦我们确定了类名和方法名，就可以构建一个闭包来从依赖注入容器中获取实例，
-		// 并使用作为闭包参数传递给它的给定参数（即作为构建器的数据）来调用该方法。
+		// 一旦我们有了类名和方法名，我们就可以构建闭包来从IoC容器中解析实例，
+		// 并使用传递给闭包的给定参数作为编写器的数据来调用它的方法。
         return function () use ($class, $method) {
-            return call_user_func_array(
-                [$this->container->make($class), $method], func_get_args()
-            );
+            return $this->container->make($class)->{$method}(...func_get_args());
         };
     }
 
@@ -155,7 +153,7 @@ trait ManagesEvents
 
     /**
      * Determine the class event method based on the given prefix.
-	 * 根据给定的前缀确定类事件方法
+	 * 确定类事件方法根据给定的前缀
      *
      * @param  string  $prefix
      * @return string
@@ -167,9 +165,9 @@ trait ManagesEvents
 
     /**
      * Add a listener to the event dispatcher.
-	 * 向事件调度程序添加侦听器
+	 * 添加侦听器向事件调度程序
      *
-     * @param  string    $name
+     * @param  string  $name
      * @param  \Closure  $callback
      * @return void
      */
@@ -186,7 +184,7 @@ trait ManagesEvents
 
     /**
      * Call the composer for a given view.
-	 * 调用给定视图的编写器
+	 * 调用给定视图的composer
      *
      * @param  \Illuminate\Contracts\View\View  $view
      * @return void

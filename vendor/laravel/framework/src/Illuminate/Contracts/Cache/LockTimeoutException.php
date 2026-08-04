@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，缓存，锁定超时异常
+ * 契约，缓存锁超时异常，待完善类
  */
 
 namespace Illuminate\Contracts\Cache;

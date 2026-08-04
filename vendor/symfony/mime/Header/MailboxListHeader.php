@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Mime，数据头，Mailbox列表标题
- */
 
 /*
  * This file is part of the Symfony package.
@@ -47,9 +44,9 @@ final class MailboxListHeader extends AbstractHeader
     }
 
     /**
-     * @return Address[]
-     *
      * @throws RfcComplianceException
+     *
+     * @return Address[]
      */
     public function getBody(): array
     {
@@ -102,9 +99,9 @@ final class MailboxListHeader extends AbstractHeader
     /**
      * Gets the full mailbox list of this Header as an array of valid RFC 2822 strings.
      *
-     * @return string[]
-     *
      * @throws RfcComplianceException
+     *
+     * @return string[]
      */
     public function getAddressStrings(): array
     {

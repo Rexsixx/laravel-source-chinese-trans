@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，线程调度，Schedule 完成命令
+ * 控制台，计划完成命令
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -15,7 +15,7 @@ class ScheduleFinishCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'schedule:finish {id}';
+    protected $signature = 'schedule:finish {id} {code=0}';
 
     /**
      * The console command description.
@@ -27,44 +27,23 @@ class ScheduleFinishCommand extends Command
 
     /**
      * Indicates whether the command should be shown in the Artisan command list.
-	 * 指示该命令是否应该显示在Artisan命令列表中
+	 * 指明该命令是否应该显示在Artisan命令列表中
      *
      * @var bool
      */
     protected $hidden = true;
 
     /**
-     * The schedule instance.
-	 * 调度实例
-     *
-     * @var \Illuminate\Console\Scheduling\Schedule
-     */
-    protected $schedule;
-
-    /**
-     * Create a new command instance.
-	 * 创建一个新的命令实例
+     * Execute the console command.
+	 * 执行控制台命令
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
-    public function __construct(Schedule $schedule)
+    public function handle(Schedule $schedule)
     {
-        $this->schedule = $schedule;
-
-        parent::__construct();
-    }
-
-    /**
-     * Execute the console command.
-	 * 执行console命令
-     *
-     * @return void
-     */
-    public function handle()
-    {
-        collect($this->schedule->events())->filter(function ($value) {
+        collect($schedule->events())->filter(function ($value) {
             return $value->mutexName() == $this->argument('id');
-        })->each->callAfterCallbacks($this->laravel);
+        })->each->callAfterCallbacksWithExitCode($this->laravel, $this->argument('code'));
     }
 }

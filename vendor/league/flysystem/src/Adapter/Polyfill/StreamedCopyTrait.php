@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，适配器，Polyfill，流拷贝特性
+ * League，Flysystem，适配器，Polyfill，流式复制特性
  */
 
 namespace League\Flysystem\Adapter\Polyfill;
@@ -11,7 +11,6 @@ trait StreamedCopyTrait
 {
     /**
      * Copy a file.
-	 * 复制一个文件
      *
      * @param string $path
      * @param string $newpath
@@ -38,17 +37,15 @@ trait StreamedCopyTrait
     // Required abstract method
 
     /**
-     * @param string $path
-     *
+     * @param  string   $path
      * @return resource
      */
     abstract public function readStream($path);
 
     /**
-     * @param string   $path
-     * @param resource $resource
-     * @param Config   $config
-     *
+     * @param  string   $path
+     * @param  resource $resource
+     * @param  Config   $config
      * @return resource
      */
     abstract public function writeStream($path, $resource, Config $config);

@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，队列，连接器，Beanstalkd 连接器
+ * 队列，连接器，Beanstalkd连接器类
  */
 
 namespace Illuminate\Queue\Connectors;
 
+use Illuminate\Queue\BeanstalkdQueue;
 use Pheanstalk\Connection;
 use Pheanstalk\Pheanstalk;
-use Illuminate\Queue\BeanstalkdQueue;
 
 class BeanstalkdConnector implements ConnectorInterface
 {

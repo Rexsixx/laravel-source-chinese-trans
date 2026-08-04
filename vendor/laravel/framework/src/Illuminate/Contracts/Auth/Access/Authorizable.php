@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，认证，访问，可被授权的
+ * 契约，可授权的
  */
 
 namespace Illuminate\Contracts\Auth\Access;

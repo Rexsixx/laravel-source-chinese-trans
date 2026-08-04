@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，构建者工厂
+ * PhpParser，构建器工厂
  */
 
 namespace PhpParser;
@@ -18,7 +18,6 @@ class BuilderFactory
 {
     /**
      * Creates an attribute node.
-	 * 创建一个属性节点
      *
      * @param string|Name $name Name of the attribute
      * @param array       $args Attribute named arguments
@@ -218,7 +217,7 @@ class BuilderFactory
     /**
      * Creates node a for a literal value.
      *
-     * @param Expr|bool|null|int|float|string|array|\UnitEnum $value $value
+     * @param Expr|bool|null|int|float|string|array $value $value
      *
      * @return Expr
      */
@@ -354,15 +353,15 @@ class BuilderFactory
     /**
      * Creates a class constant fetch node.
      *
-     * @param string|Name|Expr $class Class name
-     * @param string|Identifier|Expr $name  Constant name
+     * @param string|Name|Expr  $class Class name
+     * @param string|Identifier $name  Constant name
      *
      * @return Expr\ClassConstFetch
      */
     public function classConstFetch($class, $name): Expr\ClassConstFetch {
         return new Expr\ClassConstFetch(
             BuilderHelpers::normalizeNameOrExpr($class),
-            BuilderHelpers::normalizeIdentifierOrExpr($name)
+            BuilderHelpers::normalizeIdentifier($name)
         );
     }
 

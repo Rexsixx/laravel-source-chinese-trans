@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，构建器，方法
- */
-
 namespace PhpParser\Builder;
 
 use PhpParser;

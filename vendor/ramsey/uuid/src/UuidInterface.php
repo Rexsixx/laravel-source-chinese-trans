@@ -28,13 +28,11 @@ use Serializable;
 /**
  * UuidInterface defines common functionality for all universally unique
  * identifiers (UUIDs)
- * UuidInterface定义了所有普遍惟一标识符(UUIDs)的通用功能
  */
 interface UuidInterface extends JsonSerializable, Serializable
 {
     /**
      * Compares this UUID to the specified UUID.
-	 * 将此UUID与指定的UUID进行比较。
      *
      * The first of two UUIDs is greater than the second if the most
      * significant field in which the UUIDs differ is greater for the first

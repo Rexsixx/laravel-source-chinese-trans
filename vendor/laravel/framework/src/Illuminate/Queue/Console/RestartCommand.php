@@ -1,11 +1,12 @@
 <?php
 /**
- * Illuminate，队列，控制台，重启动命令
+ * 队列，控制台，重启动命令
  */
 
 namespace Illuminate\Queue\Console;
 
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Support\InteractsWithTime;
 
 class RestartCommand extends Command
@@ -29,14 +30,36 @@ class RestartCommand extends Command
     protected $description = 'Restart queue worker daemons after their current job';
 
     /**
+     * The cache store implementation.
+	 * 缓存存储实现
+     *
+     * @var \Illuminate\Contracts\Cache\Repository
+     */
+    protected $cache;
+
+    /**
+     * Create a new queue restart command.
+	 * 创建新的队列重启命令
+     *
+     * @param  \Illuminate\Contracts\Cache\Repository  $cache
+     * @return void
+     */
+    public function __construct(Cache $cache)
+    {
+        parent::__construct();
+
+        $this->cache = $cache;
+    }
+
+    /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
     public function handle()
     {
-        $this->laravel['cache']->forever('illuminate:queue:restart', $this->currentTime());
+        $this->cache->forever('illuminate:queue:restart', $this->currentTime());
 
         $this->info('Broadcasting queue restart signal.');
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，问题，警卫属性
+ * 数据库，Eloquent守卫属性
  */
 
 namespace Illuminate\Database\Eloquent\Concerns;
@@ -27,15 +27,23 @@ trait GuardsAttributes
 
     /**
      * Indicates if all mass assignment is enabled.
-	 * 指示是否启用了所有的质量分配
+	 * 指明是否启用了所有的质量分配
      *
      * @var bool
      */
     protected static $unguarded = false;
 
     /**
+     * The actual columns that exist on the database and can be guarded.
+	 * 存在于数据库中并且可以被保护的实际列
+     *
+     * @var array
+     */
+    protected static $guardableColumns = [];
+
+    /**
      * Get the fillable attributes for the model.
-	 * 获取模型的可填充属性
+	 * 得到模型的可填充属性
      *
      * @return array
      */
@@ -46,7 +54,7 @@ trait GuardsAttributes
 
     /**
      * Set the fillable attributes for the model.
-	 * 为模型设置可填充属性
+	 * 设置可填充属性
      *
      * @param  array  $fillable
      * @return $this
@@ -60,7 +68,7 @@ trait GuardsAttributes
 
     /**
      * Get the guarded attributes for the model.
-	 * 获取模型的protected属性
+	 * 得到模型的保护属性
      *
      * @return array
      */
@@ -71,7 +79,7 @@ trait GuardsAttributes
 
     /**
      * Set the guarded attributes for the model.
-	 * 为模型设置受保护的属性
+	 * 设置受保护的属性为模型
      *
      * @param  array  $guarded
      * @return $this
@@ -85,7 +93,7 @@ trait GuardsAttributes
 
     /**
      * Disable all mass assignable restrictions.
-	 * 禁用所有可批量分配的限制。
+	 * 禁用所有可批量分配的限制
      *
      * @param  bool  $state
      * @return void
@@ -108,7 +116,7 @@ trait GuardsAttributes
 
     /**
      * Determine if current state is "unguarded".
-	 * 确定当前状态是否为“未保护”
+	 * 确定当前状态是否为"未保护"
      *
      * @return bool
      */
@@ -119,7 +127,7 @@ trait GuardsAttributes
 
     /**
      * Run the given callable while being unguarded.
-	 * 在不受保护的情况下运行给定的可调用对象
+	 * 运行给定的可调用对象在不受保护的情况下
      *
      * @param  callable  $callback
      * @return mixed
@@ -155,7 +163,9 @@ trait GuardsAttributes
         // If the key is in the "fillable" array, we can of course assume that it's
         // a fillable attribute. Otherwise, we will check the guarded array when
         // we need to determine if the attribute is black-listed on the model.
-		// 如果该键存在于“可填充”数组中，那么我们就可以肯定它是一个可填充的属性。
+		// 如果键在"可填充"数组中，我们当然可以假设它是可填写的属性。
+		// 否则，我们将在以下情况下检查爱保护的阵列，
+		// 我们需要确定该属性是否在模型上被列入黑名单。
         if (in_array($key, $this->getFillable())) {
             return true;
         }
@@ -163,12 +173,14 @@ trait GuardsAttributes
         // If the attribute is explicitly listed in the "guarded" array then we can
         // return false immediately. This means this attribute is definitely not
         // fillable and there is no point in going any further in this method.
-		// 如果该属性明确列在“受保护”数组中，那么我们就可以立即返回“false”。
+		// 如果该属性明确列在"受保护"数组中，那么我们可以立即返回false。
+		// 这意味着此属性绝对不是可填充，在这种方法中继续下去没有意义。
         if ($this->isGuarded($key)) {
             return false;
         }
 
         return empty($this->getFillable()) &&
+            strpos($key, '.') === false &&
             ! Str::startsWith($key, '_');
     }
 
@@ -181,7 +193,31 @@ trait GuardsAttributes
      */
     public function isGuarded($key)
     {
-        return in_array($key, $this->getGuarded()) || $this->getGuarded() == ['*'];
+        if (empty($this->getGuarded())) {
+            return false;
+        }
+
+        return $this->getGuarded() == ['*'] ||
+               ! empty(preg_grep('/^'.preg_quote($key).'$/i', $this->getGuarded())) ||
+               ! $this->isGuardableColumn($key);
+    }
+
+    /**
+     * Determine if the given column is a valid, guardable column.
+	 * 确定给定的列是否是有效的、可保护的列
+     *
+     * @param  string  $key
+     * @return bool
+     */
+    protected function isGuardableColumn($key)
+    {
+        if (! isset(static::$guardableColumns[get_class($this)])) {
+            static::$guardableColumns[get_class($this)] = $this->getConnection()
+                        ->getSchemaBuilder()
+                        ->getColumnListing($this->getTable());
+        }
+
+        return in_array($key, static::$guardableColumns[get_class($this)]);
     }
 
     /**
@@ -197,7 +233,7 @@ trait GuardsAttributes
 
     /**
      * Get the fillable attributes of a given array.
-	 * 获取给定数组的可填充属性。
+	 * 得到给定数组的可填充属性
      *
      * @param  array  $attributes
      * @return array

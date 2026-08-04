@@ -11,9 +11,8 @@
 
 namespace Prophecy\Argument\Token;
 
-use Prophecy\Comparator\FactoryProvider;
 use SebastianBergmann\Comparator\ComparisonFailure;
-use SebastianBergmann\Comparator\Factory as ComparatorFactory;
+use Prophecy\Comparator\Factory as ComparatorFactory;
 use Prophecy\Util\StringUtil;
 
 /**
@@ -31,20 +30,22 @@ class ObjectStateToken implements TokenInterface
     /**
      * Initializes token.
      *
-     * @param string $methodName
-     * @param mixed  $value             Expected return value
+     * @param string            $methodName
+     * @param mixed             $value             Expected return value
+     * @param null|StringUtil   $util
+     * @param ComparatorFactory $comparatorFactory
      */
     public function __construct(
         $methodName,
         $value,
-        ?StringUtil $util = null,
-        ?ComparatorFactory $comparatorFactory = null
+        StringUtil $util = null,
+        ComparatorFactory $comparatorFactory = null
     ) {
         $this->name  = $methodName;
         $this->value = $value;
-        $this->util  = $util ?: new StringUtil();
+        $this->util  = $util ?: new StringUtil;
 
-        $this->comparatorFactory = $comparatorFactory ?: FactoryProvider::getInstance();
+        $this->comparatorFactory = $comparatorFactory ?: ComparatorFactory::getInstance();
     }
 
     /**
@@ -56,9 +57,8 @@ class ObjectStateToken implements TokenInterface
      */
     public function scoreArgument($argument)
     {
-        $methodCallable = array($argument, $this->name);
-        if (is_object($argument) && method_exists($argument, $this->name) && is_callable($methodCallable)) {
-            $actual = call_user_func($methodCallable);
+        if (is_object($argument) && method_exists($argument, $this->name)) {
+            $actual = call_user_func(array($argument, $this->name));
 
             $comparator = $this->comparatorFactory->getComparatorFor(
                 $this->value, $actual

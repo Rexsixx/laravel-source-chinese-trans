@@ -57,6 +57,7 @@ trait Rounding
             'microsecond' => [0, 999999],
         ]);
         $factor = 1;
+        $initialMonth = $this->month;
 
         if ($normalizedUnit === 'week') {
             $normalizedUnit = 'day';
@@ -76,15 +77,12 @@ trait Rounding
         $found = false;
         $fraction = 0;
         $arguments = null;
-        $initialValue = null;
         $factor = $this->year < 0 ? -1 : 1;
         $changes = [];
-        $minimumInc = null;
 
         foreach ($ranges as $unit => [$minimum, $maximum]) {
             if ($normalizedUnit === $unit) {
                 $arguments = [$this->$unit, $minimum];
-                $initialValue = $this->$unit;
                 $fraction = $precision - floor($precision);
                 $found = true;
 
@@ -95,23 +93,7 @@ trait Rounding
                 $delta = $maximum + 1 - $minimum;
                 $factor /= $delta;
                 $fraction *= $delta;
-                $inc = ($this->$unit - $minimum) * $factor;
-
-                if ($inc !== 0.0) {
-                    $minimumInc = $minimumInc ?? ($arguments[0] / pow(2, 52));
-
-                    // If value is still the same when adding a non-zero increment/decrement,
-                    // it means precision got lost in the addition
-                    if (abs($inc) < $minimumInc) {
-                        $inc = $minimumInc * ($inc < 0 ? -1 : 1);
-                    }
-
-                    // If greater than $precision, assume precision loss caused an overflow
-                    if ($function !== 'floor' || abs($arguments[0] + $inc - $initialValue) >= $precision) {
-                        $arguments[0] += $inc;
-                    }
-                }
-
+                $arguments[0] += ($this->$unit - $minimum) * $factor;
                 $changes[$unit] = round(
                     $minimum + ($fraction ? $fraction * $function(($this->$unit - $minimum) / $fraction) : 0)
                 );
@@ -129,13 +111,16 @@ trait Rounding
         $normalizedValue = floor($function(($value - $minimum) / $precision) * $precision + $minimum);
 
         /** @var CarbonInterface $result */
-        $result = $this;
+        $result = $this->$normalizedUnit($normalizedValue);
 
         foreach ($changes as $unit => $value) {
             $result = $result->$unit($value);
         }
 
-        return $result->$normalizedUnit($normalizedValue);
+        return $normalizedUnit === 'month' && $precision <= 1 && abs($result->month - $initialMonth) === 2
+            // Re-run the change in case an overflow occurred
+            ? $result->$normalizedUnit($normalizedValue)
+            : $result;
     }
 
     /**

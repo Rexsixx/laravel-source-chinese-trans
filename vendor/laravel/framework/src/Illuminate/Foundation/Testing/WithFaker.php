@@ -1,17 +1,18 @@
 <?php
 /**
- * Illuminate，基础，测试，使用 Faker
+ * 基础，使用伪造者
  */
 
 namespace Illuminate\Foundation\Testing;
 
 use Faker\Factory;
+use Faker\Generator;
 
 trait WithFaker
 {
     /**
      * The Faker instance.
-	 * Faker实例
+	 * 伪造实例
      *
      * @var \Faker\Generator
      */
@@ -19,7 +20,7 @@ trait WithFaker
 
     /**
      * Setup up the Faker instance.
-	 * 设置Faker实例
+	 * 设置伪造实例
      *
      * @return void
      */
@@ -30,7 +31,7 @@ trait WithFaker
 
     /**
      * Get the default Faker instance for a given locale.
-	 * 获取给定语言环境的默认Faker实例
+	 * 得到给定语言环境的默认Faker实例
      *
      * @param  string|null  $locale
      * @return \Faker\Generator
@@ -42,13 +43,19 @@ trait WithFaker
 
     /**
      * Create a Faker instance for the given locale.
-	 * 为给定的语言环境创建一个Faker实例
+	 * 创建伪造实例
      *
      * @param  string|null  $locale
      * @return \Faker\Generator
      */
     protected function makeFaker($locale = null)
     {
-        return Factory::create($locale ?? Factory::DEFAULT_LOCALE);
+        $locale = $locale ?? config('app.faker_locale', Factory::DEFAULT_LOCALE);
+
+        if (isset($this->app) && $this->app->bound(Generator::class)) {
+            return $this->app->make(Generator::class, ['locale' => $locale]);
+        }
+
+        return Factory::create($locale);
     }
 }

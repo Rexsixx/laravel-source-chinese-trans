@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，阅读器，翻译加载器
+ * Symfony，组件，翻译，读者，翻译读者
  */
 
 /*
@@ -20,7 +20,6 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * TranslationReader reads translation messages from translation files.
- * 翻译阅读器从翻译文件读取翻译消息。
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
@@ -28,7 +27,6 @@ class TranslationReader implements TranslationReaderInterface
 {
     /**
      * Loaders used for import.
-	 * 用于进口的装载机
      *
      * @var array
      */
@@ -36,7 +34,6 @@ class TranslationReader implements TranslationReaderInterface
 
     /**
      * Adds a loader to the translation extractor.
-	 * 将装载机添加到翻译提取器中
      *
      * @param string $format The format of the loader
      */

@@ -1,8 +1,4 @@
 <?php
-/**
- * SebastianBergmann，递归上下文，异常
- */
-
 /*
  * This file is part of the Recursion Context package.
  *

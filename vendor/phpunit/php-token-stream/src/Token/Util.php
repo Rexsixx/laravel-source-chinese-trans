@@ -1,9 +1,4 @@
 <?php declare(strict_types=1);
-
-/**
- * SebastianBergmann，PHP_Token_Util
- */
-
 /*
  * This file is part of php-token-stream.
  *

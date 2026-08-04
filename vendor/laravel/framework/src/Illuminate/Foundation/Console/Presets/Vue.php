@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，基础，控制台，预先装置，Vue
+ * 基础，Vue
  */
 
 namespace Illuminate\Foundation\Console\Presets;
 
-use Illuminate\Support\Arr;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Arr;
 
 class Vue extends Preset
 {
@@ -73,7 +73,7 @@ class Vue extends Preset
 
     /**
      * Update the bootstrapping files.
-	 * 更新引导文件
+	 * 更新引导文件 
      *
      * @return void
      */

@@ -1,15 +1,15 @@
 <?php
 /**
- * Illuminate，Http，Json 响应
+ * Http，Json响应
  */
 
 namespace Illuminate\Http;
 
-use JsonSerializable;
-use InvalidArgumentException;
-use Illuminate\Support\Traits\Macroable;
-use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Support\Traits\Macroable;
+use InvalidArgumentException;
+use JsonSerializable;
 use Symfony\Component\HttpFoundation\JsonResponse as BaseJsonResponse;
 
 class JsonResponse extends BaseJsonResponse
@@ -20,12 +20,12 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Constructor.
-	 * 构造函数
+	 * 初始化
      *
      * @param  mixed  $data
-     * @param  int    $status
+     * @param  int  $status
      * @param  array  $headers
-     * @param  int    $options
+     * @param  int  $options
      * @return void
      */
     public function __construct($data = null, $status = 200, $headers = [], $options = 0)
@@ -37,7 +37,7 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Sets the JSONP callback.
-	 * 设置JSONP回调
+	 * 设置JSON回调
      *
      * @param  string|null  $callback
      * @return $this
@@ -49,7 +49,7 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Get the json_decoded data from the response.
-	 * 从响应中获取json_decoded数据
+	 * 得到json编码数据
      *
      * @param  bool  $assoc
      * @param  int  $depth
@@ -86,7 +86,7 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Determine if an error occurred during JSON encoding.
-	 * 确定JSON编码期间是否发生错误
+	 * 确定是否错误JSON编码
      *
      * @param  int  $jsonError
      * @return bool

@@ -1,17 +1,17 @@
 <?php
 /**
- * Illuminate，广播，广播事件
+ * 广播，广播事件
  */
 
 namespace Illuminate\Broadcasting;
 
-use ReflectionClass;
-use ReflectionProperty;
-use Illuminate\Support\Arr;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Broadcasting\Broadcaster;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Broadcasting\Broadcaster;
+use Illuminate\Support\Arr;
+use ReflectionClass;
+use ReflectionProperty;
 
 class BroadcastEvent implements ShouldQueue
 {
@@ -26,8 +26,24 @@ class BroadcastEvent implements ShouldQueue
     public $event;
 
     /**
+     * The number of times the job may be attempted.
+	 * 尝试次数
+     *
+     * @var int
+     */
+    public $tries;
+
+    /**
+     * The number of seconds the job can run before timing out.
+	 * 超时秒数
+     *
+     * @var int
+     */
+    public $timeout;
+
+    /**
      * Create a new job handler instance.
-	 * 创建一个新的作业处理程序实例
+	 * 创建新的实例
      *
      * @param  mixed  $event
      * @return void
@@ -35,11 +51,13 @@ class BroadcastEvent implements ShouldQueue
     public function __construct($event)
     {
         $this->event = $event;
+        $this->tries = property_exists($event, 'tries') ? $event->tries : null;
+        $this->timeout = property_exists($event, 'timeout') ? $event->timeout : null;
     }
 
     /**
      * Handle the queued job.
-	 * 处理排队作业
+	 * 处理队列任务
      *
      * @param  \Illuminate\Contracts\Broadcasting\Broadcaster  $broadcaster
      * @return void
@@ -57,7 +75,7 @@ class BroadcastEvent implements ShouldQueue
 
     /**
      * Get the payload for the given event.
-	 * 获取给定事件的有效负载
+	 * 得到事件的负载
      *
      * @param  mixed  $event
      * @return array
@@ -83,7 +101,7 @@ class BroadcastEvent implements ShouldQueue
 
     /**
      * Format the given value for a property.
-	 * 为属性设置给定值的格式
+	 * 格式化给定属性值
      *
      * @param  mixed  $value
      * @return mixed
@@ -99,7 +117,7 @@ class BroadcastEvent implements ShouldQueue
 
     /**
      * Get the display name for the queued job.
-	 * 获取排队作业的显示名称
+	 * 得到队列任务的显示名称
      *
      * @return string
      */
@@ -110,7 +128,7 @@ class BroadcastEvent implements ShouldQueue
 
     /**
      * Prepare the instance for cloning.
-	 * 为克隆准备实例
+	 * 克隆实例做准备
      *
      * @return void
      */

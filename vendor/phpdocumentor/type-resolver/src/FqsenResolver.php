@@ -1,7 +1,4 @@
 <?php
-/**
- * phpDocumentor，反射，Fqsen分解器
- */
 
 declare(strict_types=1);
 

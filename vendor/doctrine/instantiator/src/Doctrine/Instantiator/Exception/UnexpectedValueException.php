@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，实例化器，异常，意外值异常
+ * Doctrine，偏转器，异常，意外值异常
  */
 
 namespace Doctrine\Instantiator\Exception;
@@ -13,7 +13,6 @@ use function sprintf;
 
 /**
  * Exception for given parameters causing invalid/unexpected state on instantiation
- * 为给定参数导致实例化无效/意外状态的异常
  */
 class UnexpectedValueException extends BaseUnexpectedValueException implements ExceptionInterface
 {

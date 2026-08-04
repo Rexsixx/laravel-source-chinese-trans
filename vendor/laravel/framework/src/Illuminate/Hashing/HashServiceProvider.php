@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，哈希算法，哈希服务提供商
+ * 哈希，哈希服务提供者
  */
 
 namespace Illuminate\Hashing;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Support\ServiceProvider;
 
 class HashServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -29,7 +29,7 @@ class HashServiceProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Get the services provided by the provider.
-	 * 获取提供者提供的服务
+	 * 得到服务提供者
      *
      * @return array
      */

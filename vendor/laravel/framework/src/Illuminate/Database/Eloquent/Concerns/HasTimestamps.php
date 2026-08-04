@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，问题，有时间戳
+ * 数据库，Eloquent有时间戳
  */
 
 namespace Illuminate\Database\Eloquent\Concerns;
@@ -11,7 +11,7 @@ trait HasTimestamps
 {
     /**
      * Indicates if the model should be timestamped.
-	 * 指示是否应该对模型进行时间戳
+	 * 指明是否应该对模型进行时间戳
      *
      * @var bool
      */
@@ -19,7 +19,7 @@ trait HasTimestamps
 
     /**
      * Update the model's update timestamp.
-	 * 更新模型的更新时间戳
+	 * 更新模型更新时间戳
      *
      * @return bool
      */
@@ -44,47 +44,50 @@ trait HasTimestamps
     {
         $time = $this->freshTimestamp();
 
-        if (! is_null(static::UPDATED_AT) && ! $this->isDirty(static::UPDATED_AT)) {
+        $updatedAtColumn = $this->getUpdatedAtColumn();
+
+        if (! is_null($updatedAtColumn) && ! $this->isDirty($updatedAtColumn)) {
             $this->setUpdatedAt($time);
         }
 
-        if (! $this->exists && ! is_null(static::CREATED_AT) &&
-            ! $this->isDirty(static::CREATED_AT)) {
+        $createdAtColumn = $this->getCreatedAtColumn();
+
+        if (! $this->exists && ! is_null($createdAtColumn) && ! $this->isDirty($createdAtColumn)) {
             $this->setCreatedAt($time);
         }
     }
 
     /**
      * Set the value of the "created at" attribute.
-	 * 设置“created at”属性的值
+	 * 设置"created at"属性值
      *
      * @param  mixed  $value
      * @return $this
      */
     public function setCreatedAt($value)
     {
-        $this->{static::CREATED_AT} = $value;
+        $this->{$this->getCreatedAtColumn()} = $value;
 
         return $this;
     }
 
     /**
      * Set the value of the "updated at" attribute.
-	 * 设置“更新时间”属性的值
+	 * 设置"updated at"属性值
      *
      * @param  mixed  $value
      * @return $this
      */
     public function setUpdatedAt($value)
     {
-        $this->{static::UPDATED_AT} = $value;
+        $this->{$this->getUpdatedAtColumn()} = $value;
 
         return $this;
     }
 
     /**
      * Get a fresh timestamp for the model.
-	 * 为模型获取一个新的时间戳
+	 * 得到一个新的时间戳为模型
      *
      * @return \Illuminate\Support\Carbon
      */
@@ -95,7 +98,7 @@ trait HasTimestamps
 
     /**
      * Get a fresh timestamp for the model.
-	 * 为模型获取一个新的时间戳
+	 * 得到一个新的时间戳为模型
      *
      * @return string
      */
@@ -117,9 +120,9 @@ trait HasTimestamps
 
     /**
      * Get the name of the "created at" column.
-	 * 获取“创建位置”列的名称
+	 * 得到"updated at"列的名称
      *
-     * @return string
+     * @return string|null
      */
     public function getCreatedAtColumn()
     {
@@ -128,12 +131,34 @@ trait HasTimestamps
 
     /**
      * Get the name of the "updated at" column.
-	 * 获取“更新时间”列的名称
+	 * 得到"updated at"列的名称
      *
-     * @return string
+     * @return string|null
      */
     public function getUpdatedAtColumn()
     {
         return static::UPDATED_AT;
+    }
+
+    /**
+     * Get the fully qualified "created at" column.
+	 * 得到完全限定的"created at"列
+     *
+     * @return string
+     */
+    public function getQualifiedCreatedAtColumn()
+    {
+        return $this->qualifyColumn($this->getCreatedAtColumn());
+    }
+
+    /**
+     * Get the fully qualified "updated at" column.
+	 * 得到完全限定的"updated at"列
+     *
+     * @return string
+     */
+    public function getQualifiedUpdatedAtColumn()
+    {
+        return $this->qualifyColumn($this->getUpdatedAtColumn());
     }
 }

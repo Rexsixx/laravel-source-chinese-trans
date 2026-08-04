@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，分析器，Profiler
- */
 
 /*
  * This file is part of the Symfony package.
@@ -25,7 +22,6 @@ use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * Profiler.
- * 分析器
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -51,7 +47,6 @@ class Profiler implements ResetInterface
 
     /**
      * Disables the profiler.
-	 * 使分析者无效
      */
     public function disable()
     {
@@ -148,7 +143,7 @@ class Profiler implements ResetInterface
      *
      * @return Profile|null A Profile instance or null if the profiler is disabled
      */
-    public function collect(Request $request, Response $response/* , \Throwable $exception = null */)
+    public function collect(Request $request, Response $response/*, \Throwable $exception = null*/)
     {
         $exception = 2 < \func_num_args() ? func_get_arg(2) : null;
 

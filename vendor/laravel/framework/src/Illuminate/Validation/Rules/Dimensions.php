@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，验证，规则，尺寸规格
+ * 验证，维度
  */
 
 namespace Illuminate\Validation\Rules;
@@ -17,9 +17,9 @@ class Dimensions
 
     /**
      * Create a new dimensions rule instance.
-	 * 创建一个新的维度规则实例
+	 * 创建新的维度规则实例
      *
-     * @param  array  $constraints;
+     * @param  array  $constraints
      * @return void
      */
     public function __construct(array $constraints = [])
@@ -29,7 +29,7 @@ class Dimensions
 
     /**
      * Set the "width" constraint.
-	 * 设置“宽度”约束
+	 * 设置"宽度"约束
      *
      * @param  int  $value
      * @return $this
@@ -43,7 +43,7 @@ class Dimensions
 
     /**
      * Set the "height" constraint.
-	 * 设置“高度”约束
+	 * 设置"高度"约束
      *
      * @param  int  $value
      * @return $this
@@ -57,7 +57,7 @@ class Dimensions
 
     /**
      * Set the "min width" constraint.
-	 * 设置“最小宽度”约束
+	 * 设置"最小宽度"约束
      *
      * @param  int  $value
      * @return $this
@@ -71,7 +71,7 @@ class Dimensions
 
     /**
      * Set the "min height" constraint.
-	 * 设置“最小高度”约束
+	 * 设置"最小高度"约束
      *
      * @param  int  $value
      * @return $this
@@ -85,7 +85,7 @@ class Dimensions
 
     /**
      * Set the "max width" constraint.
-	 * 设置“最大宽度”约束
+	 * 设置"最大宽度"约束
      *
      * @param  int  $value
      * @return $this
@@ -99,7 +99,7 @@ class Dimensions
 
     /**
      * Set the "max height" constraint.
-	 * 设置“最大高度”约束
+	 * 设置"最大高度"约束
      *
      * @param  int  $value
      * @return $this
@@ -113,7 +113,7 @@ class Dimensions
 
     /**
      * Set the "ratio" constraint.
-	 * 设置“比率”约束
+	 * 设置"比率"约束
      *
      * @param  float  $value
      * @return $this

@@ -1,21 +1,22 @@
 <?php
 /**
- * Illuminate，数据库，Postgres 连接
+ * 数据库，Postgres连接
  */
 
 namespace Illuminate\Database;
 
-use Illuminate\Database\Schema\PostgresBuilder;
 use Doctrine\DBAL\Driver\PDOPgSql\Driver as DoctrineDriver;
-use Illuminate\Database\Query\Processors\PostgresProcessor;
 use Illuminate\Database\Query\Grammars\PostgresGrammar as QueryGrammar;
+use Illuminate\Database\Query\Processors\PostgresProcessor;
 use Illuminate\Database\Schema\Grammars\PostgresGrammar as SchemaGrammar;
+use Illuminate\Database\Schema\PostgresBuilder;
+use LogicException;
 
 class PostgresConnection extends Connection
 {
     /**
      * Get the default query grammar instance.
-	 * 获取默认查询语法实例
+	 * 设置默认查询语法实例
      *
      * @return \Illuminate\Database\Query\Grammars\PostgresGrammar
      */
@@ -26,7 +27,7 @@ class PostgresConnection extends Connection
 
     /**
      * Get a schema builder instance for the connection.
-	 * 获取连接的架构构建器实例
+	 * 得到连接的架构构建器实例
      *
      * @return \Illuminate\Database\Schema\PostgresBuilder
      */
@@ -41,7 +42,7 @@ class PostgresConnection extends Connection
 
     /**
      * Get the default schema grammar instance.
-	 * 获取默认模式语法实例
+	 * 得到默认模式语法实例
      *
      * @return \Illuminate\Database\Schema\Grammars\PostgresGrammar
      */
@@ -52,7 +53,7 @@ class PostgresConnection extends Connection
 
     /**
      * Get the default post processor instance.
-	 * 获取默认的后处理器实例
+	 * 得到默认请求进程实例
      *
      * @return \Illuminate\Database\Query\Processors\PostgresProcessor
      */
@@ -63,12 +64,19 @@ class PostgresConnection extends Connection
 
     /**
      * Get the Doctrine DBAL driver.
-	 * 获取Doctrine DBAL驱动程序
+	 * 得到Doctrine DBAL驱动
      *
      * @return \Doctrine\DBAL\Driver\PDOPgSql\Driver
      */
     protected function getDoctrineDriver()
     {
+        if (! class_exists(DoctrineDriver::class)) {
+            throw new LogicException(
+                'Laravel v6 is only compatible with doctrine/dbal 2, in order to use this feature you must require the package "doctrine/dbal:^2.6".'
+            );
+			//Laravel v6仅与doctrin/dbal 2兼容，要使用此功能，您必须需要包"doctrin/dbal:^2.6".
+        }
+
         return new DoctrineDriver;
     }
 }

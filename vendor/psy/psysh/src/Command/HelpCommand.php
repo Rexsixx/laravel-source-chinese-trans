@@ -1,9 +1,12 @@
 <?php
+/**
+ * Psy，命令，辅助命令
+ */
 
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2018 Justin Hileman
+ * (c) 2012-2022 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,6 +14,7 @@
 
 namespace Psy\Command;
 
+use Psy\Output\ShellOutput;
 use Symfony\Component\Console\Helper\TableHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,7 +49,7 @@ class HelpCommand extends Command
      *
      * @param Command $command
      */
-    public function setCommand($command)
+    public function setCommand(Command $command)
     {
         $this->command = $command;
     }
@@ -86,13 +90,19 @@ class HelpCommand extends Command
                 ]);
             }
 
-            $output->startPaging();
+            if ($output instanceof ShellOutput) {
+                $output->startPaging();
+            }
+
             if ($table instanceof TableHelper) {
                 $table->render($output);
             } else {
                 $table->render();
             }
-            $output->stopPaging();
+
+            if ($output instanceof ShellOutput) {
+                $output->stopPaging();
+            }
         }
 
         return 0;

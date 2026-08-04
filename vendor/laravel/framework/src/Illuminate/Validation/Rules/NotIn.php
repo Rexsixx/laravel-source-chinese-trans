@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，验证，规则，Not In
+ * 验证，Not IN
  */
 
 namespace Illuminate\Validation\Rules;
@@ -9,13 +9,13 @@ class NotIn
 {
     /**
      * The name of the rule.
-	 * 规则的名称
+	 * 规则名
      */
     protected $rule = 'not_in';
 
     /**
      * The accepted values.
-	 * 接受的值
+	 * 可接受值
      *
      * @var array
      */
@@ -23,7 +23,7 @@ class NotIn
 
     /**
      * Create a new "not in" rule instance.
-	 * 创建一个新的“不在”规则实例
+	 * 创建新的规则实例
      *
      * @param  array  $values
      * @return void
@@ -35,7 +35,7 @@ class NotIn
 
     /**
      * Convert the rule to a validation string.
-	 * 将规则转换为验证字符串
+	 * 转换规则为验证字符串
      *
      * @return string
      */

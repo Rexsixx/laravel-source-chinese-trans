@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，可选择的
+ * 支持，可选项
  */
 
 namespace Illuminate\Support;
@@ -16,7 +16,7 @@ class Optional implements ArrayAccess
 
     /**
      * The underlying object.
-	 * 基础对象
+	 * 底层对象
      *
      * @var mixed
      */
@@ -24,7 +24,7 @@ class Optional implements ArrayAccess
 
     /**
      * Create a new optional instance.
-	 * 创建一个新的可选实例
+	 * 创建新的选项实例
      *
      * @param  mixed  $value
      * @return void
@@ -82,7 +82,7 @@ class Optional implements ArrayAccess
 
     /**
      * Get an item at a given offset.
-	 * 获取给定偏移量处的项
+	 * 得到项在给定偏移量处
      *
      * @param  mixed  $key
      * @return mixed
@@ -94,7 +94,7 @@ class Optional implements ArrayAccess
 
     /**
      * Set the item at a given offset.
-	 * 在给定的偏移量处设置项
+	 * 设置项在给定的偏移量处
      *
      * @param  mixed  $key
      * @param  mixed  $value
@@ -109,7 +109,7 @@ class Optional implements ArrayAccess
 
     /**
      * Unset the item at a given offset.
-	 * 在给定的偏移量处取消项的设置
+	 * 取消项的设置在给定的偏移量
      *
      * @param  string  $key
      * @return void
@@ -123,7 +123,7 @@ class Optional implements ArrayAccess
 
     /**
      * Dynamically pass a method to the underlying object.
-	 * 动态地将方法传递给底层对象
+	 * 动态地传递方法给底层对象
      *
      * @param  string  $method
      * @param  array  $parameters

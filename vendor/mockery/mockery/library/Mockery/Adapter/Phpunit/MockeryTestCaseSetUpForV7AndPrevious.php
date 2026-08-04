@@ -1,9 +1,5 @@
 <?php
 /**
- * Mockery，适配器，Php单元，MockeryTestCaseSetUpForV7AndPrevious
- */
-
-/**
  * Mockery
  *
  * LICENSE

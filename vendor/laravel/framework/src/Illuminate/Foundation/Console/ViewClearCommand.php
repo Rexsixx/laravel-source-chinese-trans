@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，基础，控制台，视图清除命令
+ * 基础，视图清除命令
  */
 
 namespace Illuminate\Foundation\Console;
 
-use RuntimeException;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use RuntimeException;
 
 class ViewClearCommand extends Command
 {
@@ -37,7 +37,7 @@ class ViewClearCommand extends Command
 
     /**
      * Create a new config clear command instance.
-	 * 创建新的config clear命令实例
+	 * 创建新的配置清除命令实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void
@@ -51,7 +51,7 @@ class ViewClearCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      *

@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Mime，数据头，标题接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\Mime\Header;
 
 /**
  * A MIME Header.
- * 一个MIME头。
  *
  * @author Chris Corbyn
  */
@@ -24,7 +20,6 @@ interface HeaderInterface
 {
     /**
      * Sets the body.
-	 * 设置主体。
      *
      * The type depends on the Header concrete class.
      *

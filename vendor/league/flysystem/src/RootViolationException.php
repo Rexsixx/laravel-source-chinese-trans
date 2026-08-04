@@ -1,13 +1,13 @@
 <?php
 /**
- * League，Flysystem，根验证异常
+ * League，Flysystem，根违规异常
  */
 
 namespace League\Flysystem;
 
 use LogicException;
 
-class RootViolationException extends LogicException implements FilesystemException
+class RootViolationException extends LogicException
 {
     //
 }

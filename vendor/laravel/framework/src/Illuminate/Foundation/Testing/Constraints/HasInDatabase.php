@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，约束条件，在数据库中
+ * 基础，在数据库中
  */
 
 namespace Illuminate\Foundation\Testing\Constraints;
@@ -36,7 +36,7 @@ class HasInDatabase extends Constraint
 
     /**
      * Create a new constraint instance.
-	 * 创建一个新的约束实例
+	 * 创建新的约束实例
      *
      * @param  \Illuminate\Database\Connection  $database
      * @param  array  $data
@@ -63,7 +63,7 @@ class HasInDatabase extends Constraint
 
     /**
      * Get the description of the failure.
-	 * 获取故障的描述
+	 * 得到失败描述
      *
      * @param  string  $table
      * @return string
@@ -78,23 +78,36 @@ class HasInDatabase extends Constraint
 
     /**
      * Get additional info about the records found in the database table.
-	 * 获取关于在数据库表中找到的记录的其他信息
+	 * 得到关于在数据库表中找到的记录的其他信息
      *
      * @param  string  $table
      * @return string
      */
     protected function getAdditionalInfo($table)
     {
-        $results = $this->database->table($table)->get();
+        $query = $this->database->table($table);
 
-        if ($results->isEmpty()) {
-            return 'The table is empty';
+        $similarResults = $query->where(
+            array_key_first($this->data),
+            $this->data[array_key_first($this->data)]
+        )->limit($this->show)->get();
+
+        if ($similarResults->isNotEmpty()) {
+            $description = 'Found similar results: '.json_encode($similarResults, JSON_PRETTY_PRINT);
+        } else {
+            $query = $this->database->table($table);
+
+            $results = $query->limit($this->show)->get();
+
+            if ($results->isEmpty()) {
+                return 'The table is empty.';
+            }
+
+            $description = 'Found: '.json_encode($results, JSON_PRETTY_PRINT);
         }
 
-        $description = 'Found: '.json_encode($results->take($this->show), JSON_PRETTY_PRINT);
-
-        if ($results->count() > $this->show) {
-            $description .= sprintf(' and %s others', $results->count() - $this->show);
+        if ($query->count() > $this->show) {
+            $description .= sprintf(' and %s others', $query->count() - $this->show);
         }
 
         return $description;
@@ -102,7 +115,7 @@ class HasInDatabase extends Constraint
 
     /**
      * Get a string representation of the object.
-	 * 获取对象的字符串表示形式
+	 * 得到对象的字符串表示形式
      *
      * @param  int  $options
      * @return string

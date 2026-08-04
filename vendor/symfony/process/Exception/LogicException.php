@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，过程，异常，逻辑异常
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\Process\Exception;
 
 /**
  * LogicException for the Process Component.
- * 流程组件的LogicException。
  *
  * @author Romain Neutron <imprec@gmail.com>
  */

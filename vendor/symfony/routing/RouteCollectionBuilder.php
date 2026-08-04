@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，路由收集器构建者
- */
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +17,6 @@ use Symfony\Component\Config\Resource\ResourceInterface;
 
 /**
  * Helps add and import routes into a RouteCollection.
- * 帮助添加和导入路由。
  *
  * @author Ryan Weaver <ryan@knpuniversity.com>
  */
@@ -49,7 +45,6 @@ class RouteCollectionBuilder
 
     /**
      * Import an external routing resource and returns the RouteCollectionBuilder.
-	 * 导入外部路由资源并返回RouteCollectionBuilder。
      *
      *     $routes->import('blog.yml', '/blog');
      *
@@ -91,7 +86,6 @@ class RouteCollectionBuilder
 
     /**
      * Adds a route and returns it for future modification.
-	 * 添加一条路线,并返回它来进行未来的修改。
      *
      * @param string      $path       The route path
      * @param string      $controller The route's controller

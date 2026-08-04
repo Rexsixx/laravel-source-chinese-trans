@@ -60,7 +60,6 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Cast the current instance into the given class.
-	 * 将当前的实例放入给定的类中
      *
      * @param string $className The $className::instance() method will be called to cast the current object.
      *
@@ -81,7 +80,6 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Create a CarbonTimeZone from mixed input.
-	 * 从混合输入创建一个碳时区
      *
      * @param DateTimeZone|string|int|null $object     original value to get CarbonTimeZone from it.
      * @param DateTimeZone|string|int|null $objectDump dump of the object for error messages.
@@ -119,7 +117,6 @@ class CarbonTimeZone extends DateTimeZone
 
     /**
      * Returns abbreviated name of the current timezone according to DST setting.
-	 * 根据DST设置返回当前时区的缩写名
      *
      * @param bool $dst
      *
@@ -161,7 +158,7 @@ class CarbonTimeZone extends DateTimeZone
      *
      * @return string
      */
-    public function toOffsetName(?DateTimeInterface $date = null)
+    public function toOffsetName(DateTimeInterface $date = null)
     {
         return static::getOffsetNameFromMinuteOffset(
             $this->getOffset($date ?: Carbon::now($this)) / 60
@@ -175,7 +172,7 @@ class CarbonTimeZone extends DateTimeZone
      *
      * @return CarbonTimeZone
      */
-    public function toOffsetTimeZone(?DateTimeInterface $date = null)
+    public function toOffsetTimeZone(DateTimeInterface $date = null)
     {
         return new static($this->toOffsetName($date));
     }
@@ -191,7 +188,7 @@ class CarbonTimeZone extends DateTimeZone
      *
      * @return string|false
      */
-    public function toRegionName(?DateTimeInterface $date = null, $isDst = 1)
+    public function toRegionName(DateTimeInterface $date = null, $isDst = 1)
     {
         $name = $this->getName();
         $firstChar = substr($name, 0, 1);
@@ -233,7 +230,7 @@ class CarbonTimeZone extends DateTimeZone
      *
      * @return CarbonTimeZone|false
      */
-    public function toRegionTimeZone(?DateTimeInterface $date = null)
+    public function toRegionTimeZone(DateTimeInterface $date = null)
     {
         $tz = $this->toRegionName($date);
 
@@ -256,18 +253,6 @@ class CarbonTimeZone extends DateTimeZone
     public function __toString()
     {
         return $this->getName();
-    }
-
-    /**
-     * Return the type number:
-     *
-     * Type 1; A UTC offset, such as -0300
-     * Type 2; A timezone abbreviation, such as GMT
-     * Type 3: A timezone identifier, such as Europe/London
-     */
-    public function getType(): int
-    {
-        return preg_match('/"timezone_type";i:(\d)/', serialize($this), $match) ? (int) $match[1] : 3;
     }
 
     /**

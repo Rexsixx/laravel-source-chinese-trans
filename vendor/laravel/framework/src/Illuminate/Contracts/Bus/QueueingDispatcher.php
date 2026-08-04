@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，总线，排队调度程序
+ * 契约，总线队列调度接口
  */
 
 namespace Illuminate\Contracts\Bus;
@@ -9,7 +9,7 @@ interface QueueingDispatcher extends Dispatcher
 {
     /**
      * Dispatch a command to its appropriate handler behind a queue.
-	 * 将命令分派到队列后面相应的处理程序
+	 * 分派命令到队列后面的相应处理程序
      *
      * @param  mixed  $command
      * @return mixed

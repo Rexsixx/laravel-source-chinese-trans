@@ -1,7 +1,4 @@
 <?php
-/**
- * NunoMaduro，碰撞，监听器
- */
 
 /**
  * This file is part of Collision.

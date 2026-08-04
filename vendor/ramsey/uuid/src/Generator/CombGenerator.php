@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，转化器，Comb 生成器
+ * Ramsey，Uuid，供应者，Comb 发生器
  */
 
 /**

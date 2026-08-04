@@ -1,9 +1,11 @@
 <?php
 /**
- * Illuminate，验证，规则，如果需要
+ * 验证，是否必须
  */
 
 namespace Illuminate\Validation\Rules;
+
+use InvalidArgumentException;
 
 class RequiredIf
 {
@@ -17,19 +19,23 @@ class RequiredIf
 
     /**
      * Create a new required validation rule based on a condition.
-	 * 根据条件创建新的所需验证规则
+	 * 创建新的所需验证规则根据条件
      *
      * @param  callable|bool  $condition
      * @return void
      */
     public function __construct($condition)
     {
-        $this->condition = $condition;
+        if (! is_string($condition)) {
+            $this->condition = $condition;
+        } else {
+            throw new InvalidArgumentException('The provided condition must be a callable or boolean.');
+        }
     }
 
     /**
      * Convert the rule to a validation string.
-	 * 将规则转换为验证字符串
+	 * 转换规则为验证字符串
      *
      * @return string
      */

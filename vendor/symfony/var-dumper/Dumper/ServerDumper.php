@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，转储，服务器转储器
+ * Symfony，组件，Var Dumper，转储，服务转储
  */
 
 /*
@@ -20,7 +20,6 @@ use Symfony\Component\VarDumper\Server\Connection;
 
 /**
  * ServerDumper forwards serialized Data clones to a server.
- * ServerDumper转发将数据克隆交付给服务器。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */

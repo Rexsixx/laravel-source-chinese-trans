@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，支持，高阶集合代理
+ * 支持，高阶集合代理
  */
 
 namespace Illuminate\Support;
 
 /**
- * @mixin \Illuminate\Support\Collection
+ * @mixin \Illuminate\Support\Enumerable
  */
 class HigherOrderCollectionProxy
 {
@@ -14,7 +14,7 @@ class HigherOrderCollectionProxy
      * The collection being operated on.
 	 * 正在操作的集合
      *
-     * @var \Illuminate\Support\Collection
+     * @var \Illuminate\Support\Enumerable
      */
     protected $collection;
 
@@ -28,13 +28,13 @@ class HigherOrderCollectionProxy
 
     /**
      * Create a new proxy instance.
-	 * 创建一个新的代理实例
+	 * 创建新的代码实例
      *
-     * @param  \Illuminate\Support\Collection  $collection
+     * @param  \Illuminate\Support\Enumerable  $collection
      * @param  string  $method
      * @return void
      */
-    public function __construct(Collection $collection, $method)
+    public function __construct(Enumerable $collection, $method)
     {
         $this->method = $method;
         $this->collection = $collection;

@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，基础，测试，问题，与异常处理交互
+ * 基础，与异常处理交互
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;
 
 use Exception;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -15,7 +15,7 @@ trait InteractsWithExceptionHandling
 {
     /**
      * The original exception handler.
-	 * 原始异常处理程序
+	 * 原始异常处理
      *
      * @var \Illuminate\Contracts\Debug\ExceptionHandler|null
      */
@@ -72,13 +72,13 @@ trait InteractsWithExceptionHandling
             $this->originalExceptionHandler = app(ExceptionHandler::class);
         }
 
-        $this->app->instance(ExceptionHandler::class, new class($this->originalExceptionHandler, $except) implements ExceptionHandler {
+        $this->app->instance(ExceptionHandler::class, new class($this->originalExceptionHandler, $except) implements ExceptionHandler
+        {
             protected $except;
             protected $originalHandler;
 
             /**
              * Create a new class instance.
-			 * 创建一个新的类实例
              *
              * @param  \Illuminate\Contracts\Debug\ExceptionHandler  $originalHandler
              * @param  array  $except
@@ -91,11 +91,12 @@ trait InteractsWithExceptionHandling
             }
 
             /**
-             * Report the given exception.
-			 * 报告给定的异常
+             * Report or log an exception.
              *
              * @param  \Exception  $e
              * @return void
+             *
+             * @throws \Exception
              */
             public function report(Exception $e)
             {
@@ -104,7 +105,6 @@ trait InteractsWithExceptionHandling
 
             /**
              * Determine if the exception should be reported.
-			 * 确定是否应该报告异常
              *
              * @param  \Exception  $e
              * @return bool
@@ -115,35 +115,33 @@ trait InteractsWithExceptionHandling
             }
 
             /**
-             * Render the given exception.
-			 * 呈现给定的异常
+             * Render an exception into an HTTP response.
              *
              * @param  \Illuminate\Http\Request  $request
              * @param  \Exception  $e
-             * @return mixed
+             * @return \Symfony\Component\HttpFoundation\Response
              *
-             * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\Exception
+             * @throws \Exception
              */
             public function render($request, Exception $e)
             {
-                if ($e instanceof NotFoundHttpException) {
-                    throw new NotFoundHttpException(
-                        "{$request->method()} {$request->url()}", null, $e->getCode()
-                    );
-                }
-
                 foreach ($this->except as $class) {
                     if ($e instanceof $class) {
                         return $this->originalHandler->render($request, $e);
                     }
                 }
 
+                if ($e instanceof NotFoundHttpException) {
+                    throw new NotFoundHttpException(
+                        "{$request->method()} {$request->url()}", null, $e->getCode()
+                    );
+                }
+
                 throw $e;
             }
 
             /**
-             * Render the exception for the console.
-			 * 为控制台呈现异常
+             * Render an exception to the console.
              *
              * @param  \Symfony\Component\Console\Output\OutputInterface  $output
              * @param  \Exception  $e

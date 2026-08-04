@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，连接器，MySql 连接器
+ * 数据库，MySql连接器
  */
 
 namespace Illuminate\Database\Connectors;
@@ -25,8 +25,8 @@ class MySqlConnector extends Connector implements ConnectorInterface
         // We need to grab the PDO options that should be used while making the brand
         // new connection instance. The PDO options control various aspects of the
         // connection's behavior, and some might be specified by the developers.
-		// 我们需要获取在创建全新连接实例时应使用的 PDO 选项。
-		// PDO（程序数据对象）选项用于控制连接行为的各个方面，其中一些选项可能是由开发人员指定的。
+		// 我们需要获取在创建全新连接实例时应该使用的PDO选项。
+		// PDO选项控制连接行为的各个方面，其中一些可能由开发人员指定。
         $connection = $this->createConnection($dsn, $config, $options);
 
         if (! empty($config['database'])) {
@@ -38,8 +38,9 @@ class MySqlConnector extends Connector implements ConnectorInterface
         // Next, we will check to see if a timezone has been specified in this config
         // and if it has we will issue a statement to modify the timezone with the
         // database. Setting this DB timezone is an optional configuration item.
-		// 接下来，我们将检查此配置中是否已指定时区，如果已指定，则会向数据库发出一条指令来修改时区。
-		// 设置这个DB时区是一个可选的配置项。
+		// 接下来，我们将检查此配置中是否指定了时区，
+		// 如果指定了我们将发出一条语句，使用数据库修改时区。
+		// 设置此数据库时区是一个可选配置项。
         $this->configureTimezone($connection, $config);
 
         $this->setModes($connection, $config);
@@ -95,12 +96,11 @@ class MySqlConnector extends Connector implements ConnectorInterface
 
     /**
      * Create a DSN string from a configuration.
-	 * 从配置中创建DSN字符串。
+	 * 从配置中创建DSN字符串
      *
      * Chooses socket or host/port based on the 'unix_socket' config value.
-	 * 根据‘unix_socket’配置值选择套接字或主机/端口。
      *
-     * @param  array   $config
+     * @param  array  $config
      * @return string
      */
     protected function getDsn(array $config)
@@ -124,7 +124,7 @@ class MySqlConnector extends Connector implements ConnectorInterface
 
     /**
      * Get the DSN string for a socket configuration.
-	 * 获取套接字配置的DSN字符串
+	 * 得到套接字配置的DSN字符串
      *
      * @param  array  $config
      * @return string
@@ -136,7 +136,7 @@ class MySqlConnector extends Connector implements ConnectorInterface
 
     /**
      * Get the DSN string for a host / port configuration.
-	 * 获取主机/端口配置的DSN字符串
+	 * 得到主机/端口配置的DSN字符串
      *
      * @param  array  $config
      * @return string
@@ -173,7 +173,7 @@ class MySqlConnector extends Connector implements ConnectorInterface
 
     /**
      * Set the custom modes on the connection.
-	 * 在连接上设置自定义模式
+	 * 设置自定义模式
      *
      * @param  \PDO  $connection
      * @param  array  $config
@@ -188,7 +188,7 @@ class MySqlConnector extends Connector implements ConnectorInterface
 
     /**
      * Get the query to enable strict mode.
-	 * 获取查询以启用严格模式
+	 * 得到查询以启用严格模式
      *
      * @param  \PDO  $connection
      * @return string

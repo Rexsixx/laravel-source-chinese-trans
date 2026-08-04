@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，命令，Xliff Lint命令
+ * Symfony，组件，翻译，依赖注入，XliffLint 命令
  */
 
 /*
@@ -26,7 +26,6 @@ use Symfony\Component\Translation\Util\XliffUtils;
 
 /**
  * Validates XLIFF files syntax and outputs encountered errors.
- * 验证XLIFF文件的语法和输出遇到错误。
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  * @author Robin Chalas <robin.chalas@gmail.com>

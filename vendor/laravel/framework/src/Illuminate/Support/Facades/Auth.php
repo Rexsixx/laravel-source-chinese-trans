@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，支持，门面，Auth
+ * 支持，门面认证
  */
 
 namespace Illuminate\Support\Facades;
 
 /**
- * @method static mixed guard(string|null $name = null)
+ * @method static \Illuminate\Contracts\Auth\Guard|\Illuminate\Contracts\Auth\StatefulGuard guard(string|null $name = null)
  * @method static void shouldUse(string $name);
  * @method static bool check()
  * @method static bool guest()
@@ -22,7 +22,7 @@ namespace Illuminate\Support\Facades;
  * @method static bool viaRemember()
  * @method static void logout()
  * @method static \Symfony\Component\HttpFoundation\Response|null onceBasic(string $field = 'email',array $extraConditions = [])
- * @method static null|bool logoutOtherDevices(string $password, string $attribute = 'password')
+ * @method static bool|null logoutOtherDevices(string $password, string $attribute = 'password')
  * @method static \Illuminate\Contracts\Auth\UserProvider|null createUserProvider(string $provider = null)
  * @method static \Illuminate\Auth\AuthManager extend(string $driver, \Closure $callback)
  * @method static \Illuminate\Auth\AuthManager provider(string $name, \Closure $callback)
@@ -36,7 +36,7 @@ class Auth extends Facade
 {
     /**
      * Get the registered name of the component.
-	 * 获取组件的注册名称
+	 * 得到组件注册名
      *
      * @return string
      */

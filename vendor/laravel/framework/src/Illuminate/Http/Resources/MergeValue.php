@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，Http，资源，合并值
+ * Http，合并值
  */
 
 namespace Illuminate\Http\Resources;
 
-use JsonSerializable;
 use Illuminate\Support\Collection;
+use JsonSerializable;
 
 class MergeValue
 {

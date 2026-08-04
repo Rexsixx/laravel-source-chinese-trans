@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，路由选择，重定向器
+ * 路由，路由重定向
  */
 
 namespace Illuminate\Routing;
 
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Traits\Macroable;
 use Illuminate\Session\Store as SessionStore;
+use Illuminate\Support\Traits\Macroable;
 
 class Redirector
 {
@@ -23,7 +23,7 @@ class Redirector
 
     /**
      * The session store instance.
-	 * 会话存储实例
+	 * session存储实例
      *
      * @var \Illuminate\Session\Store
      */
@@ -31,7 +31,7 @@ class Redirector
 
     /**
      * Create a new Redirector instance.
-	 * 创建一个新的Redirector实例
+	 * 创建新的重定向实例
      *
      * @param  \Illuminate\Routing\UrlGenerator  $generator
      * @return void
@@ -43,7 +43,7 @@ class Redirector
 
     /**
      * Create a new redirect response to the "home" route.
-	 * 创建一个指向“home”路由的新重定向响应
+	 * 创建一个指向home路由的新重定向响应
      *
      * @param  int  $status
      * @return \Illuminate\Http\RedirectResponse
@@ -55,9 +55,9 @@ class Redirector
 
     /**
      * Create a new redirect response to the previous location.
-	 * 创建到前一个位置的新重定向响应
+	 * 创建新的跳转响应至前一个位置
      *
-     * @param  int    $status
+     * @param  int  $status
      * @param  array  $headers
      * @param  mixed  $fallback
      * @return \Illuminate\Http\RedirectResponse
@@ -69,9 +69,9 @@ class Redirector
 
     /**
      * Create a new redirect response to the current URI.
-	 * 创建对当前URI的新重定向响应
+	 * 创建新的跳转响应至当前URI
      *
-     * @param  int    $status
+     * @param  int  $status
      * @param  array  $headers
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -82,12 +82,12 @@ class Redirector
 
     /**
      * Create a new redirect response, while putting the current URL in the session.
-	 * 创建一个新的重定向响应，同时将当前URL放在会话中。
+	 * 创建新的重定向响应，同时将当前URL放在会话中
      *
      * @param  string  $path
-     * @param  int     $status
-     * @param  array   $headers
-     * @param  bool|null    $secure
+     * @param  int  $status
+     * @param  array  $headers
+     * @param  bool|null  $secure
      * @return \Illuminate\Http\RedirectResponse
      */
     public function guest($path, $status = 302, $headers = [], $secure = null)
@@ -110,9 +110,9 @@ class Redirector
 	 * 创建到先前预期位置的新重定向响应
      *
      * @param  string  $default
-     * @param  int     $status
-     * @param  array   $headers
-     * @param  bool|null    $secure
+     * @param  int  $status
+     * @param  array  $headers
+     * @param  bool|null  $secure
      * @return \Illuminate\Http\RedirectResponse
      */
     public function intended($default = '/', $status = 302, $headers = [], $secure = null)
@@ -139,9 +139,9 @@ class Redirector
 	 * 创建对给定路径的新重定向响应
      *
      * @param  string  $path
-     * @param  int     $status
-     * @param  array   $headers
-     * @param  bool|null    $secure
+     * @param  int  $status
+     * @param  array  $headers
+     * @param  bool|null  $secure
      * @return \Illuminate\Http\RedirectResponse
      */
     public function to($path, $status = 302, $headers = [], $secure = null)
@@ -151,11 +151,11 @@ class Redirector
 
     /**
      * Create a new redirect response to an external URL (no validation).
-	 * 创建一个指向外部URL的新重定向响应（不需要验证）
+	 * 创建一个指向外部URL的新重定向响应(不需要验证)
      *
      * @param  string  $path
-     * @param  int     $status
-     * @param  array   $headers
+     * @param  int  $status
+     * @param  array  $headers
      * @return \Illuminate\Http\RedirectResponse
      */
     public function away($path, $status = 302, $headers = [])
@@ -165,11 +165,11 @@ class Redirector
 
     /**
      * Create a new redirect response to the given HTTPS path.
-	 * 为给定的HTTPS路径创建一个新的重定向响应
+	 * 创建新的重定向响应为给定的HTTPS路径
      *
      * @param  string  $path
-     * @param  int     $status
-     * @param  array   $headers
+     * @param  int  $status
+     * @param  array  $headers
      * @return \Illuminate\Http\RedirectResponse
      */
     public function secure($path, $status = 302, $headers = [])
@@ -179,12 +179,12 @@ class Redirector
 
     /**
      * Create a new redirect response to a named route.
-	 * 为命名路由创建一个新的重定向响应
+	 * 创建新的重定向响应为路由
      *
      * @param  string  $route
-     * @param  mixed   $parameters
-     * @param  int     $status
-     * @param  array   $headers
+     * @param  mixed  $parameters
+     * @param  int  $status
+     * @param  array  $headers
      * @return \Illuminate\Http\RedirectResponse
      */
     public function route($route, $parameters = [], $status = 302, $headers = [])
@@ -194,12 +194,12 @@ class Redirector
 
     /**
      * Create a new redirect response to a controller action.
-	 * 为控制器动作创建一个新的重定向响应
+	 * 创建新的重定向响应为控制器动作
      *
      * @param  string|array  $action
-     * @param  mixed   $parameters
-     * @param  int     $status
-     * @param  array   $headers
+     * @param  mixed  $parameters
+     * @param  int  $status
+     * @param  array  $headers
      * @return \Illuminate\Http\RedirectResponse
      */
     public function action($action, $parameters = [], $status = 302, $headers = [])
@@ -209,11 +209,11 @@ class Redirector
 
     /**
      * Create a new redirect response.
-	 * 创建一个新的重定向响应
+	 * 创建新的跳转响应
      *
      * @param  string  $path
-     * @param  int     $status
-     * @param  array   $headers
+     * @param  int  $status
+     * @param  array  $headers
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function createRedirect($path, $status, $headers)
@@ -229,7 +229,7 @@ class Redirector
 
     /**
      * Get the URL generator instance.
-	 * 获取URL生成器实例
+	 * 得到URL生成器实例
      *
      * @return \Illuminate\Routing\UrlGenerator
      */
@@ -240,7 +240,7 @@ class Redirector
 
     /**
      * Set the active session store.
-	 * 设置活动会话存储
+	 * 设置活动会话
      *
      * @param  \Illuminate\Session\Store  $session
      * @return void

@@ -1,7 +1,4 @@
 <?php
-/**
- * NunoMaduro，碰撞，适配器，Laravel，检查员
- */
 
 /**
  * This file is part of Collision.

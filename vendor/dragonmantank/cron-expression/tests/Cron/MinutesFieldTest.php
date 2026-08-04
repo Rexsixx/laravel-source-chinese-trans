@@ -1,7 +1,4 @@
 <?php
-/**
- * Cron，测试，分字段测试
- */
 
 namespace Cron\Tests;
 
@@ -62,7 +59,6 @@ class MinutesFieldTest extends TestCase
 
     /**
      * Various bad syntaxes that are reported to work, but shouldn't.
-	 * 各种错误的语法，据说可以工作，但不应该。
      *
      * @author Chris Tankersley
      * @since 2017-08-18

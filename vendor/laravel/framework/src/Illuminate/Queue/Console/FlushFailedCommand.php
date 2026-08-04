@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，控制台，刷新失败命令
+ * 队列，控制台，刷新失败命令
  */
 
 namespace Illuminate\Queue\Console;
@@ -27,7 +27,7 @@ class FlushFailedCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */

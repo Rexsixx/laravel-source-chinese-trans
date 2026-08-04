@@ -1,19 +1,19 @@
 <?php
 /**
- * Illuminate，数据库，控制台，迁移，状态命令
+ * 数据库，迁移状态命令
  */
 
 namespace Illuminate\Database\Console\Migrations;
 
-use Illuminate\Support\Collection;
 use Illuminate\Database\Migrations\Migrator;
+use Illuminate\Support\Collection;
 use Symfony\Component\Console\Input\InputOption;
 
 class StatusCommand extends BaseCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名。
+	 * 控制台命令名
      *
      * @var string
      */
@@ -39,7 +39,7 @@ class StatusCommand extends BaseCommand
      * Create a new migration rollback command instance.
 	 * 创建新的迁移回滚命令实例
      *
-     * @param  \Illuminate\Database\Migrations\Migrator $migrator
+     * @param  \Illuminate\Database\Migrations\Migrator  $migrator
      * @return void
      */
     public function __construct(Migrator $migrator)
@@ -51,7 +51,7 @@ class StatusCommand extends BaseCommand
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -60,7 +60,9 @@ class StatusCommand extends BaseCommand
         $this->migrator->setConnection($this->option('database'));
 
         if (! $this->migrator->repositoryExists()) {
-            return $this->error('Migration table not found.');
+            $this->error('Migration table not found.');
+
+            return 1;
         }
 
         $ran = $this->migrator->getRepository()->getRan();
@@ -76,7 +78,7 @@ class StatusCommand extends BaseCommand
 
     /**
      * Get the status for the given ran migrations.
-	 * 获取给定运行迁移的状态
+	 * 得到运行迁移的状态
      *
      * @param  array  $ran
      * @param  array  $batches
@@ -96,7 +98,7 @@ class StatusCommand extends BaseCommand
 
     /**
      * Get an array of all of the migration files.
-	 * 获取所有迁移文件的数组
+	 * 得到所有迁移文件的数组
      *
      * @return array
      */
@@ -107,7 +109,7 @@ class StatusCommand extends BaseCommand
 
     /**
      * Get the console command options.
-	 * 获取控制台命令选项
+	 * 得到控制台命令选项
      *
      * @return array
      */

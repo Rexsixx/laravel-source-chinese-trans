@@ -7,7 +7,6 @@ namespace Dotenv\Exception;
 
 /**
  * This is the exception interface.
- * 这是异常接口。
  */
 interface ExceptionInterface
 {

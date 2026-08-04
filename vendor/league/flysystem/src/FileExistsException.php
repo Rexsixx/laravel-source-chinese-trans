@@ -16,7 +16,6 @@ class FileExistsException extends Exception
 
     /**
      * Constructor.
-	 * 构造函数
      *
      * @param string        $path
      * @param int           $code

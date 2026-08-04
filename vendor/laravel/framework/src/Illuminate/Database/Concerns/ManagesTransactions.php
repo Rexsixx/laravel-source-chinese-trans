@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，问题，管理事务
+ * 数据库，管理事务特征
  */
 
 namespace Illuminate\Database\Concerns;
@@ -29,28 +29,51 @@ trait ManagesTransactions
             // We'll simply execute the given callback within a try / catch block and if we
             // catch any exception we can rollback this transaction so that none of this
             // gets actually persisted to a database or stored in a permanent fashion.
-			// 我们将直接在“try/catch”块中执行给定的回调函数，如果捕获到任何异常，
-			// 我们就可以回滚这个事务，这样就不会有任何内容实际被保存到数据库中或以永久性的方式存储起来。
+			// 我们只需在try/catch块中执行给定的回调，
+			// 如果我们捕获任何异常，我们可以回滚此事务，
+			// 实际持久化到数据库或以永久方式存储
             try {
-                return tap($callback($this), function () {
-                    $this->commit();
-                });
+                $callbackResult = $callback($this);
             }
 
             // If we catch an exception we'll rollback this transaction and try again if we
             // are not out of attempts. If we are out of attempts we will just throw the
             // exception back out and let the developer handle an uncaught exceptions.
-			// 如果出现异常情况，我们将回滚当前事务，并在尝试次数未用完的情况下重新进行操作。
-			// 如果尝试次数用完了，我们就会直接将异常抛出，让开发人员来处理未捕获的异常情况。
+			// 如果我们捕获到异常，我们将回滚此事务并再次尝试。
+			// 如果我们没有尝试，我们会抛出异常，并让开发人员处理未捕获的异常。
             catch (Exception $e) {
                 $this->handleTransactionException(
                     $e, $currentAttempt, $attempts
                 );
+
+                continue;
             } catch (Throwable $e) {
                 $this->rollBack();
 
                 throw $e;
             }
+
+            try {
+                if ($this->transactions == 1) {
+                    $this->getPdo()->commit();
+                }
+
+                $this->transactions = max(0, $this->transactions - 1);
+            } catch (Exception $e) {
+                $commitFailed = true;
+
+                $this->handleCommitTransactionException(
+                    $e, $currentAttempt, $attempts
+                );
+
+                continue;
+            }
+
+            if (! isset($commitFailed)) {
+                $this->fireConnectionEvent('committed');
+            }
+
+            return $callbackResult;
         }
     }
 
@@ -70,9 +93,9 @@ trait ManagesTransactions
         // On a deadlock, MySQL rolls back the entire transaction so we can't just
         // retry the query. We have to throw this exception all the way out and
         // let the developer handle it in another way. We will decrement too.
-		// 在出现死锁的情况下，MySQL 会回滚整个事务，因此我们不能简单地重试该查询。
-		// 我们必须彻底摒弃这种异常情况，让开发者以另一种方式来处理它。我们也会进行相应的减法操作。
-        if ($this->causedByDeadlock($e) &&
+		// 在死锁时，MySQL会回滚整个事务，因此我们不能只是重试查询。
+		// 我们必须彻底抛出这个异常，让开发人员以另一种方式处理它。
+        if ($this->causedByConcurrencyError($e) &&
             $this->transactions > 1) {
             $this->transactions--;
 
@@ -82,11 +105,11 @@ trait ManagesTransactions
         // If there was an exception we will rollback this transaction and then we
         // can check if we have exceeded the maximum attempt count for this and
         // if we haven't we will return and try this query again in our loop.
-		// 如果存在异常情况，我们将回滚此次交易，然后我们可以检查是否已超过此次的最大尝试次数，
-		// 如果没有超过，我们将返回并再次在循环中执行此查询。
+		// 如果发生异常，我们将回滚此事务，然后可以检查我们是否已超过此操作的最大浓度次数，
+		// 如果没有，我们将返回并在循环中再次尝试此查询。
         $this->rollBack();
 
-        if ($this->causedByDeadlock($e) &&
+        if ($this->causedByConcurrencyError($e) &&
             $currentAttempt < $maxAttempts) {
             return;
         }
@@ -120,6 +143,8 @@ trait ManagesTransactions
     protected function createTransaction()
     {
         if ($this->transactions == 0) {
+            $this->reconnectIfMissingConnection();
+
             try {
                 $this->getPdo()->beginTransaction();
             } catch (Exception $e) {
@@ -157,7 +182,7 @@ trait ManagesTransactions
         if ($this->causedByLostConnection($e)) {
             $this->reconnect();
 
-            $this->pdo->beginTransaction();
+            $this->getPdo()->beginTransaction();
         } else {
             throw $e;
         }
@@ -181,6 +206,31 @@ trait ManagesTransactions
     }
 
     /**
+     * Handle an exception encountered when committing a transaction.
+	 * 处理提交事务时遇到的异常
+     *
+     * @param  \Exception  $e
+     * @param  int  $currentAttempt
+     * @param  int  $maxAttempts
+     * @return void
+     */
+    protected function handleCommitTransactionException($e, $currentAttempt, $maxAttempts)
+    {
+        $this->transactions = max(0, $this->transactions - 1);
+
+        if ($this->causedByConcurrencyError($e) &&
+            $currentAttempt < $maxAttempts) {
+            return;
+        }
+
+        if ($this->causedByLostConnection($e)) {
+            $this->transactions = 0;
+        }
+
+        throw $e;
+    }
+
+    /**
      * Rollback the active database transaction.
 	 * 回滚活动数据库事务
      *
@@ -194,9 +244,9 @@ trait ManagesTransactions
         // We allow developers to rollback to a certain transaction level. We will verify
         // that this given transaction level is valid before attempting to rollback to
         // that level. If it's not we will just return out and not attempt anything.
-		// 我们允许开发人员回滚到某个事务级别。
-		// 在尝试回滚到该交易级别之前，我们将先确认此给定的交易级别是有效的。
-		// 如果不是，我们就返回，不做任何尝试。
+		// 我们允许开发人员回滚到某个事件级别。
+		// 在尝试回滚到该级别之前，我们将验证此给定的事务级别是否有效。
+		// 如果不是这样，我们只会回来，不尝试任何事情。
         $toLevel = is_null($toLevel)
                     ? $this->transactions - 1
                     : $toLevel;
@@ -208,8 +258,8 @@ trait ManagesTransactions
         // Next, we will actually perform this rollback within this database and fire the
         // rollback event. We will also set the current transaction level to the given
         // level that was passed into this method so it will be right from here out.
-		// 接下来，我们将在这个数据库中实际执行此次回滚操作，并触发回滚事件。
-		// 我们还将将当前的事务级别设置为给定的级别,它被传递到这个方法中,因此它将是正确的。
+		// 接下来，我们将在此数据库中实际执行回滚操作，并触发回滚事件。
+		// 我们还将把当前交易级别设置为给定的传递到此方法中的级别，因此它将从这里开始。
         try {
             $this->performRollBack($toLevel);
         } catch (Exception $e) {
@@ -223,7 +273,7 @@ trait ManagesTransactions
 
     /**
      * Perform a rollback within the database.
-	 * 在数据库中执行回滚
+	 * 执行回滚在数据库中
      *
      * @param  int  $toLevel
      * @return void
@@ -241,9 +291,10 @@ trait ManagesTransactions
 
     /**
      * Handle an exception from a rollback.
-	 * 处理回滚的异常
+	 * 处理异常从回滚
      *
-     * @param \Exception  $e
+     * @param  \Exception  $e
+     * @return void
      *
      * @throws \Exception
      */
@@ -258,7 +309,7 @@ trait ManagesTransactions
 
     /**
      * Get the number of active transactions.
-	 * 获取活动事务的数量
+	 * 得到活动事务的数量
      *
      * @return int
      */

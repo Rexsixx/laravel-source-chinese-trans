@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，电子邮件验证器，验证，错误，RFC警告
+ * Egulias，电子邮件验证器，确认，错误，RFC 警告
  */
 
 namespace Egulias\EmailValidator\Validation\Error;

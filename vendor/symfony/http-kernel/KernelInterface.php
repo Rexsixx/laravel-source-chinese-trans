@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，内核接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -90,7 +87,7 @@ interface KernelInterface extends HttpKernelInterface
      * @throws \InvalidArgumentException if the file cannot be found or the name is not valid
      * @throws \RuntimeException         if the name contains invalid/unsafe characters
      */
-    public function locateResource($name/* , $dir = null, $first = true */);
+    public function locateResource($name/*, $dir = null, $first = true*/);
 
     /**
      * Gets the name of the kernel.

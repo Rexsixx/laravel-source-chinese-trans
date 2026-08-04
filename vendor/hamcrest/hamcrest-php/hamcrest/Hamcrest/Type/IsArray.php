@@ -12,7 +12,6 @@ use Hamcrest\Core\IsTypeOf;
 
 /**
  * Tests whether the value is an array.
- * 测试值是否为数组。
  */
 class IsArray extends IsTypeOf
 {

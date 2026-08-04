@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，转储，抽象转储器
+ * Symfony，组件，Var Dumper，转储，抽象转储
  */
 
 /*
@@ -49,7 +49,7 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
     public function __construct($output = null, string $charset = null, int $flags = 0)
     {
         $this->flags = $flags;
-        $this->setCharset($charset ?: \ini_get('php.output_encoding') ?: \ini_get('default_charset') ?: 'UTF-8');
+        $this->setCharset($charset ?: ini_get('php.output_encoding') ?: ini_get('default_charset') ?: 'UTF-8');
         $this->decimalPoint = \PHP_VERSION_ID >= 80000 ? '.' : localeconv()['decimal_point'];
         $this->setOutput($output ?: static::$defaultOutput);
         if (!$output && \is_string(static::$defaultOutput)) {
@@ -59,7 +59,6 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
 
     /**
      * Sets the output destination of the dumps.
-	 * 设置转储的输出目的地
      *
      * @param callable|resource|string $output A line dumper callable, an opened stream or an output path
      *

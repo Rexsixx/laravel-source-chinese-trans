@@ -1,21 +1,21 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，有多个
+ * 数据库，Eloquent经历了许多磨难
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class HasManyThrough extends Relation
 {
     /**
      * The "through" parent model instance.
-	 * “through”父模型实例
+	 * 父模型实例
      *
      * @var \Illuminate\Database\Eloquent\Model
      */
@@ -23,7 +23,7 @@ class HasManyThrough extends Relation
 
     /**
      * The far parent model instance.
-	 * 远父模型实例
+	 * 父模型实例
      *
      * @var \Illuminate\Database\Eloquent\Model
      */
@@ -39,7 +39,7 @@ class HasManyThrough extends Relation
 
     /**
      * The far key on the relationship.
-	 * 关系上的远键
+	 * 关系上的far键
      *
      * @var string
      */
@@ -47,7 +47,6 @@ class HasManyThrough extends Relation
 
     /**
      * The local key on the relationship.
-	 * 关系上的本地键
      *
      * @var string
      */
@@ -71,7 +70,7 @@ class HasManyThrough extends Relation
 
     /**
      * Create a new has many through relationship instance.
-	 * 创建一个新的有多个通过关系实例
+	 * 创建新的有多个通过关系实例
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Model  $farParent
@@ -96,7 +95,7 @@ class HasManyThrough extends Relation
 
     /**
      * Set the base constraints on the relation query.
-	 * 在关系查询上设置基本约束
+	 * 设置基本约束在关系查询上
      *
      * @return void
      */
@@ -113,7 +112,7 @@ class HasManyThrough extends Relation
 
     /**
      * Set the join clause on the query.
-	 * 在查询上设置连接子句
+	 * 设置连接子句在查询上
      *
      * @param  \Illuminate\Database\Eloquent\Builder|null  $query
      * @return void
@@ -133,7 +132,7 @@ class HasManyThrough extends Relation
 
     /**
      * Get the fully qualified parent key name.
-	 * 获取完全限定父键名
+	 * 得到完全限定父键名
      *
      * @return string
      */
@@ -144,7 +143,7 @@ class HasManyThrough extends Relation
 
     /**
      * Determine whether "through" parent of the relation uses Soft Deletes.
-	 * 确定关系的“through”父级是否使用软删除
+	 * 确定关系的"through"父级是否使用软删除
      *
      * @return bool
      */
@@ -155,7 +154,7 @@ class HasManyThrough extends Relation
 
     /**
      * Set the constraints for an eager load of the relation.
-	 * 为关系的即时加载设置约束
+	 * 设置约束为关系的即时加载
      *
      * @param  array  $models
      * @return void
@@ -173,7 +172,7 @@ class HasManyThrough extends Relation
      * Initialize the relation on a set of models.
 	 * 初始化一组模型上的关系
      *
-     * @param  array   $models
+     * @param  array  $models
      * @param  string  $relation
      * @return array
      */
@@ -190,7 +189,7 @@ class HasManyThrough extends Relation
      * Match the eagerly loaded results to their parents.
 	 * 将急切加载的结果与他们的父母匹配
      *
-     * @param  array   $models
+     * @param  array  $models
      * @param  \Illuminate\Database\Eloquent\Collection  $results
      * @param  string  $relation
      * @return array
@@ -202,8 +201,8 @@ class HasManyThrough extends Relation
         // Once we have the dictionary we can simply spin through the parent models to
         // link them up with their children using the keyed dictionary to make the
         // matching very convenient and easy work. Then we'll just return them.
-		// 一旦我们有了这个字典，我们就可以直接遍历父模型，利用带键的字典将它们与子模型关联起来，
-		// 这样就能使匹配操作变得非常便捷和容易。然后我们就只需将它们返回即可。
+		// 一旦我们有了字典，我们就可以简单地旋转父模型，使用键控字典将它们与它们的孩子联系起来，
+		// 使匹配变得非常方便和容易。然后我们只需返回它们。
         foreach ($models as $model) {
             if (isset($dictionary[$key = $model->getAttribute($this->localKey)])) {
                 $model->setRelation(
@@ -217,7 +216,7 @@ class HasManyThrough extends Relation
 
     /**
      * Build model dictionary keyed by the relation's foreign key.
-	 * 构建以关系的外键为键的模型字典
+	 * 构建模型字典以关系的外键为键
      *
      * @param  \Illuminate\Database\Eloquent\Collection  $results
      * @return array
@@ -229,7 +228,8 @@ class HasManyThrough extends Relation
         // First we will create a dictionary of models keyed by the foreign key of the
         // relationship as this will allow us to quickly access all of the related
         // models without having to do nested looping which will be quite slow.
-		// 首先，我们将创建一个基于关系中外键的模型字典，这样我们就能快速访问所有相关模型，而无需进行嵌套循环操作，因为后者会非常耗时。
+		// 首先，我们将创建一个由关系的外键键控的模型字典，
+		// 因为这将使我们能够快速访问所有相关的模型，而不必进行嵌套循环，这将非常缓慢。
         foreach ($results as $result) {
             $dictionary[$result->laravel_through_key][] = $result;
         }
@@ -239,7 +239,7 @@ class HasManyThrough extends Relation
 
     /**
      * Get the first related model record matching the attributes or instantiate it.
-	 * 获取与属性匹配的第一个相关模型记录，或者实例化它。
+	 * 得到与属性匹配的第一个相关模型记录，或者实例化它。
      *
      * @param  array  $attributes
      * @return \Illuminate\Database\Eloquent\Model
@@ -271,10 +271,25 @@ class HasManyThrough extends Relation
     }
 
     /**
+     * Add a basic where clause to the query, and return the first result.
+	 * 向查询添加一个基本的where子句，并返回第一个结果。
+     *
+     * @param  \Closure|string|array  $column
+     * @param  mixed  $operator
+     * @param  mixed  $value
+     * @param  string  $boolean
+     * @return \Illuminate\Database\Eloquent\Model|static
+     */
+    public function firstWhere($column, $operator = null, $value = null, $boolean = 'and')
+    {
+        return $this->where($column, $operator, $value, $boolean)->first();
+    }
+
+    /**
      * Execute the query and get the first related model.
 	 * 执行查询并获得第一个相关模型
      *
-     * @param  array   $columns
+     * @param  array  $columns
      * @return mixed
      */
     public function first($columns = ['*'])
@@ -304,7 +319,7 @@ class HasManyThrough extends Relation
 
     /**
      * Find a related model by its primary key.
-	 * 根据主键查找相关模型
+	 * 查找相关模型根据主键
      *
      * @param  mixed  $id
      * @param  array  $columns
@@ -323,7 +338,7 @@ class HasManyThrough extends Relation
 
     /**
      * Find multiple related models by their primary keys.
-	 * 通过主键查找多个相关模型
+	 * 查找多个相关模型通过主键
      *
      * @param  mixed  $ids
      * @param  array  $columns
@@ -380,7 +395,7 @@ class HasManyThrough extends Relation
 
     /**
      * Execute the query as a "select" statement.
-	 * 以“select”语句的形式执行查询
+	 * 执行查询以"select"语句的形式
      *
      * @param  array  $columns
      * @return \Illuminate\Database\Eloquent\Collection
@@ -394,8 +409,8 @@ class HasManyThrough extends Relation
         // If we actually found models we will also eager load any relationships that
         // have been specified as needing to be eager loaded. This will solve the
         // n + 1 query problem for the developer and also increase performance.
-		// 如果我们真的找到了相应的模型，那么我们还会自动加载那些已被指定需要进行“懒加载”的关系。
-		// 这将解决开发人员面临的“n + 1 查询”问题，并且还能提高性能。
+		// 如果我们真的找到了模型，我们也会渴望加载任何被指定为需要渴望加载的关系。
+		// 这将为开发人员解决n+1查询问题，并提高性能。
         if (count($models) > 0) {
             $models = $builder->eagerLoadRelations($models);
         }
@@ -405,9 +420,9 @@ class HasManyThrough extends Relation
 
     /**
      * Get a paginator for the "select" statement.
-	 * 获取“select”语句的分页器
+	 * 得到"select"语句的分页器
      *
-     * @param  int  $perPage
+     * @param  int|null  $perPage
      * @param  array  $columns
      * @param  string  $pageName
      * @param  int  $page
@@ -422,9 +437,9 @@ class HasManyThrough extends Relation
 
     /**
      * Paginate the given query into a simple paginator.
-	 * 将给定查询分页到一个简单的分页器中
+	 * 分页给定查询到一个简单的分页器中
      *
-     * @param  int  $perPage
+     * @param  int|null  $perPage
      * @param  array  $columns
      * @param  string  $pageName
      * @param  int|null  $page
@@ -439,7 +454,7 @@ class HasManyThrough extends Relation
 
     /**
      * Set the select clause for the relation query.
-	 * 为关系查询设置select子句
+	 * 设置select子句为关系查询
      *
      * @param  array  $columns
      * @return array
@@ -487,7 +502,7 @@ class HasManyThrough extends Relation
 
     /**
      * Get a generator for the given query.
-	 * 获取给定查询的生成器
+	 * 得到给定查询的生成器
      *
      * @return \Generator
      */
@@ -498,7 +513,7 @@ class HasManyThrough extends Relation
 
     /**
      * Execute a callback over each item while chunking.
-	 * 在分块时对每个项执行回调
+	 * 执行回调对每个项在分块时
      *
      * @param  callable  $callback
      * @param  int  $count
@@ -517,7 +532,7 @@ class HasManyThrough extends Relation
 
     /**
      * Prepare the query builder for query execution.
-	 * 为查询执行准备查询生成器
+	 * 准备查询生成器为查询执行
      *
      * @param  array  $columns
      * @return \Illuminate\Database\Eloquent\Builder
@@ -559,7 +574,7 @@ class HasManyThrough extends Relation
 
     /**
      * Add the constraints for a relationship query on the same table.
-	 * 为同一表上的关系查询添加约束
+	 * 添加约束为同一表上的关系查询
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
@@ -585,7 +600,7 @@ class HasManyThrough extends Relation
 
     /**
      * Add the constraints for a relationship query on the same table as the through parent.
-	 * 在与through父表相同的表上为关系查询添加约束
+	 * 添加约束在与through父表相同的表上为关系查询
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
@@ -609,7 +624,7 @@ class HasManyThrough extends Relation
 
     /**
      * Get a relationship join table hash.
-	 * 获取关系连接表散列
+	 * 得到关系连接表散列
      *
      * @return string
      */
@@ -620,7 +635,7 @@ class HasManyThrough extends Relation
 
     /**
      * Get the qualified foreign key on the related model.
-	 * 获取相关模型上的合格外键
+	 * 得到相关模型上的合格外键
      *
      * @return string
      */
@@ -631,7 +646,7 @@ class HasManyThrough extends Relation
 
     /**
      * Get the foreign key on the "through" model.
-	 * 获取“直通”模式上的外键
+	 * 得到“直通"模式"上的外键
      *
      * @return string
      */
@@ -642,7 +657,7 @@ class HasManyThrough extends Relation
 
     /**
      * Get the qualified foreign key on the "through" model.
-	 * 获取“through”模型上的合格外键
+	 * 得到"through"模型上的合格外键
      *
      * @return string
      */
@@ -653,7 +668,7 @@ class HasManyThrough extends Relation
 
     /**
      * Get the foreign key on the related model.
-	 * 获取相关模型上的外键
+	 * 得到相关模型上的外键
      *
      * @return string
      */
@@ -664,7 +679,7 @@ class HasManyThrough extends Relation
 
     /**
      * Get the qualified foreign key on the related model.
-	 * 获取相关模型上的合格外键
+	 * 得到相关模型上的合格外键
      *
      * @return string
      */
@@ -675,7 +690,7 @@ class HasManyThrough extends Relation
 
     /**
      * Get the local key on the far parent model.
-	 * 获取远父模型上的本地键
+	 * 得到远父模型上的本地键
      *
      * @return string
      */
@@ -686,7 +701,7 @@ class HasManyThrough extends Relation
 
     /**
      * Get the qualified local key on the far parent model.
-	 * 获取远父模型上的限定本地键
+	 * 得到远父模型上的限定本地键
      *
      * @return string
      */
@@ -697,7 +712,7 @@ class HasManyThrough extends Relation
 
     /**
      * Get the local key on the intermediary model.
-	 * 获取中介模型上的本地键
+	 * 得到中间模型上的本地键
      *
      * @return string
      */

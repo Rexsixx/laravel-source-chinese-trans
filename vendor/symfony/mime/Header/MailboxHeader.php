@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Mime，数据头，Mailbox标题
- */
 
 /*
  * This file is part of the Symfony package.

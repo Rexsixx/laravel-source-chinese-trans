@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，碎片，抽象的代理片段渲染器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -22,7 +19,6 @@ use Symfony\Component\HttpKernel\UriSigner;
 
 /**
  * Implements Surrogate rendering strategy.
- * 实现代理呈现策略。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -100,11 +96,9 @@ abstract class AbstractSurrogateFragmentRenderer extends RoutableFragmentRendere
     private function containsNonScalars(array $values): bool
     {
         foreach ($values as $value) {
-            if (\is_scalar($value) || null === $value) {
-                continue;
-            }
-
-            if (!\is_array($value) || $this->containsNonScalars($value)) {
+            if (\is_array($value)) {
+                return $this->containsNonScalars($value);
+            } elseif (!is_scalar($value) && null !== $value) {
                 return true;
             }
         }

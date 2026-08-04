@@ -1,19 +1,20 @@
 <?php
 /**
- * Illuminate，支持，测试，Fakes，通知 Fake
+ * 支持，通知伪造
  */
 
 namespace Illuminate\Support\Testing\Fakes;
 
-use Illuminate\Support\Str;
+use Exception;
+use Illuminate\Contracts\Notifications\Dispatcher as NotificationDispatcher;
+use Illuminate\Contracts\Notifications\Factory as NotificationFactory;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 use PHPUnit\Framework\Assert as PHPUnit;
-use Illuminate\Contracts\Translation\HasLocalePreference;
-use Illuminate\Contracts\Notifications\Factory as NotificationFactory;
-use Illuminate\Contracts\Notifications\Dispatcher as NotificationDispatcher;
 
-class NotificationFake implements NotificationFactory, NotificationDispatcher
+class NotificationFake implements NotificationDispatcher, NotificationFactory
 {
     use Macroable;
 
@@ -41,10 +42,16 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
      * @param  string  $notification
      * @param  callable|null  $callback
      * @return void
+     *
+     * @throws \Exception
      */
     public function assertSentTo($notifiable, $notification, $callback = null)
     {
         if (is_array($notifiable) || $notifiable instanceof Collection) {
+            if (count($notifiable) === 0) {
+                throw new Exception('No notifiable given.');
+            }
+
             foreach ($notifiable as $singleNotifiable) {
                 $this->assertSentTo($singleNotifiable, $notification, $callback);
             }
@@ -87,10 +94,16 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
      * @param  string  $notification
      * @param  callable|null  $callback
      * @return void
+     *
+     * @throws \Exception
      */
     public function assertNotSentTo($notifiable, $notification, $callback = null)
     {
         if (is_array($notifiable) || $notifiable instanceof Collection) {
+            if (count($notifiable) === 0) {
+                throw new Exception('No notifiable given.');
+            }
+
             foreach ($notifiable as $singleNotifiable) {
                 $this->assertNotSentTo($singleNotifiable, $notification, $callback);
             }
@@ -139,7 +152,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Get all of the notifications matching a truth-test callback.
-	 * 获取所有与true -test回调匹配的通知
+	 * 得到所有与true-test回调匹配的通知
      *
      * @param  mixed  $notifiable
      * @param  string  $notification
@@ -178,7 +191,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Get all of the notifications for a notifiable entity by type.
-	 * 按类型获取可通知实体的所有通知
+	 * 按类型得到可通知实体的所有通知
      *
      * @param  mixed  $notifiable
      * @param  string  $notification
@@ -191,7 +204,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Send the given notification to the given notifiable entities.
-	 * 将给定的通知发送到给定的可通知实体
+	 * 发送到给定的可通知实体将给定的通知
      *
      * @param  \Illuminate\Support\Collection|array|mixed  $notifiables
      * @param  mixed  $notification
@@ -237,7 +250,7 @@ class NotificationFake implements NotificationFactory, NotificationDispatcher
 
     /**
      * Get a channel instance by name.
-	 * 按名称获取通道实例
+	 * 得到通道实例按名称
      *
      * @param  string|null  $name
      * @return mixed

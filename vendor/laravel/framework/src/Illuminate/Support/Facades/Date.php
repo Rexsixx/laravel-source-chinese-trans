@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，Date
+ * 支持，门面日期
  */
 
 namespace Illuminate\Support\Facades;
@@ -78,6 +78,11 @@ use Illuminate\Support\DateFactory;
  * @method static string singularUnit(string $unit)
  * @method static \Illuminate\Support\Carbon today($tz = null)
  * @method static \Illuminate\Support\Carbon tomorrow($tz = null)
+ * @method static mixed use(mixed $handler)
+ * @method static void useCallable(callable $callable)
+ * @method static void useClass(string $class)
+ * @method static void useFactory(object $factory)
+ * @method static void useDefault()
  * @method static void useMonthsOverflow($monthsOverflow = true)
  * @method static \Illuminate\Support\Carbon useStrictMode($strictModeEnabled = true)
  * @method static void useYearsOverflow($yearsOverflow = true)
@@ -89,7 +94,7 @@ class Date extends Facade
 
     /**
      * Get the registered name of the component.
-	 * 获取组件的注册名称
+	 * 得到组件注册名
      *
      * @return string
      *

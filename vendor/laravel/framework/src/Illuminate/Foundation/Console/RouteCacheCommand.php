@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，基础，控制台，路由缓存命令
+ * 基础，路由缓存命令
  */
 
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Console\Kernel as ConsoleKernelContract;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Routing\RouteCollection;
-use Illuminate\Contracts\Console\Kernel as ConsoleKernelContract;
 
 class RouteCacheCommand extends Command
 {
@@ -52,7 +52,7 @@ class RouteCacheCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -79,7 +79,7 @@ class RouteCacheCommand extends Command
 
     /**
      * Boot a fresh copy of the application and get the routes.
-	 * 启动应用程序的新副本并获取路由
+	 * 启动应用程序的新副本并得到路由
      *
      * @return \Illuminate\Routing\RouteCollection
      */
@@ -93,7 +93,7 @@ class RouteCacheCommand extends Command
 
     /**
      * Get a fresh application instance.
-	 * 获取一个新的应用程序实例
+	 * 得到新的应用程序实例
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */

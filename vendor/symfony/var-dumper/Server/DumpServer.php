@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，服务，转储服务器
+ * Symfony，组件，Var Dumper，服务，转储服务
  */
 
 /*
@@ -59,7 +59,6 @@ class DumpServer
             $payload = @unserialize(base64_decode($message), ['allowed_classes' => [Data::class, Stub::class]]);
 
             // Impossible to decode the message, give up.
-			// 无法破译的信息，放弃吧。
             if (false === $payload) {
                 if ($this->logger) {
                     $this->logger->warning('Unable to decode a message from {clientId} client.', ['clientId' => $clientId]);

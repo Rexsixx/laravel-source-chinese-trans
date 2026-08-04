@@ -1,12 +1,12 @@
 <?php
 /**
- * App，供应商，认证服务提供商
+ * App，服务提供者，授权服务提供者
  */
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -22,7 +22,7 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Register any authentication / authorization services.
-	 * 注册任何身份验证/授权服务
+     * 注册任何身份验证/授权服务
      *
      * @return void
      */

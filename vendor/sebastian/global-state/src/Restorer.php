@@ -1,8 +1,4 @@
-<?php
-/**
- * SebastianBergmann，GlobalState，恢复器
- */
-
+<?php declare(strict_types=1);
 /*
  * This file is part of sebastian/global-state.
  *
@@ -11,28 +7,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
 namespace SebastianBergmann\GlobalState;
-
-use ReflectionProperty;
 
 /**
  * Restorer of snapshots of global state.
- * 全局国家的快照恢复器。
  */
 class Restorer
 {
     /**
      * Deletes function definitions that are not defined in a snapshot.
-	 * 删除未在快照中定义的函数定义
      *
      * @throws RuntimeException when the uopz_delete() function is not available
      *
-     * @see    https://github.com/krakjoe/uopz
+     * @see https://github.com/krakjoe/uopz
      */
-    public function restoreFunctions(Snapshot $snapshot)
+    public function restoreFunctions(Snapshot $snapshot): void
     {
         if (!\function_exists('uopz_delete')) {
             throw new RuntimeException('The uopz_delete() function is required for this operation');
@@ -47,9 +36,8 @@ class Restorer
 
     /**
      * Restores all global and super-global variables from a snapshot.
-	 * 从快照中恢复所有全局和超全局变量
      */
-    public function restoreGlobalVariables(Snapshot $snapshot)
+    public function restoreGlobalVariables(Snapshot $snapshot): void
     {
         $superGlobalArrays = $snapshot->superGlobalArrays();
 
@@ -60,7 +48,7 @@ class Restorer
         $globalVariables = $snapshot->globalVariables();
 
         foreach (\array_keys($GLOBALS) as $key) {
-            if ($key != 'GLOBALS' &&
+            if ($key !== 'GLOBALS' &&
                 !\in_array($key, $superGlobalArrays) &&
                 !$snapshot->blacklist()->isGlobalVariableBlacklisted($key)) {
                 if (\array_key_exists($key, $globalVariables)) {
@@ -75,7 +63,7 @@ class Restorer
     /**
      * Restores all static attributes in user-defined classes from this snapshot.
      */
-    public function restoreStaticAttributes(Snapshot $snapshot)
+    public function restoreStaticAttributes(Snapshot $snapshot): void
     {
         $current    = new Snapshot($snapshot->blacklist(), false, false, false, false, true, false, false, false, false);
         $newClasses = \array_diff($current->classes(), $snapshot->classes());
@@ -84,7 +72,7 @@ class Restorer
 
         foreach ($snapshot->staticAttributes() as $className => $staticAttributes) {
             foreach ($staticAttributes as $name => $value) {
-                $reflector = new ReflectionProperty($className, $name);
+                $reflector = new \ReflectionProperty($className, $name);
                 $reflector->setAccessible(true);
                 $reflector->setValue($value);
             }
@@ -118,7 +106,7 @@ class Restorer
     /**
      * Restores a super-global variable array from this snapshot.
      */
-    private function restoreSuperGlobalArray(Snapshot $snapshot, string $superGlobalArray)
+    private function restoreSuperGlobalArray(Snapshot $snapshot, string $superGlobalArray): void
     {
         $superGlobalVariables = $snapshot->superGlobalVariables();
 

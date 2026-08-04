@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，ORM，Spot，Populator
+ * Faker，ORM，Spot，填充器
  */
 
 namespace Faker\ORM\Spot;
@@ -9,7 +9,6 @@ use Spot\Locator;
 
 /**
  * Service class for populating a database using the Spot ORM.
- * 使用点ORM填充数据库的服务类。
  */
 class Populator
 {

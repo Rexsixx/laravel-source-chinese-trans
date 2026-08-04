@@ -12,7 +12,6 @@ use PhpOption\Option;
 
 /**
  * This is the loader class.
- * 这是加载器类。
  *
  * It's responsible for loading variables by reading a file from disk and:
  * - stripping comments beginning with a `#`,
@@ -40,7 +39,6 @@ class Loader
 
     /**
      * The environment variables instance.
-	 * 环境变量实例
      *
      * @var \Dotenv\Environment\VariablesInterface
      */
@@ -48,7 +46,6 @@ class Loader
 
     /**
      * The list of environment variables declared inside the 'env' file.
-	 * 在‘env’文件中声明的环境变量列表
      *
      * @var string[]
      */

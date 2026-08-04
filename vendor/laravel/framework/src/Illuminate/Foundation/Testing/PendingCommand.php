@@ -1,23 +1,24 @@
 <?php
 /**
- * Illuminate，基础，测试，待处理的命令
+ * 基础，等待中命令
  */
 
 namespace Illuminate\Foundation\Testing;
 
-use Mockery;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Contracts\Console\Kernel;
-use Symfony\Component\Console\Input\ArrayInput;
-use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Symfony\Component\Console\Output\BufferedOutput;
+use Mockery;
 use Mockery\Exception\NoMatchingExpectationException;
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\Output;
 
 class PendingCommand
 {
     /**
      * The test being run.
-	 * 正在运行的测试
+	 * 正进行测试
      *
      * @var \Illuminate\Foundation\Testing\TestCase
      */
@@ -25,7 +26,7 @@ class PendingCommand
 
     /**
      * The application instance.
-	 * 程序实例
+	 * 应用实例
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -33,7 +34,7 @@ class PendingCommand
 
     /**
      * The command to run.
-	 * 要运行的命令
+	 * 运行命令
      *
      * @var string
      */
@@ -57,7 +58,7 @@ class PendingCommand
 
     /**
      * Determine if command has executed.
-	 * 判断命令是否已执行
+	 * 定义是否命令已执行
      *
      * @var bool
      */
@@ -65,7 +66,7 @@ class PendingCommand
 
     /**
      * Create a new pending console command run.
-	 * 创建一个新的暂挂控制台命令运行
+	 * 创建新的的暂挂控制台命令运行
      *
      * @param  \PHPUnit\Framework\TestCase  $test
      * @param  \Illuminate\Contracts\Foundation\Application  $app
@@ -145,10 +146,10 @@ class PendingCommand
     {
         $this->hasExecuted = true;
 
-        $this->mockConsoleOutput();
+        $mock = $this->mockConsoleOutput();
 
         try {
-            $exitCode = $this->app[Kernel::class]->call($this->command, $this->parameters);
+            $exitCode = $this->app[Kernel::class]->call($this->command, $this->parameters, $mock);
         } catch (NoMatchingExpectationException $e) {
             if ($e->getMethodName() === 'askQuestion') {
                 $this->test->fail('Unexpected question "'.$e->getActualArguments()[0]->getQuestion().'" was asked.');
@@ -171,7 +172,7 @@ class PendingCommand
      * Mock the application's console output.
 	 * 模拟应用程序的控制台输出
      *
-     * @return void
+     * @return \Mockery\MockInterface
      */
     protected function mockConsoleOutput()
     {
@@ -196,11 +197,13 @@ class PendingCommand
         $this->app->bind(OutputStyle::class, function () use ($mock) {
             return $mock;
         });
+
+        return $mock;
     }
 
     /**
      * Create a mock for the buffered output.
-	 * 为缓冲的输出创建一个模拟
+	 * 创建一个模拟为缓冲的输出
      *
      * @return \Mockery\MockInterface
      */

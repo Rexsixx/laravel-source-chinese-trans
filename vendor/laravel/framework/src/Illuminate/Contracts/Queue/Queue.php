@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，队列，Queue
+ * 契约，队列接口
  */
 
 namespace Illuminate\Contracts\Queue;
@@ -9,7 +9,7 @@ interface Queue
 {
     /**
      * Get the size of the queue.
-	 * 获取队列的大小
+	 * 得到队列大小
      *
      * @param  string|null  $queue
      * @return int
@@ -18,10 +18,10 @@ interface Queue
 
     /**
      * Push a new job onto the queue.
-	 * 将新作业推送到队列中
+	 * 推入新作业入队列
      *
      * @param  string|object  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @param  string|null  $queue
      * @return mixed
      */
@@ -29,33 +29,33 @@ interface Queue
 
     /**
      * Push a new job onto the queue.
-	 * 将新作业推送到队列中
+	 * 推入新作业入队列
      *
      * @param  string  $queue
      * @param  string|object  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @return mixed
      */
     public function pushOn($queue, $job, $data = '');
 
     /**
      * Push a raw payload onto the queue.
-	 * 将原始有效负载推入队列
+	 * 推入原始有效负载至队列
      *
      * @param  string  $payload
      * @param  string|null  $queue
-     * @param  array   $options
+     * @param  array  $options
      * @return mixed
      */
     public function pushRaw($payload, $queue = null, array $options = []);
 
     /**
      * Push a new job onto the queue after a delay.
-	 * 在延迟后将新作业推入队列
+	 * 推入新作业至队列使用延迟
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string|object  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @param  string|null  $queue
      * @return mixed
      */
@@ -63,22 +63,22 @@ interface Queue
 
     /**
      * Push a new job onto the queue after a delay.
-	 * 在延迟后将新作业推入队列
+	 * 推入新任务至队列使用延迟
      *
      * @param  string  $queue
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string|object  $job
-     * @param  mixed   $data
+     * @param  mixed  $data
      * @return mixed
      */
     public function laterOn($queue, $delay, $job, $data = '');
 
     /**
      * Push an array of jobs onto the queue.
-	 * 将一组作业推入队列
+	 * 推入任务数组至队列
      *
-     * @param  array   $jobs
-     * @param  mixed   $data
+     * @param  array  $jobs
+     * @param  mixed  $data
      * @param  string|null  $queue
      * @return mixed
      */
@@ -86,7 +86,7 @@ interface Queue
 
     /**
      * Pop the next job off of the queue.
-	 * 将下一个作业从队列中弹出
+	 * 取出下一个任务从队列中
      *
      * @param  string  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
@@ -95,7 +95,7 @@ interface Queue
 
     /**
      * Get the connection name for the queue.
-	 * 获取队列的连接名称
+	 * 得到队列连接名
      *
      * @return string
      */
@@ -103,7 +103,7 @@ interface Queue
 
     /**
      * Set the connection name for the queue.
-	 * 设置队列的连接名称
+	 * 设置队列连接名
      *
      * @param  string  $name
      * @return $this

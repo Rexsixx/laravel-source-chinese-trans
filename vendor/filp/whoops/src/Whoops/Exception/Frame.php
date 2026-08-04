@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，异常，框架
+ * Whoops，异常，Frame
  */
 
 /**
@@ -35,6 +35,9 @@ class Frame implements Serializable
      */
     protected $application;
 
+    /**
+     * @param array[]
+     */
     public function __construct(array $frame)
     {
         $this->frame = $frame;

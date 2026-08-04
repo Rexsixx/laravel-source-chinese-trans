@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Css选择器，节点，选择节点
- */
 
 /*
  * This file is part of the Symfony package.
@@ -29,7 +26,7 @@ class SelectorNode extends AbstractNode
     private $tree;
     private $pseudoElement;
 
-    public function __construct(NodeInterface $tree, ?string $pseudoElement = null)
+    public function __construct(NodeInterface $tree, string $pseudoElement = null)
     {
         $this->tree = $tree;
         $this->pseudoElement = $pseudoElement ? strtolower($pseudoElement) : null;

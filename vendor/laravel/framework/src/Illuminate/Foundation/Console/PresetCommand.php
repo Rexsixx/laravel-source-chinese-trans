@@ -1,18 +1,18 @@
 <?php
 /**
- * Illuminate，基础，控制台，预设命令
+ * 基础，预设命令
  */
 
 namespace Illuminate\Foundation\Console;
 
-use InvalidArgumentException;
 use Illuminate\Console\Command;
+use InvalidArgumentException;
 
 class PresetCommand extends Command
 {
     /**
      * The console command signature.
-	 * 控制台命令签名
+	 & 控制台命令签名
      *
      * @var string
      */
@@ -30,7 +30,7 @@ class PresetCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      *
@@ -51,7 +51,7 @@ class PresetCommand extends Command
 
     /**
      * Install the "fresh" preset.
-	 * 安装“fresh”预设
+	 * 安装"fresh"预设
      *
      * @return void
      */
@@ -64,7 +64,7 @@ class PresetCommand extends Command
 
     /**
      * Install the "bootstrap" preset.
-	 * 安装“bootstrap”预设
+	 * 安装"bootstrap"预设
      *
      * @return void
      */
@@ -78,7 +78,7 @@ class PresetCommand extends Command
 
     /**
      * Install the "vue" preset.
-	 * 安装“vue”预设
+	 * 安装"vue"预设
      *
      * @return void
      */
@@ -92,7 +92,7 @@ class PresetCommand extends Command
 
     /**
      * Install the "react" preset.
-	 * 安装“react”预设
+	 * 安装"react"预设
      *
      * @return void
      */

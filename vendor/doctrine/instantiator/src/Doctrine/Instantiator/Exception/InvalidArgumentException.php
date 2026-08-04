@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，实例化器，异常，无效参数异常
+ * Doctrine，偏转器，异常，无效参数异常
  */
 
 namespace Doctrine\Instantiator\Exception;
@@ -14,7 +14,6 @@ use function trait_exists;
 
 /**
  * Exception for invalid arguments provided to the instantiator
- * 为实例化器提供的无效参数异常
  */
 class InvalidArgumentException extends BaseInvalidArgumentException implements ExceptionInterface
 {

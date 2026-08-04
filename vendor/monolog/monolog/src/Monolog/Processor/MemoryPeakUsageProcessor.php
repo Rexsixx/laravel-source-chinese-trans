@@ -1,7 +1,4 @@
-<?php
-/**
- * Monolog，处理器，内存峰值使用处理器
- */
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the Monolog package.
@@ -16,7 +13,6 @@ namespace Monolog\Processor;
 
 /**
  * Injects memory_get_peak_usage in all records
- * 在所有记录中注入memory_get_peak_use
  *
  * @see Monolog\Processor\MemoryProcessor::__construct() for options
  * @author Rob Jensen
@@ -24,15 +20,17 @@ namespace Monolog\Processor;
 class MemoryPeakUsageProcessor extends MemoryProcessor
 {
     /**
-     * @param  array $record
-     * @return array
+     * {@inheritDoc}
      */
-    public function __invoke(array $record)
+    public function __invoke(array $record): array
     {
-        $bytes = memory_get_peak_usage($this->realUsage);
-        $formatted = $this->formatBytes($bytes);
+        $usage = memory_get_peak_usage($this->realUsage);
 
-        $record['extra']['memory_peak_usage'] = $formatted;
+        if ($this->useFormatting) {
+            $usage = $this->formatBytes($usage);
+        }
+
+        $record['extra']['memory_peak_usage'] = $usage;
 
         return $record;
     }

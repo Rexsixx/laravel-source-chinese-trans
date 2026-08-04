@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，分页，长度感知分页器
+ * 契约，长分页接口
  */
 
 namespace Illuminate\Contracts\Pagination;
@@ -9,7 +9,7 @@ interface LengthAwarePaginator extends Paginator
 {
     /**
      * Create a range of pagination URLs.
-	 * 创建一系列分页url
+	 * 创建随机分页
      *
      * @param  int  $start
      * @param  int  $end
@@ -27,7 +27,7 @@ interface LengthAwarePaginator extends Paginator
 
     /**
      * Get the page number of the last available page.
-	 * 获取最后可用页面的页码
+	 * 得到最后可用页的页码
      *
      * @return int
      */

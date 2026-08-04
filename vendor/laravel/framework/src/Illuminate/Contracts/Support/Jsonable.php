@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，支持，可 JSON化的
+ * 契约，JSON接口
  */
 
 namespace Illuminate\Contracts\Support;
@@ -9,7 +9,7 @@ interface Jsonable
 {
     /**
      * Convert the object to its JSON representation.
-	 * 将对象转换为其JSON表示形式
+	 * 转换对象为JSON
      *
      * @param  int  $options
      * @return string

@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，复合期望
+ * Mockery，复合的期望
  */
 
 /**

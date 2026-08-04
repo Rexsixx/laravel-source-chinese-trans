@@ -1,9 +1,5 @@
 <?php
 /**
- * Ramsey，Uuid，编码解码器，Guid 编解码器
- */
-
-/**
  * This file is part of the ramsey/uuid library
  *
  * For the full copyright and license information, please view the LICENSE
@@ -23,7 +19,6 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * GuidStringCodec encodes and decodes globally unique identifiers (GUID)
- * 指导代码和解码全局惟一标识符(GUID)
  *
  * @link https://en.wikipedia.org/wiki/Globally_unique_identifier
  */

@@ -1,7 +1,4 @@
 <?php
-/**
- * NunoMaduro，碰撞，适配器，Php单元，监听器
- */
 
 /**
  * This file is part of Collision.

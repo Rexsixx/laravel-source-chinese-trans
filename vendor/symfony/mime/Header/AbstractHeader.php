@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Mime，数据头，抽象头
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Mime\Encoder\QpMimeHeaderEncoder;
 
 /**
  * An abstract base MIME Header.
- * 一个抽象的基础MIME头
  *
  * @author Chris Corbyn
  */
@@ -113,11 +109,6 @@ abstract class AbstractHeader implements HeaderInterface
                 }
                 $phraseStr = $this->encodeWords($header, $string, $usedLength);
             }
-        } elseif (str_contains($phraseStr, '(')) {
-            foreach (['\\', '"'] as $char) {
-                $phraseStr = str_replace($char, '\\'.$char, $phraseStr);
-            }
-            $phraseStr = '"'.$phraseStr.'"';
         }
 
         return $phraseStr;
@@ -184,20 +175,6 @@ abstract class AbstractHeader implements HeaderInterface
             $tokens[] = $encodedToken;
         }
 
-        foreach ($tokens as $i => $token) {
-            // whitespace(s) between 2 encoded tokens
-            if (
-                0 < $i
-                && isset($tokens[$i + 1])
-                && preg_match('~^[\t ]+$~', $token)
-                && $this->tokenNeedsEncoding($tokens[$i - 1])
-                && $this->tokenNeedsEncoding($tokens[$i + 1])
-            ) {
-                $tokens[$i - 1] .= $token.$tokens[$i + 1];
-                array_splice($tokens, $i, 2);
-            }
-        }
-
         return $tokens;
     }
 
@@ -218,7 +195,7 @@ abstract class AbstractHeader implements HeaderInterface
         $encodingWrapperLength = \strlen('=?'.$charsetDecl.'?'.self::$encoder->getName().'??=');
 
         if ($firstLineOffset >= 75) {
-            // Does this logic need to be here?
+            //Does this logic need to be here?
             $firstLineOffset = 0;
         }
 
@@ -249,7 +226,7 @@ abstract class AbstractHeader implements HeaderInterface
     /**
      * Generate a list of all tokens in the final header.
      */
-    protected function toTokens(?string $string = null): array
+    protected function toTokens(string $string = null): array
     {
         if (null === $string) {
             $string = $this->getBodyAsString();

@@ -1,22 +1,22 @@
 <?php
 /**
- * Illuminate，队列，序列化并恢复模型标识符
+ * 队列，序列化和恢复模型标识符
  */
 
 namespace Illuminate\Queue;
 
-use Illuminate\Contracts\Queue\QueueableEntity;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Contracts\Database\ModelIdentifier;
 use Illuminate\Contracts\Queue\QueueableCollection;
-use Illuminate\Database\Eloquent\Relations\Concerns\AsPivot;
+use Illuminate\Contracts\Queue\QueueableEntity;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Database\Eloquent\Relations\Concerns\AsPivot;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 trait SerializesAndRestoresModelIdentifiers
 {
     /**
      * Get the property value prepared for serialization.
-	 * 获取为序列化准备的属性值
+	 * 得到属性值为序列化准备的
      *
      * @param  mixed  $value
      * @return mixed
@@ -46,7 +46,7 @@ trait SerializesAndRestoresModelIdentifiers
 
     /**
      * Get the restored property value after deserialization.
-	 * 获取反序列化后恢复的属性值
+	 * 得到反序列化后恢复的属性值
      *
      * @param  mixed  $value
      * @return mixed
@@ -97,7 +97,7 @@ trait SerializesAndRestoresModelIdentifiers
 
     /**
      * Restore the model from the model identifier instance.
-	 * 从模型标识符实例恢复模型
+	 * 恢复模型从模型标识符实例
      *
      * @param  \Illuminate\Contracts\Database\ModelIdentifier  $value
      * @return \Illuminate\Database\Eloquent\Model
@@ -111,7 +111,7 @@ trait SerializesAndRestoresModelIdentifiers
 
     /**
      * Get the query for model restoration.
-	 * 获取模型恢复的查询
+	 * 得到模型恢复的查询
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  array|int  $ids

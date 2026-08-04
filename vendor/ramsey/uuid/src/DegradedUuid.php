@@ -25,7 +25,6 @@ use Ramsey\Uuid\Exception\UnsupportedOperationException;
 
 /**
  * DegradedUuid represents an RFC 4122 UUID on 32-bit systems
- * DegradedUuid在32位系统上表示RFC 4122 UUID。
  *
  * @see Uuid
  */

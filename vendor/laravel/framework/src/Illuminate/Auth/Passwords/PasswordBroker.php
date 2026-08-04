@@ -1,16 +1,16 @@
 <?php
 /**
- * Illuminate，Auth，密码，密码代理
+ * 授权，密码代理
  */
 
 namespace Illuminate\Auth\Passwords;
 
 use Closure;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Contracts\Auth\PasswordBroker as PasswordBrokerContract;
+use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Support\Arr;
 use UnexpectedValueException;
-use Illuminate\Contracts\Auth\UserProvider;
-use Illuminate\Contracts\Auth\PasswordBroker as PasswordBrokerContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 class PasswordBroker implements PasswordBrokerContract
 {
@@ -24,30 +24,21 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * The user provider implementation.
-	 * 用户提供程序实现
+	 * 用户提供者实现
      *
      * @var \Illuminate\Contracts\Auth\UserProvider
      */
     protected $users;
 
     /**
-     * The custom password validator callback.
-	 * 自定义密码验证器回调
-     *
-     * @var \Closure
-     */
-    protected $passwordValidator;
-
-    /**
      * Create a new password broker instance.
-	 * 创建一个新的密码代理实例
+	 * 创建新的密码代理实例
      *
      * @param  \Illuminate\Auth\Passwords\TokenRepositoryInterface  $tokens
      * @param  \Illuminate\Contracts\Auth\UserProvider  $users
      * @return void
      */
-    public function __construct(TokenRepositoryInterface $tokens,
-                                UserProvider $users)
+    public function __construct(TokenRepositoryInterface $tokens, UserProvider $users)
     {
         $this->users = $users;
         $this->tokens = $tokens;
@@ -65,19 +56,24 @@ class PasswordBroker implements PasswordBrokerContract
         // First we will check to see if we found a user at the given credentials and
         // if we did not we will redirect back to this current URI with a piece of
         // "flash" data in the session to indicate to the developers the errors.
-		// 首先，我们会检查是否找到了与给定凭证匹配的用户。
-		// 如果没有找到，我们将返回到当前的 URI，并在会话中添加一段“提示”数据，以便向开发人员指示出现的错误。
+		// 首先，我们将检查是否在给定的凭据中找到了用户，如果没有，
+		// 我们将在会话中使用一段"flash"数据重定向回当前URI，以向开发人员指示错误。
         $user = $this->getUser($credentials);
 
         if (is_null($user)) {
             return static::INVALID_USER;
         }
 
+        if (method_exists($this->tokens, 'recentlyCreatedToken') &&
+            $this->tokens->recentlyCreatedToken($user)) {
+            return static::RESET_THROTTLED;
+        }
+
         // Once we have the reset token, we are ready to send the message out to this
         // user with a link to reset their password. We will then redirect back to
         // the current URI having nothing set in the session to indicate errors.
-		// 一旦我们获得了重置令牌，就可以向该用户发送消息，并附上一个重置密码的链接了。
-		// 然后,我们将重定向回当前URI,在会话中没有设置错误。
+		// 一旦我们有了重置令牌，我们就可以向该用户发送消息，并附上重置密码的链接。
+		// 然后，我们将重定向回会话中没有设置任何指示错误的当前URI。
         $user->sendPasswordResetNotification(
             $this->tokens->create($user)
         );
@@ -95,13 +91,13 @@ class PasswordBroker implements PasswordBrokerContract
      */
     public function reset(array $credentials, Closure $callback)
     {
+        $user = $this->validateReset($credentials);
+
         // If the responses from the validate method is not a user instance, we will
         // assume that it is a redirect and simply return it from this method and
         // the user is properly redirected having an error message on the post.
-		// 如果验证方法的返回值不是用户实例，我们将假定这是一个重定向操作，
-		// 并直接从该方法中返回它，这样用户就会被正确地重定向，并且在页面上会显示错误信息。
-        $user = $this->validateReset($credentials);
-
+		// 如果来自validate方法的响应不是用户实例，我们将假设它是一个重定向，
+		// 并简单地从该方法返回它，并且用户被正确重定向，并在帖子上显示错误消息。
         if (! $user instanceof CanResetPasswordContract) {
             return $user;
         }
@@ -111,8 +107,8 @@ class PasswordBroker implements PasswordBrokerContract
         // Once the reset has been validated, we'll call the given callback with the
         // new password. This gives the user an opportunity to store the password
         // in their persistent storage. Then we'll delete the token and return.
-		// 一旦重置操作得到验证，我们将调用给定的回调函数，并传入新的密码。
-		// 这给了用户一个在持久化存储中存储密码的机会。然后我们将删除令牌和返回。
+		// 一旦重置被验证，我们将使用新密码调用给定的回调。
+		// 这为用户提供了将密码存储在持久存储器中的机会。然后我们将删除令牌并返回。
         $callback($user, $password);
 
         $this->tokens->delete($user);
@@ -133,10 +129,6 @@ class PasswordBroker implements PasswordBrokerContract
             return static::INVALID_USER;
         }
 
-        if (! $this->validateNewPassword($credentials)) {
-            return static::INVALID_PASSWORD;
-        }
-
         if (! $this->tokens->exists($user, $credentials['token'])) {
             return static::INVALID_TOKEN;
         }
@@ -145,60 +137,8 @@ class PasswordBroker implements PasswordBrokerContract
     }
 
     /**
-     * Set a custom password validator.
-	 * 设置自定义密码验证器
-     *
-     * @param  \Closure  $callback
-     * @return void
-     */
-    public function validator(Closure $callback)
-    {
-        $this->passwordValidator = $callback;
-    }
-
-    /**
-     * Determine if the passwords match for the request.
-	 * 确定密码是否与请求匹配
-     *
-     * @param  array  $credentials
-     * @return bool
-     */
-    public function validateNewPassword(array $credentials)
-    {
-        if (isset($this->passwordValidator)) {
-            [$password, $confirm] = [
-                $credentials['password'],
-                $credentials['password_confirmation'],
-            ];
-
-            return call_user_func(
-                $this->passwordValidator, $credentials
-            ) && $password === $confirm;
-        }
-
-        return $this->validatePasswordWithDefaults($credentials);
-    }
-
-    /**
-     * Determine if the passwords are valid for the request.
-	 * 确定密码对请求是否有效
-     *
-     * @param  array  $credentials
-     * @return bool
-     */
-    protected function validatePasswordWithDefaults(array $credentials)
-    {
-        [$password, $confirm] = [
-            $credentials['password'],
-            $credentials['password_confirmation'],
-        ];
-
-        return $password === $confirm && mb_strlen($password) >= 8;
-    }
-
-    /**
      * Get the user for the given credentials.
-	 * 获取给定凭据的用户
+	 * 得到给定凭据的用户
      *
      * @param  array  $credentials
      * @return \Illuminate\Contracts\Auth\CanResetPassword|null
@@ -220,9 +160,9 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Create a new password reset token for the given user.
-	 * 为给定用户创建一个新的密码重置令牌
+	 * 创建一个新的密码重置令牌为给定用户
      *
-     * @param  \Illuminate\Contracts\Auth\CanResetPassword $user
+     * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @return string
      */
     public function createToken(CanResetPasswordContract $user)
@@ -234,7 +174,7 @@ class PasswordBroker implements PasswordBrokerContract
      * Delete password reset tokens of the given user.
 	 * 删除给定用户的密码重置令牌
      *
-     * @param  \Illuminate\Contracts\Auth\CanResetPassword $user
+     * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @return void
      */
     public function deleteToken(CanResetPasswordContract $user)
@@ -246,8 +186,8 @@ class PasswordBroker implements PasswordBrokerContract
      * Validate the given password reset token.
 	 * 验证给定的密码重置令牌
      *
-     * @param  \Illuminate\Contracts\Auth\CanResetPassword $user
-     * @param  string $token
+     * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
+     * @param  string  $token
      * @return bool
      */
     public function tokenExists(CanResetPasswordContract $user, $token)
@@ -257,7 +197,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Get the password reset token repository implementation.
-	 * 获取密码重置令牌存储库实现
+	 * 得到密码重置令牌存储库实现
      *
      * @return \Illuminate\Auth\Passwords\TokenRepositoryInterface
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，问题，隐藏属性
+ * 数据库，Eloquent隐藏属性
  */
 
 namespace Illuminate\Database\Eloquent\Concerns;
@@ -25,7 +25,7 @@ trait HidesAttributes
 
     /**
      * Get the hidden attributes for the model.
-	 * 获取模型的隐藏属性
+	 * 得到模型的隐藏属性
      *
      * @return array
      */
@@ -36,7 +36,7 @@ trait HidesAttributes
 
     /**
      * Set the hidden attributes for the model.
-	 * 为模型设置隐藏属性
+	 * 设置模型的隐藏属性
      *
      * @param  array  $hidden
      * @return $this
@@ -50,7 +50,7 @@ trait HidesAttributes
 
     /**
      * Add hidden attributes for the model.
-	 * 为模型添加隐藏属性
+	 * 添加模型隐藏属性
      *
      * @param  array|string|null  $attributes
      * @return void
@@ -64,7 +64,7 @@ trait HidesAttributes
 
     /**
      * Get the visible attributes for the model.
-	 * 获取模型的可见属性
+	 * 得到模型的可见属性
      *
      * @return array
      */
@@ -75,7 +75,7 @@ trait HidesAttributes
 
     /**
      * Set the visible attributes for the model.
-	 * 为模型设置可见属性
+	 * 设置模型的可见属性
      *
      * @param  array  $visible
      * @return $this
@@ -89,7 +89,7 @@ trait HidesAttributes
 
     /**
      * Add visible attributes for the model.
-	 * 为模型添加可见属性
+	 * 添加模型的可见属性
      *
      * @param  array|string|null  $attributes
      * @return void
@@ -103,7 +103,7 @@ trait HidesAttributes
 
     /**
      * Make the given, typically hidden, attributes visible.
-	 * 使给定的（通常是隐藏的）属性可见
+	 * 使给定的(通常是隐藏的)属性可见
      *
      * @param  array|string  $attributes
      * @return $this
@@ -121,7 +121,7 @@ trait HidesAttributes
 
     /**
      * Make the given, typically visible, attributes hidden.
-	 * 将给定的（通常是可见的）属性隐藏起来
+	 * 使给定的(通常是隐藏的)属性隐藏
      *
      * @param  array|string  $attributes
      * @return $this

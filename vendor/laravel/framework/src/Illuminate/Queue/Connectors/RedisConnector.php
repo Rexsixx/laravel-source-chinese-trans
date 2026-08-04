@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，队列，连接器，Redis 连接器
+ * 队列，连接器，Redis连接器
  */
 
 namespace Illuminate\Queue\Connectors;
 
-use Illuminate\Queue\RedisQueue;
 use Illuminate\Contracts\Redis\Factory as Redis;
+use Illuminate\Queue\RedisQueue;
 
 class RedisConnector implements ConnectorInterface
 {
@@ -20,7 +20,7 @@ class RedisConnector implements ConnectorInterface
 
     /**
      * The connection name.
-	 * 连接名称
+	 * 连接名
      *
      * @var string
      */
@@ -28,7 +28,7 @@ class RedisConnector implements ConnectorInterface
 
     /**
      * Create a new Redis queue connector instance.
-	 * 创建一个新的Redis队列连接器实例
+	 * 创建新的Redis队列连接实例
      *
      * @param  \Illuminate\Contracts\Redis\Factory  $redis
      * @param  string|null  $connection

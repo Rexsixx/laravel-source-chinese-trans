@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，过程，管道，管道接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\Process\Pipes;
 
 /**
  * PipesInterface manages descriptors and pipes for the use of proc_open.
- * PipesInterface管理描述符和用于使用proc_open的管道。
  *
  * @author Romain Neutron <imprec@gmail.com>
  *
@@ -28,7 +24,6 @@ interface PipesInterface
 
     /**
      * Returns an array of descriptors for the use of proc_open.
-	 * 返回用于使用proc_open的描述符数组
      */
     public function getDescriptors(): array;
 

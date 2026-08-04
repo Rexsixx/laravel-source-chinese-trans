@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，基础，认证，访问，授权请求
+ * 基础，授权请求
  */
 
 namespace Illuminate\Foundation\Auth\Access;
 
-use Illuminate\Support\Str;
 use Illuminate\Contracts\Auth\Access\Gate;
+use Illuminate\Support\Str;
 
 trait AuthorizesRequests
 {
@@ -47,7 +47,7 @@ trait AuthorizesRequests
 
     /**
      * Guesses the ability's name if it wasn't provided.
-	 * 如果没有提供，则猜测该能力的名称。
+	 * 猜测该能力的名称，如果没有提供。
      *
      * @param  mixed  $ability
      * @param  mixed|array  $arguments
@@ -107,13 +107,14 @@ trait AuthorizesRequests
 
     /**
      * Get the map of resource methods to ability names.
-	 * 获取资源方法到能力名称的映射
+	 * 得到资源方法到能力名称的映射
      *
      * @return array
      */
     protected function resourceAbilityMap()
     {
         return [
+            'index' => 'viewAny',
             'show' => 'view',
             'create' => 'create',
             'store' => 'create',
@@ -125,7 +126,7 @@ trait AuthorizesRequests
 
     /**
      * Get the list of resource methods which do not have model parameters.
-	 * 获取没有模型参数的资源方法列表
+	 * 得到没有模型参数的资源方法列表
      *
      * @return array
      */

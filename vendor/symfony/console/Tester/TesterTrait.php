@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，控制台，检验器，测试特性
- */
 
 /*
  * This file is part of the Symfony package.

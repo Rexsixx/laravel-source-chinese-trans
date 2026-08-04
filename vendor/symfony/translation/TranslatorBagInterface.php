@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，翻译包接口
+ * Symfony，组件，翻译，目录，翻译包接口
  */
 
 /*
@@ -26,7 +26,6 @@ interface TranslatorBagInterface
 {
     /**
      * Gets the catalogue by locale.
-	 * 按区域设置获取目录
      *
      * @param string|null $locale The locale or null to use the default
      *

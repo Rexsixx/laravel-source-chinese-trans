@@ -1,6 +1,6 @@
 <?php
 /**
- * TijsVerkoyen，Css 到内联样式，Css，处理器
+ * TijsVerkoyen，Css内联样式，Css，处理器
  */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css;
@@ -30,7 +30,6 @@ class Processor
 
     /**
      * Get the CSS from the style-tags in the given HTML-string
-	 * 从给定html字符串中的样式标记获取CSS
      *
      * @param string $html
      *

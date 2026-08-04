@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，支持，进程工具
+ * 支持，流程工具
  */
 
 namespace Illuminate\Support;
 
 /**
  * ProcessUtils is a bunch of utility methods.
- * ProcessUtils是一堆实用程序方法。
+ * ProcessUtils是一堆实用程序方法
  *
  * This class was originally copied from Symfony 3.
  */
@@ -62,7 +62,7 @@ class ProcessUtils
 
     /**
      * Is the given string surrounded by the given character?
-	 * 给定字符串是否被给定字符包围？
+	 * 给定字符串是否被给定字符包围?
      *
      * @param  string  $arg
      * @param  string  $char

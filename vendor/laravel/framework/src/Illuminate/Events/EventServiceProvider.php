@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，事件，事件服务提供商
+ * 事件，事件服务提供者
  */
 
 namespace Illuminate\Events;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Queue\Factory as QueueFactoryContract;
+use Illuminate\Support\ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {

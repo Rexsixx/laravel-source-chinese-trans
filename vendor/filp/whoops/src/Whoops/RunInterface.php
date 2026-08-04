@@ -22,7 +22,6 @@ interface RunInterface
 
     /**
      * Pushes a handler to the end of the stack
-	 * 将处理程序推到堆栈的末尾
      *
      * @throws InvalidArgumentException  If argument is not callable or instance of HandlerInterface
      * @param  Callable|HandlerInterface $handler
@@ -32,8 +31,7 @@ interface RunInterface
 
     /**
      * Removes the last handler in the stack and returns it.
-     * Returns null if there"s nothing else to pop.如果没有别的东西,就返回null。
-	 * 删除堆栈中的最后一个处理程序并返回它。
+     * Returns null if there"s nothing else to pop.
      *
      * @return null|HandlerInterface
      */
@@ -42,7 +40,6 @@ interface RunInterface
     /**
      * Returns an array with all handlers, in the
      * order they were added to the stack.
-	 * 返回一个数组与所有处理程序,按顺序添加到堆栈。
      *
      * @return array
      */
@@ -55,16 +52,6 @@ interface RunInterface
      * @return Run
      */
     public function clearHandlers();
-
-    /**
-     * @return array<callable>
-     */
-    public function getFrameFilters();
-
-    /**
-     * @return Run
-     */
-    public function clearFrameFilters();
 
     /**
      * Registers this instance as an error handler.
@@ -154,12 +141,4 @@ interface RunInterface
      * Special case to deal with Fatal errors and the like.
      */
     public function handleShutdown();
-
-    /**
-     * Registers a filter callback in the frame filters stack.
-     *
-     * @param callable $filterCallback
-     * @return \Whoops\Run
-     */
-    public function addFrameFilter($filterCallback);
 }

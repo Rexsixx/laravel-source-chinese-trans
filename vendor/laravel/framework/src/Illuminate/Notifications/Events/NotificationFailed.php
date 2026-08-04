@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，事件，通知已失败
+ * 通知，通知失败
  */
 
 namespace Illuminate\Notifications\Events;
@@ -14,7 +14,7 @@ class NotificationFailed
 
     /**
      * The notifiable entity who received the notification.
-	 * 收到通知的应通知实体
+	 * 通知实体应收到通知的
      *
      * @var mixed
      */
@@ -46,7 +46,7 @@ class NotificationFailed
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification

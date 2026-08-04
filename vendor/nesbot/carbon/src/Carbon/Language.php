@@ -83,7 +83,6 @@ class Language implements JsonSerializable
 
     /**
      * Get the list of the known languages.
-	 * 获取已知语言的列表
      *
      * @return array
      */

@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，调试，致命错误处理程序，未定义的方法致命错误处理程序
- */
 
 /*
  * This file is part of the Symfony package.

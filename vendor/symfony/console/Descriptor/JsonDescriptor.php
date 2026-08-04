@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，描述符，Json 描述符
+ * Symfony，组件，控制台，描述符号，JSON 描述符号
  */
 
 /*

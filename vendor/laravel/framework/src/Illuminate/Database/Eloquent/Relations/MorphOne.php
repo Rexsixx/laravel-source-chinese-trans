@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，多态一对一
+ * 数据库，Eloquent改变一个
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Concerns\SupportsDefaultModels;
 
 class MorphOne extends MorphOneOrMany
@@ -15,7 +15,7 @@ class MorphOne extends MorphOneOrMany
 
     /**
      * Get the results of the relationship.
-	 * 得到关系的结果
+	 * 得到关联结果
      *
      * @return mixed
      */
@@ -32,7 +32,7 @@ class MorphOne extends MorphOneOrMany
      * Initialize the relation on a set of models.
 	 * 初始化一组模型上的关系
      *
-     * @param  array   $models
+     * @param  array  $models
      * @param  string  $relation
      * @return array
      */
@@ -49,7 +49,7 @@ class MorphOne extends MorphOneOrMany
      * Match the eagerly loaded results to their parents.
 	 * 将急切加载的结果与他们的父母匹配
      *
-     * @param  array   $models
+     * @param  array  $models
      * @param  \Illuminate\Database\Eloquent\Collection  $results
      * @param  string  $relation
      * @return array
@@ -61,7 +61,7 @@ class MorphOne extends MorphOneOrMany
 
     /**
      * Make a new related instance for the given model.
-	 * 为给定模型创建一个新的相关实例
+	 * 为给定模型创建新的相关实例
      *
      * @param  \Illuminate\Database\Eloquent\Model  $parent
      * @return \Illuminate\Database\Eloquent\Model

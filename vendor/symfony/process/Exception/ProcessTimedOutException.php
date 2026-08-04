@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，过程，异常，过程排除异常
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Process\Process;
 
 /**
  * Exception that is thrown when a process times out.
- * 当过程超时时抛出的异常。
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */

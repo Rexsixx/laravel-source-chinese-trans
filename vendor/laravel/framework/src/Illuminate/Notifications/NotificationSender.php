@@ -1,17 +1,19 @@
 <?php
 /**
- * Illuminate，通知，通知发送方
+ * 通知发送人
  */
 
 namespace Illuminate\Notifications;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Traits\Localizable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Collection as ModelCollection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Events\NotificationSending;
+use Illuminate\Notifications\Events\NotificationSent;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Localizable;
 
 class NotificationSender
 {
@@ -35,7 +37,7 @@ class NotificationSender
 
     /**
      * The event dispatcher.
-	 * 事件调度程序
+	 * 事件调度器
      *
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
@@ -51,7 +53,7 @@ class NotificationSender
 
     /**
      * Create a new notification sender instance.
-	 * 创建一个新的通知发送方实例
+	 * 创建新的通知发送方实例
      *
      * @param  \Illuminate\Notifications\ChannelManager  $manager
      * @param  \Illuminate\Contracts\Bus\Dispatcher  $bus
@@ -69,7 +71,7 @@ class NotificationSender
 
     /**
      * Send the given notification to the given notifiable entities.
-	 * 将给定的通知发送到给定的可通知实体
+	 * 发送给定的通知到给定的可通知实体
      *
      * @param  \Illuminate\Support\Collection|array|mixed  $notifiables
      * @param  mixed  $notification
@@ -110,7 +112,9 @@ class NotificationSender
                 $notificationId = Str::uuid()->toString();
 
                 foreach ((array) $viaChannels as $channel) {
-                    $this->sendToNotifiable($notifiable, $notificationId, clone $original, $channel);
+                    if (! ($notifiable instanceof AnonymousNotifiable && $channel === 'database')) {
+                        $this->sendToNotifiable($notifiable, $notificationId, clone $original, $channel);
+                    }
                 }
             });
         }
@@ -118,7 +122,7 @@ class NotificationSender
 
     /**
      * Get the notifiable's preferred locale for the notification.
-	 * 获取通知的被通知对象的首选语言环境
+	 * 得到通知的被通知对象的首选语言环境
      *
      * @param  mixed  $notifiable
      * @param  mixed  $notification
@@ -135,7 +139,7 @@ class NotificationSender
 
     /**
      * Send the given notification to the given notifiable via a channel.
-	 * 通过通道将给定的通知发送给给定的通知对象
+	 * 发送给定的通知给给定的通知对象通过通道。
      *
      * @param  mixed  $notifiable
      * @param  string  $id
@@ -156,7 +160,7 @@ class NotificationSender
         $response = $this->manager->driver($channel)->send($notifiable, $notification);
 
         $this->events->dispatch(
-            new Events\NotificationSent($notifiable, $notification, $channel, $response)
+            new NotificationSent($notifiable, $notification, $channel, $response)
         );
     }
 
@@ -172,16 +176,16 @@ class NotificationSender
     protected function shouldSendNotification($notifiable, $notification, $channel)
     {
         return $this->events->until(
-            new Events\NotificationSending($notifiable, $notification, $channel)
+            new NotificationSending($notifiable, $notification, $channel)
         ) !== false;
     }
 
     /**
      * Queue the given notification instances.
-	 * 将给定的通知实例排队
+	 * 排队给定的通知实例
      *
      * @param  mixed  $notifiables
-     * @param  array[\Illuminate\Notifications\Channels\Notification]  $notification
+     * @param  \Illuminate\Notifications\Notification  $notification
      * @return void
      */
     protected function queueNotification($notifiables, $notification)
@@ -207,6 +211,12 @@ class NotificationSender
                             ->onConnection($notification->connection)
                             ->onQueue($notification->queue)
                             ->delay($notification->delay)
+                            ->through(
+                                array_merge(
+                                    method_exists($notification, 'middleware') ? $notification->middleware() : [],
+                                    $notification->middleware ?? []
+                                )
+                            )
                 );
             }
         }
@@ -214,7 +224,7 @@ class NotificationSender
 
     /**
      * Format the notifiables into a Collection / array if necessary.
-	 * 如有必要，将可通知对象格式化为集合/数组。
+	 * 格式化可通知对象为集合/数组如有必要
      *
      * @param  mixed  $notifiables
      * @return \Illuminate\Database\Eloquent\Collection|array

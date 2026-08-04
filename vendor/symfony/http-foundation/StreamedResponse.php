@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，流式响应
+ * Symfony，组件，Http基础，流响应
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * StreamedResponse represents a streamed HTTP response.
- * StreamedResponse表示一个流HTTP响应。
  *
  * A StreamedResponse uses a callback for its content.
  *

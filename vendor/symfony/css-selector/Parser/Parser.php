@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Css选择器，分析程序，Parser
- */
 
 /*
  * This file is part of the Symfony package.
@@ -32,7 +29,7 @@ class Parser implements ParserInterface
 {
     private $tokenizer;
 
-    public function __construct(?Tokenizer $tokenizer = null)
+    public function __construct(Tokenizer $tokenizer = null)
     {
         $this->tokenizer = $tokenizer ?? new Tokenizer();
     }

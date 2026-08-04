@@ -8,5 +8,4 @@ namespace League\Flysystem\Adapter;
 class SynologyFtp extends Ftpd
 {
     // This class merely exists because of BC.
-	// 这个类仅仅因为BC而存在
 }

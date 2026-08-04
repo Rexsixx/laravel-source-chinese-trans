@@ -1,7 +1,4 @@
 <?php
-/**
- * phpDocumentor，反射，伪类型，可调用字符串
- */
 
 declare(strict_types=1);
 
@@ -22,7 +19,6 @@ use phpDocumentor\Reflection\Types\String_;
 
 /**
  * Value Object representing the type 'string'.
- * 表示“字符串”的值对象。
  *
  * @psalm-immutable
  */

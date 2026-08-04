@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，批量分配异常
+ * 数据库，Eloquent，批量分配异常，待完善
  */
 
 namespace Illuminate\Database\Eloquent;

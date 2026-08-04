@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，翻译器 Weak类型
+ * Carbon，翻译程周类型
  */
 
 /**
@@ -19,7 +19,6 @@ if (!class_exists(LazyTranslator::class, false)) {
     {
         /**
          * Returns the translation.
-		 * 返回翻译
          *
          * @param string|null $id
          * @param array       $parameters

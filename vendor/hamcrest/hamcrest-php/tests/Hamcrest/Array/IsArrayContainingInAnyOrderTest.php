@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，数组，是否包含在任何订单测试中的数组
+ * Hamcrest，数组，是否数组包含任意顺序的测试
  */
 
 namespace Hamcrest\Arrays;

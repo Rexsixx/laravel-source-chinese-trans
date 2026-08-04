@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，多态
+ * 数据库，Eloquent转变
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
 
 use BadMethodCallException;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class MorphTo extends BelongsTo
 {
@@ -22,7 +22,7 @@ class MorphTo extends BelongsTo
 
     /**
      * The models whose relations are being eager loaded.
-	 * 其关系被热切加载的模型
+	 * 被加载模型
      *
      * @var \Illuminate\Database\Eloquent\Collection
      */
@@ -30,7 +30,7 @@ class MorphTo extends BelongsTo
 
     /**
      * All of the models keyed by ID.
-	 * 所有以ID为键的模型
+	 * 模型词典
      *
      * @var array
      */
@@ -73,7 +73,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Set the constraints for an eager load of the relation.
-	 * 为关系的即时加载设置约束
+	 * 设置约束为关系的即时加载
      *
      * @param  array  $models
      * @return void
@@ -85,7 +85,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Build a dictionary with the models.
-	 * 用这些模型构建一个字典
+	 * 构建字典用这些模型
      *
      * @param  \Illuminate\Database\Eloquent\Collection  $models
      * @return void
@@ -118,7 +118,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Get all of the relation results for a type.
-	 * 获取一个类型的所有关系结果
+	 * 得到一个类型的所有关系结果
      *
      * @param  string  $type
      * @return \Illuminate\Database\Eloquent\Collection
@@ -152,14 +152,12 @@ class MorphTo extends BelongsTo
      */
     protected function gatherKeysByType($type)
     {
-        return collect($this->dictionary[$type])->map(function ($models) {
-            return head($models)->{$this->foreignKey};
-        })->values()->unique()->all();
+        return array_keys($this->dictionary[$type]);
     }
 
     /**
      * Create a new model instance by type.
-	 * 按类型创建一个新的模型实例
+	 * 创建一个新的模型实例按类型
      *
      * @param  string  $type
      * @return \Illuminate\Database\Eloquent\Model
@@ -168,14 +166,18 @@ class MorphTo extends BelongsTo
     {
         $class = Model::getActualClassNameForMorph($type);
 
-        return new $class;
+        return tap(new $class, function ($instance) {
+            if (! $instance->getConnectionName()) {
+                $instance->setConnection($this->getConnection()->getName());
+            }
+        });
     }
 
     /**
      * Match the eagerly loaded results to their parents.
 	 * 将急切加载的结果与他们的父母匹配
      *
-     * @param  array   $models
+     * @param  array  $models
      * @param  \Illuminate\Database\Eloquent\Collection  $results
      * @param  string  $relation
      * @return array
@@ -208,7 +210,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Associate the model instance to the given parent.
-	 * 将模型实例关联到给定的父实例
+	 * 关联模型实例到给定的父实例
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return \Illuminate\Database\Eloquent\Model
@@ -256,7 +258,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Make a new related instance for the given model.
-	 * 为给定模型创建一个新的相关实例
+	 * 创建一个新的相关实例为给定模型
      *
      * @param  \Illuminate\Database\Eloquent\Model  $parent
      * @return \Illuminate\Database\Eloquent\Model
@@ -268,7 +270,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Get the foreign key "type" name.
-	 * 获取外键“类型”名称
+	 * 得到外键"类型"名称
      *
      * @return string
      */
@@ -279,7 +281,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Get the dictionary used by the relationship.
-	 * 获取关系使用的字典
+	 * 得到关系使用的字典
      *
      * @return array
      */
@@ -306,7 +308,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Replay stored macro calls on the actual related instance.
-	 * 在实际相关实例上重播存储的宏调用
+	 * 重播存储的宏调用在实际相关实例
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
@@ -322,10 +324,10 @@ class MorphTo extends BelongsTo
 
     /**
      * Handle dynamic method calls to the relationship.
-	 * 处理对关系的动态方法调用
+	 * 处理动态方法关系调用
      *
      * @param  string  $method
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return mixed
      */
     public function __call($method, $parameters)
@@ -343,8 +345,8 @@ class MorphTo extends BelongsTo
         // If we tried to call a method that does not exist on the parent Builder instance,
         // we'll assume that we want to call a query macro (e.g. withTrashed) that only
         // exists on related models. We will just store the call and replay it later.
-		// 如果尝试调用父类构建器实例中不存在的方法，我们将假定是要调用只存在于相关模型中的查询宏（例如 withTrashed）。
-		// 我们将把该调用存储起来，稍后再执行。
+		// 如果我们试图调用父Builder实例上不存在的方法，
+		// 我们将假设我们想调用仅存在于相关模型上的查询宏（例如withTrashed）。我们将只存储通话并稍后重播。
         catch (BadMethodCallException $e) {
             $this->macroBuffer[] = compact('method', 'parameters');
 

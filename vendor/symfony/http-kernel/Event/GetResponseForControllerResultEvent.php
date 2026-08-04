@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，事件，为控制器结果事件得到响应
- */
 
 /*
  * This file is part of the Symfony package.

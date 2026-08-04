@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * SebastianBergmann，代码覆盖率，覆盖代码未执行异常
  */

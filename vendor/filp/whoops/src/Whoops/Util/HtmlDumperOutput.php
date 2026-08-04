@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，工具，Html dump输出
+ * Whoops，Util，Html Dumper 输出
  */
 
 /**

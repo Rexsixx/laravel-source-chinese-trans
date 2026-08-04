@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Var Dumper，Caster，Enum存根
- */
 
 /*
  * This file is part of the Symfony package.

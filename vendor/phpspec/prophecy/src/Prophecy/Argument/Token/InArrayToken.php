@@ -1,7 +1,4 @@
 <?php
-/**
- * Prophecy，参数，令牌，在数组令牌
- */
 
 /*
  * This file is part of the Prophecy.
@@ -25,7 +22,7 @@ class InArrayToken implements TokenInterface
     private $strict;
 
     /**
-     * @param array<mixed> $arguments tokens
+     * @param array $arguments tokens
      * @param bool $strict
      */
     public function __construct(array $arguments, $strict = true)

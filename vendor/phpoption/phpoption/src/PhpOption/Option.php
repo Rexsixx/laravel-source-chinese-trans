@@ -1,6 +1,6 @@
 <?php
 /**
- * PhpOption，选项
+ * PhpOption，Option
  */
 
 /*
@@ -33,6 +33,7 @@ abstract class Option implements IteratorAggregate
 {
     /**
      * Creates an option given a return value.
+	 * 创建一个返回值的选项。
      *
      * This is intended for consuming existing APIs and allows you to easily
      * convert them to an option. By default, we treat ``null`` as the None
@@ -65,13 +66,13 @@ abstract class Option implements IteratorAggregate
      * @template S
      *
      * @param array<string|int,S>|ArrayAccess<string|int,S>|null $array A potential array or \ArrayAccess value.
-     * @param string|int|null                                    $key   The key to check.
+     * @param string                                             $key   The key to check.
      *
      * @return Option<S>
      */
     public static function fromArraysValue($array, $key)
     {
-        if ($key === null || !(is_array($array) || $array instanceof ArrayAccess) || !isset($array[$key])) {
+        if (!(is_array($array) || $array instanceof ArrayAccess) || !isset($array[$key])) {
             return None::create();
         }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，Validator
+ * 支持，门面验证
  */
 
 namespace Illuminate\Support\Facades;
@@ -17,7 +17,7 @@ class Validator extends Facade
 {
     /**
      * Get the registered name of the component.
-	 * 获取组件的注册名称
+	 * 得到组件注册名
      *
      * @return string
      */

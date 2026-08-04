@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，Redis，限制器，并发限制生成器
+ * Redis，并发限制生成器
  */
 
 namespace Illuminate\Redis\Limiters;
 
-use Illuminate\Support\InteractsWithTime;
 use Illuminate\Contracts\Redis\LimiterTimeoutException;
+use Illuminate\Support\InteractsWithTime;
 
 class ConcurrencyLimiterBuilder
 {
@@ -22,7 +22,7 @@ class ConcurrencyLimiterBuilder
 
     /**
      * The name of the lock.
-	 * 锁的名称
+	 * 锁名称
      *
      * @var string
      */
@@ -54,7 +54,7 @@ class ConcurrencyLimiterBuilder
 
     /**
      * Create a new builder instance.
-	 * 创建一个新的构建器实例
+	 * 创建新的构建器实例
      *
      * @param  \Illuminate\Redis\Connections\Connection  $connection
      * @param  string  $name
@@ -110,7 +110,7 @@ class ConcurrencyLimiterBuilder
 
     /**
      * Execute the given callback if a lock is obtained, otherwise call the failure callback.
-	 * 如果获得了锁，则执行给定的回调，否则调用失败回调。
+	 * 执行给定的回调，如果获得了锁，否则调用失败回调。
      *
      * @param  callable  $callback
      * @param  callable|null  $failure

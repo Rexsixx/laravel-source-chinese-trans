@@ -1,15 +1,15 @@
 <?php
 /**
- * Illuminate，缓存，控制台，清除命令
+ * 缓存，控制台，清除命令
  */
 
 namespace Illuminate\Cache\Console;
 
-use Illuminate\Console\Command;
 use Illuminate\Cache\CacheManager;
+use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class ClearCommand extends Command
 {
@@ -31,7 +31,7 @@ class ClearCommand extends Command
 
     /**
      * The cache manager instance.
-	 * 缓存管理器实例
+	 * 缓存管理实例
      *
      * @var \Illuminate\Cache\CacheManager
      */
@@ -47,7 +47,7 @@ class ClearCommand extends Command
 
     /**
      * Create a new cache clear command instance.
-	 * 创建一个新的缓存清除命令实例
+	 * 创建新的缓存清除命令实例
      *
      * @param  \Illuminate\Cache\CacheManager  $cache
      * @param  \Illuminate\Filesystem\Filesystem  $files
@@ -63,7 +63,7 @@ class ClearCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -109,7 +109,7 @@ class ClearCommand extends Command
 
     /**
      * Get the cache instance for the command.
-	 * 获取命令的缓存实例
+	 * 得到命令的缓存实例
      *
      * @return \Illuminate\Cache\Repository
      */
@@ -122,7 +122,7 @@ class ClearCommand extends Command
 
     /**
      * Get the tags passed to the command.
-	 * 获取传递给命令的标记
+	 * 得到传递给命令的标记
      *
      * @return array
      */
@@ -133,7 +133,7 @@ class ClearCommand extends Command
 
     /**
      * Get the console command arguments.
-	 * 获取控制台命令参数
+	 * 得到控制台命令参数
      *
      * @return array
      */
@@ -146,7 +146,7 @@ class ClearCommand extends Command
 
     /**
      * Get the console command options.
-	 * 获取控制台命令选项
+	 * 得到控制台命令选项
      *
      * @return array
      */

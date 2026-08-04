@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，认证，身份验证管理器
+ * 授权，身份验证管理器
  */
 
 namespace Illuminate\Auth;
 
 use Closure;
-use InvalidArgumentException;
 use Illuminate\Contracts\Auth\Factory as FactoryContract;
+use InvalidArgumentException;
 
 class AuthManager implements FactoryContract
 {
@@ -23,7 +23,7 @@ class AuthManager implements FactoryContract
 
     /**
      * The registered custom driver creators.
-	 * 注册的自定义驱动程序创建者
+	 * 注册的自定义驱动创建者
      *
      * @var array
      */
@@ -31,7 +31,7 @@ class AuthManager implements FactoryContract
 
     /**
      * The array of created "drivers".
-	 * 已创建的“驱动程序”数组
+	 * 已创建的"驱动程序"数组
      *
      * @var array
      */
@@ -39,7 +39,7 @@ class AuthManager implements FactoryContract
 
     /**
      * The user resolver shared by various services.
-	 * 各种服务共享的用户解析器。
+	 * 各种服务共享的用户解析器
      *
      * Determines the default user for Gate, Request, and the Authenticatable contract.
      *
@@ -49,7 +49,7 @@ class AuthManager implements FactoryContract
 
     /**
      * Create a new Auth manager instance.
-	 * 创建一个新的Auth管理器实例。
+	 * 创建一个新的Auth管理器实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -65,7 +65,6 @@ class AuthManager implements FactoryContract
 
     /**
      * Attempt to get the guard from the local cache.
-	 * 尝试从本地缓存中获取保护
      *
      * @param  string|null  $name
      * @return \Illuminate\Contracts\Auth\Guard|\Illuminate\Contracts\Auth\StatefulGuard
@@ -111,7 +110,7 @@ class AuthManager implements FactoryContract
 
     /**
      * Call a custom driver creator.
-	 * 调用自定义驱动程序创建者
+	 * 调用自定义驱动创建者
      *
      * @param  string  $name
      * @param  array  $config
@@ -139,8 +138,8 @@ class AuthManager implements FactoryContract
         // When using the remember me functionality of the authentication services we
         // will need to be set the encryption instance of the guard, which allows
         // secure, encrypted cookie values to get generated for those cookies.
-		// 在使用认证服务的“记住我”功能时，我们需要设置防护措施的加密实例，
-		// 这样就能为这些 Cookie 生成安全的、加密的值。
+		// 在使用身份验证服务的记住我功能时，我们需要设置保护的加密实例，
+		// 这允许为这些cookie生成安全、加密的cookie值。
         if (method_exists($guard, 'setCookieJar')) {
             $guard->setCookieJar($this->app['cookie']);
         }
@@ -169,8 +168,8 @@ class AuthManager implements FactoryContract
         // The token guard implements a basic API token based guard implementation
         // that takes an API token field from the request and matches it to the
         // user in the database or another persistence layer where users are.
-		// 该令牌守护程序实现了基于 API 令牌的基本守护程序实现，
-		// 它从请求中获取 API 令牌字段，并将其与数据库或另一个保存用户信息的持久层中的用户进行匹配。
+		// 令牌保护实现基本的基于API令牌的保护实现，该实现从请求中获取API令牌字段，
+		// 并将其与数据库或用户所在的另一持久层中的用户匹配。
         $guard = new TokenGuard(
             $this->createUserProvider($config['provider'] ?? null),
             $this->app['request'],
@@ -186,7 +185,7 @@ class AuthManager implements FactoryContract
 
     /**
      * Get the guard configuration.
-	 * 获取守卫配置
+	 * 得到守卫配置
      *
      * @param  string  $name
      * @return array
@@ -198,7 +197,6 @@ class AuthManager implements FactoryContract
 
     /**
      * Get the default authentication driver name.
-	 * 获取默认的身份验证驱动程序名称
      *
      * @return string
      */
@@ -239,7 +237,6 @@ class AuthManager implements FactoryContract
 
     /**
      * Register a new callback based request guard.
-	 * 注册一个新的基于回调的请求保护
      *
      * @param  string  $driver
      * @param  callable  $callback
@@ -258,7 +255,7 @@ class AuthManager implements FactoryContract
 
     /**
      * Get the user resolver callback.
-	 * 获取用户解析器回调
+	 * 得到用户解析器回调
      *
      * @return \Closure
      */
@@ -269,7 +266,7 @@ class AuthManager implements FactoryContract
 
     /**
      * Set the callback to be used to resolve users.
-	 * 将回调设置为用于解析用户
+	 * 设置回调为用于解析用户
      *
      * @param  \Closure  $userResolver
      * @return $this
@@ -283,7 +280,7 @@ class AuthManager implements FactoryContract
 
     /**
      * Register a custom driver creator Closure.
-	 * 册自定义驱动程序创建器Closure
+	 * 注册自定义驱动程序创建器Closure
      *
      * @param  string  $driver
      * @param  \Closure  $callback
@@ -309,6 +306,17 @@ class AuthManager implements FactoryContract
         $this->customProviderCreators[$name] = $callback;
 
         return $this;
+    }
+
+    /**
+     * Determines if any guards have already been resolved.
+	 * 确定是否已经解决了任何守卫
+     *
+     * @return bool
+     */
+    public function hasResolvedGuards()
+    {
+        return count($this->guards) > 0;
     }
 
     /**

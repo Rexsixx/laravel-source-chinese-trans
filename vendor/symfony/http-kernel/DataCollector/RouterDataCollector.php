@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，数据收集器，路由器数据收集器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -41,7 +38,7 @@ class RouterDataCollector extends DataCollector
      *
      * @final since Symfony 4.4
      */
-    public function collect(Request $request, Response $response/* , \Throwable $exception = null */)
+    public function collect(Request $request, Response $response/*, \Throwable $exception = null*/)
     {
         if ($response instanceof RedirectResponse) {
             $this->data['redirect'] = true;

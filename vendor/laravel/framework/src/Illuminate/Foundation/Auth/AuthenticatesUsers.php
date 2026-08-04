@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，认证，对用户进行身份验证
+ * 基础，对用户进行身份验证
  */
 
 namespace Illuminate\Foundation\Auth;
@@ -26,7 +26,7 @@ trait AuthenticatesUsers
 
     /**
      * Handle a login request to the application.
-	 * 处理对应用程序的登录请求
+	 * 处理应用的登录请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
@@ -40,7 +40,8 @@ trait AuthenticatesUsers
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
         // the IP address of the client making these requests into this application.
-		// 如果该类使用了“ThrottlesLogins”特性，我们就可以自动对这个应用程序的登录尝试进行限制。
+		// 如果类使用ThrottlesLogins特性，我们可以自动限制此应用程序的登录尝试。
+		// 我们将通过向此应用程序发出这些请求的客户端的用户名和IP地址来键入它。
         if (method_exists($this, 'hasTooManyLoginAttempts') &&
             $this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
@@ -55,8 +56,8 @@ trait AuthenticatesUsers
         // If the login attempt was unsuccessful we will increment the number of attempts
         // to login and redirect the user back to the login form. Of course, when this
         // user surpasses their maximum number of attempts they will get locked out.
-		// 如果登录尝试未成功，我们将增加登录尝试次数，并将用户重新引导回登录页面。
-		// 当然，如果该用户超过其最大尝试次数，他们就会被锁定无法继续操作。
+		// 如果登录尝试不成功，我们将增加登录尝试次数，并将用户重定向回登录表单。
+		// 当然，当此用户超过其最大尝试次数时，他们将被锁定。
         $this->incrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);
@@ -95,7 +96,7 @@ trait AuthenticatesUsers
 
     /**
      * Get the needed authorization credentials from the request.
-	 * 从请求中获取所需的授权凭据
+	 * 获取所需的授权凭据从请求中
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
@@ -107,7 +108,7 @@ trait AuthenticatesUsers
 
     /**
      * Send the response after the user was authenticated.
-	 * 用户通过身份验证后发送响应
+	 * 发送响应在用户通过身份验证后
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -124,7 +125,7 @@ trait AuthenticatesUsers
 
     /**
      * The user has been authenticated.
-	 * 用户已通过认证
+	 * 用户通过身份验证后
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $user
@@ -137,7 +138,7 @@ trait AuthenticatesUsers
 
     /**
      * Get the failed login response instance.
-	 * 获取失败的登录响应实例
+	 * 得到失败的登录响应实例
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -153,7 +154,7 @@ trait AuthenticatesUsers
 
     /**
      * Get the login username to be used by the controller.
-	 * 获取控制器使用的登录用户名
+	 * 得到控制器使用的登录用户名
      *
      * @return string
      */
@@ -164,7 +165,7 @@ trait AuthenticatesUsers
 
     /**
      * Log the user out of the application.
-	 * 将用户从应用程序中注销
+	 * 注销用户从应用程序中
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -174,6 +175,8 @@ trait AuthenticatesUsers
         $this->guard()->logout();
 
         $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
 
         return $this->loggedOut($request) ?: redirect('/');
     }
@@ -192,7 +195,7 @@ trait AuthenticatesUsers
 
     /**
      * Get the guard to be used during authentication.
-	 * 获取要在身份验证期间使用的保护
+	 * 得到要在身份验证期间使用的保护
      *
      * @return \Illuminate\Contracts\Auth\StatefulGuard
      */

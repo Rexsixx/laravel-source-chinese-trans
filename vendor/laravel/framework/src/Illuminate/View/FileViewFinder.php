@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，视图，文件视图查找器
+ * 视图，文件视图查看器
  */
 
 namespace Illuminate\View;
 
-use InvalidArgumentException;
 use Illuminate\Filesystem\Filesystem;
+use InvalidArgumentException;
 
 class FileViewFinder implements ViewFinderInterface
 {
@@ -20,7 +20,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * The array of active view paths.
-	 * 活动视图路径的数组
+	 * 视图路径
      *
      * @var array
      */
@@ -36,7 +36,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * The namespace to file path hints.
-	 * 命名空间到文件路径的提示
+	 * 文件路径提示
      *
      * @var array
      */
@@ -44,7 +44,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Register a view extension with the finder.
-	 * 向查找器注册视图扩展
+	 * 注册视图后缀
      *
      * @var array
      */
@@ -52,7 +52,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Create a new file view loader instance.
-	 * 创建一个新的文件视图加载器实例
+	 * 创建新的文件视图加载实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  array  $paths
@@ -71,7 +71,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Get the fully qualified location of the view.
-	 * 获取视图的完全限定位置
+	 * 得到视图的完全限定位置
      *
      * @param  string  $name
      * @return string
@@ -91,7 +91,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Get the path to a template with a named path.
-	 * 获取具有命名路径的模板的路径
+	 * 得到具有命名路径的模板的路径
      *
      * @param  string  $name
      * @return string
@@ -105,7 +105,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Get the segments of a template with a named path.
-	 * 获取带有命名路径的模板片段
+	 * 得到带有命名路径的模板片段
      *
      * @param  string  $name
      * @return array
@@ -129,10 +129,10 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Find the given view in the list of paths.
-	 * 在路径列表中查找给定视图
+	 * 查找给定视图在路径列表中
      *
      * @param  string  $name
-     * @param  array   $paths
+     * @param  array  $paths
      * @return string
      *
      * @throws \InvalidArgumentException
@@ -152,7 +152,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Get an array of possible view files.
-	 * 获取可能的视图文件的数组
+	 * 得到可能的视图文件的数组
      *
      * @param  string  $name
      * @return array
@@ -166,7 +166,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Add a location to the finder.
-	 * 向查找器添加位置
+	 * 添加位置至查找器
      *
      * @param  string  $location
      * @return void
@@ -202,7 +202,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Add a namespace hint to the finder.
-	 * 向查找器添加名称空间提示
+	 * 添加命名空间
      *
      * @param  string  $namespace
      * @param  string|array  $hints
@@ -253,7 +253,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Register an extension with the view finder.
-	 * 用取景器注册一个扩展
+	 * 注册扩展
      *
      * @param  string  $extension
      * @return void
@@ -281,7 +281,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Flush the cache of located views.
-	 * 刷新已定位视图的缓存
+	 * 清空本地视图
      *
      * @return void
      */
@@ -292,7 +292,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Get the filesystem instance.
-	 * 获取文件系统实例
+	 * 得到文件系统实例
      *
      * @return \Illuminate\Filesystem\Filesystem
      */
@@ -303,7 +303,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Set the active view paths.
-	 * 设置活动视图路径
+	 * 设置主动视图路径
      *
      * @param  array  $paths
      * @return $this
@@ -317,7 +317,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Get the active view paths.
-	 * 获取活动视图路径
+	 * 得到视图路径
      *
      * @return array
      */
@@ -328,7 +328,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Get the views that have been located.
-	 * 获取已定位的视图
+	 * 得到已定位的视图
      *
      * @return array
      */
@@ -339,7 +339,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Get the namespace to file path hints.
-	 * 将名称空间获取到文件路径提示
+	 * 得到文件路径提示
      *
      * @return array
      */
@@ -350,7 +350,7 @@ class FileViewFinder implements ViewFinderInterface
 
     /**
      * Get registered extensions.
-	 * 注册扩展名
+	 * 得到注册扩展名
      *
      * @return array
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，字符串描述测试
+ * Hamcrest，样本自我描述
  */
 
 namespace Hamcrest;

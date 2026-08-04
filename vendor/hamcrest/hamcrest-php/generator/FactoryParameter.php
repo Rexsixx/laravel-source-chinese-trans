@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，工厂参数
+ * 工厂参数
  */
 
 /*
@@ -27,6 +27,7 @@ class FactoryParameter
 
     /**
      * Compute the declaration code.
+	 * 计算声明代码
      *
      * @return string
      */

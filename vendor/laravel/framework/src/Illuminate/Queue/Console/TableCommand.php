@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，队列，控制台，表命令
+ * 队列，控制台，表命令
  */
 
 namespace Illuminate\Queue\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
-use Illuminate\Support\Composer;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Composer;
+use Illuminate\Support\Str;
 
 class TableCommand extends Command
 {
@@ -43,10 +43,10 @@ class TableCommand extends Command
 
     /**
      * Create a new queue job table command instance.
-	 * 创建一个新的队列作业表命令实例
+	 * 创建新的队列作业表命令实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @param  \Illuminate\Support\Composer    $composer
+     * @param  \Illuminate\Support\Composer  $composer
      * @return void
      */
     public function __construct(Filesystem $files, Composer $composer)
@@ -59,7 +59,7 @@ class TableCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台实例
      *
      * @return void
      */
@@ -92,7 +92,7 @@ class TableCommand extends Command
 
     /**
      * Replace the generated migration with the job table stub.
-	 * 用作业表存根替换生成的迁移
+	 * 替换生成的迁移使用作业表存根
      *
      * @param  string  $path
      * @param  string  $table

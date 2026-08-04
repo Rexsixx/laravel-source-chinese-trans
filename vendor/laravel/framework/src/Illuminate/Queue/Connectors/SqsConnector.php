@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，队列，连接器，Sqs 连接器
+ * 队列，连接器，Sqs连接器
  */
 
 namespace Illuminate\Queue\Connectors;
 
 use Aws\Sqs\SqsClient;
-use Illuminate\Support\Arr;
 use Illuminate\Queue\SqsQueue;
+use Illuminate\Support\Arr;
 
 class SqsConnector implements ConnectorInterface
 {
@@ -33,7 +33,7 @@ class SqsConnector implements ConnectorInterface
 
     /**
      * Get the default configuration for SQS.
-	 * 获取SQS的默认配置
+	 * 得到默认配置
      *
      * @param  array  $config
      * @return array

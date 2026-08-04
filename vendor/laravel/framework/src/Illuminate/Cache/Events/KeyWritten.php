@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，事件，密钥写入
+ * 缓存，事件，密钥写入
  */
 
 namespace Illuminate\Cache\Events;
@@ -25,7 +25,7 @@ class KeyWritten extends CacheEvent
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  string  $key
      * @param  mixed  $value

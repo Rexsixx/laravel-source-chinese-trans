@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Mime，测试，约束，电子邮件附件计数
- */
 
 /*
  * This file is part of the Symfony package.
@@ -23,7 +20,7 @@ final class EmailAttachmentCount extends Constraint
     private $expectedValue;
     private $transport;
 
-    public function __construct(int $expectedValue, ?string $transport = null)
+    public function __construct(int $expectedValue, string $transport = null)
     {
         $this->expectedValue = $expectedValue;
         $this->transport = $transport;

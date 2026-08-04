@@ -1,6 +1,6 @@
 <?php
 /**
- * 深拷贝，异常，克隆异常
+ * DeepCopy，异常，克隆异常
  */
 
 namespace DeepCopy\Exception;

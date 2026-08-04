@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，ORM，Mandango，列式猜测器
+ * Faker，ORM，Mandango，列类型猜测器
  */
 
 namespace Faker\ORM\Mandango;

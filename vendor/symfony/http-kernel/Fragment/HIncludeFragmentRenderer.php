@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，碎片，HInclude片段渲染器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -26,7 +23,6 @@ use Twig\Loader\SourceContextLoaderInterface;
 
 /**
  * Implements the Hinclude rendering strategy.
- * 实现Hinclude呈现策略。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

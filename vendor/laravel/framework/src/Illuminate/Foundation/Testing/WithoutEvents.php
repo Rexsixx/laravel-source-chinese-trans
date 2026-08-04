@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，无事件
+ * 基础，不使用事件
  */
 
 namespace Illuminate\Foundation\Testing;

@@ -1,22 +1,22 @@
 <?php
 /**
- * Illuminate，Session，存储
+ * Session，存储
  */
 
 namespace Illuminate\Session;
 
 use Closure;
-use stdClass;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use SessionHandlerInterface;
-use Illuminate\Contracts\Session\Session;
+use stdClass;
 
 class Store implements Session
 {
     /**
      * The session ID.
-	 * 会话ID
+	 * 会话ID 
      *
      * @var string
      */
@@ -24,7 +24,7 @@ class Store implements Session
 
     /**
      * The session name.
-	 * 会话名称
+	 * 会话名
      *
      * @var string
      */
@@ -56,11 +56,11 @@ class Store implements Session
 
     /**
      * Create a new session instance.
-	 * 创建一个新的会话实例
+	 * 创建新的会话实例
      *
-     * @param  string $name
-     * @param  \SessionHandlerInterface $handler
-     * @param  string|null $id
+     * @param  string  $name
+     * @param  \SessionHandlerInterface  $handler
+     * @param  string|null  $id
      * @return void
      */
     public function __construct($name, SessionHandlerInterface $handler, $id = null)
@@ -89,7 +89,7 @@ class Store implements Session
 
     /**
      * Load the session data from the handler.
-	 * 从处理程序加载会话数据
+	 * 加载会话数据从处理程序
      *
      * @return void
      */
@@ -100,7 +100,7 @@ class Store implements Session
 
     /**
      * Read the session data from the handler.
-	 * 从处理程序读取会话数据
+	 * 读取会话数据从处理程序
      *
      * @return array
      */
@@ -131,7 +131,7 @@ class Store implements Session
 
     /**
      * Save the session data to storage.
-	 * 将会话数据保存到存储中
+	 * 保存会话数据至存储
      *
      * @return void
      */
@@ -175,7 +175,7 @@ class Store implements Session
 
     /**
      * Get all of the session data.
-	 * 获取所有会话数据
+	 * 得到所有会话数据
      *
      * @return array
      */
@@ -186,7 +186,7 @@ class Store implements Session
 
     /**
      * Get a subset of the session data.
-	 * 获取会话数据的子集
+	 * 得到会话数据的子集
      *
      * @param  array  $keys
      * @return array
@@ -228,7 +228,7 @@ class Store implements Session
 
     /**
      * Get an item from the session.
-	 * 从会话中获取一个项目
+	 * 得到一个项目从会话中
      *
      * @param  string  $key
      * @param  mixed  $default
@@ -241,7 +241,7 @@ class Store implements Session
 
     /**
      * Get the value of a given key and then forget it.
-	 * 获取给定键的值，然后忘记它。
+	 * 得到给定键的值，然后忘记它。
      *
      * @param  string  $key
      * @param  string|null  $default
@@ -268,10 +268,10 @@ class Store implements Session
 
     /**
      * Get the requested item from the flashed input array.
-	 * 从闪过的输入数组中获取请求的项
+	 * 得到请求的项从闪过的输入数组中
      *
      * @param  string|null  $key
-     * @param  mixed   $default
+     * @param  mixed  $default
      * @return mixed
      */
     public function getOldInput($key = null, $default = null)
@@ -296,7 +296,7 @@ class Store implements Session
 	 * 在会话中放入一个键/值对或键/值对数组
      *
      * @param  string|array  $key
-     * @param  mixed       $value
+     * @param  mixed  $value
      * @return void
      */
     public function put($key, $value = null)
@@ -334,7 +334,7 @@ class Store implements Session
 	 * 将值压入会话数组
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return void
      */
     public function push($key, $value)
@@ -379,7 +379,7 @@ class Store implements Session
 	 * 将一个键/值对Flash到会话中
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return void
      */
     public function flash(string $key, $value = true)
@@ -395,8 +395,8 @@ class Store implements Session
      * Flash a key / value pair to the session for immediate use.
 	 * 将一个键/值对保存到会话中以便立即使用
      *
-     * @param  string $key
-     * @param  mixed $value
+     * @param  string  $key
+     * @param  mixed  $value
      * @return void
      */
     public function now($key, $value)
@@ -485,7 +485,7 @@ class Store implements Session
 
     /**
      * Remove one or many items from the session.
-	 * 从会话中删除一个或多个项目
+	 * 从会话中删除一个或多个项目。
      *
      * @param  string|array  $keys
      * @return void
@@ -521,7 +521,7 @@ class Store implements Session
 
     /**
      * Generate a new session identifier.
-	 * 生成一个新的会话标识符
+	 * 生成新的会话标识符
      *
      * @param  bool  $destroy
      * @return bool
@@ -535,7 +535,7 @@ class Store implements Session
 
     /**
      * Generate a new session ID for the session.
-	 * 为会话生成一个新的会话ID
+	 * 生成一个新的会话ID为会话
      *
      * @param  bool  $destroy
      * @return bool
@@ -566,7 +566,7 @@ class Store implements Session
 
     /**
      * Get the name of the session.
-	 * 获取会话的名称
+	 * 得到会话的名称
      *
      * @return string
      */
@@ -589,7 +589,7 @@ class Store implements Session
 
     /**
      * Get the current session ID.
-	 * 获取当前会话ID
+	 * 得到当前会话ID
      *
      * @return string
      */
@@ -624,7 +624,7 @@ class Store implements Session
 
     /**
      * Get a new, random session ID.
-	 * 获取一个新的、随机的会话ID。
+	 * 得到一个新的随机的会话ID
      *
      * @return string
      */
@@ -635,7 +635,7 @@ class Store implements Session
 
     /**
      * Set the existence of the session on the handler if applicable.
-	 * 如果适用，在处理程序上设置会话的存在性。
+	 * 如果适用，设置会话的存在性在处理程序上。
      *
      * @param  bool  $value
      * @return void
@@ -649,7 +649,7 @@ class Store implements Session
 
     /**
      * Get the CSRF token value.
-	 * 获取CSRF令牌值
+	 * 得到CSRF令牌值
      *
      * @return string
      */
@@ -671,7 +671,7 @@ class Store implements Session
 
     /**
      * Get the previous URL from the session.
-	 * 从会话中获取前一个URL
+	 * 得到前一个URL从会话中
      *
      * @return string|null
      */
@@ -682,7 +682,7 @@ class Store implements Session
 
     /**
      * Set the "previous" URL in the session.
-	 * 设置会话中的“前一个”URL
+	 * 设置会话中的"前一个"URL
      *
      * @param  string  $url
      * @return void
@@ -694,7 +694,7 @@ class Store implements Session
 
     /**
      * Get the underlying session handler implementation.
-	 * 获取底层会话处理程序实现
+	 * 得到底层会话处理程序实现
      *
      * @return \SessionHandlerInterface
      */
@@ -716,7 +716,7 @@ class Store implements Session
 
     /**
      * Set the request on the handler instance.
-	 * 在处理程序实例上设置请求
+	 * 设置请求在处理程序实例上
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void

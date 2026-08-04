@@ -1,6 +1,6 @@
 <?php
 /**
- * NunoMaduro，碰撞，Writer
+ * NunoMaduro，冲突，Writer
  */
 
 /**

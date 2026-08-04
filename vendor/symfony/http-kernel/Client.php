@@ -25,7 +25,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Client simulates a browser and makes requests to an HttpKernel instance.
- * 客户机模拟浏览器并向HttpKernel实例请求请求。
  *
  * @method Request  getRequest()  A Request instance
  * @method Response getResponse() A Response instance

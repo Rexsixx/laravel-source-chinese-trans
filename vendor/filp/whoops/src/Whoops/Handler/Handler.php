@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，处理者，处理器
+ * Whoops，处理程序，Handler
  */
 
 /**
@@ -10,12 +10,12 @@
 
 namespace Whoops\Handler;
 
-use Whoops\Inspector\InspectorInterface;
+use Whoops\Exception\Inspector;
 use Whoops\RunInterface;
 
 /**
  * Abstract implementation of a Handler.
- * 处理程序的抽象实现。
+ * 一个处理程序的抽象实现。
  */
 abstract class Handler implements HandlerInterface
 {
@@ -41,7 +41,7 @@ abstract class Handler implements HandlerInterface
     private $run;
 
     /**
-     * @var InspectorInterface $inspector
+     * @var Inspector $inspector
      */
     private $inspector;
 
@@ -67,15 +67,15 @@ abstract class Handler implements HandlerInterface
     }
 
     /**
-     * @param InspectorInterface $inspector
+     * @param Inspector $inspector
      */
-    public function setInspector(InspectorInterface $inspector)
+    public function setInspector(Inspector $inspector)
     {
         $this->inspector = $inspector;
     }
 
     /**
-     * @return InspectorInterface
+     * @return Inspector
      */
     protected function getInspector()
     {

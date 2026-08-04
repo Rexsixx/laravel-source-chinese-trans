@@ -1,22 +1,41 @@
 <?php
 /**
- * Illuminate，支持，管理程序
+ * 支持，管理抽象类
  */
 
 namespace Illuminate\Support;
 
 use Closure;
+use Illuminate\Contracts\Container\Container;
 use InvalidArgumentException;
 
 abstract class Manager
 {
     /**
-     * The application instance.
-	 * 程序实例
+     * The container instance.
+	 * 容器实例
      *
-     * @var \Illuminate\Contracts\Foundation\Application
+     * @var \Illuminate\Contracts\Container\Container
+     */
+    protected $container;
+
+    /**
+     * The container instance.
+	 * 容器实例
+     *
+     * @var \Illuminate\Contracts\Container\Container
+     *
+     * @deprecated Use the $container property instead.
      */
     protected $app;
+
+    /**
+     * The configuration repository instance.
+	 * 配置存储库实例
+     *
+     * @var \Illuminate\Contracts\Config\Repository
+     */
+    protected $config;
 
     /**
      * The registered custom driver creators.
@@ -28,7 +47,7 @@ abstract class Manager
 
     /**
      * The array of created "drivers".
-	 * 已创建的“驱动程序”数组
+	 * 已创建的"驱动程序"数组
      *
      * @var array
      */
@@ -36,19 +55,21 @@ abstract class Manager
 
     /**
      * Create a new manager instance.
-	 * 创建一个新的管理器实例
+	 * 创建新的管理实例
      *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
-    public function __construct($app)
+    public function __construct(Container $container)
     {
-        $this->app = $app;
+        $this->app = $container;
+        $this->container = $container;
+        $this->config = $container->make('config');
     }
 
     /**
      * Get the default driver name.
-	 * 获取默认驱动程序名称
+	 * 得到默认驱动名称
      *
      * @return string
      */
@@ -56,7 +77,7 @@ abstract class Manager
 
     /**
      * Get a driver instance.
-	 * 获取驱动程序实例
+	 * 得到驱动实例
      *
      * @param  string  $driver
      * @return mixed
@@ -76,8 +97,8 @@ abstract class Manager
         // If the given driver has not been created before, we will create the instances
         // here and cache it so we can return it next time very quickly. If there is
         // already a driver created by this name, we'll just return that instance.
-		// 如果给定的驱动程序之前尚未创建，我们将在此处创建这些实例并对其进行缓存，这样下次就能很快地返回该驱动程序了。
-		// 如果已经存在以该名称创建的驱动程序，那么我们将直接返回该驱动程序实例。
+		// 如果给定的驱动程序以前没有创建过，我们将在这里创建实例并缓存它，这样我们下次就可以很快地返回它。
+		// 如果已经有一个以此名称创建的驱动程序，我们将只返回该实例。
         if (! isset($this->drivers[$driver])) {
             $this->drivers[$driver] = $this->createDriver($driver);
         }
@@ -87,7 +108,7 @@ abstract class Manager
 
     /**
      * Create a new driver instance.
-	 * 创建一个新的驱动程序实例
+	 * 创建新的驱动实例
      *
      * @param  string  $driver
      * @return mixed
@@ -99,9 +120,9 @@ abstract class Manager
         // First, we will determine if a custom driver creator exists for the given driver and
         // if it does not we will check for a creator method for the driver. Custom creator
         // callbacks allow developers to build their own "drivers" easily using Closures.
-		// 首先，我们将确定给定的驱动程序是否有自定义驱动程序创建器。
-		// 如果没有，我们将检查该驱动程序是否存在创建器方法。
-		// 自定义创建器回调允许开发人员使用闭包轻松构建自己的“驱动程序”。
+		// 首先，我们将确定给定驱动程序是否存在自定义驱动程序创建者，
+		// 如果不存在，我们将检查驱动程序的创建者方法。
+		// 自定义创建者回调允许开发人员使用闭包轻松构建自己的"驱动程序"。
         if (isset($this->customCreators[$driver])) {
             return $this->callCustomCreator($driver);
         } else {
@@ -111,26 +132,27 @@ abstract class Manager
                 return $this->$method();
             }
         }
+
         throw new InvalidArgumentException("Driver [$driver] not supported.");
     }
 
     /**
      * Call a custom driver creator.
-	 * 调用自定义驱动程序创建者
+	 * 调用自定义驱动创建者
      *
      * @param  string  $driver
      * @return mixed
      */
     protected function callCustomCreator($driver)
     {
-        return $this->customCreators[$driver]($this->app);
+        return $this->customCreators[$driver]($this->container);
     }
 
     /**
      * Register a custom driver creator Closure.
-	 * 注册自定义驱动程序创建器Closure
+	 * 注册一个自定义驱动创建者闭包
      *
-     * @param  string    $driver
+     * @param  string  $driver
      * @param  \Closure  $callback
      * @return $this
      */
@@ -143,7 +165,7 @@ abstract class Manager
 
     /**
      * Get all of the created "drivers".
-	 * 获取所有创建的“驱动程序”
+	 * 得到所有创建者"驱动"
      *
      * @return array
      */
@@ -154,10 +176,10 @@ abstract class Manager
 
     /**
      * Dynamically call the default driver instance.
-	 * 动态调用默认驱动程序实例
+	 * 动态调取默认驱动实例
      *
      * @param  string  $method
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return mixed
      */
     public function __call($method, $parameters)

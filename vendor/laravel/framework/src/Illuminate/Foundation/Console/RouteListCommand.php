@@ -1,16 +1,16 @@
 <?php
 /**
- * Illuminate，基础，控制台，路由列表命令
+ * 基础，路由列表命令
  */
 
 namespace Illuminate\Foundation\Console;
 
 use Closure;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
+use Illuminate\Console\Command;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
-use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 class RouteListCommand extends Command
@@ -33,7 +33,7 @@ class RouteListCommand extends Command
 
     /**
      * The router instance.
-	 * 路由器实例
+	 * 路由实例
      *
      * @var \Illuminate\Routing\Router
      */
@@ -41,7 +41,7 @@ class RouteListCommand extends Command
 
     /**
      * The table headers for the command.
-	 * 命令的表头
+	 * 命令表头
      *
      * @var array
      */
@@ -49,7 +49,7 @@ class RouteListCommand extends Command
 
     /**
      * The columns to display when using the "compact" flag.
-	 * 使用“compact”标志时要显示的列
+	 * 使用"compact"标志时要显示的列
      *
      * @var array
      */
@@ -71,7 +71,7 @@ class RouteListCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -90,7 +90,7 @@ class RouteListCommand extends Command
 
     /**
      * Compile the routes into a displayable format.
-	 * 将路由编译成可显示的格式
+	 * 编译路由成可显示的格式
      *
      * @return array
      */
@@ -113,7 +113,7 @@ class RouteListCommand extends Command
 
     /**
      * Get the route information for a given route.
-	 * 获取给定路线的路线信息
+	 * 得到给定路由的路由信息
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return array
@@ -132,7 +132,7 @@ class RouteListCommand extends Command
 
     /**
      * Sort the routes by a given element.
-	 * 按给定元素对路由进行排序
+	 * 排序路由按给定元素
      *
      * @param  string  $sort
      * @param  array  $routes
@@ -147,7 +147,7 @@ class RouteListCommand extends Command
 
     /**
      * Remove unnecessary columns from the routes.
-	 * 从路由中删除不必要的列
+	 * 删除不必要的列从路由中
      *
      * @param  array  $routes
      * @return array
@@ -161,7 +161,7 @@ class RouteListCommand extends Command
 
     /**
      * Display the route information on the console.
-	 * 在控制台中显示路由信息
+	 * 显示路由信息在控制台中
      *
      * @param  array  $routes
      * @return void
@@ -179,7 +179,7 @@ class RouteListCommand extends Command
 
     /**
      * Get before filters.
-	 * 在过滤器之前获取
+	 * 得到过滤器前
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return string
@@ -211,7 +211,7 @@ class RouteListCommand extends Command
 
     /**
      * Get the table headers for the visible columns.
-	 * 获取可见列的表头
+	 * 得到可见列的表头
      *
      * @return array
      */
@@ -222,7 +222,7 @@ class RouteListCommand extends Command
 
     /**
      * Get the column names to show (lowercase table headers).
-	 * 获取要显示的列名（小写表头）
+	 * 得到要显示的列名(小写表头)
      *
      * @return array
      */
@@ -265,7 +265,7 @@ class RouteListCommand extends Command
 
     /**
      * Get the console command options.
-	 * 获取控制台命令选项
+	 * 得到控制台命令选项
      *
      * @return array
      */

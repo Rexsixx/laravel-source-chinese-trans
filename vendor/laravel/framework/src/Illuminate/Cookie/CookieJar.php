@@ -1,15 +1,15 @@
 <?php
 /**
- * Illuminate，Cookie，Cookie Jar
+ * COOKIE，CookieJar
  */
 
 namespace Illuminate\Cookie;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Traits\Macroable;
-use Illuminate\Support\InteractsWithTime;
-use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Contracts\Cookie\QueueingFactory as JarContract;
+use Illuminate\Support\Arr;
+use Illuminate\Support\InteractsWithTime;
+use Illuminate\Support\Traits\Macroable;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class CookieJar implements JarContract
 {
@@ -17,7 +17,7 @@ class CookieJar implements JarContract
 
     /**
      * The default path (if specified).
-	 * 默认路径（如果指定）
+	 * 默认路径
      *
      * @var string
      */
@@ -25,7 +25,7 @@ class CookieJar implements JarContract
 
     /**
      * The default domain (if specified).
-	 * 默认域（如果指定）
+	 * 默认域名
      *
      * @var string
      */
@@ -33,7 +33,7 @@ class CookieJar implements JarContract
 
     /**
      * The default secure setting (defaults to false).
-	 * 默认的安全设置（默认为false）
+	 * 默认安全设置
      *
      * @var bool
      */
@@ -41,7 +41,7 @@ class CookieJar implements JarContract
 
     /**
      * The default SameSite option (if specified).
-	 * 默认的SameSite选项（如果指定）
+	 * 默认的SameSite选项(如果指定)
      *
      * @var string
      */
@@ -49,7 +49,7 @@ class CookieJar implements JarContract
 
     /**
      * All of the cookies queued for sending.
-	 * 所有排队等待发送的cookie
+	 * 所以cookie队列
      *
      * @var \Symfony\Component\HttpFoundation\Cookie[]
      */
@@ -57,16 +57,16 @@ class CookieJar implements JarContract
 
     /**
      * Create a new cookie instance.
-	 * 创建一个新的cookie实例
+	 * 创建新的cookie实例
      *
-     * @param  string       $name
-     * @param  string       $value
-     * @param  int          $minutes
+     * @param  string  $name
+     * @param  string  $value
+     * @param  int  $minutes
      * @param  string|null  $path
      * @param  string|null  $domain
-     * @param  bool|null    $secure
-     * @param  bool         $httpOnly
-     * @param  bool         $raw
+     * @param  bool|null  $secure
+     * @param  bool  $httpOnly
+     * @param  bool  $raw
      * @param  string|null  $sameSite
      * @return \Symfony\Component\HttpFoundation\Cookie
      */
@@ -81,15 +81,15 @@ class CookieJar implements JarContract
 
     /**
      * Create a cookie that lasts "forever" (five years).
-	 * 做一块“永远”（5年）的cookie
+	 * 创建一个cookie永久
      *
-     * @param  string       $name
-     * @param  string       $value
+     * @param  string  $name
+     * @param  string  $value
      * @param  string|null  $path
      * @param  string|null  $domain
-     * @param  bool|null    $secure
-     * @param  bool         $httpOnly
-     * @param  bool         $raw
+     * @param  bool|null  $secure
+     * @param  bool  $httpOnly
+     * @param  bool  $raw
      * @param  string|null  $sameSite
      * @return \Symfony\Component\HttpFoundation\Cookie
      */
@@ -100,7 +100,7 @@ class CookieJar implements JarContract
 
     /**
      * Expire the given cookie.
-	 * 使给定的cookie过期
+	 * cookie超时
      *
      * @param  string  $name
      * @param  string|null  $path
@@ -114,27 +114,35 @@ class CookieJar implements JarContract
 
     /**
      * Determine if a cookie has been queued.
-	 * 确定cookie是否已排队
+	 * 确定cookie是否已经队列
      *
      * @param  string  $key
+     * @param  string|null  $path
      * @return bool
      */
-    public function hasQueued($key)
+    public function hasQueued($key, $path = null)
     {
-        return ! is_null($this->queued($key));
+        return ! is_null($this->queued($key, null, $path));
     }
 
     /**
      * Get a queued cookie instance.
-	 * 获取一个排队的cookie实例
+	 * 得到一个队列实例
      *
      * @param  string  $key
-     * @param  mixed   $default
+     * @param  mixed  $default
+     * @param  string|null  $path
      * @return \Symfony\Component\HttpFoundation\Cookie
      */
-    public function queued($key, $default = null)
+    public function queued($key, $default = null, $path = null)
     {
-        return Arr::get($this->queued, $key, $default);
+        $queued = Arr::get($this->queued, $key, $default);
+
+        if ($path === null) {
+            return Arr::last($queued, null, $default);
+        }
+
+        return Arr::get($queued, $path, $default);
     }
 
     /**
@@ -149,31 +157,46 @@ class CookieJar implements JarContract
         if (head($parameters) instanceof Cookie) {
             $cookie = head($parameters);
         } else {
-            $cookie = call_user_func_array([$this, 'make'], $parameters);
+            $cookie = $this->make(...array_values($parameters));
         }
 
-        $this->queued[$cookie->getName()] = $cookie;
+        if (! isset($this->queued[$cookie->getName()])) {
+            $this->queued[$cookie->getName()] = [];
+        }
+
+        $this->queued[$cookie->getName()][$cookie->getPath()] = $cookie;
     }
 
     /**
      * Remove a cookie from the queue.
-	 * 从队列中删除一个cookie
+	 * 移除一个cookie从队列
      *
      * @param  string  $name
+     * @param  string|null  $path
      * @return void
      */
-    public function unqueue($name)
+    public function unqueue($name, $path = null)
     {
-        unset($this->queued[$name]);
+        if ($path === null) {
+            unset($this->queued[$name]);
+
+            return;
+        }
+
+        unset($this->queued[$name][$path]);
+
+        if (empty($this->queued[$name])) {
+            unset($this->queued[$name]);
+        }
     }
 
     /**
      * Get the path and domain, or the default values.
-	 * 获取路径和域，或默认值。
+	 * 得到路径和域，或默认值
      *
-     * @param  string    $path
-     * @param  string    $domain
-     * @param  bool|null $secure
+     * @param  string  $path
+     * @param  string  $domain
+     * @param  bool|null  $secure
      * @param  string|null  $sameSite
      * @return array
      */
@@ -184,11 +207,11 @@ class CookieJar implements JarContract
 
     /**
      * Set the default path and domain for the jar.
-	 * 为jar设置默认路径和域
+	 * 设置默认路径和域为jar
      *
      * @param  string  $path
      * @param  string  $domain
-     * @param  bool    $secure
+     * @param  bool  $secure
      * @param  string|null  $sameSite
      * @return $this
      */
@@ -201,12 +224,12 @@ class CookieJar implements JarContract
 
     /**
      * Get the cookies which have been queued for the next request.
-	 * 获取已为下一个请求排队的cookie
+	 * 得到已为下一个请求排队的cookie
      *
      * @return \Symfony\Component\HttpFoundation\Cookie[]
      */
     public function getQueuedCookies()
     {
-        return $this->queued;
+        return Arr::flatten($this->queued);
     }
 }

@@ -1,18 +1,19 @@
 <?php
 /**
- * Illuminate，队列，控制台，工作线程命令
+ * 队列，控制台，执行命令
  */
 
 namespace Illuminate\Queue\Console;
 
-use Illuminate\Queue\Worker;
-use Illuminate\Support\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Queue\Job;
-use Illuminate\Queue\WorkerOptions;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Queue\Worker;
+use Illuminate\Queue\WorkerOptions;
+use Illuminate\Support\Carbon;
 
 class WorkCommand extends Command
 {
@@ -33,11 +34,11 @@ class WorkCommand extends Command
                             {--memory=128 : The memory limit in megabytes}
                             {--sleep=3 : Number of seconds to sleep when no job is available}
                             {--timeout=60 : The number of seconds a child process can run}
-                            {--tries=0 : Number of times to attempt a job before logging it failed}';
+                            {--tries=1 : Number of times to attempt a job before logging it failed}';
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -45,29 +46,39 @@ class WorkCommand extends Command
 
     /**
      * The queue worker instance.
-	 * 队列工作程序实例
+	 * 队列工作实例
      *
      * @var \Illuminate\Queue\Worker
      */
     protected $worker;
 
     /**
+     * The cache store implementation.
+	 * 缓存存储实现
+     *
+     * @var \Illuminate\Contracts\Cache\Repository
+     */
+    protected $cache;
+
+    /**
      * Create a new queue work command.
-	 * 创建一个新的队列工作命令
+	 * 创建新的队列工作命令
      *
      * @param  \Illuminate\Queue\Worker  $worker
+     * @param  \Illuminate\Contracts\Cache\Repository  $cache
      * @return void
      */
-    public function __construct(Worker $worker)
+    public function __construct(Worker $worker, Cache $cache)
     {
         parent::__construct();
 
+        $this->cache = $cache;
         $this->worker = $worker;
     }
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -80,8 +91,8 @@ class WorkCommand extends Command
         // We'll listen to the processed and failed events so we can write information
         // to the console as jobs are processed, which will let the developer watch
         // which jobs are coming through a queue and be informed on its progress.
-		// 我们将监听处理过程中的事件以及失败事件，这样在处理任务的过程中就可以将相关信息写入控制台，
-		// 这样开发人员就能查看哪些任务正通过队列流转，并能了解其进展情况。
+		// 我们将监听已处理和失败的事件，以便在处理作业时将信息写入控制台，
+		// 这将让开发人员观察哪些作业正在通过队列，并了解其进度。
         $this->listenForEvents();
 
         $connection = $this->argument('connection')
@@ -90,8 +101,8 @@ class WorkCommand extends Command
         // We need to get the right queue for the connection which is set in the queue
         // configuration file for the application. We will pull it based on the set
         // connection being run for the queue operation currently being executed.
-		// 我们需要根据应用程序的队列配置文件中所设定的正确队列来建立连接。
-		// 我们将根据当前正在执行的队列操作所设定的连接条件来进行操作。
+		// 我们需要为应用程序的队列配置文件中设置的连接获取正确的队列。
+		// 我们将根据当前正在执行的队列操作正在运行的集合连接来拉取它。
         $queue = $this->getQueue($connection);
 
         $this->runWorker(
@@ -101,7 +112,7 @@ class WorkCommand extends Command
 
     /**
      * Run the worker instance.
-	 * 运行worker实例
+	 * 运行执行者实例
      *
      * @param  string  $connection
      * @param  string  $queue
@@ -109,7 +120,7 @@ class WorkCommand extends Command
      */
     protected function runWorker($connection, $queue)
     {
-        $this->worker->setCache($this->laravel['cache']->driver());
+        $this->worker->setCache($this->cache);
 
         return $this->worker->{$this->option('once') ? 'runNextJob' : 'daemon'}(
             $connection, $queue, $this->gatherWorkerOptions()
@@ -118,7 +129,7 @@ class WorkCommand extends Command
 
     /**
      * Gather all of the queue worker options as a single object.
-	 * 将所有队列辅助器选项收集为单个对象
+	 * 收集所有队列辅助器选项为单个对象
      *
      * @return \Illuminate\Queue\WorkerOptions
      */
@@ -157,10 +168,10 @@ class WorkCommand extends Command
 
     /**
      * Write the status output for the queue worker.
-	 * 为队列工作器写入状态输出
+	 * 写入状态输出为队列工作器
      *
      * @param  \Illuminate\Contracts\Queue\Job  $job
-     * @param  string $status
+     * @param  string  $status
      * @return void
      */
     protected function writeOutput(Job $job, $status)
@@ -211,7 +222,7 @@ class WorkCommand extends Command
 
     /**
      * Get the queue name for the worker.
-	 * 获取工作线程的队列名称
+	 * 得到工作线程的队列名称
      *
      * @param  string  $connection
      * @return string
@@ -225,7 +236,7 @@ class WorkCommand extends Command
 
     /**
      * Determine if the worker should run in maintenance mode.
-	 * 确定线程是否应该在维护模式下运行
+	 * 确定执行者是否应该在维护模式下运行
      *
      * @return bool
      */

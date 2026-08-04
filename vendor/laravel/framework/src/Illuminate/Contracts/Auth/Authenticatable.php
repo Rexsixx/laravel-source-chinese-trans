@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，认证，可认证的
+ * 契约，可认证接口
  */
 
 namespace Illuminate\Contracts\Auth;
@@ -9,7 +9,7 @@ interface Authenticatable
 {
     /**
      * Get the name of the unique identifier for the user.
-	 * 获取用户的唯一标识符的名称
+	 * 得到用户的唯一标识符的名称
      *
      * @return string
      */
@@ -17,7 +17,7 @@ interface Authenticatable
 
     /**
      * Get the unique identifier for the user.
-	 * 获取用户的唯一标识符
+	 * 得到用户唯一标识符
      *
      * @return mixed
      */
@@ -25,7 +25,7 @@ interface Authenticatable
 
     /**
      * Get the password for the user.
-	 * 获取用户的密码
+	 * 得到用户密码
      *
      * @return string
      */
@@ -33,7 +33,7 @@ interface Authenticatable
 
     /**
      * Get the token value for the "remember me" session.
-	 * 获取“记住我”会话的令牌值
+	 * 得到"记住我"会话的令牌值
      *
      * @return string
      */
@@ -41,7 +41,7 @@ interface Authenticatable
 
     /**
      * Set the token value for the "remember me" session.
-	 * 设置“记住我”会话的令牌值
+	 * 设置"记住我"会话的令牌值
      *
      * @param  string  $value
      * @return void
@@ -50,7 +50,7 @@ interface Authenticatable
 
     /**
      * Get the column name for the "remember me" token.
-	 * 获取“记住我”令牌的列名
+	 * 得到"记住我"令牌的列名
      *
      * @return string
      */

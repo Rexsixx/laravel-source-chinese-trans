@@ -1,24 +1,24 @@
 <?php
 /**
- * Illuminate，路由选择，路由集合
+ * 路由，路由集合
  */
 
 namespace Illuminate\Routing;
 
-use Countable;
 use ArrayIterator;
-use IteratorAggregate;
-use Illuminate\Support\Arr;
+use Countable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Support\Arr;
+use IteratorAggregate;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class RouteCollection implements Countable, IteratorAggregate
 {
     /**
      * An array of the routes keyed by method.
-	 * 方法键值的路由数组
+	 * 路由键值数组
      *
      * @var array
      */
@@ -26,7 +26,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * A flattened array of all of the routes.
-	 * 所有路线的平面化排列
+	 * 所有路由
      *
      * @var array
      */
@@ -34,7 +34,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * A look-up table of routes by their names.
-	 * 按名称查找路由的表
+	 * 按名称查找路由表
      *
      * @var array
      */
@@ -50,7 +50,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Add a Route instance to the collection.
-	 * 向集合添加一个Route实例
+	 * 添加路由实例至集合
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return \Illuminate\Routing\Route
@@ -66,7 +66,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Add the given route to the arrays of routes.
-	 * 将给定的路由添加到路由数组中
+	 * 添加路由至给定的路由数组中
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return void
@@ -84,7 +84,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Add the route to any look-up tables if necessary.
-	 * 如有必要，将该路由添加到任何查找表中。
+	 * 将该路由添加到任何查找表中如有必要
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return void
@@ -94,8 +94,8 @@ class RouteCollection implements Countable, IteratorAggregate
         // If the route has a name, we will add it to the name look-up table so that we
         // will quickly be able to find any route associate with a name and not have
         // to iterate through every route every time we need to perform a look-up.
-		// 如果该路由有名称，我们将将其添加到名称查找表中，
-		// 这样我们就能快速找到与某个名称相关的任何路由，而无需每次进行查找时都逐一检查所有路由。
+		// 如果路由有一个名称，我们会将其添加到名称查找表中，这样我们就可以快速找到与名称关联的任何路由，
+		// 而不必每次需要执行查找时都迭代每条路由。
         if ($name = $route->getName()) {
             $this->nameList[$name] = $route;
         }
@@ -103,8 +103,8 @@ class RouteCollection implements Countable, IteratorAggregate
         // When the route is routing to a controller we will also store the action that
         // is used by the route. This will let us reverse route to controllers while
         // processing a request and easily generate URLs to the given controllers.
-		// 当路由指向控制器时，我们还会存储该路由所使用的操作。
-		// 这将使我们在处理请求时能够反向调用控制器，并且能够轻松生成指向指定控制器的 URL。
+		// 当路由路由到控制器时，我们还将存储路由使用的操作。
+		// 这将使我们在处理请求时反向路由到控制器，并轻松生成指向给定控制器的URL。
         $action = $route->getAction();
 
         if (isset($action['controller'])) {
@@ -127,10 +127,9 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Refresh the name look-up table.
-	 * 刷新名称查找表。
+	 * 刷新名称查找表
      *
      * This is done in case any names are fluently defined or if routes are overwritten.
-	 * 这样做是为了防止任何名称被流利地定义或路由被覆盖。
      *
      * @return void
      */
@@ -147,10 +146,9 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Refresh the action look-up table.
-	 * 刷新操作查找表。
+	 * 刷新操作查找表
      *
      * This is done in case any actions are overwritten with new controllers.
-	 * 这样做是为了防止任何操作被新控制器覆盖。
      *
      * @return void
      */
@@ -181,9 +179,8 @@ class RouteCollection implements Countable, IteratorAggregate
         // First, we will see if we can find a matching route for this current request
         // method. If we can, great, we can just return it so that it can be called
         // by the consumer. Otherwise we will check for routes with another verb.
-		// 首先，我们要看看能否为当前的请求方法找到一个匹配的路径。
-		// 如果可以的话，那太好了，我们可以直接将其返回，以便消费者能够调用它。
-		// 否则，我们将使用另一个动词来检查路径。
+		// 首先，我们将看看是否可以为当前的请求方法找到匹配的路由。
+		// 如果可以的话，很好，我们可以把它退回，这样消费者就可以调用它了。否则，我们将使用另一个动词检查路由。
         $route = $this->matchAgainstRoutes($routes, $request);
 
         if (! is_null($route)) {
@@ -193,8 +190,8 @@ class RouteCollection implements Countable, IteratorAggregate
         // If no route was found we will now check if a matching route is specified by
         // another HTTP verb. If it is we will need to throw a MethodNotAllowed and
         // inform the user agent of which HTTP verb it should use for this route.
-		// 如果未找到任何匹配的路由，那么接下来我们将检查是否由其他 HTTP 动词指定了一个相匹配的路由。
-		// 如果是这样的话，我们就需要抛出一个“方法不允许”异常，并告知用户代理对于此路径应使用何种 HTTP 动词。
+		// 如果没有找到路由，我们现在将检查另一个HTTP谓词是否指定了匹配的路由。
+		// 如果是这样，我们需要抛出一个MethodNotAllowed，并通知用户代理它应该为此路由使用哪个HTTP动词。
         $others = $this->checkForAlternateVerbs($request);
 
         if (count($others) > 0) {
@@ -226,7 +223,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Determine if any routes match on another HTTP verb.
-	 * 确定是否有任何路由与另一个HTTP谓词匹配
+	 * 确定是否有任何路由与另一个HTTP动作匹配
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
@@ -238,8 +235,8 @@ class RouteCollection implements Countable, IteratorAggregate
         // Here we will spin through all verbs except for the current request verb and
         // check to see if any routes respond to them. If they do, we will return a
         // proper error response with the correct headers on the response string.
-		// 接下来，我们将遍历所有动词（除了当前请求所使用的动词之外），并检查是否有任何路由能够响应这些动词。
-		// 如果他们这样做的话，我们将返回一个包含正确头部信息的恰当错误响应，并将其附在响应字符串中。
+		// 在这里，我们将浏览除当前请求动词之外的所有动词，并检查是否有任何路由对其做出响应。
+		// 如果他们这样做，我们将返回一个正确的错误响应，并在响应字符串中包含正确的标头。
         $others = [];
 
         foreach ($methods as $method) {
@@ -253,7 +250,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Get a route (if necessary) that responds when other available methods are present.
-	 * 获取一个路由（如果有必要），当存在其他可用方法时，它会做出响应。
+	 * 得到一个路由(如果有必要)，当存在其他可用方法时，它会做出响应。
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  array  $methods
@@ -274,7 +271,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Throw a method not allowed HTTP exception.
-	 * 抛出一个方法不允许HTTP异常
+	 * 抛出不允许方法HTTP异常
      *
      * @param  array  $others
      * @param  string  $method
@@ -296,7 +293,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Get routes from the collection by method.
-	 * 通过方法从集合中获取路由
+	 * 得到路由从集合中通过方法
      *
      * @param  string|null  $method
      * @return array
@@ -320,7 +317,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Get a route instance by its name.
-	 * 通过名称获取路由实例
+	 * 得到路由实例通过名称
      *
      * @param  string  $name
      * @return \Illuminate\Routing\Route|null
@@ -332,7 +329,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Get a route instance by its controller action.
-	 * 通过它的控制器动作获取一个路由实例
+	 * 得到一个路由实例从控制器动作
      *
      * @param  string  $action
      * @return \Illuminate\Routing\Route|null
@@ -344,7 +341,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Get all of the routes in the collection.
-	 * 获取集合中的所有路由
+	 * 得到集合中的所有路由
      *
      * @return array
      */
@@ -355,7 +352,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Get all of the routes keyed by their HTTP verb / method.
-	 * 获取所有由HTTP动词/方法指定的路由
+	 * 得到所有由HTTP动词/方法指定的路由
      *
      * @return array
      */
@@ -377,7 +374,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Get an iterator for the items.
-	 * 获取项的迭代器
+	 * 得到项的迭代器
      *
      * @return \ArrayIterator
      */
@@ -388,7 +385,7 @@ class RouteCollection implements Countable, IteratorAggregate
 
     /**
      * Count the number of items in the collection.
-	 * 计算集合中的项数
+	 * 计算集合中的数目
      *
      * @return int
      */

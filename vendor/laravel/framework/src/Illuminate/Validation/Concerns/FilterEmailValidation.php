@@ -1,23 +1,21 @@
 <?php
 /**
- * Illuminate，验证，问题，过滤邮件验证
+ * 验证，过滤邮件验证
  */
 
 namespace Illuminate\Validation\Concerns;
 
 use Egulias\EmailValidator\EmailLexer;
-use Egulias\EmailValidator\Warning\Warning;
-use Egulias\EmailValidator\Exception\InvalidEmail;
 use Egulias\EmailValidator\Validation\EmailValidation;
 
 class FilterEmailValidation implements EmailValidation
 {
     /**
      * Returns true if the given email is valid.
-	 * 如果给定的电子邮件有效，则返回true。
+	 * 返回true如果给定的电子邮件有效
      *
      * @param  string  $email
-     * @param  EmailLexer
+     * @param  \Egulias\EmailValidator\EmailLexer  $emailLexer
      * @return bool
      */
     public function isValid($email, EmailLexer $emailLexer)
@@ -29,7 +27,7 @@ class FilterEmailValidation implements EmailValidation
      * Returns the validation error.
 	 * 返回验证错误
      *
-     * @return InvalidEmail|null
+     * @return \Egulias\EmailValidator\Exception\InvalidEmail|null
      */
     public function getError()
     {
@@ -40,7 +38,7 @@ class FilterEmailValidation implements EmailValidation
      * Returns the validation warnings.
 	 * 返回验证警告
      *
-     * @return Warning[]
+     * @return \Egulias\EmailValidator\Warning\Warning[]
      */
     public function getWarnings()
     {

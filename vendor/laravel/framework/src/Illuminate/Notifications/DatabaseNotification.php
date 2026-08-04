@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，通知，数据库通知
+ * 通知，数据库通知
  */
 
 namespace Illuminate\Notifications;
@@ -10,8 +10,16 @@ use Illuminate\Database\Eloquent\Model;
 class DatabaseNotification extends Model
 {
     /**
+     * The "type" of the primary key ID.
+	 * 主键ID的"类型"
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
      * Indicates if the IDs are auto-incrementing.
-	 * 指示id是否自动递增
+	 * 指明id是否自动递增
      *
      * @var bool
      */
@@ -46,7 +54,9 @@ class DatabaseNotification extends Model
 
     /**
      * Get the notifiable entity that the notification belongs to.
-	 * 获取通知所属的可通知实体
+	 * 得到通知所属的可通知实体
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function notifiable()
     {
@@ -55,7 +65,7 @@ class DatabaseNotification extends Model
 
     /**
      * Mark the notification as read.
-	 * 将通知标记为已读
+	 * 标记通知为已读
      *
      * @return void
      */
@@ -68,7 +78,7 @@ class DatabaseNotification extends Model
 
     /**
      * Mark the notification as unread.
-	 * 将通知标记为未读
+	 * 标记通知为未读
      *
      * @return void
      */
@@ -81,7 +91,7 @@ class DatabaseNotification extends Model
 
     /**
      * Determine if a notification has been read.
-	 * 确定是否已读取通知
+	 * 确定是否通知已读取
      *
      * @return bool
      */
@@ -92,7 +102,7 @@ class DatabaseNotification extends Model
 
     /**
      * Determine if a notification has not been read.
-	 * 确定是否未读取通知
+	 * 确定是否通知未读取
      *
      * @return bool
      */
@@ -103,7 +113,7 @@ class DatabaseNotification extends Model
 
     /**
      * Create a new database notification collection instance.
-	 * 创建一个新的数据库通知集合实例
+	 * 创建新的数据库通知集合实例
      *
      * @param  array  $models
      * @return \Illuminate\Notifications\DatabaseNotificationCollection

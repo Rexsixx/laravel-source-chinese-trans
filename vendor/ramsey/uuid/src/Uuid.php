@@ -218,7 +218,6 @@ class Uuid implements UuidInterface
      * @return string
      * @link http://php.net/manual/en/class.jsonserializable.php
      */
-    #[ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->toString();

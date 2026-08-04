@@ -325,7 +325,6 @@ class DomainPart extends Parser
         $matchesIP  = array();
 
         // Extract IPv4 part from the end of the address-literal (if there is one)
-		// 从地址-文字的末尾提取IPv4部分(如果有的话)
         if (preg_match(
             '/\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/',
             $addressLiteral,

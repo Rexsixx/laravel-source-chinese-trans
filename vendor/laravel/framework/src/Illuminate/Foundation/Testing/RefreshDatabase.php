@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，刷新数据库
+ * 基础，刷新数据库
  */
 
 namespace Illuminate\Foundation\Testing;
@@ -11,7 +11,7 @@ trait RefreshDatabase
 {
     /**
      * Define hooks to migrate the database before and after each test.
-	 * 定义钩子，以便在每次测试之前和之后迁移数据库。
+	 * 定义钩子，以便在每次测试之前和之后迁移数据库
      *
      * @return void
      */
@@ -72,7 +72,7 @@ trait RefreshDatabase
 
     /**
      * Begin a database transaction on the testing database.
-	 * 在测试数据库上开始一个数据库事务
+	 * 开始一个数据库事务在测试数据库上
      *
      * @return void
      */

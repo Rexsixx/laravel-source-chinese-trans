@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，特性，单位
+ * Carbon，特性，边界
  */
 
 /**
@@ -20,12 +20,10 @@ use Carbon\CarbonInterval;
 use Carbon\Exceptions\UnitException;
 use Closure;
 use DateInterval;
-use DateMalformedStringException;
 use ReturnTypeWillChange;
 
 /**
  * Trait Units.
- * 特征单位。
  *
  * Add, subtract and set units.
  */
@@ -34,7 +32,6 @@ trait Units
     /**
      * Add seconds to the instance using timestamp. Positive $value travels
      * forward while negative $value travels into the past.
-	 * 使用时间戳为实例添加几秒钟。积极的价值价值前进,而负值的价值会流入过去。
      *
      * @param string $unit
      * @param int    $value
@@ -149,7 +146,6 @@ trait Units
 
     /**
      * Returns true if a property can be changed via setter.
-	 * 如果属性可以通过setter更改,则返回true。
      *
      * @param string $unit
      *
@@ -177,7 +173,6 @@ trait Units
 
     /**
      * Call native PHP DateTime/DateTimeImmutable add() method.
-	 * 调用本地PHP DateTime / datetimeimvariable add()方法
      *
      * @param DateInterval $interval
      *
@@ -205,7 +200,7 @@ trait Units
     public function add($unit, $value = 1, $overflow = null)
     {
         if (\is_string($unit) && \func_num_args() === 1) {
-            $unit = CarbonInterval::make($unit, [], true);
+            $unit = CarbonInterval::make($unit);
         }
 
         if ($unit instanceof CarbonConverterInterface) {
@@ -238,8 +233,6 @@ trait Units
      */
     public function addUnit($unit, $value = 1, $overflow = null)
     {
-        $originalArgs = \func_get_args();
-
         $date = $this;
 
         if (!is_numeric($value) || !(float) $value) {
@@ -312,21 +305,16 @@ trait Units
             $unit = 'second';
             $value = $second;
         }
+        $date = $date->modify("$value $unit");
 
-        try {
-            $date = $date->modify("$value $unit");
-
-            if (isset($timeString)) {
-                $date = $date->setTimeFromTimeString($timeString);
-            } elseif (isset($canOverflow, $day) && $canOverflow && $day !== $date->day) {
-                $date = $date->modify('last day of previous month');
-            }
-        } catch (DateMalformedStringException $ignoredException) { // @codeCoverageIgnore
-            $date = null; // @codeCoverageIgnore
+        if (isset($timeString)) {
+            $date = $date->setTimeFromTimeString($timeString);
+        } elseif (isset($canOverflow, $day) && $canOverflow && $day !== $date->day) {
+            $date = $date->modify('last day of previous month');
         }
 
         if (!$date) {
-            throw new UnitException('Unable to add unit '.var_export($originalArgs, true));
+            throw new UnitException('Unable to add unit '.var_export(\func_get_args(), true));
         }
 
         return $date;
@@ -375,7 +363,7 @@ trait Units
     public function sub($unit, $value = 1, $overflow = null)
     {
         if (\is_string($unit) && \func_num_args() === 1) {
-            $unit = CarbonInterval::make($unit, [], true);
+            $unit = CarbonInterval::make($unit);
         }
 
         if ($unit instanceof CarbonConverterInterface) {
@@ -411,7 +399,7 @@ trait Units
     public function subtract($unit, $value = 1, $overflow = null)
     {
         if (\is_string($unit) && \func_num_args() === 1) {
-            $unit = CarbonInterval::make($unit, [], true);
+            $unit = CarbonInterval::make($unit);
         }
 
         return $this->sub($unit, $value, $overflow);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，Http客户端，响应接口
+ * Symfony，契约，HTTP客户端，响应接口
  */
 
 /*
@@ -108,5 +108,5 @@ interface ResponseInterface
      * @return mixed An array of all available info, or one of them when $type is
      *               provided, or null when an unsupported type is requested
      */
-    public function getInfo(?string $type = null);
+    public function getInfo(string $type = null);
 }

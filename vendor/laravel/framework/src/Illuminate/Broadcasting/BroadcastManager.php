@@ -1,20 +1,21 @@
 <?php
 /**
- * Illuminate，广播，广播管理器
+ * 广播，广播管理，核心类
  */
 
 namespace Illuminate\Broadcasting;
 
 use Closure;
-use Pusher\Pusher;
-use Psr\Log\LoggerInterface;
-use InvalidArgumentException;
 use Illuminate\Broadcasting\Broadcasters\LogBroadcaster;
 use Illuminate\Broadcasting\Broadcasters\NullBroadcaster;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
-use Illuminate\Broadcasting\Broadcasters\RedisBroadcaster;
 use Illuminate\Broadcasting\Broadcasters\PusherBroadcaster;
+use Illuminate\Broadcasting\Broadcasters\RedisBroadcaster;
 use Illuminate\Contracts\Broadcasting\Factory as FactoryContract;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Contracts\Bus\Dispatcher as BusDispatcherContract;
+use InvalidArgumentException;
+use Psr\Log\LoggerInterface;
+use Pusher\Pusher;
 
 /**
  * @mixin \Illuminate\Contracts\Broadcasting\Broadcaster
@@ -23,7 +24,7 @@ class BroadcastManager implements FactoryContract
 {
     /**
      * The application instance.
-	 * 程序实例
+	 * 应用实例
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
@@ -31,7 +32,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * The array of resolved broadcast drivers.
-	 * 已解析的广播驱动程序数组
+	 * 已解析广播驱动
      *
      * @var array
      */
@@ -39,7 +40,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * The registered custom driver creators.
-	 * 注册的自定义驱动程序创建者
+	 * 已注册的驱动创建者
      *
      * @var array
      */
@@ -47,7 +48,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Create a new manager instance.
-	 * 创建一个新的管理器实例
+	 * 创建新的管理实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -82,7 +83,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Get the socket ID for the given request.
-	 * 获取给定请求的套接字ID
+	 * 得到请求的套接字ID
      *
      * @param  \Illuminate\Http\Request|null  $request
      * @return string|null
@@ -103,7 +104,7 @@ class BroadcastManager implements FactoryContract
 	 * 开始广播事件
      *
      * @param  mixed|null  $event
-     * @return \Illuminate\Broadcasting\PendingBroadcast|void
+     * @return \Illuminate\Broadcasting\PendingBroadcast
      */
     public function event($event = null)
     {
@@ -112,17 +113,15 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Queue the given event for broadcast.
-	 * 将给定的事件排队以进行广播
+	 * 排队给定事件以进行广播
      *
      * @param  mixed  $event
      * @return void
      */
     public function queue($event)
     {
-        $connection = $event instanceof ShouldBroadcastNow ? 'sync' : null;
-
-        if (is_null($connection) && isset($event->connection)) {
-            $connection = $event->connection;
+        if ($event instanceof ShouldBroadcastNow) {
+            return $this->app->make(BusDispatcherContract::class)->dispatchNow(new BroadcastEvent(clone $event));
         }
 
         $queue = null;
@@ -135,14 +134,14 @@ class BroadcastManager implements FactoryContract
             $queue = $event->queue;
         }
 
-        $this->app->make('queue')->connection($connection)->pushOn(
+        $this->app->make('queue')->connection($event->connection ?? null)->pushOn(
             $queue, new BroadcastEvent(clone $event)
         );
     }
 
     /**
      * Get a driver instance.
-	 * 获取驱动程序实例
+	 * 得到驱动实例
      *
      * @param  string|null  $driver
      * @return mixed
@@ -154,7 +153,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Get a driver instance.
-	 * 获取驱动程序实例
+	 * 得到驱动实例
      *
      * @param  string|null  $name
      * @return mixed
@@ -180,7 +179,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Resolve the given broadcaster.
-	 * 解析给定的广播器
+	 * 解析给定广播
      *
      * @param  string  $name
      * @return \Illuminate\Contracts\Broadcasting\Broadcaster
@@ -206,7 +205,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Call a custom driver creator.
-	 * 调用自定义驱动程序创建者
+	 * 调用自定义驱动创建者
      *
      * @param  array  $config
      * @return mixed
@@ -218,7 +217,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Create an instance of the driver.
-	 * 创建驱动程序的实例
+	 * 创建驱动实例
      *
      * @param  array  $config
      * @return \Illuminate\Contracts\Broadcasting\Broadcaster
@@ -239,7 +238,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Create an instance of the driver.
-	 * 创建驱动程序的实例
+	 * 创建驱动实例
      *
      * @param  array  $config
      * @return \Illuminate\Contracts\Broadcasting\Broadcaster
@@ -247,13 +246,14 @@ class BroadcastManager implements FactoryContract
     protected function createRedisDriver(array $config)
     {
         return new RedisBroadcaster(
-            $this->app->make('redis'), $config['connection'] ?? null
+            $this->app->make('redis'), $config['connection'] ?? null,
+            $this->app['config']->get('database.redis.options.prefix', '')
         );
     }
 
     /**
      * Create an instance of the driver.
-	 * 创建驱动程序的实例
+	 * 创建驱动实例
      *
      * @param  array  $config
      * @return \Illuminate\Contracts\Broadcasting\Broadcaster
@@ -267,7 +267,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Create an instance of the driver.
-	 * 创建驱动程序的实例
+	 * 创建驱动实例
      *
      * @param  array  $config
      * @return \Illuminate\Contracts\Broadcasting\Broadcaster
@@ -279,7 +279,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Get the connection configuration.
-	 * 获取连接配置
+	 * 得到连接配置
      *
      * @param  string  $name
      * @return array
@@ -295,7 +295,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Get the default driver name.
-	 * 获取默认驱动程序名称
+	 * 得到默认驱动名称
      *
      * @return string
      */
@@ -306,7 +306,7 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Set the default driver name.
-	 * 设置默认的驱动程序名称
+	 * 设置默认驱动名称
      *
      * @param  string  $name
      * @return void
@@ -318,9 +318,9 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Register a custom driver creator Closure.
-	 * 注册自定义驱动程序创建器Closure
+	 * 注册自定义驱动
      *
-     * @param  string    $driver
+     * @param  string  $driver
      * @param  \Closure  $callback
      * @return $this
      */
@@ -333,10 +333,10 @@ class BroadcastManager implements FactoryContract
 
     /**
      * Dynamically call the default driver instance.
-	 * 动态调用默认驱动程序实例
+	 * 动态调取默认驱动实例
      *
      * @param  string  $method
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return mixed
      */
     public function __call($method, $parameters)

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，依赖注入，添加控制台命令传递
+ * Symfony，组件，控制台，依赖注入组件，增加控制台命令通道
  */
 
 /*
@@ -24,7 +24,6 @@ use Symfony\Component\DependencyInjection\TypedReference;
 
 /**
  * Registers console commands.
- * 注册控制台命令
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */
@@ -59,7 +58,7 @@ class AddConsoleCommandPass implements CompilerPassInterface
                 if (!$r->isSubclassOf(Command::class)) {
                     throw new InvalidArgumentException(sprintf('The service "%s" tagged "%s" must be a subclass of "%s".', $id, $this->commandTag, Command::class));
                 }
-                $commandName = null !== $class::getDefaultName() ? str_replace('%', '%%', $class::getDefaultName()) : null;
+                $commandName = $class::getDefaultName();
             }
 
             if (null === $commandName) {

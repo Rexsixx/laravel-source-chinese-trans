@@ -1,18 +1,18 @@
 <?php
 /**
- * Illuminate，队列，失败的，数据库失败的作业提供程序
+ * 队列，失败，数据库失败作业提供者
  */
 
 namespace Illuminate\Queue\Failed;
 
-use Illuminate\Support\Facades\Date;
 use Illuminate\Database\ConnectionResolverInterface;
+use Illuminate\Support\Facades\Date;
 
 class DatabaseFailedJobProvider implements FailedJobProviderInterface
 {
     /**
      * The connection resolver implementation.
-	 * 连接解析器实现
+	 * 连接解析实现
      *
      * @var \Illuminate\Database\ConnectionResolverInterface
      */
@@ -20,7 +20,7 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * The database connection name.
-	 * 数据库连接名称
+	 * 数据库连接名
      *
      * @var string
      */
@@ -73,7 +73,7 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * Get a list of all of the failed jobs.
-	 * 获取所有失败任务的列表
+	 * 得到所有失败任务的列表
      *
      * @return array
      */
@@ -84,7 +84,7 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * Get a single failed job.
-	 * 找一份失败的作业
+	 * 得到单个失败的作业
      *
      * @param  mixed  $id
      * @return object|null
@@ -119,7 +119,7 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * Get a new query builder instance for the table.
-	 * 获取表的新查询生成器实例
+	 * 得到表的新查询生成器实例
      *
      * @return \Illuminate\Database\Query\Builder
      */

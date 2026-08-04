@@ -16,10 +16,8 @@ namespace Carbon\Traits;
 
 /**
  * Trait Week.
- * 特征周。
  *
  * week and ISO week number, year and count in year.
- * 周和ISO周数,年和年计数。
  *
  * Depends on the following properties:
  *

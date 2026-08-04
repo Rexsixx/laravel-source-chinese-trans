@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，电子邮件验证器，异常，Dot At Start
+ * Egulias，电子邮件验证器，异常，点开始
  */
 
 namespace Egulias\EmailValidator\Exception;

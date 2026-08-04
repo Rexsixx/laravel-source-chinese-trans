@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，控制台，忘记失败命令
+ * 队列，控制台，忘记失败命令
  */
 
 namespace Illuminate\Queue\Console;
@@ -19,7 +19,7 @@ class ForgetFailedCommand extends Command
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -27,7 +27,7 @@ class ForgetFailedCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */

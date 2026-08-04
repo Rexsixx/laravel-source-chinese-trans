@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，类型，字符串测试
- */
-
 namespace Hamcrest\Type;
 
 class IsStringTest extends \Hamcrest\AbstractMatcherTest

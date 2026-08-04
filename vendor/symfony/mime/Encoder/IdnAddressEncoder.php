@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Mime，编码器，Idn 地址编码器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\Mime\Encoder;
 
 /**
  * An IDN email address encoder.
- * 一个IDN电子邮件地址编码器。
  *
  * Encodes the domain part of an address using IDN. This is compatible will all
  * SMTP servers.
@@ -30,7 +26,6 @@ final class IdnAddressEncoder implements AddressEncoderInterface
 {
     /**
      * Encodes the domain part of an address using IDN.
-	 * 使用IDN编码地址的域部分
      */
     public function encodeString(string $address): string
     {

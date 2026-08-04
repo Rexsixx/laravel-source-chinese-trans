@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由选择，中间件，替代绑定
+ * 路由，中间件，替代绑定
  */
 
 namespace Illuminate\Routing\Middleware;
@@ -12,7 +12,7 @@ class SubstituteBindings
 {
     /**
      * The router instance.
-	 * 路由器实例
+	 * 路由实例
      *
      * @var \Illuminate\Contracts\Routing\Registrar
      */
@@ -20,7 +20,7 @@ class SubstituteBindings
 
     /**
      * Create a new bindings substitutor.
-	 * 创建一个新的绑定替代器
+	 * 创建新的绑定替代器
      *
      * @param  \Illuminate\Contracts\Routing\Registrar  $router
      * @return void

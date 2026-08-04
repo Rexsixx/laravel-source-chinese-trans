@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，验证，状态验证器接口
+ * 验证，存在验证接口
  */
 
 namespace Illuminate\Validation;
@@ -16,7 +16,7 @@ interface PresenceVerifierInterface
      * @param  string  $value
      * @param  int|null  $excludeId
      * @param  string|null  $idColumn
-     * @param  array   $extra
+     * @param  array  $extra
      * @return int
      */
     public function getCount($collection, $column, $value, $excludeId = null, $idColumn = null, array $extra = []);
@@ -27,8 +27,8 @@ interface PresenceVerifierInterface
      *
      * @param  string  $collection
      * @param  string  $column
-     * @param  array   $values
-     * @param  array   $extra
+     * @param  array  $values
+     * @param  array  $extra
      * @return int
      */
     public function getMultiCount($collection, $column, array $values, array $extra = []);

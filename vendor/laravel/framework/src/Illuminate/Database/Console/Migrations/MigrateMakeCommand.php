@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，数据库，控制台，迁移，迁移 Make命令
+ * 数据库，迁移执行命令
  */
 
 namespace Illuminate\Database\Console\Migrations;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Composer;
 use Illuminate\Database\Migrations\MigrationCreator;
+use Illuminate\Support\Composer;
+use Illuminate\Support\Str;
 
 class MigrateMakeCommand extends BaseCommand
 {
@@ -26,7 +26,7 @@ class MigrateMakeCommand extends BaseCommand
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -50,7 +50,7 @@ class MigrateMakeCommand extends BaseCommand
 
     /**
      * Create a new migration install command instance.
-	 * 创建一个新的迁移安装命令实例
+	 * 创建新的迁移安装命令实例
      *
      * @param  \Illuminate\Database\Migrations\MigrationCreator  $creator
      * @param  \Illuminate\Support\Composer  $composer
@@ -66,7 +66,7 @@ class MigrateMakeCommand extends BaseCommand
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -75,8 +75,8 @@ class MigrateMakeCommand extends BaseCommand
         // It's possible for the developer to specify the tables to modify in this
         // schema operation. The developer may also specify if this table needs
         // to be freshly created so we can create the appropriate migrations.
-		// 开发人员可以在此架构操作中指定要修改的表。
-		// 开发人员还可以指定是否需要重新创建此表，以便我们能够创建相应的迁移操作。
+		// 这将成为可能，开发人员可以在此指定要修改的表模式操作。
+		// 开发人员还可以指定此表是否需要，以便我们能够创建适当的迁移。
         $name = Str::snake(trim($this->input->getArgument('name')));
 
         $table = $this->input->getOption('table');
@@ -86,8 +86,8 @@ class MigrateMakeCommand extends BaseCommand
         // If no table was given as an option but a create option is given then we
         // will use the "create" option as the table name. This allows the devs
         // to pass a table name into this option as a short-cut for creating.
-		// 如果未给出表名选项，但提供了“创建”选项，那么我们将使用“创建”选项作为表名。
-		// 这使得开发人员能够将表名作为参数传递给此选项，从而简化了创建操作。
+		// 如果没有给出表作为选项，但给出了创建选项，那么我们将使用"create"选项作为表名。
+		// 这使得开发人员将表名传递到此选项中，作为创建的快捷方式。
         if (! $table && is_string($create)) {
             $table = $create;
 
@@ -97,8 +97,8 @@ class MigrateMakeCommand extends BaseCommand
         // Next, we will attempt to guess the table name if this the migration has
         // "create" in the name. This will allow us to provide a convenient way
         // of creating migrations that create new tables for the application.
-		// 接下来，如果迁移操作的名称中包含“创建”一词，我们将尝试猜测其对应的表名。
-		// 这将使我们能够提供一种便捷的方式来创建迁移操作，从而为应用程序创建新的表。
+		// 接下来，我们将尝试猜测表名，如果迁移有名称中的"create"。
+		// 这将使我们能够提供一种方便的方式创建迁移，为应用程序创建新表。
         if (! $table) {
             [$table, $create] = TableGuesser::guess($name);
         }
@@ -106,9 +106,8 @@ class MigrateMakeCommand extends BaseCommand
         // Now we are ready to write the migration out to disk. Once we've written
         // the migration out, we will dump-autoload for the entire framework to
         // make sure that the migrations are registered by the class loaders.
-		// 现在我们准备将迁移写入磁盘。
-		// 一旦我们完成了迁移工作，我们就会对整个框架进行“dump-autoload”操作，
-		// 以确保迁移信息能被类加载器正确识别并注册。
+		// 现在我们已经准备好迁移写入磁盘。
+		// 一旦我们写了迁移出去后，我们将把整个框架的自动加载转存到确保类加载器已注册迁移。
         $this->writeMigration($name, $table, $create);
 
         $this->composer->dumpAutoloads();
@@ -116,11 +115,11 @@ class MigrateMakeCommand extends BaseCommand
 
     /**
      * Write the migration file to disk.
-	 * 将迁移文件写入磁盘
+	 * 写迁移文件至磁盘
      *
      * @param  string  $name
      * @param  string  $table
-     * @param  bool    $create
+     * @param  bool  $create
      * @return string
      */
     protected function writeMigration($name, $table, $create)
@@ -138,7 +137,7 @@ class MigrateMakeCommand extends BaseCommand
 
     /**
      * Get migration path (either specified by '--path' option or default location).
-	 * 获取迁移路径（由‘——path’选项指定或默认位置）
+	 * 得到迁移路径(由'——path'选项指定或默认位置)
      *
      * @return string
      */
@@ -155,7 +154,7 @@ class MigrateMakeCommand extends BaseCommand
 
     /**
      * Determine if the given path(s) are pre-resolved "real" paths.
-	 * 确定给定的路径是否是预先解析的“真实”路径
+	 * 确定给定的路径是否是预先解析的"真实"路径
      *
      * @return bool
      */

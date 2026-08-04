@@ -1,51 +1,51 @@
 <?php
 /**
- * Illuminate，哈希算法，哈希管理员
+ * 哈希，哈希管理
  */
 
 namespace Illuminate\Hashing;
 
-use Illuminate\Support\Manager;
 use Illuminate\Contracts\Hashing\Hasher;
+use Illuminate\Support\Manager;
 
 class HashManager extends Manager implements Hasher
 {
     /**
      * Create an instance of the Bcrypt hash Driver.
-	 * 创建Bcrypt哈希驱动程序的实例
+	 * 创建哈希驱动实例
      *
      * @return \Illuminate\Hashing\BcryptHasher
      */
     public function createBcryptDriver()
     {
-        return new BcryptHasher($this->app['config']['hashing.bcrypt'] ?? []);
+        return new BcryptHasher($this->config->get('hashing.bcrypt') ?? []);
     }
 
     /**
      * Create an instance of the Argon2i hash Driver.
-	 * 创建Argon2i哈希驱动程序的实例
+	 * 创建Argon2i哈希驱动程序实例
      *
      * @return \Illuminate\Hashing\ArgonHasher
      */
     public function createArgonDriver()
     {
-        return new ArgonHasher($this->app['config']['hashing.argon'] ?? []);
+        return new ArgonHasher($this->config->get('hashing.argon') ?? []);
     }
 
     /**
      * Create an instance of the Argon2id hash Driver.
-	 * 创建Argon2id哈希驱动程序的实例
+	 * 创建Argon2i哈希驱动程序实例
      *
      * @return \Illuminate\Hashing\Argon2IdHasher
      */
     public function createArgon2idDriver()
     {
-        return new Argon2IdHasher($this->app['config']['hashing.argon'] ?? []);
+        return new Argon2IdHasher($this->config->get('hashing.argon') ?? []);
     }
 
     /**
      * Get information about the given hashed value.
-	 * 获取有关给定散列值的信息
+	 * 得到有关给定散列值的信息
      *
      * @param  string  $hashedValue
      * @return array
@@ -57,10 +57,10 @@ class HashManager extends Manager implements Hasher
 
     /**
      * Hash the given value.
-	 * 散列给定值
+	 * 哈希给定值
      *
      * @param  string  $value
-     * @param  array   $options
+     * @param  array  $options
      * @return string
      */
     public function make($value, array $options = [])
@@ -70,11 +70,11 @@ class HashManager extends Manager implements Hasher
 
     /**
      * Check the given plain value against a hash.
-	 * 根据散列检查给定的普通值
+	 * 检查给定的普通值根据散列
      *
      * @param  string  $value
      * @param  string  $hashedValue
-     * @param  array   $options
+     * @param  array  $options
      * @return bool
      */
     public function check($value, $hashedValue, array $options = [])
@@ -87,7 +87,7 @@ class HashManager extends Manager implements Hasher
 	 * 检查给定的散列是否已经使用给定的选项进行了散列
      *
      * @param  string  $hashedValue
-     * @param  array   $options
+     * @param  array  $options
      * @return bool
      */
     public function needsRehash($hashedValue, array $options = [])
@@ -97,12 +97,12 @@ class HashManager extends Manager implements Hasher
 
     /**
      * Get the default driver name.
-	 * 获取默认驱动程序名称
+	 * 得到默认驱动名
      *
      * @return string
      */
     public function getDefaultDriver()
     {
-        return $this->app['config']['hashing.driver'] ?? 'bcrypt';
+        return $this->config->get('hashing.driver', 'bcrypt');
     }
 }

@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，验证，数据库状态验证器
+ * 验证，数据库状态验证
  */
 
 namespace Illuminate\Validation;
 
 use Closure;
-use Illuminate\Support\Str;
 use Illuminate\Database\ConnectionResolverInterface;
+use Illuminate\Support\Str;
 
 class DatabasePresenceVerifier implements PresenceVerifierInterface
 {
@@ -21,7 +21,7 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
 
     /**
      * The database connection to use.
-	 * 要使用的数据库连接
+	 * 数据库连接
      *
      * @var string
      */
@@ -29,7 +29,7 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
 
     /**
      * Create a new database presence verifier.
-	 * 创建一个新的数据库状态验证器
+	 * 创建新的数据库状态验证
      *
      * @param  \Illuminate\Database\ConnectionResolverInterface  $db
      * @return void
@@ -68,8 +68,8 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
      *
      * @param  string  $collection
      * @param  string  $column
-     * @param  array   $values
-     * @param  array   $extra
+     * @param  array  $values
+     * @param  array  $extra
      * @return int
      */
     public function getMultiCount($collection, $column, array $values, array $extra = [])
@@ -81,7 +81,7 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
 
     /**
      * Add the given conditions to the query.
-	 * 将给定条件添加到查询中
+	 * 添加给定的条件查询
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $conditions
@@ -104,7 +104,7 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
 
     /**
      * Add a "where" clause to the given query.
-	 * 向给定查询添加“where”子句
+	 * 添加where至查询
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $key
@@ -126,7 +126,7 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
 
     /**
      * Get a query builder for the given table.
-	 * 获取给定表的查询生成器
+	 * 得到给定表的查询生成器
      *
      * @param  string  $table
      * @return \Illuminate\Database\Query\Builder
@@ -138,7 +138,7 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
 
     /**
      * Set the connection to be used.
-	 * 设置要使用的连接
+	 * 设置连接
      *
      * @param  string  $connection
      * @return void

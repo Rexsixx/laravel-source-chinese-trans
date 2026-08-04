@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，ORM，Mandango，Populator
+ * Faker，ORM，Mandango，填充器
  */
 
 namespace Faker\ORM\Mandango;

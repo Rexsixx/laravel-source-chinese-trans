@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，过程，异常，进程失败异常
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Process\Process;
 
 /**
  * Exception for failed processes.
- * 失败过程的异常。
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */

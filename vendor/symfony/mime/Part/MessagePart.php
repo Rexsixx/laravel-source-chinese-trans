@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Mime，部分，信息部分
- */
 
 /*
  * This file is part of the Symfony package.
@@ -61,18 +58,5 @@ class MessagePart extends DataPart
     public function bodyToIterable(): iterable
     {
         return $this->message->toIterable();
-    }
-
-    /**
-     * @return array
-     */
-    public function __sleep()
-    {
-        return ['message'];
-    }
-
-    public function __wakeup()
-    {
-        $this->__construct($this->message);
     }
 }

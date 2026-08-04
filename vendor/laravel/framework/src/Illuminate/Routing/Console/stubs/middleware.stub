@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由选择，控制台，存根，动态类
+ * 路由，自己改注释
  */
 
 namespace DummyNamespace;

@@ -74,14 +74,13 @@ if (null === \$this->objectProphecyClosure) {
     };
 }
 PHP
-        );
+    );
 
         $prophecyGetter = new MethodNode('getProphecy');
         $prophecyGetter->setCode('return \call_user_func($this->objectProphecyClosure);');
 
         if ($node->hasMethod('__call')) {
             $__call = $node->getMethod('__call');
-            \assert($__call !== null);
         } else {
             $__call = new MethodNode('__call');
             $__call->addArgument(new ArgumentNode('name'));

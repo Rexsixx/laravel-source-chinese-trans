@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，核心，全部测试
+ * Hamcrest，核心，所有测试
  */
 
 namespace Hamcrest\Core;

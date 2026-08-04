@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，动态类
+ * 基础，虚拟类根文件
  */
 
 namespace DummyNamespace;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class DummyClass extends Mailable
 {
@@ -16,7 +16,6 @@ class DummyClass extends Mailable
 
     /**
      * Create a new message instance.
-	 * 创建一个新的消息实例
      *
      * @return void
      */
@@ -27,7 +26,6 @@ class DummyClass extends Mailable
 
     /**
      * Build the message.
-	 * 构建消息
      *
      * @return $this
      */

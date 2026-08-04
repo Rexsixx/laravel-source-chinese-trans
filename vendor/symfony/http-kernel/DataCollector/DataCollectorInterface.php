@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，数据收集器，数据收集器接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +17,6 @@ use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * DataCollectorInterface.
- * 数据收集器接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -31,7 +27,7 @@ interface DataCollectorInterface extends ResetInterface
      *
      * @param \Throwable|null $exception
      */
-    public function collect(Request $request, Response $response/* , \Throwable $exception = null */);
+    public function collect(Request $request, Response $response/*, \Throwable $exception = null*/);
 
     /**
      * Returns the name of the collector.

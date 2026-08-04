@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，Event
+ * 支持，门面事件
  */
 
 namespace Illuminate\Support\Facades;
@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Testing\Fakes\EventFake;
 
 /**
- * @method static void listen(string|array $events, mixed $listener)
+ * @method static void listen(string|array $events, \Closure|string $listener)
  * @method static bool hasListeners(string $eventName)
  * @method static void push(string $event, array $payload = [])
  * @method static void flush(string $event)
@@ -22,6 +22,9 @@ use Illuminate\Support\Testing\Fakes\EventFake;
  * @method static void forget(string $event)
  * @method static void forgetPushed()
  * @method static \Illuminate\Events\Dispatcher setQueueResolver(callable $resolver)
+ * @method static void assertDispatched(string $event, callable|int $callback = null)
+ * @method static void assertDispatchedTimes(string $event, int $times = 1)
+ * @method static void assertNotDispatched(string $event, callable|int $callback = null)
  *
  * @see \Illuminate\Events\Dispatcher
  */
@@ -29,7 +32,7 @@ class Event extends Facade
 {
     /**
      * Replace the bound instance with a fake.
-	 * 将绑定实例替换为伪实例
+	 * 替换绑定实例为假实例
      *
      * @param  array|string  $eventsToFake
      * @return \Illuminate\Support\Testing\Fakes\EventFake
@@ -39,13 +42,14 @@ class Event extends Facade
         static::swap($fake = new EventFake(static::getFacadeRoot(), $eventsToFake));
 
         Model::setEventDispatcher($fake);
+        Cache::refreshEventDispatcher();
 
         return $fake;
     }
 
     /**
      * Replace the bound instance with a fake during the given callable's execution.
-	 * 在给定的可调用对象执行期间，将绑定实例替换为伪实例。
+	 * 在给定的可调用对象执行期间，将绑定实例替换为假实例。
      *
      * @param  callable  $callable
      * @param  array  $eventsToFake
@@ -61,12 +65,13 @@ class Event extends Facade
             static::swap($originalDispatcher);
 
             Model::setEventDispatcher($originalDispatcher);
+            Cache::refreshEventDispatcher();
         });
     }
 
     /**
      * Get the registered name of the component.
-	 * 获取组件的注册名称
+	 * 得到组件注册名
      *
      * @return string
      */

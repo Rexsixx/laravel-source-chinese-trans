@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Var Dumper，Caster，链接存根
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\VarDumper\Caster;
 
 /**
  * Represents a file or a URL.
- * 表示文件或URL。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

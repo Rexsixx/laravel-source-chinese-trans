@@ -1,6 +1,6 @@
 <?php
 /**
- * App，Http，内核
+ * App，Http，Kernel内核
  */
 
 namespace App\Http;
@@ -11,10 +11,10 @@ class Kernel extends HttpKernel
 {
     /**
      * The application's global HTTP middleware stack.
-	 * 应用程序的全局HTTP中间件堆栈。
+	 * 应用全局Http中间件堆栈
      *
      * These middleware are run during every request to your application.
-	 * 这些中间件在您的应用程序的每一个请求中都运行。
+     * 这些中间件在对应用程序的每次请求期间运行
      *
      * @var array
      */
@@ -28,7 +28,7 @@ class Kernel extends HttpKernel
 
     /**
      * The application's route middleware groups.
-	 * 应用程序的路由中间件组
+	 * 应用的路由中间件组
      *
      * @var array
      */
@@ -45,13 +45,13 @@ class Kernel extends HttpKernel
 
         'api' => [
             'throttle:60,1',
-            'bindings',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
 
     /**
      * The application's route middleware.
-	 * 应用程序的路由中间件。
+	 * 应用的路由中间件
      *
      * These middleware may be assigned to groups or used individually.
 	 * 这些中间件可以被分配到组或单独使用。
@@ -65,6 +65,7 @@ class Kernel extends HttpKernel
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
@@ -72,7 +73,7 @@ class Kernel extends HttpKernel
 
     /**
      * The priority-sorted list of middleware.
-	 * 中间件的优先排序列表。
+	 * 中间件的优先级排序。
      *
      * This forces non-global middleware to always be in the given order.
 	 * 这迫使非全局中间件始终处于给定的顺序。
@@ -83,6 +84,7 @@ class Kernel extends HttpKernel
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \App\Http\Middleware\Authenticate::class,
+        \Illuminate\Routing\Middleware\ThrottleRequests::class,
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,

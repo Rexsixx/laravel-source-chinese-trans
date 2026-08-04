@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，Auth，密码，密码代理管理器
+ * 授权，密码代理管理器
  */
 
 namespace Illuminate\Auth\Passwords;
 
+use Illuminate\Contracts\Auth\PasswordBrokerFactory as FactoryContract;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Illuminate\Contracts\Auth\PasswordBrokerFactory as FactoryContract;
 
 /**
  * @mixin \Illuminate\Contracts\Auth\PasswordBroker
@@ -24,7 +24,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * The array of created "drivers".
-	 * 已创建的“驱动程序”数组
+	 * 已创建的"驱动程序"
      *
      * @var array
      */
@@ -32,7 +32,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Create a new PasswordBroker manager instance.
-	 * 创建一个新的PasswordBroker管理器实例。
+	 * 创建新的密码破解管理器实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -58,7 +58,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Resolve the given broker.
-	 * 解析给定的代理
+	 * 解析给定的破解
      *
      * @param  string  $name
      * @return \Illuminate\Contracts\Auth\PasswordBroker
@@ -76,7 +76,8 @@ class PasswordBrokerManager implements FactoryContract
         // The password broker uses a token repository to validate tokens and send user
         // password e-mails, as well as validating that password reset process as an
         // aggregate service of sorts providing a convenient interface for resets.
-		// 密码代理使用令牌存储库来验证令牌并发送用户密码电子邮件，同时验证密码重置流程，作为某种聚合服务，提供方便的重置接口。
+		// 密码代理使用令牌存储库来验证令牌并向用户发送密码电子邮件，
+		// 同时将密码重置过程作为一种聚合服务进行验证，为重置提供方便的接口。
         return new PasswordBroker(
             $this->createTokenRepository($config),
             $this->app['auth']->createUserProvider($config['provider'] ?? null)
@@ -85,7 +86,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Create a token repository instance based on the given configuration.
-	 * 根据给定的配置创建令牌存储库实例
+	 * 创建令牌存储库实例根据给定的配置
      *
      * @param  array  $config
      * @return \Illuminate\Auth\Passwords\TokenRepositoryInterface
@@ -105,13 +106,14 @@ class PasswordBrokerManager implements FactoryContract
             $this->app['hash'],
             $config['table'],
             $key,
-            $config['expire']
+            $config['expire'],
+            $config['throttle'] ?? 0
         );
     }
 
     /**
      * Get the password broker configuration.
-	 * 获取密码代理配置
+	 * 密码代理配置
      *
      * @param  string  $name
      * @return array
@@ -123,7 +125,7 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Get the default password broker name.
-	 * 获取默认密码代理名称
+	 * 得到默认密码代理名称
      *
      * @return string
      */
@@ -146,10 +148,10 @@ class PasswordBrokerManager implements FactoryContract
 
     /**
      * Dynamically call the default driver instance.
-	 * 动态调用默认驱动程序实例
+	 * 动态调用默认驱动实例
      *
      * @param  string  $method
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return mixed
      */
     public function __call($method, $parameters)

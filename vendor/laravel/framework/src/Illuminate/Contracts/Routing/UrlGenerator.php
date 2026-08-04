@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，路由，网址生成器
+ * 契约，路由URL生成器接口
  */
 
 namespace Illuminate\Contracts\Routing;
@@ -9,7 +9,7 @@ interface UrlGenerator
 {
     /**
      * Get the current URL for the request.
-	 * 获取请求的当前URL
+	 * 得到当前请求URL
      *
      * @return string
      */
@@ -17,7 +17,7 @@ interface UrlGenerator
 
     /**
      * Get the URL for the previous request.
-	 * 获取前一个请求的URL
+	 * 得到前一个请求的URL
      *
      * @param  mixed  $fallback
      * @return string
@@ -26,7 +26,7 @@ interface UrlGenerator
 
     /**
      * Generate an absolute URL to the given path.
-	 * 生成给定路径的绝对URL
+	 * 生成一个真正的URL
      *
      * @param  string  $path
      * @param  mixed  $extra
@@ -40,7 +40,7 @@ interface UrlGenerator
 	 * 生成给定路径的安全的绝对URL
      *
      * @param  string  $path
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return string
      */
     public function secure($path, $parameters = []);
@@ -57,10 +57,10 @@ interface UrlGenerator
 
     /**
      * Get the URL to a named route.
-	 * 获取一个命名路由的URL
+	 * 得到命名路由的URL
      *
      * @param  string  $name
-     * @param  mixed   $parameters
+     * @param  mixed  $parameters
      * @param  bool  $absolute
      * @return string
      *
@@ -70,11 +70,11 @@ interface UrlGenerator
 
     /**
      * Get the URL to a controller action.
-	 * 获取一个控制器动作的URL
+	 * 得到控制器动作的URL
      *
      * @param  string|array  $action
-     * @param  mixed $parameters
-     * @param  bool $absolute
+     * @param  mixed  $parameters
+     * @param  bool  $absolute
      * @return string
      */
     public function action($action, $parameters = [], $absolute = true);

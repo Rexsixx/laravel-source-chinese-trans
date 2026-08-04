@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，工厂构建器
+ * 数据库，Eloquent，工厂生成器
  */
 
 namespace Illuminate\Database\Eloquent;
 
 use Faker\Generator as Faker;
-use InvalidArgumentException;
 use Illuminate\Support\Traits\Macroable;
+use InvalidArgumentException;
 
 class FactoryBuilder
 {
@@ -15,7 +15,7 @@ class FactoryBuilder
 
     /**
      * The model definitions in the container.
-	 * 容器中的模型定义
+	 * 容器中模型定义
      *
      * @var array
      */
@@ -23,7 +23,7 @@ class FactoryBuilder
 
     /**
      * The model being built.
-	 * 正在构建的模型
+	 * 被创建模型
      *
      * @var string
      */
@@ -31,7 +31,7 @@ class FactoryBuilder
 
     /**
      * The name of the model being built.
-	 * 正在构建的模型的名称
+	 * 补创建模型名称
      *
      * @var string
      */
@@ -71,7 +71,7 @@ class FactoryBuilder
 
     /**
      * The states to apply.
-	 * 要申请的状态
+	 * 申请状态
      *
      * @var array
      */
@@ -95,7 +95,7 @@ class FactoryBuilder
 
     /**
      * Create an new builder instance.
-	 * 创建一个新的构建器实例
+	 * 创建新的构建器实例
      *
      * @param  string  $class
      * @param  string  $name
@@ -174,7 +174,7 @@ class FactoryBuilder
 
     /**
      * Create a model and persist it in the database if requested.
-	 * 如果需要，创建一个模型并将其持久化到数据库中。
+	 * 创建一个模型并将其持久化到数据库中，如果需要。
      *
      * @param  array  $attributes
      * @return \Closure
@@ -191,7 +191,7 @@ class FactoryBuilder
 	 * 创建一个模型集合，并将它们持久化到数据库中。
      *
      * @param  array  $attributes
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|mixed
      */
     public function create(array $attributes = [])
     {
@@ -208,6 +208,20 @@ class FactoryBuilder
         }
 
         return $results;
+    }
+
+    /**
+     * Create a collection of models and persist them to the database.
+	 * 创建一个模型集合，并将它们持久化到数据库中。
+     *
+     * @param  iterable  $records
+     * @return \Illuminate\Database\Eloquent\Collection|mixed
+     */
+    public function createMany(iterable $records)
+    {
+        return (new $this->class)->newCollection(array_map(function ($attribute) {
+            return $this->create($attribute);
+        }, $records));
     }
 
     /**
@@ -233,7 +247,7 @@ class FactoryBuilder
 	 * 创建一个模型集合
      *
      * @param  array  $attributes
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|mixed
      */
     public function make(array $attributes = [])
     {
@@ -258,7 +272,7 @@ class FactoryBuilder
 
     /**
      * Create an array of raw attribute arrays.
-	 * 创建一个原始属性数组数组
+	 * 创建原始属性数组数组
      *
      * @param  array  $attributes
      * @return mixed
@@ -280,7 +294,7 @@ class FactoryBuilder
 
     /**
      * Get a raw attributes array for the model.
-	 * 获取模型的原始属性数组
+	 * 得到模型的原始属性数组
      *
      * @param  array  $attributes
      * @return mixed
@@ -327,7 +341,7 @@ class FactoryBuilder
 
     /**
      * Apply the active states to the model definition array.
-	 * 将活动状态应用于模型定义数组
+	 * 应用活动状态于模型定义数组
      *
      * @param  array  $definition
      * @param  array  $attributes
@@ -357,7 +371,7 @@ class FactoryBuilder
 
     /**
      * Get the state attributes.
-	 * 获取状态属性
+	 * 得到状态属性
      *
      * @param  string  $state
      * @param  array  $attributes
@@ -371,10 +385,7 @@ class FactoryBuilder
             return $stateAttributes;
         }
 
-        return call_user_func(
-            $stateAttributes,
-            $this->faker, $attributes
-        );
+        return $stateAttributes($this->faker, $attributes);
     }
 
     /**
@@ -468,7 +479,7 @@ class FactoryBuilder
 
     /**
      * Determine if the given state has an "after" callback.
-	 * 确定给定状态是否有一个“after”回调
+	 * 确定给定状态是否有一个after回调
      *
      * @param  string  $state
      * @return bool

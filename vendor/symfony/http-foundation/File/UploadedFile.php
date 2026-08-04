@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，File，上传文件
+ * Symfony，组件，Http基础，文件，已上传文件
  */
 
 /*
@@ -27,7 +27,6 @@ use Symfony\Component\Mime\MimeTypes;
 
 /**
  * A file uploaded through a form.
- * 通过表单上传的文件。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  * @author Florian Eckerstorfer <florian@eckerstorfer.org>
@@ -247,8 +246,8 @@ class UploadedFile extends File
      */
     public static function getMaxFilesize()
     {
-        $sizePostMax = self::parseFilesize(\ini_get('post_max_size'));
-        $sizeUploadMax = self::parseFilesize(\ini_get('upload_max_filesize'));
+        $sizePostMax = self::parseFilesize(ini_get('post_max_size'));
+        $sizeUploadMax = self::parseFilesize(ini_get('upload_max_filesize'));
 
         return min($sizePostMax ?: \PHP_INT_MAX, $sizeUploadMax ?: \PHP_INT_MAX);
     }

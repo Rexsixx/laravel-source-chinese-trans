@@ -18,6 +18,7 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 /**
  * Represents a choice question.
+ * 代表一个选择问题
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

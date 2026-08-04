@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，事件监听器，验证请求监听器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +17,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Validates Requests.
- * 验证请求。
  *
  * @author Magnus Nordlander <magnus@fervo.se>
  *

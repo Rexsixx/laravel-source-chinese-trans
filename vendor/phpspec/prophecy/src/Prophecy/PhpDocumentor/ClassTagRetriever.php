@@ -31,6 +31,11 @@ final class ClassTagRetriever implements MethodTagRetrieverInterface
         $this->contextFactory = new ContextFactory();
     }
 
+    /**
+     * @param \ReflectionClass $reflectionClass
+     *
+     * @return Method[]
+     */
     public function getTagList(\ReflectionClass $reflectionClass)
     {
         try {

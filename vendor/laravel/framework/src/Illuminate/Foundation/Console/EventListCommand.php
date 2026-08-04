@@ -1,19 +1,19 @@
 <?php
 /**
- * Illuminate，基础，控制台，事件列表命令
+ * 基础，事件列表命令
  */
 
 namespace Illuminate\Foundation\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider;
+use Illuminate\Support\Str;
 
 class EventListCommand extends Command
 {
     /**
      * The name and signature of the console command.
-	 * console命令的名称和签名
+	 * 控制台命令的名称和签名
      *
      * @var string
      */
@@ -21,7 +21,7 @@ class EventListCommand extends Command
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -29,7 +29,7 @@ class EventListCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return mixed
      */
@@ -46,7 +46,7 @@ class EventListCommand extends Command
 
     /**
      * Get all of the events and listeners configured for the application.
-	 * 获取为应用程序配置的所有事件和侦听器
+	 * 得到所有事件和监听器配置为应用
      *
      * @return array
      */
@@ -55,7 +55,7 @@ class EventListCommand extends Command
         $events = [];
 
         foreach ($this->laravel->getProviders(EventServiceProvider::class) as $provider) {
-            $providerEvents = array_merge_recursive($provider->discoverEvents(), $provider->listens());
+            $providerEvents = array_merge_recursive($provider->shouldDiscoverEvents() ? $provider->discoverEvents() : [], $provider->listens());
 
             $events = array_merge_recursive($events, $providerEvents);
         }
@@ -71,7 +71,7 @@ class EventListCommand extends Command
 
     /**
      * Filter the given events using the provided event name filter.
-	 * 使用提供的事件名称筛选器筛选给定的事件
+	 * 筛选器筛选给定的事件使用提供的事件
      *
      * @param  array  $events
      * @return array

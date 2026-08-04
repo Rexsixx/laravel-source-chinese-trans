@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，认证，有状态的警卫
+ * 契约，有状态的守卫
  */
 
 namespace Illuminate\Contracts\Auth;
@@ -12,7 +12,7 @@ interface StatefulGuard extends Guard
 	 * 尝试使用给定凭据对用户进行身份验证
      *
      * @param  array  $credentials
-     * @param  bool   $remember
+     * @param  bool  $remember
      * @return bool
      */
     public function attempt(array $credentials = [], $remember = false);
@@ -41,7 +41,7 @@ interface StatefulGuard extends Guard
 	 * 将给定的用户ID记录到应用程序中
      *
      * @param  mixed  $id
-     * @param  bool   $remember
+     * @param  bool  $remember
      * @return \Illuminate\Contracts\Auth\Authenticatable
      */
     public function loginUsingId($id, $remember = false);

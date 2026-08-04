@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，MySql 构建器
+ * 数据库，结构，MySql构建者
  */
 
 namespace Illuminate\Database\Schema;
@@ -25,7 +25,7 @@ class MySqlBuilder extends Builder
 
     /**
      * Get the column listing for a given table.
-	 * 获取给定表的列清单
+	 * 得到给定表的列清单
      *
      * @param  string  $table
      * @return array
@@ -43,7 +43,7 @@ class MySqlBuilder extends Builder
 
     /**
      * Drop all tables from the database.
-	 * 从数据库中删除所有表
+	 * 从数据库删除所有表
      *
      * @return void
      */
@@ -72,7 +72,7 @@ class MySqlBuilder extends Builder
 
     /**
      * Drop all views from the database.
-	 * 从数据库中删除所有视图
+	 * 从数据库删除所有视图
      *
      * @return void
      */
@@ -97,11 +97,11 @@ class MySqlBuilder extends Builder
 
     /**
      * Get all of the table names for the database.
-	 * 获取数据库的所有表名
+	 * 得到数据库中所有表名
      *
      * @return array
      */
-    protected function getAllTables()
+    public function getAllTables()
     {
         return $this->connection->select(
             $this->grammar->compileGetAllTables()
@@ -110,11 +110,11 @@ class MySqlBuilder extends Builder
 
     /**
      * Get all of the view names for the database.
-	 * 获取数据库的所有视图名称
+	 * 得到数据库中所有视图名
      *
      * @return array
      */
-    protected function getAllViews()
+    public function getAllViews()
     {
         return $this->connection->select(
             $this->grammar->compileGetAllViews()

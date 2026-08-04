@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，错误处理程序，异常，Flatten 异常
- */
 
 /*
  * This file is part of the Symfony package.

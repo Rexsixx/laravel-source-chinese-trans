@@ -1,21 +1,21 @@
 <?php
 /**
- * Illuminate，通知，通道，广播通道
+ * 通知，广播通道
  */
 
 namespace Illuminate\Notifications\Channels;
 
-use RuntimeException;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Events\BroadcastNotificationCreated;
+use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Notifications\Notification;
+use RuntimeException;
 
 class BroadcastChannel
 {
     /**
      * The event dispatcher.
-	 * 事件调度程序
+	 * 事件调度
      *
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
@@ -23,7 +23,7 @@ class BroadcastChannel
 
     /**
      * Create a new database channel.
-	 * 创建一个新的数据库通道
+	 * 创建新的数据库通道
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
@@ -59,7 +59,7 @@ class BroadcastChannel
 
     /**
      * Get the data for the notification.
-	 * 获取通知的数据
+	 * 得到通知的数据
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification

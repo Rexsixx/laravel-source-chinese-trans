@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，基础，认证，验证电子邮件
+ * 基础，验证邮箱
  */
 
 namespace Illuminate\Foundation\Auth;
 
-use Illuminate\Http\Request;
-use Illuminate\Auth\Events\Verified;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Http\Request;
 
 trait VerifiesEmails
 {
@@ -29,15 +29,20 @@ trait VerifiesEmails
 
     /**
      * Mark the authenticated user's email address as verified.
-	 * 将已验证用户的电子邮件地址标记为已验证
+	 * 标记已验证用户的电子邮件地址为已验证
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function verify(Request $request)
     {
-        if ($request->route('id') != $request->user()->getKey()) {
+        if (! hash_equals((string) $request->route('id'), (string) $request->user()->getKey())) {
+            throw new AuthorizationException;
+        }
+
+        if (! hash_equals((string) $request->route('hash'), sha1($request->user()->getEmailForVerification()))) {
             throw new AuthorizationException;
         }
 

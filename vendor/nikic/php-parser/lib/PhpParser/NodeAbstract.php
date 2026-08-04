@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，节点摘要
- */
-
 namespace PhpParser;
 
 abstract class NodeAbstract implements Node, \JsonSerializable

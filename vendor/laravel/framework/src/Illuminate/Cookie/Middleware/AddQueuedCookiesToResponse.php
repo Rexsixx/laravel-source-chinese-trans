@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Cookie，中间件，将排队 cookie添加到响应中
+ * COOKIE，添加排队cookie至响应中
  */
 
 namespace Illuminate\Cookie\Middleware;
@@ -20,7 +20,7 @@ class AddQueuedCookiesToResponse
 
     /**
      * Create a new CookieQueue instance.
-	 * 创建一个新的CookieQueue实例
+	 * 创建新的cookie队列实例
      *
      * @param  \Illuminate\Contracts\Cookie\QueueingFactory  $cookies
      * @return void

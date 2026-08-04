@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，总线，调度作业
+ * 基础，总线调度任务
  */
 
 namespace Illuminate\Foundation\Bus;
@@ -11,7 +11,7 @@ trait DispatchesJobs
 {
     /**
      * Dispatch a job to its appropriate handler.
-	 * 将作业分派给适当的处理程序
+	 * 分派任务至对应的处理程序
      *
      * @param  mixed  $job
      * @return mixed
@@ -23,7 +23,7 @@ trait DispatchesJobs
 
     /**
      * Dispatch a job to its appropriate handler in the current process.
-	 * 将作业分派给当前进程中相应的处理程序
+	 * 分派作业给当前进程中相应的处理程序
      *
      * @param  mixed  $job
      * @return mixed

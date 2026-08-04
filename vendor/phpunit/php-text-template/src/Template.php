@@ -1,8 +1,4 @@
 <?php
-/**
- * SebastianBergmann，Text_Template
- */
-
 /*
  * This file is part of the Text_Template package.
  *

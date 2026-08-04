@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，问题，与 Flash数据交互
+ * Http，与闪存数据交互
  */
 
 namespace Illuminate\Http\Concerns;
@@ -22,7 +22,7 @@ trait InteractsWithFlashData
 
     /**
      * Flash the input for the current request to the session.
-	 * 将当前请求的输入闪现到会话中
+	 * 闪存当前请求的输入到会话中
      *
      * @return void
      */

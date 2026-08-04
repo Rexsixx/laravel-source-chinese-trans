@@ -1,6 +1,6 @@
 <?php
 /**
- * Prophecy，参数，令牌，任何值令牌
+ * Prophecy，参数，令牌，任意值令牌
  */
 
 /*
@@ -24,7 +24,7 @@ class AnyValueToken implements TokenInterface
     /**
      * Always scores 3 for any argument.
      *
-     * @param mixed $argument
+     * @param $argument
      *
      * @return int
      */

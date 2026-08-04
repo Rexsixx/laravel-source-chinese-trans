@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，缓存，储存
+ * 契约，缓存存储接口
  */
 
 namespace Illuminate\Contracts\Cache;
@@ -9,7 +9,7 @@ interface Store
 {
     /**
      * Retrieve an item from the cache by key.
-	 * 按键从缓存中检索项
+	 * 检索一个项从缓存中
      *
      * @param  string|array  $key
      * @return mixed
@@ -18,10 +18,9 @@ interface Store
 
     /**
      * Retrieve multiple items from the cache by key.
-	 * 按键从缓存中检索多个项。
+	 * 检索多个项按键从缓存中
      *
      * Items not found in the cache will have a null value.
-	 * 在缓存中找不到的项将具有空值。
      *
      * @param  array  $keys
      * @return array
@@ -30,7 +29,7 @@ interface Store
 
     /**
      * Store an item in the cache for a given number of seconds.
-	 * 将项存储在缓存中给定的秒数
+	 * 存储项在缓存中给定的秒数
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -41,7 +40,7 @@ interface Store
 
     /**
      * Store multiple items in the cache for a given number of seconds.
-	 * 在给定的秒数内将多个项存储在缓存中
+	 * 存储多个项在缓存中在给定的秒数
      *
      * @param  array  $values
      * @param  int  $seconds
@@ -71,7 +70,7 @@ interface Store
 
     /**
      * Store an item in the cache indefinitely.
-	 * 将项无限期地存储在缓存中
+	 * 存储项在缓存中无限期
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -81,7 +80,7 @@ interface Store
 
     /**
      * Remove an item from the cache.
-	 * 从缓存中删除项
+	 * 删除项从缓存中
      *
      * @param  string  $key
      * @return bool
@@ -90,7 +89,7 @@ interface Store
 
     /**
      * Remove all items from the cache.
-	 * 从缓存中删除所有项
+	 * 删除所有项从缓存中
      *
      * @return bool
      */
@@ -98,7 +97,7 @@ interface Store
 
     /**
      * Get the cache key prefix.
-	 * 获取缓存键前缀
+	 * 得到缓存键前缀
      *
      * @return string
      */

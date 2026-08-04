@@ -1,22 +1,22 @@
 <?php
 /**
- * Illuminate，验证，验证程序
+ * 验证，验证器，核心类
  */
 
 namespace Illuminate\Validation;
 
-use RuntimeException;
 use BadMethodCallException;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Support\Fluent;
-use Illuminate\Support\MessageBag;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\ImplicitRule;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Illuminate\Contracts\Validation\Rule as RuleContract;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Fluent;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\Str;
+use RuntimeException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Validator implements ValidatorContract
 {
@@ -25,7 +25,7 @@ class Validator implements ValidatorContract
 
     /**
      * The Translator implementation.
-	 * Translator实现
+	 * 翻译器实现
      *
      * @var \Illuminate\Contracts\Translation\Translator
      */
@@ -54,6 +54,14 @@ class Validator implements ValidatorContract
      * @var array
      */
     protected $failedRules = [];
+
+    /**
+     * Attributes that should be excluded from the validated data.
+	 * 应从验证数据中排除的属性
+     *
+     * @var array
+     */
+    protected $excludeAttributes = [];
 
     /**
      * The message bag instance.
@@ -104,8 +112,16 @@ class Validator implements ValidatorContract
     protected $implicitAttributes = [];
 
     /**
+     * The callback that should be used to format the attribute.
+	 * 应该用于格式化属性的回调
+     *
+     * @var callable|null
+     */
+    protected $implicitAttributesFormatter;
+
+    /**
      * The cached data for the "distinct" rule.
-	 * 为“distinct”规则缓存的数据
+	 * 为"distinct"规则缓存的数据
      *
      * @var array
      */
@@ -113,7 +129,7 @@ class Validator implements ValidatorContract
 
     /**
      * All of the registered "after" callbacks.
-	 * 所有注册的“after”回调
+	 * 所有注册的"after"回调
      *
      * @var array
      */
@@ -129,7 +145,7 @@ class Validator implements ValidatorContract
 
     /**
      * The array of fallback error messages.
-	 * 回退错误消息数组。
+	 * 回退错误消息数组
      *
      * @var array
      */
@@ -199,7 +215,16 @@ class Validator implements ValidatorContract
         'RequiredWith', 'RequiredWithAll', 'RequiredWithout', 'RequiredWithoutAll',
         'RequiredIf', 'RequiredUnless', 'Confirmed', 'Same', 'Different', 'Unique',
         'Before', 'After', 'BeforeOrEqual', 'AfterOrEqual', 'Gt', 'Lt', 'Gte', 'Lte',
+        'ExcludeIf', 'ExcludeUnless',
     ];
+
+    /**
+     * The validation rules that can exclude an attribute.
+	 * 可以排除属性的验证规则
+     *
+     * @var array
+     */
+    protected $excludeRules = ['ExcludeIf', 'ExcludeUnless'];
 
     /**
      * The size related validation rules.
@@ -218,8 +243,16 @@ class Validator implements ValidatorContract
     protected $numericRules = ['Numeric', 'Integer'];
 
     /**
+     * The current placeholder for dots in rule keys.
+	 * 规则键中点的当前占位符
+     *
+     * @var string
+     */
+    protected $dotPlaceholder;
+
+    /**
      * Create a new Validator instance.
-	 * 创建一个新的Validator实例
+	 * 创建新的Validator实例
      *
      * @param  \Illuminate\Contracts\Translation\Translator  $translator
      * @param  array  $data
@@ -231,6 +264,8 @@ class Validator implements ValidatorContract
     public function __construct(Translator $translator, array $data, array $rules,
                                 array $messages = [], array $customAttributes = [])
     {
+        $this->dotPlaceholder = Str::random();
+
         $this->initialRules = $rules;
         $this->translator = $translator;
         $this->customMessages = $messages;
@@ -256,16 +291,13 @@ class Validator implements ValidatorContract
                 $value = $this->parseData($value);
             }
 
-            // If the data key contains a dot, we will replace it with another character
-            // sequence so it doesn't interfere with dot processing when working with
-            // array based validation rules and array_dot later in the validations.
-			// 如果数据键中包含点符号，我们将用另一个字符序列替换它，
-			// 这样在使用基于数组的验证规则以及在后续验证中处理数组_dot 时，就不会干扰点符号的处理了。
-            if (Str::contains($key, '.')) {
-                $newData[str_replace('.', '->', $key)] = $value;
-            } else {
-                $newData[$key] = $value;
-            }
+            $key = str_replace(
+                ['.', '*'],
+                [$this->dotPlaceholder, '__asterisk__'],
+                $key
+            );
+
+            $newData[$key] = $value;
         }
 
         return $newData;
@@ -281,7 +313,7 @@ class Validator implements ValidatorContract
     public function after($callback)
     {
         $this->after[] = function () use ($callback) {
-            return call_user_func_array($callback, [$this]);
+            return $callback($this);
         };
 
         return $this;
@@ -302,13 +334,23 @@ class Validator implements ValidatorContract
         // We'll spin through each rule, validating the attributes attached to that
         // rule. Any error messages will be added to the containers with each of
         // the other error messages, returning true if we don't have messages.
-		// 我们将逐一检查每条规则，并验证与该规则相关的属性。
-		// 任何错误消息都会与其它错误消息一起添加到容器中，如果没有任何错误消息则返回“真”。
+		// 我们将遍历每个规则，验证附加到该规则的属性。
+		// 任何错误消息都将与其他错误消息一起添加到容器中，如果没有消息，则返回true。
         foreach ($this->rules as $attribute => $rules) {
-            $attribute = str_replace('\.', '->', $attribute);
+            if ($this->shouldBeExcluded($attribute)) {
+                $this->removeAttribute($attribute);
+
+                continue;
+            }
 
             foreach ($rules as $rule) {
                 $this->validateAttribute($attribute, $rule);
+
+                if ($this->shouldBeExcluded($attribute)) {
+                    $this->removeAttribute($attribute);
+
+                    break;
+                }
 
                 if ($this->shouldStopValidating($attribute)) {
                     break;
@@ -319,10 +361,10 @@ class Validator implements ValidatorContract
         // Here we will spin through all of the "after" hooks on this validator and
         // fire them off. This gives the callbacks a chance to perform all kinds
         // of other validation that needs to get wrapped up in this operation.
-		// 接下来，我们将遍历此验证器中的所有“后续”钩子，并触发它们。
-		// 这样就能让回调函数有机会执行各种其他需要在此操作中完成的验证工作。
+		// 在这里，我们将遍历此验证器上的所有"after"钩子并将其关闭。
+		// 这使回调有机会执行需要在此操作中完成的各种其他验证。
         foreach ($this->after as $after) {
-            call_user_func($after);
+            $after();
         }
 
         return $this->messages->isEmpty();
@@ -340,8 +382,40 @@ class Validator implements ValidatorContract
     }
 
     /**
+     * Determine if the attribute should be excluded.
+	 * 确定是否应该排除该属性
+     *
+     * @param  string  $attribute
+     * @return bool
+     */
+    protected function shouldBeExcluded($attribute)
+    {
+        foreach ($this->excludeAttributes as $excludeAttribute) {
+            if ($attribute === $excludeAttribute ||
+                Str::startsWith($attribute, $excludeAttribute.'.')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Remove the given attribute.
+	 * 移除给定的属性
+     *
+     * @param  string  $attribute
+     * @return void
+     */
+    protected function removeAttribute($attribute)
+    {
+        Arr::forget($this->data, $attribute);
+        Arr::forget($this->rules, $attribute);
+    }
+
+    /**
      * Run the validator's rules against its data.
-	 * 针对其数据运行验证器的规则
+	 * 运行验证器的规则针对其数据
      *
      * @return array
      *
@@ -358,7 +432,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the attributes and values that were validated.
-	 * 获取已验证的属性和值
+	 * 得到已验证的属性和值
      *
      * @return array
      *
@@ -406,8 +480,9 @@ class Validator implements ValidatorContract
         // First we will get the correct keys for the given attribute in case the field is nested in
         // an array. Then we determine if the given rule accepts other field names as parameters.
         // If so, we will replace any asterisks found in the parameters with the correct keys.
-		// 首先，如果该字段嵌套在数组中，我们将获取给定属性的正确键。
-		// 然后，我们会检查给定的规则是否允许将其他字段名称作为参数使用。如果是这样，我们将把参数中出现的星号替换为正确的键值。
+		// 首先，如果字段嵌套在数组中，我们将获得给定属性的正确键。
+		// 然后我们确定给定的规则是否接受其他字段名作为参数。
+		// 如果是这样，我们将用正确的键替换参数中的任何星号。
         if (($keys = $this->getExplicitKeys($attribute)) &&
             $this->dependsOnOtherFields($rule)) {
             $parameters = $this->replaceAsterisksInParameters($parameters, $keys);
@@ -418,8 +493,8 @@ class Validator implements ValidatorContract
         // If the attribute is a file, we will verify that the file upload was actually successful
         // and if it wasn't we will add a failure for the attribute. Files may not successfully
         // upload if they are too large based on PHP's settings so we will bail in this case.
-		// 如果该属性是文件，我们将验证文件上传是否确实成功了，如果不成功，我们将为该属性添加一个失败记录。
-		// 如果文件过大（超出 PHP 的设置限制），则可能无法成功上传，因此在这种情况下我们将停止操作。
+		// 如果该属性是一个文件，我们将验证文件上传是否真正成功，如果不是，我们将为该属性添加一个失败。
+		// 根据PHP的设置，如果文件太大，可能无法成功上传，因此在这种情况下我们将退出。
         if ($value instanceof UploadedFile && ! $value->isValid() &&
             $this->hasRule($attribute, array_merge($this->fileRules, $this->implicitRules))
         ) {
@@ -429,8 +504,8 @@ class Validator implements ValidatorContract
         // If we have made it this far we will make sure the attribute is validatable and if it is
         // we will call the validation method with the attribute. If a method returns false the
         // attribute is invalid and we will add a failure message for this failing attribute.
-		// 如果我们已经成功完成了这一过程，那么我们就会确保该属性具有可验证性，
-		// 如果具备可验证性的话，我们就会使用该属性调用验证方法。
+		// 如果我们已经做到了这一点，我们将确保该属性是可验证的，如果是，我们将使用该属性调用验证方法。
+		// 如果方法返回false，则该属性无效，我们将为此失败属性添加失败消息。
         $validatable = $this->isValidatable($rule, $attribute, $value);
 
         if ($rule instanceof RuleContract) {
@@ -460,7 +535,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the explicit keys from an attribute flattened with dot notation.
-	 * 从使用点表示法平面化的属性中获取显式键。
+	 * 得到显式键从使用点表示法平面化的属性中
      *
      * E.g. 'foo.1.bar.spark.baz' -> [1, 'spark'] for 'foo.*.bar.*.baz'
      *
@@ -482,7 +557,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the primary attribute name.
-	 * 获取主属性名称。
+	 * 得到主属性名称
      *
      * For example, if "name.0" is given, "name.*" will be returned.
      *
@@ -502,7 +577,7 @@ class Validator implements ValidatorContract
 
     /**
      * Replace each field parameter which has asterisks with the given keys.
-	 * 用给定的键替换每个带有星号的字段参数
+	 * 替换每个带有星号的字段参数用给定的键
      *
      * @param  array  $parameters
      * @param  array  $keys
@@ -526,6 +601,10 @@ class Validator implements ValidatorContract
      */
     protected function isValidatable($rule, $attribute, $value)
     {
+        if (in_array($rule, $this->excludeRules)) {
+            return true;
+        }
+
         return $this->presentOrRuleIsImplicit($rule, $attribute, $value) &&
                $this->passesOptionalCheck($attribute) &&
                $this->isNotNullIfMarkedAsNullable($rule, $attribute) &&
@@ -602,10 +681,9 @@ class Validator implements ValidatorContract
 
     /**
      * Determine if it's a necessary presence validation.
-	 * 确定它是否是必要的状态验证。
+	 * 确定它是否是必要的状态验证
      *
      * This is to avoid possible database type comparison errors.
-	 * 这是为了避免可能的数据库类型比较错误。
      *
      * @param  string  $rule
      * @param  string  $attribute
@@ -618,7 +696,7 @@ class Validator implements ValidatorContract
 
     /**
      * Validate an attribute using a custom rule object.
-	 * 使用自定义规则对象验证属性
+	 * 验证属性使用自定义规则对象
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -661,8 +739,8 @@ class Validator implements ValidatorContract
         // In case the attribute has any rule that indicates that the field is required
         // and that rule already failed then we should stop validation at this point
         // as now there is no point in calling other rules with this field empty.
-		// 如果该属性有任何表明该字段是必填项的规则，并且该规则已经失败，
-		// 那么此时我们就应该停止验证了，因为此时再对这个字段为空的情况调用其他规则已经没有意义了。
+		// 如果该属性有任何规则表明该字段是必需的，并且该规则已经失败，
+		// 那么我们应该在此时停止验证，因为现在没有必要在该字段为空的情况下调用其他规则。
         return $this->hasRule($attribute, $this->implicitRules) &&
                isset($this->failedRules[$attribute]) &&
                array_intersect(array_keys($this->failedRules[$attribute]), $this->implicitRules);
@@ -670,7 +748,7 @@ class Validator implements ValidatorContract
 
     /**
      * Add a failed rule and error message to the collection.
-	 * 向集合中添加一个失败的规则和错误消息
+	 * 添加失败的规则和错误消息至集合
      *
      * @param  string  $attribute
      * @param  string  $rule
@@ -683,11 +761,30 @@ class Validator implements ValidatorContract
             $this->passes();
         }
 
+        $attribute = str_replace('__asterisk__', '*', $attribute);
+
+        if (in_array($rule, $this->excludeRules)) {
+            return $this->excludeAttribute($attribute);
+        }
+
         $this->messages->add($attribute, $this->makeReplacements(
             $this->getMessage($attribute, $rule), $attribute, $rule, $parameters
         ));
 
         $this->failedRules[$attribute][$rule] = $parameters;
+    }
+
+    /**
+     * Add the given attribute to the list of excluded attributes.
+     * 将给定属性添加到排除属性列表中
+     * @param  string  $attribute
+     * @return void
+     */
+    protected function excludeAttribute(string $attribute)
+    {
+        $this->excludeAttributes[] = $attribute;
+
+        $this->excludeAttributes = array_unique($this->excludeAttributes);
     }
 
     /**
@@ -719,9 +816,19 @@ class Validator implements ValidatorContract
             $this->passes();
         }
 
-        return array_intersect_key(
+        $invalid = array_intersect_key(
             $this->data, $this->attributesThatHaveMessages()
         );
+
+        $result = [];
+
+        $failed = Arr::only(Arr::dot($invalid), array_keys($this->failed()));
+
+        foreach ($failed as $key => $failure) {
+            Arr::set($result, $key, $failure);
+        }
+
+        return $result;
     }
 
     /**
@@ -739,7 +846,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the failed validation rules.
-	 * 获取失败的验证规则
+	 * 得到失败的验证规则
      *
      * @return array
      */
@@ -750,7 +857,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the message container for the validator.
-	 * 获取验证器的消息容器
+	 * 得到验证器的消息容器
      *
      * @return \Illuminate\Support\MessageBag
      */
@@ -776,7 +883,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the messages for the instance.
-	 * 获取实例的消息
+	 * 得到实例的消息
      *
      * @return \Illuminate\Support\MessageBag
      */
@@ -800,7 +907,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get a rule and its parameters for a given attribute.
-	 * 获取给定属性的规则及其参数
+	 * 得到给定属性的规则及其参数
      *
      * @param  string  $attribute
      * @param  string|array  $rules
@@ -825,7 +932,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the data under validation.
-	 * 获取正在验证的数据
+	 * 得到正在验证的数据
      *
      * @return array
      */
@@ -836,7 +943,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the data under validation.
-	 * 获取正在验证的数据
+	 * 得到正在验证的数据
      *
      * @return array
      */
@@ -863,7 +970,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the value of a given attribute.
-	 * 获取给定属性的值
+	 * 得到给定属性的值
      *
      * @param  string  $attribute
      * @return mixed
@@ -875,7 +982,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the validation rules.
-	 * 获取验证规则
+	 * 得到验证规则
      *
      * @return array
      */
@@ -893,6 +1000,10 @@ class Validator implements ValidatorContract
      */
     public function setRules(array $rules)
     {
+        $rules = collect($rules)->mapWithKeys(function ($value, $key) {
+            return [str_replace('\.', $this->dotPlaceholder, $key) => $value];
+        })->toArray();
+
         $this->initialRules = $rules;
 
         $this->rules = [];
@@ -914,8 +1025,8 @@ class Validator implements ValidatorContract
         // The primary purpose of this parser is to expand any "*" rules to the all
         // of the explicit rules needed for the given data. For example the rule
         // names.* would get expanded to names.0, names.1, etc. for this data.
-		// 此解析器的主要作用是将任何“*”规则扩展为针对给定数据所需的全部明确规则。
-		// 例如，规则名.* 会扩展为 names.0、names.1 等，适用于此数据。
+		// 此解析器的主要目的是将任何"*"规则扩展为给定数据所需的所有显式规则。
+		// 例如，对于此数据，规则名称.*将扩展为名称.0、名称.1等。
         $response = (new ValidationRuleParser($this->data))
                             ->explode($rules);
 
@@ -941,7 +1052,7 @@ class Validator implements ValidatorContract
     {
         $payload = new Fluent($this->getData());
 
-        if (call_user_func($callback, $payload)) {
+        if ($callback($payload)) {
             foreach ((array) $attribute as $key) {
                 $this->addRules([$key => $rules]);
             }
@@ -960,7 +1071,7 @@ class Validator implements ValidatorContract
     public function addExtensions(array $extensions)
     {
         if ($extensions) {
-            $keys = array_map('\Illuminate\Support\Str::snake', array_keys($extensions));
+            $keys = array_map([Str::class, 'snake'], array_keys($extensions));
 
             $extensions = array_combine($keys, array_values($extensions));
         }
@@ -985,8 +1096,8 @@ class Validator implements ValidatorContract
     }
 
     /**
-     * Register an array of custom implicit validator extensions.
-	 * 注册一个自定义隐式验证器扩展数组
+     * Register an array of custom dependent validator extensions.
+	 * 注册一个自定义依赖验证器扩展数组
      *
      * @param  array  $extensions
      * @return void
@@ -1053,7 +1164,7 @@ class Validator implements ValidatorContract
     public function addReplacers(array $replacers)
     {
         if ($replacers) {
-            $keys = array_map('\Illuminate\Support\Str::snake', array_keys($replacers));
+            $keys = array_map([Str::class, 'snake'], array_keys($replacers));
 
             $replacers = array_combine($keys, array_values($replacers));
         }
@@ -1076,7 +1187,7 @@ class Validator implements ValidatorContract
 
     /**
      * Set the custom messages for the validator.
-	 * 为验证器设置自定义消息
+	 * 设置自定义消息为验证器
      *
      * @param  array  $messages
      * @return $this
@@ -1090,7 +1201,7 @@ class Validator implements ValidatorContract
 
     /**
      * Set the custom attributes on the validator.
-	 * 在验证器上设置自定义属性
+	 * 设置自定义属性在验证器上
      *
      * @param  array  $attributes
      * @return $this
@@ -1117,8 +1228,22 @@ class Validator implements ValidatorContract
     }
 
     /**
+     * Set the callback that used to format an implicit attribute.
+	 * 设置用于格式化隐式属性的回调
+     *
+     * @param  callable|null  $formatter
+     * @return $this
+     */
+    public function setImplicitAttributesFormatter(callable $formatter = null)
+    {
+        $this->implicitAttributesFormatter = $formatter;
+
+        return $this;
+    }
+
+    /**
      * Set the custom values on the validator.
-	 * 在验证器上设置自定义值
+	 * 设置自定义值在验证器上
      *
      * @param  array  $values
      * @return $this
@@ -1132,7 +1257,7 @@ class Validator implements ValidatorContract
 
     /**
      * Add the custom values for the validator.
-	 * 为验证器添加自定义值
+	 * 添加自定义值为验证器
      *
      * @param  array  $customValues
      * @return $this
@@ -1158,7 +1283,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the Presence Verifier implementation.
-	 * 获取Presence Verifier实现
+	 * 得到Presence Verifier实现
      *
      * @return \Illuminate\Validation\PresenceVerifierInterface
      *
@@ -1175,7 +1300,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the Presence Verifier implementation.
-	 * 获取Presence Verifier实现
+	 * 得到Presence Verifier实现
      *
      * @param  string  $connection
      * @return \Illuminate\Validation\PresenceVerifierInterface
@@ -1203,7 +1328,7 @@ class Validator implements ValidatorContract
 
     /**
      * Get the Translator implementation.
-	 * 获取Translator实现
+	 * 得到翻译机实现
      *
      * @return \Illuminate\Contracts\Translation\Translator
      */
@@ -1214,7 +1339,7 @@ class Validator implements ValidatorContract
 
     /**
      * Set the Translator implementation.
-	 * 设置Translator实现
+	 * 设置翻译机实现
      *
      * @param  \Illuminate\Contracts\Translation\Translator  $translator
      * @return void
@@ -1249,7 +1374,7 @@ class Validator implements ValidatorContract
         $callback = $this->extensions[$rule];
 
         if (is_callable($callback)) {
-            return call_user_func_array($callback, $parameters);
+            return $callback(...array_values($parameters));
         } elseif (is_string($callback)) {
             return $this->callClassBasedExtension($callback, $parameters);
         }
@@ -1267,7 +1392,7 @@ class Validator implements ValidatorContract
     {
         [$class, $method] = Str::parseCallback($callback, 'validate');
 
-        return call_user_func_array([$this->container->make($class), $method], $parameters);
+        return $this->container->make($class)->{$method}(...array_values($parameters));
     }
 
     /**

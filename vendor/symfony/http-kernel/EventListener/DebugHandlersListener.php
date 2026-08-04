@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，事件监听器，调试处理程序监听器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -29,7 +26,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Configures errors and exceptions handlers.
- * 配置错误和异常处理程序。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *
@@ -58,7 +54,7 @@ class DebugHandlersListener implements EventSubscriberInterface
      */
     public function __construct(callable $exceptionHandler = null, LoggerInterface $logger = null, $levels = \E_ALL, ?int $throwAt = \E_ALL, bool $scream = true, $fileLinkFormat = null, bool $scope = true)
     {
-        $handler = set_exception_handler('is_int');
+        $handler = set_exception_handler('var_dump');
         $this->earlyHandler = \is_array($handler) ? $handler[0] : null;
         restore_exception_handler();
 
@@ -84,7 +80,7 @@ class DebugHandlersListener implements EventSubscriberInterface
         }
         $this->firstCall = $this->hasTerminatedWithException = false;
 
-        $handler = set_exception_handler('is_int');
+        $handler = set_exception_handler('var_dump');
         $handler = \is_array($handler) ? $handler[0] : null;
         restore_exception_handler();
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，验证，验证异常
+ * 验证，验证异常
  */
 
 namespace Illuminate\Validation;
@@ -13,7 +13,7 @@ class ValidationException extends Exception
 {
     /**
      * The validator instance.
-	 * 验证器实例
+	 * 验证实例
      *
      * @var \Illuminate\Contracts\Validation\Validator
      */
@@ -53,7 +53,7 @@ class ValidationException extends Exception
 
     /**
      * Create a new exception instance.
-	 * 创建一个新的异常实例
+	 * 创建新的异常实例
      *
      * @param  \Illuminate\Contracts\Validation\Validator  $validator
      * @param  \Symfony\Component\HttpFoundation\Response|null  $response
@@ -89,7 +89,7 @@ class ValidationException extends Exception
 
     /**
      * Get all of the validation error messages.
-	 * 获取所有验证错误消息
+	 * 得到所有验证错误消息
      *
      * @return array
      */
@@ -114,7 +114,7 @@ class ValidationException extends Exception
 
     /**
      * Set the error bag on the exception.
-	 * 在异常上设置错误包
+	 * 设置错误包在异常上
      *
      * @param  string  $errorBag
      * @return $this
@@ -142,7 +142,7 @@ class ValidationException extends Exception
 
     /**
      * Get the underlying response instance.
-	 * 获取底层响应实例
+	 * 得到底层响应实例
      *
      * @return \Symfony\Component\HttpFoundation\Response|null
      */

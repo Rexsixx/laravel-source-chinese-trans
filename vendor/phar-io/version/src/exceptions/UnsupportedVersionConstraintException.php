@@ -1,8 +1,4 @@
-<?php
-/**
- * PharIo，版本，不受支持的版本约束异常
- */
-
+<?php declare(strict_types = 1);
 /*
  * This file is part of PharIo\Version.
  *
@@ -11,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PharIo\Version;
 
 final class UnsupportedVersionConstraintException extends \RuntimeException implements Exception {

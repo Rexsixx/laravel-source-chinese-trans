@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，事件，作业已处理
+ * 队列，事件，作业处理
  */
 
 namespace Illuminate\Queue\Events;
@@ -25,7 +25,7 @@ class JobProcessed
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job

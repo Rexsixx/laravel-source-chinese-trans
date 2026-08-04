@@ -1,9 +1,5 @@
 <?php
 /**
- * phpDocumentor，反射，类型，聚合类型
- */
-
-/**
  * This file is part of phpDocumentor.
  *
  *  For the full copyright and license information, please view the LICENSE

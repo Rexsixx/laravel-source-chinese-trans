@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，通知，控制台，通知表命令
+ * 通知，表命令
  */
 
 namespace Illuminate\Notifications\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Composer;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Composer;
 
 class NotificationTableCommand extends Command
 {
@@ -42,10 +42,10 @@ class NotificationTableCommand extends Command
 
     /**
      * Create a new notifications table command instance.
-	 * 创建一个新的通知表命令实例
+	 * 创建新的通知表命令实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @param  \Illuminate\Support\Composer    $composer
+     * @param  \Illuminate\Support\Composer  $composer
      * @return void
      */
     public function __construct(Filesystem $files, Composer $composer)
@@ -58,7 +58,7 @@ class NotificationTableCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -75,7 +75,7 @@ class NotificationTableCommand extends Command
 
     /**
      * Create a base migration file for the notifications.
-	 * 为通知创建一个基本迁移文件
+	 * 创建基本迁移文件为通知
      *
      * @return string
      */

@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，节点，名称，完全合格的
- */
-
 namespace PhpParser\Node\Name;
 
 class FullyQualified extends \PhpParser\Node\Name

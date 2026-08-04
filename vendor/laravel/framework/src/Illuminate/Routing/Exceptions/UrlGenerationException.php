@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由选择，异常，Url 生成异常
+ * 路由，URL生成异常
  */
 
 namespace Illuminate\Routing\Exceptions;
@@ -11,7 +11,7 @@ class UrlGenerationException extends Exception
 {
     /**
      * Create a new exception for missing route parameters.
-	 * 为丢失的路由参数创建一个新的异常
+	 * 创建新的异常丢失路由参数
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return static

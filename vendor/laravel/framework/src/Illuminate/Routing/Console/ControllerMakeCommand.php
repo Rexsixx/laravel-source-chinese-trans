@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，路由选择，控制台，控制器编译命令
+ * 路由，控制台控制器设置命令
  */
 
 namespace Illuminate\Routing\Console;
 
+use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
 class ControllerMakeCommand extends GeneratorCommand
@@ -30,7 +30,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成的类的类型
+	 * 生成类的类型，默认为控制器
      *
      * @var string
      */
@@ -38,7 +38,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 获取生成器的存根文件
+	 * 得到生成器的存根文件
      *
      * @return string
      */
@@ -69,7 +69,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认命名空间
+	 * 得到类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -81,10 +81,9 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * Build the class with the given name.
-	 * 用给定的名称构建类。
+	 * 构建给定名称类
      *
      * Remove the base controller import if we are already in base namespace.
-	 * 如果我们已经在基命名空间中，请删除基控制器导入。
      *
      * @param  string  $name
      * @return string
@@ -159,7 +158,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * Get the fully-qualified model class name.
-	 * 获取完全限定的模型类名
+	 * 得到完全限定的模型类名
      *
      * @param  string  $model
      * @return string
@@ -183,18 +182,19 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * Get the console command options.
-	 * 获取控制台命令选项
+	 * 得到控制台命令操作
      *
      * @return array
      */
     protected function getOptions()
     {
         return [
-            ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource controller for the given model.'],
-            ['resource', 'r', InputOption::VALUE_NONE, 'Generate a resource controller class.'],
-            ['invokable', 'i', InputOption::VALUE_NONE, 'Generate a single method, invokable controller class.'],
-            ['parent', 'p', InputOption::VALUE_OPTIONAL, 'Generate a nested resource controller class.'],
             ['api', null, InputOption::VALUE_NONE, 'Exclude the create and edit methods from the controller.'],
+            ['force', null, InputOption::VALUE_NONE, 'Create the class even if the controller already exists'],
+            ['invokable', 'i', InputOption::VALUE_NONE, 'Generate a single method, invokable controller class.'],
+            ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource controller for the given model.'],
+            ['parent', 'p', InputOption::VALUE_OPTIONAL, 'Generate a nested resource controller class.'],
+            ['resource', 'r', InputOption::VALUE_NONE, 'Generate a resource controller class.'],
         ];
     }
 }

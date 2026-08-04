@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，节点转存器
- */
-
 namespace PhpParser;
 
 use PhpParser\Node\Expr\Include_;
@@ -43,7 +39,7 @@ class NodeDumper
      *
      * @return string Dumped value
      */
-    public function dump($node, ?string $code = null) : string {
+    public function dump($node, string $code = null) : string {
         $this->code = $code;
         return $this->dumpRecursive($node);
     }

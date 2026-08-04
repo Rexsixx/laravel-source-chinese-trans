@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，特性，Tappable
+ * 支持，可开采的
  */
 
 namespace Illuminate\Support\Traits;

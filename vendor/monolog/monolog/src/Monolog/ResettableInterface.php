@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * Monolog，可重调接口
  */
@@ -30,5 +31,8 @@ namespace Monolog;
  */
 interface ResettableInterface
 {
+    /**
+     * @return void
+     */
     public function reset();
 }

@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，基础，控制台，资源生成命令
+ * 基础，资源生成命令
  */
 
 namespace Illuminate\Foundation\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 class ResourceMakeCommand extends GeneratorCommand
@@ -29,7 +29,7 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成的类的类型
+	 * 生成类的类型
      *
      * @var string
      */
@@ -37,7 +37,7 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -52,7 +52,7 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 获取生成器的存根文件
+	 * 得到生成器的存根文件
      *
      * @return string
      */
@@ -77,7 +77,7 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认命名空间
+	 * 得到类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -89,7 +89,7 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * Get the console command options.
-	 * 获取控制台命令选项
+	 * 得到控制台命令选项
      *
      * @return array
      */

@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，生成器，Url 生成器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -24,7 +21,6 @@ use Symfony\Component\Routing\RouteCollection;
 /**
  * UrlGenerator can generate a URL or a path for any route in the RouteCollection
  * based on the passed parameters.
- * url生成器可以根据传递的参数在路由中生成URL或路径。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>

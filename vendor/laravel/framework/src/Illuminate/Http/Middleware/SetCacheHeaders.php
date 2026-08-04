@@ -1,17 +1,18 @@
 <?php
 /**
- * Illuminate，Http，中间件，设置缓存头
+ * Http，设置缓存头
  */
 
 namespace Illuminate\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Carbon;
 
 class SetCacheHeaders
 {
     /**
      * Add cache related HTTP headers.
-	 * 添加与缓存相关的HTTP头
+	 * 添加缓存HTTP头
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -36,6 +37,14 @@ class SetCacheHeaders
             $options['etag'] = md5($response->getContent());
         }
 
+        if (isset($options['last_modified'])) {
+            if (is_numeric($options['last_modified'])) {
+                $options['last_modified'] = Carbon::createFromTimestamp($options['last_modified']);
+            } else {
+                $options['last_modified'] = Carbon::parse($options['last_modified']);
+            }
+        }
+
         $response->setCache($options);
         $response->isNotModified($request);
 
@@ -44,7 +53,7 @@ class SetCacheHeaders
 
     /**
      * Parse the given header options.
-	 * 解析给定的标头选项
+	 * 解析给定的头选项
      *
      * @param  string  $options
      * @return array

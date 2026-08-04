@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Mime，测试，约束，电子邮件头相同
- */
 
 /*
  * This file is part of the Symfony package.
@@ -58,14 +55,12 @@ final class EmailHeaderSame extends Constraint
      */
     protected function failureDescription($message): string
     {
-        return sprintf('the Email %s (value is %s)', $this->toString(), $this->getHeaderValue($message) ?? 'null');
+        return sprintf('the Email %s (value is %s)', $this->toString(), $this->getHeaderValue($message));
     }
 
-    private function getHeaderValue($message): ?string
+    private function getHeaderValue($message): string
     {
-        if (null === $header = $message->getHeaders()->get($this->headerName)) {
-            return null;
-        }
+        $header = $message->getHeaders()->get($this->headerName);
 
         return $header instanceof UnstructuredHeader ? $header->getValue() : $header->getBodyAsString();
     }

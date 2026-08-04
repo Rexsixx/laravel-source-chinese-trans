@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，控制台，输入，输入接口
- */
 
 /*
  * This file is part of the Symfony package.

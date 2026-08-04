@@ -1,12 +1,12 @@
 <?php
 /**
- * Psy，代码清除器，调用时间通过参考传递
+ * Psy，代码清理器，调用时间通过引用传递
  */
 
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2018 Justin Hileman
+ * (c) 2012-2022 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,6 +18,7 @@ use PhpParser\Node;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\VariadicPlaceholder;
 use Psy\Exception\FatalErrorException;
 
 /**
@@ -34,7 +35,7 @@ class CallTimePassByReferencePass extends CodeCleanerPass
     /**
      * Validate of use call-time pass-by-reference.
      *
-     * @throws RuntimeException if the user used call-time pass-by-reference
+     * @throws FatalErrorException if the user used call-time pass-by-reference
      *
      * @param Node $node
      */
@@ -45,8 +46,12 @@ class CallTimePassByReferencePass extends CodeCleanerPass
         }
 
         foreach ($node->args as $arg) {
+            if ($arg instanceof VariadicPlaceholder) {
+                continue;
+            }
+
             if ($arg->byRef) {
-                throw new FatalErrorException(self::EXCEPTION_MESSAGE, 0, E_ERROR, null, $node->getLine());
+                throw new FatalErrorException(self::EXCEPTION_MESSAGE, 0, \E_ERROR, null, $node->getLine());
             }
         }
     }

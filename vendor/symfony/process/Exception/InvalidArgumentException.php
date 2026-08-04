@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，过程，异常，无效参数异常
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\Process\Exception;
 
 /**
  * InvalidArgumentException for the Process Component.
- * 流程组件的InvalidArgumentException。
  *
  * @author Romain Neutron <imprec@gmail.com>
  */

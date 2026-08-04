@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，软件包清单
+ * 基础，包清单
  */
 
 namespace Illuminate\Foundation;
@@ -28,7 +28,7 @@ class PackageManifest
 
     /**
      * The vendor path.
-	 * 供应商路径
+	 * 提供路径
      *
      * @var string
      */
@@ -44,7 +44,7 @@ class PackageManifest
 
     /**
      * The loaded manifest array.
-	 * 加载的清单数组
+	 * 导入清单
      *
      * @var array
      */
@@ -52,7 +52,7 @@ class PackageManifest
 
     /**
      * Create a new package manifest instance.
-	 * 创建一个新的包清单实例
+	 * 创建新的包实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string  $basePath
@@ -69,33 +69,43 @@ class PackageManifest
 
     /**
      * Get all of the service provider class names for all packages.
-	 * 获取所有包的所有服务提供者类名
+	 * 得到所有的服务提供者类名
      *
      * @return array
      */
     public function providers()
     {
-        return collect($this->getManifest())->flatMap(function ($configuration) {
-            return (array) ($configuration['providers'] ?? []);
-        })->filter()->all();
+        return $this->config('providers');
     }
 
     /**
      * Get all of the aliases for all packages.
-	 * 获取所有包的所有别名
+	 * 得到所有的别名
      *
      * @return array
      */
     public function aliases()
     {
-        return collect($this->getManifest())->flatMap(function ($configuration) {
-            return (array) ($configuration['aliases'] ?? []);
+        return $this->config('aliases');
+    }
+
+    /**
+     * Get all of the values for all packages for the given configuration name.
+	 * 得到所有的配置值 
+     *
+     * @param  string  $key
+     * @return array
+     */
+    public function config($key)
+    {
+        return collect($this->getManifest())->flatMap(function ($configuration) use ($key) {
+            return (array) ($configuration[$key] ?? []);
         })->filter()->all();
     }
 
     /**
      * Get the current package manifest.
-	 * 获取当前的包清单
+	 * 得到当前包清单
      *
      * @return array
      */
@@ -109,15 +119,13 @@ class PackageManifest
             $this->build();
         }
 
-        $this->files->get($this->manifestPath);
-
         return $this->manifest = file_exists($this->manifestPath) ?
             $this->files->getRequire($this->manifestPath) : [];
     }
 
     /**
      * Build the manifest and write it to disk.
-	 * 构建清单并将其写入磁盘
+	 * 建立清单并写入磁盘
      *
      * @return void
      */
@@ -144,7 +152,7 @@ class PackageManifest
 
     /**
      * Format the given package name.
-	 * 格式化给定的包名
+	 * 格式化给定包名
      *
      * @param  string  $package
      * @return string
@@ -156,7 +164,7 @@ class PackageManifest
 
     /**
      * Get all of the package names that should be ignored.
-	 * 获取所有应该忽略的包名
+	 * 得到所有应该忽略的包名
      *
      * @return array
      */
@@ -173,7 +181,7 @@ class PackageManifest
 
     /**
      * Write the given manifest array to disk.
-	 * 将给定的清单数组写入磁盘
+	 * 写入给定清单至磁盘
      *
      * @param  array  $manifest
      * @return void

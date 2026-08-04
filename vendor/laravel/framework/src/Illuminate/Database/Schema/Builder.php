@@ -1,15 +1,15 @@
 <?php
 /**
- * Illuminate，数据库，架构，构建器
+ * 数据库，结构，构建者，各具体数据库的基础类
  */
 
 namespace Illuminate\Database\Schema;
 
 use Closure;
-use LogicException;
-use RuntimeException;
 use Doctrine\DBAL\Types\Type;
 use Illuminate\Database\Connection;
+use LogicException;
+use RuntimeException;
 
 class Builder
 {
@@ -31,7 +31,7 @@ class Builder
 
     /**
      * The Blueprint resolver callback.
-	 * Blueprint解析器回调
+	 * 蓝图解析回调
      *
      * @var \Closure
      */
@@ -39,7 +39,7 @@ class Builder
 
     /**
      * The default string length for migrations.
-	 * 迁移的默认字符串长度
+	 * 默认字符串长度
      *
      * @var int
      */
@@ -47,7 +47,7 @@ class Builder
 
     /**
      * Create a new database Schema manager.
-	 * 创建一个新的数据库模式管理器
+	 * 创建新的数据库模式管理器
      *
      * @param  \Illuminate\Database\Connection  $connection
      * @return void
@@ -72,7 +72,7 @@ class Builder
 
     /**
      * Determine if the given table exists.
-	 * 确定给定的表是否存在
+	 * 确定给定表是否存在
      *
      * @param  string  $table
      * @return bool
@@ -103,10 +103,10 @@ class Builder
 
     /**
      * Determine if the given table has given columns.
-	 * 确定给定的表是否有给定的列
+	 * 确定给定表是否有给定列
      *
      * @param  string  $table
-     * @param  array   $columns
+     * @param  array  $columns
      * @return bool
      */
     public function hasColumns($table, array $columns)
@@ -124,7 +124,7 @@ class Builder
 
     /**
      * Get the data type for the given column name.
-	 * 获取给定列名的数据类型
+	 * 得到给定列名的数据类型
      *
      * @param  string  $table
      * @param  string  $column
@@ -139,7 +139,7 @@ class Builder
 
     /**
      * Get the column listing for a given table.
-	 * 获取给定表的列清单
+	 * 得到给定表的列清单
      *
      * @param  string  $table
      * @return array
@@ -157,7 +157,7 @@ class Builder
      * Modify a table on the schema.
 	 * 修改模式上的表
      *
-     * @param  string    $table
+     * @param  string  $table
      * @param  \Closure  $callback
      * @return void
      */
@@ -168,9 +168,9 @@ class Builder
 
     /**
      * Create a new table on the schema.
-	 * 在模式上创建一个新表
+	 * 创建一个新表在模式上
      *
-     * @param  string    $table
+     * @param  string  $table
      * @param  \Closure  $callback
      * @return void
      */
@@ -199,7 +199,7 @@ class Builder
 
     /**
      * Drop a table from the schema if it exists.
-	 * 从模式中删除存在的表
+	 * 从模式中删除一个表如果表存在
      *
      * @param  string  $table
      * @return void
@@ -213,7 +213,7 @@ class Builder
 
     /**
      * Drop all tables from the database.
-	 * 从数据库中删除所有表
+	 * 删除数据库中有表
      *
      * @return void
      *
@@ -226,7 +226,7 @@ class Builder
 
     /**
      * Drop all views from the database.
-	 * 从数据库中删除所有视图
+	 * 删除数据库中有视图
      *
      * @return void
      *
@@ -239,7 +239,7 @@ class Builder
 
     /**
      * Drop all types from the database.
-	 * 从数据库中删除所有类型
+	 * 删除数据库中有类型
      *
      * @return void
      *
@@ -248,6 +248,19 @@ class Builder
     public function dropAllTypes()
     {
         throw new LogicException('This database driver does not support dropping all types.');
+    }
+
+    /**
+     * Get all of the table names for the database.
+	 * 得到数据库中有表名
+     *
+     * @return void
+     *
+     * @throws \LogicException
+     */
+    public function getAllTables()
+    {
+        throw new LogicException('This database driver does not support getting all tables.');
     }
 
     /**
@@ -305,7 +318,7 @@ class Builder
 
     /**
      * Create a new command set with a Closure.
-	 * 使用Closure创建一个新的命令集
+	 * 创建新的命令集使用Closure
      *
      * @param  string  $table
      * @param  \Closure|null  $callback
@@ -334,6 +347,7 @@ class Builder
      * @return void
      *
      * @throws \Doctrine\DBAL\DBALException
+     * @throws \RuntimeException
      */
     public function registerCustomDoctrineType($class, $name, $type)
     {
@@ -355,7 +369,7 @@ class Builder
 
     /**
      * Get the database connection instance.
-	 * 获取数据库连接实例
+	 * 得到数据库连接实例
      *
      * @return \Illuminate\Database\Connection
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * App，Http，中间件，验证 Csrf令牌
+ * App，Http，中间件，验证 CSRF令牌
  */
 
 namespace App\Http\Middleware;
@@ -11,7 +11,7 @@ class VerifyCsrfToken extends Middleware
 {
     /**
      * Indicates whether the XSRF-TOKEN cookie should be set on the response.
-	 * 指示是否应该在响应上设置xsrf令牌cookie
+     * 指明是否应该在响应上设置XSRF令牌cookie
      *
      * @var bool
      */
@@ -19,7 +19,7 @@ class VerifyCsrfToken extends Middleware
 
     /**
      * The URIs that should be excluded from CSRF verification.
-	 * 该uri应该被排除在CSRF验证之外
+     * 该URI应该被排除在CSRF验证之外
      *
      * @var array
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，配置 Url解析器
+ * 支持，配置Url解析器
  */
 
 namespace Illuminate\Support;
@@ -11,7 +11,7 @@ class ConfigurationUrlParser
 {
     /**
      * The drivers aliases map.
-	 * 驱动程序别名映射
+	 * 驱动别名映射
      *
      * @var array
      */
@@ -21,6 +21,8 @@ class ConfigurationUrlParser
         'postgres' => 'pgsql',
         'postgresql' => 'pgsql',
         'sqlite3' => 'sqlite',
+        'redis' => 'tcp',
+        'rediss' => 'tls',
     ];
 
     /**
@@ -44,18 +46,22 @@ class ConfigurationUrlParser
             return $config;
         }
 
-        $parsedUrl = $this->parseUrl($url);
+        $rawComponents = $this->parseUrl($url);
+
+        $decodedComponents = $this->parseStringsToNativeTypes(
+            array_map('rawurldecode', $rawComponents)
+        );
 
         return array_merge(
             $config,
-            $this->getPrimaryOptions($parsedUrl),
-            $this->getQueryOptions($parsedUrl)
+            $this->getPrimaryOptions($decodedComponents),
+            $this->getQueryOptions($rawComponents)
         );
     }
 
     /**
      * Get the primary database connection options.
-	 * 获取主数据库连接选项
+	 * 得到主数据库连接选项
      *
      * @param  array  $url
      * @return array
@@ -76,7 +82,7 @@ class ConfigurationUrlParser
 
     /**
      * Get the database driver from the URL.
-	 * 从URL获取数据库驱动程序
+	 * 得到数据库驱动从URL
      *
      * @param  array  $url
      * @return string|null
@@ -94,7 +100,7 @@ class ConfigurationUrlParser
 
     /**
      * Get the database name from the URL.
-	 * 从URL获取数据库名称
+	 * 得到数据库名称从URL
      *
      * @param  array  $url
      * @return string|null
@@ -103,12 +109,12 @@ class ConfigurationUrlParser
     {
         $path = $url['path'] ?? null;
 
-        return $path ? substr($path, 1) : null;
+        return $path && $path !== '/' ? substr($path, 1) : null;
     }
 
     /**
      * Get all of the additional database options from the query string.
-	 * 从查询字符串中获取所有其他数据库选项
+	 * 得到所有其他数据库选项从查询字符串中
      *
      * @param  array  $url
      * @return array
@@ -130,10 +136,12 @@ class ConfigurationUrlParser
 
     /**
      * Parse the string URL to an array of components.
-	 * 将字符串URL解析为组件数组
+	 * 解析字符串URL为组件数组
      *
      * @param  string  $url
      * @return array
+     *
+     * @throws \InvalidArgumentException
      */
     protected function parseUrl($url)
     {
@@ -145,14 +153,12 @@ class ConfigurationUrlParser
             throw new InvalidArgumentException('The database configuration URL is malformed.');
         }
 
-        return $this->parseStringsToNativeTypes(
-            array_map('rawurldecode', $parsedUrl)
-        );
+        return $parsedUrl;
     }
 
     /**
      * Convert string casted values to their native types.
-	 * 将字符串强制转换值转换为其本机类型
+	 * 转换字符串强制转换值为其本机类型
      *
      * @param  mixed  $value
      * @return mixed
@@ -178,7 +184,7 @@ class ConfigurationUrlParser
 
     /**
      * Get all of the current drivers aliases.
-	 * 找出当前所有司机的别名
+	 * 得到当前所有驱动的别名
      *
      * @return array
      */
@@ -189,7 +195,7 @@ class ConfigurationUrlParser
 
     /**
      * Add the given driver alias to the driver aliases array.
-	 * 将给定的驱动别名添加到驱动别名数组中
+	 * 添加给定的驱动别名到驱动别名数组中
      *
      * @param  string  $alias
      * @param  string  $driver

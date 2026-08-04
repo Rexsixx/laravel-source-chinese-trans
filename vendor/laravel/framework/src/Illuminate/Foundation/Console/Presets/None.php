@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，预先装置，None
+ * 基础，无
  */
 
 namespace Illuminate\Foundation\Console\Presets;
@@ -55,7 +55,7 @@ class None extends Preset
 
     /**
      * Write the stubs for the Sass and JavaScript files.
-	 * 编写Sass和JavaScript文件的存根
+	 * 写Sass和JavaScript文件的存根
      *
      * @return void
      */

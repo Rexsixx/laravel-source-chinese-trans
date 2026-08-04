@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，控制台，样式，Symfony 样式
- */
 
 /*
  * This file is part of the Symfony package.
@@ -433,18 +430,18 @@ class SymfonyStyle extends OutputStyle
         $chars = substr(str_replace(\PHP_EOL, "\n", $this->bufferedOutput->fetch()), -2);
 
         if (!isset($chars[0])) {
-            $this->newLine(); // empty history, so we should start with a new line.
+            $this->newLine(); //empty history, so we should start with a new line.
 
             return;
         }
-        // Prepend new line for each non LF chars (This means no blank line was output before)
+        //Prepend new line for each non LF chars (This means no blank line was output before)
         $this->newLine(2 - substr_count($chars, "\n"));
     }
 
     private function autoPrependText(): void
     {
         $fetched = $this->bufferedOutput->fetch();
-        // Prepend new line if last char isn't EOL:
+        //Prepend new line if last char isn't EOL:
         if (!str_ends_with($fetched, "\n")) {
             $this->newLine();
         }

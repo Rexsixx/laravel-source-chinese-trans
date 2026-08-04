@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，调试，错误处理程序
- */
 
 /*
  * This file is part of the Symfony package.
@@ -357,8 +354,8 @@ class ErrorHandler
      */
     private function reRegister(int $prev)
     {
-        if ($prev !== ($this->thrownErrors | $this->loggedErrors)) {
-            $handler = set_error_handler('is_int');
+        if ($prev !== $this->thrownErrors | $this->loggedErrors) {
+            $handler = set_error_handler('var_dump');
             $handler = \is_array($handler) ? $handler[0] : null;
             restore_error_handler();
             if ($handler === $this) {
@@ -493,7 +490,7 @@ class ErrorHandler
             $log = 0;
         } else {
             if (\PHP_VERSION_ID < (\PHP_VERSION_ID < 70400 ? 70316 : 70404)) {
-                $currentErrorHandler = set_error_handler('is_int');
+                $currentErrorHandler = set_error_handler('var_dump');
                 restore_error_handler();
             }
 
@@ -604,7 +601,7 @@ class ErrorHandler
         $sameHandlerLimit = 10;
 
         while (!\is_array($handler) || !$handler[0] instanceof self) {
-            $handler = set_exception_handler('is_int');
+            $handler = set_exception_handler('var_dump');
             restore_exception_handler();
 
             if (!$handler) {

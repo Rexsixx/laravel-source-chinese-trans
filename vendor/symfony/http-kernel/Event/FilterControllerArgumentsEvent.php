@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，事件，过滤器控制器参数事件
- */
 
 /*
  * This file is part of the Symfony package.

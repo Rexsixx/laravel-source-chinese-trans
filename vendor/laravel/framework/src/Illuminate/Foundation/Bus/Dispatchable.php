@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，总线，调度单元
+ * 基础，总线调度
  */
 
 namespace Illuminate\Foundation\Bus;
@@ -11,7 +11,7 @@ trait Dispatchable
 {
     /**
      * Dispatch the job with the given arguments.
-	 * 使用给定的参数调度作业
+	 * 调度任务用给定参数
      *
      * @return \Illuminate\Foundation\Bus\PendingDispatch
      */
@@ -29,6 +29,17 @@ trait Dispatchable
     public static function dispatchNow()
     {
         return app(Dispatcher::class)->dispatchNow(new static(...func_get_args()));
+    }
+
+    /**
+     * Dispatch a command to its appropriate handler after the current process.
+	 * 在当前进程结束后，将命令分派给相应的处理程序
+     *
+     * @return mixed
+     */
+    public static function dispatchAfterResponse()
+    {
+        return app(Dispatcher::class)->dispatchAfterResponse(new static(...func_get_args()));
     }
 
     /**

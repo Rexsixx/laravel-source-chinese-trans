@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，正则表达式，Regex
+ * Dotenv，Regex，Regex
  */
 
 namespace Dotenv\Regex;
@@ -25,7 +25,6 @@ class Regex
 
     /**
      * Perform a preg replace, wrapping up the result.
-	 * 执行preg替换,完成结果。
      *
      * @param string $pattern
      * @param string $replacement
@@ -42,7 +41,6 @@ class Regex
 
     /**
      * Perform a preg replace callback, wrapping up the result.
-	 * 执行preg replace回调，封装结果。
      *
      * @param string   $pattern
      * @param callable $callback
@@ -59,7 +57,6 @@ class Regex
 
     /**
      * Perform a preg operation, wrapping up the result.
-	 * 执行一个preg操作，包装结果
      *
      * @param callable $operation
      * @param string   $subject

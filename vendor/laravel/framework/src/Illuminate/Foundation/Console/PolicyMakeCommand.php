@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，基础，控制台，策略制定命令
+ * 基础，政策生成命令
  */
 
 namespace Illuminate\Foundation\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 class PolicyMakeCommand extends GeneratorCommand
@@ -29,7 +29,7 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成的类的类型
+	 * 生成类的类型
      *
      * @var string
      */
@@ -37,7 +37,7 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * Build the class with the given name.
-	 * 用给定的名称构建类
+	 * 构建类使用给定名称
      *
      * @param  string  $name
      * @return string
@@ -55,7 +55,7 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * Replace the User model namespace.
-	 * 替换User模型名称空间
+	 * 替换User模型命名空间
      *
      * @param  string  $stub
      * @return string
@@ -77,7 +77,7 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * Replace the model for the given stub.
-	 * 替换给定存根的模型
+	 * 替模型为给定存根
      *
      * @param  string  $stub
      * @param  string  $model
@@ -118,7 +118,7 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 获取生成器的存根文件
+	 * 得到存根文件为生成器
      *
      * @return string
      */
@@ -131,7 +131,7 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认命名空间
+	 * 得到类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -143,7 +143,7 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * Get the console command arguments.
-	 * 获取控制台命令参数
+	 * 得到控制台命令参数
      *
      * @return array
      */

@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，加载程序，Yaml 文件加载器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -25,7 +22,6 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * YamlFileLoader loads Yaml routing files.
- * YamlFileLoader加载Yaml路由文件。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
@@ -39,7 +35,6 @@ class YamlFileLoader extends FileLoader
 
     /**
      * Loads a Yaml file.
-	 * 加载一个Yaml文件
      *
      * @param string      $file A Yaml file path
      * @param string|null $type The resource type

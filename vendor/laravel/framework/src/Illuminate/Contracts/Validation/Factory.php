@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，验证，工厂
+ * 契约，验证工厂接口
  */
 
 namespace Illuminate\Contracts\Validation;
@@ -9,7 +9,7 @@ interface Factory
 {
     /**
      * Create a new Validator instance.
-	 * 创建一个新的Validator实例
+	 * 创建新的验证实例
      *
      * @param  array  $data
      * @param  array  $rules
@@ -32,9 +32,9 @@ interface Factory
 
     /**
      * Register a custom implicit validator extension.
-	 * 注册自定义隐式验证器扩展
+	 * 注册一个自定义隐式验证器扩展
      *
-     * @param  string   $rule
+     * @param  string  $rule
      * @param  \Closure|string  $extension
      * @param  string|null  $message
      * @return void
@@ -43,9 +43,9 @@ interface Factory
 
     /**
      * Register a custom implicit validator message replacer.
-	 * 注册自定义隐式验证器消息替换程序
+	 * 注册一个自定义隐式验证器替换
      *
-     * @param  string   $rule
+     * @param  string  $rule
      * @param  \Closure|string  $replacer
      * @return void
      */

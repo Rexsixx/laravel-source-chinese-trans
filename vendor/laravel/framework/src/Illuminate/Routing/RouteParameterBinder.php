@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由选择，路由参数绑定器
+ * 路由，路由参数绑定器
  */
 
 namespace Illuminate\Routing;
@@ -19,7 +19,7 @@ class RouteParameterBinder
 
     /**
      * Create a new Route parameter binder instance.
-	 * 创建一个新的路由参数绑定实例
+	 * 创建新的路由参数绑定实例
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return void
@@ -31,7 +31,7 @@ class RouteParameterBinder
 
     /**
      * Get the parameters for the route.
-	 * 获取路由的参数
+	 * 得到路由参数
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
@@ -41,15 +41,15 @@ class RouteParameterBinder
         // If the route has a regular expression for the host part of the URI, we will
         // compile that and get the parameter matches for this domain. We will then
         // merge them into this parameters array so that this array is completed.
-		// 如果该路由对 URI 中的主机部分有正则表达式匹配规则，我们将对其进行编译，并获取此域名的参数匹配结果。
-		// 然后我们将把它们合并到这个参数数组中，以使该数组完整。
+		// 如果路由有URI主机部分的正则表达式，我们将编译它并获取此域的参数匹配。
+		// 然后，我们将它们合并到这个参数数组中，这样这个数组就完成了。
         $parameters = $this->bindPathParameters($request);
 
         // If the route has a regular expression for the host part of the URI, we will
         // compile that and get the parameter matches for this domain. We will then
         // merge them into this parameters array so that this array is completed.
-		// 如果该路由对 URI 中的主机部分有正则表达式匹配规则，我们将对其进行编译，并获取此域名的参数匹配结果。
-		// 我们将把它们合并到这个参数数组中，以使该数组完整。
+		// 如果路由有URI主机部分的正则表达式，我们将编译它并获取此域的参数匹配。
+		// 然后，我们将它们合并到这个参数数组中，这样这个数组就完成了。
         if (! is_null($this->route->compiled->getHostRegex())) {
             $parameters = $this->bindHostParameters(
                 $request, $parameters
@@ -61,7 +61,7 @@ class RouteParameterBinder
 
     /**
      * Get the parameter matches for the path portion of the URI.
-	 * 获取URI的路径部分的参数匹配
+	 * 得到URI的路径部分的参数匹配
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
@@ -77,7 +77,7 @@ class RouteParameterBinder
 
     /**
      * Extract the parameter list from the host part of the request.
-	 * 从请求的主机部分提取参数列表
+	 * 提取参数列表从请求的主机部分
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  array  $parameters

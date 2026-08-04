@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，Http客户端，异常，传输异常接口
+ * Symfony，契约，HTTP客户端，异常，传输异常接口
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Contracts\HttpClient\Exception;
 
 /**
  * When any error happens at the transport level.
- * 当任何错误发生在传输级别时。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

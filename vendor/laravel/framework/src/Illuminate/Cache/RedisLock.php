@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Redis 锁
+ * 缓存，Redis锁
  */
 
 namespace Illuminate\Cache;
@@ -17,7 +17,7 @@ class RedisLock extends Lock
 
     /**
      * Create a new lock instance.
-	 * 创建一个新的锁实例
+	 * 创建新的锁实例
      *
      * @param  \Illuminate\Redis\Connections\Connection  $redis
      * @param  string  $name
@@ -40,29 +40,27 @@ class RedisLock extends Lock
      */
     public function acquire()
     {
-        $result = $this->redis->setnx($this->name, $this->owner);
-
-        if ($result === 1 && $this->seconds > 0) {
-            $this->redis->expire($this->name, $this->seconds);
+        if ($this->seconds > 0) {
+            return $this->redis->set($this->name, $this->owner, 'EX', $this->seconds, 'NX') == true;
+        } else {
+            return $this->redis->setnx($this->name, $this->owner) === 1;
         }
-
-        return $result === 1;
     }
 
     /**
      * Release the lock.
 	 * 释放锁
      *
-     * @return void
+     * @return bool
      */
     public function release()
     {
-        $this->redis->eval(LuaScripts::releaseLock(), 1, $this->name, $this->owner);
+        return (bool) $this->redis->eval(LuaScripts::releaseLock(), 1, $this->name, $this->owner);
     }
 
     /**
      * Releases this lock in disregard of ownership.
-	 * 释放此锁，而不考虑所有权。
+	 * 释放此锁，而不考虑所有权
      *
      * @return void
      */

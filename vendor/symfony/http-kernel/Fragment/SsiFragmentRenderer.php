@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，碎片，Ssi碎片渲染器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\HttpKernel\Fragment;
 
 /**
  * Implements the SSI rendering strategy.
- * 实现SSI呈现策略。
  *
  * @author Sebastian Krebs <krebs.seb@gmail.com>
  */

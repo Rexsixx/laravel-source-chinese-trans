@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，生成器，Dumper，Php生成器Dumper
- */
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +17,6 @@ use Symfony\Component\Routing\Matcher\Dumper\CompiledUrlMatcherDumper;
 
 /**
  * PhpGeneratorDumper creates a PHP class able to generate URLs for a given set of routes.
- * PhpGeneratorDumper创建了一个PHP类,它能够为给定的路由生成url。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
@@ -31,7 +27,6 @@ class PhpGeneratorDumper extends GeneratorDumper
 {
     /**
      * Dumps a set of routes to a PHP class.
-	 * 向PHP类转储一组路由。
      *
      * Available options:
      *

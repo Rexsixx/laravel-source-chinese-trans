@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，广播，广播员，使用推送通道约定
+ * 广播，使用Pusher通道约定
  */
 
 namespace Illuminate\Broadcasting\Broadcasters;
@@ -11,7 +11,7 @@ trait UsePusherChannelConventions
 {
     /**
      * Return true if channel is protected by authentication.
-	 * 如果通道受身份验证保护，则返回true。
+	 * 返回true，如果通道受身份验证保护
      *
      * @param  string  $channel
      * @return bool
@@ -23,17 +23,17 @@ trait UsePusherChannelConventions
 
     /**
      * Remove prefix from channel name.
-	 * 从通道名中删除前缀
+	 * 移除通道名前缀
      *
      * @param  string  $channel
      * @return string
      */
     public function normalizeChannelName($channel)
     {
-        if ($this->isGuardedChannel($channel)) {
-            return Str::startsWith($channel, 'private-')
-                ? Str::replaceFirst('private-', '', $channel)
-                : Str::replaceFirst('presence-', '', $channel);
+        foreach (['private-encrypted-', 'private-', 'presence-'] as $prefix) {
+            if (Str::startsWith($channel, $prefix)) {
+                return Str::replaceFirst($prefix, '', $channel);
+            }
         }
 
         return $channel;

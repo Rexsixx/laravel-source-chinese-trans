@@ -28,31 +28,22 @@ class Call
     private $arguments;
     private $returnValue;
     private $exception;
-    /**
-     * @var string|null
-     */
     private $file;
-    /**
-     * @var int|null
-     */
     private $line;
-    /**
-     * @var \SplObjectStorage<ArgumentsWildcard, int|false>
-     */
     private $scores;
 
     /**
      * Initializes call.
      *
      * @param string      $methodName
-     * @param array<mixed> $arguments
+     * @param array       $arguments
      * @param mixed       $returnValue
-     * @param Exception|null $exception
+     * @param Exception   $exception
      * @param null|string $file
      * @param null|int    $line
      */
     public function __construct($methodName, array $arguments, $returnValue,
-        ?Exception $exception, $file, $line)
+                                Exception $exception = null, $file, $line)
     {
         $this->methodName  = $methodName;
         $this->arguments   = $arguments;
@@ -79,7 +70,7 @@ class Call
     /**
      * Returns called method arguments.
      *
-     * @return array<mixed>
+     * @return array
      */
     public function getArguments()
     {
@@ -109,7 +100,7 @@ class Call
     /**
      * Returns callee filename.
      *
-     * @return string|null
+     * @return string
      */
     public function getFile()
     {
@@ -119,7 +110,7 @@ class Call
     /**
      * Returns callee line number.
      *
-     * @return int|null
+     * @return int
      */
     public function getLine()
     {

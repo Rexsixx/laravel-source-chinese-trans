@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，翻译，格式化程序，Intl格式化程序
- */
 
 /*
  * This file is part of the Symfony package.

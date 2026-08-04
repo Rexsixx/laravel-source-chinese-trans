@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，提供者，时间提供者接口
+ * Ramsey，Uuid，供应者，时间提供接口
  */
 
 /**

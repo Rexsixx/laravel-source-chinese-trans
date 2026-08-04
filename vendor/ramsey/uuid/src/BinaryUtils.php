@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，二进制 Utils
+ * Ramsey，Uuid，二进制工具
  */
 
 namespace Ramsey\Uuid;

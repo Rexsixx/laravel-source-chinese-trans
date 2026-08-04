@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，过程，管道，抽象管道
- */
 
 /*
  * This file is part of the Symfony package.
@@ -59,7 +56,6 @@ abstract class AbstractPipes implements PipesInterface
 
     /**
      * Returns true if a system call has been interrupted.
-	 * 如果系统调用被中断,返回true。
      */
     protected function hasSystemCallBeenInterrupted(): bool
     {
@@ -108,7 +104,7 @@ abstract class AbstractPipes implements PipesInterface
                 stream_set_blocking($input, 0);
             } elseif (!isset($this->inputBuffer[0])) {
                 if (!\is_string($input)) {
-                    if (!\is_scalar($input)) {
+                    if (!is_scalar($input)) {
                         throw new InvalidArgumentException(sprintf('"%s" yielded a value of type "%s", but only scalars and stream resources are supported.', \get_class($this->input), \gettype($input)));
                     }
                     $input = (string) $input;

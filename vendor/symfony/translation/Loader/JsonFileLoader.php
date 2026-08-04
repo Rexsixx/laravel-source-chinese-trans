@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，翻译，载入程序，Json File 加载器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Translation\Exception\InvalidResourceException;
 
 /**
  * JsonFileLoader loads translations from an json file.
- * JsonFileLoader从json文件中加载翻译。
  *
  * @author singles
  */
@@ -43,7 +39,6 @@ class JsonFileLoader extends FileLoader
 
     /**
      * Translates JSON_ERROR_* constant into meaningful message.
-	 * 将JSON_ERROR_*常量转换为有意义的消息
      */
     private function getJSONErrorMessage(int $errorCode): string
     {

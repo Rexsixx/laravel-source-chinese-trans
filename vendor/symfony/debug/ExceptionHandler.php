@@ -22,7 +22,6 @@ use Symfony\Component\HttpKernel\Debug\FileLinkFormatter;
 
 /**
  * ExceptionHandler converts an exception to a Response object.
- * 异常处理程序将异常转换为响应对象。
  *
  * It is mostly useful in debug mode to replace the default PHP/XDebug
  * output with something prettier and more useful.
@@ -59,7 +58,7 @@ class ExceptionHandler
     public function __construct(bool $debug = true, string $charset = null, $fileLinkFormat = null)
     {
         $this->debug = $debug;
-        $this->charset = $charset ?: \ini_get('default_charset') ?: 'UTF-8';
+        $this->charset = $charset ?: ini_get('default_charset') ?: 'UTF-8';
         $this->fileLinkFormat = $fileLinkFormat;
     }
 
@@ -394,7 +393,7 @@ EOF;
     private function formatPath(string $path, int $line): string
     {
         $file = $this->escapeHtml(preg_match('#[^/\\\\]*+$#', $path, $file) ? $file[0] : $path);
-        $fmt = $this->fileLinkFormat ?: \ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format');
+        $fmt = $this->fileLinkFormat ?: ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format');
 
         if (!$fmt) {
             return sprintf('<span class="block trace-file-path">in <span title="%s%3$s"><strong>%s</strong>%s</span></span>', $this->escapeHtml($path), $file, 0 < $line ? ' line '.$line : '');

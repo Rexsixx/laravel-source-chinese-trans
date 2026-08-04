@@ -1,6 +1,6 @@
 <?php
 /**
- * 深拷贝，类型过滤器，Type Matcher
+ * DeepCopy，类型匹配器，类型过滤器
  */
 
 namespace DeepCopy\TypeMatcher;

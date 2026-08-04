@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，引擎，Engine
+ * 视图，引擎
  */
 
 namespace Illuminate\View\Engines;
@@ -17,7 +17,7 @@ abstract class Engine
 
     /**
      * Get the last view that was rendered.
-	 * 获取最后一次渲染的视图
+	 * 得到最后一次渲染的视图
      *
      * @return string
      */

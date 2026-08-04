@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，控制台，应用
+ * 契约，控制台应用接口
  */
 
 namespace Illuminate\Contracts\Console;
@@ -9,7 +9,7 @@ interface Application
 {
     /**
      * Run an Artisan console command by name.
-	 * 按名称运行Artisan控制台命令
+	 * 执行一个客户端命令
      *
      * @param  string  $command
      * @param  array  $parameters
@@ -20,7 +20,7 @@ interface Application
 
     /**
      * Get the output from the last command.
-	 * 获取最后一个命令的输出
+	 * 得到上一个命令的输出
      *
      * @return string
      */

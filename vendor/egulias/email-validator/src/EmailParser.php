@@ -13,6 +13,7 @@ use Egulias\EmailValidator\Warning\EmailTooLong;
 
 /**
  * EmailParser
+ * 电子邮件解析器
  *
  * @author Eduardo Gulias Davis <me@egulias.com>
  */

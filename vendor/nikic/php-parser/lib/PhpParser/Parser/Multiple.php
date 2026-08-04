@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，分析程序，多样的
+ * PhpParser，分析程序，多重的
  */
 
 namespace PhpParser\Parser;
@@ -28,7 +28,7 @@ class Multiple implements Parser
         $this->parsers = $parsers;
     }
 
-    public function parse(string $code, ?ErrorHandler $errorHandler = null) {
+    public function parse(string $code, ErrorHandler $errorHandler = null) {
         if (null === $errorHandler) {
             $errorHandler = new ErrorHandler\Throwing;
         }

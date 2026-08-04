@@ -1,7 +1,4 @@
 <?php
-/**
- * phpDocumentor，反射，Doc Block，标准标签工厂
- */
 
 declare(strict_types=1);
 

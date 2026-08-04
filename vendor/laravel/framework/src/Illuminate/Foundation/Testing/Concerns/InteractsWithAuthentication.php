@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，问题，与身份验证交互
+ * 基础，与身份验证交互
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;
@@ -11,7 +11,7 @@ trait InteractsWithAuthentication
 {
     /**
      * Set the currently logged in user for the application.
-	 * 为应用程序设置当前登录的用户
+	 * 设置当前登录的用户为应用
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string|null  $driver
@@ -24,7 +24,7 @@ trait InteractsWithAuthentication
 
     /**
      * Set the currently logged in user for the application.
-	 * 禁用模拟控制台输出
+	 * 设置当前登录的用户为应用
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string|null  $driver
@@ -59,7 +59,7 @@ trait InteractsWithAuthentication
 
     /**
      * Assert that the user is not authenticated.
-	 * 断言用户未经过身份验证
+	 * 断言用户没身份验证
      *
      * @param  string|null  $guard
      * @return $this
@@ -73,7 +73,7 @@ trait InteractsWithAuthentication
 
     /**
      * Return true if the user is authenticated, false otherwise.
-	 * 如果用户通过身份验证，则返回true，否则返回false。
+	 * 返回真如果用户已被身份验证
      *
      * @param  string|null  $guard
      * @return bool
@@ -129,7 +129,7 @@ trait InteractsWithAuthentication
 
     /**
      * Assert that the given credentials are invalid.
-	 * 断言给定的凭据无效
+	 * 断言给定的凭证是无效的
      *
      * @param  array  $credentials
      * @param  string|null  $guard
@@ -146,7 +146,7 @@ trait InteractsWithAuthentication
 
     /**
      * Return true if the credentials are valid, false otherwise.
-	 * 如果凭据有效则返回true，否则返回false。
+	 * 返回true如果凭据有效，否则返回false
      *
      * @param  array  $credentials
      * @param  string|null  $guard

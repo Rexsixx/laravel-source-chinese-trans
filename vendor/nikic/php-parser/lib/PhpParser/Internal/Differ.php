@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，内部的，Diff Elem
- */
-
 namespace PhpParser\Internal;
 
 /**

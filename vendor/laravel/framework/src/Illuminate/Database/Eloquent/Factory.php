@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，工厂
+ * 数据库，Eloquent，工厂
  */
 
 namespace Illuminate\Database\Eloquent;
@@ -13,7 +13,7 @@ class Factory implements ArrayAccess
 {
     /**
      * The model definitions in the container.
-	 * 容器中的模型定义
+	 * 容器中模型定义
      *
      * @var array
      */
@@ -21,7 +21,7 @@ class Factory implements ArrayAccess
 
     /**
      * The registered model states.
-	 * 注册的模型状态
+	 * 已注册模型状态
      *
      * @var array
      */
@@ -37,7 +37,7 @@ class Factory implements ArrayAccess
 
     /**
      * The registered after creating callbacks.
-	 * 创建回调后注册的
+	 * 创建回调后注册
      *
      * @var array
      */
@@ -53,7 +53,7 @@ class Factory implements ArrayAccess
 
     /**
      * Create a new factory instance.
-	 * 创建一个新的工厂实例
+	 * 创建新的工厂实例
      *
      * @param  \Faker\Generator  $faker
      * @return void
@@ -65,7 +65,7 @@ class Factory implements ArrayAccess
 
     /**
      * Create a new factory container.
-	 * 创建一个新的工厂容器
+	 * 创建新的工厂容器
      *
      * @param  \Faker\Generator  $faker
      * @param  string|null  $pathToFactories
@@ -80,7 +80,7 @@ class Factory implements ArrayAccess
 
     /**
      * Define a class with a given short-name.
-	 * 用给定的短名称定义一个类
+	 * 用一个给定的短名定义一个类
      *
      * @param  string  $class
      * @param  string  $name
@@ -94,7 +94,7 @@ class Factory implements ArrayAccess
 
     /**
      * Define a class with a given set of attributes.
-	 * 用一组给定的属性定义一个类
+	 * 定义一个具有给定属性集的类
      *
      * @param  string  $class
      * @param  callable  $attributes
@@ -110,7 +110,7 @@ class Factory implements ArrayAccess
 
     /**
      * Define a state with a given set of attributes.
-	 * 用一组给定的属性定义一个状态
+	 * 定义一个状态用给定的属性
      *
      * @param  string  $class
      * @param  string  $state
@@ -160,7 +160,7 @@ class Factory implements ArrayAccess
      *
      * @param  string  $class
      * @param  callable  $callback
-     * @param  string $name
+     * @param  string  $name
      * @return $this
      */
     public function afterCreating($class, callable $callback, $name = 'default')
@@ -240,7 +240,7 @@ class Factory implements ArrayAccess
 
     /**
      * Get the raw attribute array for a given named model.
-	 * 获取给定命名模型的原始属性数组
+	 * 得到给定命名模型的原始属性数组
      *
      * @param  string  $class
      * @param  string  $name
@@ -254,7 +254,7 @@ class Factory implements ArrayAccess
 
     /**
      * Get the raw attribute array for a given model.
-	 * 获取给定模型的原始属性数组
+	 * 得到给定模型的原始属性数组
      *
      * @param  string  $class
      * @param  array  $attributes
@@ -270,7 +270,7 @@ class Factory implements ArrayAccess
 
     /**
      * Create a builder for the given model.
-	 * 为给定的模型创建一个构建器
+	 * 创建一个构建器为给定的模型
      *
      * @param  string  $class
      * @param  string  $name
@@ -286,7 +286,7 @@ class Factory implements ArrayAccess
 
     /**
      * Load factories from path.
-	 * 从路径加载工厂
+	 * 加载工厂从路径
      *
      * @param  string  $path
      * @return $this
@@ -318,7 +318,7 @@ class Factory implements ArrayAccess
 
     /**
      * Get the value of the given offset.
-	 * 获取给定偏移量的值
+	 * 得到给定偏移量的值
      *
      * @param  string  $offset
      * @return mixed
@@ -330,7 +330,7 @@ class Factory implements ArrayAccess
 
     /**
      * Set the given offset to the given value.
-	 * 将给定偏移量设置为给定值
+	 * 设置给定偏移量为给定值
      *
      * @param  string  $offset
      * @param  callable  $value
@@ -343,7 +343,7 @@ class Factory implements ArrayAccess
 
     /**
      * Unset the value at the given offset.
-	 * 在给定偏移量处取消值的设置
+	 * 取消值的设置在给定的偏移量
      *
      * @param  string  $offset
      * @return void

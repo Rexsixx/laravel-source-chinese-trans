@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，Http，资源，Json，资源响应
+ * Http，资源响应
  */
 
 namespace Illuminate\Http\Resources\Json;
 
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class ResourceResponse implements Responsable
 {
@@ -21,7 +21,7 @@ class ResourceResponse implements Responsable
 
     /**
      * Create a new resource response.
-	 * 创建一个新的资源响应
+	 * 创建新的资源响应
      *
      * @param  mixed  $resource
      * @return void
@@ -33,7 +33,7 @@ class ResourceResponse implements Responsable
 
     /**
      * Create an HTTP response that represents the object.
-	 * 创建一个表示对象的HTTP响应
+	 * 创建表示对象的HTTP响应
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
@@ -56,7 +56,7 @@ class ResourceResponse implements Responsable
 
     /**
      * Wrap the given data if necessary.
-	 * 必要时包装给定的数据
+	 * 包装给定的数据如果有必要
      *
      * @param  array  $data
      * @param  array  $with
@@ -92,7 +92,7 @@ class ResourceResponse implements Responsable
 
     /**
      * Determine if "with" data has been added and our data is unwrapped.
-	 * 确定是否添加了“with”数据以及是否打开了数据包装
+	 * 确定是否添加了"with"数据以及是否打开了数据包装
      *
      * @param  array  $data
      * @param  array  $with
@@ -108,7 +108,7 @@ class ResourceResponse implements Responsable
 
     /**
      * Get the default data wrapper for the resource.
-	 * 获取资源的默认数据包装器
+	 * 得到资源的默认数据包装器
      *
      * @return string
      */

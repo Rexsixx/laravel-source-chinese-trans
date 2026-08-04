@@ -1,16 +1,16 @@
 <?php
 /**
- * Illuminate，基础，认证，Throttles 登录
+ * 基础，节流登录
  */
 
 namespace Illuminate\Foundation\Auth;
 
-use Illuminate\Support\Str;
+use Illuminate\Auth\Events\Lockout;
+use Illuminate\Cache\RateLimiter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Cache\RateLimiter;
-use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 trait ThrottlesLogins
@@ -45,7 +45,7 @@ trait ThrottlesLogins
 
     /**
      * Redirect the user after determining they are locked out.
-	 * 在确定用户被锁定后重定向用户
+	 * 重定向用户在确定用户被锁定后
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void
@@ -59,7 +59,10 @@ trait ThrottlesLogins
         );
 
         throw ValidationException::withMessages([
-            $this->username() => [Lang::get('auth.throttle', ['seconds' => $seconds])],
+            $this->username() => [Lang::get('auth.throttle', [
+                'seconds' => $seconds,
+                'minutes' => ceil($seconds / 60),
+            ])],
         ])->status(Response::HTTP_TOO_MANY_REQUESTS);
     }
 
@@ -77,7 +80,7 @@ trait ThrottlesLogins
 
     /**
      * Fire an event when a lockout occurs.
-	 * 发生锁定时触发事件
+	 * 触发事件发生锁定时
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void
@@ -89,7 +92,7 @@ trait ThrottlesLogins
 
     /**
      * Get the throttle key for the given request.
-	 * 获取给定请求的油门键
+	 * 得到给定请求的油门键
      *
      * @param  \Illuminate\Http\Request  $request
      * @return string
@@ -101,7 +104,7 @@ trait ThrottlesLogins
 
     /**
      * Get the rate limiter instance.
-	 * 获取速率限制器实例
+	 * 得到速率限制器实例
      *
      * @return \Illuminate\Cache\RateLimiter
      */
@@ -112,7 +115,7 @@ trait ThrottlesLogins
 
     /**
      * Get the maximum number of attempts to allow.
-	 * 获取允许的最大尝试次数
+	 * 得到允许的最大尝试次数
      *
      * @return int
      */
@@ -123,7 +126,7 @@ trait ThrottlesLogins
 
     /**
      * Get the number of minutes to throttle for.
-	 * 弄清楚节流的分钟数
+	 * 得到分钟数为节流
      *
      * @return int
      */

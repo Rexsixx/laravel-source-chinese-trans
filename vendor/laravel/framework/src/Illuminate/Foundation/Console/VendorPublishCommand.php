@@ -1,17 +1,17 @@
 <?php
 /**
- * Illuminate，基础，控制台，厂商发布命令
+ * 基础，供应商发布命令
  */
 
 namespace Illuminate\Foundation\Console;
 
-use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
-use League\Flysystem\MountManager;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
-use League\Flysystem\Filesystem as Flysystem;
 use League\Flysystem\Adapter\Local as LocalAdapter;
+use League\Flysystem\Filesystem as Flysystem;
+use League\Flysystem\MountManager;
 
 class VendorPublishCommand extends Command
 {
@@ -25,7 +25,7 @@ class VendorPublishCommand extends Command
 
     /**
      * The provider to publish.
-	 * 要发布的提供者
+	 * 要发布提供者
      *
      * @var string
      */
@@ -52,7 +52,7 @@ class VendorPublishCommand extends Command
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -60,7 +60,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Create a new command instance.
-	 * 创建一个新的命令实例
+	 * 创建新的命令实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void
@@ -74,7 +74,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -165,21 +165,29 @@ class VendorPublishCommand extends Command
 
     /**
      * Publishes the assets for a tag.
-	 * 发布标记的资源
+	 * 发布标记的资产
      *
      * @param  string  $tag
      * @return mixed
      */
     protected function publishTag($tag)
     {
+        $published = false;
+
         foreach ($this->pathsToPublish($tag) as $from => $to) {
             $this->publishItem($from, $to);
+
+            $published = true;
+        }
+
+        if ($published === false) {
+            $this->error('Unable to locate publishable resources.');
         }
     }
 
     /**
      * Get all of the paths to publish.
-	 * 获取所有要发布的路径
+	 * 得到所有要发布的路径
      *
      * @param  string  $tag
      * @return array
@@ -193,7 +201,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Publish the given item from and to the given location.
-	 * 将给定的项从给定位置发布到给定位置
+	 * 发布给定的项从给定位置到给定位置
      *
      * @param  string  $from
      * @param  string  $to
@@ -212,7 +220,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Publish the file to the given path.
-	 * 将文件发布到给定的路径
+	 * 发布文件到给定的路径
      *
      * @param  string  $from
      * @param  string  $to
@@ -265,7 +273,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Create the directory to house the published files if needed.
-	 * 如果需要，创建目录来存放发布的文件。
+	 * 如果需要，创建目录来存放发布的文件
      *
      * @param  string  $directory
      * @return void
@@ -279,7 +287,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Write a status message to the console.
-	 * 向控制台写入状态消息
+	 * 写入状态消息向控制台
      *
      * @param  string  $from
      * @param  string  $to

@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，公共，Lexer，抽象词汇
+ * Doctrine，公共，Lexer，抽象Lexer
  */
 
 declare(strict_types=1);
@@ -21,7 +21,7 @@ use const PREG_SPLIT_OFFSET_CAPTURE;
 
 /**
  * Base class for writing simple lexers, i.e. for creating small DSLs.
- * 基类编写简单的词典,即创建小dsl。
+ * 基类编写简单的词典,即创建小DSLs。
  *
  * @psalm-type Token = array{value: int|string, type:string|int|null, position:int}
  */
@@ -29,7 +29,7 @@ abstract class AbstractLexer
 {
     /**
      * Lexer original input string.
-	 * Lexer原始输入字符串
+	 * 输入字符串
      *
      * @var string
      */
@@ -37,7 +37,6 @@ abstract class AbstractLexer
 
     /**
      * Array of scanned tokens.
-	 * 扫描令牌数组
      *
      * Each token is an associative array containing three items:
      *  - 'value'    : the string value of the token in the input string
@@ -52,7 +51,6 @@ abstract class AbstractLexer
 
     /**
      * Current lexer position in input string.
-	 * 输入字符串中的当前词法分析器位置
      *
      * @var int
      */
@@ -60,7 +58,6 @@ abstract class AbstractLexer
 
     /**
      * Current peek of current lexer position.
-	 * 当前词法分析器位置的当前顶点
      *
      * @var int
      */
@@ -68,7 +65,6 @@ abstract class AbstractLexer
 
     /**
      * The next token in the input.
-	 * 输入中的下一个令牌
      *
      * @var mixed[]|null
      * @psalm-var Token|null
@@ -77,7 +73,6 @@ abstract class AbstractLexer
 
     /**
      * The last matched/seen token.
-	 * 最后匹配/看到的标记
      *
      * @var mixed[]|null
      * @psalm-var Token|null
@@ -86,7 +81,6 @@ abstract class AbstractLexer
 
     /**
      * Composed regex for input parsing.
-	 * 组成的regex用于输入解析
      *
      * @var string|null
      */
@@ -94,7 +88,6 @@ abstract class AbstractLexer
 
     /**
      * Sets the input data to be tokenized.
-	 * 设置输入数据来控制。
      *
      * The Lexer is immediately reset and the new input tokenized.
      * Any unprocessed tokens from any previous input are lost.

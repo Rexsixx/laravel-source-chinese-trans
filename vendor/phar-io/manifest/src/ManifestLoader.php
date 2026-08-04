@@ -1,8 +1,4 @@
-<?php
-/**
- * PharIo，Manifest，Manifest 装载机
- */
-
+<?php declare(strict_types = 1);
 /*
  * This file is part of PharIo\Manifest.
  *
@@ -11,50 +7,28 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PharIo\Manifest;
 
 class ManifestLoader {
-    /**
-     * @param string $filename
-     *
-     * @return Manifest
-     *
-     * @throws ManifestLoaderException
-     */
-    public static function fromFile($filename) {
+    public static function fromFile(string $filename): Manifest {
         try {
             return (new ManifestDocumentMapper())->map(
                 ManifestDocument::fromFile($filename)
             );
         } catch (Exception $e) {
             throw new ManifestLoaderException(
-                sprintf('Loading %s failed.', $filename),
-                $e->getCode(),
+                \sprintf('Loading %s failed.', $filename),
+                (int)$e->getCode(),
                 $e
             );
         }
     }
 
-    /**
-     * @param string $filename
-     *
-     * @return Manifest
-     *
-     * @throws ManifestLoaderException
-     */
-    public static function fromPhar($filename) {
+    public static function fromPhar(string $filename): Manifest {
         return self::fromFile('phar://' . $filename . '/manifest.xml');
     }
 
-    /**
-     * @param string $manifest
-     *
-     * @return Manifest
-     *
-     * @throws ManifestLoaderException
-     */
-    public static function fromString($manifest) {
+    public static function fromString(string $manifest): Manifest {
         try {
             return (new ManifestDocumentMapper())->map(
                 ManifestDocument::fromString($manifest)
@@ -62,7 +36,7 @@ class ManifestLoader {
         } catch (Exception $e) {
             throw new ManifestLoaderException(
                 'Processing string failed',
-                $e->getCode(),
+                (int)$e->getCode(),
                 $e
             );
         }

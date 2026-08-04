@@ -1,9 +1,4 @@
 <?php declare(strict_types=1);
-
-/**
- * SebastianBergmann，差速器，配置异常
- */
-
 /*
  * This file is part of sebastian/diff.
  *
@@ -29,7 +24,7 @@ final class ConfigurationException extends InvalidArgumentException
         string $expected,
         $value,
         int $code = 0,
-        ?\Exception $previous = null
+        \Exception $previous = null
     ) {
         parent::__construct(
             \sprintf(

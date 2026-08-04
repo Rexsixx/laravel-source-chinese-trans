@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，控制台，线程调度，管理频率
+ * 控制台，管理频率
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -25,7 +25,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run between start and end time.
-	 * 将事件安排在开始时间和结束时间之间运行
+	 * 计划事件在开始时间和结束时间之间
      *
      * @param  string  $startTime
      * @param  string  $endTime
@@ -38,7 +38,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to not run between start and end time.
-	 * 将事件安排为不在开始时间和结束时间之间运行
+	 * 计划事件安排不在开始时间和结束时间之间
      *
      * @param  string  $startTime
      * @param  string  $endTime
@@ -51,7 +51,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run between start and end time.
-	 * 将事件安排在开始时间和结束时间之间运行
+	 * 计划事件在开始时间和结束时间之间
      *
      * @param  string  $startTime
      * @param  string  $endTime
@@ -59,18 +59,28 @@ trait ManagesFrequencies
      */
     private function inTimeInterval($startTime, $endTime)
     {
-        return function () use ($startTime, $endTime) {
-            return Carbon::now($this->timezone)->between(
-                Carbon::parse($startTime, $this->timezone),
-                Carbon::parse($endTime, $this->timezone),
-                true
-            );
+        [$now, $startTime, $endTime] = [
+            Carbon::now($this->timezone),
+            Carbon::parse($startTime, $this->timezone),
+            Carbon::parse($endTime, $this->timezone),
+        ];
+
+        if ($endTime->lessThan($startTime)) {
+            if ($startTime->greaterThan($now)) {
+                $startTime->subDay(1);
+            } else {
+                $endTime->addDay(1);
+            }
+        }
+
+        return function () use ($now, $startTime, $endTime) {
+            return $now->between($startTime, $endTime);
         };
     }
 
     /**
      * Schedule the event to run every minute.
-	 * 将事件安排为每分钟运行一次
+	 * 计划事件为每分钟运行一次
      *
      * @return $this
      */
@@ -81,7 +91,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run every five minutes.
-	 * 将事件安排为每五分钟运行一次
+	 * 计划事件为每五分钟运行一次
      *
      * @return $this
      */
@@ -92,7 +102,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run every ten minutes.
-	 * 将事件安排为每十分钟运行一次
+	 * 计划事件为每十分钟运行一次
      *
      * @return $this
      */
@@ -103,7 +113,8 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run every fifteen minutes.
-	 * 将活动安排为每15分钟一次
+	 * 计划事件为每15分钟一次
+	 * 
      *
      * @return $this
      */
@@ -114,7 +125,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run every thirty minutes.
-	 * 将活动安排为每30分钟进行一次
+	 * 计划事件为每30分钟进行一次
      *
      * @return $this
      */
@@ -125,7 +136,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run hourly.
-	 * 将事件安排为每小时运行一次
+	 * 计划事件为每小时运行一次
      *
      * @return $this
      */
@@ -136,7 +147,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run hourly at a given offset in the hour.
-	 * 将事件安排为按小时内给定的偏移量每小时运行一次
+	 * 计划事件为按小时内给定的偏移量每小时运行一次
      *
      * @param  array|int  $offset
      * @return $this
@@ -150,7 +161,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run daily.
-	 * 将事件安排为每天运行
+	 * 计划事件为每天运行一次
      *
      * @return $this
      */
@@ -162,7 +173,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the command at a given time.
-	 * 在给定时间安排命令
+	 * 计划命令在给定时间
      *
      * @param  string  $time
      * @return $this
@@ -174,7 +185,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run daily at a given time (10:00, 19:30, etc).
-	 * 将活动安排在每天的指定时间（10:00,19:30等）
+	 * 计划事件在每天的指定时间(10:00,19:30等)
      *
      * @param  string  $time
      * @return $this
@@ -189,7 +200,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run twice daily.
-	 * 将活动安排为每天运行两次
+	 * 计划事件为每天运行两次
      *
      * @param  int  $first
      * @param  int  $second
@@ -205,7 +216,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run only on weekdays.
-	 * 将活动安排为只在工作日运行
+	 * 计划事件只在工作日运行
      *
      * @return $this
      */
@@ -216,7 +227,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run only on weekends.
-	 * 安排活动只在周末进行
+	 * 计划事件只在周末进行
      *
      * @return $this
      */
@@ -227,7 +238,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run only on Mondays.
-	 * 安排活动只在星期一进行
+	 * 计划事件只在星期一进行
      *
      * @return $this
      */
@@ -238,7 +249,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run only on Tuesdays.
-	 * 安排活动只在星期二进行
+	 * 计划事件只在星期二进行
      *
      * @return $this
      */
@@ -249,7 +260,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run only on Wednesdays.
-	 * 安排活动只在星期三进行
+	 * 计划事件只在星期三进行
      *
      * @return $this
      */
@@ -260,7 +271,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run only on Thursdays.
-	 * 安排活动只在星期四进行
+	 * 计划事件只在星期四进行
      *
      * @return $this
      */
@@ -271,7 +282,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run only on Fridays.
-	 * 安排活动只在星期五进行
+	 * 计划事件只在星期五进行
      *
      * @return $this
      */
@@ -282,7 +293,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run only on Saturdays.
-	 * 安排活动只在星期六进行
+	 * 计划事件只在星期六进行
      *
      * @return $this
      */
@@ -293,7 +304,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run only on Sundays.
-	 * 安排活动只在星期日进行
+	 * 计划事件只在星期天进行
      *
      * @return $this
      */
@@ -304,7 +315,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run weekly.
-	 * 安排活动为每周运行一次
+	 * 计划事件为每周运行一次
      *
      * @return $this
      */
@@ -317,7 +328,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run weekly on a given day and time.
-	 * 将活动安排在每周指定的日期和时间进行
+	 * 计划事件在每周指定的日期和时间进行
      *
      * @param  int  $day
      * @param  string  $time
@@ -332,7 +343,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run monthly.
-	 * 将活动安排为每月一次
+	 * 计划事件为每月运行一次
      *
      * @return $this
      */
@@ -345,7 +356,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run monthly on a given day and time.
-	 * 将活动安排在每月的特定日期和时间进行
+	 * 计划事件在每月的特定日期和时间进行
      *
      * @param  int  $day
      * @param  string  $time
@@ -360,7 +371,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run twice monthly.
-	 * 将活动安排为每月两次
+	 * 计划事件为每月运行两次
      *
      * @param  int  $first
      * @param  int  $second
@@ -377,7 +388,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run quarterly.
-	 * 将活动安排为每季度一次
+	 * 计划事件为每季度运行一次
      *
      * @return $this
      */
@@ -391,7 +402,7 @@ trait ManagesFrequencies
 
     /**
      * Schedule the event to run yearly.
-	 * 计划该活动每年运行一次
+	 * 计划事件每年运行一次
      *
      * @return $this
      */
@@ -433,7 +444,7 @@ trait ManagesFrequencies
 
     /**
      * Splice the given value into the given position of the expression.
-	 * 将给定值拼接到表达式的给定位置
+	 * 拼接给定值到表达式的给定位置
      *
      * @param  int  $position
      * @param  string  $value

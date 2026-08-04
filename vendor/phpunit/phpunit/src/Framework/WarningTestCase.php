@@ -1,8 +1,4 @@
-<?php
-/**
- * PHPUnit，框架，警告测试用例
- */
-
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -14,15 +10,10 @@
 namespace PHPUnit\Framework;
 
 /**
- * A warning.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class WarningTestCase extends TestCase
+final class WarningTestCase extends TestCase
 {
-    /**
-     * @var string
-     */
-    protected $message = '';
-
     /**
      * @var bool
      */
@@ -39,16 +30,14 @@ class WarningTestCase extends TestCase
     protected $runTestInSeparateProcess = false;
 
     /**
-     * @var bool
+     * @var string
      */
-    protected $useErrorHandler = false;
+    private $message;
 
-    /**
-     * @param string $message
-     */
-    public function __construct($message = '')
+    public function __construct(string $message = '')
     {
         $this->message = $message;
+
         parent::__construct('Warning');
     }
 
@@ -67,6 +56,8 @@ class WarningTestCase extends TestCase
 
     /**
      * @throws Exception
+     *
+     * @psalm-return never-return
      */
     protected function runTest(): void
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，类型
+ * Mockery，匹配程序，类型
  */
 
 /**
@@ -28,7 +28,6 @@ class Type extends MatcherAbstract
 {
     /**
      * Check if the actual value matches the expected.
-	 * 检查实际值是否符合预期
      *
      * @param mixed $actual
      * @return bool

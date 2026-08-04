@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，测试，文件
+ * Http，文件
  */
 
 namespace Illuminate\Http\Testing;
@@ -11,7 +11,7 @@ class File extends UploadedFile
 {
     /**
      * The name of the file.
-	 * 文件的名称
+	 * 文件名
      *
      * @var string
      */
@@ -27,15 +27,23 @@ class File extends UploadedFile
 
     /**
      * The "size" to report.
-	 * 报告的“大小”
+	 * 要报告的大小 
      *
      * @var int
      */
     public $sizeToReport;
 
     /**
+     * The MIME type to report.
+	 * 要报告的MIME类型
+     *
+     * @var string|null
+     */
+    public $mimeTypeToReport;
+
+    /**
      * Create a new file instance.
-	 * 创建一个新的文件实例
+	 * 创建新的文件实例
      *
      * @param  string  $name
      * @param  resource  $tempFile
@@ -54,10 +62,10 @@ class File extends UploadedFile
 
     /**
      * Create a new fake file.
-	 * 创建一个新的假文件
+	 * 创建新的伪装文件
      *
      * @param  string  $name
-     * @param  int  $kilobytes
+     * @param  string|int  $kilobytes
      * @return \Illuminate\Http\Testing\File
      */
     public static function create($name, $kilobytes = 0)
@@ -66,8 +74,21 @@ class File extends UploadedFile
     }
 
     /**
+     * Create a new fake file with content.
+	 * 创建新的伪装文件使用内容
+     *
+     * @param  string  $name
+     * @param  string  $content
+     * @return \Illuminate\Http\Testing\File
+     */
+    public static function createWithContent($name, $content)
+    {
+        return (new FileFactory)->createWithContent($name, $content);
+    }
+
+    /**
      * Create a new fake image.
-	 * 创建一个新的假图像
+	 * 创建新的伪装图片
      *
      * @param  string  $name
      * @param  int  $width
@@ -81,7 +102,7 @@ class File extends UploadedFile
 
     /**
      * Set the "size" of the file in kilobytes.
-	 * 设置文件的“大小”，单位为千字节。
+	 * 设置文件的"大小"，单位为千字节。
      *
      * @param  int  $kilobytes
      * @return $this
@@ -95,7 +116,7 @@ class File extends UploadedFile
 
     /**
      * Get the size of the file.
-	 * 获取文件的大小
+	 * 得到文件大小 
      *
      * @return int
      */
@@ -105,19 +126,33 @@ class File extends UploadedFile
     }
 
     /**
-     * Get the MIME type for the file.
-	 * 获取文件的MIME类型
+     * Set the "MIME type" for the file.
+	 * 设置文件的"MIME类型"
+     *
+     * @param  string  $mimeType
+     * @return $this
+     */
+    public function mimeType($mimeType)
+    {
+        $this->mimeTypeToReport = $mimeType;
+
+        return $this;
+    }
+
+    /**
+     * Get the MIME type of the file.
+	 * 得到文件的MIME类型
      *
      * @return string
      */
     public function getMimeType()
     {
-        return MimeType::from($this->name);
+        return $this->mimeTypeToReport ?: MimeType::from($this->name);
     }
 
     /**
      * Get the path to the temporary file.
-	 * 获取临时文件的路径
+	 * 得到临时文件的路径
      *
      * @return string
      */

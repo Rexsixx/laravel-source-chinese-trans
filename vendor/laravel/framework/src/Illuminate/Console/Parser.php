@@ -1,20 +1,20 @@
 <?php
 /**
- * Illuminate，控制台，分析程序
+ * 控制台，解析
  */
 
 namespace Illuminate\Console;
 
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class Parser
 {
     /**
      * Parse the given console command definition into an array.
-	 * 将给定的控制台命令定义解析为数组
+	 * 解析给定的控制台命令定义为数组
      *
      * @param  string  $expression
      * @return array
@@ -36,7 +36,7 @@ class Parser
 
     /**
      * Extract the name of the command from the expression.
-	 * 从表达式中提取命令的名称
+	 * 提取命令的名称从表达式中
      *
      * @param  string  $expression
      * @return string
@@ -45,10 +45,6 @@ class Parser
      */
     protected static function name($expression)
     {
-        if (trim($expression) === '') {
-            throw new InvalidArgumentException('Console command definition is empty.');
-        }
-
         if (! preg_match('/[^\s]+/', $expression, $matches)) {
             throw new InvalidArgumentException('Unable to determine command name from signature.');
         }
@@ -58,7 +54,7 @@ class Parser
 
     /**
      * Extract all of the parameters from the tokens.
-	 * 从令牌中提取所有参数
+	 * 提取所有参数从令牌中
      *
      * @param  array  $tokens
      * @return array
@@ -143,7 +139,7 @@ class Parser
 
     /**
      * Parse the token into its token and description segments.
-	 * 将令牌解析为它的令牌和描述段
+	 * 解析令牌为它的令牌和描述段
      *
      * @param  string  $token
      * @return array

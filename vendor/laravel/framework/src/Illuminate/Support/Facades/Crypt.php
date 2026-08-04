@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，Crypt
+ * 支持，门面加密
  */
 
 namespace Illuminate\Support\Facades;
@@ -20,7 +20,7 @@ class Crypt extends Facade
 {
     /**
      * Get the registered name of the component.
-	 * 获取组件的注册名称
+	 * 得到组件注册名
      *
      * @return string
      */

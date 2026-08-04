@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，通知，事件，广播通知已创建
+ * 通知，广播通知创建
  */
 
 namespace Illuminate\Notifications\Events;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Queue\SerializesModels;
 
 class BroadcastNotificationCreated implements ShouldBroadcast
 {
@@ -16,7 +16,7 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * The notifiable entity who received the notification.
-	 * 收到通知的应通知实体。
+	 * 通知实体应收到通知的
      *
      * @var mixed
      */
@@ -40,7 +40,7 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -56,7 +56,7 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * Get the channels the event should broadcast on.
-	 * 获取该事件应该播放的频道
+	 * 得到该事件应该播放的通道
      *
      * @return array
      */
@@ -68,14 +68,20 @@ class BroadcastNotificationCreated implements ShouldBroadcast
             return $channels;
         }
 
-        return [new PrivateChannel($this->channelName())];
+        if (is_string($channels = $this->channelName())) {
+            return [new PrivateChannel($channels)];
+        }
+
+        return collect($channels)->map(function ($channel) {
+            return new PrivateChannel($channel);
+        })->all();
     }
 
     /**
      * Get the broadcast channel name for the event.
-	 * 获取事件的广播频道名称
+	 * 得到事件的广播频道名称
      *
-     * @return string
+     * @return array|string
      */
     protected function channelName()
     {
@@ -90,7 +96,7 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * Get the data that should be sent with the broadcasted event.
-	 * 获取应该随广播事件一起发送的数据
+	 * 得到应该随广播事件一起发送的数据
      *
      * @return array
      */
@@ -104,7 +110,7 @@ class BroadcastNotificationCreated implements ShouldBroadcast
 
     /**
      * Get the type of the notification being broadcast.
-	 * 获取正在广播的通知的类型
+	 * 得到正在广播的通知的类型
      *
      * @return string
      */

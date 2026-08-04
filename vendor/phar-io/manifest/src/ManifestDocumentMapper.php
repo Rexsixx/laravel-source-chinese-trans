@@ -1,8 +1,4 @@
-<?php
-/**
- * PharIo，Manifest，Manifest 文件映射器
- */
-
+<?php declare(strict_types = 1);
 /*
  * This file is part of PharIo\Manifest.
  *
@@ -11,22 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PharIo\Manifest;
 
-use PharIo\Version\Version;
 use PharIo\Version\Exception as VersionException;
+use PharIo\Version\Version;
 use PharIo\Version\VersionConstraintParser;
 
 class ManifestDocumentMapper {
-    /**
-     * @param ManifestDocument $document
-     *
-     * @returns Manifest
-     *
-     * @throws ManifestDocumentMapperException
-     */
-    public function map(ManifestDocument $document) {
+    public function map(ManifestDocument $document): Manifest {
         try {
             $contains          = $document->getContainsElement();
             $type              = $this->mapType($contains);
@@ -43,20 +31,13 @@ class ManifestDocumentMapper {
                 $bundledComponents
             );
         } catch (VersionException $e) {
-            throw new ManifestDocumentMapperException($e->getMessage(), $e->getCode(), $e);
+            throw new ManifestDocumentMapperException($e->getMessage(), (int)$e->getCode(), $e);
         } catch (Exception $e) {
-            throw new ManifestDocumentMapperException($e->getMessage(), $e->getCode(), $e);
+            throw new ManifestDocumentMapperException($e->getMessage(), (int)$e->getCode(), $e);
         }
     }
 
-    /**
-     * @param ContainsElement $contains
-     *
-     * @return Type
-     *
-     * @throws ManifestDocumentMapperException
-     */
-    private function mapType(ContainsElement $contains) {
+    private function mapType(ContainsElement $contains): Type {
         switch ($contains->getType()) {
             case 'application':
                 return Type::application();
@@ -67,22 +48,14 @@ class ManifestDocumentMapper {
         }
 
         throw new ManifestDocumentMapperException(
-            sprintf('Unsupported type %s', $contains->getType())
+            \sprintf('Unsupported type %s', $contains->getType())
         );
     }
 
-    /**
-     * @param CopyrightElement $copyright
-     *
-     * @return CopyrightInformation
-     *
-     * @throws InvalidUrlException
-     * @throws InvalidEmailException
-     */
-    private function mapCopyright(CopyrightElement $copyright) {
+    private function mapCopyright(CopyrightElement $copyright): CopyrightInformation {
         $authors = new AuthorCollection();
 
-        foreach($copyright->getAuthorElements() as $authorElement) {
+        foreach ($copyright->getAuthorElements() as $authorElement) {
             $authors->add(
                 new Author(
                     $authorElement->getName(),
@@ -103,14 +76,7 @@ class ManifestDocumentMapper {
         );
     }
 
-    /**
-     * @param RequiresElement $requires
-     *
-     * @return RequirementCollection
-     *
-     * @throws ManifestDocumentMapperException
-     */
-    private function mapRequirements(RequiresElement $requires) {
+    private function mapRequirements(RequiresElement $requires): RequirementCollection {
         $collection = new RequirementCollection();
         $phpElement = $requires->getPHPElement();
         $parser     = new VersionConstraintParser;
@@ -119,8 +85,8 @@ class ManifestDocumentMapper {
             $versionConstraint = $parser->parse($phpElement->getVersion());
         } catch (VersionException $e) {
             throw new ManifestDocumentMapperException(
-                sprintf('Unsupported version constraint - %s', $e->getMessage()),
-                $e->getCode(),
+                \sprintf('Unsupported version constraint - %s', $e->getMessage()),
+                (int)$e->getCode(),
                 $e
             );
         }
@@ -135,7 +101,7 @@ class ManifestDocumentMapper {
             return $collection;
         }
 
-        foreach($phpElement->getExtElements() as $extElement) {
+        foreach ($phpElement->getExtElements() as $extElement) {
             $collection->add(
                 new PhpExtensionRequirement($extElement->getName())
             );
@@ -144,19 +110,14 @@ class ManifestDocumentMapper {
         return $collection;
     }
 
-    /**
-     * @param ManifestDocument $document
-     *
-     * @return BundledComponentCollection
-     */
-    private function mapBundledComponents(ManifestDocument $document) {
+    private function mapBundledComponents(ManifestDocument $document): BundledComponentCollection {
         $collection = new BundledComponentCollection();
 
         if (!$document->hasBundlesElement()) {
             return $collection;
         }
 
-        foreach($document->getBundlesElement()->getComponentElements() as $componentElement) {
+        foreach ($document->getBundlesElement()->getComponentElements() as $componentElement) {
             $collection->add(
                 new BundledComponent(
                     $componentElement->getName(),
@@ -170,17 +131,9 @@ class ManifestDocumentMapper {
         return $collection;
     }
 
-    /**
-     * @param ExtensionElement $extension
-     *
-     * @return Extension
-     *
-     * @throws ManifestDocumentMapperException
-     */
-    private function mapExtension(ExtensionElement $extension) {
+    private function mapExtension(ExtensionElement $extension): Extension {
         try {
-            $parser            = new VersionConstraintParser;
-            $versionConstraint = $parser->parse($extension->getCompatible());
+            $versionConstraint = (new VersionConstraintParser)->parse($extension->getCompatible());
 
             return Type::extension(
                 new ApplicationName($extension->getFor()),
@@ -188,8 +141,8 @@ class ManifestDocumentMapper {
             );
         } catch (VersionException $e) {
             throw new ManifestDocumentMapperException(
-                sprintf('Unsupported version constraint - %s', $e->getMessage()),
-                $e->getCode(),
+                \sprintf('Unsupported version constraint - %s', $e->getMessage()),
+                (int)$e->getCode(),
                 $e
             );
         }

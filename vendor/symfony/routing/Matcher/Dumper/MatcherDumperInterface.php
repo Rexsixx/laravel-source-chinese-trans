@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，匹配程序，转储，匹配程序转储接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * MatcherDumperInterface is the interface that all matcher dumper classes must implement.
- * MatcherDumperInterface是所有matcher dumper类必须实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

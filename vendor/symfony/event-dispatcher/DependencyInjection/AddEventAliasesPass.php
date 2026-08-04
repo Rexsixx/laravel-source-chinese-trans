@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，事件调度程序，依赖注入，添加事件别名通过
- */
 
 /*
  * This file is part of the Symfony package.

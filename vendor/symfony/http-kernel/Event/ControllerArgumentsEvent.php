@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，事件，控制器参数事件
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\HttpKernel\Event;
 
 /**
  * Allows filtering of controller arguments.
- * 允许对控制器参数进行过滤。
  *
  * You can call getController() to retrieve the controller and getArguments
  * to retrieve the current arguments. With setArguments() you can replace

@@ -1,14 +1,15 @@
 <?php
 /**
- * Illuminate，路由选择，路由依赖解析器特性
+ * 路由，路由依赖解析特性
  */
 
 namespace Illuminate\Routing;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Reflector;
+use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
-use Illuminate\Support\Arr;
-use ReflectionFunctionAbstract;
 
 trait RouteDependencyResolverTrait
 {
@@ -74,17 +75,17 @@ trait RouteDependencyResolverTrait
      */
     protected function transformDependency(ReflectionParameter $parameter, $parameters)
     {
-        $class = $parameter->getClass();
+        $className = Reflector::getParameterClassName($parameter);
 
         // If the parameter has a type-hinted class, we will check to see if it is already in
         // the list of parameters. If it is we will just skip it as it is probably a model
         // binding and we do not want to mess with those; otherwise, we resolve it here.
-		// 如果该参数具有类型提示的类，则我们会检查它是否已经在参数列表中。
-		// 如果是这样的话，我们就直接略过它，因为这很可能是一种模型绑定操作，而我们不想去干扰这些；否则，我们就在这里进行解决。
-        if ($class && ! $this->alreadyInParameters($class->name, $parameters)) {
+		// 如果参数有一个类型提示类，我们将检查它是否已经在参数列表中。
+		// 如果是这样，我们就跳过它，因为它可能是一个模型绑定，我们不想弄乱这些；否则，我们在这里解决。
+        if ($className && ! $this->alreadyInParameters($className, $parameters)) {
             return $parameter->isDefaultValueAvailable()
                 ? $parameter->getDefaultValue()
-                : $this->container->make($class->name);
+                : $this->container->make($className);
         }
     }
 
@@ -105,7 +106,7 @@ trait RouteDependencyResolverTrait
 
     /**
      * Splice the given value into the parameter list.
-	 * 将给定的值拼接到参数列表中。
+	 * 拼接给定的值到参数列表中
      *
      * @param  array  $parameters
      * @param  string  $offset

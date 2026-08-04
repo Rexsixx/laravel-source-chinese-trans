@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，克隆，Var Cloner
+ * Symfony，组件，Var Dumper，克隆，Var 克隆
  */
 
 /*
@@ -121,7 +121,6 @@ class VarCloner extends AbstractCloner
                 }
                 // Create $stub when the original value $v can not be used directly
                 // If $v is a nested structure, put that structure in array $a
-				// 当原始值 $v 无法直接使用时，创建 $stub。如果 $v 是嵌套结构，则将该结构放入数组 $a 中。
                 switch (true) {
                     case null === $v:
                     case \is_bool($v):

@@ -1,36 +1,27 @@
 <?php
 /**
- * Illuminate，支持，服务提供商
+ * 支持，服务提供者抽象类
  */
 
 namespace Illuminate\Support;
 
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Database\Eloquent\Factory as ModelFactory;
 
 abstract class ServiceProvider
 {
     /**
      * The application instance.
-	 * 程序实例
+	 * app应用实例
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
     /**
-     * Indicates if loading of the provider is deferred.
-	 * 指示是否延迟加载提供程序
-     *
-     * @deprecated Implement the \Illuminate\Contracts\Support\DeferrableProvider interface instead. Will be removed in Laravel 6.0.
-     *
-     * @var bool
-     */
-    protected $defer = false;
-
-    /**
      * The paths that should be published.
-	 * 应该发布的路径
+	 * 将要被发布的路径
      *
      * @var array
      */
@@ -38,7 +29,7 @@ abstract class ServiceProvider
 
     /**
      * The paths that should be published by group.
-	 * 应按组发布的路径
+	 * 将要被发布的路径分组
      *
      * @var array
      */
@@ -46,7 +37,7 @@ abstract class ServiceProvider
 
     /**
      * Create a new service provider instance.
-	 * 创建一个新的服务提供者实例
+	 * 创建新的服务提供者接口
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -58,7 +49,7 @@ abstract class ServiceProvider
 
     /**
      * Register any application services.
-	 * 注册任何应用程序服务
+	 * 注册任何应用服务
      *
      * @return void
      */
@@ -69,7 +60,7 @@ abstract class ServiceProvider
 
     /**
      * Merge the given configuration with the existing configuration.
-	 * 将给定的配置与现有配置合并
+	 * 合并给定的配置与现有配置
      *
      * @param  string  $path
      * @param  string  $key
@@ -77,14 +68,16 @@ abstract class ServiceProvider
      */
     protected function mergeConfigFrom($path, $key)
     {
-        $config = $this->app['config']->get($key, []);
-
-        $this->app['config']->set($key, array_merge(require $path, $config));
+        if (! $this->app->configurationIsCached()) {
+            $this->app['config']->set($key, array_merge(
+                require $path, $this->app['config']->get($key, [])
+            ));
+        }
     }
 
     /**
      * Load the given routes file if routes are not already cached.
-	 * 如果路由尚未缓存，则加载给定的路由文件。
+	 * 加载给定的路由文件，如果路由尚未缓存
      *
      * @param  string  $path
      * @return void
@@ -98,7 +91,7 @@ abstract class ServiceProvider
 
     /**
      * Register a view file namespace.
-	 * 注册一个视图文件命名空间
+	 * 加载视图文件命名空间
      *
      * @param  string|array  $path
      * @param  string  $namespace
@@ -106,15 +99,18 @@ abstract class ServiceProvider
      */
     protected function loadViewsFrom($path, $namespace)
     {
-        if (isset($this->app->config['view']['paths']) && is_array($this->app->config['view']['paths'])) {
-            foreach ($this->app->config['view']['paths'] as $viewPath) {
-                if (is_dir($appPath = $viewPath.'/vendor/'.$namespace)) {
-                    $this->app['view']->addNamespace($namespace, $appPath);
+        $this->callAfterResolving('view', function ($view) use ($path, $namespace) {
+            if (isset($this->app->config['view']['paths']) &&
+                is_array($this->app->config['view']['paths'])) {
+                foreach ($this->app->config['view']['paths'] as $viewPath) {
+                    if (is_dir($appPath = $viewPath.'/vendor/'.$namespace)) {
+                        $view->addNamespace($namespace, $appPath);
+                    }
                 }
             }
-        }
 
-        $this->app['view']->addNamespace($namespace, $path);
+            $view->addNamespace($namespace, $path);
+        });
     }
 
     /**
@@ -127,7 +123,9 @@ abstract class ServiceProvider
      */
     protected function loadTranslationsFrom($path, $namespace)
     {
-        $this->app['translator']->addNamespace($namespace, $path);
+        $this->callAfterResolving('translator', function ($translator) use ($path, $namespace) {
+            $translator->addNamespace($namespace, $path);
+        });
     }
 
     /**
@@ -139,11 +137,13 @@ abstract class ServiceProvider
      */
     protected function loadJsonTranslationsFrom($path)
     {
-        $this->app['translator']->addJsonPath($path);
+        $this->callAfterResolving('translator', function ($translator) use ($path) {
+            $translator->addJsonPath($path);
+        });
     }
 
     /**
-     * Register a database migration path.
+     * Register database migration paths.
 	 * 注册数据库迁移路径
      *
      * @param  array|string  $paths
@@ -151,7 +151,7 @@ abstract class ServiceProvider
      */
     protected function loadMigrationsFrom($paths)
     {
-        $this->app->afterResolving('migrator', function ($migrator) use ($paths) {
+        $this->callAfterResolving('migrator', function ($migrator) use ($paths) {
             foreach ((array) $paths as $path) {
                 $migrator->path($path);
             }
@@ -159,8 +159,41 @@ abstract class ServiceProvider
     }
 
     /**
+     * Register Eloquent model factory paths.
+	 * 注册Eloquent模型工厂路径
+     *
+     * @param  array|string  $paths
+     * @return void
+     */
+    protected function loadFactoriesFrom($paths)
+    {
+        $this->callAfterResolving(ModelFactory::class, function ($factory) use ($paths) {
+            foreach ((array) $paths as $path) {
+                $factory->load($path);
+            }
+        });
+    }
+
+    /**
+     * Setup an after resolving listener, or fire immediately if already resolved.
+	 * 设置一个解析后的监听器，立即触发如果已经解析。
+     *
+     * @param  string  $name
+     * @param  callable  $callback
+     * @return void
+     */
+    protected function callAfterResolving($name, $callback)
+    {
+        $this->app->afterResolving($name, $callback);
+
+        if ($this->app->resolved($name)) {
+            $callback($this->app->make($name), $this->app);
+        }
+    }
+
+    /**
      * Register paths to be published by the publish command.
-	 * 使用publish命令注册要发布的路径
+	 * 注册要发布的路径使用publish命令
      *
      * @param  array  $paths
      * @param  mixed  $groups
@@ -193,7 +226,7 @@ abstract class ServiceProvider
 
     /**
      * Add a publish group / tag to the service provider.
-	 * 向服务提供者添加发布组/标记
+	 * 添加服务提供者至发布组/标记
      *
      * @param  string  $group
      * @param  array  $paths
@@ -212,10 +245,10 @@ abstract class ServiceProvider
 
     /**
      * Get the paths to publish.
-	 * 获取发布路径
+	 * 得到发布路径
      *
-     * @param  string  $provider
-     * @param  string  $group
+     * @param  string|null  $provider
+     * @param  string|null  $group
      * @return array
      */
     public static function pathsToPublish($provider = null, $group = null)
@@ -231,7 +264,7 @@ abstract class ServiceProvider
 
     /**
      * Get the paths for the provider or group (or both).
-	 * 获取提供程序或组（或两者）的路径
+	 * 得到提供程序或组(或两者)的路径
      *
      * @param  string|null  $provider
      * @param  string|null  $group
@@ -252,7 +285,7 @@ abstract class ServiceProvider
 
     /**
      * Get the paths for the provider and group.
-	 * 获取提供程序和组的路径
+	 * 得到提供者和组的路径
      *
      * @param  string  $provider
      * @param  string  $group
@@ -269,7 +302,7 @@ abstract class ServiceProvider
 
     /**
      * Get the service providers available for publishing.
-	 * 获取可用于发布的服务提供者
+	 * 得到可用于发布的服务提供者
      *
      * @return array
      */
@@ -280,7 +313,7 @@ abstract class ServiceProvider
 
     /**
      * Get the groups available for publishing.
-	 * 获取可用于发布的组
+	 * 得到可用于发布的组
      *
      * @return array
      */
@@ -307,7 +340,7 @@ abstract class ServiceProvider
 
     /**
      * Get the services provided by the provider.
-	 * 获取提供者提供的服务
+	 * 得到提供的服务通过提供者
      *
      * @return array
      */
@@ -318,7 +351,7 @@ abstract class ServiceProvider
 
     /**
      * Get the events that trigger this service provider to register.
-	 * 获取触发此服务提供者注册的事件
+	 * 得到触发此服务提供者注册的事件
      *
      * @return array
      */
@@ -329,12 +362,12 @@ abstract class ServiceProvider
 
     /**
      * Determine if the provider is deferred.
-	 * 确定是否延迟提供程序
+	 * 确定是否延迟提供者
      *
      * @return bool
      */
     public function isDeferred()
     {
-        return $this->defer || $this instanceof DeferrableProvider;
+        return $this instanceof DeferrableProvider;
     }
 }

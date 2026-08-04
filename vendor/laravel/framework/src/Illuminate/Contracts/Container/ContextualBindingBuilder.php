@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，容器，上下文绑定构建器
+ * 契约，容器上下文绑定生成器接口
  */
 
 namespace Illuminate\Contracts\Container;

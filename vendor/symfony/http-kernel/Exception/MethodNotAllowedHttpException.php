@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，异常，不允许Http异常的方法
- */
 
 /*
  * This file is part of the Symfony package.

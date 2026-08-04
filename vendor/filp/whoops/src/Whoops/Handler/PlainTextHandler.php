@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，处理者，纯文本处理程序
+ * Whoops，处理程序，纯文本处理程序
  */
 
 /**
@@ -20,7 +20,6 @@ use Whoops\Exception\Frame;
 * Handler outputing plaintext error messages. Can be used
 * directly, or will be instantiated automagically by Whoops\Run
 * if passed to Run::pushHandler
-* 输出明文错误消息的处理程序。
 */
 class PlainTextHandler extends Handler
 {
@@ -164,12 +163,12 @@ class PlainTextHandler extends Handler
      * Set the size limit in bytes of frame arguments var_dump output.
      * If the limit is reached, the var_dump output is discarded.
      * Prevent memory limit errors.
-     * @param int $traceFunctionArgsOutputLimit
+     * @var integer
      * @return static
      */
     public function setTraceFunctionArgsOutputLimit($traceFunctionArgsOutputLimit)
     {
-        $this->traceFunctionArgsOutputLimit = (int) $traceFunctionArgsOutputLimit;
+        $this->traceFunctionArgsOutputLimit = (integer) $traceFunctionArgsOutputLimit;
         return $this;
     }
 
@@ -287,7 +286,7 @@ class PlainTextHandler extends Handler
             return '';
         }
         $inspector = $this->getInspector();
-        $frames = $inspector->getFrames($this->getRun()->getFrameFilters());
+        $frames = $inspector->getFrames();
 
         $response = "\nStack trace:";
 

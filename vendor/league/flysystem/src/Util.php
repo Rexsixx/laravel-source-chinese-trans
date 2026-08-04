@@ -8,13 +8,10 @@ namespace League\Flysystem;
 use League\Flysystem\Util\MimeType;
 use LogicException;
 
-use function strcmp;
-
 class Util
 {
     /**
      * Get normalized pathinfo.
-	 * 得到标准化的pathinfo
      *
      * @param string $path
      *
@@ -37,7 +34,6 @@ class Util
 
     /**
      * Normalize a dirname return value.
-	 * 使dirname返回值正常化
      *
      * @param string $dirname
      *
@@ -50,7 +46,6 @@ class Util
 
     /**
      * Get a normalized dirname from a path.
-	 * 从路径中获得标准化的dirname
      *
      * @param string $path
      *
@@ -63,7 +58,6 @@ class Util
 
     /**
      * Map result arrays.
-	 * 映射结果数组
      *
      * @param array $object
      * @param array $map
@@ -87,7 +81,6 @@ class Util
 
     /**
      * Normalize path.
-	 * 正常化路径
      *
      * @param string $path
      *
@@ -102,7 +95,6 @@ class Util
 
     /**
      * Normalize relative directories in a path.
-	 * 在路径中规范相对目录
      *
      * @param string $path
      *
@@ -113,7 +105,8 @@ class Util
     public static function normalizeRelativePath($path)
     {
         $path = str_replace('\\', '/', $path);
-        $path =  static::removeFunkyWhiteSpace($path);
+        $path = static::removeFunkyWhiteSpace($path);
+
         $parts = [];
 
         foreach (explode('/', $path) as $part) {
@@ -137,23 +130,21 @@ class Util
             }
         }
 
-        $path = implode('/', $parts);
-
-        return $path;
+        return implode('/', $parts);
     }
 
     /**
-     * Rejects unprintable characters and invalid unicode characters.
-	 * 拒绝不可打印的字符和无效的unicode字符
+     * Removes unprintable characters and invalid unicode characters.
      *
      * @param string $path
      *
      * @return string $path
      */
-    protected static function removeFunkyWhiteSpace($path)
-    {
-        if (preg_match('#\p{C}+#u', $path)) {
-            throw CorruptedPathDetected::forPath($path);
+    protected static function removeFunkyWhiteSpace($path) {
+        // We do this check in a loop, since removing invalid unicode characters
+        // can lead to new characters being created.
+        while (preg_match('#\p{C}+|^\./#u', $path)) {
+            $path = preg_replace('#\p{C}+|^\./#u', '', $path);
         }
 
         return $path;
@@ -161,7 +152,6 @@ class Util
 
     /**
      * Normalize prefix.
-	 * 正则化前缀
      *
      * @param string $prefix
      * @param string $separator
@@ -175,7 +165,6 @@ class Util
 
     /**
      * Get content size.
-	 * 获取内容大小
      *
      * @param string $contents
      *
@@ -188,9 +177,8 @@ class Util
 
     /**
      * Guess MIME Type based on the path of the file and it's content.
-	 * 基于文件路径和内容的猜测MIME类型
      *
-     * @param string          $path
+     * @param string $path
      * @param string|resource $content
      *
      * @return string|null MIME Type or NULL if no extension detected
@@ -208,7 +196,6 @@ class Util
 
     /**
      * Emulate directories.
-	 * 模拟目录
      *
      * @param array $listing
      *
@@ -220,7 +207,7 @@ class Util
         $listedDirectories = [];
 
         foreach ($listing as $object) {
-            [$directories, $listedDirectories] = static::emulateObjectDirectories($object, $directories, $listedDirectories);
+            list($directories, $listedDirectories) = static::emulateObjectDirectories($object, $directories, $listedDirectories);
         }
 
         $directories = array_diff(array_unique($directories), array_unique($listedDirectories));
@@ -234,7 +221,6 @@ class Util
 
     /**
      * Ensure a Config instance.
-	 * 确保配置实例
      *
      * @param null|array|Config $config
      *
@@ -283,15 +269,11 @@ class Util
      *
      * @param resource $resource
      *
-     * @return int|null stream size
+     * @return int stream size
      */
     public static function getStreamSize($resource)
     {
         $stat = fstat($resource);
-
-        if ( ! is_array($stat) || ! isset($stat['size'])) {
-            return null;
-        }
 
         return $stat['size'];
     }
@@ -311,13 +293,13 @@ class Util
             $listedDirectories[] = $object['path'];
         }
 
-        if ( ! isset($object['dirname']) || trim($object['dirname']) === '') {
+        if (empty($object['dirname'])) {
             return [$directories, $listedDirectories];
         }
 
         $parent = $object['dirname'];
 
-        while (isset($parent) && trim($parent) !== '' && ! in_array($parent, $directories)) {
+        while ( ! empty($parent) && ! in_array($parent, $directories)) {
             $directories[] = $parent;
             $parent = static::dirname($parent);
         }

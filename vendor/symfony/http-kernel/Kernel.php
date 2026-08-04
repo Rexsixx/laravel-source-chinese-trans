@@ -79,11 +79,11 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
 
     private static $freshCache = [];
 
-    public const VERSION = '4.4.51';
-    public const VERSION_ID = 40451;
+    public const VERSION = '4.4.41';
+    public const VERSION_ID = 40441;
     public const MAJOR_VERSION = 4;
     public const MINOR_VERSION = 4;
-    public const RELEASE_VERSION = 51;
+    public const RELEASE_VERSION = 41;
     public const EXTRA_VERSION = '';
 
     public const END_OF_MAINTENANCE = '11/2022';
@@ -240,7 +240,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
     /**
      * {@inheritdoc}
      */
-    public function locateResource($name/* , $dir = null, $first = true, $triggerDeprecation = true */)
+    public function locateResource($name/*, $dir = null, $first = true, $triggerDeprecation = true*/)
     {
         if (2 <= \func_num_args()) {
             $dir = func_get_arg(1);

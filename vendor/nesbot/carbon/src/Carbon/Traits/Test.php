@@ -119,14 +119,12 @@ trait Test
      *
      * /!\ Use this method for unit tests only.
      *
-     * @template T
-     *
      * @param DateTimeInterface|Closure|static|string|false|null $testNow  real or mock Carbon instance
-     * @param Closure(): T                                       $callback
+     * @param Closure|null                                       $callback
      *
-     * @return T
+     * @return mixed
      */
-    public static function withTestNow($testNow, $callback)
+    public static function withTestNow($testNow = null, $callback = null)
     {
         static::setTestNow($testNow);
 
@@ -200,7 +198,7 @@ trait Test
             : $testInstance->format(static::MOCK_DATETIME_FORMAT);
     }
 
-    private static function setDefaultTimezone($timezone, ?DateTimeInterface $date = null)
+    private static function setDefaultTimezone($timezone, DateTimeInterface $date = null)
     {
         $previous = null;
         $success = false;

@@ -1,6 +1,6 @@
 <?php
 /**
- * PhpOption，延迟选项
+ * PhpOption，懒人选项
  */
 
 /*

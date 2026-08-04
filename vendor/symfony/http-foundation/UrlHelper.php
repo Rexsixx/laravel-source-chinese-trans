@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，Url助手
+ * Symfony，组件，Http基础，Url 助手
  */
 
 /*
@@ -18,7 +18,6 @@ use Symfony\Component\Routing\RequestContext;
 
 /**
  * A helper service for manipulating URLs within and outside the request scope.
- * 在请求范围内和外部操作url的辅助服务。
  *
  * @author Valentin Udaltsov <udaltsov.valentin@gmail.com>
  */

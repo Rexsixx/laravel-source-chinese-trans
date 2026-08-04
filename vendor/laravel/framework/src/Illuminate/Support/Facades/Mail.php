@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，Mail
+ * 支持，门面邮件
  */
 
 namespace Illuminate\Support\Facades;
@@ -11,15 +11,15 @@ use Illuminate\Support\Testing\Fakes\MailFake;
  * @method static \Illuminate\Mail\PendingMail to($users)
  * @method static \Illuminate\Mail\PendingMail bcc($users)
  * @method static void raw(string $text, $callback)
- * @method static void send(string|array|\Illuminate\Contracts\Mail\Mailable $view, array $data = [], \Closure|string $callback = null)
+ * @method static void send(\Illuminate\Contracts\Mail\Mailable|string|array $view, array $data = [], \Closure|string $callback = null)
  * @method static array failures()
- * @method static mixed queue(string|array|\Illuminate\Contracts\Mail\Mailable $view, string $queue = null)
- * @method static mixed later(\DateTimeInterface|\DateInterval|int $delay, string|array|\Illuminate\Contracts\Mail\Mailable $view, string $queue = null)
- * @method static void assertSent(string $mailable, \Closure|string $callback = null)
- * @method static void assertNotSent(string $mailable, \Closure|string $callback = null)
+ * @method static mixed queue(\Illuminate\Contracts\Mail\Mailable|string|array $view, string $queue = null)
+ * @method static mixed later(\DateTimeInterface|\DateInterval|int $delay, \Illuminate\Contracts\Mail\Mailable|string|array $view, string $queue = null)
+ * @method static void assertSent(string $mailable, callable|int $callback = null)
+ * @method static void assertNotSent(string $mailable, callable|int $callback = null)
  * @method static void assertNothingSent()
- * @method static void assertQueued(string $mailable, \Closure|string $callback = null)
- * @method static void assertNotQueued(string $mailable, \Closure|string $callback = null)
+ * @method static void assertQueued(string $mailable, callable|int $callback = null)
+ * @method static void assertNotQueued(string $mailable, callable $callback = null)
  * @method static void assertNothingQueued()
  * @method static \Illuminate\Support\Collection sent(string $mailable, \Closure|string $callback = null)
  * @method static bool hasSent(string $mailable)
@@ -33,7 +33,7 @@ class Mail extends Facade
 {
     /**
      * Replace the bound instance with a fake.
-	 * 将绑定实例替换为伪实例
+	 * 替换绑定实例为伪实例
      *
      * @return \Illuminate\Support\Testing\Fakes\MailFake
      */
@@ -46,7 +46,7 @@ class Mail extends Facade
 
     /**
      * Get the registered name of the component.
-	 * 获取组件的注册名称
+	 * 得到组件注册名
      *
      * @return string
      */

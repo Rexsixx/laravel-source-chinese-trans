@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Css选择器，XPath，翻译器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -51,7 +48,7 @@ class Translator implements TranslatorInterface
     private $pseudoClassTranslators = [];
     private $attributeMatchingTranslators = [];
 
-    public function __construct(?ParserInterface $parser = null)
+    public function __construct(ParserInterface $parser = null)
     {
         $this->mainParser = $parser ?? new Parser();
 

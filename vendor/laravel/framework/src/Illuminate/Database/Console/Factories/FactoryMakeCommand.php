@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，控制台，工厂，工厂制造指令
+ * 数据库，控制台, 工厂制造指令
  */
 
 namespace Illuminate\Database\Console\Factories;
@@ -36,7 +36,7 @@ class FactoryMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 获取生成器的存根文件
+	 * 得到生成器的存根文件
      *
      * @return string
      */
@@ -47,7 +47,7 @@ class FactoryMakeCommand extends GeneratorCommand
 
     /**
      * Build the class with the given name.
-	 * 用给定的名称构建类
+	 * 构建类使用给定的名称
      *
      * @param  string  $name
      * @return string
@@ -75,7 +75,7 @@ class FactoryMakeCommand extends GeneratorCommand
 
     /**
      * Get the destination class path.
-	 * 获取目标类路径
+	 * 得到目标类路径
      *
      * @param  string  $name
      * @return string
@@ -91,7 +91,7 @@ class FactoryMakeCommand extends GeneratorCommand
 
     /**
      * Get the console command options.
-	 * 获取控制台命令选项
+	 * 得到控制台命令选项
      *
      * @return array
      */

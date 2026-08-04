@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，处理者
+ * League，Flysystem，处理程序
  */
 
 namespace League\Flysystem;
@@ -63,7 +63,7 @@ abstract class Handler
     {
         $metadata = $this->filesystem->getMetadata($this->path);
 
-        return $metadata ? $metadata['type'] : 'dir';
+        return $metadata['type'];
     }
 
     /**

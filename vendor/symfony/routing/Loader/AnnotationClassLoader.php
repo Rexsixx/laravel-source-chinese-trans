@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，加载程序，注释类加载器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -25,7 +22,6 @@ use Symfony\Component\Routing\RouteCompiler;
 
 /**
  * AnnotationClassLoader loads routing information from a PHP class and its methods.
- * 注释类加载器从PHP类和它的方法加载路由信息。
  *
  * You need to define an implementation for the configureRoute() method. Most of the
  * time, this method should define some PHP callable to be called for the route
@@ -80,7 +76,6 @@ abstract class AnnotationClassLoader implements LoaderInterface
 
     /**
      * Sets the annotation class to read route properties from.
-	 * 设置注释类以读取路由属性
      *
      * @param string $class A fully-qualified class name
      */

@@ -1,21 +1,21 @@
 <?php
 /**
- * Illuminate，Http，问题，与输入交互
+ * Http，与输入交互
  */
 
 namespace Illuminate\Http\Concerns;
 
-use stdClass;
-use SplFileInfo;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Http\UploadedFile;
+use SplFileInfo;
+use stdClass;
 
 trait InteractsWithInput
 {
     /**
      * Retrieve a server variable from the request.
-	 * 从请求中检索服务器变量
+	 * 检索服务器变量从请求中
      *
      * @param  string|null  $key
      * @param  string|array|null  $default
@@ -28,7 +28,7 @@ trait InteractsWithInput
 
     /**
      * Determine if a header is set on the request.
-	 * 确定是否在请求上设置了标头
+	 * 确定是否设置请求头
      *
      * @param  string  $key
      * @return bool
@@ -53,7 +53,7 @@ trait InteractsWithInput
 
     /**
      * Get the bearer token from the request headers.
-	 * 从请求头中获取承载令牌
+	 * 得到承载令牌从请求头中
      *
      * @return string|null
      */
@@ -113,13 +113,7 @@ trait InteractsWithInput
 
         $input = $this->all();
 
-        foreach ($keys as $key) {
-            if (Arr::has($input, $key)) {
-                return true;
-            }
-        }
-
-        return false;
+        return Arr::hasAny($input, $keys);
     }
 
     /**
@@ -163,8 +157,22 @@ trait InteractsWithInput
     }
 
     /**
+     * Determine if the request is missing a given input item key.
+	 * 确定请求是否缺少给定的输入项键
+     *
+     * @param  string|array  $key
+     * @return bool
+     */
+    public function missing($key)
+    {
+        $keys = is_array($key) ? $key : func_get_args();
+
+        return ! $this->has($keys);
+    }
+
+    /**
      * Determine if the given input key is an empty string for "has".
-	 * 确定给定的输入键是否为“has”的空字符串
+	 * 确定给定的输入键是否为"has"的空字符串
      *
      * @param  string  $key
      * @return bool
@@ -178,7 +186,7 @@ trait InteractsWithInput
 
     /**
      * Get the keys for all of the input and files.
-	 * 获取所有输入和文件的密钥
+	 * 得到所有输入和文件的密钥
      *
      * @return array
      */
@@ -189,7 +197,7 @@ trait InteractsWithInput
 
     /**
      * Get all of the input and files for the request.
-	 * 获取请求的所有输入和文件
+	 * 得到请求的所有输入和文件
      *
      * @param  array|mixed|null  $keys
      * @return array
@@ -213,11 +221,11 @@ trait InteractsWithInput
 
     /**
      * Retrieve an input item from the request.
-	 * 从请求中检索输入项
+	 * 检索输入项从请求中
      *
      * @param  string|null  $key
-     * @param  string|array|null  $default
-     * @return string|array|null
+     * @param  mixed  $default
+     * @return mixed
      */
     public function input($key = null, $default = null)
     {
@@ -227,8 +235,23 @@ trait InteractsWithInput
     }
 
     /**
+     * Retrieve input as a boolean value.
+	 * 检索输入作为布尔值
+     *
+     * Returns true when value is "1", "true", "on", and "yes". Otherwise, returns false.
+     *
+     * @param  string|null  $key
+     * @param  bool  $default
+     * @return bool
+     */
+    public function boolean($key = null, $default = false)
+    {
+        return filter_var($this->input($key, $default), FILTER_VALIDATE_BOOLEAN);
+    }
+
+    /**
      * Get a subset containing the provided keys with values from the input data.
-	 * 从输入数据中获取包含所提供键值的子集
+	 * 得到包含所提供键值的子集从输入数据中
      *
      * @param  array|mixed  $keys
      * @return array
@@ -254,7 +277,7 @@ trait InteractsWithInput
 
     /**
      * Get all of the input except for a specified array of items.
-	 * 获取除指定项数组外的所有输入
+	 * 得到除指定项数组外的所有输入
      *
      * @param  array|mixed  $keys
      * @return array
@@ -272,7 +295,7 @@ trait InteractsWithInput
 
     /**
      * Retrieve a query string item from the request.
-	 * 从请求中检索查询字符串项
+	 * 检索查询字符串项从请求中
      *
      * @param  string|null  $key
      * @param  string|array|null  $default
@@ -285,7 +308,7 @@ trait InteractsWithInput
 
     /**
      * Retrieve a request payload item from the request.
-	 * 从请求中检索请求有效负载项
+	 * 检索请求有效负载项从请求中
      *
      * @param  string|null  $key
      * @param  string|array|null  $default
@@ -310,7 +333,7 @@ trait InteractsWithInput
 
     /**
      * Retrieve a cookie from the request.
-	 * 从请求中检索cookie
+	 * 检索cookie从请求中
      *
      * @param  string|null  $key
      * @param  string|array|null  $default
@@ -323,7 +346,7 @@ trait InteractsWithInput
 
     /**
      * Get an array of all of the files on the request.
-	 * 获取请求上所有文件的数组
+	 * 得到请求上所有文件的数组
      *
      * @return array
      */
@@ -336,7 +359,7 @@ trait InteractsWithInput
 
     /**
      * Convert the given array of Symfony UploadedFiles to custom Laravel UploadedFiles.
-	 * 将给定的Symfony UploadedFiles数组转换为自定义的Laravel UploadedFiles
+	 * 转换给定的Symfony UploadedFiles数组为自定义的Laravel UploadedFiles
      *
      * @param  array  $files
      * @return array
@@ -390,7 +413,7 @@ trait InteractsWithInput
 
     /**
      * Retrieve a file from the request.
-	 * 从请求中检索文件
+	 * 检索文件从请求中
      *
      * @param  string|null  $key
      * @param  mixed  $default
@@ -403,7 +426,7 @@ trait InteractsWithInput
 
     /**
      * Retrieve a parameter item from a given source.
-	 * 从给定源检索参数项
+	 * 检索参数项从给定源
      *
      * @param  string  $source
      * @param  string  $key

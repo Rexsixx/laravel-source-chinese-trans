@@ -1,19 +1,19 @@
 <?php
 /**
- * Illuminate，Session，加密存储
+ * Session，加密存储
  */
 
 namespace Illuminate\Session;
 
-use SessionHandlerInterface;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\Encrypter as EncrypterContract;
+use SessionHandlerInterface;
 
 class EncryptedStore extends Store
 {
     /**
      * The encrypter instance.
-	 * 加密器实例
+	 * 加密实例
      *
      * @var \Illuminate\Contracts\Encryption\Encrypter
      */
@@ -21,12 +21,12 @@ class EncryptedStore extends Store
 
     /**
      * Create a new session instance.
-	 * 创建一个新的会话实例
+	 * 创建会话实例
      *
-     * @param  string $name
-     * @param  \SessionHandlerInterface $handler
-     * @param  \Illuminate\Contracts\Encryption\Encrypter $encrypter
-     * @param  string|null $id
+     * @param  string  $name
+     * @param  \SessionHandlerInterface  $handler
+     * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
+     * @param  string|null  $id
      * @return void
      */
     public function __construct($name, SessionHandlerInterface $handler, EncrypterContract $encrypter, $id = null)
@@ -66,7 +66,7 @@ class EncryptedStore extends Store
 
     /**
      * Get the encrypter instance.
-	 * 获取加密器实例
+	 * 得到加密实例
      *
      * @return \Illuminate\Contracts\Encryption\Encrypter
      */

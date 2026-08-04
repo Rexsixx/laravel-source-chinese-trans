@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，翻译，载入程序，Qt File 加载器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -22,7 +19,6 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * QtFileLoader loads translations from QT Translations XML files.
- * QtFileLoader加载了QT翻译XML文件的翻译。
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */

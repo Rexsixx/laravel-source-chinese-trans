@@ -1,7 +1,4 @@
 <?php
-/**
- * Carbon，异常，未知方法异常
- */
 
 /**
  * This file is part of the Carbon package.
@@ -21,7 +18,6 @@ class UnknownMethodException extends BaseBadMethodCallException implements BadMe
 {
     /**
      * The method.
-	 * 方法
      *
      * @var string
      */
@@ -34,7 +30,7 @@ class UnknownMethodException extends BaseBadMethodCallException implements BadMe
      * @param int            $code
      * @param Throwable|null $previous
      */
-    public function __construct($method, $code = 0, ?Throwable $previous = null)
+    public function __construct($method, $code = 0, Throwable $previous = null)
     {
         $this->method = $method;
 

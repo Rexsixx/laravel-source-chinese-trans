@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，数据器，翻译数据收集器
+ * Symfony，组件，翻译，数据收集器，翻译数据收集器
  */
 
 /*
@@ -53,7 +53,7 @@ class TranslationDataCollector extends DataCollector implements LateDataCollecto
      *
      * @param \Throwable|null $exception
      */
-    public function collect(Request $request, Response $response/* , \Throwable $exception = null */)
+    public function collect(Request $request, Response $response/*, \Throwable $exception = null*/)
     {
         $this->data['locale'] = $this->translator->getLocale();
         $this->data['fallback_locales'] = $this->translator->getFallbackLocales();

@@ -1,6 +1,6 @@
 <?php
 /**
- * Cron，分字段
+ * Cron，分钟字段
  */
 
 namespace Cron;

@@ -1,7 +1,4 @@
-<?php
-/**
- * Monolog，格式化程序，格式化程序接口
- */
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the Monolog package.
@@ -16,18 +13,20 @@ namespace Monolog\Formatter;
 
 /**
  * Interface for formatters
- * 格式化程序接口
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
+ *
+ * @phpstan-import-type Record from \Monolog\Logger
  */
 interface FormatterInterface
 {
     /**
      * Formats a log record.
-	 * 格式化日志记录
      *
      * @param  array $record A record to format
      * @return mixed The formatted record
+     *
+     * @phpstan-param Record $record
      */
     public function format(array $record);
 
@@ -36,6 +35,8 @@ interface FormatterInterface
      *
      * @param  array $records A set of records to format
      * @return mixed The formatted set of records
+     *
+     * @phpstan-param Record[] $records
      */
     public function formatBatch(array $records);
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，适配器，Php单元，Legacy，V5的测试侦听器
+ * Mockery，适配器，Php单元，Legacy，V5的测试监听器
  */
 
 /**

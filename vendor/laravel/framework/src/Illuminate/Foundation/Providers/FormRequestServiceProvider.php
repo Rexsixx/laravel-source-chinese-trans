@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，基础，供应商，表单请求服务提供商
+ * 基础，表单请求服务提供者
  */
 
 namespace Illuminate\Foundation\Providers;
 
+use Illuminate\Contracts\Validation\ValidatesWhenResolved;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\ValidatesWhenResolved;
 
 class FormRequestServiceProvider extends ServiceProvider
 {
@@ -25,7 +25,7 @@ class FormRequestServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap the application services.
-	 * 引导应用程序服务
+	 * 引导应用服务
      *
      * @return void
      */

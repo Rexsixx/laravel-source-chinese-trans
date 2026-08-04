@@ -1,7 +1,4 @@
 <?php
-/**
- * phpDocumentor，反射，Doc Block，标签，不赞成
- */
 
 declare(strict_types=1);
 

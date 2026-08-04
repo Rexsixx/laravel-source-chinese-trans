@@ -1,15 +1,15 @@
 <?php
 /**
- * Illuminate，数据库，连接器，Connector
+ * 数据库，连接器
  */
 
 namespace Illuminate\Database\Connectors;
 
-use PDO;
-use Exception;
-use Throwable;
 use Doctrine\DBAL\Driver\PDOConnection;
+use Exception;
 use Illuminate\Database\DetectsLostConnections;
+use PDO;
+use Throwable;
 
 class Connector
 {
@@ -17,7 +17,7 @@ class Connector
 
     /**
      * The default PDO connection options.
-	 * 默认的PDO连接选项
+	 * 默认PDO连接参数
      *
      * @var array
      */
@@ -31,11 +31,11 @@ class Connector
 
     /**
      * Create a new PDO connection.
-	 * 创建一个新的PDO连接
+	 * 创建新的PDO连接
      *
      * @param  string  $dsn
-     * @param  array   $config
-     * @param  array   $options
+     * @param  array  $config
+     * @param  array  $options
      * @return \PDO
      *
      * @throws \Exception
@@ -59,7 +59,7 @@ class Connector
 
     /**
      * Create a new PDO connection instance.
-	 * 创建一个新的PDO连接实例
+	 * 创建新的PDO连接实例
      *
      * @param  string  $dsn
      * @param  string  $username
@@ -97,7 +97,7 @@ class Connector
      * @param  string  $dsn
      * @param  string  $username
      * @param  string  $password
-     * @param  array   $options
+     * @param  array  $options
      * @return \PDO
      *
      * @throws \Exception
@@ -127,7 +127,7 @@ class Connector
 
     /**
      * Get the default PDO connection options.
-	 * 获取默认的PDO连接选项
+	 * 得到默认的PDO连接选项
      *
      * @return array
      */

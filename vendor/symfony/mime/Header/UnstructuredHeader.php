@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Mime，数据头，非正式组成的标题
- */
 
 /*
  * This file is part of the Symfony package.
@@ -48,7 +45,6 @@ class UnstructuredHeader extends AbstractHeader
 
     /**
      * Get the (unencoded) value of this header.
-	 * 获取这个头的(未编码的)值
      */
     public function getValue(): string
     {

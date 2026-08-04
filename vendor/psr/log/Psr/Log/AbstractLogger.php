@@ -1,6 +1,6 @@
 <?php
 /**
- * Psr，日志，抽象记录器
+ * Psy，日志，抽象记录器
  */
 
 namespace Psr\Log;

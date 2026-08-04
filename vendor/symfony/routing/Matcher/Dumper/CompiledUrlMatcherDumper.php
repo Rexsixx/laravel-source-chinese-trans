@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，匹配程序，转储，编译 Url匹配程序转储
- */
 
 /*
  * This file is part of the Symfony package.
@@ -21,7 +18,6 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * CompiledUrlMatcherDumper creates PHP arrays to be used with CompiledUrlMatcher.
- * CompiledUrlMatcherDumper创建了用于CompiledUrlMatcher的PHP数组。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
@@ -64,7 +60,6 @@ EOF;
 
     /**
      * Generates the arrays for CompiledUrlMatcher's constructor.
-	 * 为CompiledUrlMatcher的构造函数生成数组
      */
     public function getCompiledRoutes(bool $forDump = false): array
     {

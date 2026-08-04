@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，日志，事件，消息已记录
+ * 日志，信息记录
  */
 
 namespace Illuminate\Log\Events;
@@ -9,7 +9,7 @@ class MessageLogged
 {
     /**
      * The log "level".
-	 * 日志“level”
+	 * 日志级别
      *
      * @var string
      */
@@ -25,7 +25,7 @@ class MessageLogged
 
     /**
      * The log context.
-	 * 日志上下文
+	 * 日志内容
      *
      * @var array
      */
@@ -33,7 +33,7 @@ class MessageLogged
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  string  $level
      * @param  string  $message

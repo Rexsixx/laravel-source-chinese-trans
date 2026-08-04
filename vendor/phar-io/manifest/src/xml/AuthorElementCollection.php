@@ -1,8 +1,4 @@
-<?php
-/**
- * PharIo，Manifest，作者元素收集
- */
-
+<?php declare(strict_types = 1);
 /*
  * This file is part of PharIo\Manifest.
  *
@@ -11,11 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PharIo\Manifest;
 
 class AuthorElementCollection extends ElementCollection {
-    public function current() {
+    public function current(): AuthorElement {
         return new AuthorElement(
             $this->getCurrentElement()
         );

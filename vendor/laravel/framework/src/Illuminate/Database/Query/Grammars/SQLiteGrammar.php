@@ -1,39 +1,19 @@
 <?php
 /**
- * Illuminate，数据库，查询，语法，SQLite 语法
+ * 数据库，语法，SQLite语法
  */
 
 namespace Illuminate\Database\Query\Grammars;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Database\Query\Builder;
 
 class SQLiteGrammar extends Grammar
 {
     /**
-     * The components that make up a select clause.
-	 * 组成select子句的组件
-     *
-     * @var array
-     */
-    protected $selectComponents = [
-        'aggregate',
-        'columns',
-        'from',
-        'joins',
-        'wheres',
-        'groups',
-        'havings',
-        'orders',
-        'limit',
-        'offset',
-        'lock',
-    ];
-
-    /**
      * All of the available clause operators.
-	 * 所有可用的子句操作符
+	 * 所有可用子句操作符
      *
      * @var array
      */
@@ -44,44 +24,33 @@ class SQLiteGrammar extends Grammar
     ];
 
     /**
-     * Compile a select query into SQL.
-	 * 将一个选择查询编译成SQL
+     * Compile the lock into SQL.
+	 * 将锁编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  bool|string  $value
      * @return string
      */
-    public function compileSelect(Builder $query)
+    protected function compileLock(Builder $query, $value)
     {
-        if ($query->unions && $query->aggregate) {
-            return $this->compileUnionAggregate($query);
-        }
-
-        $sql = parent::compileSelect($query);
-
-        if ($query->unions) {
-            $sql = 'select * from ('.$sql.') '.$this->compileUnions($query);
-        }
-
-        return $sql;
+        return '';
     }
 
     /**
-     * Compile a single union statement.
-	 * 编译单个联合语句
+     * Wrap a union subquery in parentheses.
+	 * 包装联合子查询在括号中
      *
-     * @param  array  $union
+     * @param  string  $sql
      * @return string
      */
-    protected function compileUnion(array $union)
+    protected function wrapUnion($sql)
     {
-        $conjunction = $union['all'] ? ' union all ' : ' union ';
-
-        return $conjunction.'select * from ('.$union['query']->toSql().')';
+        return 'select * from ('.$sql.')';
     }
 
     /**
      * Compile a "where date" clause.
-	 * 编译一个“where date”子句
+	 * 编译"where date"子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -94,7 +63,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where day" clause.
-	 * 编写一个“where day”子句
+	 * 编译"where day"子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -107,7 +76,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where month" clause.
-	 * 编写“where month”子句
+	 * 编译"where month"子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -120,7 +89,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where year" clause.
-	 * 编写一个“where year”子句
+	 * 编译"where year"子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -133,7 +102,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where time" clause.
-	 * 编写一个“where time”子句
+	 * 编译"where time"子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -146,7 +115,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a date based where clause.
-	 * 编译一个基于日期的where子句
+	 * 编译基于日期的where子句
      *
      * @param  string  $type
      * @param  \Illuminate\Database\Query\Builder  $query
@@ -162,7 +131,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "JSON length" statement into SQL.
-	 * 将“JSON长度”语句编译成SQL
+	 * 编译"JSON length"子句至SQL
      *
      * @param  string  $column
      * @param  string  $operator
@@ -177,25 +146,25 @@ class SQLiteGrammar extends Grammar
     }
 
     /**
-     * Compile an insert statement into SQL.
-	 * 将插入语句编译成SQL
+     * Compile an update statement into SQL.
+	 * 编译update语句成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
      * @return string
      */
-    public function compileInsert(Builder $query, array $values)
+    public function compileUpdate(Builder $query, array $values)
     {
-        $table = $this->wrapTable($query->from);
+        if (isset($query->joins) || isset($query->limit)) {
+            return $this->compileUpdateWithJoinsOrLimit($query, $values);
+        }
 
-        return empty($values)
-                ? "insert into {$table} DEFAULT VALUES"
-                : parent::compileInsert($query, $values);
+        return parent::compileUpdate($query, $values);
     }
 
     /**
      * Compile an insert ignore statement into SQL.
-	 * 将插入忽略语句编译成SQL
+	 * 编译插入忽略语句成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
@@ -207,50 +176,85 @@ class SQLiteGrammar extends Grammar
     }
 
     /**
-     * Compile an update statement into SQL.
-	 * 将update语句编译成SQL
+     * Compile the columns for an update statement.
+	 * 编译更新语句的列
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
      * @return string
      */
-    public function compileUpdate(Builder $query, $values)
+    protected function compileUpdateColumns(Builder $query, array $values)
     {
-        $table = $this->wrapTable($query->from);
+        $jsonGroups = $this->groupJsonColumnsForUpdate($values);
 
-        $columns = collect($values)->map(function ($value, $key) {
-            return $this->wrap(Str::after($key, '.')).' = '.$this->parameter($value);
+        return collect($values)->reject(function ($value, $key) {
+            return $this->isJsonSelector($key);
+        })->merge($jsonGroups)->map(function ($value, $key) use ($jsonGroups) {
+            $column = last(explode('.', $key));
+
+            $value = isset($jsonGroups[$key]) ? $this->compileJsonPatch($column, $value) : $this->parameter($value);
+
+            return $this->wrap($column).' = '.$value;
         })->implode(', ');
+    }
 
-        if (isset($query->joins) || isset($query->limit)) {
-            return $this->compileUpdateWithJoinsOrLimit($query, $columns);
+    /**
+     * Group the nested JSON columns.
+	 * 分组嵌套的JSON列
+     *
+     * @param  array  $values
+     * @return array
+     */
+    protected function groupJsonColumnsForUpdate(array $values)
+    {
+        $groups = [];
+
+        foreach ($values as $key => $value) {
+            if ($this->isJsonSelector($key)) {
+                Arr::set($groups, str_replace('->', '.', Str::after($key, '.')), $value);
+            }
         }
 
-        return trim("update {$table} set {$columns} {$this->compileWheres($query)}");
+        return $groups;
+    }
+
+    /**
+     * Compile a "JSON" patch statement into SQL.
+	 * 编译"JSON"补丁语句成SQL
+     *
+     * @param  string  $column
+     * @param  mixed  $value
+     * @return string
+     */
+    protected function compileJsonPatch($column, $value)
+    {
+        return "json_patch(ifnull({$this->wrap($column)}, json('{}')), json({$this->parameter($value)}))";
     }
 
     /**
      * Compile an update statement with joins or limit into SQL.
-	 * 将带有连接或限制的更新语句编译成SQL
+	 * 编译带有连接或限制的更新语句成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
-     * @param  string  $columns
+     * @param  array  $values
      * @return string
      */
-    protected function compileUpdateWithJoinsOrLimit(Builder $query, $columns)
+    protected function compileUpdateWithJoinsOrLimit(Builder $query, array $values)
     {
-        $segments = preg_split('/\s+as\s+/i', $query->from);
+        $table = $this->wrapTable($query->from);
 
-        $alias = $segments[1] ?? $segments[0];
+        $columns = $this->compileUpdateColumns($query, $values);
 
-        $selectSql = parent::compileSelect($query->select($alias.'.rowid'));
+        $alias = last(preg_split('/\s+as\s+/i', $query->from));
 
-        return "update {$this->wrapTable($query->from)} set {$columns} where {$this->wrap('rowid')} in ({$selectSql})";
+        $selectSql = $this->compileSelect($query->select($alias.'.rowid'));
+
+        return "update {$table} set {$columns} where {$this->wrap('rowid')} in ({$selectSql})";
     }
 
     /**
      * Prepare the bindings for an update statement.
-	 * 为更新语句准备绑定
+	 * 准备绑定为更新语句
      *
      * @param  array  $bindings
      * @param  array  $values
@@ -258,6 +262,14 @@ class SQLiteGrammar extends Grammar
      */
     public function prepareBindingsForUpdate(array $bindings, array $values)
     {
+        $groups = $this->groupJsonColumnsForUpdate($values);
+
+        $values = collect($values)->reject(function ($value, $key) {
+            return $this->isJsonSelector($key);
+        })->merge($groups)->map(function ($value) {
+            return is_array($value) ? json_encode($value) : $value;
+        })->all();
+
         $cleanBindings = Arr::except($bindings, 'select');
 
         return array_values(
@@ -267,7 +279,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a delete statement into SQL.
-	 * 将delete语句编译成SQL
+	 * 编译delete语句成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
@@ -278,32 +290,30 @@ class SQLiteGrammar extends Grammar
             return $this->compileDeleteWithJoinsOrLimit($query);
         }
 
-        $wheres = is_array($query->wheres) ? $this->compileWheres($query) : '';
-
-        return trim("delete from {$this->wrapTable($query->from)} $wheres");
+        return parent::compileDelete($query);
     }
 
     /**
      * Compile a delete statement with joins or limit into SQL.
-	 * 将带有连接或限制的删除语句编译成SQL
+	 * 编译带有连接或限制的删除语句成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
      */
     protected function compileDeleteWithJoinsOrLimit(Builder $query)
     {
-        $segments = preg_split('/\s+as\s+/i', $query->from);
+        $table = $this->wrapTable($query->from);
 
-        $alias = $segments[1] ?? $segments[0];
+        $alias = last(preg_split('/\s+as\s+/i', $query->from));
 
-        $selectSql = parent::compileSelect($query->select($alias.'.rowid'));
+        $selectSql = $this->compileSelect($query->select($alias.'.rowid'));
 
-        return "delete from {$this->wrapTable($query->from)} where {$this->wrap('rowid')} in ({$selectSql})";
+        return "delete from {$table} where {$this->wrap('rowid')} in ({$selectSql})";
     }
 
     /**
      * Compile a truncate table statement into SQL.
-	 * 将截断表语句编译成SQL
+	 * 编译截断表语句成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return array

@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Var Dumper，Caster，Cut 存根
- */
 
 /*
  * This file is part of the Symfony package.

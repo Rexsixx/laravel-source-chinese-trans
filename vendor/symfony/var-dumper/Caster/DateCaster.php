@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，Caster，Date Caster
+ * Symfony，组件，Var Dumper，Caster，日期 Caster
  */
 
 /*
@@ -18,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts DateTimeInterface related classes to array representation.
+ * 将DateTimeInterface相关类转换为数组表示。
  *
  * @author Dany Maillard <danymaillard93b@gmail.com>
  *
@@ -108,11 +109,11 @@ class DateCaster
         }
 
         $period = sprintf(
-            'every %s, from %s%s %s',
+            'every %s, from %s (%s) %s',
             self::formatInterval($p->getDateInterval()),
-            $p->include_start_date ? '[' : ']',
             self::formatDateTime($p->getStartDate()),
-            ($end = $p->getEndDate()) ? 'to '.self::formatDateTime($end).(\PHP_VERSION_ID >= 80200 && $p->include_end_date ? ']' : '[') : 'recurring '.$p->recurrences.' time/s'
+            $p->include_start_date ? 'included' : 'excluded',
+            ($end = $p->getEndDate()) ? 'to '.self::formatDateTime($end) : 'recurring '.$p->recurrences.' time/s'
         );
 
         $p = [Caster::PREFIX_VIRTUAL.'period' => new ConstStub($period, implode("\n", $dates))];

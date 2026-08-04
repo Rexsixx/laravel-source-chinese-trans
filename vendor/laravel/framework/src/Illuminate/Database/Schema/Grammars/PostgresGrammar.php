@@ -1,18 +1,18 @@
 <?php
 /**
- * Illuminate，数据库，架构，语法，Postgres 语法
+ * 数据库，Postgres语法
  */
 
 namespace Illuminate\Database\Schema\Grammars;
 
-use Illuminate\Support\Fluent;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Fluent;
 
 class PostgresGrammar extends Grammar
 {
     /**
      * If this Grammar supports schema changes wrapped in a transaction.
-	 * 如果此语法支持封装在事务中的模式更改
+	 * 是否此语法支持封装在事务中的模式更改
      *
      * @var bool
      */
@@ -20,11 +20,11 @@ class PostgresGrammar extends Grammar
 
     /**
      * The possible column modifiers.
-	 * 可能的列修饰符
+	 * 可能的列修改
      *
      * @var array
      */
-    protected $modifiers = ['Collate', 'Increment', 'Nullable', 'Default'];
+    protected $modifiers = ['Collate', 'Increment', 'Nullable', 'Default', 'VirtualAs', 'StoredAs'];
 
     /**
      * The columns available as serials.
@@ -55,7 +55,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile the query to determine the list of columns.
-	 * 编译查询以确定列列表
+	 * 编译查询以确定表是否存在
      *
      * @return string
      */
@@ -191,7 +191,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a drop table command.
-	 * 编译一个删除表命令
+	 * 编译删除表命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -204,7 +204,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a drop table (if exists) command.
-	 * 编译一个删除表（如果存在）命令
+	 * 编译删除表命令(如果存在)
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -243,7 +243,7 @@ class PostgresGrammar extends Grammar
      * Compile the SQL needed to drop all types.
 	 * 编译删除所有类型所需的SQL
      *
-     * @param array $types
+     * @param  array  $types
      * @return string
      */
     public function compileDropAllTypes($types)
@@ -255,29 +255,29 @@ class PostgresGrammar extends Grammar
      * Compile the SQL needed to retrieve all table names.
 	 * 编译检索所有表名所需的SQL
      *
-     * @param  string  $schema
+     * @param  string|array  $schema
      * @return string
      */
     public function compileGetAllTables($schema)
     {
-        return "select tablename from pg_catalog.pg_tables where schemaname = '{$schema}'";
+        return "select tablename from pg_catalog.pg_tables where schemaname in ('".implode("','", (array) $schema)."')";
     }
 
     /**
      * Compile the SQL needed to retrieve all view names.
 	 * 编译检索所有视图名所需的SQL
      *
-     * @param  string  $schema
+     * @param  string|array  $schema
      * @return string
      */
     public function compileGetAllViews($schema)
     {
-        return "select viewname from pg_catalog.pg_views where schemaname = '{$schema}'";
+        return "select viewname from pg_catalog.pg_views where schemaname in ('".implode("','", (array) $schema)."')";
     }
 
     /**
      * Compile the SQL needed to retrieve all type names.
-	 * 编译检索所有类型名所需的SQL
+	 * 编译检索所有类型名称所需的SQL
      *
      * @return string
      */
@@ -303,7 +303,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a drop primary key command.
-	 * 编译一个删除主键命令
+	 * 编译删除主键命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -318,7 +318,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a drop unique key command.
-	 * 编译一个删除唯一键命令
+	 * 编译删除唯一键命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -333,7 +333,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a drop index command.
-	 * 编写一个删除索引命令
+	 * 编译删除索引命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -346,7 +346,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a drop spatial index command.
-	 * 编译一个删除空间索引命令
+	 * 编译删除空间索引命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -359,7 +359,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a drop foreign key command.
-	 * 编译一个删除外键命令
+	 * 编译删除外键命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -374,7 +374,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a rename table command.
-	 * 编译一个重命名表命令
+	 * 编译重命名表命令
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -389,10 +389,10 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a rename index command.
-	 * 编译一个重命名索引命令
+	 * 编译重命名索引命令
      *
-     * @param  \Illuminate\Database\Schema\Blueprint $blueprint
-     * @param  \Illuminate\Support\Fluent $command
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
      * @return string
      */
     public function compileRenameIndex(Blueprint $blueprint, Fluent $command)
@@ -444,7 +444,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a char type.
-	 * 为char类型创建列定义
+	 * 创建列定义为char类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -456,7 +456,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a string type.
-	 * 为字符串类型创建列定义
+	 * 创建列定义为字符串类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -468,7 +468,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a text type.
-	 * 为文本类型创建列定义
+	 * 创建列定义为文本类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -480,7 +480,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a medium text type.
-	 * 为中等文本类型创建列定义
+	 *创建列定义为中等文本类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -492,7 +492,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a long text type.
-	 * 为长文本类型创建列定义
+	 * 创建列定义为长文本类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -504,7 +504,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for an integer type.
-	 * 为整数类型创建列定义
+	 * 创建列定义为整数类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -516,7 +516,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a big integer type.
-	 * 为大整数类型创建列定义
+	 * 创建列定义为大整数类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -528,7 +528,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a medium integer type.
-	 * 为中等整数类型创建列定义
+	 * 创建列定义为中等整数类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -540,7 +540,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a tiny integer type.
-	 * 为一个小整数类型创建列定义
+	 * 创建列定义为一个小整数类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -552,7 +552,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a small integer type.
-	 * 为小整数类型创建列定义
+	 * 创建列定义为小整数类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -564,7 +564,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a generatable column.
-	 * 为可生成的列创建列定义
+	 * 创建列定义为可生成的列
      *
      * @param  string  $type
      * @param  \Illuminate\Support\Fluent  $column
@@ -600,7 +600,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a float type.
-	 * 为float类型创建列定义
+	 * 创建列定义为float类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -624,7 +624,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a real type.
-	 * 为实际类型创建列定义
+	 * 创建列定义为实际类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -636,7 +636,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a decimal type.
-	 * 为十进制类型创建列定义
+	 * 创建列定义为十进制类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -648,7 +648,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a boolean type.
-	 * 为布尔类型创建列定义
+	 * 创建列定义为布尔类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -660,7 +660,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for an enumeration type.
-	 * 为枚举类型创建列定义
+	 * 创建列定义为枚举类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -676,7 +676,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a json type.
-	 * 为json类型创建列定义
+	 * 创建列定义为json类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -688,7 +688,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a jsonb type.
-	 * 为jsonb类型创建列定义
+	 * 创建列定义为jsonb类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -700,7 +700,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a date type.
-	 * 为日期类型创建列定义
+	 * 创建列定义为日期类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -712,7 +712,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a date-time type.
-	 * 为日期-时间类型创建列定义
+	 * 创建列定义为日期-时间类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -724,7 +724,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a date-time (with time zone) type.
-	 * 为日期-时间（带时区）类型创建列定义
+	 * 创建列定义为日期-时间(带时区)类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -743,45 +743,45 @@ class PostgresGrammar extends Grammar
      */
     protected function typeTime(Fluent $column)
     {
-        return "time($column->precision) without time zone";
+        return 'time'.(is_null($column->precision) ? '' : "($column->precision)").' without time zone';
     }
 
     /**
      * Create the column definition for a time (with time zone) type.
-	 * 为时间（带时区）类型创建列定义
+	 * 创建列定义为时间(带时区)类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
     protected function typeTimeTz(Fluent $column)
     {
-        return "time($column->precision) with time zone";
+        return 'time'.(is_null($column->precision) ? '' : "($column->precision)").' with time zone';
     }
 
     /**
      * Create the column definition for a timestamp type.
-	 * 为时间戳类型创建列定义
+	 * 创建列定义为时间戳类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
     protected function typeTimestamp(Fluent $column)
     {
-        $columnType = "timestamp($column->precision) without time zone";
+        $columnType = 'timestamp'.(is_null($column->precision) ? '' : "($column->precision)").' without time zone';
 
         return $column->useCurrent ? "$columnType default CURRENT_TIMESTAMP" : $columnType;
     }
 
     /**
      * Create the column definition for a timestamp (with time zone) type.
-	 * 为时间戳（带时区）类型创建列定义
+	 * 创建列定义为时间戳(带时区)类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
     protected function typeTimestampTz(Fluent $column)
     {
-        $columnType = "timestamp($column->precision) with time zone";
+        $columnType = 'timestamp'.(is_null($column->precision) ? '' : "($column->precision)").' with time zone';
 
         return $column->useCurrent ? "$columnType default CURRENT_TIMESTAMP" : $columnType;
     }
@@ -800,7 +800,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a binary type.
-	 * 为二进制类型创建列定义
+	 * 创建列定义为二进制类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -812,7 +812,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a uuid type.
-	 * 为uid类型创建列定义
+	 * 创建列定义为uid类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -824,7 +824,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for an IP address type.
-	 * 为IP地址类型创建列定义
+	 * 创建列定义为IP地址类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -848,110 +848,110 @@ class PostgresGrammar extends Grammar
 
     /**
      * Create the column definition for a spatial Geometry type.
-	 * 为空间几何类型创建列定义
+	 * 创建列定义为空间几何类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
     protected function typeGeometry(Fluent $column)
     {
-        return $this->formatPostGisType('geometry');
+        return $this->formatPostGisType('geometry', $column);
     }
 
     /**
      * Create the column definition for a spatial Point type.
-	 * 为空间Point类型创建列定义
+	 * 创建列定义为空间Point类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
     protected function typePoint(Fluent $column)
     {
-        return $this->formatPostGisType('point');
+        return $this->formatPostGisType('point', $column);
     }
 
     /**
      * Create the column definition for a spatial LineString type.
-	 * 为空间LineString类型创建列定义
+	 * 创建列定义为空间LineString类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
     protected function typeLineString(Fluent $column)
     {
-        return $this->formatPostGisType('linestring');
+        return $this->formatPostGisType('linestring', $column);
     }
 
     /**
      * Create the column definition for a spatial Polygon type.
-	 * 为空间多边形类型创建列定义
+	 * 创建列定义为空间多边形类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
     protected function typePolygon(Fluent $column)
     {
-        return $this->formatPostGisType('polygon');
+        return $this->formatPostGisType('polygon', $column);
     }
 
     /**
      * Create the column definition for a spatial GeometryCollection type.
-	 * 为空间GeometryCollection类型创建列定义
+	 * 创建列定义为空间GeometryCollection类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
     protected function typeGeometryCollection(Fluent $column)
     {
-        return $this->formatPostGisType('geometrycollection');
+        return $this->formatPostGisType('geometrycollection', $column);
     }
 
     /**
      * Create the column definition for a spatial MultiPoint type.
-	 * 为空间多点类型创建列定义
+	 * 创建列定义为空间多点类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
     protected function typeMultiPoint(Fluent $column)
     {
-        return $this->formatPostGisType('multipoint');
+        return $this->formatPostGisType('multipoint', $column);
     }
 
     /**
      * Create the column definition for a spatial MultiLineString type.
-	 * 为空间MultiLineString类型创建列定义
+	 * 创建列定义为空间MultiLineString类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
     public function typeMultiLineString(Fluent $column)
     {
-        return $this->formatPostGisType('multilinestring');
+        return $this->formatPostGisType('multilinestring', $column);
     }
 
     /**
      * Create the column definition for a spatial MultiPolygon type.
-	 * 为空间MultiPolygon类型创建列定义
+	 * 创建列定义为空间MultiPolygon类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
     protected function typeMultiPolygon(Fluent $column)
     {
-        return $this->formatPostGisType('multipolygon');
+        return $this->formatPostGisType('multipolygon', $column);
     }
 
     /**
      * Create the column definition for a spatial MultiPolygonZ type.
-	 * 为空间MultiPolygonZ类型创建列定义
+	 * 创建列定义为空间MultiPolygonZ类型
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
     protected function typeMultiPolygonZ(Fluent $column)
     {
-        return $this->formatPostGisType('multipolygonz');
+        return $this->formatPostGisType('multipolygonz', $column);
     }
 
     /**
@@ -959,16 +959,25 @@ class PostgresGrammar extends Grammar
 	 * 格式化PostGIS空间类型的列定义
      *
      * @param  string  $type
+     * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    private function formatPostGisType(string $type)
+    private function formatPostGisType($type, Fluent $column)
     {
-        return "geography($type, 4326)";
+        if ($column->isGeometry === null) {
+            return sprintf('geography(%s, %s)', $type, $column->projection ?? '4326');
+        }
+
+        if ($column->projection !== null) {
+            return sprintf('geometry(%s, %s)', $type, $column->projection);
+        }
+
+        return "geometry({$type})";
     }
 
     /**
      * Get the SQL for a collation column modifier.
-	 * 获取排序列修饰符的SQL
+	 * 设置排序列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -983,7 +992,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Get the SQL for a nullable column modifier.
-	 * 获取可空列修饰符的SQL
+	 * 得到可空列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -996,7 +1005,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Get the SQL for a default column modifier.
-	 * 获取默认列修饰符的SQL
+	 * 得到默认列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -1011,7 +1020,7 @@ class PostgresGrammar extends Grammar
 
     /**
      * Get the SQL for an auto-increment column modifier.
-	 * 获取用于自动增量列修饰符的SQL
+	 * 得到用于自动增量列修饰符的SQL
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $column
@@ -1021,6 +1030,36 @@ class PostgresGrammar extends Grammar
     {
         if ((in_array($column->type, $this->serials) || ($column->generatedAs !== null)) && $column->autoIncrement) {
             return ' primary key';
+        }
+    }
+
+    /**
+     * Get the SQL for a generated virtual column modifier.
+	 * 得到生成的虚拟列修饰符的SQL
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string|null
+     */
+    protected function modifyVirtualAs(Blueprint $blueprint, Fluent $column)
+    {
+        if ($column->virtualAs !== null) {
+            return " generated always as ({$column->virtualAs})";
+        }
+    }
+
+    /**
+     * Get the SQL for a generated stored column modifier.
+	 * 得到生成的存储列修饰符的SQL
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string|null
+     */
+    protected function modifyStoredAs(Blueprint $blueprint, Fluent $column)
+    {
+        if ($column->storedAs !== null) {
+            return " generated always as ({$column->storedAs}) stored";
         }
     }
 }

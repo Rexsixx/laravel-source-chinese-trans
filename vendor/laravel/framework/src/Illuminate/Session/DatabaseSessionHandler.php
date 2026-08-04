@@ -1,20 +1,20 @@
 <?php
 /**
- * Illuminate，Session，数据库会话处理程序
+ * SSession，数据库会话处理
  */
 
 namespace Illuminate\Session;
 
-use Illuminate\Support\Arr;
-use SessionHandlerInterface;
-use Illuminate\Support\Carbon;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\InteractsWithTime;
-use Illuminate\Database\ConnectionInterface;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\InteractsWithTime;
+use SessionHandlerInterface;
 
-class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareInterface
+class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerInterface
 {
     use InteractsWithTime;
 
@@ -28,7 +28,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * The name of the session table.
-	 * 会话表的名称
+	 * 会话表名
      *
      * @var string
      */
@@ -44,7 +44,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * The container instance.
-	 * 容器实例
+	 * 连接实例
      *
      * @var \Illuminate\Contracts\Container\Container
      */
@@ -60,7 +60,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Create a new database session handler instance.
-	 * 创建一个新的数据库会话处理程序实例
+	 * 创建新的数据库会话处理实例
      *
      * @param  \Illuminate\Database\ConnectionInterface  $connection
      * @param  string  $table
@@ -149,7 +149,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Perform an insert operation on the session ID.
-	 * 对会话ID执行插入操作
+	 * 执行插入操作对会话ID
      *
      * @param  string  $sessionId
      * @param  string  $payload
@@ -166,7 +166,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Perform an update operation on the session ID.
-	 * 对会话ID进行更新操作
+	 * 进行更新操作对会话ID
      *
      * @param  string  $sessionId
      * @param  string  $payload
@@ -179,7 +179,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Get the default payload for the session.
-	 * 获取会话的默认有效负载
+	 * 得到会话的默认有效负载
      *
      * @param  string  $data
      * @return array
@@ -219,7 +219,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Get the currently authenticated user's ID.
-	 * 获取当前经过身份验证的用户的ID
+	 * 得到当前用户ID
      *
      * @return mixed
      */
@@ -230,7 +230,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Add the request information to the session payload.
-	 * 将请求信息添加到会话有效负载
+	 * 添加请求信息到会话有效负载
      *
      * @param  array  $payload
      * @return $this
@@ -249,7 +249,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Get the IP address for the current request.
-	 * 获取当前请求的IP地址
+	 * 得到当前请求的IP地址
      *
      * @return string
      */
@@ -260,7 +260,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Get the user agent for the current request.
-	 * 获取当前请求的用户代理
+	 * 得到当前请求的用户代理
      *
      * @return string
      */
@@ -289,7 +289,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
 
     /**
      * Get a fresh query builder instance for the table.
-	 * 获取表的新查询生成器实例
+	 * 得到表的新查询生成器实例
      *
      * @return \Illuminate\Database\Query\Builder
      */

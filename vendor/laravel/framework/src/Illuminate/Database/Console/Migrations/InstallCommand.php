@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，数据库，控制台，迁移，安装命令
+ * 数据库，迁移安装命令
  */
 
 namespace Illuminate\Database\Console\Migrations;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
 use Illuminate\Database\Migrations\MigrationRepositoryInterface;
+use Symfony\Component\Console\Input\InputOption;
 
 class InstallCommand extends Command
 {
@@ -21,7 +21,7 @@ class InstallCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令名称
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -37,7 +37,7 @@ class InstallCommand extends Command
 
     /**
      * Create a new migration install command instance.
-	 * 创建一个新的迁移安装命令实例
+	 * 创建新的迁移安装命令实例
      *
      * @param  \Illuminate\Database\Migrations\MigrationRepositoryInterface  $repository
      * @return void
@@ -51,7 +51,7 @@ class InstallCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -66,7 +66,7 @@ class InstallCommand extends Command
 
     /**
      * Get the console command options.
-	 * 获取控制台命令选项
+	 * 得到控制台命令选项
      *
      * @return array
      */

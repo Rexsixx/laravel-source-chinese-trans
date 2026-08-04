@@ -1,12 +1,13 @@
 <?php
 /**
- * Illuminate，视图，问题，管理组件
+ * 视图，管理组件
  */
 
 namespace Illuminate\View\Concerns;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
+use InvalidArgumentException;
 
 trait ManagesComponents
 {
@@ -63,7 +64,7 @@ trait ManagesComponents
 
     /**
      * Get the first view that actually exists from the given list, and start a component.
-	 * 从给定列表中获取实际存在的第一个视图，并启动一个组件。
+	 * 得到实际存在的第一个视图从给定列表中，并启动一个组件。
      *
      * @param  array  $names
      * @param  array  $data
@@ -93,7 +94,7 @@ trait ManagesComponents
 
     /**
      * Get the data for the given component.
-	 * 获取给定组件的数据
+	 * 得到给定组件的数据
      *
      * @param  string  $name
      * @return array
@@ -117,14 +118,14 @@ trait ManagesComponents
      */
     public function slot($name, $content = null)
     {
-        if (func_num_args() === 2) {
+        if (func_num_args() > 2) {
+            throw new InvalidArgumentException('You passed too many arguments to the ['.$name.'] slot.');
+        } elseif (func_num_args() === 2) {
             $this->slots[$this->currentComponent()][$name] = $content;
-        } else {
-            if (ob_start()) {
-                $this->slots[$this->currentComponent()][$name] = '';
+        } elseif (ob_start()) {
+            $this->slots[$this->currentComponent()][$name] = '';
 
-                $this->slotStack[$this->currentComponent()][] = $name;
-            }
+            $this->slotStack[$this->currentComponent()][] = $name;
         }
     }
 
@@ -148,7 +149,7 @@ trait ManagesComponents
 
     /**
      * Get the index for the current component.
-	 * 获取当前组件的索引
+	 * 得到当前组件的索引
      *
      * @return int
      */

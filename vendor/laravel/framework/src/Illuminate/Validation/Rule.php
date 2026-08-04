@@ -1,12 +1,18 @@
 <?php
 /**
- * Illuminate，验证，规则
+ * 验证，规则
  */
 
 namespace Illuminate\Validation;
 
-use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Traits\Macroable;
+use Illuminate\Validation\Rules\Dimensions;
+use Illuminate\Validation\Rules\Exists;
+use Illuminate\Validation\Rules\In;
+use Illuminate\Validation\Rules\NotIn;
+use Illuminate\Validation\Rules\RequiredIf;
+use Illuminate\Validation\Rules\Unique;
 
 class Rule
 {
@@ -14,19 +20,19 @@ class Rule
 
     /**
      * Get a dimensions constraint builder instance.
-	 * 获取维度约束构建器实例
+	 * 得到维度约束构建器实例
      *
      * @param  array  $constraints
      * @return \Illuminate\Validation\Rules\Dimensions
      */
     public static function dimensions(array $constraints = [])
     {
-        return new Rules\Dimensions($constraints);
+        return new Dimensions($constraints);
     }
 
     /**
      * Get a exists constraint builder instance.
-	 * 获取一个已存在的约束生成器实例
+	 * 得到一个已存在的约束生成器实例
      *
      * @param  string  $table
      * @param  string  $column
@@ -34,12 +40,12 @@ class Rule
      */
     public static function exists($table, $column = 'NULL')
     {
-        return new Rules\Exists($table, $column);
+        return new Exists($table, $column);
     }
 
     /**
      * Get an in constraint builder instance.
-	 * 获取约束生成器实例
+	 * 得到一个约束生成器实例
      *
      * @param  \Illuminate\Contracts\Support\Arrayable|array|string  $values
      * @return \Illuminate\Validation\Rules\In
@@ -50,12 +56,12 @@ class Rule
             $values = $values->toArray();
         }
 
-        return new Rules\In(is_array($values) ? $values : func_get_args());
+        return new In(is_array($values) ? $values : func_get_args());
     }
 
     /**
      * Get a not_in constraint builder instance.
-	 * 获取一个not_in约束生成器实例
+	 * 得到一个not_in约束生成器实例
      *
      * @param  \Illuminate\Contracts\Support\Arrayable|array|string  $values
      * @return \Illuminate\Validation\Rules\NotIn
@@ -66,24 +72,24 @@ class Rule
             $values = $values->toArray();
         }
 
-        return new Rules\NotIn(is_array($values) ? $values : func_get_args());
+        return new NotIn(is_array($values) ? $values : func_get_args());
     }
 
     /**
      * Get a required_if constraint builder instance.
-	 * 获取required_if约束构建器实例
+	 * 得到required_if约束构建器实例
      *
      * @param  callable|bool  $callback
      * @return \Illuminate\Validation\Rules\RequiredIf
      */
     public static function requiredIf($callback)
     {
-        return new Rules\RequiredIf($callback);
+        return new RequiredIf($callback);
     }
 
     /**
      * Get a unique constraint builder instance.
-	 * 获取唯一约束构建器实例
+	 * 得到唯一约束生成器实例
      *
      * @param  string  $table
      * @param  string  $column
@@ -91,6 +97,6 @@ class Rule
      */
     public static function unique($table, $column = 'NULL')
     {
-        return new Rules\Unique($table, $column);
+        return new Unique($table, $column);
     }
 }

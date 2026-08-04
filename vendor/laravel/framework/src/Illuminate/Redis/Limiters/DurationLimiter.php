@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Redis，限制器，负载限制器
+ * Redis，负载限制器
  */
 
 namespace Illuminate\Redis\Limiters;
@@ -11,7 +11,7 @@ class DurationLimiter
 {
     /**
      * The Redis factory implementation.
-	 * Redis工厂实现
+	 * Redis工厂实例
      *
      * @var \Illuminate\Redis\Connections\Connection
      */
@@ -61,10 +61,10 @@ class DurationLimiter
      * Create a new duration limiter instance.
 	 * 创建新的持续时间限制器实例
      *
-     * @param  \Illuminate\Redis\Connections\Connection $redis
-     * @param  string $name
-     * @param  int $maxLocks
-     * @param  int $decay
+     * @param  \Illuminate\Redis\Connections\Connection  $redis
+     * @param  string  $name
+     * @param  int  $maxLocks
+     * @param  int  $decay
      * @return void
      */
     public function __construct($redis, $name, $maxLocks, $decay)
@@ -77,11 +77,11 @@ class DurationLimiter
 
     /**
      * Attempt to acquire the lock for the given number of seconds.
-	 * 尝试在给定的秒数内获取锁
+	 * 尝试获取锁在给定的秒数内
      *
-     * @param  int $timeout
-     * @param  callable|null $callback
-     * @return bool
+     * @param  int  $timeout
+     * @param  callable|null  $callback
+     * @return mixed
      *
      * @throws \Illuminate\Contracts\Redis\LimiterTimeoutException
      */
@@ -98,7 +98,7 @@ class DurationLimiter
         }
 
         if (is_callable($callback)) {
-            $callback();
+            return $callback();
         }
 
         return true;
@@ -125,7 +125,7 @@ class DurationLimiter
 
     /**
      * Get the Lua script for acquiring a lock.
-	 * 获取用于获取锁的Lua脚本
+	 * 得到用于获取锁的Lua脚本
      *
      * KEYS[1] - The limiter name
      * ARGV[1] - Current time in microseconds

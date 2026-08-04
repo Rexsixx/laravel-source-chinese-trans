@@ -1,17 +1,17 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，动态类
+ * 基础，虚拟类根文件
  */
 
 namespace DummyNamespace;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class DummyClass
 {
@@ -19,7 +19,6 @@ class DummyClass
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
      *
      * @return void
      */
@@ -30,7 +29,6 @@ class DummyClass
 
     /**
      * Get the channels the event should broadcast on.
-	 * 获取该事件应该播放的频道
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */

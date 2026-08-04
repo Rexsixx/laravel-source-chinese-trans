@@ -1,6 +1,6 @@
 <?php
 /**
- * TijsVerkoyen，Css 到内联样式，Css，所有权，处理器
+ * TijsVerkoyen，Css内联样式，Css，性质，处理器
  */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css\Property;
@@ -65,7 +65,6 @@ class Processor
 
     /**
      * Converts a property-string into an object
-	 * 将属性字符串转换为对象
      *
      * @param string $property
      *

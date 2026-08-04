@@ -1,6 +1,6 @@
 <?php
 /**
- * Psr，简单缓存，缓存异常
+ * Psy，简单缓存，缓存异常
  */
 
 namespace Psr\SimpleCache;

@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，Redis，限制器，并发限制器
+ * Redis，并发限制器
  */
 
 namespace Illuminate\Redis\Limiters;
 
 use Exception;
-use Illuminate\Support\Str;
 use Illuminate\Contracts\Redis\LimiterTimeoutException;
+use Illuminate\Support\Str;
 
 class ConcurrencyLimiter
 {
@@ -21,7 +21,7 @@ class ConcurrencyLimiter
 
     /**
      * The name of the limiter.
-	 * 限制器的名称
+	 * 限制名称
      *
      * @var string
      */
@@ -45,7 +45,7 @@ class ConcurrencyLimiter
 
     /**
      * Create a new concurrency limiter instance.
-	 * 创建一个新的并发限制器实例
+	 * 创建新的并发限制器实例
      *
      * @param  \Illuminate\Redis\Connections\Connection  $redis
      * @param  string  $name
@@ -105,8 +105,7 @@ class ConcurrencyLimiter
      * Attempt to acquire the lock.
 	 * 尝试获取锁
      *
-     * @param string $id A unique identifier for this lock
-     *
+     * @param  string  $id  A unique identifier for this lock
      * @return mixed
      */
     protected function acquire($id)
@@ -123,7 +122,7 @@ class ConcurrencyLimiter
 
     /**
      * Get the Lua script for acquiring a lock.
-	 * 获取用于获取锁的Lua脚本
+	 * 得到用于获取锁的Lua脚本
      *
      * KEYS    - The keys that represent available slots
      * ARGV[1] - The limiter name
@@ -137,7 +136,7 @@ class ConcurrencyLimiter
         return <<<'LUA'
 for index, value in pairs(redis.call('mget', unpack(KEYS))) do
     if not value then
-        redis.call('set', ARGV[1]..index, ARGV[3], "EX", ARGV[2])
+        redis.call('set', KEYS[index], ARGV[3], "EX", ARGV[2])
         return ARGV[1]..index
     end
 end
@@ -148,8 +147,8 @@ LUA;
      * Release the lock.
 	 * 释放锁
      *
-     * @param  string $key
-     * @param  string $id
+     * @param  string  $key
+     * @param  string  $id
      * @return void
      */
     protected function release($key, $id)

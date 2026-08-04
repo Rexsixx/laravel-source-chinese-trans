@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，工具，门面系统
+ * Whoops，Util，系统门面
  */
 
 /**
@@ -14,7 +14,6 @@ class SystemFacade
 {
     /**
      * Turns on output buffering.
-	 * 打开输出缓冲
      *
      * @return bool
      */

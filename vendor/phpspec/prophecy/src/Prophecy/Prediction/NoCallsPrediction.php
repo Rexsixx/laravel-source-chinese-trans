@@ -18,7 +18,7 @@ use Prophecy\Util\StringUtil;
 use Prophecy\Exception\Prediction\UnexpectedCallsException;
 
 /**
- * Tests that there were no calls made.
+ * No calls prediction.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -26,11 +26,25 @@ class NoCallsPrediction implements PredictionInterface
 {
     private $util;
 
-    public function __construct(?StringUtil $util = null)
+    /**
+     * Initializes prediction.
+     *
+     * @param null|StringUtil $util
+     */
+    public function __construct(StringUtil $util = null)
     {
-        $this->util = $util ?: new StringUtil();
+        $this->util = $util ?: new StringUtil;
     }
 
+    /**
+     * Tests that there were no calls made.
+     *
+     * @param Call[]         $calls
+     * @param ObjectProphecy $object
+     * @param MethodProphecy $method
+     *
+     * @throws \Prophecy\Exception\Prediction\UnexpectedCallsException
+     */
     public function check(array $calls, ObjectProphecy $object, MethodProphecy $method)
     {
         if (!count($calls)) {

@@ -5,9 +5,9 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -15,7 +15,7 @@ class User extends Authenticatable
 
     /**
      * The attributes that are mass assignable.
-	 * 可分配的属性
+     * 可分配的属性
      *
      * @var array
      */
@@ -25,7 +25,7 @@ class User extends Authenticatable
 
     /**
      * The attributes that should be hidden for arrays.
-	 * 应该隐藏在数组中的属性
+     * 应该被隐藏在数组中的属性
      *
      * @var array
      */
@@ -35,7 +35,7 @@ class User extends Authenticatable
 
     /**
      * The attributes that should be cast to native types.
-	 * 应该将其用于本地类型的属性
+     * 应该将其用于本地类型的属性
      *
      * @var array
      */

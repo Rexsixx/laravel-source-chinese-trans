@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，数据库，架构，列定义
+ * 数据库，结构，结构列定义，待完善类
  */
 
 namespace Illuminate\Database\Schema;
 
-use Illuminate\Support\Fluent;
 use Illuminate\Database\Query\Expression;
+use Illuminate\Support\Fluent;
 
 /**
  * @method ColumnDefinition after(string $column) Place the column "after" another column (MySQL)

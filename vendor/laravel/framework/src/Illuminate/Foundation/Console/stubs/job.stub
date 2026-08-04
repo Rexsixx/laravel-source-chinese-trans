@@ -1,20 +1,18 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，动态类
+ * 基础，虚拟类根文件
  */
 
 namespace DummyNamespace;
 
-use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;
 
 class DummyClass
 {
-    use Dispatchable, Queueable;
+    use Dispatchable;
 
     /**
      * Create a new job instance.
-	 * 创建一个新的作业实例
      *
      * @return void
      */
@@ -25,7 +23,6 @@ class DummyClass
 
     /**
      * Execute the job.
-	 * 执行事件
      *
      * @return void
      */

@@ -1,19 +1,19 @@
 <?php
 /**
- * Illuminate，通知，通知服务提供商
+ * 通知服务提供者
  */
 
 namespace Illuminate\Notifications;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Notifications\Factory as FactoryContract;
 use Illuminate\Contracts\Notifications\Dispatcher as DispatcherContract;
+use Illuminate\Contracts\Notifications\Factory as FactoryContract;
+use Illuminate\Support\ServiceProvider;
 
 class NotificationServiceProvider extends ServiceProvider
 {
     /**
      * Boot the application services.
-	 * 引导应用程序服务
+	 * 引导应用服务
      *
      * @return void
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，标签集
+ * 缓存，缓存标签集
  */
 
 namespace Illuminate\Cache;
@@ -19,7 +19,7 @@ class TagSet
 
     /**
      * The tag names.
-	 * 标签名称
+	 * 标签名
      *
      * @var array
      */
@@ -27,7 +27,7 @@ class TagSet
 
     /**
      * Create a new TagSet instance.
-	 * 创建一个新的TagSet实例
+	 * 创建新标签集实例
      *
      * @param  \Illuminate\Contracts\Cache\Store  $store
      * @param  array  $names
@@ -41,7 +41,7 @@ class TagSet
 
     /**
      * Reset all tags in the set.
-	 * 重置集合中的所有标签
+	 * 重置所有标签
      *
      * @return void
      */
@@ -66,7 +66,7 @@ class TagSet
 
     /**
      * Get a unique namespace that changes when any of the tags are flushed.
-	 * 获取在刷新任何标记时更改的唯一名称空间
+	 * 得到唯一命名空间
      *
      * @return string
      */
@@ -77,7 +77,7 @@ class TagSet
 
     /**
      * Get an array of tag identifiers for all of the tags in the set.
-	 * 获取集合中所有标记的标记标识符数组
+	 * 得到集合中所有的标记标识符数组
      *
      * @return array
      */
@@ -88,7 +88,7 @@ class TagSet
 
     /**
      * Get the unique tag identifier for a given tag.
-	 * 获取给定标记的唯一标记标识符
+	 * 得到给定标记的唯一标识符
      *
      * @param  string  $name
      * @return string
@@ -100,7 +100,7 @@ class TagSet
 
     /**
      * Get the tag identifier key for a given tag.
-	 * 获取给定标记的标记标识符键
+	 * 得到给定标记的标识符键
      *
      * @param  string  $name
      * @return string
@@ -112,7 +112,7 @@ class TagSet
 
     /**
      * Get all of the tag names in the set.
-	 * 获取集合中所有的标记名
+	 * 得到设置中所有名称
      *
      * @return array
      */

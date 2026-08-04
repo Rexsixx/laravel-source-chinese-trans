@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，翻译，翻译程序接口
+ * Symfony，契约，翻译，翻译接口
  */
 
 /*
@@ -23,7 +23,7 @@ interface TranslatorInterface
 {
     /**
      * Translates the given message.
-	 * 翻译给定的消息。
+	 * 翻译给定的信息。
      *
      * When a number is provided as a parameter named "%count%", the message is parsed for plural
      * forms and a translation is chosen according to this number using the following rules:
@@ -67,5 +67,5 @@ interface TranslatorInterface
      *
      * @throws \InvalidArgumentException If the locale contains invalid characters
      */
-    public function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null);
+    public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null);
 }

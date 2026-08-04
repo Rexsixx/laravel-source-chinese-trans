@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，Gate
+ * 支持，门面大门
  */
 
 namespace Illuminate\Support\Facades;
@@ -22,6 +22,8 @@ use Illuminate\Contracts\Auth\Access\Gate as GateContract;
  * @method static mixed getPolicyFor(object|string $class)
  * @method static \Illuminate\Contracts\Auth\Access\Gate forUser(\Illuminate\Contracts\Auth\Authenticatable|mixed $user)
  * @method static array abilities()
+ * @method static \Illuminate\Auth\Access\Response inspect(string $ability, array|mixed $arguments = [])
+ * @method static \Illuminate\Auth\Access\Gate guessPolicyNamesUsing(callable $callback)
  *
  * @see \Illuminate\Contracts\Auth\Access\Gate
  */
@@ -29,7 +31,7 @@ class Gate extends Facade
 {
     /**
      * Get the registered name of the component.
-	 * 获取组件的注册名称
+	 * 得到组件注册名
      *
      * @return string
      */

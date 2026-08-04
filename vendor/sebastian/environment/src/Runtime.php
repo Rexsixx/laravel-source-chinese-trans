@@ -1,9 +1,4 @@
 <?php declare(strict_types=1);
-
-/**
- * SebastianBergmann，环境，运行时间
- */
-
 /*
  * This file is part of sebastian/environment.
  *
@@ -16,7 +11,6 @@ namespace SebastianBergmann\Environment;
 
 /**
  * Utility class for HHVM/PHP environment handling.
- * HHVM / PHP环境处理的实用程序类。
  */
 final class Runtime
 {
@@ -28,7 +22,6 @@ final class Runtime
     /**
      * Returns true when Xdebug or PCOV is available or
      * the runtime used is PHPDBG.
-	 * 当Xdebug或PCOV可用时返回true,或者使用的运行时是PHPDBG。
      */
     public function canCollectCodeCoverage(): bool
     {
@@ -37,7 +30,6 @@ final class Runtime
 
     /**
      * Returns true when Zend OPcache is loaded, enabled, and is configured to discard comments.
-	 * 当Zend OPcache被加载、启用并配置为丢弃注释时返回true。
      */
     public function discardsComments(): bool
     {
@@ -158,11 +150,11 @@ final class Runtime
     {
         if ($this->isHHVM()) {
             // @codeCoverageIgnoreStart
-            return 'https://hhvm.com/';
+            return 'http://hhvm.com/';
             // @codeCoverageIgnoreEnd
         }
 
-        return 'https://www.php.net/';
+        return 'https://secure.php.net/';
     }
 
     public function getVersion(): string

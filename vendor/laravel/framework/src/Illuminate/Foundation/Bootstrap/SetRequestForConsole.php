@@ -1,18 +1,18 @@
 <?php
 /**
- * Illuminate，基础，引导程序，设置控制台请求
+ * 基础，设置请求闭包
  */
 
 namespace Illuminate\Foundation\Bootstrap;
 
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\Request;
 
 class SetRequestForConsole
 {
     /**
      * Bootstrap the given application.
-	 * 引导给定的应用程序
+	 * 引导给定应用
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void

@@ -1,7 +1,4 @@
 <?php
-/**
- * Carbon，异常，无效日期异常
- */
 
 /**
  * This file is part of the Carbon package.
@@ -21,7 +18,6 @@ class InvalidDateException extends BaseInvalidArgumentException implements Inval
 {
     /**
      * The invalid field.
-	 * 无效字段
      *
      * @var string
      */
@@ -42,7 +38,7 @@ class InvalidDateException extends BaseInvalidArgumentException implements Inval
      * @param int            $code
      * @param Throwable|null $previous
      */
-    public function __construct($field, $value, $code = 0, ?Throwable $previous = null)
+    public function __construct($field, $value, $code = 0, Throwable $previous = null)
     {
         $this->field = $field;
         $this->value = $value;

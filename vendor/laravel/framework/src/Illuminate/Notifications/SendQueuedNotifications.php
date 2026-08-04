@@ -1,17 +1,18 @@
 <?php
 /**
- * Illuminate，通知，发送排队通知
+ * 发送队列通知
  */
 
 namespace Illuminate\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class SendQueuedNotifications implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * The notifiable entities that should receive the notification.
@@ -55,7 +56,7 @@ class SendQueuedNotifications implements ShouldQueue
 
     /**
      * Create a new job instance.
-	 * 创建一个新的作业实例
+	 * 创建新的作业实例
      *
      * @param  \Illuminate\Support\Collection  $notifiables
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -85,7 +86,7 @@ class SendQueuedNotifications implements ShouldQueue
 
     /**
      * Get the display name for the queued job.
-	 * 获取排队作业的显示名称
+	 * 得到排队作业的显示名称
      *
      * @return string
      */
@@ -96,7 +97,7 @@ class SendQueuedNotifications implements ShouldQueue
 
     /**
      * Call the failed method on the notification instance.
-	 * 在通知实例上调用失败的方法
+	 * 调用失败的方法在通知实例上
      *
      * @param  \Exception  $e
      * @return void
@@ -110,7 +111,7 @@ class SendQueuedNotifications implements ShouldQueue
 
     /**
      * Get the retry delay for the notification.
-	 * 获取通知的重试延迟
+	 * 得到通知的重试延迟 
      *
      * @return mixed
      */
@@ -121,6 +122,21 @@ class SendQueuedNotifications implements ShouldQueue
         }
 
         return $this->notification->retryAfter ?? $this->notification->retryAfter();
+    }
+
+    /**
+     * Get the expiration for the notification.
+	 * 得到通知的过期时间
+     *
+     * @return mixed
+     */
+    public function retryUntil()
+    {
+        if (! method_exists($this->notification, 'retryUntil') && ! isset($this->notification->timeoutAt)) {
+            return;
+        }
+
+        return $this->notification->timeoutAt ?? $this->notification->retryUntil();
     }
 
     /**

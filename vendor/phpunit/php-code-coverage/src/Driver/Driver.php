@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * SebastianBergmann，代码覆盖率，驱动程序，Driver
  */
@@ -15,7 +16,6 @@ namespace SebastianBergmann\CodeCoverage\Driver;
 
 /**
  * Interface for code coverage drivers.
- * 代码覆盖驱动程序的接口。
  */
 interface Driver
 {

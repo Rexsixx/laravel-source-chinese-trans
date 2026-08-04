@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，Session
+ * 支持，门面session
  */
 
 namespace Illuminate\Support\Facades;
@@ -28,6 +28,7 @@ namespace Illuminate\Support\Facades;
  * @method static \SessionHandlerInterface getHandler()
  * @method static bool handlerNeedsRequest()
  * @method static void setRequestOnHandler(\Illuminate\Http\Request $request)
+ * @method static void push(string $key, mixed $value)
  *
  * @see \Illuminate\Session\SessionManager
  * @see \Illuminate\Session\Store
@@ -36,7 +37,7 @@ class Session extends Facade
 {
     /**
      * Get the registered name of the component.
-	 * 获取组件的注册名称
+	 * 得到组件注册名
      *
      * @return string
      */

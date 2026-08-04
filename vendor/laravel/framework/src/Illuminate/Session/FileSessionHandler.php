@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，Session，文件会话处理程序
+ * Session，文件Session处理
  */
 
 namespace Illuminate\Session;
 
-use SessionHandlerInterface;
-use Illuminate\Support\Carbon;
-use Symfony\Component\Finder\Finder;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Carbon;
+use SessionHandlerInterface;
+use Symfony\Component\Finder\Finder;
 
 class FileSessionHandler implements SessionHandlerInterface
 {
@@ -38,7 +38,7 @@ class FileSessionHandler implements SessionHandlerInterface
 
     /**
      * Create a new file driven handler instance.
-	 * 创建一个新的文件驱动处理程序实例
+	 * 创建新的文件驱动处理程序实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string  $path

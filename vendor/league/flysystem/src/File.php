@@ -12,7 +12,6 @@ class File extends Handler
 {
     /**
      * Check whether the file exists.
-	 * 检查文件是否存在
      *
      * @return bool
      */

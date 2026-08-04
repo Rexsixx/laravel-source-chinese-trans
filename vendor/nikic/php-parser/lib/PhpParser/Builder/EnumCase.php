@@ -1,7 +1,4 @@
 <?php
-/**
- * PhpParser，构建器，枚举用例
- */
 
 declare(strict_types=1);
 
@@ -81,8 +78,8 @@ class EnumCase implements PhpParser\Builder
         return new Stmt\EnumCase(
             $this->name,
             $this->value,
-            $this->attributeGroups,
-            $this->attributes
+            $this->attributes,
+            $this->attributeGroups
         );
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，错误处理程序，调试
+ * Symfony，组件，错误处理器，Debug
  */
 
 /*
@@ -16,7 +16,6 @@ namespace Symfony\Component\ErrorHandler;
 
 /**
  * Registers all the debug tools.
- * 注册所有调试工具。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -28,7 +27,7 @@ class Debug
 
         if (!\in_array(\PHP_SAPI, ['cli', 'phpdbg'], true)) {
             ini_set('display_errors', 0);
-        } elseif (!filter_var(\ini_get('log_errors'), \FILTER_VALIDATE_BOOLEAN) || \ini_get('error_log')) {
+        } elseif (!filter_var(ini_get('log_errors'), \FILTER_VALIDATE_BOOLEAN) || ini_get('error_log')) {
             // CLI - display errors only if they're not already logged to STDERR
             ini_set('display_errors', 1);
         }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，数据库，架构，SQLite 构建器
+ * 数据库，结构，SQListBuilder创建者
  */
 
 namespace Illuminate\Database\Schema;
@@ -9,7 +9,7 @@ class SQLiteBuilder extends Builder
 {
     /**
      * Drop all tables from the database.
-	 * 从数据库中删除所有表
+	 * 删除数据库所有表
      *
      * @return void
      */
@@ -30,7 +30,7 @@ class SQLiteBuilder extends Builder
 
     /**
      * Drop all views from the database.
-	 * 从数据库中删除所有视图
+	 * 删除数据库所有视图
      *
      * @return void
      */

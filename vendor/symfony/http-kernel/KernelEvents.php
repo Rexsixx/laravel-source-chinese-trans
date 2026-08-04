@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，内核事件
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\HttpKernel;
 
 /**
  * Contains all events thrown in the HttpKernel component.
- * 包含在HttpKernel组件中抛出的所有事件。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */

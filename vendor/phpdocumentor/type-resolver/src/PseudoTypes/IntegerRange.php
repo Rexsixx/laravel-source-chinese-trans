@@ -1,7 +1,4 @@
 <?php
-/**
- * phpDocumentor，反射，伪类型，整数范围
- */
 
 declare(strict_types=1);
 

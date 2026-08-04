@@ -1,6 +1,6 @@
 <?php
 /**
- * Mockery，载入程序，Loader
+ * Mockery，加载器，Loader
  */
 
 /**

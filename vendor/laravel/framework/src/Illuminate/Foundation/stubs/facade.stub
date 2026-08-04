@@ -1,6 +1,6 @@
-<?php
+<?
 /**
- * Illuminate，基础，存根，动态类
+ * 基础，动态类存根文件
  */
 
 namespace DummyNamespace;
@@ -14,7 +14,6 @@ class DummyClass extends Facade
 {
     /**
      * Get the registered name of the component.
-	 * 获取组件的注册名称
      *
      * @return string
      */

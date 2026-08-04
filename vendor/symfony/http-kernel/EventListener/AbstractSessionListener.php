@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，事件监听器，抽象会话监听器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -26,7 +23,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 /**
  * Sets the session onto the request on the "kernel.request" event and saves
  * it on the "kernel.response" event.
- * 将会话设置为“内核上的请求”。请求“事件,并将其保存在“内核”上。响应”事件。
  *
  * In addition, if the session has been started it overrides the Cache-Control
  * header in such a way that all caching is disabled in that case.
@@ -78,7 +74,7 @@ abstract class AbstractSessionListener implements EventSubscriberInterface
         // Always remove the internal header if present
         $response->headers->remove(self::NO_AUTO_CACHE_CONTROL_HEADER);
 
-        if (!$session = $this->container && $this->container->has('initialized_session') ? $this->container->get('initialized_session') : ($event->getRequest()->hasSession() ? $event->getRequest()->getSession() : null)) {
+        if (!$session = $this->container && $this->container->has('initialized_session') ? $this->container->get('initialized_session') : $event->getRequest()->getSession()) {
             return;
         }
 

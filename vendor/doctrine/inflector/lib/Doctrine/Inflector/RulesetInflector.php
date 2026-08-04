@@ -13,7 +13,6 @@ use function array_merge;
 
 /**
  * Inflects based on multiple rulesets.
- * 基于多个规则的通货膨胀。
  *
  * Rules:
  * - If the word matches any uninflected word pattern, it is not inflected

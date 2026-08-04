@@ -116,7 +116,6 @@ class AbstractFieldTest extends TestCase
 
     /**
      * Allows ranges and lists to coexist in the same expression
-	 * 允许范围和列表在同一表达式中共存
      *
      * @see https://github.com/dragonmantank/cron-expression/issues/5
      */
@@ -129,7 +128,6 @@ class AbstractFieldTest extends TestCase
 
     /**
      * Makes sure that various types of ranges expand out properly
-	 * 确保各种类型的范围适当地展开
      *
      * @see https://github.com/dragonmantank/cron-expression/issues/5
      */

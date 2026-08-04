@@ -20,8 +20,6 @@ use SebastianBergmann\Comparator\Factory as BaseFactory;
  * Prophecy comparator factory.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
- *
- * @deprecated Use "Prophecy\Comparator\FactoryProvider" instead to get a "SebastianBergmann\Comparator\Factory" instance.
  */
 final class Factory extends BaseFactory
 {
@@ -44,7 +42,7 @@ final class Factory extends BaseFactory
     public static function getInstance()
     {
         if (self::$instance === null) {
-            self::$instance = new Factory();
+            self::$instance = new Factory;
         }
 
         return self::$instance;

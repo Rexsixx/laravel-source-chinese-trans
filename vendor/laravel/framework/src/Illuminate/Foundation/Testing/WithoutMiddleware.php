@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，没有中间件
+ * 基础，不使用中间件
  */
 
 namespace Illuminate\Foundation\Testing;

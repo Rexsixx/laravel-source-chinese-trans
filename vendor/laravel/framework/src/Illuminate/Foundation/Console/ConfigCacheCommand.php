@@ -1,15 +1,15 @@
 <?php
 /**
- * Illuminate，基础，控制台，配置缓存命令
+ * 基础，配置缓存命令
  */
 
 namespace Illuminate\Foundation\Console;
 
-use Throwable;
-use LogicException;
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernelContract;
+use Illuminate\Filesystem\Filesystem;
+use LogicException;
+use Throwable;
 
 class ConfigCacheCommand extends Command
 {
@@ -23,7 +23,7 @@ class ConfigCacheCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命描述
      *
      * @var string
      */
@@ -39,7 +39,7 @@ class ConfigCacheCommand extends Command
 
     /**
      * Create a new config cache command instance.
-	 * 创建一个新的config cache命令实例
+	 * 创建新的配置缓存命令实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void
@@ -53,7 +53,7 @@ class ConfigCacheCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      *

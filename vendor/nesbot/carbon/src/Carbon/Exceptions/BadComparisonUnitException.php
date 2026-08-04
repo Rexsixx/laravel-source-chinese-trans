@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，异常，不良比较差组异常
+ * Carbon，异常，错误比较单元异常
  */
 
 /**
@@ -32,7 +32,7 @@ class BadComparisonUnitException extends UnitException
      * @param int            $code
      * @param Throwable|null $previous
      */
-    public function __construct($unit, $code = 0, ?Throwable $previous = null)
+    public function __construct($unit, $code = 0, Throwable $previous = null)
     {
         $this->unit = $unit;
 

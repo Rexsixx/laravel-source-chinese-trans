@@ -1,6 +1,6 @@
 <?php
 /**
- * Fideloper，代理，信托代理
+ * Fideloper，代理，可信代理
  */
 
 namespace Fideloper\Proxy;
@@ -13,7 +13,7 @@ class TrustProxies
 {
     /**
      * The config repository instance.
-	 * 配置存储库实例
+	 * 配置存储库实例。
      *
      * @var \Illuminate\Contracts\Config\Repository
      */
@@ -21,7 +21,6 @@ class TrustProxies
 
     /**
      * The trusted proxies for the application.
-	 * 应用程序的可信代理
      *
      * @var null|string|array
      */
@@ -29,7 +28,6 @@ class TrustProxies
 
     /**
      * The proxy header mappings.
-	 * 代理头映射
      *
      * @var null|string|int
      */
@@ -37,7 +35,6 @@ class TrustProxies
 
     /**
      * Create a new trusted proxies middleware instance.
-	 * 创建一个新的可信代理中间件实例
      *
      * @param \Illuminate\Contracts\Config\Repository $config
      */
@@ -48,7 +45,6 @@ class TrustProxies
 
     /**
      * Handle an incoming request.
-	 * 处理传入请求
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
@@ -67,7 +63,6 @@ class TrustProxies
 
     /**
      * Sets the trusted proxies on the request to the value of trustedproxy.proxies
-	 * 将请求上的可信代理设置为trustedproxy.proxies的值
      *
      * @param \Illuminate\Http\Request $request
      */
@@ -92,7 +87,6 @@ class TrustProxies
 
     /**
      * Specify the IP addresses to trust explicitly.
-	 * 指定IP地址显式信任
      *
      * @param \Illuminate\Http\Request $request
      * @param array                    $trustedIps
@@ -104,7 +98,6 @@ class TrustProxies
 
     /**
      * Set the trusted proxy to be the IP address calling this servers
-	 * 将可信代理设置为调用此服务器的IP地址
      *
      * @param \Illuminate\Http\Request $request
      */
@@ -115,7 +108,6 @@ class TrustProxies
 
     /**
      * Retrieve trusted header name(s), falling back to defaults if config not set.
-	 * 检索受信任的头名(s),如果配置不设置,则返回到默认值。
      *
      * @return int A bit field of Request::HEADER_*, to set which headers to trust from your proxies.
      */
@@ -131,24 +123,10 @@ class TrustProxies
             case Request::HEADER_FORWARDED:
                 return Request::HEADER_FORWARDED;
                 break;
-            case 'HEADER_X_FORWARDED_FOR':
-            case Request::HEADER_X_FORWARDED_FOR:
-                return Request::HEADER_X_FORWARDED_FOR;
+            case 'HEADER_X_FORWARDED_ALL':
+            case Request::HEADER_X_FORWARDED_ALL:
+                return Request::HEADER_X_FORWARDED_ALL;
                 break;
-            case 'HEADER_X_FORWARDED_HOST':
-            case Request::HEADER_X_FORWARDED_HOST:
-                return Request::HEADER_X_FORWARDED_HOST;
-                break;
-            case 'HEADER_X_FORWARDED_PORT':
-            case Request::HEADER_X_FORWARDED_PORT:
-                return Request::HEADER_X_FORWARDED_PORT;
-                break;
-            case 'HEADER_X_FORWARDED_PROTO':
-            case Request::HEADER_X_FORWARDED_PROTO:
-                return Request::HEADER_X_FORWARDED_PROTO;
-                break;
-            default:
-                return Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO | Request::HEADER_X_FORWARDED_AWS_ELB;
         }
 
         return $headers;

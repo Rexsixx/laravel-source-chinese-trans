@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，支持，门面，Bus
+ * 支持，门面总线
  */
 
 namespace Illuminate\Support\Facades;
 
-use Illuminate\Support\Testing\Fakes\BusFake;
 use Illuminate\Contracts\Bus\Dispatcher as BusDispatcherContract;
+use Illuminate\Support\Testing\Fakes\BusFake;
 
 /**
  * @method static mixed dispatch($command)
@@ -15,6 +15,9 @@ use Illuminate\Contracts\Bus\Dispatcher as BusDispatcherContract;
  * @method static bool|mixed getCommandHandler($command)
  * @method static \Illuminate\Contracts\Bus\Dispatcher pipeThrough(array $pipes)
  * @method static \Illuminate\Contracts\Bus\Dispatcher map(array $map)
+ * @method static void assertDispatched(string $command, callable|int $callback = null)
+ * @method static void assertDispatchedTimes(string $command, int $times = 1)
+ * @method static void assertNotDispatched(string $command, callable|int $callback = null)
  *
  * @see \Illuminate\Contracts\Bus\Dispatcher
  */
@@ -22,20 +25,21 @@ class Bus extends Facade
 {
     /**
      * Replace the bound instance with a fake.
-	 * 将绑定实例替换为伪实例
+	 * 替换绑定实例为假实例
      *
+     * @param  array|string  $jobsToFake
      * @return \Illuminate\Support\Testing\Fakes\BusFake
      */
-    public static function fake()
+    public static function fake($jobsToFake = [])
     {
-        static::swap($fake = new BusFake);
+        static::swap($fake = new BusFake(static::getFacadeRoot(), $jobsToFake));
 
         return $fake;
     }
 
     /**
      * Get the registered name of the component.
-	 * 获取组件的注册名称
+	 * 得到组件注册名
      *
      * @return string
      */

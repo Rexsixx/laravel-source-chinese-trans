@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，控制台，生成器指令
+ * 控制台，命令生成器抽象类
  */
 
 namespace Illuminate\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
 
 abstract class GeneratorCommand extends Command
@@ -43,7 +43,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Get the stub file for the generator.
-	 * 获取生成器的存根文件
+	 * 得到生成器的存根文件
      *
      * @return string
      */
@@ -51,9 +51,10 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return bool|null
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function handle()
@@ -65,8 +66,9 @@ abstract class GeneratorCommand extends Command
         // First we will check to see if the class already exists. If it does, we don't want
         // to create the class and overwrite the user's code. So, we will bail out so the
         // code is untouched. Otherwise, we will continue generating this class' files.
-		// 首先，我们将检查类是否已经存在。如果它这样做,我们就不希望创建类并覆盖用户的代码。
-		// 所以,我们将保释出来,这样代码就不受影响了。否则,我们将继续生成这个类的文件。
+		// 首先，我们将检查类是否已经存在。
+		// 如果是这样，我们不想创建类并覆盖用户的代码。所以，我们会保释代码未被修改。
+		// 否则，我们将继续生成此类文件。
         if ((! $this->hasOption('force') ||
              ! $this->option('force')) &&
              $this->alreadyExists($this->getNameInput())) {
@@ -78,11 +80,11 @@ abstract class GeneratorCommand extends Command
         // Next, we will generate the path to the location where this class' file should get
         // written. Then, we will build the class and make the proper replacements on the
         // stub files so that it gets the correctly formatted namespace and class name.
-		// 接下来，我们将生成该类文件所在位置的路径。
-		// 然后,我们将构建类,并在存根文件上进行适当的替换,以便它获得正确格式化的名称空间和类名。
+		// 接下来，我们将生成该类文件应获取的位置的路径。
+		// 然后，我们将构建类并进行适当的更换存根文件，以便它获得格式正确的命名空间和类名。
         $this->makeDirectory($path);
 
-        $this->files->put($path, $this->buildClass($name));
+        $this->files->put($path, $this->sortImports($this->buildClass($name)));
 
         $this->info($this->type.' created successfully.');
     }
@@ -113,7 +115,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认名称空间
+	 * 得到默认的命名空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -137,7 +139,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Get the destination class path.
-	 * 获取目标类路径
+	 * 得到目标类路径
      *
      * @param  string  $name
      * @return string
@@ -151,7 +153,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Build the directory for the class if necessary.
-	 * 如有必要，为类构建目录。
+	 * 为类构建目录，如有必要。
      *
      * @param  string  $path
      * @return string
@@ -167,10 +169,11 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Build the class with the given name.
-	 * 用给定的名称构建类
+	 * 构建类用给定的名称
      *
      * @param  string  $name
      * @return string
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function buildClass($name)
@@ -182,7 +185,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Replace the namespace for the given stub.
-	 * 替换给定存根的命名空间
+	 * 替换命名空间为给定存根
      *
      * @param  string  $stub
      * @param  string  $name
@@ -201,7 +204,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Get the full namespace for a given class, without the class name.
-	 * 获取给定类的完整名称空间，不包含类名。
+	 * 得到给定类的完整名称空间，不包含类名。
      *
      * @param  string  $name
      * @return string
@@ -213,7 +216,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Replace the class name for the given stub.
-	 * 替换给定存根的类名
+	 * 替换类名为给定的存根
      *
      * @param  string  $stub
      * @param  string  $name
@@ -227,8 +230,28 @@ abstract class GeneratorCommand extends Command
     }
 
     /**
+     * Alphabetically sorts the imports for the given stub.
+	 * 按字母顺序对给定存根的导入进行排序
+     *
+     * @param  string  $stub
+     * @return string
+     */
+    protected function sortImports($stub)
+    {
+        if (preg_match('/(?P<imports>(?:use [^;]+;$\n?)+)/m', $stub, $match)) {
+            $imports = explode("\n", trim($match['imports']));
+
+            sort($imports);
+
+            return str_replace(trim($match['imports']), implode("\n", $imports), $stub);
+        }
+
+        return $stub;
+    }
+
+    /**
      * Get the desired class name from the input.
-	 * 从输入中获取所需的类名
+	 * 得到所需的类名从输入中
      *
      * @return string
      */
@@ -239,7 +262,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Get the root namespace for the class.
-	 * 获取类的根命名空间
+	 * 得到类的根命名空间
      *
      * @return string
      */
@@ -250,22 +273,22 @@ abstract class GeneratorCommand extends Command
 
     /**
      * Get the model for the default guard's user provider.
-	 * 获取默认保护的用户提供程序的模型
+	 * 得到默认保护的用户提供程序的模型
      *
      * @return string|null
      */
     protected function userProviderModel()
     {
-        $guard = config('auth.defaults.guard');
+        $config = $this->laravel['config'];
 
-        $provider = config("auth.guards.{$guard}.provider");
+        $provider = $config->get('auth.guards.'.$config->get('auth.defaults.guard').'.provider');
 
-        return config("auth.providers.{$provider}.model");
+        return $config->get("auth.providers.{$provider}.model");
     }
 
     /**
      * Get the console command arguments.
-	 * 获取控制台命令参数
+	 * 得到控制台命令参数
      *
      * @return array
      */

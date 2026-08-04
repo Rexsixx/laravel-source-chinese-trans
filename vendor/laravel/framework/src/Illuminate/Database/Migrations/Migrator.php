@@ -1,27 +1,28 @@
 <?php
 /**
- * Illuminate，数据库，迁移，迁移器
+ * 数据库，迁移者
  */
 
 namespace Illuminate\Database\Migrations;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
 use Illuminate\Console\OutputStyle;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Database\ConnectionResolverInterface as Resolver;
 use Illuminate\Database\Events\MigrationEnded;
 use Illuminate\Database\Events\MigrationsEnded;
-use Illuminate\Database\Events\MigrationStarted;
 use Illuminate\Database\Events\MigrationsStarted;
-use Illuminate\Database\ConnectionResolverInterface as Resolver;
+use Illuminate\Database\Events\MigrationStarted;
+use Illuminate\Database\Events\NoPendingMigrations;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class Migrator
 {
     /**
      * The event dispatcher instance.
-	 * 事件调度程序实例
+	 * 事件调度实例
      *
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
@@ -29,7 +30,7 @@ class Migrator
 
     /**
      * The migration repository implementation.
-	 * 迁移存储库实现
+	 * 迁移资源库实现
      *
      * @var \Illuminate\Database\Migrations\MigrationRepositoryInterface
      */
@@ -53,7 +54,7 @@ class Migrator
 
     /**
      * The name of the default connection.
-	 * 默认连接的名称
+	 * 默认连接名称
      *
      * @var string
      */
@@ -61,7 +62,7 @@ class Migrator
 
     /**
      * The paths to all of the migration files.
-	 * 所有迁移文件的路径
+	 * 迁移文件路径
      *
      * @var array
      */
@@ -77,7 +78,7 @@ class Migrator
 
     /**
      * Create a new migrator instance.
-	 * 创建一个新的迁移器实例
+	 * 创建新的迁移实例
      *
      * @param  \Illuminate\Database\Migrations\MigrationRepositoryInterface  $repository
      * @param  \Illuminate\Database\ConnectionResolverInterface  $resolver
@@ -98,7 +99,7 @@ class Migrator
 
     /**
      * Run the pending migrations at a given path.
-	 * 在给定路径上运行挂起的迁移
+	 * 运行挂起的迁移
      *
      * @param  array|string  $paths
      * @param  array  $options
@@ -109,8 +110,8 @@ class Migrator
         // Once we grab all of the migration files for the path, we will compare them
         // against the migrations that have already been run for this package then
         // run each of the outstanding migrations against a database connection.
-		// 一旦我们获取了该路径的所有迁移文件，我们就会将它们与针对此软件包已运行过的迁移进行比较，
-		// 然后针对数据库连接运行所有未完成的迁移操作。
+		// 一旦我们获取了路径的所有迁移文件，我们将把它们与已经为此包运行的迁移进行比较，
+		// 然后根据数据库连接运行每个未完成的迁移。
         $files = $this->getMigrationFiles($paths);
 
         $this->requireFiles($migrations = $this->pendingMigrations(
@@ -120,8 +121,8 @@ class Migrator
         // Once we have all these migrations that are outstanding we are ready to run
         // we will go ahead and run them "up". This will execute each migration as
         // an operation against a database. Then we'll return this list of them.
-		// 一旦完成了所有尚未完成的迁移工作，我们就准备好开始运行了，
-		// 届时我们将继续执行这些迁移操作并将其“推进”到完成状态。
+		// 一旦我们完成了所有这些未完成的迁移，我们就可以运行了，我们将继续运行它们。
+		// 这将把每次迁移作为对数据库的操作来执行。然后我们将返回他们的列表。
         $this->runPending($migrations, $options);
 
         return $migrations;
@@ -129,7 +130,7 @@ class Migrator
 
     /**
      * Get the migration files that have not yet run.
-	 * 获取尚未运行的迁移文件
+	 * 得到尚未运行的迁移文件
      *
      * @param  array  $files
      * @param  array  $ran
@@ -156,9 +157,11 @@ class Migrator
         // First we will just make sure that there are any migrations to run. If there
         // aren't, we will just make a note of it to the developer so they're aware
         // that all of the migrations have been run against this database system.
-		// 首先，我们要确认是否需要执行任何迁移操作。
-		// 如果没有相关记录，我们就会将这一情况告知开发人员，让他们知晓针对此数据库系统已经完成了所有迁移操作。
+		// 首先，我们将确保有任何迁移要运行。
+		// 如果没有，我们只会把它记下来给开发人员，这样他们就知道所有的迁移都是针对这个数据库系统运行的。
         if (count($migrations) === 0) {
+            $this->fireMigrationEvent(new NoPendingMigrations('up'));
+
             $this->note('<info>Nothing to migrate.</info>');
 
             return;
@@ -167,8 +170,8 @@ class Migrator
         // Next, we will get the next batch number for the migrations so we can insert
         // correct batch number in the database migrations repository when we store
         // each migration's execution. We will also extract a few of the options.
-		// 接下来，我们将获取下一批迁移的编号，以便在存储每次迁移的执行情况时，
-		// 能在数据库迁移库中正确插入批次编号。我们还将提取一些选项。
+		// 接下来，我们将获得迁移的下一个批号，以便在存储每次迁移的执行时，
+		// 在数据库迁移存储库中插入正确的批号。我们还将提取一些选项。
         $batch = $this->repository->getNextBatchNumber();
 
         $pretend = $options['pretend'] ?? false;
@@ -180,8 +183,8 @@ class Migrator
         // Once we have the array of migrations, we will spin through them and run the
         // migrations "up" so the changes are made to the databases. We'll then log
         // that the migration was run so we don't repeat it next time we execute.
-		// 一旦我们有了这些迁移列表，我们就会依次处理它们，并执行“向上”迁移操作，以便将所做的更改应用到数据库中。
-		// 然后我们会记录迁移已执行，以便下次运行时不再重复。
+		// 一旦我们有了迁移数组，我们将遍历它们并“向上”运行迁移，以便对数据库进行更改。
+		// 然后，我们将记录迁移已运行，这样下次执行时就不会重复。
         foreach ($migrations as $file) {
             $this->runUp($file, $batch, $pretend);
 
@@ -195,11 +198,11 @@ class Migrator
 
     /**
      * Run "up" a migration instance.
-	 * 运行“up”迁移实例
+	 * 运行"up"迁移实例
      *
      * @param  string  $file
-     * @param  int     $batch
-     * @param  bool    $pretend
+     * @param  int  $batch
+     * @param  bool  $pretend
      * @return void
      */
     protected function runUp($file, $batch, $pretend)
@@ -207,8 +210,8 @@ class Migrator
         // First we will resolve a "real" instance of the migration class from this
         // migration file name. Once we have the instances we can run the actual
         // command such as "up" or "down", or we can just simulate the action.
-		// 首先，我们将根据这个迁移文件名来解析出迁移类的“实际”实例。
-		// 一旦获得实例后，我们就可以运行实际的命令，例如“up”或“down”，或者直接模拟该操作。
+		// 首先，我们将从该迁移文件名解析迁移类的"真实"实例。
+		// 一旦我们有了实例，我们就可以运行实际的命令，如“up”或“down”，或者我们可以模拟动作。
         $migration = $this->resolve(
             $name = $this->getMigrationName($file)
         );
@@ -228,8 +231,8 @@ class Migrator
         // Once we have run a migrations class, we will log that it was run in this
         // repository so that we don't try to run it next time we do a migration
         // in the application. A migration repository keeps the migrate order.
-		// 一旦我们运行了迁移类，我们就会记录此次是在此存储库中运行的，这样下次在应用程序中进行迁移时就不会再尝试运行该类了。
-		// 迁移存储库保持迁移顺序。
+		// 一旦我们运行了迁移类，我们将记录它是在这个存储库中运行的，
+		// 这样我们下次在应用程序中进行迁移时就不会尝试运行它。迁移存储库保存迁移顺序。
         $this->repository->log($name, $batch);
 
         $this->note("<info>Migrated:</info>  {$name} ({$runTime} seconds)");
@@ -239,7 +242,7 @@ class Migrator
      * Rollback the last migration operation.
 	 * 回滚上一次迁移操作
      *
-     * @param  array|string $paths
+     * @param  array|string  $paths
      * @param  array  $options
      * @return array
      */
@@ -248,11 +251,13 @@ class Migrator
         // We want to pull in the last batch of migrations that ran on the previous
         // migration operation. We'll then reverse those migrations and run each
         // of them "down" to reverse the last migration "operation" which ran.
-		// 我们希望将之前迁移操作中运行的最后一批迁移任务一并纳入此次迁移操作之中。
-		// 然后我们将撤销这些迁移操作，并依次将它们“回退”至初始状态，以撤销刚刚执行的最后一次迁移操作。
+		// 我们希望引入在上一次迁移操作中运行的最后一批迁移。
+		// 然后，我们将反转这些迁移，并"向下"运行每个迁移，以反转上次运行的迁移"操作"。
         $migrations = $this->getMigrationsForRollback($options);
 
         if (count($migrations) === 0) {
+            $this->fireMigrationEvent(new NoPendingMigrations('down'));
+
             $this->note('<info>Nothing to rollback.</info>');
 
             return [];
@@ -263,7 +268,7 @@ class Migrator
 
     /**
      * Get the migrations for a rollback operation.
-	 * 获取回滚操作的迁移
+	 * 得到回滚操作的迁移
      *
      * @param  array  $options
      * @return array
@@ -297,8 +302,8 @@ class Migrator
         // Next we will run through all of the migrations and call the "down" method
         // which will reverse each migration in order. This getLast method on the
         // repository already returns these migration's names in reverse order.
-		// 接下来，我们将逐一执行所有的迁移操作，并调用“down”方法，该方法会按顺序将每个迁移进行反向操作。
-		// 该存储库中的“getLast”方法已经能够按相反的顺序返回这些迁移的名称。
+		// 接下来，我们将遍历所有迁移，并调用"down"方法，该方法将按顺序反转每次迁移。
+		// 存储库上的getLast方法已经以相反的顺序返回了这些迁移的名称。
         foreach ($migrations as $migration) {
             $migration = (object) $migration;
 
@@ -325,7 +330,7 @@ class Migrator
      * Rolls all of the currently applied migrations back.
 	 * 回滚所有当前应用的迁移
      *
-     * @param  array|string $paths
+     * @param  array|string  $paths
      * @param  bool  $pretend
      * @return array
      */
@@ -334,8 +339,8 @@ class Migrator
         // Next, we will reverse the migration list so we can run them back in the
         // correct order for resetting this database. This will allow us to get
         // the database back into its "empty" state ready for the migrations.
-		// 接下来，我们将对迁移列表进行反转操作，以便按照正确的顺序重新执行这些迁移操作，从而完成此数据库的重置工作。
-		// 这将使我们能够将数据库恢复到“空”状态，以便进行迁移。
+		// 接下来，我们将遍历所有迁移，并调用"down"方法，该方法将按顺序反转每次迁移。
+		// 存储库上的getLast方法已经以相反的顺序返回了这些迁移的名称。
         $migrations = array_reverse($this->repository->getRan());
 
         if (count($migrations) === 0) {
@@ -361,8 +366,8 @@ class Migrator
         // Since the getRan method that retrieves the migration name just gives us the
         // migration name, we will format the names into objects with the name as a
         // property on the objects so that we can pass it to the rollback method.
-		// 由于 getRan 方法用于获取迁移名称，它只会给我们提供迁移名称本身，
-		// 因此我们将把这些名称格式化为对象，并将名称作为对象的一个属性，以便能够将其传递给回滚方法。
+		// 由于检索迁移名称的getRan方法只给了我们迁移名称，我们将把名称格式化为对象，
+		// 并将名称作为对象的属性，以便我们可以将其传递给rollback方法。
         $migrations = collect($migrations)->map(function ($m) {
             return (object) ['migration' => $m];
         })->all();
@@ -374,11 +379,11 @@ class Migrator
 
     /**
      * Run "down" a migration instance.
-	 * 运行“down”迁移实例
+	 * 运行down迁移实例
      *
      * @param  string  $file
      * @param  object  $migration
-     * @param  bool    $pretend
+     * @param  bool  $pretend
      * @return void
      */
     protected function runDown($file, $migration, $pretend)
@@ -386,8 +391,8 @@ class Migrator
         // First we will get the file name of the migration so we can resolve out an
         // instance of the migration. Once we get an instance we can either run a
         // pretend execution of the migration or we can run the real migration.
-		// 首先，我们要获取迁移文件的名称，这样就能确定该迁移操作的具体实例了。
-		// 一旦我们获取到了实例，我们就可以选择进行一次模拟迁移的执行，或者直接执行实际的迁移操作。
+		// 首先，我们将获取迁移的文件名，以便解析出迁移的实例。
+		// 一旦我们得到一个实例，我们可以运行一个假装的迁移执行，也可以运行真正的迁移。
         $instance = $this->resolve(
             $name = $this->getMigrationName($file)
         );
@@ -407,8 +412,8 @@ class Migrator
         // Once we have successfully run the migration "down" we will remove it from
         // the migration repository so it will be considered to have not been run
         // by the application then will be able to fire by any later operation.
-		// 一旦我们成功完成了向下的迁移操作，我们就会将其从迁移存储库中移除，
-		// 这样该操作就会被视为未被应用程序执行过，从而能够在后续的任何操作中被触发。
+		// 一旦我们成功地“关闭”迁移，我们将从迁移存储库中删除它，
+		// 这样它将被认为没有被应用程序运行，然后可以通过任何后续操作启动。
         $this->repository->delete($migration);
 
         $this->note("<info>Rolled back:</info>  {$name} ({$runTime} seconds)");
@@ -416,7 +421,7 @@ class Migrator
 
     /**
      * Run a migration inside a transaction if the database supports it.
-	 * 如果数据库支持，则在事务中运行迁移。
+	 * 在事务中运行迁移，如果数据库支持。
      *
      * @param  object  $migration
      * @param  string  $method
@@ -463,7 +468,7 @@ class Migrator
 
     /**
      * Get all of the queries that would be run for a migration.
-	 * 获取将为迁移运行的所有查询
+	 * 得到将为迁移运行的所有查询
      *
      * @param  object  $migration
      * @param  string  $method
@@ -474,8 +479,8 @@ class Migrator
         // Now that we have the connections we can resolve it and pretend to run the
         // queries against the database returning the array of raw SQL statements
         // that would get fired against the database system for this migration.
-		// 既然我们已经建立了这些连接，就可以进行处理并模拟对数据库的查询操作，
-		// 从而返回一系列将发送至数据库系统的原始 SQL 语句，这些语句将用于此次迁移。
+		// 现在我们有了连接，我们可以解析它，并假装对数据库运行查询，
+		// 返回原始SQL语句数组，这些语句将在此次迁移中对数据库系统触发。
         $db = $this->resolveConnection(
             $migration->getConnection()
         );
@@ -489,7 +494,7 @@ class Migrator
 
     /**
      * Resolve a migration instance from a file.
-	 * 从文件解析迁移实例
+	 * 解析迁移实例从文件中
      *
      * @param  string  $file
      * @return object
@@ -503,7 +508,7 @@ class Migrator
 
     /**
      * Get all of the migration files in a given path.
-	 * 获取给定路径中的所有迁移文件
+	 * 得到给定路径中的所有迁移文件
      *
      * @param  string|array  $paths
      * @return array
@@ -512,10 +517,10 @@ class Migrator
     {
         return Collection::make($paths)->flatMap(function ($path) {
             return Str::endsWith($path, '.php') ? [$path] : $this->files->glob($path.'/*_*.php');
-        })->filter()->sortBy(function ($file) {
+        })->filter()->values()->keyBy(function ($file) {
             return $this->getMigrationName($file);
-        })->values()->keyBy(function ($file) {
-            return $this->getMigrationName($file);
+        })->sortBy(function ($file, $key) {
+            return $key;
         })->all();
     }
 
@@ -523,7 +528,7 @@ class Migrator
      * Require in all the migration files in a given path.
 	 * 在给定路径中的所有迁移文件中要求
      *
-     * @param  array   $files
+     * @param  array  $files
      * @return void
      */
     public function requireFiles(array $files)
@@ -535,7 +540,7 @@ class Migrator
 
     /**
      * Get the name of the migration.
-	 * 获取迁移的名称
+	 * 得到迁移的名称
      *
      * @param  string  $path
      * @return string
@@ -559,7 +564,7 @@ class Migrator
 
     /**
      * Get all of the custom migration paths.
-	 * 获取所有自定义迁移路径
+	 * 得到所有自定义迁移路径
      *
      * @return array
      */
@@ -570,7 +575,7 @@ class Migrator
 
     /**
      * Get the default connection name.
-	 * 获取默认连接名称
+	 * 得到默认连接名称
      *
      * @return string
      */
@@ -611,7 +616,7 @@ class Migrator
 
     /**
      * Get the schema grammar out of a migration connection.
-	 * 从迁移连接中获取模式语法
+	 * 得到模式语法从迁移连接中
      *
      * @param  \Illuminate\Database\Connection  $connection
      * @return \Illuminate\Database\Schema\Grammars\Grammar
@@ -629,7 +634,7 @@ class Migrator
 
     /**
      * Get the migration repository instance.
-	 * 获取迁移存储库实例
+	 * 得到迁移存储库实例
      *
      * @return \Illuminate\Database\Migrations\MigrationRepositoryInterface
      */
@@ -651,7 +656,7 @@ class Migrator
 
     /**
      * Get the file system instance.
-	 * 获取文件系统实例
+	 * 得到文件系统实例
      *
      * @return \Illuminate\Filesystem\Filesystem
      */
@@ -676,7 +681,7 @@ class Migrator
 
     /**
      * Write a note to the console's output.
-	 * 在控制台的输出中写入一个注释
+	 * 写入一个注释在控制台的输出
      *
      * @param  string  $message
      * @return void
@@ -692,7 +697,7 @@ class Migrator
      * Fire the given event for the migration.
 	 * 为迁移触发给定的事件
      *
-     * @param  \Illuminate\Contracts\Database\Events\MigrationEvent $event
+     * @param  \Illuminate\Contracts\Database\Events\MigrationEvent  $event
      * @return void
      */
     public function fireMigrationEvent($event)

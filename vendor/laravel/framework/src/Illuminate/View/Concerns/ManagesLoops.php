@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，视图，问题，管理循环
+ * 视图，管理循环
  */
 
 namespace Illuminate\View\Concerns;
@@ -20,7 +20,7 @@ trait ManagesLoops
 
     /**
      * Add new loop to the stack.
-	 * 向堆栈添加新的循环
+	 * 添加新的循环至堆栈
      *
      * @param  \Countable|array  $data
      * @return void
@@ -68,7 +68,7 @@ trait ManagesLoops
 
     /**
      * Pop a loop from the top of the loop stack.
-	 * 从循环堆栈的顶部弹出一个循环
+	 * 弹出一个循环从循环堆栈的顶部
      *
      * @return void
      */
@@ -79,7 +79,7 @@ trait ManagesLoops
 
     /**
      * Get an instance of the last loop in the stack.
-	 * 获取堆栈中最后一个循环的实例
+	 * 得到堆栈中最后一个循环的实例
      *
      * @return \stdClass|null
      */
@@ -92,7 +92,7 @@ trait ManagesLoops
 
     /**
      * Get the entire loop stack.
-	 * 获取整个循环堆栈
+	 * 得到整个循环堆栈
      *
      * @return array
      */

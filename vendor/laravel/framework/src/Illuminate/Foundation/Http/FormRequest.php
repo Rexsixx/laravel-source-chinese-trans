@@ -1,19 +1,19 @@
 <?php
 /**
- * Illuminate，基础，Http，表单请求
+ * 基础，Http表单请求
  */
 
 namespace Illuminate\Foundation\Http;
 
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Validation\Factory as ValidationFactory;
+use Illuminate\Contracts\Validation\ValidatesWhenResolved;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
-use Illuminate\Contracts\Container\Container;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Validation\ValidatesWhenResolvedTrait;
-use Illuminate\Contracts\Validation\ValidatesWhenResolved;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
+use Illuminate\Validation\ValidationException;
 
 class FormRequest extends Request implements ValidatesWhenResolved
 {
@@ -37,7 +37,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
 
     /**
      * The URI to redirect to if validation fails.
-	 * 验证失败时要重定向到的URI
+	 * 验证失败时要重定向的URI
      *
      * @var string
      */
@@ -45,7 +45,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
 
     /**
      * The route to redirect to if validation fails.
-	 * 验证失败时要重定向到的路由
+	 * 验证失败时要重定向的路由
      *
      * @var string
      */
@@ -53,7 +53,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
 
     /**
      * The controller action to redirect to if validation fails.
-	 * 验证失败时要重定向到的控制器动作
+	 * 验证失败时要重定向的控制器
      *
      * @var string
      */
@@ -77,7 +77,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
 
     /**
      * Get the validator instance for the request.
-	 * 获取请求的验证器实例
+	 * 得到请求的验证器实例
      *
      * @return \Illuminate\Contracts\Validation\Validator
      */
@@ -121,11 +121,11 @@ class FormRequest extends Request implements ValidatesWhenResolved
 
     /**
      * Get data to be validated from the request.
-	 * 从请求中获取要验证的数据
+	 * 得到要验证的数据从请求中
      *
      * @return array
      */
-    protected function validationData()
+    public function validationData()
     {
         return $this->all();
     }
@@ -148,7 +148,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
 
     /**
      * Get the URL to redirect to on a validation error.
-	 * 获取验证错误时要重定向到的URL
+	 * 得到验证错误时要重定向到的URL
      *
      * @return string
      */
@@ -192,12 +192,12 @@ class FormRequest extends Request implements ValidatesWhenResolved
      */
     protected function failedAuthorization()
     {
-        throw new AuthorizationException('This action is unauthorized.');
+        throw new AuthorizationException;
     }
 
     /**
      * Get the validated data from the request.
-	 * 从请求中获取经过验证的数据
+	 * 得到经过验证的数据从请求中
      *
      * @return array
      */
@@ -208,7 +208,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
 
     /**
      * Get custom messages for validator errors.
-	 * 获取验证器错误的自定义消息
+	 * 得到验证器错误的自定义消息
      *
      * @return array
      */
@@ -219,7 +219,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
 
     /**
      * Get custom attributes for validator errors.
-	 * 获取验证器错误的自定义属性
+	 * 得到验证器错误的自定义属性
      *
      * @return array
      */
@@ -230,7 +230,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
 
     /**
      * Set the Validator instance.
-	 * 设置Validator实例
+	 * 设置验证器实例
      *
      * @param  \Illuminate\Contracts\Validation\Validator  $validator
      * @return $this

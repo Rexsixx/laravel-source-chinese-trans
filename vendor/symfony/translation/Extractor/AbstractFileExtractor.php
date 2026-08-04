@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，翻译，提取器，抽象文件提取器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
 
 /**
  * Base class used by classes that extract translation messages from files.
- * 由从文件中提取翻译消息的类使用的基类。
  *
  * @author Marcos D. Sánchez <marcosdsanchez@gmail.com>
  */

@@ -1,19 +1,19 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，问题，As Pivot
+ * 数据库，Eloquent为轴
  */
 
 namespace Illuminate\Database\Eloquent\Relations\Concerns;
 
-use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 trait AsPivot
 {
     /**
      * The parent model of the relationship.
-	 * 关系的父模型
+	 * 父模型关系
      *
      * @var \Illuminate\Database\Eloquent\Model
      */
@@ -21,7 +21,7 @@ trait AsPivot
 
     /**
      * The name of the foreign key column.
-	 * 外键列的名称
+	 * 外键列名称
      *
      * @var string
      */
@@ -29,7 +29,7 @@ trait AsPivot
 
     /**
      * The name of the "other key" column.
-	 * “其他键”列的名称
+	 * "其他键"列名
      *
      * @var string
      */
@@ -37,12 +37,12 @@ trait AsPivot
 
     /**
      * Create a new pivot model instance.
-	 * 创建一个新的pivot模型实例
+	 * 创建一个新的支点模型实例
      *
      * @param  \Illuminate\Database\Eloquent\Model  $parent
-     * @param  array   $attributes
+     * @param  array  $attributes
      * @param  string  $table
-     * @param  bool    $exists
+     * @param  bool  $exists
      * @return static
      */
     public static function fromAttributes(Model $parent, $attributes, $table, $exists = false)
@@ -54,8 +54,8 @@ trait AsPivot
         // The pivot model is a "dynamic" model since we will set the tables dynamically
         // for the instance. This allows it work for any intermediate tables for the
         // many to many relationship that are defined by this developer's classes.
-		// 该模型属于“动态”模型，因为我们会根据具体情况动态设置表格。
-		// 这使得它能够适用于由该开发人员的类所定义的任何多对多关系的中间表。
+		// 数据透视模型是一个"动态"模型，因为我们将动态地设置表为实例。
+		// 这允许它任何中间表都可以使用由开发人员的类定义的多对多关系。
         $instance->setConnection($parent->getConnectionName())
             ->setTable($table)
             ->forceFill($attributes)
@@ -64,8 +64,8 @@ trait AsPivot
         // We store off the parent instance so we will access the timestamp column names
         // for the model, since the pivot model timestamps aren't easily configurable
         // from the developer's point of view. We can use the parents to get these.
-		// 我们先保存父实例，这样就能获取模型的时间戳列名了，因为从开发者的角度来看，
-		// 透视模型的时间戳是不容易进行配置的。我们可以利用父实例来获取这些时间戳信息。
+		// 我们存储父实例，以便访问模型的时间戳列名，
+		// 由于pivot模型时间戳不容易从开发者的角度来看。我们可以利用父类来得到这些。
         $instance->pivotParent = $parent;
 
         $instance->exists = $exists;
@@ -75,12 +75,12 @@ trait AsPivot
 
     /**
      * Create a new pivot model from raw values returned from a query.
-	 * 根据查询返回的原始值创建新的数据透视模型
+	 * 创建新的数据透视模型根据查询返回的原始值
      *
      * @param  \Illuminate\Database\Eloquent\Model  $parent
-     * @param  array   $attributes
+     * @param  array  $attributes
      * @param  string  $table
-     * @param  bool    $exists
+     * @param  bool  $exists
      * @return static
      */
     public static function fromRawAttributes(Model $parent, $attributes, $table, $exists = false)
@@ -89,14 +89,14 @@ trait AsPivot
 
         $instance->timestamps = $instance->hasTimestampAttributes($attributes);
 
-        $instance->setRawAttributes($attributes, true);
+        $instance->setRawAttributes($attributes, $exists);
 
         return $instance;
     }
 
     /**
      * Set the keys for a save update query.
-	 * 为保存更新查询设置键
+	 * 设置主键为保存更新查询
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
@@ -118,7 +118,7 @@ trait AsPivot
 
     /**
      * Delete the pivot model record from the database.
-	 * 从数据库中删除数据透视模型记录
+	 * 删除数据透视模型记录从数据库中
      *
      * @return int
      */
@@ -141,7 +141,7 @@ trait AsPivot
 
     /**
      * Get the query builder for a delete operation on the pivot.
-	 * 获取对数据透视进行删除操作的查询构建器
+	 * 得到对数据透视进行删除操作的查询构建器
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -155,7 +155,7 @@ trait AsPivot
 
     /**
      * Get the table associated with the model.
-	 * 获取与模型相关联的表
+	 * 得到与模型关联的表
      *
      * @return string
      */
@@ -172,7 +172,7 @@ trait AsPivot
 
     /**
      * Get the foreign key column name.
-	 * 获取外键列名
+	 * 得到外键列名
      *
      * @return string
      */
@@ -183,7 +183,7 @@ trait AsPivot
 
     /**
      * Get the "related key" column name.
-	 * 获取“相关键”列名
+	 * 得到"相关键"列名
      *
      * @return string
      */
@@ -194,7 +194,7 @@ trait AsPivot
 
     /**
      * Get the "related key" column name.
-	 * 获取“相关键”列名
+	 * 得到"相关键"列名
      *
      * @return string
      */
@@ -234,7 +234,7 @@ trait AsPivot
 
     /**
      * Get the name of the "created at" column.
-	 * 获取“创建位置”列的名称
+	 * 得到"创建时间"列的名称
      *
      * @return string
      */
@@ -247,7 +247,7 @@ trait AsPivot
 
     /**
      * Get the name of the "updated at" column.
-	 * 获取“更新时间”列的名称
+	 * 得到"更新时间"列的名称
      *
      * @return string
      */
@@ -260,7 +260,7 @@ trait AsPivot
 
     /**
      * Get the queueable identity for the entity.
-	 * 获取实体的可排队标识
+	 * 得到实体的可排队标识
      *
      * @return mixed
      */
@@ -279,7 +279,7 @@ trait AsPivot
 
     /**
      * Get a new query to restore one or more models by their queueable IDs.
-	 * 获取一个新查询，根据可排队id还原一个或多个模型。
+	 * 得到一个新查询，根据可排队id还原一个或多个模型。
      *
      * @param  int[]|string[]|string  $ids
      * @return \Illuminate\Database\Eloquent\Builder
@@ -303,13 +303,15 @@ trait AsPivot
 
     /**
      * Get a new query to restore multiple models by their queueable IDs.
-	 * 获取一个新查询，根据可排队id恢复多个模型。
+	 * 得到一个新查询，根据可排队id恢复多个模型。
      *
      * @param  int[]|string[]  $ids
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function newQueryForCollectionRestoration(array $ids)
     {
+        $ids = array_values($ids);
+
         if (! Str::contains($ids[0], ':')) {
             return parent::newQueryForRestoration($ids);
         }
@@ -326,5 +328,19 @@ trait AsPivot
         }
 
         return $query;
+    }
+
+    /**
+     * Unset all the loaded relations for the instance.
+	 * 取消为实例加载的所有关系的设置
+     *
+     * @return $this
+     */
+    public function unsetRelations()
+    {
+        $this->pivotParent = null;
+        $this->relations = [];
+
+        return $this;
     }
 }

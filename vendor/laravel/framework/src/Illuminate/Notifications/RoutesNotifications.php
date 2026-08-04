@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，通知，路由的通知
+ * 通知，路由通知
  */
 
 namespace Illuminate\Notifications;
 
-use Illuminate\Support\Str;
 use Illuminate\Contracts\Notifications\Dispatcher;
+use Illuminate\Support\Str;
 
 trait RoutesNotifications
 {
@@ -37,7 +37,7 @@ trait RoutesNotifications
 
     /**
      * Get the notification routing information for the given driver.
-	 * 获取给定驱动程序的通知路由信息
+	 * 得到给定驱动程序的通知路由信息
      *
      * @param  string  $driver
      * @param  \Illuminate\Notifications\Notification|null  $notification
@@ -54,8 +54,6 @@ trait RoutesNotifications
                 return $this->notifications();
             case 'mail':
                 return $this->email;
-            case 'nexmo':
-                return $this->phone_number;
         }
     }
 }

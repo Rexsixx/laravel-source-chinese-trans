@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，支持，Composer
+ * 支持，Composer
  */
 
 namespace Illuminate\Support;
 
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Process\PhpExecutableFinder;
+use Symfony\Component\Process\Process;
 
 class Composer
 {
@@ -29,7 +29,7 @@ class Composer
 
     /**
      * Create a new Composer manager instance.
-	 * 创建一个新的Composer管理器实例
+	 * 创建新的管理实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string|null  $workingPath
@@ -70,7 +70,7 @@ class Composer
 
     /**
      * Get the composer command for the environment.
-	 * 获取环境的编写器命令
+	 * 得到环境的编写器命令
      *
      * @return array
      */
@@ -85,7 +85,7 @@ class Composer
 
     /**
      * Get the PHP binary.
-	 * 获取PHP二进制文件
+	 * 得到PHP二进制
      *
      * @return string
      */
@@ -96,7 +96,7 @@ class Composer
 
     /**
      * Get a new Symfony process instance.
-	 * 获取一个新的Symfony流程实例
+	 * 得到一个新的Symfony流程实例
      *
      * @param  array  $command
      * @return \Symfony\Component\Process\Process

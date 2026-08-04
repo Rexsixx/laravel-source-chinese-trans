@@ -11,7 +11,6 @@ use Dotenv\Exception\InvalidPathException;
 
 /**
  * This is the dotenv class.
- * 这是dotenv类。
  *
  * It's responsible for loading a `.env` file in the given directory and
  * setting the environment variables.
@@ -20,7 +19,7 @@ class Dotenv
 {
     /**
      * The loader instance.
-	 * 加载实例
+	 * 加载器实例
      *
      * @var \Dotenv\Loader
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，翻译，语言环境感知接口
+ * Symfony，契约，翻译，环境识别接口
  */
 
 /*
@@ -18,7 +18,7 @@ interface LocaleAwareInterface
 {
     /**
      * Sets the current locale.
-	 * 设置当前区域设置
+	 * 设置当前区域
      *
      * @param string $locale The locale
      *
@@ -28,7 +28,7 @@ interface LocaleAwareInterface
 
     /**
      * Returns the current locale.
-	 * 返回当前语言环境
+	 * 返回当前区域
      *
      * @return string
      */

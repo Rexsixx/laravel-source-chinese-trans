@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，事件，缓存命中
+ * 缓存，事件，缓存命中，当请求的数据在缓存中被找到时，称为缓存命中。
  */
 
 namespace Illuminate\Cache\Events;
@@ -17,7 +17,7 @@ class CacheHit extends CacheEvent
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  string  $key
      * @param  mixed  $value

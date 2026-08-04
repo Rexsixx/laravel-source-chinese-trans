@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，描述符，应用描述
+ * Symfony，组件，控制台，描述符号，应用描述符号
  */
 
 /*
@@ -134,7 +134,7 @@ class ApplicationDescription
         }
 
         if ($namespacedCommands) {
-            ksort($namespacedCommands, \SORT_STRING);
+            ksort($namespacedCommands);
             foreach ($namespacedCommands as $key => $commandsSet) {
                 ksort($commandsSet);
                 $sortedCommands[$key] = $commandsSet;

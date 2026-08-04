@@ -1,23 +1,26 @@
 <?php
 /**
- * Illuminate，队列，队列服务提供程序
+ * 队列，队列服务提供者
  */
 
 namespace Illuminate\Queue;
 
-use Illuminate\Support\Str;
-use Opis\Closure\SerializableClosure;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Queue\Connectors\SqsConnector;
-use Illuminate\Queue\Connectors\NullConnector;
-use Illuminate\Queue\Connectors\SyncConnector;
-use Illuminate\Queue\Connectors\RedisConnector;
+use Aws\DynamoDb\DynamoDbClient;
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Queue\Connectors\DatabaseConnector;
-use Illuminate\Queue\Failed\NullFailedJobProvider;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Queue\Connectors\BeanstalkdConnector;
+use Illuminate\Queue\Connectors\DatabaseConnector;
+use Illuminate\Queue\Connectors\NullConnector;
+use Illuminate\Queue\Connectors\RedisConnector;
+use Illuminate\Queue\Connectors\SqsConnector;
+use Illuminate\Queue\Connectors\SyncConnector;
 use Illuminate\Queue\Failed\DatabaseFailedJobProvider;
+use Illuminate\Queue\Failed\DynamoDbFailedJobProvider;
+use Illuminate\Queue\Failed\NullFailedJobProvider;
+use Illuminate\Support\Arr;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use Opis\Closure\SerializableClosure;
 
 class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -39,7 +42,7 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Register the queue manager.
-	 * 注册队列管理器
+	 * 注册队列管理
      *
      * @return void
      */
@@ -49,8 +52,8 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
             // Once we have an instance of the queue manager, we will register the various
             // resolvers for the queue connectors. These connectors are responsible for
             // creating the classes that accept queue configs and instantiate queues.
-			// 一旦我们获得了队列管理器的实例，我们就会为队列连接器注册各种解析器。
-			// 这些连接器负责创建那些能够接收队列配置并实例化队列的类。
+			// 一旦我们有了队列管理器的实例，我们将为队列连接器注册各种解析器。
+			// 这些连接器负责创建接受队列配置和实例化队列的类。
             return tap(new QueueManager($app), function ($manager) {
                 $this->registerConnectors($manager);
             });
@@ -72,7 +75,7 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Register the connectors on the queue manager.
-	 * 在队列管理器上注册连接器
+	 * 注册连接器在队列管理器上
      *
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
@@ -170,22 +173,29 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Register the queue worker.
-	 * 注册队列工作器
+	 * 注册队列执行者
      *
      * @return void
      */
     protected function registerWorker()
     {
         $this->app->singleton('queue.worker', function () {
+            $isDownForMaintenance = function () {
+                return $this->app->isDownForMaintenance();
+            };
+
             return new Worker(
-                $this->app['queue'], $this->app['events'], $this->app[ExceptionHandler::class]
+                $this->app['queue'],
+                $this->app['events'],
+                $this->app[ExceptionHandler::class],
+                $isDownForMaintenance
             );
         });
     }
 
     /**
      * Register the queue listener.
-	 * 注册队列侦听器
+	 * 注册队列监听者
      *
      * @return void
      */
@@ -198,7 +208,7 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Register the failed job services.
-	 * 注册失败的作业服务
+	 * 注册失败作业服务
      *
      * @return void
      */
@@ -207,9 +217,13 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
         $this->app->singleton('queue.failer', function () {
             $config = $this->app['config']['queue.failed'];
 
-            return isset($config['table'])
-                        ? $this->databaseFailedJobProvider($config)
-                        : new NullFailedJobProvider;
+            if (isset($config['driver']) && $config['driver'] === 'dynamodb') {
+                return $this->dynamoFailedJobProvider($config);
+            } elseif (isset($config['table'])) {
+                return $this->databaseFailedJobProvider($config);
+            } else {
+                return new NullFailedJobProvider;
+            }
         });
     }
 
@@ -228,8 +242,36 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
     }
 
     /**
+     * Create a new DynamoDb failed job provider.
+	 * 创建新的DynamoDb失败作业提供程序
+     *
+     * @param  array  $config
+     * @return \Illuminate\Queue\Failed\DynamoDbFailedJobProvider
+     */
+    protected function dynamoFailedJobProvider($config)
+    {
+        $dynamoConfig = [
+            'region' => $config['region'],
+            'version' => 'latest',
+            'endpoint' => $config['endpoint'] ?? null,
+        ];
+
+        if (! empty($config['key']) && ! empty($config['secret'])) {
+            $dynamoConfig['credentials'] = Arr::only(
+                $config, ['key', 'secret', 'token']
+            );
+        }
+
+        return new DynamoDbFailedJobProvider(
+            new DynamoDbClient($dynamoConfig),
+            $this->app['config']['app.name'],
+            $config['table']
+        );
+    }
+
+    /**
      * Configure Opis Closure signing for security.
-	 * 为安全性配置Opis闭包签名
+	 * 配置Opis闭包签名为安全性
      *
      * @return void
      */
@@ -244,7 +286,7 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Get the services provided by the provider.
-	 * 获取提供者提供的服务
+	 * 得到提供者提供的服务
      *
      * @return array
      */

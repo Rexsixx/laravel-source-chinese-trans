@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，分析器，文件分析器存储器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\HttpKernel\Profiler;
 
 /**
  * Storage for profiler using files.
- * 用于profiler使用文件的存储。
  *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
@@ -24,7 +20,6 @@ class FileProfilerStorage implements ProfilerStorageInterface
 {
     /**
      * Folder where profiler data are stored.
-	 * 存储原始数据的文件夹
      *
      * @var string
      */
@@ -120,7 +115,19 @@ class FileProfilerStorage implements ProfilerStorageInterface
      */
     public function read($token): ?Profile
     {
-        return $this->doRead($token);
+        if (!$token || !file_exists($file = $this->getFilename($token))) {
+            return null;
+        }
+
+        if (\function_exists('gzcompress')) {
+            $file = 'compress.zlib://'.$file;
+        }
+
+        if (!$data = unserialize(file_get_contents($file))) {
+            return null;
+        }
+
+        return $this->createProfileFromData($token, $data);
     }
 
     /**
@@ -162,13 +169,14 @@ class FileProfilerStorage implements ProfilerStorageInterface
             'status_code' => $profile->getStatusCode(),
         ];
 
-        $data = serialize($data);
+        $context = stream_context_create();
 
-        if (\function_exists('gzencode')) {
-            $data = gzencode($data, 3);
+        if (\function_exists('gzcompress')) {
+            $file = 'compress.zlib://'.$file;
+            stream_context_set_option($context, 'zlib', 'level', 3);
         }
 
-        if (false === file_put_contents($file, $data, \LOCK_EX)) {
+        if (false === file_put_contents($file, serialize($data), 0, $context)) {
             return false;
         }
 
@@ -285,34 +293,21 @@ class FileProfilerStorage implements ProfilerStorageInterface
         }
 
         foreach ($data['children'] as $token) {
-            if (null !== $childProfile = $this->doRead($token, $profile)) {
-                $profile->addChild($childProfile);
+            if (!$token || !file_exists($file = $this->getFilename($token))) {
+                continue;
             }
+
+            if (\function_exists('gzcompress')) {
+                $file = 'compress.zlib://'.$file;
+            }
+
+            if (!$childData = unserialize(file_get_contents($file))) {
+                continue;
+            }
+
+            $profile->addChild($this->createProfileFromData($token, $childData, $profile));
         }
 
         return $profile;
-    }
-
-    private function doRead($token, Profile $profile = null): ?Profile
-    {
-        if (!$token || !file_exists($file = $this->getFilename($token))) {
-            return null;
-        }
-
-        $h = fopen($file, 'r');
-        flock($h, \LOCK_SH);
-        $data = stream_get_contents($h);
-        flock($h, \LOCK_UN);
-        fclose($h);
-
-        if (\function_exists('gzdecode')) {
-            $data = @gzdecode($data) ?: $data;
-        }
-
-        if (!$data = unserialize($data)) {
-            return null;
-        }
-
-        return $this->createProfileFromData($token, $data, $profile);
     }
 }

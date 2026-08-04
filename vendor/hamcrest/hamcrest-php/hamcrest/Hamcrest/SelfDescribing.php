@@ -11,7 +11,7 @@ namespace Hamcrest;
 
 /**
  * The ability of an object to describe itself.
- * 一个对象描述自己的能力。
+ * 物体描述自身的能力。
  */
 interface SelfDescribing
 {

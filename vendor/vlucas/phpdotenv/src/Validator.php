@@ -27,6 +27,7 @@ class Validator
 
     /**
      * The loader instance.
+	 * 加载实例
      *
      * @var \Dotenv\Loader
      */

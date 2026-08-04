@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，序列化模型
+ * 队列，序列化模型
  */
 
 namespace Illuminate\Queue;
@@ -14,7 +14,7 @@ trait SerializesModels
 
     /**
      * Prepare the instance for serialization.
-	 * 为序列化准备实例
+	 * 准备实例为序列化
      *
      * @return array
      */
@@ -35,7 +35,7 @@ trait SerializesModels
 
     /**
      * Restore the model after serialization.
-	 * 序列化后恢复模型
+	 * 恢复模型序列化后
      *
      * @return void
      */
@@ -53,8 +53,89 @@ trait SerializesModels
     }
 
     /**
+     * Prepare the instance values for serialization.
+	 * 准备实例值为序列化
+     *
+     * @return array
+     */
+    public function __serialize()
+    {
+        $values = [];
+
+        $properties = (new ReflectionClass($this))->getProperties();
+
+        $class = get_class($this);
+
+        foreach ($properties as $property) {
+            if ($property->isStatic()) {
+                continue;
+            }
+
+            $property->setAccessible(true);
+
+            if (! $property->isInitialized($this)) {
+                continue;
+            }
+
+            $name = $property->getName();
+
+            if ($property->isPrivate()) {
+                $name = "\0{$class}\0{$name}";
+            } elseif ($property->isProtected()) {
+                $name = "\0*\0{$name}";
+            }
+
+            $values[$name] = $this->getSerializedPropertyValue(
+                $this->getPropertyValue($property)
+            );
+        }
+
+        return $values;
+    }
+
+    /**
+     * Restore the model after serialization.
+	 * 恢复模型在序列化后
+     *
+     * @param  array  $values
+     * @return array
+     */
+    public function __unserialize(array $values)
+    {
+        $properties = (new ReflectionClass($this))->getProperties();
+
+        $class = get_class($this);
+
+        foreach ($properties as $property) {
+            if ($property->isStatic()) {
+                continue;
+            }
+
+            $name = $property->getName();
+
+            if ($property->isPrivate()) {
+                $name = "\0{$class}\0{$name}";
+            } elseif ($property->isProtected()) {
+                $name = "\0*\0{$name}";
+            }
+
+            if (! array_key_exists($name, $values)) {
+                continue;
+            }
+
+            $property->setAccessible(true);
+
+            $property->setValue(
+                $this, $this->getRestoredPropertyValue($values[$name])
+            );
+        }
+
+        return $values;
+    }
+
+    /**
      * Get the property value for the given property.
-	 * 获取给定属性的属性值
+	 * 得到给定属性的属性值
      *
      * @param  \ReflectionProperty  $property
      * @return mixed

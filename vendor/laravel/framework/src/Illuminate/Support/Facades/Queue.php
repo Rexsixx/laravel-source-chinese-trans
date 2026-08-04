@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，支持，门面，Queue
+ * 支持，门面队列
  */
 
 namespace Illuminate\Support\Facades;
@@ -18,6 +18,11 @@ use Illuminate\Support\Testing\Fakes\QueueFake;
  * @method static \Illuminate\Contracts\Queue\Job|null pop(string $queue = null)
  * @method static string getConnectionName()
  * @method static \Illuminate\Contracts\Queue\Queue setConnectionName(string $name)
+ * @method static void assertNothingPushed()
+ * @method static void assertNotPushed(string $job, callable $callback = null)
+ * @method static void assertPushed(string $job, callable|int $callback = null)
+ * @method static void assertPushedOn(string $queue, string $job, callable|int $callback = null)
+ * @method static void assertPushedWithChain(string $job, array $expectedChain = [], callable $callback = null)
  *
  * @see \Illuminate\Queue\QueueManager
  * @see \Illuminate\Queue\Queue
@@ -26,7 +31,7 @@ class Queue extends Facade
 {
     /**
      * Replace the bound instance with a fake.
-	 * 将绑定实例替换为伪实例
+	 * 替换绑定实例为伪实例
      *
      * @return \Illuminate\Support\Testing\Fakes\QueueFake
      */
@@ -39,7 +44,7 @@ class Queue extends Facade
 
     /**
      * Get the registered name of the component.
-	 * 获取组件的注册名称
+	 * 得到组件注册名
      *
      * @return string
      */

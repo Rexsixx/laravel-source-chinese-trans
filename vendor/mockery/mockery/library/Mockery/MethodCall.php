@@ -1,9 +1,5 @@
 <?php
 /**
- * Mockery，方法调用
- */
-
-/**
  * Mockery
  *
  * LICENSE

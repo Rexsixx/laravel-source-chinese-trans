@@ -9,7 +9,6 @@ class ListPaths extends AbstractPlugin
 {
     /**
      * Get the method name.
-	 * 获取方法名称
      *
      * @return string
      */
@@ -24,7 +23,7 @@ class ListPaths extends AbstractPlugin
      * @param string $directory
      * @param bool   $recursive
      *
-     * @return string[] paths
+     * @return array paths
      */
     public function handle($directory = '', $recursive = false)
     {

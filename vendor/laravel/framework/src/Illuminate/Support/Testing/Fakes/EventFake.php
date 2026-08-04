@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，支持，测试，Fakes，事件 Fake
+ * 支持，事件伪造
  */
 
 namespace Illuminate\Support\Testing\Fakes;
 
 use Closure;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Arr;
 use PHPUnit\Framework\Assert as PHPUnit;
-use Illuminate\Contracts\Events\Dispatcher;
 
 class EventFake implements Dispatcher
 {
@@ -38,7 +38,7 @@ class EventFake implements Dispatcher
 
     /**
      * Create a new event fake instance.
-	 * 创建一个新的事件伪实例
+	 * 创建新的事件伪实例
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $dispatcher
      * @param  array|string  $eventsToFake
@@ -73,7 +73,7 @@ class EventFake implements Dispatcher
 
     /**
      * Assert if a event was dispatched a number of times.
-	 * 如果事件被多次调度，则断言。
+	 * 断言是否事件被多次调度
      *
      * @param  string  $event
      * @param  int  $times
@@ -105,7 +105,7 @@ class EventFake implements Dispatcher
 
     /**
      * Get all of the events matching a truth-test callback.
-	 * 获取与true -test回调匹配的所有事件
+	 * 得到与true-test回调匹配的所有事件
      *
      * @param  string  $event
      * @param  callable|null  $callback
@@ -140,7 +140,7 @@ class EventFake implements Dispatcher
 
     /**
      * Register an event listener with the dispatcher.
-	 * 向调度程序注册事件侦听器
+	 * 注册事件侦听器向调度程序
      *
      * @param  string|array  $events
      * @param  mixed  $listener
@@ -245,7 +245,7 @@ class EventFake implements Dispatcher
 
     /**
      * Remove a set of listeners from the dispatcher.
-	 * 从调度程序中删除一组侦听器
+	 * 删除一组侦听器从调度程序中
      *
      * @param  string  $event
      * @return void
@@ -270,8 +270,8 @@ class EventFake implements Dispatcher
      * Dispatch an event and call the listeners.
 	 * 分派事件并调用侦听器
      *
-     * @param  string|object $event
-     * @param  mixed $payload
+     * @param  string|object  $event
+     * @param  mixed  $payload
      * @return void
      */
     public function until($event, $payload = [])

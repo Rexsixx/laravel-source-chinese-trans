@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Mime，Mime 类型
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Mime\Exception\LogicException;
 
 /**
  * Manages MIME types and file extensions.
- * 管理MIME类型和文件扩展。
  *
  * For MIME type guessing, you can register custom guessers
  * by calling the registerGuesser() method.
@@ -74,7 +70,6 @@ final class MimeTypes implements MimeTypesInterface
 
     /**
      * Registers a MIME type guesser.
-	 * 注册一个MIME类型猜测器。
      *
      * The last registered guesser has precedence over the other ones.
      */

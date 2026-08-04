@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * SebastianBergmann，代码覆盖率，版本
  */
@@ -25,7 +26,7 @@ final class Version
     public static function id(): string
     {
         if (self::$version === null) {
-            $version       = new VersionId('6.1.4', \dirname(__DIR__));
+            $version       = new VersionId('7.0.15', \dirname(__DIR__));
             self::$version = $version->getVersion();
         }
 

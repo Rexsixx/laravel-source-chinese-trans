@@ -1,7 +1,4 @@
 <?php
-/**
- * PhpParser，Const Expr 校验器
- */
 
 namespace PhpParser;
 
@@ -11,7 +8,6 @@ use PhpParser\Node\Scalar;
 
 /**
  * Evaluates constant expressions.
- * 计算常量表达式。
  *
  * This evaluator is able to evaluate all constant expressions (as defined by PHP), which can be
  * evaluated without further context. If a subexpression is not of this type, a user-provided
@@ -41,7 +37,7 @@ class ConstExprEvaluator
      *
      * @param callable|null $fallbackEvaluator To call if subexpression cannot be evaluated
      */
-    public function __construct(?callable $fallbackEvaluator = null) {
+    public function __construct(callable $fallbackEvaluator = null) {
         $this->fallbackEvaluator = $fallbackEvaluator ?? function(Expr $expr) {
             throw new ConstExprEvaluationException(
                 "Expression of type {$expr->getType()} cannot be evaluated"

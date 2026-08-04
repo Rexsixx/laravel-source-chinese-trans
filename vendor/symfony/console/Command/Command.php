@@ -83,7 +83,6 @@ class Command
 
     /**
      * Ignores validation errors.
-	 * 忽略验证错误
      *
      * This is mainly useful for the help command.
      */
@@ -109,7 +108,6 @@ class Command
 
     /**
      * Gets the helper set.
-	 * 获取助手集合
      *
      * @return HelperSet|null A HelperSet instance
      */
@@ -120,7 +118,6 @@ class Command
 
     /**
      * Gets the application instance for this command.
-	 * 获取此命令的应用程序实例
      *
      * @return Application|null An Application instance
      */
@@ -131,7 +128,6 @@ class Command
 
     /**
      * Checks whether the command is enabled or not in the current environment.
-	 * 检查命令是否在当前环境中启用。
      *
      * Override this to check for x or y and return false if the command can not
      * run properly under the current conditions.
@@ -145,7 +141,6 @@ class Command
 
     /**
      * Configures the current command.
-	 * 配置当前命令
      */
     protected function configure()
     {
@@ -153,7 +148,6 @@ class Command
 
     /**
      * Executes the current command.
-	 * 执行当前命令。
      *
      * This method is not abstract because you can use this class
      * as a concrete class. In this case, instead of defining the
@@ -173,7 +167,6 @@ class Command
 
     /**
      * Interacts with the user.
-	 * 与用户交互。
      *
      * This method is executed before the InputDefinition is validated.
      * This means that this is the only place where the command can
@@ -186,7 +179,6 @@ class Command
     /**
      * Initializes the command after the input has been bound and before the input
      * is validated.
-	 * 在输入被绑定后初始化命令,并在输入验证之前初始化命令。
      *
      * This is mainly useful when a lot of commands extends one main command
      * where some things need to be initialized based on the input arguments and options.
@@ -200,7 +192,6 @@ class Command
 
     /**
      * Runs the command.
-	 * 运行命令。
      *
      * The code to execute is either defined directly with the
      * setCode() method or by overriding the execute() method
@@ -208,7 +199,7 @@ class Command
      *
      * @return int The command exit code
      *
-     * @throws ExceptionInterface When input binding fails. Bypass this by calling {@link ignoreValidationErrors()}.
+     * @throws \Exception When binding input fails. Bypass this by calling {@link ignoreValidationErrors()}.
      *
      * @see setCode()
      * @see execute()

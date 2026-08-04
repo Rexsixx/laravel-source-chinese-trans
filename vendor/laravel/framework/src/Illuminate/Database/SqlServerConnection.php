@@ -1,24 +1,25 @@
 <?php
 /**
- * Illuminate，数据库，Sql Server 连接
+ * 数据库，SqlServer连接
  */
 
 namespace Illuminate\Database;
 
 use Closure;
-use Exception;
-use Throwable;
-use Illuminate\Database\Schema\SqlServerBuilder;
 use Doctrine\DBAL\Driver\PDOSqlsrv\Driver as DoctrineDriver;
-use Illuminate\Database\Query\Processors\SqlServerProcessor;
+use Exception;
 use Illuminate\Database\Query\Grammars\SqlServerGrammar as QueryGrammar;
+use Illuminate\Database\Query\Processors\SqlServerProcessor;
 use Illuminate\Database\Schema\Grammars\SqlServerGrammar as SchemaGrammar;
+use Illuminate\Database\Schema\SqlServerBuilder;
+use LogicException;
+use Throwable;
 
 class SqlServerConnection extends Connection
 {
     /**
      * Execute a Closure within a transaction.
-	 * 在事务中执行闭包
+	 * 执行闭包使用事务
      *
      * @param  \Closure  $callback
      * @param  int  $attempts
@@ -38,8 +39,8 @@ class SqlServerConnection extends Connection
             // We'll simply execute the given callback within a try / catch block
             // and if we catch any exception we can rollback the transaction
             // so that none of the changes are persisted to the database.
-			// 我们将直接在“try”/“catch”块中执行给定的回调函数，如果捕获到任何异常，
-			// 我们就可以回滚事务，从而确保数据库中不会保存任何更改。
+			// 我们只需在try/catch中执行给定的回调。
+			// 如果我们发现任何异常，我们可以回滚事务，以致没有任何更改被持久化到数据库中。
             try {
                 $result = $callback($this);
 
@@ -49,8 +50,8 @@ class SqlServerConnection extends Connection
             // If we catch an exception, we will roll back so nothing gets messed
             // up in the database. Then we'll re-throw the exception so it can
             // be handled how the developer sees fit for their applications.
-			// 如果出现异常情况，我们将进行回滚操作，以确保数据库中的数据不会遭到破坏。
-			// 然后我们将重新抛出该异常，以便开发者能够根据其应用程序的需求来处理该异常。
+			// 如果我们发现异常，我们将回滚这样就不会有任何混乱在数据库中。
+			// 然后我们将重新抛出异常，以便它可以按照开发人员认为适合其应用程序的方式进行处理。
             catch (Exception $e) {
                 $this->getPdo()->exec('ROLLBACK TRAN');
 
@@ -67,7 +68,7 @@ class SqlServerConnection extends Connection
 
     /**
      * Get the default query grammar instance.
-	 * 获取默认查询语法实例
+	 * 得到默认查询语法实例
      *
      * @return \Illuminate\Database\Query\Grammars\SqlServerGrammar
      */
@@ -78,7 +79,7 @@ class SqlServerConnection extends Connection
 
     /**
      * Get a schema builder instance for the connection.
-	 * 获取连接的架构构建器实例
+	 * 得到连接的架构构建器实例
      *
      * @return \Illuminate\Database\Schema\SqlServerBuilder
      */
@@ -93,7 +94,7 @@ class SqlServerConnection extends Connection
 
     /**
      * Get the default schema grammar instance.
-	 * 获取默认模式语法实例
+	 * 得到默认模式语法实例
      *
      * @return \Illuminate\Database\Schema\Grammars\SqlServerGrammar
      */
@@ -104,7 +105,7 @@ class SqlServerConnection extends Connection
 
     /**
      * Get the default post processor instance.
-	 * 获取默认的后处理器实例
+	 * 得到默认请求进行实例
      *
      * @return \Illuminate\Database\Query\Processors\SqlServerProcessor
      */
@@ -115,12 +116,19 @@ class SqlServerConnection extends Connection
 
     /**
      * Get the Doctrine DBAL driver.
-	 * 获取Doctrine DBAL驱动程序
+	 * 得到DBAL驱动
      *
      * @return \Doctrine\DBAL\Driver\PDOSqlsrv\Driver
      */
     protected function getDoctrineDriver()
     {
+        if (! class_exists(DoctrineDriver::class)) {
+            throw new LogicException(
+                'Laravel v6 is only compatible with doctrine/dbal 2, in order to use this feature you must require the package "doctrine/dbal:^2.6".'
+            );
+			//Laravel v6仅与doctrin/dbal 2兼容，要使用此功能，您必须需要包"doctrin/dbal:^2.6".
+        }
+
         return new DoctrineDriver;
     }
 }

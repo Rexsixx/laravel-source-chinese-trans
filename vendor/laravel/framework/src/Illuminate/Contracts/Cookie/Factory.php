@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，Cookie，工厂
+ * 契约，Cookie工厂接口
  */
 
 namespace Illuminate\Contracts\Cookie;
@@ -13,12 +13,12 @@ interface Factory
      *
      * @param  string  $name
      * @param  string  $value
-     * @param  int     $minutes
+     * @param  int  $minutes
      * @param  string|null  $path
      * @param  string|null  $domain
-     * @param  bool|null    $secure
-     * @param  bool    $httpOnly
-     * @param  bool         $raw
+     * @param  bool|null  $secure
+     * @param  bool  $httpOnly
+     * @param  bool  $raw
      * @param  string|null  $sameSite
      * @return \Symfony\Component\HttpFoundation\Cookie
      */
@@ -26,15 +26,15 @@ interface Factory
 
     /**
      * Create a cookie that lasts "forever" (five years).
-	 * 做一块“永远”（5年）的cookie
+	 * 创建一个永远的cookie，5年
      *
      * @param  string  $name
      * @param  string  $value
      * @param  string|null  $path
      * @param  string|null  $domain
-     * @param  bool|null    $secure
-     * @param  bool    $httpOnly
-     * @param  bool         $raw
+     * @param  bool|null  $secure
+     * @param  bool  $httpOnly
+     * @param  bool  $raw
      * @param  string|null  $sameSite
      * @return \Symfony\Component\HttpFoundation\Cookie
      */
@@ -42,7 +42,7 @@ interface Factory
 
     /**
      * Expire the given cookie.
-	 * 使给定的cookie过期
+	 * cookie超时
      *
      * @param  string  $name
      * @param  string|null  $path

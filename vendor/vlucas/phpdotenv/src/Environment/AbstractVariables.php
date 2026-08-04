@@ -14,13 +14,11 @@ use ReturnTypeWillChange;
  * 这是抽象变量的实现。
  *
  * Extend this as required, implementing "get", "set", and "clear".
- * 根据需要扩展它，实现“get”、“set”和“clear”。
  */
 abstract class AbstractVariables implements VariablesInterface
 {
     /**
      * Are we immutable?
-	 * 我们是不可变的吗?
      *
      * @var bool
      */
@@ -28,7 +26,6 @@ abstract class AbstractVariables implements VariablesInterface
 
     /**
      * The record of loaded variables.
-	 * 载入变量的记录
      *
      * @var \Dotenv\Environment\Adapter\ArrayAdapter
      */
@@ -36,7 +33,6 @@ abstract class AbstractVariables implements VariablesInterface
 
     /**
      * Create a new environment variables instance.
-	 * 创建一个新的环境变量实例
      *
      * @param bool $immutable
      *
@@ -50,7 +46,6 @@ abstract class AbstractVariables implements VariablesInterface
 
     /**
      * Get an environment variable.
-	 * 获取一个环境变量
      *
      * @param string $name
      *
@@ -69,7 +64,6 @@ abstract class AbstractVariables implements VariablesInterface
 
     /**
      * Get an environment variable.
-	 * 获取一个环境变量
      *
      * @param string $name
      *
@@ -79,7 +73,6 @@ abstract class AbstractVariables implements VariablesInterface
 
     /**
      * Set an environment variable.
-	 * 设置环境变量
      *
      * @param string      $name
      * @param string|null $value
@@ -106,7 +99,6 @@ abstract class AbstractVariables implements VariablesInterface
 
     /**
      * Set an environment variable.
-	 * 设置环境变量
      *
      * @param string      $name
      * @param string|null $value
@@ -117,7 +109,6 @@ abstract class AbstractVariables implements VariablesInterface
 
     /**
      * Clear an environment variable.
-	 * 清除一个环境变量
      *
      * @param string $name
      *
@@ -141,7 +132,6 @@ abstract class AbstractVariables implements VariablesInterface
 
     /**
      * Clear an environment variable.
-	 * 清除一个环境变量
      *
      * @param string $name
      *
@@ -151,7 +141,6 @@ abstract class AbstractVariables implements VariablesInterface
 
     /**
      * Determine if the environment is immutable.
-	 * 确定环境是否是不可变的
      *
      * @return bool
      */
@@ -162,7 +151,6 @@ abstract class AbstractVariables implements VariablesInterface
 
     /**
      * Tells whether environment variable has been defined.
-	 * 告知环境变量是否已定义
      *
      * @param string $name
      *

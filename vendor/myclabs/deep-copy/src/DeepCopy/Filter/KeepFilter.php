@@ -1,6 +1,6 @@
 <?php
 /**
- * 深拷贝，过滤，保持过滤器
+ * DeepCopy，过滤器，保持过滤器
  */
 
 namespace DeepCopy\Filter;
@@ -9,7 +9,6 @@ class KeepFilter implements Filter
 {
     /**
      * Keeps the value of the object property.
-	 * 保持对象属性的值
      *
      * {@inheritdoc}
      */

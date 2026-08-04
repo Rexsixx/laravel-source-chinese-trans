@@ -1,6 +1,6 @@
 <?php
 /**
- * 深拷贝，过滤，置换过滤器
+ * DeepCopy，过滤器，替换过滤器
  */
 
 namespace DeepCopy\Filter;
@@ -33,9 +33,7 @@ class ReplaceFilter implements Filter
     public function apply($object, $property, $objectCopier)
     {
         $reflectionProperty = ReflectionHelper::getProperty($object, $property);
-        if (PHP_VERSION_ID < 80100) {
-            $reflectionProperty->setAccessible(true);
-        }
+        $reflectionProperty->setAccessible(true);
 
         $value = call_user_func($this->callback, $reflectionProperty->getValue($object));
 

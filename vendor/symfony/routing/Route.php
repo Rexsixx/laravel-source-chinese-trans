@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，路由
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\Routing;
 
 /**
  * A Route describes a route and its parameters.
- * 一条路线描述了一条路线及其参数。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>

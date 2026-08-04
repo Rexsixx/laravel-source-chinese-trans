@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Mime，异常，异常接口
- */
 
 /*
  * This file is part of the Symfony package.

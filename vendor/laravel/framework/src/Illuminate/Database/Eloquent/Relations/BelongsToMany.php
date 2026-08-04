@@ -1,16 +1,16 @@
 <?php
 /**
- * Illuminate，数据库，Eloquent，关系，归属众多
+ * 数据库，Eloquent从属许多
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
 
-use Illuminate\Support\Str;
-use InvalidArgumentException;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 class BelongsToMany extends Relation
 {
@@ -18,7 +18,7 @@ class BelongsToMany extends Relation
 
     /**
      * The intermediate table for the relation.
-	 * 关系的中间表
+	 * 关系中间表
      *
      * @var string
      */
@@ -26,7 +26,7 @@ class BelongsToMany extends Relation
 
     /**
      * The foreign key of the parent model.
-	 * 父模型的外键
+	 * 模型的外键
      *
      * @var string
      */
@@ -34,7 +34,7 @@ class BelongsToMany extends Relation
 
     /**
      * The associated key of the relation.
-	 * 关联的关联键
+	 * 外联键
      *
      * @var string
      */
@@ -42,7 +42,7 @@ class BelongsToMany extends Relation
 
     /**
      * The key name of the parent model.
-	 * 父模型的键名
+	 * 父模型键名
      *
      * @var string
      */
@@ -50,7 +50,7 @@ class BelongsToMany extends Relation
 
     /**
      * The key name of the related model.
-	 * 相关模型的键名
+	 * 相关模型键名
      *
      * @var string
      */
@@ -58,7 +58,7 @@ class BelongsToMany extends Relation
 
     /**
      * The "name" of the relationship.
-	 * 关系的“名称”
+	 * 关联名称
      *
      * @var string
      */
@@ -98,7 +98,7 @@ class BelongsToMany extends Relation
 
     /**
      * Indicates if timestamps are available on the pivot table.
-	 * 指示数据透视表上是否有可用的时间戳
+	 * 指明数据透视表上是否有可用的时间戳
      *
      * @var bool
      */
@@ -106,7 +106,7 @@ class BelongsToMany extends Relation
 
     /**
      * The custom pivot table column for the created_at timestamp.
-	 * 用于created_at时间戳的自定义数据透视表列
+	 * 自定义数据透视表列为created_at时间戳
      *
      * @var string
      */
@@ -114,7 +114,7 @@ class BelongsToMany extends Relation
 
     /**
      * The custom pivot table column for the updated_at timestamp.
-	 * updated_at时间戳的自定义数据透视表列
+	 * 自定义数据透视表列为updated_at时间戳
      *
      * @var string
      */
@@ -122,7 +122,7 @@ class BelongsToMany extends Relation
 
     /**
      * The class name of the custom pivot model to use for the relationship.
-	 * 用于关系的自定义数据透视模型的类名
+	 * 自定义数据透视模型的类名用于关系的
      *
      * @var string
      */
@@ -130,7 +130,7 @@ class BelongsToMany extends Relation
 
     /**
      * The name of the accessor to use for the "pivot" relationship.
-	 * 要用于“枢轴”关系的访问器的名称
+	 * 要用于"支点"关系的访问器的名称
      *
      * @var string
      */
@@ -138,7 +138,7 @@ class BelongsToMany extends Relation
 
     /**
      * The count of self joins.
-	 * 自连接的计数
+	 * 自连接计数
      *
      * @var int
      */
@@ -146,7 +146,7 @@ class BelongsToMany extends Relation
 
     /**
      * Create a new belongs to many relationship instance.
-	 * 创建一个新的属于多个关系实例
+	 * 创建新的属于多个关系实例
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Model  $parent
@@ -173,7 +173,7 @@ class BelongsToMany extends Relation
 
     /**
      * Attempt to resolve the intermediate table name from the given string.
-	 * 尝试从给定字符串中解析中间表名
+	 * 尝试解析中间表名从给定字符串中
      *
      * @param  string  $table
      * @return string
@@ -199,7 +199,7 @@ class BelongsToMany extends Relation
 
     /**
      * Set the base constraints on the relation query.
-	 * 在关系查询上设置基本约束
+	 * 设置基本约束在关系查询上
      *
      * @return void
      */
@@ -214,7 +214,7 @@ class BelongsToMany extends Relation
 
     /**
      * Set the join clause for the relation query.
-	 * 为关系查询设置连接子句
+	 * 设置连接子句为关系查询
      *
      * @param  \Illuminate\Database\Eloquent\Builder|null  $query
      * @return $this
@@ -226,8 +226,8 @@ class BelongsToMany extends Relation
         // We need to join to the intermediate table on the related model's primary
         // key column with the intermediate table's foreign key for the related
         // model instance. Then we can set the "where" for the parent models.
-		// 我们需要在相关模型的主键列上将中间表与相关模型实例的外键进行关联操作。
-		// 然后我们可以为父模型设置“where”。
+		// 我们需要使用相关实例的中间表的外键连接到相关模型主键列上的中间表。
+		// 然后，我们可以为父模型设置“位置”。
         $baseTable = $this->related->getTable();
 
         $key = $baseTable.'.'.$this->relatedKey;
@@ -239,7 +239,7 @@ class BelongsToMany extends Relation
 
     /**
      * Set the where clause for the relation query.
-	 * 为关系查询设置where子句
+	 * 设置where子句为关系查询
      *
      * @return $this
      */
@@ -273,7 +273,7 @@ class BelongsToMany extends Relation
      * Initialize the relation on a set of models.
 	 * 初始化一组模型上的关系
      *
-     * @param  array   $models
+     * @param  array  $models
      * @param  string  $relation
      * @return array
      */
@@ -288,9 +288,9 @@ class BelongsToMany extends Relation
 
     /**
      * Match the eagerly loaded results to their parents.
-	 * 将急切加载的结果与他们的父母匹配
+	 * 匹配急切加载的结果与他们的父母
      *
-     * @param  array   $models
+     * @param  array  $models
      * @param  \Illuminate\Database\Eloquent\Collection  $results
      * @param  string  $relation
      * @return array
@@ -302,8 +302,8 @@ class BelongsToMany extends Relation
         // Once we have an array dictionary of child objects we can easily match the
         // children back to their parent using the dictionary and the keys on the
         // the parent models. Then we will return the hydrated models back out.
-		// 一旦我们有了一个包含子对象的数组字典，就可以通过该字典以及父模型上的键轻松地将子对象与其父对象进行匹配。
-		// 然后我们会把水化的模型退回来。
+		// 一旦我们有了子对象的数组字典，我们就可以使用字典和父模型上的键轻松地将子对象与父对象进行匹配。
+		// 然后我们将把水合模型放回原处。
         foreach ($models as $model) {
             if (isset($dictionary[$key = $model->{$this->parentKey}])) {
                 $model->setRelation(
@@ -327,8 +327,8 @@ class BelongsToMany extends Relation
         // First we will build a dictionary of child models keyed by the foreign key
         // of the relation so that we will easily and quickly match them to their
         // parents without having a possibly slow inner loops for every models.
-		// 首先，我们将构建一个基于关联关系外键的子模型字典，以便能够轻松且快速地将它们与父模型进行匹配，
-		// 而无需为每个模型都进行可能较为缓慢的内部循环操作。
+		// 首先，我们将建立一个由关系的外键键控的子模型字典，
+		// 这样我们就可以轻松快速地将它们与它们的父母匹配，而不会对每个模型产生可能缓慢的内部循环。
         $dictionary = [];
 
         foreach ($results as $result) {
@@ -340,7 +340,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get the class being used for pivot models.
-	 * 获取用于pivot模型的类
+	 * 得到用于pivot模型的类
      *
      * @return string
      */
@@ -379,11 +379,11 @@ class BelongsToMany extends Relation
 
     /**
      * Set a where clause for a pivot table column.
-	 * 为数据透视表列设置where子句
+	 * 设置where子句为数据透视表列
      *
      * @param  string  $column
-     * @param  string  $operator
-     * @param  mixed   $value
+     * @param  string|null  $operator
+     * @param  mixed  $value
      * @param  string  $boolean
      * @return $this
      */
@@ -396,12 +396,12 @@ class BelongsToMany extends Relation
 
     /**
      * Set a "where in" clause for a pivot table column.
-	 * 为数据透视表列设置“where in”子句
+	 * 设置"where in"子句为数据透视表列
      *
      * @param  string  $column
-     * @param  mixed   $values
+     * @param  mixed  $values
      * @param  string  $boolean
-     * @param  bool    $not
+     * @param  bool  $not
      * @return $this
      */
     public function wherePivotIn($column, $values, $boolean = 'and', $not = false)
@@ -413,11 +413,11 @@ class BelongsToMany extends Relation
 
     /**
      * Set an "or where" clause for a pivot table column.
-	 * 为数据透视表列设置“or where”子句
+	 * 设置"or where"子句为数据透视表列
      *
      * @param  string  $column
-     * @param  string  $operator
-     * @param  mixed   $value
+     * @param  string|null  $operator
+     * @param  mixed  $value
      * @return $this
      */
     public function orWherePivot($column, $operator = null, $value = null)
@@ -427,14 +427,15 @@ class BelongsToMany extends Relation
 
     /**
      * Set a where clause for a pivot table column.
-	 * 为数据透视表列设置where子句。
+	 * 设置where子句为数据透视表列
      *
      * In addition, new pivot records will receive this value.
-	 * 此外，新的pivot记录将接收此值。
      *
      * @param  string|array  $column
      * @param  mixed  $value
      * @return $this
+     *
+     * @throws \InvalidArgumentException
      */
     public function withPivotValue($column, $value = null)
     {
@@ -457,15 +458,42 @@ class BelongsToMany extends Relation
 
     /**
      * Set an "or where in" clause for a pivot table column.
-	 * 为数据透视表列设置“or where in”子句
+	 * 设置"or where in"子句为数据透视表列
      *
      * @param  string  $column
-     * @param  mixed   $values
+     * @param  mixed  $values
      * @return $this
      */
     public function orWherePivotIn($column, $values)
     {
         return $this->wherePivotIn($column, $values, 'or');
+    }
+
+    /**
+     * Set a "where not in" clause for a pivot table column.
+	 * 设置"where not in"子句为数据透视表列
+     *
+     * @param  string  $column
+     * @param  mixed  $values
+     * @param  string  $boolean
+     * @return $this
+     */
+    public function wherePivotNotIn($column, $values, $boolean = 'and')
+    {
+        return $this->wherePivotIn($column, $values, $boolean, true);
+    }
+
+    /**
+     * Set an "or where not in" clause for a pivot table column.
+	 * 设置"or where not in"子句为数据透视表列
+     *
+     * @param  string  $column
+     * @param  mixed  $values
+     * @return $this
+     */
+    public function orWherePivotNotIn($column, $values)
+    {
+        return $this->wherePivotNotIn($column, $values, 'or');
     }
 
     /**
@@ -487,7 +515,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get the first related model record matching the attributes or instantiate it.
-	 * 获取与属性匹配的第一个相关模型记录，或者实例化它。
+	 * 得到与属性匹配的第一个相关模型记录，或者实例化它。
      *
      * @param  array  $attributes
      * @return \Illuminate\Database\Eloquent\Model
@@ -503,11 +531,11 @@ class BelongsToMany extends Relation
 
     /**
      * Get the first related record matching the attributes or create it.
-	 * 获取匹配属性的第一个相关记录，或者创建它。
+	 * 得到匹配属性的第一个相关记录，或者创建它。
      *
      * @param  array  $attributes
      * @param  array  $joining
-     * @param  bool   $touch
+     * @param  bool  $touch
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function firstOrCreate(array $attributes, array $joining = [], $touch = true)
@@ -526,7 +554,7 @@ class BelongsToMany extends Relation
      * @param  array  $attributes
      * @param  array  $values
      * @param  array  $joining
-     * @param  bool   $touch
+     * @param  bool  $touch
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function updateOrCreate(array $attributes, array $values = [], array $joining = [], $touch = true)
@@ -544,7 +572,7 @@ class BelongsToMany extends Relation
 
     /**
      * Find a related model by its primary key.
-	 * 根据主键查找相关模型
+	 * 查找相关模型根据主键
      *
      * @param  mixed  $id
      * @param  array  $columns
@@ -553,13 +581,13 @@ class BelongsToMany extends Relation
     public function find($id, $columns = ['*'])
     {
         return is_array($id) ? $this->findMany($id, $columns) : $this->where(
-            $this->getRelated()->getQualifiedKeyName(), '=', $id
+            $this->getRelated()->getQualifiedKeyName(), '=', $this->parseId($id)
         )->first($columns);
     }
 
     /**
      * Find multiple related models by their primary keys.
-	 * 通过主键查找多个相关模型
+	 * 查找多个相关模型通过主键
      *
      * @param  mixed  $ids
      * @param  array  $columns
@@ -568,7 +596,7 @@ class BelongsToMany extends Relation
     public function findMany($ids, $columns = ['*'])
     {
         return empty($ids) ? $this->getRelated()->newCollection() : $this->whereIn(
-            $this->getRelated()->getQualifiedKeyName(), $ids
+            $this->getRelated()->getQualifiedKeyName(), $this->parseIds($ids)
         )->get($columns);
     }
 
@@ -598,10 +626,25 @@ class BelongsToMany extends Relation
     }
 
     /**
+     * Add a basic where clause to the query, and return the first result.
+	 * 向查询添加一个基本的where子句，并返回第一个结果。
+     *
+     * @param  \Closure|string|array  $column
+     * @param  mixed  $operator
+     * @param  mixed  $value
+     * @param  string  $boolean
+     * @return \Illuminate\Database\Eloquent\Model|static
+     */
+    public function firstWhere($column, $operator = null, $value = null, $boolean = 'and')
+    {
+        return $this->where($column, $operator, $value, $boolean)->first();
+    }
+
+    /**
      * Execute the query and get the first result.
 	 * 执行查询并获得第一个结果
      *
-     * @param  array   $columns
+     * @param  array  $columns
      * @return mixed
      */
     public function first($columns = ['*'])
@@ -644,7 +687,7 @@ class BelongsToMany extends Relation
 
     /**
      * Execute the query as a "select" statement.
-	 * 以“select”语句的形式执行查询
+	 * 执行查询以"select"语句的形式
      *
      * @param  array  $columns
      * @return \Illuminate\Database\Eloquent\Collection
@@ -654,7 +697,8 @@ class BelongsToMany extends Relation
         // First we'll add the proper select columns onto the query so it is run with
         // the proper columns. Then, we will get the results and hydrate out pivot
         // models with the result of those columns as a separate model relation.
-		// 首先，我们要在查询中添加相应的选择列，以便在运行时使用正确的列。
+		// 首先，我们将在查询中添加正确的选择列，以便使用正确的列运行查询。
+		// 然后，我们将得到结果，并将这些柱的结果作为单独的模型关系来水合枢轴模型。
         $builder = $this->query->applyScopes();
 
         $columns = $builder->getQuery()->columns ? [] : $columns;
@@ -668,8 +712,8 @@ class BelongsToMany extends Relation
         // If we actually found models we will also eager load any relationships that
         // have been specified as needing to be eager loaded. This will solve the
         // n + 1 query problem for the developer and also increase performance.
-		// 如果我们真的找到了相应的模型，那么我们还会自动加载那些已被指定需要进行“懒加载”的关系。
-		// 这将解决开发人员面临的“n + 1 查询”问题，并且还能提高性能。
+		// 如果我们真的找到了模型，我们也会渴望加载任何被指定为需要渴望加载的关系。
+		// 这将为开发人员解决n+1查询问题，并提高性能。
         if (count($models) > 0) {
             $models = $builder->eagerLoadRelations($models);
         }
@@ -679,7 +723,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get the select columns for the relation query.
-	 * 获取关系查询的选择列
+	 * 得到关系查询的选择列
      *
      * @param  array  $columns
      * @return array
@@ -695,7 +739,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get the pivot columns for the relation.
-	 * 得到关系的主列。
+	 * 得到关系的主列
      *
      * "pivot_" is prefixed ot each column for easy removal later.
      *
@@ -712,9 +756,9 @@ class BelongsToMany extends Relation
 
     /**
      * Get a paginator for the "select" statement.
-	 * 获取“select”语句的分页器
+	 * 得到"select"语句的分页器
      *
-     * @param  int  $perPage
+     * @param  int|null  $perPage
      * @param  array  $columns
      * @param  string  $pageName
      * @param  int|null  $page
@@ -733,7 +777,7 @@ class BelongsToMany extends Relation
      * Paginate the given query into a simple paginator.
 	 * 将给定查询分页到一个简单的分页器中
      *
-     * @param  int  $perPage
+     * @param  int|null  $perPage
      * @param  array  $columns
      * @param  string  $pageName
      * @param  int|null  $page
@@ -814,6 +858,23 @@ class BelongsToMany extends Relation
     }
 
     /**
+     * Get a lazy collection for the given query.
+	 * 得到给定查询的惰性集合
+     *
+     * @return \Illuminate\Support\LazyCollection
+     */
+    public function cursor()
+    {
+        $this->query->addSelect($this->shouldSelect());
+
+        return $this->query->cursor()->map(function ($model) {
+            $this->hydratePivotRelation([$model]);
+
+            return $model;
+        });
+    }
+
+    /**
      * Hydrate the pivot table relationship on the models.
 	 * 在模型上建立透视表关系
      *
@@ -825,8 +886,8 @@ class BelongsToMany extends Relation
         // To hydrate the pivot relationship, we will just gather the pivot attributes
         // and create a new Pivot model, which is basically a dynamic model that we
         // will set the attributes, table, and connections on it so it will work.
-		// 为了强化这种核心关系，我们将只需收集核心属性并创建一个新的“核心”模型。
-		// 这个模型本质上是一个动态模型，我们将在其中设置属性、表格和连接，以便使其能够正常运行。
+		// 为了优化枢轴关系，我们只需收集枢轴属性并创建一个新的枢轴模型，
+		// 这基本上是一个动态模型，我们将在其上设置属性、表和连接，使其正常工作。
         foreach ($models as $model) {
             $model->setRelation($this->accessor, $this->newExistingPivot(
                 $this->migratePivotAttributes($model)
@@ -836,7 +897,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get the pivot attributes from a model.
-	 * 从模型中获取枢轴属性
+	 * 得到枢轴属性从模型中
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return array
@@ -849,8 +910,8 @@ class BelongsToMany extends Relation
             // To get the pivots attributes we will just take any of the attributes which
             // begin with "pivot_" and add those to this arrays, as well as unsetting
             // them from the parent's models since they exist in a different table.
-			// 为了获取这些关键属性，我们只需选取任何以“pivot_”开头的属性，
-			// 并将其添加到这个数组中，同时从父模型中移除这些属性，因为它们存在于不同的表中。
+			// 为了获取枢轴属性，我们只需获取以“pivot_”开头的任何属性，并将其添加到此数组中，
+			// 同时将其从父模型中取消设置，因为它们存在于不同的表中。
             if (strpos($key, 'pivot_') === 0) {
                 $values[substr($key, 6)] = $value;
 
@@ -902,7 +963,7 @@ class BelongsToMany extends Relation
 
     /**
      * Touch all of the related models for the relationship.
-	 * 触摸关系的所有相关模型。
+	 * 触摸关系的所有相关模型
      *
      * E.g.: Touch all roles associated with this user.
      *
@@ -919,8 +980,8 @@ class BelongsToMany extends Relation
         // If we actually have IDs for the relation, we will run the query to update all
         // the related model's timestamps, to make sure these all reflect the changes
         // to the parent models. This will help us keep any caching synced up here.
-		// 如果我们确实掌握了这种关系的标识信息，我们就会执行查询操作，更新所有相关模型的时间戳，
-		// 以确保这些时间戳能够反映父模型的变化情况。这样做有助于我们保持此处的缓存同步。
+		// 如果我们确实有关系的ID，我们将运行查询来更新所有相关模型的时间戳，
+		// 以确保这些时间戳都反映了对父模型的更改。这将有助于我们在此处保持任何缓存的同步。
         if (count($ids = $this->allRelatedIds()) > 0) {
             $this->getRelated()->newQueryWithoutRelationships()->whereIn($key, $ids)->update($columns);
         }
@@ -928,7 +989,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get all of the IDs for the related models.
-	 * 获取相关模型的所有id
+	 * 得到相关模型的所有IDs
      *
      * @return \Illuminate\Support\Collection
      */
@@ -943,7 +1004,7 @@ class BelongsToMany extends Relation
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  array  $pivotAttributes
-     * @param  bool   $touch
+     * @param  bool  $touch
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function save(Model $model, array $pivotAttributes = [], $touch = true)
@@ -980,7 +1041,7 @@ class BelongsToMany extends Relation
      *
      * @param  array  $attributes
      * @param  array  $joining
-     * @param  bool   $touch
+     * @param  bool  $touch
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function create(array $attributes = [], array $joining = [], $touch = true)
@@ -990,8 +1051,8 @@ class BelongsToMany extends Relation
         // Once we save the related model, we need to attach it to the base model via
         // through intermediate table so we'll use the existing "attach" method to
         // accomplish this which will insert the record and any more attributes.
-		// 一旦我们保存了相关模型，就需要通过中间表将其附加到基础模型上，
-		// 因此我们将使用现有的“attach”方法来完成这一操作，该方法会插入记录以及任何其他属性。
+		// 一旦我们保存了相关模型，我们需要通过中间表将其附加到基础模型上，
+		// 因此我们将使用现有的"附加"方法来实现这一点，该方法将插入记录和任何其他属性。
         $instance->save(['touch' => false]);
 
         $this->attach($instance, $joining, $touch);
@@ -1003,11 +1064,11 @@ class BelongsToMany extends Relation
      * Create an array of new instances of the related models.
 	 * 创建相关模型的新实例数组
      *
-     * @param  array  $records
+     * @param  iterable  $records
      * @param  array  $joinings
      * @return array
      */
-    public function createMany(array $records, array $joinings = [])
+    public function createMany(iterable $records, array $joinings = [])
     {
         $instances = [];
 
@@ -1022,7 +1083,7 @@ class BelongsToMany extends Relation
 
     /**
      * Add the constraints for a relationship query.
-	 * 为关系查询添加约束
+	 * 添加约束为关系查询
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
@@ -1042,7 +1103,7 @@ class BelongsToMany extends Relation
 
     /**
      * Add the constraints for a relationship query on the same table.
-	 * 为同一表上的关系查询添加约束
+	 * 添加约束为同一表上的关系查询
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
@@ -1064,7 +1125,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get the key for comparing against the parent key in "has" query.
-	 * 获取用于与“has”查询中的父键进行比较的键
+	 * 得到用于与"has"查询中的父键进行比较的键。
      *
      * @return string
      */
@@ -1075,7 +1136,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get a relationship join table hash.
-	 * 获取关系连接表散列
+	 * 得到关系连接表散列
      *
      * @return string
      */
@@ -1104,7 +1165,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get the name of the "created at" column.
-	 * 获取“创建位置”列的名称
+	 * 得到"创建位置"列的名称
      *
      * @return string
      */
@@ -1115,7 +1176,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get the name of the "updated at" column.
-	 * 获取“更新时间”列的名称
+	 * 得到"更新时间"列的名称
      *
      * @return string
      */
@@ -1126,7 +1187,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get the foreign key for the relation.
-	 * 获取关系的外键
+	 * 得到关系的外键
      *
      * @return string
      */
@@ -1137,7 +1198,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get the fully qualified foreign key for the relation.
-	 * 获取关系的完全限定外键
+	 * 得到关系的完全限定外键
      *
      * @return string
      */
@@ -1148,7 +1209,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get the "related key" for the relation.
-	 * 获取该关系的“相关键”
+	 * 得到该关系的"相关键"
      *
      * @return string
      */
@@ -1159,7 +1220,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get the fully qualified "related key" for the relation.
-	 * 获取关系的完全限定“相关键”
+	 * 得到关系的完全限定"相关键"
      *
      * @return string
      */
@@ -1170,7 +1231,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get the parent key for the relationship.
-	 * 获取关系的父键
+	 * 得到关系的父键
      *
      * @return string
      */
@@ -1181,7 +1242,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get the fully qualified parent key name for the relation.
-	 * 获取关系的完全限定父键名
+	 * 得到关系的完全限定父键名
      *
      * @return string
      */
@@ -1192,7 +1253,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get the related key for the relationship.
-	 * 获取关系的相关键
+	 * 得到关系的相关键
      *
      * @return string
      */
@@ -1203,7 +1264,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get the intermediate table for the relationship.
-	 * 获取关系的中间表
+	 * 得到关系的中间表
      *
      * @return string
      */
@@ -1214,7 +1275,7 @@ class BelongsToMany extends Relation
 
     /**
      * Get the relationship name for the relationship.
-	 * 获取关系的关系名称
+	 * 得到关系的关系名称
      *
      * @return string
      */
@@ -1225,12 +1286,23 @@ class BelongsToMany extends Relation
 
     /**
      * Get the name of the pivot accessor for this relationship.
-	 * 获取此关系的数据透视访问器的名称
+	 * 得到此关系的数据透视访问器的名称
      *
      * @return string
      */
     public function getPivotAccessor()
     {
         return $this->accessor;
+    }
+
+    /**
+     * Get the pivot columns for this relationship.
+	 * 得到这个关系的主列
+     *
+     * @return array
+     */
+    public function getPivotColumns()
+    {
+        return $this->pivotColumns;
     }
 }

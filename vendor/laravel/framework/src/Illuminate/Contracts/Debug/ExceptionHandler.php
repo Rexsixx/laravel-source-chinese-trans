@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，调试，异常处理程序
+ * 契约，调试异常处理接口
  */
 
 namespace Illuminate\Contracts\Debug;
@@ -15,6 +15,8 @@ interface ExceptionHandler
      *
      * @param  \Exception  $e
      * @return void
+     *
+     * @throws \Exception
      */
     public function report(Exception $e);
 
@@ -29,17 +31,19 @@ interface ExceptionHandler
 
     /**
      * Render an exception into an HTTP response.
-	 * 将异常呈现到HTTP响应中
+	 * 呈现异常至HTTP响应中
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $e
      * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Exception
      */
     public function render($request, Exception $e);
 
     /**
      * Render an exception to the console.
-	 * 向控制台呈现一个异常
+	 * 呈现异常至控制台
      *
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
      * @param  \Exception  $e

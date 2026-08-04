@@ -31,8 +31,6 @@ final class ReturnTypeNode extends TypeNodeAbstract
 
     /**
      * @deprecated use hasReturnStatement
-     *
-     * @return bool
      */
     public function isVoid()
     {

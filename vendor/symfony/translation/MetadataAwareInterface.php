@@ -16,13 +16,14 @@ namespace Symfony\Component\Translation;
 
 /**
  * MetadataAwareInterface.
- *
+ * 元数据意识接口。
  * @author Fabien Potencier <fabien@symfony.com>
  */
 interface MetadataAwareInterface
 {
     /**
      * Gets metadata for the given domain and key.
+	 * 获取给定域和密钥的元数据。
      *
      * Passing an empty domain will return an array with all metadata indexed by
      * domain and then by key. Passing an empty key will return an array with all

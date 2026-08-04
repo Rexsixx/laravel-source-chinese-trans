@@ -18,13 +18,11 @@ interface RequestContextAwareInterface
 {
     /**
      * Sets the request context.
-	 * 设置请求上下文
      */
     public function setContext(RequestContext $context);
 
     /**
      * Gets the request context.
-	 * 获取请求上下文
      *
      * @return RequestContext The context
      */

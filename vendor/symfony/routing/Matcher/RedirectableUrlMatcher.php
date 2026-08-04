@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，匹配程序，可转发Url 匹配程序
- */
 
 /*
  * This file is part of the Symfony package.

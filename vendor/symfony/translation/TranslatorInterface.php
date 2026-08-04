@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，转换器接口
+ * Symfony，组件，翻译，翻译器接口
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Contracts\Translation\LocaleAwareInterface;
 
 /**
  * TranslatorInterface.
- * 转换器接口
+ * 翻译器接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -29,7 +29,6 @@ interface TranslatorInterface extends LocaleAwareInterface
 {
     /**
      * Translates the given message.
-	 * 翻译给定的消息
      *
      * @param string      $id         The message id (may also be an object that can be cast to string)
      * @param array       $parameters An array of parameters for the message
@@ -44,7 +43,6 @@ interface TranslatorInterface extends LocaleAwareInterface
 
     /**
      * Translates the given choice message by choosing a translation according to a number.
-	 * 根据数字选择一种翻译，翻译给定的选择信息。
      *
      * @param string      $id         The message id (may also be an object that can be cast to string)
      * @param int         $number     The number to use to find the index of the message
@@ -60,7 +58,6 @@ interface TranslatorInterface extends LocaleAwareInterface
 
     /**
      * Sets the current locale.
-	 * 设置当前区域设置
      *
      * @param string $locale The locale
      *
@@ -70,7 +67,6 @@ interface TranslatorInterface extends LocaleAwareInterface
 
     /**
      * Returns the current locale.
-	 * 返回当前语言环境
      *
      * @return string The locale
      */

@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http基础，响应
- */
 
 /*
  * This file is part of the Symfony package.
@@ -80,7 +77,7 @@ class Response
     public const HTTP_PRECONDITION_REQUIRED = 428;                                       // RFC6585
     public const HTTP_TOO_MANY_REQUESTS = 429;                                           // RFC6585
     public const HTTP_REQUEST_HEADER_FIELDS_TOO_LARGE = 431;                             // RFC6585
-    public const HTTP_UNAVAILABLE_FOR_LEGAL_REASONS = 451;                               // RFC7725
+    public const HTTP_UNAVAILABLE_FOR_LEGAL_REASONS = 451;
     public const HTTP_INTERNAL_SERVER_ERROR = 500;
     public const HTTP_NOT_IMPLEMENTED = 501;
     public const HTTP_BAD_GATEWAY = 502;
@@ -387,7 +384,6 @@ class Response
             fastcgi_finish_request();
         } elseif (!\in_array(\PHP_SAPI, ['cli', 'phpdbg'], true)) {
             static::closeOutputBuffers(0, true);
-            flush();
         }
 
         return $this;

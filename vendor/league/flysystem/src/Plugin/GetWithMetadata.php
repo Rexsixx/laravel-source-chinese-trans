@@ -12,7 +12,6 @@ class GetWithMetadata extends AbstractPlugin
 {
     /**
      * Get the method name.
-	 * 获取方法名称
      *
      * @return string
      */
@@ -24,8 +23,8 @@ class GetWithMetadata extends AbstractPlugin
     /**
      * Get metadata for an object with required metadata.
      *
-     * @param string   $path     path to file
-     * @param string[] $metadata metadata keys
+     * @param string $path     path to file
+     * @param array  $metadata metadata keys
      *
      * @throws InvalidArgumentException
      * @throws FileNotFoundException

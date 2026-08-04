@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，资源，资源委托
+ * Http，委托至资源
  */
 
 namespace Illuminate\Http\Resources;
@@ -14,7 +14,7 @@ trait DelegatesToResource
 
     /**
      * Get the value of the resource's route key.
-	 * 获取资源的路由键的值
+	 * 得到资源的路由键的值
      *
      * @return mixed
      */
@@ -25,7 +25,7 @@ trait DelegatesToResource
 
     /**
      * Get the route key for the resource.
-	 * 获取资源的路由键
+	 * 得到资源的路由键
      *
      * @return string
      */
@@ -62,7 +62,7 @@ trait DelegatesToResource
 
     /**
      * Get the value for a given offset.
-	 * 获取给定偏移量的值
+	 * 得到给定偏移量的值
      *
      * @param  mixed  $offset
      * @return mixed
@@ -123,7 +123,7 @@ trait DelegatesToResource
 
     /**
      * Dynamically get properties from the underlying resource.
-	 * 从底层资源动态获取属性
+	 * 动态获取属性从底层资源
      *
      * @param  string  $key
      * @return mixed
@@ -135,7 +135,7 @@ trait DelegatesToResource
 
     /**
      * Dynamically pass method calls to the underlying resource.
-	 * 动态地将方法调用传递给底层资源
+	 * 动态调取方法从底层资源
      *
      * @param  string  $method
      * @param  array  $parameters

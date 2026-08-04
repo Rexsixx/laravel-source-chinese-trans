@@ -1,18 +1,18 @@
 <?php
 /**
- * Illuminate，哈希算法，Bcrypt 哈希
+ * 哈希，哈希加密
  */
 
 namespace Illuminate\Hashing;
 
-use RuntimeException;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
+use RuntimeException;
 
 class BcryptHasher extends AbstractHasher implements HasherContract
 {
     /**
      * The default cost factor.
-	 * 默认的成本因子
+	 * 默认成本因素
      *
      * @var int
      */
@@ -28,7 +28,7 @@ class BcryptHasher extends AbstractHasher implements HasherContract
 
     /**
      * Create a new hasher instance.
-	 * 创建一个新的散列实例
+	 * 创建新的哈希实例
      *
      * @param  array  $options
      * @return void
@@ -41,10 +41,10 @@ class BcryptHasher extends AbstractHasher implements HasherContract
 
     /**
      * Hash the given value.
-	 * 对给定值进行散列
+	 * 哈希值
      *
      * @param  string  $value
-     * @param  array   $options
+     * @param  array  $options
      * @return string
      *
      * @throws \RuntimeException
@@ -64,7 +64,7 @@ class BcryptHasher extends AbstractHasher implements HasherContract
 
     /**
      * Check the given plain value against a hash.
-	 * 根据散列检查给定的普通值
+	 * 检查给定的普通值根据散列
      *
      * @param  string  $value
      * @param  string  $hashedValue
@@ -87,7 +87,7 @@ class BcryptHasher extends AbstractHasher implements HasherContract
 	 * 检查给定的散列是否已经使用给定的选项进行了散列
      *
      * @param  string  $hashedValue
-     * @param  array   $options
+     * @param  array  $options
      * @return bool
      */
     public function needsRehash($hashedValue, array $options = [])
@@ -113,7 +113,7 @@ class BcryptHasher extends AbstractHasher implements HasherContract
 
     /**
      * Extract the cost value from the options array.
-	 * 从选项数组中提取成本值
+	 * 提取成本值从选项数组中
      *
      * @param  array  $options
      * @return int

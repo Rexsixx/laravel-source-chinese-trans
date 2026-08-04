@@ -1,19 +1,16 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，动态类
+ * 基础，虚拟类根文件
  */
 
 namespace DummyNamespace;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\TestCase;
 
 class DummyClass extends TestCase
 {
     /**
      * A basic unit test example.
-	 * 一个基本的单元测试示例
      *
      * @return void
      */

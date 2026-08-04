@@ -1,19 +1,20 @@
 <?php
 /**
- * Illuminate，基础，测试，问题，与 Redis交互
+ * 基础，与Redis交互
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;
 
 use Exception;
-use Illuminate\Redis\RedisManager;
 use Illuminate\Foundation\Application;
+use Illuminate\Redis\RedisManager;
+use Illuminate\Support\Env;
 
 trait InteractsWithRedis
 {
     /**
      * Indicate connection failed if redis is not available.
-	 * 如果redis不可用，则表明连接失败。
+	 * 如果redis不可用，则表明连接失败
      *
      * @var bool
      */
@@ -21,7 +22,7 @@ trait InteractsWithRedis
 
     /**
      * Redis manager instance.
-	 * Redis管理器实例
+	 * Redis管理实例
      *
      * @var \Illuminate\Redis\RedisManager[]
      */
@@ -29,15 +30,21 @@ trait InteractsWithRedis
 
     /**
      * Setup redis connection.
-	 * 建立redis连接
+	 * 安装Redis连接
      *
      * @return void
      */
     public function setUpRedis()
     {
         $app = $this->app ?? new Application;
-        $host = getenv('REDIS_HOST') ?: '127.0.0.1';
-        $port = getenv('REDIS_PORT') ?: 6379;
+        $host = Env::get('REDIS_HOST', '127.0.0.1');
+        $port = Env::get('REDIS_PORT', 6379);
+
+        if (! extension_loaded('redis')) {
+            $this->markTestSkipped('The redis extension is not installed. Please install the extension to enable '.__CLASS__);
+
+            return;
+        }
 
         if (static::$connectionFailedOnceWithDefaultsSkip) {
             $this->markTestSkipped('Trying default host/port failed, please set environment variable REDIS_HOST & REDIS_PORT to enable '.__CLASS__);
@@ -48,6 +55,9 @@ trait InteractsWithRedis
         foreach ($this->redisDriverProvider() as $driver) {
             $this->redis[$driver[0]] = new RedisManager($app, $driver[0], [
                 'cluster' => false,
+                'options' => [
+                    'prefix' => 'test_',
+                ],
                 'default' => [
                     'host' => $host,
                     'port' => $port,
@@ -58,9 +68,9 @@ trait InteractsWithRedis
         }
 
         try {
-            $this->redis['predis']->connection()->flushdb();
+            $this->redis['phpredis']->connection()->flushdb();
         } catch (Exception $e) {
-            if ($host === '127.0.0.1' && $port === 6379 && getenv('REDIS_HOST') === false) {
+            if ($host === '127.0.0.1' && $port === 6379 && Env::get('REDIS_HOST') === null) {
                 static::$connectionFailedOnceWithDefaultsSkip = true;
                 $this->markTestSkipped('Trying default host/port failed, please set environment variable REDIS_HOST & REDIS_PORT to enable '.__CLASS__);
             }
@@ -75,7 +85,7 @@ trait InteractsWithRedis
      */
     public function tearDownRedis()
     {
-        $this->redis['predis']->connection()->flushdb();
+        $this->redis['phpredis']->connection()->flushdb();
 
         foreach ($this->redisDriverProvider() as $driver) {
             $this->redis[$driver[0]]->connection()->disconnect();
@@ -84,26 +94,21 @@ trait InteractsWithRedis
 
     /**
      * Get redis driver provider.
-	 * 获取redis驱动程序提供程序
+	 * 得到Redis驱动提供者
      *
      * @return array
      */
     public function redisDriverProvider()
     {
-        $providers = [
+        return [
             ['predis'],
+            ['phpredis'],
         ];
-
-        if (extension_loaded('redis')) {
-            $providers[] = ['phpredis'];
-        }
-
-        return $providers;
     }
 
     /**
      * Run test if redis is available.
-	 * 如果redis可用，运行测试。
+	 * 运行test如果Redis为可用
      *
      * @param  callable  $callback
      * @return void

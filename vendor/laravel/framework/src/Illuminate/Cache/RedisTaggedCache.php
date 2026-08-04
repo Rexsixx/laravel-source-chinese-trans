@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，Redis 已标记缓存
+ * 缓存，Redis标记缓存
  */
 
 namespace Illuminate\Cache;
@@ -9,7 +9,7 @@ class RedisTaggedCache extends TaggedCache
 {
     /**
      * Forever reference key.
-	 * 永久参考键
+	 * 忘记来源
      *
      * @var string
      */
@@ -17,7 +17,7 @@ class RedisTaggedCache extends TaggedCache
 	
     /**
      * Standard reference key.
-	 * 标准参考键
+	 * 标准来源
      *
      * @var string
      */
@@ -25,10 +25,10 @@ class RedisTaggedCache extends TaggedCache
 
     /**
      * Store an item in the cache.
-	 * 在缓存中存储项
+	 * 保存一项至缓存
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @param  \DateTimeInterface|\DateInterval|int|null  $ttl
      * @return bool
      */
@@ -75,7 +75,7 @@ class RedisTaggedCache extends TaggedCache
 
     /**
      * Store an item in the cache indefinitely.
-	 * 将项无限期地存储在缓存中
+	 * 存储项目在缓存中无限期
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -90,7 +90,7 @@ class RedisTaggedCache extends TaggedCache
 
     /**
      * Remove all items from the cache.
-	 * 从缓存中删除所有项
+	 * 移除所有项从缓存中
      *
      * @return bool
      */
@@ -104,7 +104,7 @@ class RedisTaggedCache extends TaggedCache
 
     /**
      * Store standard key references into store.
-	 * 将标准键引用存储到存储中
+	 * 存储标准键引用到存储中
      *
      * @param  string  $namespace
      * @param  string  $key
@@ -117,7 +117,7 @@ class RedisTaggedCache extends TaggedCache
 
     /**
      * Store forever key references into store.
-	 * 将关键引用永久存储到存储中
+	 * 存储关键引用永久到存储中
      *
      * @param  string  $namespace
      * @param  string  $key
@@ -197,14 +197,14 @@ class RedisTaggedCache extends TaggedCache
 
         if (count($values) > 0) {
             foreach (array_chunk($values, 1000) as $valuesChunk) {
-                call_user_func_array([$this->store->connection(), 'del'], $valuesChunk);
+                $this->store->connection()->del(...$valuesChunk);
             }
         }
     }
 
     /**
      * Get the reference key for the segment.
-	 * 获取段的参考键
+	 * 得到段的参考键
      *
      * @param  string  $segment
      * @param  string  $suffix

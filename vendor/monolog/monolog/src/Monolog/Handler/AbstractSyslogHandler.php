@@ -1,6 +1,7 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
- * Monolog，处理程序，抽象 Syslog处理程序
+ * Monolog，处理程序，抽象 Syslog 处理程序
  */
 
 /*
@@ -15,19 +16,25 @@
 namespace Monolog\Handler;
 
 use Monolog\Logger;
+use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LineFormatter;
 
 /**
  * Common syslog functionality
+ *
+ * @phpstan-import-type Level from \Monolog\Logger
  */
 abstract class AbstractSyslogHandler extends AbstractProcessingHandler
 {
+    /** @var int */
     protected $facility;
 
     /**
      * Translates Monolog log levels to syslog log priorities.
+     * @var array
+     * @phpstan-var array<Level, int>
      */
-    protected $logLevels = array(
+    protected $logLevels = [
         Logger::DEBUG     => LOG_DEBUG,
         Logger::INFO      => LOG_INFO,
         Logger::NOTICE    => LOG_NOTICE,
@@ -36,12 +43,13 @@ abstract class AbstractSyslogHandler extends AbstractProcessingHandler
         Logger::CRITICAL  => LOG_CRIT,
         Logger::ALERT     => LOG_ALERT,
         Logger::EMERGENCY => LOG_EMERG,
-    );
+    ];
 
     /**
      * List of valid log facility names.
+     * @var array<string, int>
      */
-    protected $facilities = array(
+    protected $facilities = [
         'auth'     => LOG_AUTH,
         'authpriv' => LOG_AUTHPRIV,
         'cron'     => LOG_CRON,
@@ -53,14 +61,12 @@ abstract class AbstractSyslogHandler extends AbstractProcessingHandler
         'syslog'   => LOG_SYSLOG,
         'user'     => LOG_USER,
         'uucp'     => LOG_UUCP,
-    );
+    ];
 
     /**
-     * @param mixed $facility
-     * @param int   $level The minimum logging level at which this handler will be triggered
-     * @param bool  $bubble Whether the messages that are handled can bubble up the stack or not
+     * @param string|int $facility Either one of the names of the keys in $this->facilities, or a LOG_* facility constant
      */
-    public function __construct($facility = LOG_USER, $level = Logger::DEBUG, $bubble = true)
+    public function __construct($facility = LOG_USER, $level = Logger::DEBUG, bool $bubble = true)
     {
         parent::__construct($level, $bubble);
 
@@ -85,7 +91,7 @@ abstract class AbstractSyslogHandler extends AbstractProcessingHandler
         }
 
         // convert textual description of facility to syslog constant
-        if (array_key_exists(strtolower($facility), $this->facilities)) {
+        if (is_string($facility) && array_key_exists(strtolower($facility), $this->facilities)) {
             $facility = $this->facilities[strtolower($facility)];
         } elseif (!in_array($facility, array_values($this->facilities), true)) {
             throw new \UnexpectedValueException('Unknown facility value "'.$facility.'" given');
@@ -95,9 +101,9 @@ abstract class AbstractSyslogHandler extends AbstractProcessingHandler
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    protected function getDefaultFormatter()
+    protected function getDefaultFormatter(): FormatterInterface
     {
         return new LineFormatter('%channel%.%level_name%: %message% %context% %extra%');
     }

@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，节点反射器
- */
-
 namespace PhpParser;
 
 class NodeTraverser implements NodeTraverserInterface

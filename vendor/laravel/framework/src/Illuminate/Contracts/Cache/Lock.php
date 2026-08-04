@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，缓存，锁
+ * 契约，缓存锁接口
  */
 
 namespace Illuminate\Contracts\Cache;
@@ -22,7 +22,7 @@ interface Lock
      *
      * @param  int  $seconds
      * @param  callable|null  $callback
-     * @return bool
+     * @return mixed
      */
     public function block($seconds, $callback = null);
 
@@ -30,13 +30,13 @@ interface Lock
      * Release the lock.
 	 * 释放锁
      *
-     * @return void
+     * @return bool
      */
     public function release();
 
     /**
      * Returns the current owner of the lock.
-	 * 返回锁的当前所有者
+	 * 返回锁所有者
      *
      * @return string
      */
@@ -44,7 +44,7 @@ interface Lock
 
     /**
      * Releases this lock in disregard of ownership.
-	 * 释放此锁，而不考虑所有权。
+	 * 释放锁而不考虑所有权
      *
      * @return void
      */

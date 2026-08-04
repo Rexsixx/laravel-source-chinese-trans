@@ -1,16 +1,15 @@
 <?php
 /**
- * Illuminate，支持，门面，Lang
+ * 支持，门面语言
  */
 
 namespace Illuminate\Support\Facades;
 
 /**
- * @method static mixed trans(string $key, array $replace = [], string $locale = null)
- * @method static string transChoice(string $key, int|array|\Countable $number, array $replace = [], string $locale = null)
+ * @method static mixed get(string $key, array $replace = [], string $locale = null, bool $fallback = true)
+ * @method static string choice(string $key, \Countable|int|array $number, array $replace = [], string $locale = null)
  * @method static string getLocale()
  * @method static void setLocale(string $locale)
- * @method static string|array|null get(string $key, array $replace = [], string $locale = null, bool $fallback = true)
  *
  * @see \Illuminate\Translation\Translator
  */
@@ -18,7 +17,7 @@ class Lang extends Facade
 {
     /**
      * Get the registered name of the component.
-	 * 获取组件的注册名称
+	 * 得到组件注册名
      *
      * @return string
      */

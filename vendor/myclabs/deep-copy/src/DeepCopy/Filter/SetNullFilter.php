@@ -1,6 +1,6 @@
 <?php
 /**
- * 深拷贝，过滤，设置零过滤器
+ * DeepCopy，过滤器，设置空过滤器
  */
 
 namespace DeepCopy\Filter;
@@ -14,7 +14,6 @@ class SetNullFilter implements Filter
 {
     /**
      * Sets the object property to null.
-	 * 将对象属性设置为null
      *
      * {@inheritdoc}
      */
@@ -22,9 +21,7 @@ class SetNullFilter implements Filter
     {
         $reflectionProperty = ReflectionHelper::getProperty($object, $property);
 
-        if (PHP_VERSION_ID < 80100) {
-            $reflectionProperty->setAccessible(true);
-        }
+        $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($object, null);
     }
 }

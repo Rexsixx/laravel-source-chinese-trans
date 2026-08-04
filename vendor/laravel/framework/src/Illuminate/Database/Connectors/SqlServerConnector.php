@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，数据库，连接器，Sql Server 连接器
+ * 数据库，SqlServer连接器
  */
 
 namespace Illuminate\Database\Connectors;
 
-use PDO;
 use Illuminate\Support\Arr;
+use PDO;
 
 class SqlServerConnector extends Connector implements ConnectorInterface
 {
@@ -39,9 +39,9 @@ class SqlServerConnector extends Connector implements ConnectorInterface
 
     /**
      * Create a DSN string from a configuration.
-	 * 从配置中创建DSN字符串
+	 * 创建DSN字符串从配置
      *
-     * @param  array   $config
+     * @param  array  $config
      * @return string
      */
     protected function getDsn(array $config)
@@ -49,8 +49,8 @@ class SqlServerConnector extends Connector implements ConnectorInterface
         // First we will create the basic DSN setup as well as the port if it is in
         // in the configuration options. This will give us the basic DSN we will
         // need to establish the PDO connections and return them back for use.
-		// 首先，我们将按照配置选项中的设置来创建基本的 DSN 配置以及端口。
-		// 这将为我们提供建立 PDO 连接所需的最基本的数据源名称（DSN），并将其返回以供后续使用。
+		// 首先我们将创建基本的DSN设置以及端口，如果存在在配置选项中。
+		// 这将为我们提供基本的DSN，需要建立PDO连接并将其返回使用。
         if ($this->prefersOdbc($config)) {
             return $this->getOdbcDsn($config);
         }
@@ -77,7 +77,7 @@ class SqlServerConnector extends Connector implements ConnectorInterface
 
     /**
      * Get the DSN string for a DbLib connection.
-	 * 获取DbLib连接的DSN字符串
+	 * 得到DbLib连接的DSN字符串
      *
      * @param  array  $config
      * @return string
@@ -92,7 +92,7 @@ class SqlServerConnector extends Connector implements ConnectorInterface
 
     /**
      * Get the DSN string for an ODBC connection.
-	 * 获取ODBC连接的DSN字符串
+	 * 得到ODBC连接的DSN字符串
      *
      * @param  array  $config
      * @return string
@@ -105,7 +105,7 @@ class SqlServerConnector extends Connector implements ConnectorInterface
 
     /**
      * Get the DSN string for a SqlSrv connection.
-	 * 获取SqlSrv连接的DSN字符串
+	 * 得到SqlSrv连接的DSN字符串
      *
      * @param  array  $config
      * @return string
@@ -152,12 +152,28 @@ class SqlServerConnector extends Connector implements ConnectorInterface
             $arguments['MultiSubnetFailover'] = $config['multi_subnet_failover'];
         }
 
+        if (isset($config['column_encryption'])) {
+            $arguments['ColumnEncryption'] = $config['column_encryption'];
+        }
+
+        if (isset($config['key_store_authentication'])) {
+            $arguments['KeyStoreAuthentication'] = $config['key_store_authentication'];
+        }
+
+        if (isset($config['key_store_principal_id'])) {
+            $arguments['KeyStorePrincipalId'] = $config['key_store_principal_id'];
+        }
+
+        if (isset($config['key_store_secret'])) {
+            $arguments['KeyStoreSecret'] = $config['key_store_secret'];
+        }
+
         return $this->buildConnectString('sqlsrv', $arguments);
     }
 
     /**
      * Build a connection string from the given arguments.
-	 * 根据给定的参数构建连接字符串
+	 * 构建连接字符串根据给定的参数
      *
      * @param  string  $driver
      * @param  array  $arguments
@@ -172,7 +188,7 @@ class SqlServerConnector extends Connector implements ConnectorInterface
 
     /**
      * Build a host string from the given configuration.
-	 * 根据给定的配置构建主机字符串
+	 * 构建主机字符串根据给定的配置
      *
      * @param  array  $config
      * @param  string  $separator
@@ -189,7 +205,7 @@ class SqlServerConnector extends Connector implements ConnectorInterface
 
     /**
      * Get the available PDO drivers.
-	 * 获取可用的PDO驱动程序
+	 * 得到可用的PDO驱动程序
      *
      * @return array
      */

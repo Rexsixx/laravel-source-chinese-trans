@@ -1,7 +1,4 @@
 <?php
-/**
- * phpDocumentor，反射，Doc Block，标签，格式化程序，转移格式器
- */
 
 declare(strict_types=1);
 

@@ -29,7 +29,6 @@ interface RouterInterface extends UrlMatcherInterface, UrlGeneratorInterface
 {
     /**
      * Gets the RouteCollection instance associated with this Router.
-	 * 获取与此路由器相关的路由实例。
      *
      * WARNING: This method should never be used at runtime as it is SLOW.
      *          You might use it in a cache warmer though.

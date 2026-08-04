@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，事件，循环
+ * 队列，事件，循环
  */
 
 namespace Illuminate\Queue\Events;
@@ -9,7 +9,7 @@ class Looping
 {
     /**
      * The connection name.
-	 * 连接名称
+	 * 连接名
      *
      * @var string
      */
@@ -25,7 +25,7 @@ class Looping
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  string  $connectionName
      * @param  string  $queue

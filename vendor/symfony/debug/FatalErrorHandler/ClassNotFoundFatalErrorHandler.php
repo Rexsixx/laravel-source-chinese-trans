@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，调试，致命错误处理程序，类未发现致命错误处理程序
- */
 
 /*
  * This file is part of the Symfony package.
@@ -24,7 +21,6 @@ use Symfony\Component\Debug\Exception\FatalErrorException;
 
 /**
  * ErrorHandler for classes that do not exist.
- * 那些不存在的类的ErrorHandler。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *

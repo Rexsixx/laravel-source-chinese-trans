@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，事件调度程序，Legacy 事件调度程序代理
- */
 
 /*
  * This file is part of the Symfony package.
@@ -56,7 +53,7 @@ final class LegacyEventDispatcherProxy implements EventDispatcherInterface
      *
      * @return object
      */
-    public function dispatch($event/* , string $eventName = null */)
+    public function dispatch($event/*, string $eventName = null*/)
     {
         $eventName = 1 < \func_num_args() ? func_get_arg(1) : null;
 

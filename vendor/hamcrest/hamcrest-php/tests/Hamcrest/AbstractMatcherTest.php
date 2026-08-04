@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，特性匹配程序测试
+ * Hamcrest，抽象匹配器测试
  */
 
 namespace Hamcrest;
@@ -63,7 +63,6 @@ abstract class AbstractMatcherTest extends TestCase
     public function testCopesWithUnknownTypes()
     {
         //Should not generate any notices
-		// 不应产生任何通知
         $this->createMatcher()->matches(new UnknownType());
         $this->createMatcher()->describeMismatch(
             new UnknownType(),

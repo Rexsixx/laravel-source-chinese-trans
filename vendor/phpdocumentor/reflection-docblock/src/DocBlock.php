@@ -1,7 +1,4 @@
 <?php
-/**
- * phpDocumentor，反射，Doc Block
- */
 
 declare(strict_types=1);
 

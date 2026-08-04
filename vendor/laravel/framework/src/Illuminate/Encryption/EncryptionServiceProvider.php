@@ -1,13 +1,14 @@
 <?php
 /**
- * Illuminate，加密，加密服务提供商
+ * 加密，加密服务提供者
  */
 
 namespace Illuminate\Encryption;
 
-use RuntimeException;
-use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use Opis\Closure\SerializableClosure;
+use RuntimeException;
 
 class EncryptionServiceProvider extends ServiceProvider
 {
@@ -19,25 +20,61 @@ class EncryptionServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerEncrypter();
+        $this->registerOpisSecurityKey();
+    }
+
+    /**
+     * Register the encrypter.
+	 * 注册加密器
+     *
+     * @return void
+     */
+    protected function registerEncrypter()
+    {
         $this->app->singleton('encrypter', function ($app) {
             $config = $app->make('config')->get('app');
 
-            // If the key starts with "base64:", we will need to decode the key before handing
-            // it off to the encrypter. Keys may be base-64 encoded for presentation and we
-            // want to make sure to convert them back to the raw bytes before encrypting.
-			// 如果密钥以“base64：”开头，那么在将其传递给加密器之前，我们需要先对其进行解码。
-			// 密钥可能经过Base-64编码以进行显示，我们希望在加密前将其转换回原始字节。
-            if (Str::startsWith($key = $this->key($config), 'base64:')) {
-                $key = base64_decode(substr($key, 7));
-            }
-
-            return new Encrypter($key, $config['cipher']);
+            return new Encrypter($this->parseKey($config), $config['cipher']);
         });
     }
 
     /**
+     * Configure Opis Closure signing for security.
+	 * 配置Opis闭包签名为安全性
+     *
+     * @return void
+     */
+    protected function registerOpisSecurityKey()
+    {
+        $config = $this->app->make('config')->get('app');
+
+        if (! class_exists(SerializableClosure::class) || empty($config['key'])) {
+            return;
+        }
+
+        SerializableClosure::setSecretKey($this->parseKey($config));
+    }
+
+    /**
+     * Parse the encryption key.
+	 * 解析加密密钥
+     *
+     * @param  array  $config
+     * @return string
+     */
+    protected function parseKey(array $config)
+    {
+        if (Str::startsWith($key = $this->key($config), $prefix = 'base64:')) {
+            $key = base64_decode(Str::after($key, $prefix));
+        }
+
+        return $key;
+    }
+
+    /**
      * Extract the encryption key from the given configuration.
-	 * 从给定的配置中提取加密密钥
+	 * 提取加密密钥从给定的配置中
      *
      * @param  array  $config
      * @return string

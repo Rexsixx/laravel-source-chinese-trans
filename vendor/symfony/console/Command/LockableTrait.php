@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，命令，可锁定特性
+ * Symfony，组件，控制台，命令，可锁定的特质
  */
 
 /*
@@ -22,7 +22,6 @@ use Symfony\Component\Lock\Store\SemaphoreStore;
 
 /**
  * Basic lock feature for commands.
- * 命令的基本锁特性。
  *
  * @author Geoffrey Brier <geoffrey.brier@gmail.com>
  */
@@ -33,7 +32,6 @@ trait LockableTrait
 
     /**
      * Locks a command.
-	 * 锁定命令
      */
     private function lock(string $name = null, bool $blocking = false): bool
     {
@@ -63,7 +61,6 @@ trait LockableTrait
 
     /**
      * Releases the command lock if there is one.
-	 * 如果有命令锁,释放命令锁
      */
     private function release()
     {

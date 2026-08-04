@@ -1,7 +1,4 @@
 <?php
-/**
- * Doctrine，偏转器，规则，Turkish，偏转器工厂
- */
 
 declare(strict_types=1);
 

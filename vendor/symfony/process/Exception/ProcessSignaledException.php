@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，过程，异常，过程标志异常
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Process\Process;
 
 /**
  * Exception that is thrown when a process has been signaled.
- * 当一个过程被发出信号时,会抛出异常。
  *
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */

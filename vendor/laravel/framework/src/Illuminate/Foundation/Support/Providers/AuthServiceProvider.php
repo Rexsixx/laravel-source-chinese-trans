@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，支持，供应商，授权服务提供商
+ * 基础，授权服务提供者
  */
 
 namespace Illuminate\Foundation\Support\Providers;
@@ -26,14 +26,14 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function registerPolicies()
     {
-        foreach ($this->policies as $key => $value) {
+        foreach ($this->policies() as $key => $value) {
             Gate::policy($key, $value);
         }
     }
 
     /**
      * Get the policies defined on the provider.
-	 * 获取在提供程序上定义的策略
+	 * 得到在提供程序上定义的策略
      *
      * @return array
      */

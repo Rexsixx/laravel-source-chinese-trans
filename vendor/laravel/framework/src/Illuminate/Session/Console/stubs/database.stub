@@ -1,11 +1,11 @@
 <?php
 /**
- * Illuminate，Session，控制台，存根，创建会话表
+ * 会话，创建会话表存根文件
  */
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateSessionsTable extends Migration
 {
@@ -29,7 +29,8 @@ class CreateSessionsTable extends Migration
 
     /**
      * Reverse the migrations.
-	 * 逆转迁移
+	 * 反转迁移
+	 * 
      *
      * @return void
      */

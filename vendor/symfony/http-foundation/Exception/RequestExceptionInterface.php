@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http基础，异常，请求异常接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +13,6 @@ namespace Symfony\Component\HttpFoundation\Exception;
 
 /**
  * Interface for Request exceptions.
- * 请求异常的接口。
  *
  * Exceptions implementing this interface should trigger an HTTP 400 response in the application code.
  */

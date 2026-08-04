@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，支持，可数组化
+ * 契约，可用数组接口
  */
 
 namespace Illuminate\Contracts\Support;
@@ -9,7 +9,7 @@ interface Arrayable
 {
     /**
      * Get the instance as an array.
-	 * 以数组的形式获取实例
+	 * 得到实例数组
      *
      * @return array
      */

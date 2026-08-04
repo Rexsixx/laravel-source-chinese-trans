@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，路由选择，生成器，编译Url生成器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +17,6 @@ use Symfony\Component\Routing\RequestContext;
 
 /**
  * Generates URLs based on rules dumped by CompiledUrlGeneratorDumper.
- * 根据CompiledUrlGeneratorDumper的规则生成url。
  */
 class CompiledUrlGenerator extends UrlGenerator
 {

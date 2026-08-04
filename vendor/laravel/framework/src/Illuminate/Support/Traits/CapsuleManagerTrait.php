@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，支持，特性，Capsule 管理器特征
+ * 支持，压缩管理特征
  */
 
 namespace Illuminate\Support\Traits;
 
-use Illuminate\Support\Fluent;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\Fluent;
 
 trait CapsuleManagerTrait
 {
@@ -44,7 +44,7 @@ trait CapsuleManagerTrait
 
     /**
      * Make this capsule instance available globally.
-	 * 使这个capsule实例全局可用
+	 * 使这个胶囊实例全局可用
      *
      * @return void
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，Http客户端，响应流接口
+ * Symfony，契约，HTTP客户端，响应流接口
  */
 
 /*

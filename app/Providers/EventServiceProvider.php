@@ -1,14 +1,14 @@
 <?php
 /**
- * App，供应商，事件服务提供商
+ * App，服务提供者，事件服务提供者
  */
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -26,7 +26,7 @@ class EventServiceProvider extends ServiceProvider
 
     /**
      * Register any events for your application.
-	 * 为您的应用程序注册任何事件
+	 * 注册应用任何事件
      *
      * @return void
      */

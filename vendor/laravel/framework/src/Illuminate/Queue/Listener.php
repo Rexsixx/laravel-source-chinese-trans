@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，队列，监听器
+ * 队列，队列监听者
  */
 
 namespace Illuminate\Queue;
 
 use Closure;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Process\PhpExecutableFinder;
+use Symfony\Component\Process\Process;
 
 class Listener
 {
@@ -21,7 +21,7 @@ class Listener
 
     /**
      * The environment the workers should run under.
-	 * 工作线程的运行环境
+	 * 环境执行者工作
      *
      * @var string
      */
@@ -29,7 +29,7 @@ class Listener
 
     /**
      * The amount of seconds to wait before polling the queue.
-	 * 轮询队列之前等待的秒数
+	 * 等待的秒数轮询队列之前
      *
      * @var int
      */
@@ -53,7 +53,7 @@ class Listener
 
     /**
      * Create a new queue listener.
-	 * 创建一个新的队列侦听器
+	 * 创建新的队列监听
      *
      * @param  string  $commandPath
      * @return void
@@ -65,7 +65,7 @@ class Listener
 
     /**
      * Get the PHP binary.
-	 * 获取PHP二进制文件
+	 * 得到PHP二进制文件
      *
      * @return string
      */
@@ -76,7 +76,7 @@ class Listener
 
     /**
      * Get the Artisan binary.
-	 * 获取Artisan二进制文件
+	 * 得到Artisan二进制文件
      *
      * @return string
      */
@@ -105,7 +105,7 @@ class Listener
 
     /**
      * Create a new Symfony process for the worker.
-	 * 为工作者创建一个新的Symfony进程
+	 * 创建一个新的Symfony进程为工作者
      *
      * @param  string  $connection
      * @param  string  $queue
@@ -123,8 +123,8 @@ class Listener
         // If the environment is set, we will append it to the command array so the
         // workers will run under the specified environment. Otherwise, they will
         // just run under the production environment which is not always right.
-		// 如果环境已设置好，我们将将其添加到命令数组中，以便工作进程能够在指定的环境中运行。
-		// 否则，他们就会在不恰当的生产环境中运行程序，而这样的操作往往并不可靠。
+		// 如果设置了环境，我们将把它附加到命令数组中，以便workers在指定的环境下运行。
+		// 否则，它们只会在并不总是正确的生产环境下运行。
         if (isset($options->environment)) {
             $command = $this->addEnvironment($command, $options);
         }
@@ -153,7 +153,7 @@ class Listener
 
     /**
      * Create the command with the listener options.
-	 * 使用侦听器选项创建命令
+	 * 创建命令使用侦听器选项
      *
      * @param  string  $connection
      * @param  string  $queue
@@ -180,7 +180,7 @@ class Listener
 
     /**
      * Run the given process.
-	 * 运行给定的进程
+	 * 执行给定进程
      *
      * @param  \Symfony\Component\Process\Process  $process
      * @param  int  $memory
@@ -195,8 +195,8 @@ class Listener
         // Once we have run the job we'll go check if the memory limit has been exceeded
         // for the script. If it has, we will kill this script so the process manager
         // will restart this with a clean slate of memory automatically on exiting.
-		// 一旦我们完成了这项任务，就会去检查一下该脚本的内存使用量是否已超过限制。
-		// 如果存在这种情况，我们将删除该脚本，这样进程管理器在退出时就能自动以全新的内存状态重新启动此程序。
+		// 运行作业后，我们将检查是否超过了脚本的内存限制。
+		// 如果有，我们将终止此脚本，以便进程管理器在退出时自动重新启动此脚本并清空内存。
         if ($this->memoryExceeded($memory)) {
             $this->stop();
         }
@@ -231,13 +231,13 @@ class Listener
 
     /**
      * Stop listening and bail out of the script.
-	 * 别再听了，跳出剧本。
+	 * 别再听了跳出剧本
      *
      * @return void
      */
     public function stop()
     {
-        die;
+        exit;
     }
 
     /**

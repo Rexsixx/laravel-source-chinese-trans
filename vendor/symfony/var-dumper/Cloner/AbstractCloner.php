@@ -201,7 +201,6 @@ abstract class AbstractCloner implements ClonerInterface
 
     /**
      * Adds casters for resources and objects.
-	 * 为资源和对象添加casters。
      *
      * Maps resources or objects types to a callback.
      * Types are in the key, with a callable caster for value.
@@ -219,7 +218,6 @@ abstract class AbstractCloner implements ClonerInterface
 
     /**
      * Sets the maximum number of items to clone past the minimum depth in nested structures.
-	 * 设置要克隆超过嵌套结构中最小深度的项的最大数量
      *
      * @param int $maxItems
      */
@@ -230,7 +228,6 @@ abstract class AbstractCloner implements ClonerInterface
 
     /**
      * Sets the maximum cloned length for strings.
-	 * 设置字符串的最大克隆长度
      *
      * @param int $maxString
      */
@@ -252,7 +249,6 @@ abstract class AbstractCloner implements ClonerInterface
 
     /**
      * Clones a PHP variable.
-	 * 克隆一个PHP变量
      *
      * @param mixed $var    Any PHP variable
      * @param int   $filter A bit field of Caster::EXCLUDE_* constants

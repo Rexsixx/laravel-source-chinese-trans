@@ -1,7 +1,4 @@
 <?php
-/**
- * Cron，测试，字段工厂测试
- */
 
 namespace Cron\Tests;
 

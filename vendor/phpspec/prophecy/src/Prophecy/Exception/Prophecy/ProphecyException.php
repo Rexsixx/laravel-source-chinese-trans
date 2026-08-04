@@ -1,7 +1,4 @@
 <?php
-/**
- * Prophecy，异常，预言，预言异常
- */
 
 /*
  * This file is part of the Prophecy.
@@ -16,4 +13,6 @@ namespace Prophecy\Exception\Prophecy;
 
 use Prophecy\Exception\Exception;
 
-interface ProphecyException extends Exception {}
+interface ProphecyException extends Exception
+{
+}

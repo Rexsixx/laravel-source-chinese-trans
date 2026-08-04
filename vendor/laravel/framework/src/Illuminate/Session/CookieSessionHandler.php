@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，Session，Cookie 会话处理程序
+ * Session，Cookie会话处理程序
  */
 
 namespace Illuminate\Session;
 
-use SessionHandlerInterface;
-use Illuminate\Support\InteractsWithTime;
-use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Contracts\Cookie\QueueingFactory as CookieJar;
+use Illuminate\Support\InteractsWithTime;
+use SessionHandlerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class CookieSessionHandler implements SessionHandlerInterface
 {
@@ -16,7 +16,7 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * The cookie jar instance.
-	 * cookie压缩实例
+	 * 会话压缩实例
      *
      * @var \Illuminate\Contracts\Cookie\Factory
      */
@@ -40,7 +40,7 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * Create a new cookie driven handler instance.
-	 * 创建一个新的cookie驱动处理程序实例
+	 * 创建新的会话驱动处理实例
      *
      * @param  \Illuminate\Contracts\Cookie\QueueingFactory  $cookie
      * @param  int  $minutes

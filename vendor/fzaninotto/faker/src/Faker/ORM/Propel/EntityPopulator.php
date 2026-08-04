@@ -1,6 +1,6 @@
 <?php
 /**
- * Faker，ORM，Propel，实体普及器
+ * Faker，ORM，Propel，实体填充器
  */
 
 namespace Faker\ORM\Propel;

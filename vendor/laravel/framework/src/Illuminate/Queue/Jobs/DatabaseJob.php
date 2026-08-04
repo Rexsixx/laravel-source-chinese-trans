@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，队列，作业，数据库作业
+ * 队列，任务，数据库作业
  */
 
 namespace Illuminate\Queue\Jobs;
 
 use Illuminate\Container\Container;
-use Illuminate\Queue\DatabaseQueue;
 use Illuminate\Contracts\Queue\Job as JobContract;
+use Illuminate\Queue\DatabaseQueue;
 
 class DatabaseJob extends Job implements JobContract
 {
@@ -29,7 +29,7 @@ class DatabaseJob extends Job implements JobContract
 
     /**
      * Create a new job instance.
-	 * 创建一个新的作业实例
+	 * 创建新的作业实例
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  \Illuminate\Queue\DatabaseQueue  $database
@@ -49,7 +49,7 @@ class DatabaseJob extends Job implements JobContract
 
     /**
      * Release the job back into the queue.
-	 * 将作业释放回队列
+	 * 释放作业返回队列
      *
      * @param  int  $delay
      * @return mixed
@@ -65,7 +65,7 @@ class DatabaseJob extends Job implements JobContract
 
     /**
      * Delete the job from the queue.
-	 * 从队列中删除作业
+	 * 删除作业从队列
      *
      * @return void
      */
@@ -78,7 +78,7 @@ class DatabaseJob extends Job implements JobContract
 
     /**
      * Get the number of times the job has been attempted.
-	 * 获取该任务被尝试的次数
+	 * 得到该任务被尝试的次数
      *
      * @return int
      */
@@ -89,7 +89,7 @@ class DatabaseJob extends Job implements JobContract
 
     /**
      * Get the job identifier.
-	 * 获取工作标识符
+	 * 得到作业标识符
      *
      * @return string
      */
@@ -100,7 +100,7 @@ class DatabaseJob extends Job implements JobContract
 
     /**
      * Get the raw body string for the job.
-	 * 获取工作的原始主体字符串
+	 * 得到作业的原始主体字符串
      *
      * @return string
      */

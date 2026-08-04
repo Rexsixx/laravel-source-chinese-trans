@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，探测器，比较仪，Comparator
+ * Symfony，组件，探测器，比较器，Comparator
  */
 
 /*

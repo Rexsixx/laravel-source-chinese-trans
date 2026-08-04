@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，节点，可变占位符
- */
-
 namespace PhpParser\Node;
 
 use PhpParser\NodeAbstract;

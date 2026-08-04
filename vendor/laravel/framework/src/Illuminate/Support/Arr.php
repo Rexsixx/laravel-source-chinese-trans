@@ -1,13 +1,13 @@
 <?php
 /**
- * Illuminate，支持，Arr
+ * 支持，数组
  */
 
 namespace Illuminate\Support;
 
 use ArrayAccess;
-use InvalidArgumentException;
 use Illuminate\Support\Traits\Macroable;
+use InvalidArgumentException;
 
 class Arr
 {
@@ -15,7 +15,7 @@ class Arr
 
     /**
      * Determine whether the given value is array accessible.
-	 * 确定给定值是否为数组可访问的
+	 * 确定可访问给定值为可访问数组
      *
      * @param  mixed  $value
      * @return bool
@@ -27,11 +27,11 @@ class Arr
 
     /**
      * Add an element to an array using "dot" notation if it doesn't exist.
-	 * 在数组中添加一个不存在的元素，使用“点”符号。
+	 * 添加一个元素至数组
      *
-     * @param  array   $array
+     * @param  array  $array
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return array
      */
     public static function add($array, $key, $value)
@@ -47,7 +47,7 @@ class Arr
      * Collapse an array of arrays into a single array.
 	 * 将数组的数组折叠成单个数组
      *
-     * @param  array  $array
+     * @param  iterable  $array
      * @return array
      */
     public static function collapse($array)
@@ -69,9 +69,9 @@ class Arr
 
     /**
      * Cross join the given arrays, returning all possible permutations.
-	 * 交叉连接给定的数组，返回所有可能的排列。
+	 * 交叉连接给定的数组，返回所有可能的排列
      *
-     * @param  array  ...$arrays
+     * @param  iterable  ...$arrays
      * @return array
      */
     public static function crossJoin(...$arrays)
@@ -111,7 +111,7 @@ class Arr
      * Flatten a multi-dimensional associative array with dots.
 	 * 用点平坦多维关联数组
      *
-     * @param  array   $array
+     * @param  iterable  $array
      * @param  string  $prepend
      * @return array
      */
@@ -132,7 +132,7 @@ class Arr
 
     /**
      * Get all of the given array except for a specified array of keys.
-	 * 获取除指定键数组外的所有给定数组
+	 * 得到除指定键数组外的所有给定数组
      *
      * @param  array  $array
      * @param  array|string  $keys
@@ -166,7 +166,7 @@ class Arr
      * Return the first element in an array passing a given truth test.
 	 * 返回数组中第一个通过给定真值检验的元素
      *
-     * @param  array  $array
+     * @param  iterable  $array
      * @param  callable|null  $callback
      * @param  mixed  $default
      * @return mixed
@@ -184,7 +184,7 @@ class Arr
         }
 
         foreach ($array as $key => $value) {
-            if (call_user_func($callback, $value, $key)) {
+            if ($callback($value, $key)) {
                 return $value;
             }
         }
@@ -214,7 +214,7 @@ class Arr
      * Flatten a multi-dimensional array into a single level.
 	 * 将多维数组平展为单个水平
      *
-     * @param  array  $array
+     * @param  iterable  $array
      * @param  int  $depth
      * @return array
      */
@@ -243,7 +243,7 @@ class Arr
 
     /**
      * Remove one or many array items from a given array using "dot" notation.
-	 * 使用“点”符号从给定数组中删除一个或多个数组项
+	 * 使用"点"符号从给定数组中删除一个或多个数组项
      *
      * @param  array  $array
      * @param  array|string  $keys
@@ -261,6 +261,7 @@ class Arr
 
         foreach ($keys as $key) {
             // if the exact key exists in the top-level, remove it
+			// 如果顶层中存在确切的键，则删除它
             if (static::exists($array, $key)) {
                 unset($array[$key]);
 
@@ -270,6 +271,7 @@ class Arr
             $parts = explode('.', $key);
 
             // clean up before each pass
+			// 每次通过前进行清理
             $array = &$original;
 
             while (count($parts) > 1) {
@@ -288,11 +290,11 @@ class Arr
 
     /**
      * Get an item from an array using "dot" notation.
-	 * 使用“点”符号从数组中获取项
+	 * 得到项从数组中使用"点"符号
      *
      * @param  \ArrayAccess|array  $array
-     * @param  string|int  $key
-     * @param  mixed   $default
+     * @param  string|int|null  $key
+     * @param  mixed  $default
      * @return mixed
      */
     public static function get($array, $key, $default = null)
@@ -326,7 +328,7 @@ class Arr
 
     /**
      * Check if an item or items exist in an array using "dot" notation.
-	 * 使用“点”表示法检查数组中是否存在一个或多个项
+	 * 检查数组中是否存在一个或多个项使用"点"表示法
      *
      * @param  \ArrayAccess|array  $array
      * @param  string|array  $keys
@@ -360,11 +362,43 @@ class Arr
     }
 
     /**
+     * Determine if any of the keys exist in an array using "dot" notation.
+	 * 确定数组中是否存在任何键使用"点"表示法
+     *
+     * @param  \ArrayAccess|array  $array
+     * @param  string|array  $keys
+     * @return bool
+     */
+    public static function hasAny($array, $keys)
+    {
+        if (is_null($keys)) {
+            return false;
+        }
+
+        $keys = (array) $keys;
+
+        if (! $array) {
+            return false;
+        }
+
+        if ($keys === []) {
+            return false;
+        }
+
+        foreach ($keys as $key) {
+            if (static::has($array, $key)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Determines if an array is associative.
-	 * 确定数组是否是关联的。
+	 * 确定数组是否是关联的
      *
      * An array is "associative" if it doesn't have sequential numerical keys beginning with zero.
-	 * 如果数组没有以零开头的顺序数字键，则该数组是“关联的”。
      *
      * @param  array  $array
      * @return bool
@@ -378,7 +412,7 @@ class Arr
 
     /**
      * Get a subset of the items from the given array.
-	 * 从给定数组中获取项的子集
+	 * 得到项的子集从给定数组中
      *
      * @param  array  $array
      * @param  array|string  $keys
@@ -391,9 +425,9 @@ class Arr
 
     /**
      * Pluck an array of values from an array.
-	 * 从数组中取出一个值数组
+	 * 取出一个值数组从数组中
      *
-     * @param  array  $array
+     * @param  iterable  $array
      * @param  string|array  $value
      * @param  string|array|null  $key
      * @return array
@@ -410,8 +444,8 @@ class Arr
             // If the key is "null", we will just append the value to the array and keep
             // looping. Otherwise we will key the array using the value of the key we
             // received from the developer. Then we'll return the final array form.
-			// 如果键为“null”，我们就会将该值添加到数组中，并继续循环操作。
-			// 否则，我们将根据从开发人员那里收到的键值来为数组赋值。然后，我们将返回最终的数组形式。
+			// 如果键为"null"，我们只需将值附加到数组中并保持循环。
+			// 否则，我们将使用从开发人员那里收到的密钥值为数组设置密钥。然后我们将返回最终的数组形式。
             if (is_null($key)) {
                 $results[] = $itemValue;
             } else {
@@ -430,7 +464,7 @@ class Arr
 
     /**
      * Explode the "value" and "key" arguments passed to "pluck".
-	 * 爆炸传递给“pluck”的“value”和“key”参数
+	 * 爆炸传递给"pluck"的"value"和"key"参数
      *
      * @param  string|array  $value
      * @param  string|array|null  $key
@@ -467,11 +501,11 @@ class Arr
 
     /**
      * Get a value from the array, and remove it.
-	 * 从数组中获取一个值，然后删除它。
+	 * 得到一个值从数组中，然后删除它。
      *
-     * @param  array   $array
+     * @param  array  $array
      * @param  string  $key
-     * @param  mixed   $default
+     * @param  mixed  $default
      * @return mixed
      */
     public static function pull(&$array, $key, $default = null)
@@ -485,7 +519,7 @@ class Arr
 
     /**
      * Get one or a specified number of random values from an array.
-	 * 从数组中获取一个或指定数量的随机值
+	 * 得到一个或指定数量的随机值从数组中
      *
      * @param  array  $array
      * @param  int|null  $number
@@ -526,14 +560,13 @@ class Arr
 
     /**
      * Set an array item to a given value using "dot" notation.
-	 * 使用“点”表示法将数组项设置为给定值。
+	 * 使用"点"表示法将数组项设置为给定值
      *
      * If no key is given to the method, the entire array will be replaced.
-	 * 如果没有给方法提供键，整个数组将被替换。
      *
-     * @param  array   $array
+     * @param  array  $array
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return array
      */
     public static function set(&$array, $key, $value)
@@ -550,8 +583,8 @@ class Arr
             // If the key doesn't exist at this depth, we will just create an empty array
             // to hold the next value, allowing us to create the arrays to hold final
             // values at the correct depth. Then we'll keep digging into the array.
-			// 如果在当前深度找不到该键，我们就只需创建一个空数组来存放下一个值，
-			// 这样我们就能在正确的深度创建用于存放最终值的数组了。然后我们再继续深入该数组中进行查找。
+			// 如果该键在此深度不存在，我们将创建一个空数组来保存下一个值，
+			// 从而允许我们创建数组来保存正确深度的最终值。然后我们会继续挖掘阵列。
             if (! isset($array[$key]) || ! is_array($array[$key])) {
                 $array[$key] = [];
             }
@@ -587,7 +620,7 @@ class Arr
 
     /**
      * Sort the array using the given callback or "dot" notation.
-	 * 使用给定的回调或“点”符号对数组进行排序
+	 * 对数组进行排序使用给定的回调或"点"符号
      *
      * @param  array  $array
      * @param  callable|string|null  $callback
@@ -631,7 +664,7 @@ class Arr
      */
     public static function query($array)
     {
-        return http_build_query($array, null, '&', PHP_QUERY_RFC3986);
+        return http_build_query($array, '', '&', PHP_QUERY_RFC3986);
     }
 
     /**
@@ -649,7 +682,7 @@ class Arr
 
     /**
      * If the given value is not an array and not null, wrap it in one.
-	 * 如果给定的值不是数组，也不为空，则将其封装在一个数组中。
+	 * 如果给定值不是数组，也不为空，则将其封装在一个数组中。
      *
      * @param  mixed  $value
      * @return array

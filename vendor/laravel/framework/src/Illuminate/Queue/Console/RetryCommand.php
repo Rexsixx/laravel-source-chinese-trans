@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，队列，控制台，重试命令
+ * 队列，控制台，重试命令
  */
 
 namespace Illuminate\Queue\Console;
 
-use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 
 class RetryCommand extends Command
 {
@@ -20,7 +20,7 @@ class RetryCommand extends Command
 
     /**
      * The console command description.
-	 * console命令说明
+	 * 控制台命令描述
      *
      * @var string
      */
@@ -28,7 +28,7 @@ class RetryCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
      * @return void
      */
@@ -51,7 +51,7 @@ class RetryCommand extends Command
 
     /**
      * Get the job IDs to be retried.
-	 * 获取要重试的作业id
+	 * 得到作业IDs
      *
      * @return array
      */
@@ -68,7 +68,6 @@ class RetryCommand extends Command
 
     /**
      * Retry the queue job.
-	 * 重试队列作业
      *
      * @param  \stdClass  $job
      * @return void
@@ -82,10 +81,9 @@ class RetryCommand extends Command
 
     /**
      * Reset the payload attempts.
-	 * 重置负载尝试。
+	 * 重置负载尝试
      *
      * Applicable to Redis jobs which store attempts in their payload.
-	 * 适用于在负载中存储尝试的Redis作业。
      *
      * @param  string  $payload
      * @return string

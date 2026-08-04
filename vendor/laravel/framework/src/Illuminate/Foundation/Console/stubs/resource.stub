@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，动态类
+ * 基础，虚拟类根文件
  */
 
 namespace DummyNamespace;
@@ -11,7 +11,6 @@ class DummyClass extends JsonResource
 {
     /**
      * Transform the resource into an array.
-	 * 将资源转换为数组
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array

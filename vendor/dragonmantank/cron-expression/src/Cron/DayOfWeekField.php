@@ -1,7 +1,4 @@
 <?php
-/**
- * Cron，周几字段
- */
 
 namespace Cron;
 
@@ -11,7 +8,6 @@ use InvalidArgumentException;
 
 /**
  * Day of week field.  Allows: * / , - ? L #
- * 一周中的天。
  *
  * Days of the week can be represented as a number 0-7 (0|7 = Sunday)
  * or as a three letter string: SUN, MON, TUE, WED, THU, FRI, SAT.
@@ -66,7 +62,6 @@ class DayOfWeekField extends AbstractField
         }
 
         // Convert text day of the week values to integers
-		// 将每周的文本日转换为整数
         $value = $this->convertLiterals($value);
 
         $currentYear = $date->format('Y');
@@ -74,7 +69,6 @@ class DayOfWeekField extends AbstractField
         $lastDayOfMonth = $date->format('t');
 
         // Find out if this is the last specific weekday of the month
-		// 看看这是否是这个月的最后一个工作日
         if (strpos($value, 'L')) {
             $weekday = (int) $this->convertLiterals(substr($value, 0, strpos($value, 'L')));
             $weekday %= 7;

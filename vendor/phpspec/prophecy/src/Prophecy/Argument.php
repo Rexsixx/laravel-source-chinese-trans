@@ -18,6 +18,7 @@ use Prophecy\Argument\Token;
 
 /**
  * Argument tokens shortcuts.
+ * 参数标记快捷键。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -64,13 +65,12 @@ class Argument
      * Checks that argument matches provided callback.
      *
      * @param callable $callback
-     * @param string|null $customStringRepresentation Customize the __toString() representation of this token
      *
      * @return Token\CallbackToken
      */
-    public static function that($callback, ?string $customStringRepresentation = null)
+    public static function that($callback)
     {
-        return new Token\CallbackToken($callback, $customStringRepresentation);
+        return new Token\CallbackToken($callback);
     }
 
     /**
@@ -80,7 +80,7 @@ class Argument
      */
     public static function any()
     {
-        return new Token\AnyValueToken();
+        return new Token\AnyValueToken;
     }
 
     /**
@@ -90,19 +90,19 @@ class Argument
      */
     public static function cetera()
     {
-        return new Token\AnyValuesToken();
+        return new Token\AnyValuesToken;
     }
 
     /**
      * Checks that argument matches all tokens
      *
-     * @param mixed ...$tokens a list of tokens
+     * @param mixed ... a list of tokens
      *
      * @return Token\LogicalAndToken
      */
-    public static function allOf(...$tokens)
+    public static function allOf()
     {
-        return new Token\LogicalAndToken($tokens);
+        return new Token\LogicalAndToken(func_get_args());
     }
 
     /**
@@ -205,7 +205,7 @@ class Argument
      * given precision.
      *
      * @param float $value
-     * @param int $precision
+     * @param float $precision
      *
      * @return Token\ApproximateValueToken
      */
@@ -217,7 +217,7 @@ class Argument
     /**
      * Checks that argument is in array.
      *
-     * @param array<mixed> $value
+     * @param array $value
      *
      * @return Token\InArrayToken
      */
@@ -230,7 +230,7 @@ class Argument
     /**
      * Checks that argument is not in array.
      *
-     * @param array<mixed> $value
+     * @param array $value
      *
      * @return Token\NotInArrayToken
      */

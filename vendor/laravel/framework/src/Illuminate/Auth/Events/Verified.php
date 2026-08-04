@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，事件，已验证
+ * 授权，事件，已验证
  */
 
 namespace Illuminate\Auth\Events;
@@ -21,7 +21,7 @@ class Verified
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  \Illuminate\Contracts\Auth\MustVerifyEmail  $user
      * @return void

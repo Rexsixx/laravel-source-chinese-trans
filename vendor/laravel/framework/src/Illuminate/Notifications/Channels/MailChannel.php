@@ -1,23 +1,23 @@
 <?php
 /**
- * Illuminate，通知，通道，电子邮件通道
+ * 通知，邮件通道
  */
 
 namespace Illuminate\Notifications\Channels;
 
+use Illuminate\Contracts\Mail\Mailable;
+use Illuminate\Contracts\Mail\Mailer;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Markdown;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Mail\Markdown;
-use Illuminate\Contracts\Mail\Mailer;
-use Illuminate\Contracts\Mail\Mailable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class MailChannel
 {
     /**
      * The mailer implementation.
-	 * 邮件发送器实现
+	 * 邮件实现
      *
      * @var \Illuminate\Contracts\Mail\Mailer
      */
@@ -25,7 +25,7 @@ class MailChannel
 
     /**
      * The markdown implementation.
-	 * markdown实现
+	 * 编辑器实现
      *
      * @var \Illuminate\Mail\Markdown
      */
@@ -33,7 +33,7 @@ class MailChannel
 
     /**
      * Create a new mail channel instance.
-	 * 创建一个新的邮件通道实例
+	 * 创建新的邮件通道实例
      *
      * @param  \Illuminate\Contracts\Mail\Mailer  $mailer
      * @param  \Illuminate\Mail\Markdown  $markdown
@@ -47,7 +47,7 @@ class MailChannel
 
     /**
      * Send the given notification.
-	 * 发送给定的通知
+	 * 发送给定通知
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -75,7 +75,7 @@ class MailChannel
 
     /**
      * Get the mailer Closure for the message.
-	 * 获取邮件的邮件封包
+	 * 得到消息的邮件封包
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -114,7 +114,7 @@ class MailChannel
 
     /**
      * Get additional meta-data to pass along with the view data.
-	 * 获取与视图数据一起传递的附加元数据
+	 * 得到与视图数据一起传递的附加元数据
      *
      * @param  \Illuminate\Notifications\Notification  $notification
      * @return array
@@ -122,6 +122,7 @@ class MailChannel
     protected function additionalMessageData($notification)
     {
         return [
+            '__laravel_notification_id' => $notification->id,
             '__laravel_notification' => get_class($notification),
             '__laravel_notification_queued' => in_array(
                 ShouldQueue::class, class_implements($notification)
@@ -187,7 +188,7 @@ class MailChannel
 
     /**
      * Add the "from" and "reply to" addresses to the message.
-	 * 在邮件中添加“发件人”和“回复”地址
+	 * 在邮件中添加"发件人"和"回复"地址
      *
      * @param  \Illuminate\Mail\Message  $mailMessage
      * @param  \Illuminate\Notifications\Messages\MailMessage  $message
@@ -208,7 +209,7 @@ class MailChannel
 
     /**
      * Get the recipients of the given message.
-	 * 获取给定消息的收件人
+	 * 得到给定消息的收件人
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -249,7 +250,7 @@ class MailChannel
 
     /**
      * Run the callbacks for the message.
-	 * 运行消息的回调
+	 * 运行信息的回调
      *
      * @param  \Illuminate\Mail\Message  $mailMessage
      * @param  \Illuminate\Notifications\Messages\MailMessage  $message

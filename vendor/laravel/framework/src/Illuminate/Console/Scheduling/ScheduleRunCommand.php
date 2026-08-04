@@ -1,11 +1,15 @@
 <?php
 /**
- * Illuminate，控制台，线程调度，调度运行命令
+ * 控制台，计划运行命令
  */
 
 namespace Illuminate\Console\Scheduling;
 
 use Illuminate\Console\Command;
+use Illuminate\Console\Events\ScheduledTaskFinished;
+use Illuminate\Console\Events\ScheduledTaskSkipped;
+use Illuminate\Console\Events\ScheduledTaskStarting;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Facades\Date;
 
 class ScheduleRunCommand extends Command
@@ -28,7 +32,7 @@ class ScheduleRunCommand extends Command
 
     /**
      * The schedule instance.
-	 * 调度实例
+	 * 计划实例
      *
      * @var \Illuminate\Console\Scheduling\Schedule
      */
@@ -38,7 +42,7 @@ class ScheduleRunCommand extends Command
      * The 24 hour timestamp this scheduler command started running.
 	 * 这个调度器命令开始运行的时间戳是24小时
      *
-     * @var \Illuminate\Support\Carbon;
+     * @var \Illuminate\Support\Carbon
      */
     protected $startedAt;
 
@@ -51,16 +55,21 @@ class ScheduleRunCommand extends Command
     protected $eventsRan = false;
 
     /**
-     * Create a new command instance.
-	 * 创建一个新的命令实例
+     * The event dispatcher.
+	 * 事件调度程序
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @var \Illuminate\Contracts\Events\Dispatcher
+     */
+    protected $dispatcher;
+
+    /**
+     * Create a new command instance.
+	 * 创建新的命令实例
+     *
      * @return void
      */
-    public function __construct(Schedule $schedule)
+    public function __construct()
     {
-        $this->schedule = $schedule;
-
         $this->startedAt = Date::now();
 
         parent::__construct();
@@ -68,14 +77,21 @@ class ScheduleRunCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行console命令
+	 * 执行控制台命令
      *
+     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $dispatcher
      * @return void
      */
-    public function handle()
+    public function handle(Schedule $schedule, Dispatcher $dispatcher)
     {
+        $this->schedule = $schedule;
+        $this->dispatcher = $dispatcher;
+
         foreach ($this->schedule->dueEvents($this->laravel) as $event) {
             if (! $event->filtersPass($this->laravel)) {
+                $this->dispatcher->dispatch(new ScheduledTaskSkipped($event));
+
                 continue;
             }
 
@@ -111,7 +127,7 @@ class ScheduleRunCommand extends Command
 
     /**
      * Run the given event.
-	 * 运行给定的事件
+	 * 运行给定事件
      *
      * @param  \Illuminate\Console\Scheduling\Event  $event
      * @return void
@@ -120,7 +136,16 @@ class ScheduleRunCommand extends Command
     {
         $this->line('<info>Running scheduled command:</info> '.$event->getSummaryForDisplay());
 
+        $this->dispatcher->dispatch(new ScheduledTaskStarting($event));
+
+        $start = microtime(true);
+
         $event->run($this->laravel);
+
+        $this->dispatcher->dispatch(new ScheduledTaskFinished(
+            $event,
+            round(microtime(true) - $start, 2)
+        ));
 
         $this->eventsRan = true;
     }

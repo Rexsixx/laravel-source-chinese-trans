@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，基础，测试，数据库事务
+ * 基础，数据库事务
  */
 
 namespace Illuminate\Foundation\Testing;

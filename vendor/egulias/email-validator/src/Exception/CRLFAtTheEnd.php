@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，电子邮件验证器，异常，CRLF 在最后
+ * Egulias，电子邮件验证器，异常，最后的CRLF
  */
 
 namespace Egulias\EmailValidator\Exception;

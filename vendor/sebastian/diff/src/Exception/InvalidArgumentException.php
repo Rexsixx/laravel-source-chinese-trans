@@ -1,9 +1,4 @@
 <?php declare(strict_types=1);
-
-/**
- * SebastianBergmann，差速器，无效参数异常
- */
-
 /*
  * This file is part of sebastian/diff.
  *

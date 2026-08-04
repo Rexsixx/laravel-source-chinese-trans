@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，事件监听器，不允许机器人索引监听器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +17,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Ensures that the application is not indexed by search engines.
- * 确保应用程序没有通过搜索引擎索引。
  *
  * @author Gary PEGEOT <garypegeot@gmail.com>
  */

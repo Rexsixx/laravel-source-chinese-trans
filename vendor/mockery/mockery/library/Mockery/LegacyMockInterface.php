@@ -1,9 +1,5 @@
 <?php
 /**
- * Mockery，Legacy 模拟接口
- */
-
-/**
  * Mockery
  *
  * LICENSE

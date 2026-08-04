@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，队列，作业，Job
+ * 队列，任务，任务抽象类
  */
 
 namespace Illuminate\Queue\Jobs;
 
-use Illuminate\Queue\Events\JobFailed;
-use Illuminate\Support\InteractsWithTime;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\ManuallyFailedException;
+use Illuminate\Support\InteractsWithTime;
 
 abstract class Job
 {
@@ -16,7 +16,7 @@ abstract class Job
 
     /**
      * The job handler instance.
-	 * 作业处理程序实例
+	 * 作业处理实例
      *
      * @var mixed
      */
@@ -32,7 +32,7 @@ abstract class Job
 
     /**
      * Indicates if the job has been deleted.
-	 * 指示作业是否已删除
+	 * 指明作业是否已删除
      *
      * @var bool
      */
@@ -40,7 +40,7 @@ abstract class Job
 
     /**
      * Indicates if the job has been released.
-	 * 指示作业是否已释放
+	 * 指明作业是否已释放
      *
      * @var bool
      */
@@ -48,7 +48,7 @@ abstract class Job
 
     /**
      * Indicates if the job has failed.
-	 * 指示作业是否失败
+	 * 指明作业已失败
      *
      * @var bool
      */
@@ -56,7 +56,7 @@ abstract class Job
 
     /**
      * The name of the connection the job belongs to.
-	 * 作业所属的连接的名称
+	 * 作业所属的连接名称
      *
      * @var string
      */
@@ -64,7 +64,7 @@ abstract class Job
 
     /**
      * The name of the queue the job belongs to.
-	 * 作业所属队列的名称
+	 * 作业所属队列名称
      *
      * @var string
      */
@@ -72,7 +72,7 @@ abstract class Job
 
     /**
      * Get the job identifier.
-	 * 获取工作标识符
+	 * 得到作业标识符
      *
      * @return string
      */
@@ -80,7 +80,7 @@ abstract class Job
 
     /**
      * Get the raw body of the job.
-	 * 得到工作的原始身体
+	 * 得到作业原始主体
      *
      * @return string
      */
@@ -88,7 +88,7 @@ abstract class Job
 
     /**
      * Fire the job.
-	 * 启动这个作业
+	 * 启动作业
      *
      * @return void
      */
@@ -114,7 +114,7 @@ abstract class Job
 
     /**
      * Determine if the job has been deleted.
-	 * 确定作业是否已删除
+	 * 确定作业是否被删除
      *
      * @return bool
      */
@@ -125,9 +125,9 @@ abstract class Job
 
     /**
      * Release the job back into the queue.
-	 * 将作业释放回队列
+	 * 释放作业回队列
      *
-     * @param  int   $delay
+     * @param  int  $delay
      * @return void
      */
     public function release($delay = 0)
@@ -170,7 +170,7 @@ abstract class Job
 
     /**
      * Mark the job as "failed".
-	 * 标记这个作业为“失败”
+	 * 标记作业为"失败"
      *
      * @return void
      */
@@ -181,9 +181,9 @@ abstract class Job
 
     /**
      * Delete the job, call the "failed" method, and raise the failed job event.
-	 * 删除作业，调用“failed”方法，并引发失败的作业事件。
+	 * 删除作业，调用"failed"方法，并引发失败的作业事件。
      *
-     * @param  \Throwable|null $e
+     * @param  \Throwable|null  $e
      * @return void
      */
     public function fail($e = null)
@@ -198,8 +198,8 @@ abstract class Job
             // If the job has failed, we will delete it, call the "failed" method and then call
             // an event indicating the job has failed so it can be logged if needed. This is
             // to allow every developer to better keep monitor of their failed queue jobs.
-			// 如果任务执行失败，我们将删除该任务，调用“失败”方法，然后调用一个事件来表明任务已失败，以便在需要时进行记录。
-			// 这是为了让每位开发人员能够更有效地监控其失败的队列任务。
+			// 如果作业失败，我们将删除它，调用"failed"方法，然后调用一个表示作业失败的事件，
+			// 以便在需要时记录下来。这是为了让每个开发人员更好地监控他们失败的队列作业。
             $this->delete();
 
             $this->failed($e);
@@ -214,7 +214,7 @@ abstract class Job
      * Process an exception that caused the job to fail.
 	 * 处理导致作业失败的异常
      *
-     * @param  \Throwable|null $e
+     * @param  \Throwable|null  $e
      * @return void
      */
     protected function failed($e)
@@ -241,8 +241,19 @@ abstract class Job
     }
 
     /**
+     * Get the resolved job handler instance.
+	 * 得到已解析的作业处理程序实例
+     *
+     * @return mixed
+     */
+    public function getResolvedJob()
+    {
+        return $this->instance;
+    }
+
+    /**
      * Get the decoded body of the job.
-	 * 拿到解码后的文件
+	 * 得到解码后的作业主体
      *
      * @return array
      */
@@ -253,7 +264,7 @@ abstract class Job
 
     /**
      * Get the number of times to attempt a job.
-	 * 获取尝试某项工作的次数
+	 * 得到尝试某项工作的次数
      *
      * @return int|null
      */
@@ -264,7 +275,7 @@ abstract class Job
 
     /**
      * Get the number of seconds to delay a failed job before retrying it.
-	 * 获取在重试失败作业之前延迟该作业的秒数
+	 * 得到在重试失败作业之前延迟该作业的秒数
      *
      * @return int|null
      */
@@ -275,7 +286,7 @@ abstract class Job
 
     /**
      * Get the number of seconds the job can run.
-	 * 获取作业可以运行的秒数
+	 * 得到作业可以运行的秒数
      *
      * @return int|null
      */
@@ -286,7 +297,7 @@ abstract class Job
 
     /**
      * Get the timestamp indicating when the job should timeout.
-	 * 获取指示作业何时应该超时的时间戳
+	 * 得到指示作业何时应该超时的时间戳
      *
      * @return int|null
      */
@@ -297,7 +308,7 @@ abstract class Job
 
     /**
      * Get the name of the queued job class.
-	 * 获取排队作业类的名称
+	 * 得到队列作业类的名称
      *
      * @return string
      */
@@ -308,10 +319,9 @@ abstract class Job
 
     /**
      * Get the resolved name of the queued job class.
-	 * 获取排队作业类的解析名称。
+	 * 得到排队作业类的解析名称
      *
      * Resolves the name of "wrapped" jobs such as class-based handlers.
-	 * 解析“包装”作业（如基于类的处理程序）的名称。
      *
      * @return string
      */
@@ -322,7 +332,7 @@ abstract class Job
 
     /**
      * Get the name of the connection the job belongs to.
-	 * 获取作业所属的连接的名称
+	 * 得到作业所属的连接的名称
      *
      * @return string
      */
@@ -333,7 +343,7 @@ abstract class Job
 
     /**
      * Get the name of the queue the job belongs to.
-	 * 获取作业所属队列的名称
+	 * 得到作业所属队列的名称
      *
      * @return string
      */
@@ -344,7 +354,7 @@ abstract class Job
 
     /**
      * Get the service container instance.
-	 * 获取服务容器实例
+	 * 得到服务容器实例
      *
      * @return \Illuminate\Container\Container
      */

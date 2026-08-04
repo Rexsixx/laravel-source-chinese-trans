@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，事件调度程序，Event Dispatcher
+ * Symfony，组件，事件调度器，Event Dispatcher
  */
 
 /*
@@ -51,7 +51,7 @@ class EventDispatcher implements EventDispatcherInterface
      *
      * @param string|null $eventName
      */
-    public function dispatch($event/* , string $eventName = null */)
+    public function dispatch($event/*, string $eventName = null*/)
     {
         $eventName = 1 < \func_num_args() ? func_get_arg(1) : null;
 
@@ -125,7 +125,7 @@ class EventDispatcher implements EventDispatcherInterface
                     $v[0] = $v[0]();
                     $v[1] = $v[1] ?? '__invoke';
                 }
-                if ($v === $listener || ($listener instanceof \Closure && $v == $listener)) {
+                if ($v === $listener) {
                     return $priority;
                 }
             }
@@ -181,7 +181,7 @@ class EventDispatcher implements EventDispatcherInterface
                     $v[0] = $v[0]();
                     $v[1] = $v[1] ?? '__invoke';
                 }
-                if ($v === $listener || ($listener instanceof \Closure && $v == $listener)) {
+                if ($v === $listener) {
                     unset($listeners[$k], $this->sorted[$eventName], $this->optimized[$eventName]);
                 }
             }

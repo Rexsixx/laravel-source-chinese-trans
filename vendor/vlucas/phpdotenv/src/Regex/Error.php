@@ -1,6 +1,6 @@
 <?php
 /**
- * Dotenv，正则表达式，错误
+ * Dotenv，Regex，错误
  */
 
 namespace Dotenv\Regex;

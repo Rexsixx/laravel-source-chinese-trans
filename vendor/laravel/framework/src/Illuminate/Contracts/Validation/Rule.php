@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，契约，验证，规则
+ * 契约，验证规则接口
  */
 
 namespace Illuminate\Contracts\Validation;
@@ -19,7 +19,7 @@ interface Rule
 
     /**
      * Get the validation error message.
-	 * 获取验证错误消息
+	 * 得到验证错误消息
      *
      * @return string|array
      */

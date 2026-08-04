@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，访问，处理授权
+ * 授权，处理授权
  */
 
 namespace Illuminate\Auth\Access;
@@ -9,27 +9,27 @@ trait HandlesAuthorization
 {
     /**
      * Create a new access response.
-	 * 创建一个新的访问响应
+	 * 创建新的访问响应
      *
      * @param  string|null  $message
+     * @param  mixed  $code
      * @return \Illuminate\Auth\Access\Response
      */
-    protected function allow($message = null)
+    protected function allow($message = null, $code = null)
     {
-        return new Response($message);
+        return Response::allow($message, $code);
     }
 
     /**
      * Throws an unauthorized exception.
 	 * 抛出未经授权的异常
      *
-     * @param  string  $message
-     * @return void
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @param  string|null  $message
+     * @param  mixed|null  $code
+     * @return \Illuminate\Auth\Access\Response
      */
-    protected function deny($message = 'This action is unauthorized.')
+    protected function deny($message = null, $code = null)
     {
-        throw new AuthorizationException($message);
+        return Response::deny($message, $code);
     }
 }

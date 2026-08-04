@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，资源，条件加载属性
+ * Http，有条件加载属性
  */
 
 namespace Illuminate\Http\Resources;
@@ -11,7 +11,7 @@ trait ConditionallyLoadsAttributes
 {
     /**
      * Filter the given data, removing any optional values.
-	 * 过滤给定的数据，删除任何可选值。
+	 * 过滤给定数据
      *
      * @param  array  $data
      * @return array
@@ -46,7 +46,7 @@ trait ConditionallyLoadsAttributes
 
     /**
      * Merge the given data in at the given index.
-	 * 在给定的索引处合并给定的数据
+	 * 合并给定数据
      *
      * @param  array  $data
      * @param  int  $index
@@ -70,7 +70,7 @@ trait ConditionallyLoadsAttributes
 
     /**
      * Remove the missing values from the filtered data.
-	 * 从过滤的数据中删除缺失的值
+	 * 移除丢失值
      *
      * @param  array  $data
      * @return array
@@ -99,7 +99,7 @@ trait ConditionallyLoadsAttributes
 
     /**
      * Retrieve a value based on a given condition.
-	 * 根据给定条件检索值
+	 * 检索值根据给定条件
      *
      * @param  bool  $condition
      * @param  mixed  $value
@@ -117,7 +117,7 @@ trait ConditionallyLoadsAttributes
 
     /**
      * Merge a value into the array.
-	 * 将值合并到数组中
+	 * 合并一个值至数组
      *
      * @param  mixed  $value
      * @return \Illuminate\Http\Resources\MergeValue|mixed
@@ -129,7 +129,7 @@ trait ConditionallyLoadsAttributes
 
     /**
      * Merge a value based on a given condition.
-	 * 根据给定条件合并一个值
+	 * 合并一个值根据给定条件
      *
      * @param  bool  $condition
      * @param  mixed  $value
@@ -186,7 +186,7 @@ trait ConditionallyLoadsAttributes
 
     /**
      * Execute a callback if the given pivot table has been loaded.
-	 * 如果已加载给定的数据透视表，则执行回调。
+	 * 执行回调，如果已加载给定的数据透视表。
      *
      * @param  string  $table
      * @param  mixed  $value
@@ -200,7 +200,7 @@ trait ConditionallyLoadsAttributes
 
     /**
      * Execute a callback if the given pivot table with a custom accessor has been loaded.
-	 * 如果加载了带有自定义访问器的数据透视表，则执行回调。
+	 * 执行回调，如果加载了带有自定义访问器的数据透视表。
      *
      * @param  string  $accessor
      * @param  string  $table
@@ -224,7 +224,7 @@ trait ConditionallyLoadsAttributes
 
     /**
      * Transform the given value if it is present.
-	 * 如果给定值存在，则对其进行转换。
+	 * 如果给定值存在，则对其进行转换
      *
      * @param  mixed  $value
      * @param  callable  $callback

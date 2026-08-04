@@ -27,7 +27,6 @@ class DotenvFactory implements FactoryInterface
 
     /**
      * Create a new dotenv environment factory instance.
-	 * 创建一个新的dotenv环境工厂实例。
      *
      * If no adapters are provided, then the defaults will be used.
      *
@@ -44,7 +43,6 @@ class DotenvFactory implements FactoryInterface
 
     /**
      * Creates a new mutable environment variables instance.
-	 * 创建一个新的可变环境变量实例
      *
      * @return \Dotenv\Environment\VariablesInterface
      */
@@ -55,7 +53,6 @@ class DotenvFactory implements FactoryInterface
 
     /**
      * Creates a new immutable environment variables instance.
-	 * 创建一个新的不可变环境变量实例
      *
      * @return \Dotenv\Environment\VariablesInterface
      */

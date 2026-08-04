@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，偏转器，规则，English，偏转器工厂
+ * Doctrine，偏转器，规则，英文， 偏转器工厂
  */
 
 declare(strict_types=1);

@@ -1,12 +1,12 @@
 <?php
 /**
- * App，供应商，广播服务提供商
+ * App，服务提供者，广播服务提供者
  */
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\ServiceProvider;
 
 class BroadcastServiceProvider extends ServiceProvider
 {

@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，队列，连接器，数据库连接器
+ * 队列，连接器，数据库连接
  */
 
 namespace Illuminate\Queue\Connectors;
 
-use Illuminate\Queue\DatabaseQueue;
 use Illuminate\Database\ConnectionResolverInterface;
+use Illuminate\Queue\DatabaseQueue;
 
 class DatabaseConnector implements ConnectorInterface
 {
@@ -20,7 +20,7 @@ class DatabaseConnector implements ConnectorInterface
 
     /**
      * Create a new connector instance.
-	 * 创建一个新的连接器实例
+	 * 创建新的连接实例
      *
      * @param  \Illuminate\Database\ConnectionResolverInterface  $connections
      * @return void

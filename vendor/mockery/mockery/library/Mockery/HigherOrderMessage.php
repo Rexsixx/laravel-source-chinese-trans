@@ -1,9 +1,5 @@
 <?php
 /**
- * Mockery，高级指令
- */
-
-/**
  * Mockery
  *
  * LICENSE

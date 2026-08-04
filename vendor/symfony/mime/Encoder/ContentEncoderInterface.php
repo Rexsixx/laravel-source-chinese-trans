@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Mime，编码器，内容编码器接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -21,7 +18,6 @@ interface ContentEncoderInterface extends EncoderInterface
 {
     /**
      * Encodes the stream to a Generator.
-	 * 将流编码为生成器
      *
      * @param resource $stream
      */

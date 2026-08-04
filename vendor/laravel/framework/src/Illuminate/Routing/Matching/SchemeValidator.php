@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，路由选择，匹配，方案验证器
+ * 路由，匹配，方案验证器
  */
 
 namespace Illuminate\Routing\Matching;
@@ -12,7 +12,7 @@ class SchemeValidator implements ValidatorInterface
 {
     /**
      * Validate a given rule against a route and request.
-	 * 针对路由和请求验证给定的规则
+	 * 验证给定的规则
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  \Illuminate\Http\Request  $request

@@ -1,83 +1,74 @@
 <?php
 /**
- * Illuminate，基础，供应商，Artisan 服务提供商
+ * 基础，工具服务提供者
  */
 
 namespace Illuminate\Foundation\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Queue\Console\TableCommand;
-use Illuminate\Auth\Console\AuthMakeCommand;
-use Illuminate\Foundation\Console\UpCommand;
-use Illuminate\Foundation\Console\DownCommand;
 use Illuminate\Auth\Console\ClearResetsCommand;
 use Illuminate\Cache\Console\CacheTableCommand;
-use Illuminate\Foundation\Console\ServeCommand;
-use Illuminate\Foundation\Console\PresetCommand;
-use Illuminate\Queue\Console\FailedTableCommand;
-use Illuminate\Foundation\Console\AppNameCommand;
-use Illuminate\Foundation\Console\JobMakeCommand;
-use Illuminate\Database\Console\Seeds\SeedCommand;
-use Illuminate\Foundation\Console\MailMakeCommand;
-use Illuminate\Foundation\Console\OptimizeCommand;
-use Illuminate\Foundation\Console\RuleMakeCommand;
-use Illuminate\Foundation\Console\TestMakeCommand;
-use Illuminate\Foundation\Console\EventListCommand;
-use Illuminate\Foundation\Console\EventMakeCommand;
-use Illuminate\Foundation\Console\ModelMakeCommand;
-use Illuminate\Foundation\Console\RouteListCommand;
-use Illuminate\Foundation\Console\ViewCacheCommand;
-use Illuminate\Foundation\Console\ViewClearCommand;
-use Illuminate\Session\Console\SessionTableCommand;
-use Illuminate\Contracts\Support\DeferrableProvider;
-use Illuminate\Foundation\Console\EventCacheCommand;
-use Illuminate\Foundation\Console\EventClearCommand;
-use Illuminate\Foundation\Console\PolicyMakeCommand;
-use Illuminate\Foundation\Console\RouteCacheCommand;
-use Illuminate\Foundation\Console\RouteClearCommand;
+use Illuminate\Cache\Console\ClearCommand as CacheClearCommand;
+use Illuminate\Cache\Console\ForgetCommand as CacheForgetCommand;
+use Illuminate\Console\Scheduling\ScheduleFinishCommand;
 use Illuminate\Console\Scheduling\ScheduleRunCommand;
+use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Database\Console\Factories\FactoryMakeCommand;
+use Illuminate\Database\Console\Seeds\SeedCommand;
+use Illuminate\Database\Console\Seeds\SeederMakeCommand;
+use Illuminate\Database\Console\WipeCommand;
 use Illuminate\Foundation\Console\ChannelMakeCommand;
+use Illuminate\Foundation\Console\ClearCompiledCommand;
 use Illuminate\Foundation\Console\ConfigCacheCommand;
 use Illuminate\Foundation\Console\ConfigClearCommand;
 use Illuminate\Foundation\Console\ConsoleMakeCommand;
+use Illuminate\Foundation\Console\DownCommand;
 use Illuminate\Foundation\Console\EnvironmentCommand;
-use Illuminate\Foundation\Console\KeyGenerateCommand;
-use Illuminate\Foundation\Console\RequestMakeCommand;
-use Illuminate\Foundation\Console\StorageLinkCommand;
-use Illuminate\Routing\Console\ControllerMakeCommand;
-use Illuminate\Routing\Console\MiddlewareMakeCommand;
-use Illuminate\Foundation\Console\ListenerMakeCommand;
-use Illuminate\Foundation\Console\ObserverMakeCommand;
-use Illuminate\Foundation\Console\ProviderMakeCommand;
-use Illuminate\Foundation\Console\ResourceMakeCommand;
-use Illuminate\Foundation\Console\ClearCompiledCommand;
+use Illuminate\Foundation\Console\EventCacheCommand;
+use Illuminate\Foundation\Console\EventClearCommand;
 use Illuminate\Foundation\Console\EventGenerateCommand;
+use Illuminate\Foundation\Console\EventListCommand;
+use Illuminate\Foundation\Console\EventMakeCommand;
 use Illuminate\Foundation\Console\ExceptionMakeCommand;
-use Illuminate\Foundation\Console\OptimizeClearCommand;
-use Illuminate\Foundation\Console\VendorPublishCommand;
-use Illuminate\Console\Scheduling\ScheduleFinishCommand;
-use Illuminate\Database\Console\Seeds\SeederMakeCommand;
-use Illuminate\Foundation\Console\PackageDiscoverCommand;
-use Illuminate\Database\Console\Migrations\MigrateCommand;
+use Illuminate\Foundation\Console\JobMakeCommand;
+use Illuminate\Foundation\Console\KeyGenerateCommand;
+use Illuminate\Foundation\Console\ListenerMakeCommand;
+use Illuminate\Foundation\Console\MailMakeCommand;
+use Illuminate\Foundation\Console\ModelMakeCommand;
 use Illuminate\Foundation\Console\NotificationMakeCommand;
-use Illuminate\Database\Console\Factories\FactoryMakeCommand;
-use Illuminate\Queue\Console\WorkCommand as QueueWorkCommand;
-use Illuminate\Database\Console\Migrations\MigrateMakeCommand;
+use Illuminate\Foundation\Console\ObserverMakeCommand;
+use Illuminate\Foundation\Console\OptimizeClearCommand;
+use Illuminate\Foundation\Console\OptimizeCommand;
+use Illuminate\Foundation\Console\PackageDiscoverCommand;
+use Illuminate\Foundation\Console\PolicyMakeCommand;
+use Illuminate\Foundation\Console\PresetCommand;
+use Illuminate\Foundation\Console\ProviderMakeCommand;
+use Illuminate\Foundation\Console\RequestMakeCommand;
+use Illuminate\Foundation\Console\ResourceMakeCommand;
+use Illuminate\Foundation\Console\RouteCacheCommand;
+use Illuminate\Foundation\Console\RouteClearCommand;
+use Illuminate\Foundation\Console\RouteListCommand;
+use Illuminate\Foundation\Console\RuleMakeCommand;
+use Illuminate\Foundation\Console\ServeCommand;
+use Illuminate\Foundation\Console\StorageLinkCommand;
+use Illuminate\Foundation\Console\TestMakeCommand;
+use Illuminate\Foundation\Console\UpCommand;
+use Illuminate\Foundation\Console\VendorPublishCommand;
+use Illuminate\Foundation\Console\ViewCacheCommand;
+use Illuminate\Foundation\Console\ViewClearCommand;
 use Illuminate\Notifications\Console\NotificationTableCommand;
-use Illuminate\Cache\Console\ClearCommand as CacheClearCommand;
-use Illuminate\Queue\Console\RetryCommand as QueueRetryCommand;
-use Illuminate\Cache\Console\ForgetCommand as CacheForgetCommand;
-use Illuminate\Queue\Console\ListenCommand as QueueListenCommand;
-use Illuminate\Queue\Console\RestartCommand as QueueRestartCommand;
-use Illuminate\Queue\Console\ListFailedCommand as ListFailedQueueCommand;
+use Illuminate\Queue\Console\FailedTableCommand;
 use Illuminate\Queue\Console\FlushFailedCommand as FlushFailedQueueCommand;
 use Illuminate\Queue\Console\ForgetFailedCommand as ForgetFailedQueueCommand;
-use Illuminate\Database\Console\Migrations\FreshCommand as MigrateFreshCommand;
-use Illuminate\Database\Console\Migrations\ResetCommand as MigrateResetCommand;
-use Illuminate\Database\Console\Migrations\StatusCommand as MigrateStatusCommand;
-use Illuminate\Database\Console\Migrations\InstallCommand as MigrateInstallCommand;
-use Illuminate\Database\Console\Migrations\RefreshCommand as MigrateRefreshCommand;
-use Illuminate\Database\Console\Migrations\RollbackCommand as MigrateRollbackCommand;
+use Illuminate\Queue\Console\ListenCommand as QueueListenCommand;
+use Illuminate\Queue\Console\ListFailedCommand as ListFailedQueueCommand;
+use Illuminate\Queue\Console\RestartCommand as QueueRestartCommand;
+use Illuminate\Queue\Console\RetryCommand as QueueRetryCommand;
+use Illuminate\Queue\Console\TableCommand;
+use Illuminate\Queue\Console\WorkCommand as QueueWorkCommand;
+use Illuminate\Routing\Console\ControllerMakeCommand;
+use Illuminate\Routing\Console\MiddlewareMakeCommand;
+use Illuminate\Session\Console\SessionTableCommand;
+use Illuminate\Support\ServiceProvider;
 
 class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -94,19 +85,13 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         'ClearResets' => 'command.auth.resets.clear',
         'ConfigCache' => 'command.config.cache',
         'ConfigClear' => 'command.config.clear',
+        'DbWipe' => 'command.db.wipe',
         'Down' => 'command.down',
         'Environment' => 'command.environment',
         'EventCache' => 'command.event.cache',
         'EventClear' => 'command.event.clear',
         'EventList' => 'command.event.list',
         'KeyGenerate' => 'command.key.generate',
-        'Migrate' => 'command.migrate',
-        'MigrateFresh' => 'command.migrate.fresh',
-        'MigrateInstall' => 'command.migrate.install',
-        'MigrateRefresh' => 'command.migrate.refresh',
-        'MigrateReset' => 'command.migrate.reset',
-        'MigrateRollback' => 'command.migrate.rollback',
-        'MigrateStatus' => 'command.migrate.status',
         'Optimize' => 'command.optimize',
         'OptimizeClear' => 'command.optimize.clear',
         'PackageDiscover' => 'command.package.discover',
@@ -137,8 +122,6 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
      * @var array
      */
     protected $devCommands = [
-        'AppName' => 'command.app.name',
-        'AuthMake' => 'command.auth.make',
         'CacheTable' => 'command.cache.table',
         'ChannelMake' => 'command.channel.make',
         'ConsoleMake' => 'command.console.make',
@@ -151,7 +134,6 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         'ListenerMake' => 'command.listener.make',
         'MailMake' => 'command.mail.make',
         'MiddlewareMake' => 'command.middleware.make',
-        'MigrateMake' => 'command.migrate.make',
         'ModelMake' => 'command.model.make',
         'NotificationMake' => 'command.notification.make',
         'NotificationTable' => 'command.notification.table',
@@ -185,7 +167,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the given commands.
-	 * 注册给定的命令
+	 * 注册给定命令
      *
      * @param  array  $commands
      * @return void
@@ -193,7 +175,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     protected function registerCommands(array $commands)
     {
         foreach (array_keys($commands) as $command) {
-            call_user_func_array([$this, "register{$command}Command"], []);
+            $this->{"register{$command}Command"}();
         }
 
         $this->commands(array_values($commands));
@@ -201,33 +183,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
-     *
-     * @return void
-     */
-    protected function registerAppNameCommand()
-    {
-        $this->app->singleton('command.app.name', function ($app) {
-            return new AppNameCommand($app['composer'], $app['files']);
-        });
-    }
-
-    /**
-     * Register the command.
-	 * 注册命令
-     *
-     * @return void
-     */
-    protected function registerAuthMakeCommand()
-    {
-        $this->app->singleton('command.auth.make', function () {
-            return new AuthMakeCommand;
-        });
-    }
-
-    /**
-     * Register the command.
-	 * 注册命令
+	 * 注册缓存清除命令
      *
      * @return void
      */
@@ -240,7 +196,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册缓存忘记命令
      *
      * @return void
      */
@@ -253,7 +209,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册缓存表命令
      *
      * @return void
      */
@@ -266,7 +222,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册通道生成命令
      *
      * @return void
      */
@@ -279,7 +235,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册清除编译命令
      *
      * @return void
      */
@@ -292,7 +248,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册清除重置命令
      *
      * @return void
      */
@@ -305,7 +261,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册配置缓存命令
      *
      * @return void
      */
@@ -318,7 +274,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册配置清除命令
      *
      * @return void
      */
@@ -331,7 +287,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册控制台生成命令
      *
      * @return void
      */
@@ -344,7 +300,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册控制器生成命令
      *
      * @return void
      */
@@ -357,7 +313,20 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册数据库擦除命令
+     *
+     * @return void
+     */
+    protected function registerDbWipeCommand()
+    {
+        $this->app->singleton('command.db.wipe', function () {
+            return new WipeCommand;
+        });
+    }
+
+    /**
+     * Register the command.
+	 * 注册事件生成命令
      *
      * @return void
      */
@@ -370,7 +339,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册事件
      *
      * @return void
      */
@@ -383,7 +352,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册异常生成命令
      *
      * @return void
      */
@@ -396,6 +365,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册工厂生成命令
      *
      * @return void
      */
@@ -408,6 +378,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册下发命令
      *
      * @return void
      */
@@ -420,6 +391,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册环境命令
      *
      * @return void
      */
@@ -432,6 +404,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册事件缓存命令
      *
      * @return void
      */
@@ -444,6 +417,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册事件清理命令
      *
      * @return void
      */
@@ -456,6 +430,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册事件列表命令
      *
      * @return void
      */
@@ -468,6 +443,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册业务生成命令
      *
      * @return void
      */
@@ -480,6 +456,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册密钥生成命令
      *
      * @return void
      */
@@ -492,6 +469,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册监听生成命令
      *
      * @return void
      */
@@ -504,6 +482,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册邮箱生成命令
      *
      * @return void
      */
@@ -516,6 +495,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册中间件生成命令
      *
      * @return void
      */
@@ -528,109 +508,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-     *
-     * @return void
-     */
-    protected function registerMigrateCommand()
-    {
-        $this->app->singleton('command.migrate', function ($app) {
-            return new MigrateCommand($app['migrator']);
-        });
-    }
-
-    /**
-     * Register the command.
-     *
-     * @return void
-     */
-    protected function registerMigrateFreshCommand()
-    {
-        $this->app->singleton('command.migrate.fresh', function () {
-            return new MigrateFreshCommand;
-        });
-    }
-
-    /**
-     * Register the command.
-     *
-     * @return void
-     */
-    protected function registerMigrateInstallCommand()
-    {
-        $this->app->singleton('command.migrate.install', function ($app) {
-            return new MigrateInstallCommand($app['migration.repository']);
-        });
-    }
-
-    /**
-     * Register the command.
-     *
-     * @return void
-     */
-    protected function registerMigrateMakeCommand()
-    {
-        $this->app->singleton('command.migrate.make', function ($app) {
-            // Once we have the migration creator registered, we will create the command
-            // and inject the creator. The creator is responsible for the actual file
-            // creation of the migrations, and may be extended by these developers.
-            $creator = $app['migration.creator'];
-
-            $composer = $app['composer'];
-
-            return new MigrateMakeCommand($creator, $composer);
-        });
-    }
-
-    /**
-     * Register the command.
-     *
-     * @return void
-     */
-    protected function registerMigrateRefreshCommand()
-    {
-        $this->app->singleton('command.migrate.refresh', function () {
-            return new MigrateRefreshCommand;
-        });
-    }
-
-    /**
-     * Register the command.
-     *
-     * @return void
-     */
-    protected function registerMigrateResetCommand()
-    {
-        $this->app->singleton('command.migrate.reset', function ($app) {
-            return new MigrateResetCommand($app['migrator']);
-        });
-    }
-
-    /**
-     * Register the command.
-     *
-     * @return void
-     */
-    protected function registerMigrateRollbackCommand()
-    {
-        $this->app->singleton('command.migrate.rollback', function ($app) {
-            return new MigrateRollbackCommand($app['migrator']);
-        });
-    }
-
-    /**
-     * Register the command.
-     *
-     * @return void
-     */
-    protected function registerMigrateStatusCommand()
-    {
-        $this->app->singleton('command.migrate.status', function ($app) {
-            return new MigrateStatusCommand($app['migrator']);
-        });
-    }
-
-    /**
-     * Register the command.
+	 * 注册模型生成命令
      *
      * @return void
      */
@@ -643,6 +521,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册通知生成命令
      *
      * @return void
      */
@@ -655,6 +534,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册通知表命令
      *
      * @return void
      */
@@ -667,6 +547,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册寄存器优化命令
      *
      * @return void
      */
@@ -679,6 +560,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册观察者命令
      *
      * @return void
      */
@@ -691,6 +573,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册寄存器优化清除命令
      *
      * @return void
      */
@@ -703,6 +586,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册包发现命令
      *
      * @return void
      */
@@ -715,6 +599,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册策略制定命令
      *
      * @return void
      */
@@ -727,6 +612,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册寄存器预置命令
      *
      * @return void
      */
@@ -739,6 +625,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册提供者生成命令
      *
      * @return void
      */
@@ -751,6 +638,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册队列失败命令
      *
      * @return void
      */
@@ -763,6 +651,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册队列忘记命令
      *
      * @return void
      */
@@ -775,6 +664,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册队列清除命令
      *
      * @return void
      */
@@ -787,6 +677,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册队列监听命令
      *
      * @return void
      */
@@ -799,18 +690,20 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册队列重启命令
      *
      * @return void
      */
     protected function registerQueueRestartCommand()
     {
-        $this->app->singleton('command.queue.restart', function () {
-            return new QueueRestartCommand;
+        $this->app->singleton('command.queue.restart', function ($app) {
+            return new QueueRestartCommand($app['cache.store']);
         });
     }
 
     /**
      * Register the command.
+	 * 注册队列重试命令
      *
      * @return void
      */
@@ -823,18 +716,20 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册队列工作命令
      *
      * @return void
      */
     protected function registerQueueWorkCommand()
     {
         $this->app->singleton('command.queue.work', function ($app) {
-            return new QueueWorkCommand($app['queue.worker']);
+            return new QueueWorkCommand($app['queue.worker'], $app['cache.store']);
         });
     }
 
     /**
      * Register the command.
+	 * 注册队列失败表命令
      *
      * @return void
      */
@@ -847,6 +742,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册队列表命令
      *
      * @return void
      */
@@ -859,6 +755,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册请求生成命令
      *
      * @return void
      */
@@ -871,6 +768,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册资源命令
      *
      * @return void
      */
@@ -883,6 +781,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册规则创建命令
      *
      * @return void
      */
@@ -895,6 +794,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册播种机生成命令
      *
      * @return void
      */
@@ -907,6 +807,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册会话表命令
      *
      * @return void
      */
@@ -919,6 +820,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册存储链路命令
      *
      * @return void
      */
@@ -931,6 +833,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册路由缓存命令
      *
      * @return void
      */
@@ -943,6 +846,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册路由清除命令
      *
      * @return void
      */
@@ -955,6 +859,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册路由列表命令
      *
      * @return void
      */
@@ -967,6 +872,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
+	 * 注册播种命令
      *
      * @return void
      */
@@ -979,7 +885,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册调度完成命令
      *
      * @return void
      */
@@ -990,7 +896,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册调度运行命令
      *
      * @return void
      */
@@ -1001,7 +907,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册服务命令
      *
      * @return void
      */
@@ -1014,7 +920,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册测试生成命令
      *
      * @return void
      */
@@ -1027,7 +933,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册上传命令
      *
      * @return void
      */
@@ -1040,7 +946,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册厂商发布命令
      *
      * @return void
      */
@@ -1053,7 +959,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册视图缓存命令
      *
      * @return void
      */
@@ -1066,7 +972,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Register the command.
-	 * 注册命令
+	 * 注册视图清除命令
      *
      * @return void
      */
@@ -1079,7 +985,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
 
     /**
      * Get the services provided by the provider.
-	 * 获取提供者提供的服务
+	 * 得到提供者提供的服务
      *
      * @return array
      */

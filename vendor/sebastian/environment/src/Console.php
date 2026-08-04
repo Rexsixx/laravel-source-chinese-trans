@@ -1,9 +1,4 @@
 <?php declare(strict_types=1);
-
-/**
- * SebastianBergmann，环境，控制台
- */
-
 /*
  * This file is part of sebastian/environment.
  *
@@ -33,7 +28,6 @@ final class Console
 
     /**
      * Returns true if STDOUT supports colorization.
-	 * 如果stout支持着色,返回true。
      *
      * This code has been copied and adapted from
      * Symfony\Component\Console\Output\StreamOutput.
@@ -64,7 +58,6 @@ final class Console
 
     /**
      * Returns the number of columns of the terminal.
-	 * 返回终端的列数
      *
      * @codeCoverageIgnore
      */

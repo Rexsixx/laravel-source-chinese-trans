@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，电子邮件验证器，验证，电子邮件验证
+ * Egulias，电子邮件验证器，确认，电子邮件验证
  */
 
 namespace Egulias\EmailValidator\Validation;
@@ -24,7 +24,6 @@ interface EmailValidation
 
     /**
      * Returns the validation error.
-	 * 返回验证错误
      *
      * @return InvalidEmail|null
      */
@@ -32,7 +31,6 @@ interface EmailValidation
 
     /**
      * Returns the validation warnings.
-	 * 返回验证警告
      *
      * @return Warning[]
      */

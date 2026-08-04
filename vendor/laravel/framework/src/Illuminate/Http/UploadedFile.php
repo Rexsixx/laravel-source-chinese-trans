@@ -1,15 +1,16 @@
 <?php
 /**
- * Illuminate，Http，已上传文件
+ * Http，上传文件类
  */
 
 namespace Illuminate\Http;
 
-use Illuminate\Support\Arr;
 use Illuminate\Container\Container;
-use Illuminate\Support\Traits\Macroable;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Http\Testing\FileFactory;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Traits\Macroable;
 use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
 
 class UploadedFile extends SymfonyUploadedFile
@@ -18,18 +19,18 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Begin creating a new file fake.
-	 * 开始创建一个新的文件fake
+	 * 开始创建新文件
      *
      * @return \Illuminate\Http\Testing\FileFactory
      */
     public static function fake()
     {
-        return new Testing\FileFactory;
+        return new FileFactory;
     }
 
     /**
      * Store the uploaded file on a filesystem disk.
-	 * 将上传的文件存储在文件系统磁盘上
+	 * 存储上传的文件至文件系统磁盘
      *
      * @param  string  $path
      * @param  array|string  $options
@@ -42,7 +43,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Store the uploaded file on a filesystem disk with public visibility.
-	 * 将上传的文件存储在具有公共可见性的文件系统磁盘上
+	 * 存储上传的文件在具有公共可见性的文件系统磁盘上
      *
      * @param  string  $path
      * @param  array|string  $options
@@ -59,7 +60,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Store the uploaded file on a filesystem disk with public visibility.
-	 * 将上传的文件存储在具有公共可见性的文件系统磁盘上
+	 * 存储上传的文件在具有公共可见性的文件系统磁盘上
      *
      * @param  string  $path
      * @param  string  $name
@@ -77,7 +78,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Store the uploaded file on a filesystem disk.
-	 * 将上传的文件存储在文件系统磁盘上
+	 * 存储上传的文件在文件系统磁盘上
      *
      * @param  string  $path
      * @param  string  $name
@@ -97,7 +98,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Get the contents of the uploaded file.
-	 * 获取上传文件的内容
+	 * 得到上传文件内容
      *
      * @return bool|string
      *
@@ -114,7 +115,7 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Get the file's extension supplied by the client.
-	 * 获取客户端提供的文件扩展名
+	 * 得到文件扩展名
      *
      * @return string
      */
@@ -125,10 +126,10 @@ class UploadedFile extends SymfonyUploadedFile
 
     /**
      * Create a new file instance from a base instance.
-	 * 从基本实例创建新的文件实例
+	 * 创建新的文件实例
      *
      * @param  \Symfony\Component\HttpFoundation\File\UploadedFile  $file
-     * @param  bool $test
+     * @param  bool  $test
      * @return static
      */
     public static function createFromBase(SymfonyUploadedFile $file, $test = false)

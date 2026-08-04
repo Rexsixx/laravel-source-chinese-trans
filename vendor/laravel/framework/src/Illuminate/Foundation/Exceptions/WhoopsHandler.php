@@ -1,19 +1,19 @@
 <?php
 /**
- * Illuminate，基础，异常处理，Whoops 处理程序
+ * 基础，哎呀处理
  */
 
 namespace Illuminate\Foundation\Exceptions;
 
-use Illuminate\Support\Arr;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Arr;
 use Whoops\Handler\PrettyPageHandler;
 
 class WhoopsHandler
 {
     /**
      * Create a new Whoops handler for debug mode.
-	 * 为调试模式创建一个新的Whoops处理程序
+	 * 创建新的哎呀处理
      *
      * @return \Whoops\Handler\PrettyPageHandler
      */
@@ -30,9 +30,9 @@ class WhoopsHandler
 
     /**
      * Register the application paths with the handler.
-	 * 向处理程序注册应用程序路径
+	 * 注册应用程序路径用处理程序
      *
-     * @param  \Whoops\Handler\PrettyPageHandler $handler
+     * @param  \Whoops\Handler\PrettyPageHandler  $handler
      * @return $this
      */
     protected function registerApplicationPaths($handler)
@@ -46,7 +46,7 @@ class WhoopsHandler
 
     /**
      * Get the application paths except for the "vendor" directory.
-	 * 获取除“vendor”目录外的应用程序路径
+	 * 得到除"vendor"目录外的应用程序路径
      *
      * @return array
      */
@@ -60,9 +60,9 @@ class WhoopsHandler
 
     /**
      * Register the blacklist with the handler.
-	 * 向处理程序注册黑名单
+	 * 注册黑名单
      *
-     * @param  \Whoops\Handler\PrettyPageHandler $handler
+     * @param  \Whoops\Handler\PrettyPageHandler  $handler
      * @return $this
      */
     protected function registerBlacklist($handler)
@@ -78,9 +78,9 @@ class WhoopsHandler
 
     /**
      * Register the editor with the handler.
-	 * 用处理程序注册编辑器
+	 * 注册编辑器
      *
-     * @param  \Whoops\Handler\PrettyPageHandler $handler
+     * @param  \Whoops\Handler\PrettyPageHandler  $handler
      * @return $this
      */
     protected function registerEditor($handler)

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，队列，事件，工作线程停止中
+ * 队列，事件，执行停止
  */
 
 namespace Illuminate\Queue\Events;
@@ -9,7 +9,7 @@ class WorkerStopping
 {
     /**
      * The exit status.
-	 * 退出状态
+	 * 中止状态
      *
      * @var int
      */
@@ -17,7 +17,7 @@ class WorkerStopping
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  int  $status
      * @return void

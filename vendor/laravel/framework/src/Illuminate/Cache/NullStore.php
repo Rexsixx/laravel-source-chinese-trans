@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，缓存，零存储
+ * 缓存，缓存空存储
  */
 
 namespace Illuminate\Cache;
@@ -10,30 +10,23 @@ class NullStore extends TaggableStore
     use RetrievesMultipleKeys;
 
     /**
-     * The array of stored values.
-	 * 存储值的数组
-     *
-     * @var array
-     */
-    protected $storage = [];
-
-    /**
      * Retrieve an item from the cache by key.
-	 * 按键从缓存中检索项
+	 * 检索项目从缓存中
      *
      * @param  string  $key
      * @return mixed
      */
     public function get($key)
     {
+        //
     }
 
     /**
      * Store an item in the cache for a given number of seconds.
-	 * 将项存储在缓存中给定的秒数
+	 * 存储项目在缓存中使用给定的秒数
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @param  int  $seconds
      * @return bool
      */
@@ -47,7 +40,7 @@ class NullStore extends TaggableStore
 	 * 增加缓存中项的值
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return int|bool
      */
     public function increment($key, $value = 1)
@@ -60,7 +53,7 @@ class NullStore extends TaggableStore
 	 * 递减缓存中项的值
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return int|bool
      */
     public function decrement($key, $value = 1)
@@ -70,10 +63,10 @@ class NullStore extends TaggableStore
 
     /**
      * Store an item in the cache indefinitely.
-	 * 将项无限期地存储在缓存中
+	 * 存储项目无限期地在缓存中
      *
      * @param  string  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return bool
      */
     public function forever($key, $value)
@@ -83,7 +76,7 @@ class NullStore extends TaggableStore
 
     /**
      * Remove an item from the cache.
-	 * 从缓存中删除项
+	 * 从缓存中删除项目
      *
      * @param  string  $key
      * @return bool
@@ -95,7 +88,7 @@ class NullStore extends TaggableStore
 
     /**
      * Remove all items from the cache.
-	 * 从缓存中删除所有项
+	 * 清空缓存中所有项目
      *
      * @return bool
      */
@@ -106,7 +99,7 @@ class NullStore extends TaggableStore
 
     /**
      * Get the cache key prefix.
-	 * 获取缓存键前缀
+	 * 得到缓存前缀
      *
      * @return string
      */

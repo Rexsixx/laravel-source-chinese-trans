@@ -1,14 +1,14 @@
 <?php
 /**
- * Illuminate，基础，Http，中间件，检查维护模式
+ * 基础Http，中间件，检查维护模式
  */
 
 namespace Illuminate\Foundation\Http\Middleware;
 
 use Closure;
-use Symfony\Component\HttpFoundation\IpUtils;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Http\Exceptions\MaintenanceModeException;
+use Symfony\Component\HttpFoundation\IpUtils;
 
 class CheckForMaintenanceMode
 {
@@ -22,7 +22,7 @@ class CheckForMaintenanceMode
 
     /**
      * The URIs that should be accessible while maintenance mode is enabled.
-	 * 在启用维护模式时应该可以访问的uri
+	 * 在启用维护模式时应该可以访问的URI
      *
      * @var array
      */
@@ -30,7 +30,7 @@ class CheckForMaintenanceMode
 
     /**
      * Create a new middleware instance.
-	 * 创建一个新的中间件实例
+	 * 创建新的中间件实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -49,6 +49,7 @@ class CheckForMaintenanceMode
      * @return mixed
      *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     * @throws \Illuminate\Foundation\Http\Exceptions\MaintenanceModeException
      */
     public function handle($request, Closure $next)
     {

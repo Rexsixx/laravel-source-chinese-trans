@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，错误处理程序，误差增强器，误差增强器接口
- */
 
 /*
  * This file is part of the Symfony package.

@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Mime，编码器，Qp 内容编码器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -41,7 +38,6 @@ final class QpContentEncoder implements ContentEncoderInterface
 
     /**
      * Make sure CRLF is correct and HT/SPACE are in valid places.
-	 * 确保CRLF是正确的,HT / SPACE在有效的位置。
      */
     private function standardize(string $string): string
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Http，问题，与内容类型交互
+ * Http，与内容类型交互
  */
 
 namespace Illuminate\Http\Concerns;
@@ -11,7 +11,7 @@ trait InteractsWithContentTypes
 {
     /**
      * Determine if the given content types match.
-	 * 确定给定的内容类型是否匹配
+	 * 确定是否给定的内容类型匹配
      *
      * @param  string  $actual
      * @param  string  $type
@@ -30,18 +30,18 @@ trait InteractsWithContentTypes
 
     /**
      * Determine if the request is sending JSON.
-	 * 确定请求是否正在发送JSON
+	 * 确定是否请求发送JSON
      *
      * @return bool
      */
     public function isJson()
     {
-        return Str::contains($this->header('CONTENT_TYPE'), ['/json', '+json']);
+        return Str::contains($this->header('CONTENT_TYPE') ?? '', ['/json', '+json']);
     }
 
     /**
      * Determine if the current request probably expects a JSON response.
-	 * 确定当前请求是否可能期望JSON响应
+	 * 确定当前请求是否可能期望Json响应
      *
      * @return bool
      */
@@ -52,7 +52,7 @@ trait InteractsWithContentTypes
 
     /**
      * Determine if the current request is asking for JSON.
-	 * 确定当前请求是否请求JSON
+	 * 确定当前请求是否请求json
      *
      * @return bool
      */
@@ -97,7 +97,7 @@ trait InteractsWithContentTypes
 
     /**
      * Return the most suitable content type from the given array based on content negotiation.
-	 * 根据内容协商从给定数组返回最合适的内容类型
+	 * 返回最合适的内容类型根据内容协商从给定数组
      *
      * @param  string|array  $contentTypes
      * @return string|null
@@ -144,7 +144,7 @@ trait InteractsWithContentTypes
 
     /**
      * Determines whether a request accepts JSON.
-	 * 确定请求是否接受JSON
+	 * 确定请求是否接受Json
      *
      * @return bool
      */
@@ -155,7 +155,7 @@ trait InteractsWithContentTypes
 
     /**
      * Determines whether a request accepts HTML.
-	 * 确定请求是否接受HTML
+	 * 确定请求是否接受Html
      *
      * @return bool
      */
@@ -166,7 +166,7 @@ trait InteractsWithContentTypes
 
     /**
      * Get the data format expected in the response.
-	 * 获取响应中期望的数据格式
+	 * 得到数据格式
      *
      * @param  string  $default
      * @return string

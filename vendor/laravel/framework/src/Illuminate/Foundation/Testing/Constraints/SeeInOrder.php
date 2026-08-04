@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，基础，测试，约束条件，See In Order
+ * 基础，在订单中见
  */
 
 namespace Illuminate\Foundation\Testing\Constraints;
 
-use ReflectionClass;
 use PHPUnit\Framework\Constraint\Constraint;
+use ReflectionClass;
 
 class SeeInOrder extends Constraint
 {
@@ -28,7 +28,7 @@ class SeeInOrder extends Constraint
 
     /**
      * Create a new constraint instance.
-	 * 创建一个新的约束实例
+	 * 创建新的约束实例
      *
      * @param  string  $content
      * @return void
@@ -40,7 +40,7 @@ class SeeInOrder extends Constraint
 
     /**
      * Determine if the rule passes validation.
-	 * 确定规则是否通过验证
+	 * 确定是否规则通过验证
      *
      * @param  array  $values
      * @return bool
@@ -70,7 +70,7 @@ class SeeInOrder extends Constraint
 
     /**
      * Get the description of the failure.
-	 * 获取故障的描述
+	 * 得到失败描述
      *
      * @param  array  $values
      * @return string
@@ -86,7 +86,7 @@ class SeeInOrder extends Constraint
 
     /**
      * Get a string representation of the object.
-	 * 获取对象的字符串表示形式
+	 * 得到对象的字符串表示形式
      *
      * @return string
      */

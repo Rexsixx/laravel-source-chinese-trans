@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，过程，过程
+ * Symfony，组件，进程，Process
  */
 
 /*

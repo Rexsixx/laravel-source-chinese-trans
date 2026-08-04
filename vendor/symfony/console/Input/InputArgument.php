@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，组件，控制台，输入，输入参数
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -92,7 +95,7 @@ class InputArgument
      */
     public function setDefault($default = null)
     {
-        if ($this->isRequired() && null !== $default) {
+        if (self::REQUIRED === $this->mode && null !== $default) {
             throw new LogicException('Cannot set a default value except for InputArgument::OPTIONAL mode.');
         }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，缓存清洁器，缓存清洁器接口
+ * Symfony，组件，Http内核，缓存清理，缓存清理接口
  */
 
 /*
@@ -23,7 +23,6 @@ interface CacheClearerInterface
 {
     /**
      * Clears any caches necessary.
-	 * 清除任何必要的缓存
      *
      * @param string $cacheDir The cache directory
      */

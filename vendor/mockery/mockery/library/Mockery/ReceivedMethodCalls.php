@@ -1,9 +1,5 @@
 <?php
 /**
- * Mockery，接收方法
- */
-
-/**
  * Mockery
  *
  * LICENSE

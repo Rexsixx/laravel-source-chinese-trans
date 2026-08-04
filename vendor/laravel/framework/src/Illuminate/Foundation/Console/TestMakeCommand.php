@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，基础，控制台，测试生成命令
+ * 基础，测试生成命令
  */
 
 namespace Illuminate\Foundation\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
 
 class TestMakeCommand extends GeneratorCommand
 {
@@ -28,7 +28,7 @@ class TestMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成的类的类型
+	 * 生成器类的类型
      *
      * @var string
      */
@@ -36,7 +36,7 @@ class TestMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 获取生成器的存根文件
+	 * 得到生成器的存根文件
      *
      * @return string
      */
@@ -51,7 +51,7 @@ class TestMakeCommand extends GeneratorCommand
 
     /**
      * Get the destination class path.
-	 * 获取目标类路径
+	 * 得到目标类路径
      *
      * @param  string  $name
      * @return string
@@ -65,7 +65,7 @@ class TestMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认名称空间
+	 * 得到类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -81,7 +81,7 @@ class TestMakeCommand extends GeneratorCommand
 
     /**
      * Get the root namespace for the class.
-	 * 获取类的根命名空间
+	 * 得到类的根命名空间
      *
      * @return string
      */

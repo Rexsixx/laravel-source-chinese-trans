@@ -17,7 +17,6 @@ interface AdapterInterface
 
     /**
      * Get an environment variable, if it exists.
-	 * 如果存在,就得到一个环境变量。
      *
      * @param string $name
      *
@@ -27,7 +26,6 @@ interface AdapterInterface
 
     /**
      * Set an environment variable.
-	 * 设置环境变量
      *
      * @param string      $name
      * @param string|null $value
@@ -38,7 +36,6 @@ interface AdapterInterface
 
     /**
      * Clear an environment variable.
-	 * 清除一个环境变量
      *
      * @param string $name
      *

@@ -1,19 +1,19 @@
 <?php
 /**
- * Illuminate，数据库，连接器，连接工厂
+ * 数据库，连接工厂
  */
 
 namespace Illuminate\Database\Connectors;
 
-use PDOException;
-use Illuminate\Support\Arr;
-use InvalidArgumentException;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Database\Connection;
 use Illuminate\Database\MySqlConnection;
-use Illuminate\Database\SQLiteConnection;
 use Illuminate\Database\PostgresConnection;
+use Illuminate\Database\SQLiteConnection;
 use Illuminate\Database\SqlServerConnection;
-use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\Arr;
+use InvalidArgumentException;
+use PDOException;
 
 class ConnectionFactory
 {
@@ -27,7 +27,7 @@ class ConnectionFactory
 
     /**
      * Create a new connection factory instance.
-	 * 创建一个新的连接工厂实例
+	 * 创建新的连接工厂实例
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
@@ -41,7 +41,7 @@ class ConnectionFactory
      * Establish a PDO connection based on the configuration.
 	 * 根据配置信息建立PDO连接
      *
-     * @param  array   $config
+     * @param  array  $config
      * @param  string|null  $name
      * @return \Illuminate\Database\Connection
      */
@@ -60,7 +60,7 @@ class ConnectionFactory
      * Parse and prepare the database configuration.
 	 * 解析并准备数据库配置
      *
-     * @param  array   $config
+     * @param  array  $config
      * @param  string  $name
      * @return array
      */
@@ -71,7 +71,7 @@ class ConnectionFactory
 
     /**
      * Create a single database connection instance.
-	 * 创建单个数据库连接实例
+	 * 创建单数据库连接实例
      *
      * @param  array  $config
      * @return \Illuminate\Database\Connection
@@ -87,7 +87,7 @@ class ConnectionFactory
 
     /**
      * Create a single database connection instance.
-	 * 创建单个数据库连接实例
+	 * 创建数据库读写实例(翻译不对改了)
      *
      * @param  array  $config
      * @return \Illuminate\Database\Connection
@@ -101,7 +101,7 @@ class ConnectionFactory
 
     /**
      * Create a new PDO instance for reading.
-	 * 创建一个新的PDO实例用于读取
+	 * 创建新的PDO实例用于读取 
      *
      * @param  array  $config
      * @return \Closure
@@ -113,7 +113,7 @@ class ConnectionFactory
 
     /**
      * Get the read configuration for a read / write connection.
-	 * 获取读/写连接的读配置
+	 * 得到读配置从读写连接
      *
      * @param  array  $config
      * @return array
@@ -127,7 +127,7 @@ class ConnectionFactory
 
     /**
      * Get the read configuration for a read / write connection.
-	 * 获取读/写连接的读配置
+	 * 得到读配置从读写连接
      *
      * @param  array  $config
      * @return array
@@ -141,9 +141,9 @@ class ConnectionFactory
 
     /**
      * Get a read / write level configuration.
-	 * 获取读/写级别配置
+	 * 得到读写级别配置
      *
-     * @param  array   $config
+     * @param  array  $config
      * @param  string  $type
      * @return array
      */
@@ -156,7 +156,7 @@ class ConnectionFactory
 
     /**
      * Merge a configuration for a read / write connection.
-	 * 合并读写连接的配置
+	 * 合并读取连接配置
      *
      * @param  array  $config
      * @param  array  $merge
@@ -169,7 +169,7 @@ class ConnectionFactory
 
     /**
      * Create a new Closure that resolves to a PDO instance.
-	 * 创建一个解析为PDO实例的新Closure
+	 * 创建一个解析为PDO实例的新闭包
      *
      * @param  array  $config
      * @return \Closure
@@ -183,7 +183,7 @@ class ConnectionFactory
 
     /**
      * Create a new Closure that resolves to a PDO instance with a specific host or an array of hosts.
-	 * 创建一个新的Closure，它解析为具有特定主机或主机数组的PDO实例。
+	 * 创建新的闭包，解析为具有特定主机或主机数组的PDO实例
      *
      * @param  array  $config
      * @return \Closure
@@ -211,6 +211,8 @@ class ConnectionFactory
      *
      * @param  array  $config
      * @return array
+     *
+     * @throws \InvalidArgumentException
      */
     protected function parseHosts(array $config)
     {
@@ -256,6 +258,7 @@ class ConnectionFactory
             return $this->container->make($key);
         }
 
+		//核心代码，根据驱动选择连接器
         switch ($config['driver']) {
             case 'mysql':
                 return new MySqlConnector;
@@ -272,13 +275,13 @@ class ConnectionFactory
 
     /**
      * Create a new connection instance.
-	 * 创建一个新的连接实例
+	 * 创建新的连接实例
      *
-     * @param  string   $driver
-     * @param  \PDO|\Closure     $connection
-     * @param  string   $database
-     * @param  string   $prefix
-     * @param  array    $config
+     * @param  string  $driver
+     * @param  \PDO|\Closure  $connection
+     * @param  string  $database
+     * @param  string  $prefix
+     * @param  array  $config
      * @return \Illuminate\Database\Connection
      *
      * @throws \InvalidArgumentException

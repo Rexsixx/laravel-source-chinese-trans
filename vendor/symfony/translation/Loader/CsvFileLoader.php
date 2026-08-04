@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，翻译，载入程序，Csv File 加载器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,7 +15,6 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
  * CsvFileLoader loads translations from CSV files.
- * CsvFileLoader从CSV文件加载翻译。
  *
  * @author Saša Stamenković <umpirsky@gmail.com>
  */
@@ -59,7 +55,6 @@ class CsvFileLoader extends FileLoader
 
     /**
      * Sets the delimiter, enclosure, and escape character for CSV.
-	 * 设置CSV的分隔符、包围符和转义字符。
      *
      * @param string $delimiter Delimiter character
      * @param string $enclosure Enclosure character

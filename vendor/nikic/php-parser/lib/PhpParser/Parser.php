@@ -1,16 +1,11 @@
 <?php declare(strict_types=1);
 
-/**
- * PhpParser，分析程序
- */
-
 namespace PhpParser;
 
 interface Parser
 {
     /**
      * Parses PHP code into a node tree.
-	 * 将PHP代码解析为节点树
      *
      * @param string $code The source code to parse
      * @param ErrorHandler|null $errorHandler Error handler to use for lexer/parser errors, defaults
@@ -19,5 +14,5 @@ interface Parser
      * @return Node\Stmt[]|null Array of statements (or null non-throwing error handler is used and
      *                          the parser was unable to recover from an error).
      */
-    public function parse(string $code, ?ErrorHandler $errorHandler = null);
+    public function parse(string $code, ErrorHandler $errorHandler = null);
 }

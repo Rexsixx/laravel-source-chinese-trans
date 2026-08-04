@@ -1,6 +1,6 @@
 <?php
 /**
- * Illuminate，Auth，事件，已验证
+ * 授权，事件，已验证
  */
 
 namespace Illuminate\Auth\Events;
@@ -21,7 +21,7 @@ class Authenticated
 
     /**
      * The authenticated user.
-	 * 通过身份验证的用户
+	 * 已通过验证用户
      *
      * @var \Illuminate\Contracts\Auth\Authenticatable
      */
@@ -29,7 +29,7 @@ class Authenticated
 
     /**
      * Create a new event instance.
-	 * 创建一个新的事件实例
+	 * 创建新的事件实例
      *
      * @param  string  $guard
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user

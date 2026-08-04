@@ -1,20 +1,19 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，动态类
+ * 基础，虚拟类根文件
  */
 
 namespace DummyNamespace;
 
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
 
 class DummyClass implements ShouldQueue
 {
     use InteractsWithQueue;
-    
+
     /**
      * Create the event listener.
-	 * 创建事件侦听器
      *
      * @return void
      */
@@ -25,7 +24,6 @@ class DummyClass implements ShouldQueue
 
     /**
      * Handle the event.
-	 * 处理事件
      *
      * @param  object  $event
      * @return void

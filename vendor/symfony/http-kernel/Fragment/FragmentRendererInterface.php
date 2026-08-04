@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，碎片，碎片渲染器接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +17,6 @@ use Symfony\Component\HttpKernel\Controller\ControllerReference;
 
 /**
  * Interface implemented by all rendering strategies.
- * 所有呈现策略实现的接口。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

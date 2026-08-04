@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，依赖注入，服务重置器
- */
 
 /*
  * This file is part of the Symfony package.

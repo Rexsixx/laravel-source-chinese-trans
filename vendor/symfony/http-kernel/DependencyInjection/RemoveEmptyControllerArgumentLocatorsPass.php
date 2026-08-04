@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Http内核，依赖注入，删除空控制器参数控制器通过
- */
 
 /*
  * This file is part of the Symfony package.

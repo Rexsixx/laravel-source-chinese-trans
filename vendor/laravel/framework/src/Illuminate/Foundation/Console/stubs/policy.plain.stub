@@ -1,12 +1,12 @@
 <?php
 /**
- * Illuminate，基础，控制台，存根，动态类
+ * 基础，虚拟类根文件
  */
 
 namespace DummyNamespace;
 
-use NamespacedDummyUserModel;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use NamespacedDummyUserModel;
 
 class DummyClass
 {
@@ -14,7 +14,6 @@ class DummyClass
 
     /**
      * Create a new policy instance.
-	 * 创建一个新的策略实例
      *
      * @return void
      */

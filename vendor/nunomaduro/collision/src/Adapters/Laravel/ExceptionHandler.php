@@ -1,7 +1,4 @@
 <?php
-/**
- * NunoMaduro，碰撞，适配器，Laravel，异常处理程序
- */
 
 /**
  * This file is part of Collision.
@@ -22,7 +19,6 @@ use Symfony\Component\Console\Exception\ExceptionInterface as SymfonyConsoleExce
 
 /**
  * This is an Collision Laravel Adapter ExceptionHandler implementation.
- * 这是一个碰撞后的适配器异常处理程序实现。
  *
  * Registers the Error Handler on Laravel.
  *
