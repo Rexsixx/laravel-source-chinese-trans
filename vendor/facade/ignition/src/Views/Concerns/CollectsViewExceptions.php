@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，Views，关注，收集视图异常
+ * 门面，Ignition，Views，问题，收集视图异常
  */
 
 namespace Facade\Ignition\Views\Concerns;

@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition 契约，可扔物品有解决方案吗
+ * 门面，Ignition 契约，有可抛出解决方案吗
  */
 
 namespace Facade\IgnitionContracts;

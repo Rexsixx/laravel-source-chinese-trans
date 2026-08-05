@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，电子邮件验证器，警告，CFWS与FWS
+ * Egulias，电子邮件验证器，警告，CFWS 与FWS
  */
 
 namespace Egulias\EmailValidator\Warning;

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * Class Flare.
- * 类Flare
+ * 类 Flare
  *
  * @method static void glow(string $name, string $messageLevel = \Facade\FlareClient\Enums\MessageLevels::INFO, array $metaData = [])
  * @method static void context($key, $value)

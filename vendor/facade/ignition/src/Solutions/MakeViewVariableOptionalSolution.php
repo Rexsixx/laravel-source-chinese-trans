@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，解决方案提供者，使视图变量成为可选的解决方案
+ * 门面，Ignition，解决方案，使视图变量成为可选的解决方案
  */
 
 namespace Facade\Ignition\Solutions;

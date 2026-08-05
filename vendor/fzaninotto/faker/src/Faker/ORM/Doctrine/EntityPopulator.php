@@ -29,6 +29,7 @@ class EntityPopulator
 
     /**
      * Class constructor.
+	 * 类构造方法
      *
      * @param ClassMetadata $class
      */

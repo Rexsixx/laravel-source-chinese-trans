@@ -9,6 +9,7 @@ use DateTimeInterface;
 
 /**
  * Minutes field.  Allows: * , / -
+ * 分钟字段
  */
 class MinutesField extends AbstractField
 {

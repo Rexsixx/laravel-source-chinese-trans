@@ -1,4 +1,7 @@
 <?php
+/**
+ * Cron，字段接口
+ */
 
 namespace Cron;
 
@@ -6,11 +9,13 @@ use DateTimeInterface;
 
 /**
  * CRON field interface
+ * CRON字段接口
  */
 interface FieldInterface
 {
     /**
      * Check if the respective value of a DateTime field satisfies a CRON exp
+	 * 检查DateTime字段的相应值是否满足CRON exp
      *
      * @param DateTimeInterface $date  DateTime object to check
      * @param string            $value CRON expression to test against
@@ -22,6 +27,7 @@ interface FieldInterface
     /**
      * When a CRON expression is not satisfied, this method is used to increment
      * or decrement a DateTime object by the unit of the cron field
+	 * 当CRON表达式不满足时，使用此方法对DateTime对象按cron字段的单位进行递增或递减。
      *
      * @param DateTimeInterface &$date  DateTime object to change
      * @param bool              $invert (optional) Set to TRUE to decrement
@@ -32,6 +38,7 @@ interface FieldInterface
 
     /**
      * Validates a CRON expression for a given field
+	 * 验证给定字段的CRON表达式
      *
      * @param string $value CRON expression value to validate
      *

@@ -9,6 +9,7 @@ class Iban
 {
     /**
      * Generates IBAN Checksum
+	 * 生成IBAN校验和
      *
      * @param string $iban
      * @return string Checksum (numeric string)

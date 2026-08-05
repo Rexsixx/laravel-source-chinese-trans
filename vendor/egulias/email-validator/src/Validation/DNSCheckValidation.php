@@ -40,14 +40,17 @@ class DNSCheckValidation implements EmailValidation
     public function isValid($email, EmailLexer $emailLexer)
     {
         // use the input to check DNS if we cannot extract something similar to a domain
+		// 如果我们不能提取类似于域的东西，使用输入来检查DNS。
         $host = $email;
 
         // Arguable pattern to extract the domain. Not aiming to validate the domain nor the email
+		// 可论证的模式来提取域。不是为了验证域名或电子邮件。
         if (false !== $lastAtPos = strrpos($email, '@')) {
             $host = substr($email, $lastAtPos + 1);
         }
 
         // Get the domain parts
+		// 得到定义域部分
         $hostParts = explode('.', $host);
 
         // Reserved Top Level DNS Names (https://tools.ietf.org/html/rfc2606#section-2),
@@ -75,6 +78,7 @@ class DNSCheckValidation implements EmailValidation
         $isReservedTopLevel = in_array($hostParts[(count($hostParts) - 1)], $reservedTopLevelDnsNames, true);
 
         // Exclude reserved top level DNS names
+		// 排除保留的顶级DNS名称
         if ($isLocalDomain || $isReservedTopLevel) {
             $this->error = new LocalOrReservedDomain();
             return false;

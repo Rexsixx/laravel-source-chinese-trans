@@ -35,8 +35,10 @@ class PrettyPageHandler extends Handler
 
     /**
      * Search paths to be scanned for resources.
+	 * 搜索需要扫描的资源路径。
      *
      * Stored in the reverse order they're declared.
+	 * 以与声明相反的顺序存储。
      *
      * @var array
      */
@@ -44,6 +46,7 @@ class PrettyPageHandler extends Handler
 
     /**
      * Fast lookup cache for known resource locations.
+	 * 已知资源位置的快速查找缓存
      *
      * @var array
      */
@@ -51,6 +54,7 @@ class PrettyPageHandler extends Handler
 
     /**
      * The name of the custom css file.
+	 * 自定义css文件的名称
      *
      * @var string|null
      */
@@ -58,6 +62,7 @@ class PrettyPageHandler extends Handler
 
     /**
      * The name of the custom js file.
+	 * 自定义js文件的名称
      *
      * @var string|null
      */
@@ -98,6 +103,7 @@ class PrettyPageHandler extends Handler
 
     /**
      * An identifier for a known IDE/text editor.
+	 * 已知IDE/文本编辑器的标识符。
      *
      * Either a string, or a calalble that resolves a string, that can be used
      * to open a given file in an editor. If the string contains the special
@@ -112,6 +118,7 @@ class PrettyPageHandler extends Handler
 
     /**
      * A list of known editor strings.
+	 * 已知编辑器字符串的列表
      *
      * @var array
      */

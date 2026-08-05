@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，电子邮件验证器，异常，期望文本
+ * Egulias，电子邮件验证器，异常，Expecting DTEXT
  */
 
 namespace Egulias\EmailValidator\Exception;

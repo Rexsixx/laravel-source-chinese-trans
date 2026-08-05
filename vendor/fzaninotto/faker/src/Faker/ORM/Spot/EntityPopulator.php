@@ -13,11 +13,13 @@ use Spot\Relation\BelongsTo;
 
 /**
  * Service class for populating a table through a Spot Entity class.
+ * 用于通过Spot Entity类填充表的服务类。
  */
 class EntityPopulator
 {
     /**
      * When fetching existing data - fetch only few first rows.
+	 * 获取现有数据时，只获取前几行。
      */
     const RELATED_FETCH_COUNT = 10;
 

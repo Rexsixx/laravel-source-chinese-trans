@@ -8,6 +8,8 @@ namespace Hamcrest;
 /**
  * Convenient base class for Matchers that require a value of a specific type.
  * This simply checks the type and then casts.
+ * 为需要特定类型值的匹配器提供方便的基类。
+ * 这只是检查类型，然后进行强制转换。
  */
 
 abstract class TypeSafeDiagnosingMatcher extends TypeSafeMatcher

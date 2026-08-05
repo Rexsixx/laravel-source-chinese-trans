@@ -29,6 +29,8 @@ class BladeSourceMapCompiler extends BladeCompiler
         /*
          * Laravel 5.8.0- 5.8.9 added the view name as a comment in the compiled view on a new line.
          * That's why the offset to detect the correct line number must be 2 instead of 1.
+		 * Laravel 5.8.0- 5.8.9在编译视图的新行中添加了视图名作为注释。
+		 * 这就是为什么检测正确行号的偏移量必须是2而不是1的原因。
          */
         if (version_compare(app()->version(), '5.8.0', '>=') &&
             version_compare(app()->version(), '5.8.9', '<=')

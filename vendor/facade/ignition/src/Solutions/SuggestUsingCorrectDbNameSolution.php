@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，解决方案提供者，建议使用正确的数据库名称解决方案
+ * 门面，Ignition，解决方案，建议使用正确的数据库名称解决方案
  */
 
 namespace Facade\Ignition\Solutions;

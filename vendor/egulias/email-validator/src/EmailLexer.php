@@ -94,6 +94,7 @@ class EmailLexer extends AbstractLexer
 
     /**
      * The last matched/seen token.
+	 * 最后匹配/看到的标记
      *
      * @var array
      *
@@ -103,6 +104,7 @@ class EmailLexer extends AbstractLexer
 
     /**
      * The next token in the input.
+	 * 输入中的下一个令牌
      *
      * @var array|null
      */
@@ -185,6 +187,7 @@ class EmailLexer extends AbstractLexer
 
     /**
      * Lexical catchable patterns.
+	 * 词汇可捕捉模式
      *
      * @return string[]
      */

@@ -17,6 +17,7 @@ use Whoops\Exception\Formatter;
  * Catches an exception and converts it to an XML
  * response. Additionally can also return exception
  * frames for consumption by an API.
+ * 捕获异常并将其转换为XML响应。此外，还可以返回异常帧供API使用。
  */
 class XmlResponseHandler extends Handler
 {
@@ -96,6 +97,7 @@ class XmlResponseHandler extends Handler
 
     /**
      * The main function for converting to an XML document.
+	 * 转换为XML文档的主要函数
      *
      * @param  array|\Traversable $data
      * @return string            XML

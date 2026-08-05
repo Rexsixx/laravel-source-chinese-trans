@@ -13,7 +13,7 @@ class TrustProxies
 {
     /**
      * The config repository instance.
-	 * 配置存储库实例。
+	 * 配置存储库实例
      *
      * @var \Illuminate\Contracts\Config\Repository
      */
@@ -21,6 +21,7 @@ class TrustProxies
 
     /**
      * The trusted proxies for the application.
+	 * 应用程序的可信代理
      *
      * @var null|string|array
      */
@@ -28,6 +29,7 @@ class TrustProxies
 
     /**
      * The proxy header mappings.
+	 * 代理标头映射
      *
      * @var null|string|int
      */
@@ -35,6 +37,7 @@ class TrustProxies
 
     /**
      * Create a new trusted proxies middleware instance.
+	 * 创建一个新的可信代理中间件实例
      *
      * @param \Illuminate\Contracts\Config\Repository $config
      */
@@ -45,6 +48,7 @@ class TrustProxies
 
     /**
      * Handle an incoming request.
+	 * 处理传入请求
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
@@ -63,6 +67,7 @@ class TrustProxies
 
     /**
      * Sets the trusted proxies on the request to the value of trustedproxy.proxies
+	 * 将请求上的可信代理设置为trustedproxy.proxies的值
      *
      * @param \Illuminate\Http\Request $request
      */
@@ -87,6 +92,7 @@ class TrustProxies
 
     /**
      * Specify the IP addresses to trust explicitly.
+	 * 明确指定要信任的IP地址
      *
      * @param \Illuminate\Http\Request $request
      * @param array                    $trustedIps
@@ -98,6 +104,7 @@ class TrustProxies
 
     /**
      * Set the trusted proxy to be the IP address calling this servers
+	 * 将可信代理设置为调用这些服务器的IP地址
      *
      * @param \Illuminate\Http\Request $request
      */
@@ -108,6 +115,7 @@ class TrustProxies
 
     /**
      * Retrieve trusted header name(s), falling back to defaults if config not set.
+	 * 检索可信的报头名称，如果未设置配置，则返回默认值。
      *
      * @return int A bit field of Request::HEADER_*, to set which headers to trust from your proxies.
      */

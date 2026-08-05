@@ -20,8 +20,9 @@ use Whoops\RunInterface;
 abstract class Handler implements HandlerInterface
 {
     /*
-     Return constants that can be returned from Handler::handle
-     to message the handler walker.
+     * Return constants that can be returned from Handler::handle
+     * to message the handler walker.
+	 * 返回可以从 Handler::handle 返回的常量，以向处理程序遍历器发送消息。
      */
     const DONE         = 0x10; // returning this is optional, only exists for
                                // semantic purposes

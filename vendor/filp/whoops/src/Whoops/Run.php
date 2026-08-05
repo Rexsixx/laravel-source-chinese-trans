@@ -65,6 +65,7 @@ final class Run implements RunInterface
 
     /**
      * In certain scenarios, like in shutdown handler, we can not throw exceptions.
+	 * 在某些情况下，比如在shutdown处理程序中，我们不能抛出异常。
      *
      * @var bool
      */

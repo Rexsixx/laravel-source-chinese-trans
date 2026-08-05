@@ -9,6 +9,7 @@ use Spot\Locator;
 
 /**
  * Service class for populating a database using the Spot ORM.
+ * 使用Spot ORM填充数据库的服务类。
  */
 class Populator
 {
@@ -19,6 +20,8 @@ class Populator
 
     /**
      * Populator constructor.
+	 * Populator构造函数
+	 * 
      * @param \Faker\Generator $generator
      * @param Locator|null $locator
      */
@@ -30,6 +33,7 @@ class Populator
 
     /**
      * Add an order for the generation of $number records for $entity.
+	 * 为$entity添加生成$number记录的订单
      *
      * @param $entityName string Name of Entity object to generate
      * @param $number int The number of entities to populate

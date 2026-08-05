@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，公共，Lexer，抽象Lexer
+ * Doctrine，公共，Lexer，抽象 Lexer
  */
 
 declare(strict_types=1);
@@ -37,6 +37,7 @@ abstract class AbstractLexer
 
     /**
      * Array of scanned tokens.
+	 * 扫描令牌数组。
      *
      * Each token is an associative array containing three items:
      *  - 'value'    : the string value of the token in the input string
@@ -51,6 +52,7 @@ abstract class AbstractLexer
 
     /**
      * Current lexer position in input string.
+	 * 输入字符串中的当前词法分析器位置
      *
      * @var int
      */
@@ -58,6 +60,7 @@ abstract class AbstractLexer
 
     /**
      * Current peek of current lexer position.
+	 * 当前词法分析器位置的当前顶点
      *
      * @var int
      */

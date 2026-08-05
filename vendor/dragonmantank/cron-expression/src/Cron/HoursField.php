@@ -1,4 +1,7 @@
 <?php
+/**
+ * Cron，小时字段
+ */
 
 namespace Cron;
 
@@ -7,6 +10,7 @@ use DateTimeZone;
 
 /**
  * Hours field.  Allows: * , / -
+ * 小时字段
  */
 class HoursField extends AbstractField
 {
@@ -43,6 +47,7 @@ class HoursField extends AbstractField
         // Change timezone to UTC temporarily. This will
         // allow us to go back or forwards and hour even
         // if DST will be changed between the hours.
+		// 暂时将时区更改为UTC。这样即使在该时段之间切换夏令时，我们也能前后调整一小时。
         if (is_null($parts) || $parts == '*') {
             $timezone = $date->getTimezone();
             $date = $date->setTimezone(new DateTimeZone('UTC'));

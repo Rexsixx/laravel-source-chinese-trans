@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，解决方案提供者，丢失解决方案
+ * 门面，Ignition，解决方案，丢失解决方案
  */
 
 namespace Facade\Ignition\Solutions;

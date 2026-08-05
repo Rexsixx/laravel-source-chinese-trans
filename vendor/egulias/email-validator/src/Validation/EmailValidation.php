@@ -24,6 +24,7 @@ interface EmailValidation
 
     /**
      * Returns the validation error.
+	 * 返回验证错误
      *
      * @return InvalidEmail|null
      */
@@ -31,6 +32,7 @@ interface EmailValidation
 
     /**
      * Returns the validation warnings.
+	 * 返回验证警告
      *
      * @return Warning[]
      */

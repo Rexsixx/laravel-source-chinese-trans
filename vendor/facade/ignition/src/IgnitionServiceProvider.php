@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，Ignition服务提供商
+ * 门面，Ignition，Ignition 服务提供商
  */
 
 namespace Facade\Ignition;

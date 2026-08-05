@@ -10,6 +10,7 @@ use Faker\Provider\Base;
 
 /**
  * Service class for populating a table through a Mandango ActiveRecord class.
+ * 用于通过Mandango ActiveRecord类填充表的服务类。
  */
 class EntityPopulator
 {
@@ -18,6 +19,7 @@ class EntityPopulator
 
     /**
      * Class constructor.
+	 * 类构造方法
      *
      * @param string $class A Mandango ActiveRecord classname
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * 门面，Ignition，支持，Composer 类映射
+ */
 
 namespace Facade\Ignition\Support;
 

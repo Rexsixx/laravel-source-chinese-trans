@@ -10,6 +10,7 @@ use \Propel\Runtime\Map\ColumnMap;
 
 /**
  * Service class for populating a table through a Propel ActiveRecord class.
+ * 用于通过Propel ActiveRecord类填充表的服务类。
  */
 class EntityPopulator
 {
@@ -19,6 +20,7 @@ class EntityPopulator
 
     /**
      * Class constructor.
+	 * 类构造方法
      *
      * @param string $class A Propel ActiveRecord classname
      */

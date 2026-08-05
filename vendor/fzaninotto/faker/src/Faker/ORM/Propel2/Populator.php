@@ -11,6 +11,8 @@ use Propel\Runtime\ServiceContainer\ServiceContainerInterface;
 /**
  * Service class for populating a database using the Propel ORM.
  * A Populator can populate several tables using ActiveRecord classes.
+ * 使用Propel ORM填充数据库的服务类。
+ * Populator可以使用ActiveRecord类填充多个表。
  */
 class Populator
 {
@@ -28,6 +30,7 @@ class Populator
 
     /**
      * Add an order for the generation of $number records for $entity.
+	 * 为$entity添加生成$number记录的订单
      *
      * @param mixed $entity A Propel ActiveRecord classname, or a \Faker\ORM\Propel2\EntityPopulator instance
      * @param int   $number The number of entities to populate

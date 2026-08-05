@@ -20,6 +20,7 @@ use Whoops\Exception\Frame;
 * Handler outputing plaintext error messages. Can be used
 * directly, or will be instantiated automagically by Whoops\Run
 * if passed to Run::pushHandler
+* 处理器输出纯文本错误信息。可直接使用，或由 Whoops\Run 自动实例化。
 */
 class PlainTextHandler extends Handler
 {
@@ -62,6 +63,7 @@ class PlainTextHandler extends Handler
 
     /**
      * Constructor.
+	 * 构造方法
      * @throws InvalidArgumentException     If argument is not null or a LoggerInterface
      * @param  \Psr\Log\LoggerInterface|null $logger
      */

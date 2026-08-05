@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，Http，中间件，启用可行的
+ * 门面，Ignition，Http，中间件，Ignition 启用
  */
 
 namespace Facade\Ignition\Http\Middleware;
@@ -12,6 +12,7 @@ class IgnitionEnabled
 {
     /**
      * Handle an incoming request.
+	 * 处理传入请求
      *
      * @param  Request  $request
      * @param  Closure  $next

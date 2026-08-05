@@ -1,4 +1,8 @@
 <?php
+/**
+ * Hamcrest，文本，字符串开始测试
+ */
+
 namespace Hamcrest\Text;
 
 class StringStartsWithTest extends \Hamcrest\AbstractMatcherTest

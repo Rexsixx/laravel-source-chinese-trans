@@ -10,6 +10,7 @@ use DateTimeInterface;
 
 /**
  * Day of month field.  Allows: * , / - ? L W
+ * 月天字段。
  *
  * 'L' stands for "last" and specifies the last day of the month.
  *
@@ -40,6 +41,7 @@ class DayOfMonthField extends AbstractField
 
     /**
      * Get the nearest day of the week for a given day in a month
+	 * 获取一个月中给定的某一天中最接近的一天
      *
      * @param int $currentYear  Current year
      * @param int $currentMonth Current month
@@ -76,6 +78,7 @@ class DayOfMonthField extends AbstractField
     public function isSatisfiedBy(DateTimeInterface $date, $value)
     {
         // ? states that the field value is to be skipped
+		// ？ 声明要跳过字段值
         if ($value == '?') {
             return true;
         }
@@ -83,11 +86,13 @@ class DayOfMonthField extends AbstractField
         $fieldValue = $date->format('d');
 
         // Check to see if this is the last day of the month
+		// 检查一下今天是不是这个月的最后一天
         if ($value == 'L') {
             return $fieldValue == $date->format('t');
         }
 
         // Check to see if this is the nearest weekday to a particular value
+		// 检查这是否是距离某个特定值最近的工作日
         if (strpos($value, 'W')) {
             // Parse the target day
             $targetDay = substr($value, 0, strpos($value, 'W'));

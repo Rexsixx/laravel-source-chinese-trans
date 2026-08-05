@@ -39,6 +39,7 @@ class IsArrayWithSize extends FeatureMatcher
 
     /**
      * Does array size satisfy a given matcher?
+	 * 数组大小是否满足给定的匹配器？
      *
      * @param \Hamcrest\Matcher|int $size as a {@link Hamcrest\Matcher} or a value.
      *
@@ -52,6 +53,7 @@ class IsArrayWithSize extends FeatureMatcher
 
     /**
      * Matches an empty array.
+	 * 匹配空数组
      *
      * @factory
      */
@@ -65,6 +67,7 @@ class IsArrayWithSize extends FeatureMatcher
 
     /**
      * Matches an empty array.
+	 * 匹配空数组
      *
      * @factory
      */

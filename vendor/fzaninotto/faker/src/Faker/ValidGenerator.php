@@ -8,6 +8,7 @@ namespace Faker;
 /**
  * Proxy for other generators, to return only valid values. Works with
  * Faker\Generator\Base->valid()
+ * 其他生成器的代理，只返回有效值。
  */
 class ValidGenerator
 {
@@ -36,6 +37,7 @@ class ValidGenerator
 
     /**
      * Catch and proxy all generator calls but return only valid values
+	 * 捕获并代理所有生成器调用，但只返回有效值。
      * @param string $attribute
      *
      * @return mixed
@@ -47,6 +49,7 @@ class ValidGenerator
 
     /**
      * Catch and proxy all generator calls with arguments but return only valid values
+	 * 捕获并代理所有带参数的生成器调用，但只返回有效值。
      * @param string $name
      * @param array $arguments
      *

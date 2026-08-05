@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，记录记录器，Log Recorder
+ * 门面，Ignition，日志记录器，Log Recorder
  */
 
 namespace Facade\Ignition\LogRecorder;

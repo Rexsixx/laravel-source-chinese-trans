@@ -13,6 +13,7 @@ use function array_merge;
 
 /**
  * Inflects based on multiple rulesets.
+ * 基于多个规则集的变形。
  *
  * Rules:
  * - If the word matches any uninflected word pattern, it is not inflected

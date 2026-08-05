@@ -22,6 +22,7 @@ interface RunInterface
 
     /**
      * Pushes a handler to the end of the stack
+	 * 将处理程序推到堆栈的末尾
      *
      * @throws InvalidArgumentException  If argument is not callable or instance of HandlerInterface
      * @param  Callable|HandlerInterface $handler

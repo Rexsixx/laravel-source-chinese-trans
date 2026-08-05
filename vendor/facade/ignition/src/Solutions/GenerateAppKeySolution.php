@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，解决方案提供者，生成应用密钥解决方案
+ * 门面，Ignition，解决方案，生成应用密钥解决方案
  */
 
 namespace Facade\Ignition\Solutions;

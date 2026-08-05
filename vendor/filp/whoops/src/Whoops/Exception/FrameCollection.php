@@ -42,6 +42,7 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
 
     /**
      * Filters frames using a callable, returns the same FrameCollection
+	 * 使用可调用对象筛选帧，返回相同的FrameCollection。
      *
      * @param  callable        $callable
      * @return FrameCollection
@@ -54,6 +55,7 @@ class FrameCollection implements ArrayAccess, IteratorAggregate, Serializable, C
 
     /**
      * Map the collection of frames
+	 * 映射框架集合
      *
      * @param  callable        $callable
      * @return FrameCollection

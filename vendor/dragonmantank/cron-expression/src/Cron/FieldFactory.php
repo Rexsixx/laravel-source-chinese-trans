@@ -1,4 +1,7 @@
 <?php
+/**
+ * Cron，字段工厂
+ */
 
 namespace Cron;
 
@@ -6,6 +9,7 @@ use InvalidArgumentException;
 
 /**
  * CRON field factory implementing a flyweight factory
+ * CRON现场工厂实现了一个轻量级工厂
  * @link http://en.wikipedia.org/wiki/Cron
  */
 class FieldFactory
@@ -17,6 +21,7 @@ class FieldFactory
 
     /**
      * Get an instance of a field object for a cron expression position
+	 * 获取 cron 表达式位置的字段对象实例
      *
      * @param int $position CRON expression position value to retrieve
      *

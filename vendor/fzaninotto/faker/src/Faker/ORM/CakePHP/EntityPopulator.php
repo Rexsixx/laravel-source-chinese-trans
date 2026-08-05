@@ -119,6 +119,7 @@ class EntityPopulator
         }
 
         // TODO check if TreeBehavior attached to modify lft/rgt cols
+		// 检查是否附加了TreeBehavior来修改左/右颜色
 
         return $modifiers;
     }

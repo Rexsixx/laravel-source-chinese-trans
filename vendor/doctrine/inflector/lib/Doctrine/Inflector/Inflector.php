@@ -231,6 +231,7 @@ class Inflector
 
     /**
      * Converts a word into the format for a Doctrine table name. Converts 'ModelName' to 'model_name'.
+	 * 将单词转换为Doctrine表名的格式。将‘ModelName’转换为‘model_name’。
      */
     public function tableize(string $word): string
     {
@@ -248,6 +249,7 @@ class Inflector
 
     /**
      * Converts a word into the format for a Doctrine class name. Converts 'table_name' to 'TableName'.
+	 * 将单词转换为Doctrine类名的格式。将‘table_name’转换为‘table_name’。
      */
     public function classify(string $word): string
     {
@@ -264,6 +266,7 @@ class Inflector
 
     /**
      * Uppercases words with configurable delimiters between words.
+	 * 大写单词，单词之间有可配置的分隔符。
      *
      * Takes a string and capitalizes all of the words, like PHP's built-in
      * ucwords function. This extends that behavior, however, by allowing the

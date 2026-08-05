@@ -14,6 +14,7 @@ class SystemFacade
 {
     /**
      * Turns on output buffering.
+	 * 打开输出缓冲
      *
      * @return bool
      */

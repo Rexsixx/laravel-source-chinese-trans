@@ -1,6 +1,6 @@
 <?php
 /**
- * Facade，Flare Client，截断，报告
+ * Facade，Flare Client，报告
  */
 
 namespace Facade\FlareClient;

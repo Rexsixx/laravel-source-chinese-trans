@@ -1,6 +1,6 @@
 <?php
 /**
- * Facade，Flare Client，截断，截取字符串
+ * Facade，Flare Client，截断，截取字符串策略
  */
 
 namespace Facade\FlareClient\Truncation;

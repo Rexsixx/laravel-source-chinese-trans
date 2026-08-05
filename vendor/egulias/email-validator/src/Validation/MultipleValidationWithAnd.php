@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，电子邮件验证器，确认，多次验证
+ * Egulias，电子邮件验证器，确认，与的多重验证
  */
 
 namespace Egulias\EmailValidator\Validation;
@@ -20,6 +20,7 @@ class MultipleValidationWithAnd implements EmailValidation
     /**
      * All of validations will be invoked even if one of them got failure.
      * So MultipleErrors will contain all causes.
+	 * 即使其中有一个验证失败，所有验证都将被调用。因此，MultipleErrors 将包含所有原因。
      */
     const ALLOW_ALL_ERRORS = 1;
 
@@ -110,6 +111,7 @@ class MultipleValidationWithAnd implements EmailValidation
 
     /**
      * Returns the validation errors.
+	 * 返回验证错误
      *
      * @return MultipleErrors|null
      */
