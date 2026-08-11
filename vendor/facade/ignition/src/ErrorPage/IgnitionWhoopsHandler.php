@@ -1,0 +1,53 @@
+<?php
+/**
+ * 门面，Ignition，错误页面，Ignition Whoops 处理程序
+ */
+
+namespace Facade\Ignition\ErrorPage;
+
+use Error;
+use ErrorException;
+use Whoops\Handler\Handler;
+
+class IgnitionWhoopsHandler extends Handler
+{
+    /** @var \Facade\Ignition\ErrorPage\ErrorPageHandler */
+    protected $errorPageHandler;
+
+    /** @var \Throwable */
+    protected $exception;
+
+    public function __construct(ErrorPageHandler $errorPageHandler)
+    {
+        $this->errorPageHandler = $errorPageHandler;
+    }
+
+    public function handle(): ?int
+    {
+        try {
+            $this->errorPageHandler->handle($this->exception);
+        } catch (Error $error) {
+            // Errors aren't caught by Whoops.
+            // Convert the error to an exception and throw again.
+			// 错误不会被Whoops捕获。
+			// 将错误转换为异常并再次抛出。
+
+            throw new ErrorException(
+                $error->getMessage(),
+                $error->getCode(),
+                1,
+                $error->getFile(),
+                $error->getLine(),
+                $error
+            );
+        }
+
+        return Handler::QUIT;
+    }
+
+    /** @param \Throwable $exception */
+    public function setException($exception): void
+    {
+        $this->exception = $exception;
+    }
+}

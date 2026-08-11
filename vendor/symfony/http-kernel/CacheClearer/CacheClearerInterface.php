@@ -1,0 +1,32 @@
+<?php
+/**
+ * Symfony，组件，Http内核，缓存清理，缓存清理接口
+ */
+
+/*
+ * This file is part of the Symfony package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Symfony\Component\HttpKernel\CacheClearer;
+
+/**
+ * CacheClearerInterface.
+ * Cache cleaner接口。
+ *
+ * @author Dustin Dobervich <ddobervich@gmail.com>
+ */
+interface CacheClearerInterface
+{
+    /**
+     * Clears any caches necessary.
+	 * 清除任何必要的缓存
+     *
+     * @param string $cacheDir The cache directory
+     */
+    public function clear($cacheDir);
+}

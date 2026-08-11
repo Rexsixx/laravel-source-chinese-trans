@@ -1,0 +1,28 @@
+<?php
+/**
+ * Symfony，组件，Var Dumper，转储，数据转储接口
+ */
+
+/*
+ * This file is part of the Symfony package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Symfony\Component\VarDumper\Dumper;
+
+use Symfony\Component\VarDumper\Cloner\Data;
+
+/**
+ * DataDumperInterface for dumping Data objects.
+ * DataDumperInterface对象转储接口。
+ *
+ * @author Nicolas Grekas <p@tchwork.com>
+ */
+interface DataDumperInterface
+{
+    public function dump(Data $data);
+}

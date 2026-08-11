@@ -1,0 +1,26 @@
+<?php
+/**
+ * Prophecy，异常，Exception
+ */
+
+/*
+ * This file is part of the Prophecy.
+ * (c) Konstantin Kudryashov <ever.zet@gmail.com>
+ *     Marcello Duarte <marcello.duarte@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Prophecy\Exception;
+
+/**
+ * Core Prophecy exception interface.
+ * All Prophecy exceptions implement it.
+ * 核心预言异常接口。所有预言异常都实现该接口。
+ *
+ * @author Konstantin Kudryashov <ever.zet@gmail.com>
+ */
+interface Exception extends \Throwable
+{
+}
