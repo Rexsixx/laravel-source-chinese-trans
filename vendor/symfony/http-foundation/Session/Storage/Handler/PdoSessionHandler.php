@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，Session，储存，处理器，Pdo 会话处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 
 /**
  * Session handler using a PDO connection to read and write data.
+ * 使用PDO连接读写数据的会话处理程序。
  *
  * It works with MySQL, PostgreSQL, Oracle, SQL Server and SQLite and implements
  * different locking strategies to handle concurrent access to the same session.
@@ -73,79 +77,103 @@ class PdoSessionHandler extends AbstractSessionHandler
     private $pdo;
 
     /**
-     * @var string|false|null DSN string or null for session.save_path or false when lazy connection disabled
+     * DSN string or null for session.save_path or false when lazy connection disabled.
+	 * DSN字符串或会话为空。Save_path，当惰性连接被禁用时为false。
+     *
+     * @var string|false|null
      */
     private $dsn = false;
 
     /**
-     * @var string Database driver
+     * @var string|null
      */
     private $driver;
 
     /**
-     * @var string Table name
+     * @var string
      */
     private $table = 'sessions';
 
     /**
-     * @var string Column for session id
+     * @var string
      */
     private $idCol = 'sess_id';
 
     /**
-     * @var string Column for session data
+     * @var string
      */
     private $dataCol = 'sess_data';
 
     /**
-     * @var string Column for lifetime
+     * @var string
      */
     private $lifetimeCol = 'sess_lifetime';
 
     /**
-     * @var string Column for timestamp
+     * @var string
      */
     private $timeCol = 'sess_time';
 
     /**
-     * @var string Username when lazy-connect
+     * Username when lazy-connect.
+	 * 惰性连接时的用户名
+     *
+     * @var string|null
      */
-    private $username = '';
+    private $username = null;
 
     /**
-     * @var string Password when lazy-connect
+     * Password when lazy-connect.
+	 * 延迟连接时的密码
+     *
+     * @var string|null
      */
-    private $password = '';
+    private $password = null;
 
     /**
-     * @var array Connection options when lazy-connect
+     * Connection options when lazy-connect.
+	 * 延迟连接时的连接选项
+     *
+     * @var array
      */
     private $connectionOptions = [];
 
     /**
-     * @var int The strategy for locking, see constants
+     * The strategy for locking, see constants.
+	 * 锁的策略，参见常量。
+     *
+     * @var int
      */
     private $lockMode = self::LOCK_TRANSACTIONAL;
 
     /**
      * It's an array to support multiple reads before closing which is manual, non-standard usage.
+	 * 它是一个数组，在关闭之前支持多次读取，这是手动的，非标准的用法。
      *
      * @var \PDOStatement[] An array of statements to release advisory locks
      */
     private $unlockStatements = [];
 
     /**
-     * @var bool True when the current session exists but expired according to session.gc_maxlifetime
+     * True when the current session exists but expired according to session.gc_maxlifetime.
+	 * 当当前会话存在但根据session.gc_maxlifetime过期时为True
+     *
+     * @var bool
      */
     private $sessionExpired = false;
 
     /**
-     * @var bool Whether a transaction is active
+     * Whether a transaction is active.
+	 * 事务是否处于活动状态
+     *
+     * @var bool
      */
     private $inTransaction = false;
 
     /**
-     * @var bool Whether gc() has been called
+     * Whether gc() has been called.
+     *
+     * @var bool
      */
     private $gcCalled = false;
 
@@ -198,6 +226,7 @@ class PdoSessionHandler extends AbstractSessionHandler
 
     /**
      * Creates the table to store sessions which can be called once for setup.
+	 * 创建表来存储可以在设置时调用一次的会话。
      *
      * Session ID is saved in a column of maximum length 128 because that is enough even
      * for a 512 bit configured session.hash_function like Whirlpool. Session data is
@@ -249,10 +278,11 @@ class PdoSessionHandler extends AbstractSessionHandler
 
     /**
      * Returns true when the current session exists but expired according to session.gc_maxlifetime.
+	 * 当当前会话存在但根据session.gc_maxlifetime过期时返回true。
      *
      * Can be used to distinguish between a new session and one that expired due to inactivity.
      *
-     * @return bool Whether current session expired
+     * @return bool
      */
     public function isSessionExpired()
     {
@@ -305,7 +335,7 @@ class PdoSessionHandler extends AbstractSessionHandler
     /**
      * {@inheritdoc}
      */
-    protected function doDestroy($sessionId)
+    protected function doDestroy(string $sessionId)
     {
         // delete the record associated with this id
         $sql = "DELETE FROM $this->table WHERE $this->idCol = :id";
@@ -326,9 +356,9 @@ class PdoSessionHandler extends AbstractSessionHandler
     /**
      * {@inheritdoc}
      */
-    protected function doWrite($sessionId, $data)
+    protected function doWrite(string $sessionId, string $data)
     {
-        $maxlifetime = (int) ini_get('session.gc_maxlifetime');
+        $maxlifetime = (int) \ini_get('session.gc_maxlifetime');
 
         try {
             // We use a single MERGE SQL query when supported by the database.
@@ -375,14 +405,14 @@ class PdoSessionHandler extends AbstractSessionHandler
     #[\ReturnTypeWillChange]
     public function updateTimestamp($sessionId, $data)
     {
-        $expiry = time() + (int) ini_get('session.gc_maxlifetime');
+        $expiry = time() + (int) \ini_get('session.gc_maxlifetime');
 
         try {
             $updateStmt = $this->pdo->prepare(
                 "UPDATE $this->table SET $this->lifetimeCol = :expiry, $this->timeCol = :time WHERE $this->idCol = :id"
             );
-            $updateStmt->bindParam(':id', $sessionId, \PDO::PARAM_STR);
-            $updateStmt->bindParam(':expiry', $expiry, \PDO::PARAM_INT);
+            $updateStmt->bindValue(':id', $sessionId, \PDO::PARAM_STR);
+            $updateStmt->bindValue(':expiry', $expiry, \PDO::PARAM_INT);
             $updateStmt->bindValue(':time', time(), \PDO::PARAM_INT);
             $updateStmt->execute();
         } catch (\PDOException $e) {
@@ -430,6 +460,7 @@ class PdoSessionHandler extends AbstractSessionHandler
 
         if (false !== $this->dsn) {
             $this->pdo = null; // only close lazy-connection
+            $this->driver = null;
         }
 
         return true;
@@ -437,6 +468,7 @@ class PdoSessionHandler extends AbstractSessionHandler
 
     /**
      * Lazy-connects to the database.
+	 * 延迟连接到数据库
      */
     private function connect(string $dsn): void
     {
@@ -447,6 +479,7 @@ class PdoSessionHandler extends AbstractSessionHandler
 
     /**
      * Builds a PDO DSN from a URL-like connection string.
+	 * 从类似url的连接字符串构建PDO DSN
      *
      * @todo implement missing support for oci DSN (which look totally different from other PDO ones)
      */
@@ -491,10 +524,32 @@ class PdoSessionHandler extends AbstractSessionHandler
             $driver = substr($driver, 4);
         }
 
+        $dsn = null;
         switch ($driver) {
             case 'mysql':
+                $dsn = 'mysql:';
+                if ('' !== ($params['query'] ?? '')) {
+                    $queryParams = [];
+                    parse_str($params['query'], $queryParams);
+                    if ('' !== ($queryParams['charset'] ?? '')) {
+                        $dsn .= 'charset='.$queryParams['charset'].';';
+                    }
+
+                    if ('' !== ($queryParams['unix_socket'] ?? '')) {
+                        $dsn .= 'unix_socket='.$queryParams['unix_socket'].';';
+
+                        if (isset($params['path'])) {
+                            $dbName = substr($params['path'], 1); // Remove the leading slash
+                            $dsn .= 'dbname='.$dbName.';';
+                        }
+
+                        return $dsn;
+                    }
+                }
+                // If "unix_socket" is not in the query, we continue with the same process as pgsql
+                // no break
             case 'pgsql':
-                $dsn = $driver.':';
+                $dsn ?? $dsn = 'pgsql:';
 
                 if (isset($params['host']) && '' !== $params['host']) {
                     $dsn .= 'host='.$params['host'].';';
@@ -539,6 +594,7 @@ class PdoSessionHandler extends AbstractSessionHandler
 
     /**
      * Helper method to begin a transaction.
+	 * 开始事务的助手方法。
      *
      * Since SQLite does not support row level locks, we have to acquire a reserved lock
      * on the database immediately. Because of https://bugs.php.net/42766 we have to create
@@ -566,6 +622,7 @@ class PdoSessionHandler extends AbstractSessionHandler
 
     /**
      * Helper method to commit a transaction.
+	 * Helper方法提交事务
      */
     private function commit(): void
     {
@@ -588,6 +645,7 @@ class PdoSessionHandler extends AbstractSessionHandler
 
     /**
      * Helper method to rollback a transaction.
+	 * 方法回滚事务
      */
     private function rollback(): void
     {
@@ -607,15 +665,14 @@ class PdoSessionHandler extends AbstractSessionHandler
 
     /**
      * Reads the session data in respect to the different locking strategies.
+	 * 根据不同的锁定策略读取会话数据。
      *
      * We need to make sure we do not return session data that is already considered garbage according
      * to the session.gc_maxlifetime setting because gc() is called after read() and only sometimes.
      *
-     * @param string $sessionId Session ID
-     *
-     * @return string The session data
+     * @return string
      */
-    protected function doRead($sessionId)
+    protected function doRead(string $sessionId)
     {
         if (self::LOCK_ADVISORY === $this->lockMode) {
             $this->unlockStatements[] = $this->doAdvisoryLock($sessionId);
@@ -650,7 +707,7 @@ class PdoSessionHandler extends AbstractSessionHandler
                 throw new \RuntimeException('Failed to read session: INSERT reported a duplicate id but next SELECT did not return any data.');
             }
 
-            if (!filter_var(ini_get('session.use_strict_mode'), \FILTER_VALIDATE_BOOLEAN) && self::LOCK_TRANSACTIONAL === $this->lockMode && 'sqlite' !== $this->driver) {
+            if (!filter_var(\ini_get('session.use_strict_mode'), \FILTER_VALIDATE_BOOLEAN) && self::LOCK_TRANSACTIONAL === $this->lockMode && 'sqlite' !== $this->driver) {
                 // In strict mode, session fixation is not possible: new sessions always start with a unique
                 // random id, so that concurrency is not possible and this code path can be skipped.
                 // Exclusive-reading of non-existent rows does not block, so we need to do an insert to block
@@ -680,6 +737,7 @@ class PdoSessionHandler extends AbstractSessionHandler
 
     /**
      * Executes an application-level lock on the database.
+	 * 在数据库上执行应用程序级锁
      *
      * @return \PDOStatement The statement that needs to be executed later to release the lock
      *
@@ -742,6 +800,7 @@ class PdoSessionHandler extends AbstractSessionHandler
 
     /**
      * Encodes the first 4 (when PHP_INT_SIZE == 4) or 8 characters of the string as an integer.
+	 * 将字符串的前4个字符（当PHP_INT_SIZE == 4时）或8个字符编码为整数。
      *
      * Keep in mind, PHP integers are signed.
      */
@@ -759,6 +818,7 @@ class PdoSessionHandler extends AbstractSessionHandler
 
     /**
      * Return a locking or nonlocking SQL query to read session information.
+	 * 返回一个锁定或非锁定的SQL查询来读取会话信息
      *
      * @throws \DomainException When an unsupported PDO driver is used
      */
@@ -788,6 +848,7 @@ class PdoSessionHandler extends AbstractSessionHandler
 
     /**
      * Returns an insert statement supported by the database for writing session data.
+	 * 返回数据库支持的插入语句，用于写入会话数据。
      */
     private function getInsertStatement(string $sessionId, string $sessionData, int $maxlifetime): \PDOStatement
     {
@@ -815,6 +876,7 @@ class PdoSessionHandler extends AbstractSessionHandler
 
     /**
      * Returns an update statement supported by the database for writing session data.
+	 * 返回数据库支持的用于写入会话数据的更新语句
      */
     private function getUpdateStatement(string $sessionId, string $sessionData, int $maxlifetime): \PDOStatement
     {
@@ -842,6 +904,7 @@ class PdoSessionHandler extends AbstractSessionHandler
 
     /**
      * Returns a merge/upsert (i.e. insert or update) statement when supported by the database for writing session data.
+	 * 当数据库支持写入会话数据时，返回merge/upsert（即插入或更新）语句。
      */
     private function getMergeStatement(string $sessionId, string $data, int $maxlifetime): ?\PDOStatement
     {
@@ -892,13 +955,14 @@ class PdoSessionHandler extends AbstractSessionHandler
 
     /**
      * Return a PDO instance.
+	 * 返回一个PDO实例
      *
      * @return \PDO
      */
     protected function getConnection()
     {
         if (null === $this->pdo) {
-            $this->connect($this->dsn ?: ini_get('session.save_path'));
+            $this->connect($this->dsn ?: \ini_get('session.save_path'));
         }
 
         return $this->pdo;

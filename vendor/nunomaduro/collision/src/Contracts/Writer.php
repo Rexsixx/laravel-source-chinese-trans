@@ -1,4 +1,9 @@
 <?php
+/**
+ * NunoMaduro，Collision，契约，作者
+ */
+
+declare(strict_types=1);
 
 /**
  * This file is part of Collision.
@@ -11,21 +16,20 @@
 
 namespace NunoMaduro\Collision\Contracts;
 
-use Whoops\Exception\Inspector;
 use Symfony\Component\Console\Output\OutputInterface;
+use Whoops\Exception\Inspector;
 
 /**
- * This is the Collision Writer contract.
- *
- * @author Nuno Maduro <enunomaduro@gmail.com>
+ * @internal
  */
 interface Writer
 {
     /**
      * Ignores traces where the file string matches one
      * of the provided regex expressions.
+	 * 忽略与文件字符串匹配的跟踪所提供的正则表达式
      *
-     * @param  string[] $ignore The regex expressions.
+     * @param string[] $ignore the regex expressions
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
@@ -33,17 +37,23 @@ interface Writer
 
     /**
      * Declares whether or not the Writer should show the trace.
-     *
-     * @param  bool $show
+	 * 声明Writer是否应该显示跟踪
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
     public function showTrace(bool $show): Writer;
 
     /**
-     * Declares whether or not the Writer should show the editor.
+     * Declares whether or not the Writer should show the title.
+	 * 声明作者是否应该展示标题
      *
-     * @param  bool $show
+     * @return \NunoMaduro\Collision\Contracts\Writer
+     */
+    public function showTitle(bool $show): Writer;
+
+    /**
+     * Declares whether or not the Writer should show the editor.
+	 * 声明Writer是否应该显示编辑器
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
@@ -51,15 +61,13 @@ interface Writer
 
     /**
      * Writes the details of the exception on the console.
-     *
-     * @param \Whoops\Exception\Inspector $inspector
+	 * 在控制台中写入异常的详细信息
      */
     public function write(Inspector $inspector): void;
 
     /**
      * Sets the output.
-     *
-     * @param  \Symfony\Component\Console\Output\OutputInterface $output
+	 * 设置输出
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
@@ -67,8 +75,7 @@ interface Writer
 
     /**
      * Gets the output.
-     *
-     * @return \Symfony\Component\Console\Output\OutputInterface
+	 * 获取输出
      */
     public function getOutput(): OutputInterface;
 }

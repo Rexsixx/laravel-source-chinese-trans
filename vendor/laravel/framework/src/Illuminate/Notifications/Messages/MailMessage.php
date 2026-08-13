@@ -1,6 +1,6 @@
 <?php
 /**
- * 通知，邮件信息
+ * Illuminate，通知，消息，邮件消息
  */
 
 namespace Illuminate\Notifications\Messages;
@@ -9,10 +9,12 @@ use Illuminate\Container\Container;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Mail\Markdown;
-use Traversable;
+use Illuminate\Support\Traits\Conditionable;
 
 class MailMessage extends SimpleMessage implements Renderable
 {
+    use Conditionable;
+
     /**
      * The view to be rendered.
 	 * 要呈现的视图
@@ -31,7 +33,7 @@ class MailMessage extends SimpleMessage implements Renderable
 
     /**
      * The Markdown template to render (if applicable).
-	 * 要呈现的Markdown模板(如果适用)
+	 * 要呈现的Markdown模板（如果适用）
      *
      * @var string|null
      */
@@ -39,7 +41,7 @@ class MailMessage extends SimpleMessage implements Renderable
 
     /**
      * The current theme being used when generating emails.
-	 * 当前主题生成电子邮件时使用的
+	 * 生成电子邮件时使用的当前主题
      *
      * @var string|null
      */
@@ -63,7 +65,7 @@ class MailMessage extends SimpleMessage implements Renderable
 
     /**
      * The "cc" information for the message.
-	 * 消息的"抄送"信息
+	 * 邮件的"抄送"信息
      *
      * @var array
      */
@@ -71,7 +73,7 @@ class MailMessage extends SimpleMessage implements Renderable
 
     /**
      * The "bcc" information for the message.
-	 * 消息的"密送"信息
+	 * 消息的"密件"信息
      *
      * @var array
      */
@@ -228,7 +230,7 @@ class MailMessage extends SimpleMessage implements Renderable
 
     /**
      * Set the bcc address for the mail message.
-	 * 设置邮件的密送地址
+	 * 设置邮件的密件抄送地址
      *
      * @param  array|string  $address
      * @param  string|null  $name
@@ -247,7 +249,7 @@ class MailMessage extends SimpleMessage implements Renderable
 
     /**
      * Attach a file to the message.
-	 * 附加文件到消息中
+	 * 将文件附加到消息中
      *
      * @param  string  $file
      * @param  array  $options
@@ -262,7 +264,7 @@ class MailMessage extends SimpleMessage implements Renderable
 
     /**
      * Attach in-memory data as an attachment.
-	 * 附加内存中的数据作为附件
+	 * 将内存中的数据作为附件附加
      *
      * @param  string  $data
      * @param  string  $name
@@ -281,6 +283,7 @@ class MailMessage extends SimpleMessage implements Renderable
 	 * 设置此消息的优先级
      *
      * The value is an integer where 1 is the highest priority and 5 is the lowest.
+	 * 整数形式，优先级为1最高，优先级为5最低。
      *
      * @param  int  $level
      * @return $this
@@ -326,9 +329,7 @@ class MailMessage extends SimpleMessage implements Renderable
      */
     protected function arrayOfAddresses($address)
     {
-        return is_array($address) ||
-               $address instanceof Arrayable ||
-               $address instanceof Traversable;
+        return is_iterable($address) || $address instanceof Arrayable;
     }
 
     /**
@@ -345,14 +346,15 @@ class MailMessage extends SimpleMessage implements Renderable
             );
         }
 
-        return Container::getInstance()
-            ->make(Markdown::class)
-            ->render($this->markdown, $this->data());
+        $markdown = Container::getInstance()->make(Markdown::class);
+
+        return $markdown->theme($this->theme ?: $markdown->getTheme())
+                ->render($this->markdown, $this->data());
     }
 
     /**
      * Register a callback to be called with the Swift message instance.
-	 * 注册一个回调函数在Swift消息实例中
+	 * 在Swift消息实例中注册一个回调函数
      *
      * @param  callable  $callback
      * @return $this

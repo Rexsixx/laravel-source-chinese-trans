@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，测试用例
+ * Illuminate，基础，测试，测试用例抽象类
  */
 
 namespace Illuminate\Foundation\Testing;
@@ -9,7 +9,9 @@ use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Queue\Queue;
 use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\ParallelTesting;
 use Illuminate\Support\Str;
 use Mockery;
 use Mockery\Exception\InvalidCountException;
@@ -23,15 +25,18 @@ abstract class TestCase extends BaseTestCase
         Concerns\InteractsWithAuthentication,
         Concerns\InteractsWithConsole,
         Concerns\InteractsWithDatabase,
+        Concerns\InteractsWithDeprecationHandling,
         Concerns\InteractsWithExceptionHandling,
         Concerns\InteractsWithSession,
+        Concerns\InteractsWithTime,
+        Concerns\InteractsWithViews,
         Concerns\MocksApplicationServices;
 
     /**
      * The Illuminate application instance.
-	 * 点亮应用实例
+	 * Illuminate应用实例
      *
-     * @var \Illuminate\Contracts\Foundation\Application
+     * @var \Illuminate\Foundation\Application
      */
     protected $app;
 
@@ -61,7 +66,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Indicates if we have made it through the base setUp function.
-	 * 指明我们是否通过了基本setUp函数
+	 * 指示我们是否通过了基本setUp函数
      *
      * @var bool
      */
@@ -69,9 +74,10 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Creates the application.
-	 * 创建应用 
+	 * 创建应用程序
      *
      * Needs to be implemented by subclasses.
+	 * 需要由子类实现
      *
      * @return \Symfony\Component\HttpKernel\HttpKernelInterface
      */
@@ -89,6 +95,8 @@ abstract class TestCase extends BaseTestCase
 
         if (! $this->app) {
             $this->refreshApplication();
+
+            ParallelTesting::callSetUpTestCaseCallbacks($this);
         }
 
         $this->setUpTraits();
@@ -152,14 +160,18 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * Clean up the testing environment before the next test.
-	 * 清理测试环境在下次测试前
+	 * 在下次测试前清理测试环境
      *
      * @return void
+     *
+     * @throws \Mockery\Exception\InvalidCountException
      */
     protected function tearDown(): void
     {
         if ($this->app) {
             $this->callBeforeApplicationDestroyedCallbacks();
+
+            ParallelTesting::callTearDownTestCaseCallbacks($this);
 
             $this->app->flush();
 
@@ -202,6 +214,8 @@ abstract class TestCase extends BaseTestCase
         $this->beforeApplicationDestroyedCallbacks = [];
 
         Artisan::forgetBootstrappers();
+
+        Queue::createPayloadUsing(null);
 
         if ($this->callbackException) {
             throw $this->callbackException;

@@ -1,6 +1,6 @@
 <?php
 /**
- * 授权，数据库令牌存储库
+ * Illuminate，认证，密码，数据库令牌存储库
  */
 
 namespace Illuminate\Auth\Passwords;
@@ -63,7 +63,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Create a new token repository instance.
-	 * 创建新的令牌存储库实例
+	 * 创建一个新的令牌存储库实例
      *
      * @param  \Illuminate\Database\ConnectionInterface  $connection
      * @param  \Illuminate\Contracts\Hashing\Hasher  $hasher
@@ -101,8 +101,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
         // We will create a new, random token for the user so that we can e-mail them
         // a safe link to the password reset form. Then we will insert a record in
         // the database so that we can verify the token within the actual reset.
-		// 我们将为用户创建一个新的随机令牌，以便我们可以通过电子邮件向他们发送密码重置表单的安全链接。
-		// 然后，我们将在数据库中插入一条记录，以便我们在实际重置中验证令牌。
+		// 我们将为用户创建一个新的随机令牌，以便我们可以向他们发送电子邮件。
         $token = $this->createNewToken();
 
         $this->getTable()->insert($this->getPayload($email, $token));
@@ -112,7 +111,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Delete all existing reset tokens from the database.
-	 * 删除所有现有的重置令牌从数据库中
+	 * 从数据库中删除所有现有的重置令牌
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @return int
@@ -202,7 +201,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Delete a token record by user.
-	 * 删除令牌记录按用户
+	 * 按用户删除令牌记录
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @return void
@@ -227,7 +226,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Create a new token for the user.
-	 * 创建一个新令牌为用户
+	 * 为用户创建一个新令牌
      *
      * @return string
      */
@@ -249,7 +248,7 @@ class DatabaseTokenRepository implements TokenRepositoryInterface
 
     /**
      * Begin a new database query against the table.
-	 * 开始一个新的数据库查询对表
+	 * 对表开始一个新的数据库查询
      *
      * @return \Illuminate\Database\Query\Builder
      */

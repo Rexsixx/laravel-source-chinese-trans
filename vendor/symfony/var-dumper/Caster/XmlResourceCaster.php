@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Var Dumper，Caster，Xml 资源编码器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -18,11 +15,10 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts XML resources to array representation.
- * 将XML资源转换为数组表示。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *
- * @final since Symfony 4.4
+ * @final
  */
 class XmlResourceCaster
 {
@@ -51,7 +47,7 @@ class XmlResourceCaster
         \XML_ERROR_EXTERNAL_ENTITY_HANDLING => 'XML_ERROR_EXTERNAL_ENTITY_HANDLING',
     ];
 
-    public static function castXml($h, array $a, Stub $stub, $isNested)
+    public static function castXml($h, array $a, Stub $stub, bool $isNested)
     {
         $a['current_byte_index'] = xml_get_current_byte_index($h);
         $a['current_column_number'] = xml_get_current_column_number($h);

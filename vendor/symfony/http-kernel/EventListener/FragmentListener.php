@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，事件监听器，碎片监听器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,13 +16,14 @@ namespace Symfony\Component\HttpKernel\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\UriSigner;
 
 /**
  * Handles content fragments represented by special URIs.
+ * 处理由特殊uri表示的内容片段。
  *
  * All URL paths starting with /_fragment are handled as
  * content fragments by this listener.
@@ -29,7 +33,7 @@ use Symfony\Component\HttpKernel\UriSigner;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
- * @final since Symfony 4.3
+ * @final
  */
 class FragmentListener implements EventSubscriberInterface
 {
@@ -47,10 +51,11 @@ class FragmentListener implements EventSubscriberInterface
 
     /**
      * Fixes request attributes when the path is '/_fragment'.
+	 * 修复了路径为‘/_fragment’时的请求属性。
      *
      * @throws AccessDeniedHttpException if the request does not come from a trusted IP
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
 
@@ -65,7 +70,7 @@ class FragmentListener implements EventSubscriberInterface
             return;
         }
 
-        if ($event->isMasterRequest()) {
+        if ($event->isMainRequest()) {
             $this->validateRequest($request);
         }
 
@@ -83,15 +88,14 @@ class FragmentListener implements EventSubscriberInterface
         }
 
         // is the Request signed?
-        // we cannot use $request->getUri() here as we want to work with the original URI (no query string reordering)
-        if ($this->signer->check($request->getSchemeAndHttpHost().$request->getBaseUrl().$request->getPathInfo().(null !== ($qs = $request->server->get('QUERY_STRING')) ? '?'.$qs : ''))) {
+        if ($this->signer->checkRequest($request)) {
             return;
         }
 
         throw new AccessDeniedHttpException();
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => [['onKernelRequest', 48]],

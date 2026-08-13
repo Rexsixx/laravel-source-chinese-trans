@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，偏转器，语言
+ * Doctrine，Inflector，语言
  */
 
 declare(strict_types=1);

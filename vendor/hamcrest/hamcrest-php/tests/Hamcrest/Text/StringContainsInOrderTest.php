@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，文本，字符串包含顺序测试
- */
-
 namespace Hamcrest\Text;
 
 class StringContainsInOrderTest extends \Hamcrest\AbstractMatcherTest

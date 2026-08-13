@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，异常，运行时间异常
+ * Symfony，Component，Console，异常，运行时异常
  */
 
 /*

@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，响应能力接口
+ * Illuminate，契约，支持，响应的
  */
 
 namespace Illuminate\Contracts\Support;
@@ -9,7 +9,7 @@ interface Responsable
 {
     /**
      * Create an HTTP response that represents the object.
-	 * 创建一个http响应
+	 * 创建一个表示对象的HTTP响应
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Symfony\Component\HttpFoundation\Response

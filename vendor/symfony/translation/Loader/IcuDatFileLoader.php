@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，载入程序， IcuDat 文件装载机
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * IcuResFileLoader loads translations from a resource bundle.
+ * IcuResFileLoader 加载一个资源包的翻译。
  *
  * @author stealth35
  */
@@ -26,7 +30,7 @@ class IcuDatFileLoader extends IcuResFileLoader
     /**
      * {@inheritdoc}
      */
-    public function load($resource, $locale, $domain = 'messages')
+    public function load($resource, string $locale, string $domain = 'messages')
     {
         if (!stream_is_local($resource.'.dat')) {
             throw new InvalidResourceException(sprintf('This is not a local file "%s".', $resource));

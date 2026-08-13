@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，事件监听器，现场环境感知器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ use Symfony\Contracts\Translation\LocaleAwareInterface;
 
 /**
  * Pass the current locale to the provided services.
+ * 将当前语言环境传递给提供的服务。
  *
  * @author Pierre Bobiet <pierrebobiet@gmail.com>
  */
@@ -29,7 +33,7 @@ class LocaleAwareListener implements EventSubscriberInterface
     private $requestStack;
 
     /**
-     * @param LocaleAwareInterface[] $localeAwareServices
+     * @param iterable<mixed, LocaleAwareInterface> $localeAwareServices
      */
     public function __construct(iterable $localeAwareServices, RequestStack $requestStack)
     {

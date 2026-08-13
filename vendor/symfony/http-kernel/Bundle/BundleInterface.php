@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，Bundle，Bundle 接口
+ * Symfony，Component，HttpKernel，捆绑，捆绑接口
  */
 
 /*
@@ -20,6 +20,7 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
 /**
  * BundleInterface.
+ * 捆绑接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -27,6 +28,7 @@ interface BundleInterface extends ContainerAwareInterface
 {
     /**
      * Boots the Bundle.
+	 * 引导Bundle
      */
     public function boot();
 
@@ -44,31 +46,35 @@ interface BundleInterface extends ContainerAwareInterface
 
     /**
      * Returns the container extension that should be implicitly loaded.
+	 * 返回应该隐式加载的容器扩展
      *
-     * @return ExtensionInterface|null The default extension or null if there is none
+     * @return ExtensionInterface|null
      */
     public function getContainerExtension();
 
     /**
      * Returns the bundle name (the class short name).
+	 * 返回包名（类的短名称）
      *
-     * @return string The Bundle name
+     * @return string
      */
     public function getName();
 
     /**
      * Gets the Bundle namespace.
+	 * 获取Bundle命名空间
      *
-     * @return string The Bundle namespace
+     * @return string
      */
     public function getNamespace();
 
     /**
      * Gets the Bundle directory path.
+	 * 获取Bundle目录路径。
      *
      * The path should always be returned as a Unix path (with /).
      *
-     * @return string The Bundle absolute path
+     * @return string
      */
     public function getPath();
 }

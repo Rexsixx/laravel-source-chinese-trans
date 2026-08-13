@@ -14,6 +14,7 @@
 
 namespace Carbon;
 
+use Carbon\Exceptions\EndLessPeriodException;
 use Carbon\Exceptions\InvalidCastException;
 use Carbon\Exceptions\InvalidIntervalException;
 use Carbon\Exceptions\InvalidPeriodDateException;
@@ -26,11 +27,13 @@ use Carbon\Exceptions\UnreachableException;
 use Carbon\Traits\IntervalRounding;
 use Carbon\Traits\Mixin;
 use Carbon\Traits\Options;
+use Carbon\Traits\ToStringFormat;
 use Closure;
 use Countable;
 use DateInterval;
 use DatePeriod;
 use DateTime;
+use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use InvalidArgumentException;
@@ -42,6 +45,7 @@ use RuntimeException;
 
 /**
  * Substitution of DatePeriod with some modifications and many more features.
+ * 用一些修改和更多特性替换DatePeriod。
  *
  * @property-read int|float $recurrences number of recurrences (if end not set).
  * @property-read bool $include_start_date rather the start date is included in the iteration.
@@ -51,43 +55,47 @@ use RuntimeException;
  * @property-read CarbonInterface $end Period end date.
  * @property-read CarbonInterval $interval Underlying date interval instance. Always present, one day by default.
  *
- * @method static CarbonPeriod start($date, $inclusive = null) Create instance specifying start date or modify the start date if called on an instance.
- * @method static CarbonPeriod since($date, $inclusive = null) Alias for start().
- * @method static CarbonPeriod sinceNow($inclusive = null) Create instance with start date set to now or set the start date to now if called on an instance.
- * @method static CarbonPeriod end($date = null, $inclusive = null) Create instance specifying end date or modify the end date if called on an instance.
- * @method static CarbonPeriod until($date = null, $inclusive = null) Alias for end().
- * @method static CarbonPeriod untilNow($inclusive = null) Create instance with end date set to now or set the end date to now if called on an instance.
- * @method static CarbonPeriod dates($start, $end = null) Create instance with start and end dates or modify the start and end dates if called on an instance.
- * @method static CarbonPeriod between($start, $end = null) Create instance with start and end dates or modify the start and end dates if called on an instance.
- * @method static CarbonPeriod recurrences($recurrences = null) Create instance with maximum number of recurrences or modify the number of recurrences if called on an instance.
- * @method static CarbonPeriod times($recurrences = null) Alias for recurrences().
- * @method static CarbonPeriod options($options = null) Create instance with options or modify the options if called on an instance.
- * @method static CarbonPeriod toggle($options, $state = null) Create instance with options toggled on or off, or toggle options if called on an instance.
- * @method static CarbonPeriod filter($callback, $name = null) Create instance with filter added to the stack or append a filter if called on an instance.
- * @method static CarbonPeriod push($callback, $name = null) Alias for filter().
- * @method static CarbonPeriod prepend($callback, $name = null) Create instance with filter prepended to the stack or prepend a filter if called on an instance.
- * @method static CarbonPeriod filters(array $filters = []) Create instance with filters stack or replace the whole filters stack if called on an instance.
- * @method static CarbonPeriod interval($interval) Create instance with given date interval or modify the interval if called on an instance.
- * @method static CarbonPeriod each($interval) Create instance with given date interval or modify the interval if called on an instance.
- * @method static CarbonPeriod every($interval) Create instance with given date interval or modify the interval if called on an instance.
- * @method static CarbonPeriod step($interval) Create instance with given date interval or modify the interval if called on an instance.
- * @method static CarbonPeriod stepBy($interval) Create instance with given date interval or modify the interval if called on an instance.
- * @method static CarbonPeriod invert() Create instance with inverted date interval or invert the interval if called on an instance.
- * @method static CarbonPeriod years($years = 1) Create instance specifying a number of years for date interval or replace the interval by the given a number of years if called on an instance.
- * @method static CarbonPeriod year($years = 1) Alias for years().
- * @method static CarbonPeriod months($months = 1) Create instance specifying a number of months for date interval or replace the interval by the given a number of months if called on an instance.
- * @method static CarbonPeriod month($months = 1) Alias for months().
- * @method static CarbonPeriod weeks($weeks = 1) Create instance specifying a number of weeks for date interval or replace the interval by the given a number of weeks if called on an instance.
- * @method static CarbonPeriod week($weeks = 1) Alias for weeks().
- * @method static CarbonPeriod days($days = 1) Create instance specifying a number of days for date interval or replace the interval by the given a number of days if called on an instance.
- * @method static CarbonPeriod dayz($days = 1) Alias for days().
- * @method static CarbonPeriod day($days = 1) Alias for days().
- * @method static CarbonPeriod hours($hours = 1) Create instance specifying a number of hours for date interval or replace the interval by the given a number of hours if called on an instance.
- * @method static CarbonPeriod hour($hours = 1) Alias for hours().
- * @method static CarbonPeriod minutes($minutes = 1) Create instance specifying a number of minutes for date interval or replace the interval by the given a number of minutes if called on an instance.
- * @method static CarbonPeriod minute($minutes = 1) Alias for minutes().
- * @method static CarbonPeriod seconds($seconds = 1) Create instance specifying a number of seconds for date interval or replace the interval by the given a number of seconds if called on an instance.
- * @method static CarbonPeriod second($seconds = 1) Alias for seconds().
+ * @method static static start($date, $inclusive = null) Create instance specifying start date or modify the start date if called on an instance.
+ * @method static static since($date, $inclusive = null) Alias for start().
+ * @method static static sinceNow($inclusive = null) Create instance with start date set to now or set the start date to now if called on an instance.
+ * @method static static end($date = null, $inclusive = null) Create instance specifying end date or modify the end date if called on an instance.
+ * @method static static until($date = null, $inclusive = null) Alias for end().
+ * @method static static untilNow($inclusive = null) Create instance with end date set to now or set the end date to now if called on an instance.
+ * @method static static dates($start, $end = null) Create instance with start and end dates or modify the start and end dates if called on an instance.
+ * @method static static between($start, $end = null) Create instance with start and end dates or modify the start and end dates if called on an instance.
+ * @method static static recurrences($recurrences = null) Create instance with maximum number of recurrences or modify the number of recurrences if called on an instance.
+ * @method static static times($recurrences = null) Alias for recurrences().
+ * @method static static options($options = null) Create instance with options or modify the options if called on an instance.
+ * @method static static toggle($options, $state = null) Create instance with options toggled on or off, or toggle options if called on an instance.
+ * @method static static filter($callback, $name = null) Create instance with filter added to the stack or append a filter if called on an instance.
+ * @method static static push($callback, $name = null) Alias for filter().
+ * @method static static prepend($callback, $name = null) Create instance with filter prepended to the stack or prepend a filter if called on an instance.
+ * @method static static filters(array $filters = []) Create instance with filters stack or replace the whole filters stack if called on an instance.
+ * @method static static interval($interval) Create instance with given date interval or modify the interval if called on an instance.
+ * @method static static each($interval) Create instance with given date interval or modify the interval if called on an instance.
+ * @method static static every($interval) Create instance with given date interval or modify the interval if called on an instance.
+ * @method static static step($interval) Create instance with given date interval or modify the interval if called on an instance.
+ * @method static static stepBy($interval) Create instance with given date interval or modify the interval if called on an instance.
+ * @method static static invert() Create instance with inverted date interval or invert the interval if called on an instance.
+ * @method static static years($years = 1) Create instance specifying a number of years for date interval or replace the interval by the given a number of years if called on an instance.
+ * @method static static year($years = 1) Alias for years().
+ * @method static static months($months = 1) Create instance specifying a number of months for date interval or replace the interval by the given a number of months if called on an instance.
+ * @method static static month($months = 1) Alias for months().
+ * @method static static weeks($weeks = 1) Create instance specifying a number of weeks for date interval or replace the interval by the given a number of weeks if called on an instance.
+ * @method static static week($weeks = 1) Alias for weeks().
+ * @method static static days($days = 1) Create instance specifying a number of days for date interval or replace the interval by the given a number of days if called on an instance.
+ * @method static static dayz($days = 1) Alias for days().
+ * @method static static day($days = 1) Alias for days().
+ * @method static static hours($hours = 1) Create instance specifying a number of hours for date interval or replace the interval by the given a number of hours if called on an instance.
+ * @method static static hour($hours = 1) Alias for hours().
+ * @method static static minutes($minutes = 1) Create instance specifying a number of minutes for date interval or replace the interval by the given a number of minutes if called on an instance.
+ * @method static static minute($minutes = 1) Alias for minutes().
+ * @method static static seconds($seconds = 1) Create instance specifying a number of seconds for date interval or replace the interval by the given a number of seconds if called on an instance.
+ * @method static static second($seconds = 1) Alias for seconds().
+ * @method static static milliseconds($milliseconds = 1) Create instance specifying a number of milliseconds for date interval or replace the interval by the given a number of milliseconds if called on an instance.
+ * @method static static millisecond($milliseconds = 1) Alias for milliseconds().
+ * @method static static microseconds($microseconds = 1) Create instance specifying a number of microseconds for date interval or replace the interval by the given a number of microseconds if called on an instance.
+ * @method static static microsecond($microseconds = 1) Alias for microseconds().
  * @method $this roundYear(float $precision = 1, string $function = "round") Round the current instance year with given precision using the given function.
  * @method $this roundYears(float $precision = 1, string $function = "round") Round the current instance year with given precision using the given function.
  * @method $this floorYear(float $precision = 1) Truncate the current instance year with given precision.
@@ -176,9 +184,11 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
         Mixin::mixin as baseMixin;
     }
     use Options;
+    use ToStringFormat;
 
     /**
      * Built-in filter for limit by recurrences.
+	 * 内置过滤器限制递归
      *
      * @var callable
      */
@@ -186,6 +196,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Built-in filter for limit to an end.
+	 * 内置过滤器限制到结束
      *
      * @var callable
      */
@@ -193,6 +204,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Special value which can be returned by filters to end iteration. Also a filter.
+	 * 可以由过滤器返回以结束迭代的特殊值。还有一个过滤器。
      *
      * @var callable
      */
@@ -200,6 +212,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Exclude start date from iteration.
+	 * 从迭代中排除开始日期
      *
      * @var int
      */
@@ -207,6 +220,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Exclude end date from iteration.
+	 * 从迭代中排除结束日期
      *
      * @var int
      */
@@ -214,6 +228,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Yield CarbonImmutable instances.
+	 * 产生CarbonImmutable实例
      *
      * @var int
      */
@@ -221,6 +236,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Number of maximum attempts before giving up on finding next valid date.
+	 * 在放弃查找下一个有效日期之前的最大尝试次数
      *
      * @var int
      */
@@ -228,13 +244,23 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Number of maximum attempts before giving up on finding end date.
+	 * 在放弃约会之前的最大尝试次数
      *
      * @var int
      */
     public const END_MAX_ATTEMPTS = 10000;
 
     /**
+     * Default date class of iteration items.
+	 * 默认日期类的迭代项
+     *
+     * @var string
+     */
+    protected const DEFAULT_DATE_CLASS = Carbon::class;
+
+    /**
      * The registered macros.
+	 * 注册宏
      *
      * @var array
      */
@@ -242,6 +268,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Date class of iteration items.
+	 * 迭代项的日期类
      *
      * @var string
      */
@@ -249,13 +276,22 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Underlying date interval instance. Always present, one day by default.
+	 * 基本日期间隔实例。总有一天,默认的一天。
      *
      * @var CarbonInterval
      */
     protected $dateInterval;
 
     /**
+     * True once __construct is finished.
+     *
+     * @var bool
+     */
+    protected $constructed = false;
+
+    /**
      * Whether current date interval was set by default.
+	 * 当前日期间隔是否默认设置
      *
      * @var bool
      */
@@ -263,6 +299,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * The filters stack.
+	 * 过滤器堆栈
      *
      * @var array
      */
@@ -270,6 +307,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Period start date. Applied on rewind. Always present, now by default.
+	 * 开始日期。应用于rewind。现在,默认情况下。
      *
      * @var CarbonInterface
      */
@@ -277,6 +315,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Period end date. For inverted interval should be before the start date. Applied via a filter.
+	 * 周期日期。倒车间隔应该在开始日期之前。通过过滤器应用。
      *
      * @var CarbonInterface|null
      */
@@ -284,6 +323,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Limit for number of recurrences. Applied via a filter.
+	 * 对递归数的限制。通过过滤器应用。
      *
      * @var int|null
      */
@@ -291,6 +331,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Iteration options.
+	 * 迭代选项
      *
      * @var int
      */
@@ -299,6 +340,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
     /**
      * Index of current date. Always sequential, even if some dates are skipped by filters.
      * Equal to null only before the first iteration.
+	 * 当前日期指数。即使一些日期被过滤器跳过,也总是连续的。在第一次迭代之前等于空。
      *
      * @var int
      */
@@ -307,6 +349,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
     /**
      * Current date. May temporarily hold unaccepted value when looking for a next valid date.
      * Equal to null only before the first iteration.
+	 * 当前日期。在寻找下一个有效日期时,可能会暂时持有未接受的价值。
      *
      * @var CarbonInterface
      */
@@ -314,6 +357,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Timezone of current date. Taken from the start date.
+	 * 当前日期的时区。从开始日期开始。
      *
      * @var \DateTimeZone|null
      */
@@ -321,6 +365,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * The cached validation result for current date.
+	 * 当前日期缓存的验证结果
      *
      * @var bool|string|null
      */
@@ -328,6 +373,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Timezone handler for settings() method.
+	 * 设置()方法的时区处理程序
      *
      * @var mixed
      */
@@ -335,6 +381,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Make a CarbonPeriod instance from given variable if possible.
+	 * 如果可能的话,从给定的变量中做一个羰基周期实例。
      *
      * @param mixed $var
      *
@@ -351,6 +398,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Create a new instance from a DatePeriod or CarbonPeriod object.
+	 * 从数据周期或CarbonPeriod对象创建一个新的实例
      *
      * @param CarbonPeriod|DatePeriod $period
      *
@@ -392,6 +440,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Create a new instance.
+	 * 创建一个新的实例
      *
      * @return static
      */
@@ -402,6 +451,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Create a new instance from an array of parameters.
+	 * 从参数数组中创建一个新的实例
      *
      * @param array $params
      *
@@ -414,6 +464,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Create CarbonPeriod from ISO 8601 string.
+	 * 从ISO 8601字符串中创建羰基期
      *
      * @param string   $iso
      * @param int|null $options
@@ -435,6 +486,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Return whether given interval contains non zero value of any time unit.
+	 * 返回给定的间隔是否包含任何时间单元的非零值
      *
      * @param \DateInterval $interval
      *
@@ -447,6 +499,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Return whether given variable is an ISO 8601 specification.
+	 * 返回给定变量是否为ISO 8601规范。
      *
      * Note: Check is very basic, as actual validation will be done later when parsing.
      * We just want to ensure that variable is not any other type of a valid parameter.
@@ -485,15 +538,16 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
         $interval = null;
         $start = null;
         $end = null;
+        $dateClass = static::DEFAULT_DATE_CLASS;
 
         foreach (explode('/', $iso) as $key => $part) {
-            if ($key === 0 && preg_match('/^R([0-9]*|INF)$/', $part, $match)) {
+            if ($key === 0 && preg_match('/^R(\d*|INF)$/', $part, $match)) {
                 $parsed = \strlen($match[1]) ? (($match[1] !== 'INF') ? (int) $match[1] : INF) : null;
             } elseif ($interval === null && $parsed = CarbonInterval::make($part)) {
                 $interval = $part;
-            } elseif ($start === null && $parsed = Carbon::make($part)) {
+            } elseif ($start === null && $parsed = $dateClass::make($part)) {
                 $start = $part;
-            } elseif ($end === null && $parsed = Carbon::make(static::addMissingParts($start ?? '', $part))) {
+            } elseif ($end === null && $parsed = $dateClass::make(static::addMissingParts($start ?? '', $part))) {
                 $end = $part;
             } else {
                 throw new InvalidPeriodParameterException("Invalid ISO 8601 specification: $iso.");
@@ -506,7 +560,8 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
     }
 
     /**
-     * Add missing parts of the target date from the soure date.
+     * Add missing parts of the target date from the source date.
+	 * 从源日期添加目标日期的缺失部分
      *
      * @param string $source
      * @param string $target
@@ -515,7 +570,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      */
     protected static function addMissingParts($source, $target)
     {
-        $pattern = '/'.preg_replace('/[0-9]+/', '[0-9]+', preg_quote($target, '/')).'$/';
+        $pattern = '/'.preg_replace('/\d+/', '[0-9]+', preg_quote($target, '/')).'$/';
 
         $result = preg_replace($pattern, $target, $source, 1, $count);
 
@@ -524,6 +579,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Register a custom macro.
+	 * 注册自定义宏
      *
      * @example
      * ```
@@ -545,6 +601,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Register macros from a mixin object.
+	 * 从混合对象中注册宏
      *
      * @example
      * ```
@@ -584,6 +641,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Check if macro is registered.
+	 * 检查宏是否注册
      *
      * @param string $name
      *
@@ -596,6 +654,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Provide static proxy for instance aliases.
+	 * 为实例别名提供静态代理
      *
      * @param string $method
      * @param array  $parameters
@@ -617,6 +676,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * CarbonPeriod constructor.
+	 * 碳化构造
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      *
@@ -624,6 +684,10 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      */
     public function __construct(...$arguments)
     {
+        if (is_a($this->dateClass, DateTimeImmutable::class, true)) {
+            $this->options = static::IMMUTABLE;
+        }
+
         // Parse and assign arguments one by one. First argument may be an ISO 8601 spec,
         // which will be first parsed into parts and then processed the same way.
 
@@ -651,6 +715,8 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
             }
         }
 
+        $optionsSet = false;
+
         foreach ($arguments as $argument) {
             $parsedDate = null;
 
@@ -659,7 +725,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
             } elseif ($this->dateInterval === null &&
                 (
                     (\is_string($argument) && preg_match(
-                        '/^(-?\d(\d(?![\/-])|[^\d\/-]([\/-])?)*|P[T0-9].*|(?:\h*\d+(?:\.\d+)?\h*[a-z]+)+)$/i',
+                        '/^(-?\d(\d(?![\/-])|[^\d\/-]([\/-])?)*|P[T\d].*|(?:\h*\d+(?:\.\d+)?\h*[a-z]+)+)$/i',
                         $argument
                     )) ||
                     $argument instanceof DateInterval ||
@@ -674,15 +740,17 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
                 $this->setEndDate($parsedDate);
             } elseif ($this->recurrences === null && $this->endDate === null && is_numeric($argument)) {
                 $this->setRecurrences($argument);
-            } elseif ($this->options === null && (\is_int($argument) || $argument === null)) {
-                $this->setOptions($argument);
+            } elseif (!$optionsSet && (\is_int($argument) || $argument === null)) {
+                $optionsSet = true;
+                $this->setOptions(((int) $this->options) | ((int) $argument));
             } else {
                 throw new InvalidPeriodParameterException('Invalid constructor parameters.');
             }
         }
 
         if ($this->startDate === null) {
-            $this->setStartDate(Carbon::now());
+            $dateClass = $this->dateClass;
+            $this->setStartDate($dateClass::now());
         }
 
         if ($this->dateInterval === null) {
@@ -694,10 +762,13 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
         if ($this->options === null) {
             $this->setOptions(0);
         }
+
+        $this->constructed = true;
     }
 
     /**
      * Get a copy of the instance.
+	 * 获取实例的副本
      *
      * @return static
      */
@@ -707,7 +778,20 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
     }
 
     /**
+     * Prepare the instance to be set (self if mutable to be mutated,
+     * copy if immutable to generate a new instance).
+	 * 准备实例设置(如果可变,可以修改，复制如果不可变,生成一个新实例。
+     *
+     * @return static
+     */
+    protected function copyIfImmutable()
+    {
+        return $this;
+    }
+
+    /**
      * Get the getter for a property allowing both `DatePeriod` snakeCase and camelCase names.
+	 * 获取一个属性,允许两个DatePeriod的snakeCase和camelCase名称。
      *
      * @param string $name
      *
@@ -740,6 +824,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Get a property allowing both `DatePeriod` snakeCase and camelCase names.
+	 * 获取一个允许两个日期的snakeCase和camelCase名称的属性
      *
      * @param string $name
      *
@@ -758,6 +843,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Get a property allowing both `DatePeriod` snakeCase and camelCase names.
+	 * 获取一个允许两个日期的snakeCase和camelCase名称的属性
      *
      * @param string $name
      *
@@ -770,6 +856,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Check if an attribute exists on the object
+	 * 检查对象是否存在属性
      *
      * @param string $name
      *
@@ -784,6 +871,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      * @alias copy
      *
      * Get a copy of the instance.
+	 * 获取实例的副本
      *
      * @return static
      */
@@ -794,10 +882,11 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Set the iteration item class.
+	 * 设置迭代项类
      *
      * @param string $dateClass
      *
-     * @return $this
+     * @return static
      */
     public function setDateClass(string $dateClass)
     {
@@ -805,19 +894,21 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
             throw new NotACarbonClassException($dateClass);
         }
 
-        $this->dateClass = $dateClass;
+        $self = $this->copyIfImmutable();
+        $self->dateClass = $dateClass;
 
         if (is_a($dateClass, Carbon::class, true)) {
-            $this->toggleOptions(static::IMMUTABLE, false);
+            $self->options = $self->options & ~static::IMMUTABLE;
         } elseif (is_a($dateClass, CarbonImmutable::class, true)) {
-            $this->toggleOptions(static::IMMUTABLE, true);
+            $self->options = $self->options | static::IMMUTABLE;
         }
 
-        return $this;
+        return $self;
     }
 
     /**
      * Returns iteration item date class.
+	 * 返回迭代项日期类
      *
      * @return string
      */
@@ -828,12 +919,13 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Change the period date interval.
+	 * 更改周期日期间隔
      *
      * @param DateInterval|string $interval
      *
      * @throws InvalidIntervalException
      *
-     * @return $this
+     * @return static
      */
     public function setDateInterval($interval)
     {
@@ -845,51 +937,50 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
             throw new InvalidIntervalException('Empty interval is not accepted.');
         }
 
-        $this->dateInterval = $interval;
+        $self = $this->copyIfImmutable();
+        $self->dateInterval = $interval;
 
-        $this->isDefaultInterval = false;
+        $self->isDefaultInterval = false;
 
-        $this->handleChangedParameters();
+        $self->handleChangedParameters();
 
-        return $this;
+        return $self;
     }
 
     /**
      * Invert the period date interval.
+	 * 将周期日期进行反转
      *
-     * @return $this
+     * @return static
      */
     public function invertDateInterval()
     {
-        $interval = $this->dateInterval->invert();
-
-        return $this->setDateInterval($interval);
+        return $this->setDateInterval($this->dateInterval->invert());
     }
 
     /**
      * Set start and end date.
+	 * 设置开始和结束日期
      *
      * @param DateTime|DateTimeInterface|string      $start
      * @param DateTime|DateTimeInterface|string|null $end
      *
-     * @return $this
+     * @return static
      */
     public function setDates($start, $end)
     {
-        $this->setStartDate($start);
-        $this->setEndDate($end);
-
-        return $this;
+        return $this->setStartDate($start)->setEndDate($end);
     }
 
     /**
      * Change the period options.
+	 * 更改周期选项
      *
      * @param int|null $options
      *
      * @throws InvalidArgumentException
      *
-     * @return $this
+     * @return static
      */
     public function setOptions($options)
     {
@@ -897,15 +988,17 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
             throw new InvalidPeriodParameterException('Invalid options.');
         }
 
-        $this->options = $options ?: 0;
+        $self = $this->copyIfImmutable();
+        $self->options = $options ?: 0;
 
-        $this->handleChangedParameters();
+        $self->handleChangedParameters();
 
-        return $this;
+        return $self;
     }
 
     /**
      * Get the period options.
+	 * 获得周期选项
      *
      * @return int
      */
@@ -916,13 +1009,14 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Toggle given options on or off.
+	 * 切换或关闭
      *
      * @param int       $options
      * @param bool|null $state
      *
      * @throws \InvalidArgumentException
      *
-     * @return $this
+     * @return static
      */
     public function toggleOptions($options, $state = null)
     {
@@ -942,7 +1036,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      *
      * @param bool $state
      *
-     * @return $this
+     * @return static
      */
     public function excludeStartDate($state = true)
     {
@@ -954,7 +1048,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      *
      * @param bool $state
      *
-     * @return $this
+     * @return static
      */
     public function excludeEndDate($state = true)
     {
@@ -978,7 +1072,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      *
      * @return CarbonInterface
      */
-    public function getStartDate(string $rounding = null)
+    public function getStartDate(?string $rounding = null)
     {
         $date = $this->startDate->avoidMutation();
 
@@ -992,7 +1086,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      *
      * @return CarbonInterface|null
      */
-    public function getEndDate(string $rounding = null)
+    public function getEndDate(?string $rounding = null)
     {
         if (!$this->endDate) {
             return null;
@@ -1045,6 +1139,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Returns true if the end date should be included.
+	 * 如果结束日期应该包括在内,返回true。
      *
      * @return bool
      */
@@ -1055,6 +1150,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Return the start if it's included by option, else return the start + 1 period interval.
+	 * 如果它包含在选项中,返回初始值,返回起始+ 1周期间隔。
      *
      * @return CarbonInterface
      */
@@ -1072,6 +1168,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
     /**
      * Return the end if it's included by option, else return the end - 1 period interval.
      * Warning: if the period has no fixed end, this method will iterate the period to calculate it.
+	 * 如果通过选项返回结束,则返回结束- 1周期间隔。
      *
      * @return CarbonInterface
      */
@@ -1092,73 +1189,80 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Add a filter to the stack.
+	 * 在堆栈中添加一个过滤器
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
      * @param callable $callback
      * @param string   $name
      *
-     * @return $this
+     * @return static
      */
     public function addFilter($callback, $name = null)
     {
-        $tuple = $this->createFilterTuple(\func_get_args());
+        $self = $this->copyIfImmutable();
+        $tuple = $self->createFilterTuple(\func_get_args());
 
-        $this->filters[] = $tuple;
+        $self->filters[] = $tuple;
 
-        $this->handleChangedParameters();
+        $self->handleChangedParameters();
 
-        return $this;
+        return $self;
     }
 
     /**
      * Prepend a filter to the stack.
+	 * Prepend过滤器到堆栈
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
      * @param callable $callback
      * @param string   $name
      *
-     * @return $this
+     * @return static
      */
     public function prependFilter($callback, $name = null)
     {
-        $tuple = $this->createFilterTuple(\func_get_args());
+        $self = $this->copyIfImmutable();
+        $tuple = $self->createFilterTuple(\func_get_args());
 
-        array_unshift($this->filters, $tuple);
+        array_unshift($self->filters, $tuple);
 
-        $this->handleChangedParameters();
+        $self->handleChangedParameters();
 
-        return $this;
+        return $self;
     }
 
     /**
      * Remove a filter by instance or name.
+	 * 以实例或名称删除过滤器
      *
      * @param callable|string $filter
      *
-     * @return $this
+     * @return static
      */
     public function removeFilter($filter)
     {
+        $self = $this->copyIfImmutable();
         $key = \is_callable($filter) ? 0 : 1;
 
-        $this->filters = array_values(array_filter(
+        $self->filters = array_values(array_filter(
             $this->filters,
             function ($tuple) use ($key, $filter) {
                 return $tuple[$key] !== $filter;
             }
         ));
 
-        $this->updateInternalState();
+        $self->updateInternalState();
 
-        $this->handleChangedParameters();
+        $self->handleChangedParameters();
 
-        return $this;
+        return $self;
     }
 
     /**
      * Return whether given instance or name is in the filter stack.
+	 * 返回给定实例或名称在过滤器堆栈中
      *
      * @param callable|string $filter
      *
@@ -1179,6 +1283,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Get filters stack.
+	 * 获取过滤器堆栈
      *
      * @return array
      */
@@ -1189,52 +1294,56 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Set filters stack.
+	 * 设置过滤器堆栈
      *
      * @param array $filters
      *
-     * @return $this
+     * @return static
      */
     public function setFilters(array $filters)
     {
-        $this->filters = $filters;
+        $self = $this->copyIfImmutable();
+        $self->filters = $filters;
 
-        $this->updateInternalState();
+        $self->updateInternalState();
 
-        $this->handleChangedParameters();
+        $self->handleChangedParameters();
 
-        return $this;
+        return $self;
     }
 
     /**
      * Reset filters stack.
      *
-     * @return $this
+     * @return static
      */
     public function resetFilters()
     {
-        $this->filters = [];
+        $self = $this->copyIfImmutable();
+        $self->filters = [];
 
-        if ($this->endDate !== null) {
-            $this->filters[] = [static::END_DATE_FILTER, null];
+        if ($self->endDate !== null) {
+            $self->filters[] = [static::END_DATE_FILTER, null];
         }
 
-        if ($this->recurrences !== null) {
-            $this->filters[] = [static::RECURRENCES_FILTER, null];
+        if ($self->recurrences !== null) {
+            $self->filters[] = [static::RECURRENCES_FILTER, null];
         }
 
-        $this->handleChangedParameters();
+        $self->handleChangedParameters();
 
-        return $this;
+        return $self;
     }
 
     /**
      * Add a recurrences filter (set maximum number of recurrences).
+	 * 添加一个递归过滤器(设置最大的递归值)
      *
      * @param int|float|null $recurrences
      *
      * @throws InvalidArgumentException
      *
-     * @return $this
+     * @return static
      */
     public function setRecurrences($recurrences)
     {
@@ -1246,55 +1355,60 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
             return $this->removeFilter(static::RECURRENCES_FILTER);
         }
 
-        $this->recurrences = $recurrences === INF ? INF : (int) $recurrences;
+        /** @var self $self */
+        $self = $this->copyIfImmutable();
+        $self->recurrences = $recurrences === INF ? INF : (int) $recurrences;
 
-        if (!$this->hasFilter(static::RECURRENCES_FILTER)) {
-            return $this->addFilter(static::RECURRENCES_FILTER);
+        if (!$self->hasFilter(static::RECURRENCES_FILTER)) {
+            return $self->addFilter(static::RECURRENCES_FILTER);
         }
 
-        $this->handleChangedParameters();
+        $self->handleChangedParameters();
 
-        return $this;
+        return $self;
     }
 
     /**
      * Change the period start date.
+	 * 更改周期开始日期
      *
      * @param DateTime|DateTimeInterface|string $date
      * @param bool|null                         $inclusive
      *
      * @throws InvalidPeriodDateException
      *
-     * @return $this
+     * @return static
      */
     public function setStartDate($date, $inclusive = null)
     {
-        if (!$date = ([$this->dateClass, 'make'])($date)) {
+        if (!$this->isInfiniteDate($date) && !($date = ([$this->dateClass, 'make'])($date))) {
             throw new InvalidPeriodDateException('Invalid start date.');
         }
 
-        $this->startDate = $date;
+        $self = $this->copyIfImmutable();
+        $self->startDate = $date;
 
         if ($inclusive !== null) {
-            $this->toggleOptions(static::EXCLUDE_START_DATE, !$inclusive);
+            $self = $self->toggleOptions(static::EXCLUDE_START_DATE, !$inclusive);
         }
 
-        return $this;
+        return $self;
     }
 
     /**
      * Change the period end date.
+	 * 改变期限日期
      *
      * @param DateTime|DateTimeInterface|string|null $date
      * @param bool|null                              $inclusive
      *
      * @throws \InvalidArgumentException
      *
-     * @return $this
+     * @return static
      */
     public function setEndDate($date, $inclusive = null)
     {
-        if ($date !== null && !$date = ([$this->dateClass, 'make'])($date)) {
+        if ($date !== null && !$this->isInfiniteDate($date) && !$date = ([$this->dateClass, 'make'])($date)) {
             throw new InvalidPeriodDateException('Invalid end date.');
         }
 
@@ -1302,23 +1416,25 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
             return $this->removeFilter(static::END_DATE_FILTER);
         }
 
-        $this->endDate = $date;
+        $self = $this->copyIfImmutable();
+        $self->endDate = $date;
 
         if ($inclusive !== null) {
-            $this->toggleOptions(static::EXCLUDE_END_DATE, !$inclusive);
+            $self = $self->toggleOptions(static::EXCLUDE_END_DATE, !$inclusive);
         }
 
-        if (!$this->hasFilter(static::END_DATE_FILTER)) {
-            return $this->addFilter(static::END_DATE_FILTER);
+        if (!$self->hasFilter(static::END_DATE_FILTER)) {
+            return $self->addFilter(static::END_DATE_FILTER);
         }
 
-        $this->handleChangedParameters();
+        $self->handleChangedParameters();
 
-        return $this;
+        return $self;
     }
 
     /**
      * Check if the current position is valid.
+	 * 检查当前位置是否有效
      *
      * @return bool
      */
@@ -1330,6 +1446,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Return the current key.
+	 * 返回当前键
      *
      * @return int|null
      */
@@ -1343,6 +1460,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Return the current date.
+	 * 返回当前日期
      *
      * @return CarbonInterface|null
      */
@@ -1356,6 +1474,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Move forward to the next date.
+	 * 继续下一个约会
      *
      * @throws RuntimeException
      *
@@ -1377,6 +1496,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Rewind to the start date.
+	 * 重新开始约会。
      *
      * Iterating over a date in the UTC timezone avoids bug during backward DST change.
      *
@@ -1415,6 +1535,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Skip iterations and returns iteration state (false if ended, true if still valid).
+	 * 跳过迭代和返回迭代状态(如果结束时false,如果仍然有效)
      *
      * @param int $count steps number to skip (1 by default)
      *
@@ -1431,6 +1552,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Format the date period as ISO 8601.
+	 * 格式日期为ISO 8601
      *
      * @return string
      */
@@ -1455,18 +1577,27 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Convert the date period into a string.
+	 * 将日期周期转换为字符串
      *
      * @return string
      */
     public function toString()
     {
+        $format = $this->localToStringFormat ?? static::$toStringFormat;
+
+        if ($format instanceof Closure) {
+            return $format($this);
+        }
+
         $translator = ([$this->dateClass, 'getTranslator'])();
 
         $parts = [];
 
-        $format = !$this->startDate->isStartOfDay() || ($this->endDate && !$this->endDate->isStartOfDay())
-            ? 'Y-m-d H:i:s'
-            : 'Y-m-d';
+        $format = $format ?? (
+            !$this->startDate->isStartOfDay() || ($this->endDate && !$this->endDate->isStartOfDay())
+                ? 'Y-m-d H:i:s'
+                : 'Y-m-d'
+        );
 
         if ($this->recurrences !== null) {
             $parts[] = $this->translate('period_recurrences', [], $this->recurrences, $translator);
@@ -1499,6 +1630,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Cast the current instance into the given class.
+	 * 将当前的实例放入给定的类中
      *
      * @param string $className The $className::instance() method will be called to cast the current object.
      *
@@ -1509,9 +1641,9 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
         if (!method_exists($className, 'instance')) {
             if (is_a($className, DatePeriod::class, true)) {
                 return new $className(
-                    $this->getStartDate(),
+                    $this->rawDate($this->getStartDate()),
                     $this->getDateInterval(),
-                    $this->getEndDate() ? $this->getIncludedEndDate() : $this->getRecurrences(),
+                    $this->getEndDate() ? $this->rawDate($this->getIncludedEndDate()) : $this->getRecurrences(),
                     $this->isStartExcluded() ? DatePeriod::EXCLUDE_START_DATE : 0
                 );
             }
@@ -1524,6 +1656,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Return native DatePeriod PHP object matching the current instance.
+	 * 返回本地DatePeriod PHP对象匹配当前实例
      *
      * @example
      * ```
@@ -1538,12 +1671,51 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
     }
 
     /**
+     * Return `true` if the period has no custom filter and is guaranteed to be endless.
+	 * 如果这段时间没有自定义过滤器,则返回“true”,并保证它是无穷无尽的。
+     *
+     * Note that we can't check if a period is endless as soon as it has custom filters
+     * because filters can emit `CarbonPeriod::END_ITERATION` to stop the iteration in
+     * a way we can't predict without actually iterating the period.
+     */
+    public function isUnfilteredAndEndLess(): bool
+    {
+        foreach ($this->filters as $filter) {
+            switch ($filter) {
+                case [static::RECURRENCES_FILTER, null]:
+                    if ($this->recurrences !== null && is_finite($this->recurrences)) {
+                        return false;
+                    }
+
+                    break;
+
+                case [static::END_DATE_FILTER, null]:
+                    if ($this->endDate !== null && !$this->endDate->isEndOfTime()) {
+                        return false;
+                    }
+
+                    break;
+
+                default:
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Convert the date period into an array without changing current iteration state.
+	 * 在不改变当前迭代状态的情况下将日期周期转换为数组
      *
      * @return CarbonInterface[]
      */
     public function toArray()
     {
+        if ($this->isUnfilteredAndEndLess()) {
+            throw new EndLessPeriodException("Endless period can't be converted to array nor counted.");
+        }
+
         $state = [
             $this->key,
             $this->current ? $this->current->avoidMutation() : null,
@@ -1559,6 +1731,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Count dates in the date period.
+	 * 日期在日期期间
      *
      * @return int
      */
@@ -1570,16 +1743,28 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Return the first date in the date period.
+	 * 在日期期间返回第一个日期
      *
      * @return CarbonInterface|null
      */
     public function first()
     {
+        if ($this->isUnfilteredAndEndLess()) {
+            foreach ($this as $date) {
+                $this->rewind();
+
+                return $date;
+            }
+
+            return null;
+        }
+
         return ($this->toArray() ?: [])[0] ?? null;
     }
 
     /**
      * Return the last date in the date period.
+	 * 在日期期间返回最后日期
      *
      * @return CarbonInterface|null
      */
@@ -1592,6 +1777,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Convert the date period into a string.
+	 * 将日期周期转换为字符串
      *
      * @return string
      */
@@ -1629,54 +1815,80 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
             return $roundedValue;
         }
 
-        $first = \count($parameters) >= 1 ? $parameters[0] : null;
-        $second = \count($parameters) >= 2 ? $parameters[1] : null;
-
         switch ($method) {
             case 'start':
             case 'since':
-                return $this->setStartDate($first, $second);
+                self::setDefaultParameters($parameters, [
+                    [0, 'date', null],
+                ]);
+
+                return $this->setStartDate(...$parameters);
 
             case 'sinceNow':
-                return $this->setStartDate(new Carbon(), $first);
+                return $this->setStartDate(new Carbon(), ...$parameters);
 
             case 'end':
             case 'until':
-                return $this->setEndDate($first, $second);
+                self::setDefaultParameters($parameters, [
+                    [0, 'date', null],
+                ]);
+
+                return $this->setEndDate(...$parameters);
 
             case 'untilNow':
-                return $this->setEndDate(new Carbon(), $first);
+                return $this->setEndDate(new Carbon(), ...$parameters);
 
             case 'dates':
             case 'between':
-                return $this->setDates($first, $second);
+                self::setDefaultParameters($parameters, [
+                    [0, 'start', null],
+                    [1, 'end', null],
+                ]);
+
+                return $this->setDates(...$parameters);
 
             case 'recurrences':
             case 'times':
-                return $this->setRecurrences($first);
+                self::setDefaultParameters($parameters, [
+                    [0, 'recurrences', null],
+                ]);
+
+                return $this->setRecurrences(...$parameters);
 
             case 'options':
-                return $this->setOptions($first);
+                self::setDefaultParameters($parameters, [
+                    [0, 'options', null],
+                ]);
+
+                return $this->setOptions(...$parameters);
 
             case 'toggle':
-                return $this->toggleOptions($first, $second);
+                self::setDefaultParameters($parameters, [
+                    [0, 'options', null],
+                ]);
+
+                return $this->toggleOptions(...$parameters);
 
             case 'filter':
             case 'push':
-                return $this->addFilter($first, $second);
+                return $this->addFilter(...$parameters);
 
             case 'prepend':
-                return $this->prependFilter($first, $second);
+                return $this->prependFilter(...$parameters);
 
             case 'filters':
-                return $this->setFilters($first ?: []);
+                self::setDefaultParameters($parameters, [
+                    [0, 'filters', []],
+                ]);
+
+                return $this->setFilters(...$parameters);
 
             case 'interval':
             case 'each':
             case 'every':
             case 'step':
             case 'stepBy':
-                return $this->setDateInterval($first);
+                return $this->setDateInterval(...$parameters);
 
             case 'invert':
                 return $this->invertDateInterval();
@@ -1696,15 +1908,19 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
             case 'minute':
             case 'seconds':
             case 'second':
+            case 'milliseconds':
+            case 'millisecond':
+            case 'microseconds':
+            case 'microsecond':
                 return $this->setDateInterval((
                     // Override default P1D when instantiating via fluent setters.
                     [$this->isDefaultInterval ? new CarbonInterval('PT0S') : $this->dateInterval, $method]
-                )(
-                    \count($parameters) === 0 ? 1 : $first
-                ));
+                )(...$parameters));
         }
 
-        if ($this->localStrictModeEnabled ?? Carbon::isStrictModeEnabled()) {
+        $dateClass = $this->dateClass;
+
+        if ($this->localStrictModeEnabled ?? $dateClass::isStrictModeEnabled()) {
             throw new UnknownMethodException($method);
         }
 
@@ -1720,18 +1936,19 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      */
     public function setTimezone($timezone)
     {
-        $this->tzName = $timezone;
-        $this->timezone = $timezone;
+        $self = $this->copyIfImmutable();
+        $self->tzName = $timezone;
+        $self->timezone = $timezone;
 
-        if ($this->startDate) {
-            $this->setStartDate($this->startDate->setTimezone($timezone));
+        if ($self->startDate) {
+            $self = $self->setStartDate($self->startDate->setTimezone($timezone));
         }
 
-        if ($this->endDate) {
-            $this->setEndDate($this->endDate->setTimezone($timezone));
+        if ($self->endDate) {
+            $self = $self->setEndDate($self->endDate->setTimezone($timezone));
         }
 
-        return $this;
+        return $self;
     }
 
     /**
@@ -1743,18 +1960,19 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      */
     public function shiftTimezone($timezone)
     {
-        $this->tzName = $timezone;
-        $this->timezone = $timezone;
+        $self = $this->copyIfImmutable();
+        $self->tzName = $timezone;
+        $self->timezone = $timezone;
 
-        if ($this->startDate) {
-            $this->setStartDate($this->startDate->shiftTimezone($timezone));
+        if ($self->startDate) {
+            $self = $self->setStartDate($self->startDate->shiftTimezone($timezone));
         }
 
-        if ($this->endDate) {
-            $this->setEndDate($this->endDate->shiftTimezone($timezone));
+        if ($self->endDate) {
+            $self = $self->setEndDate($self->endDate->shiftTimezone($timezone));
         }
 
-        return $this;
+        return $self;
     }
 
     /**
@@ -1764,7 +1982,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      *
      * @return CarbonInterface
      */
-    public function calculateEnd(string $rounding = null)
+    public function calculateEnd(?string $rounding = null)
     {
         if ($end = $this->getEndDate($rounding)) {
             return $end;
@@ -1899,7 +2117,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Determines if the instance is equal to another.
-     * Warning: if options differ, instances wil never be equal.
+     * Warning: if options differ, instances will never be equal.
      *
      * @param mixed $period
      *
@@ -1914,7 +2132,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Determines if the instance is equal to another.
-     * Warning: if options differ, instances wil never be equal.
+     * Warning: if options differ, instances will never be equal.
      *
      * @param mixed $period
      *
@@ -1937,7 +2155,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Determines if the instance is not equal to another.
-     * Warning: if options differ, instances wil never be equal.
+     * Warning: if options differ, instances will never be equal.
      *
      * @param mixed $period
      *
@@ -1952,7 +2170,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Determines if the instance is not equal to another.
-     * Warning: if options differ, instances wil never be equal.
+     * Warning: if options differ, instances will never be equal.
      *
      * @param mixed $period
      *
@@ -2128,33 +2346,34 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Round the current instance at the given unit with given precision if specified and the given function.
+	 * 在给定的单元中,如果指定和给定的函数,在给定的单元中绕过当前的实例。
      *
      * @param string                              $unit
      * @param float|int|string|\DateInterval|null $precision
      * @param string                              $function
      *
-     * @return $this
+     * @return static
      */
     public function roundUnit($unit, $precision = 1, $function = 'round')
     {
-        $this->setStartDate($this->getStartDate()->roundUnit($unit, $precision, $function));
+        $self = $this->copyIfImmutable();
+        $self = $self->setStartDate($self->getStartDate()->roundUnit($unit, $precision, $function));
 
-        if ($this->endDate) {
-            $this->setEndDate($this->getEndDate()->roundUnit($unit, $precision, $function));
+        if ($self->endDate) {
+            $self = $self->setEndDate($self->getEndDate()->roundUnit($unit, $precision, $function));
         }
 
-        $this->setDateInterval($this->getDateInterval()->roundUnit($unit, $precision, $function));
-
-        return $this;
+        return $self->setDateInterval($self->getDateInterval()->roundUnit($unit, $precision, $function));
     }
 
     /**
      * Truncate the current instance at the given unit with given precision if specified.
+	 * 在给定的单元中截断当前实例,给定精度
      *
      * @param string                              $unit
      * @param float|int|string|\DateInterval|null $precision
      *
-     * @return $this
+     * @return static
      */
     public function floorUnit($unit, $precision = 1)
     {
@@ -2163,11 +2382,12 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Ceil the current instance at the given unit with given precision if specified.
+	 * 指示给定单位的当前实例,如果指定的话,指定的精度。
      *
      * @param string                              $unit
      * @param float|int|string|\DateInterval|null $precision
      *
-     * @return $this
+     * @return static
      */
     public function ceilUnit($unit, $precision = 1)
     {
@@ -2176,11 +2396,12 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Round the current instance second with given precision if specified (else period interval is used).
+	 * 如果指定(其他期间间隔使用),则在当前实例的第二段内进行指定精度。
      *
      * @param float|int|string|\DateInterval|null $precision
      * @param string                              $function
      *
-     * @return $this
+     * @return static
      */
     public function round($precision = null, $function = 'round')
     {
@@ -2195,7 +2416,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      *
      * @param float|int|string|\DateInterval|null $precision
      *
-     * @return $this
+     * @return static
      */
     public function floor($precision = null)
     {
@@ -2207,7 +2428,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      *
      * @param float|int|string|\DateInterval|null $precision
      *
-     * @return $this
+     * @return static
      */
     public function ceil($precision = null)
     {
@@ -2276,6 +2497,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Return true if the given period either follows or is followed by the current one.
+	 * 如果给定的时间是这样的,那么就返回true,然后是当前的。
      *
      * @see follows()
      * @see isFollowedBy()
@@ -2291,6 +2513,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Update properties after removing built-in filters.
+	 * 删除内置过滤器后更新属性
      *
      * @return void
      */
@@ -2307,6 +2530,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Create a filter tuple from raw parameters.
+	 * 从原始参数创建一个过滤器元组。
      *
      * Will create an automatic filter callback for one of Carbon's is* methods.
      *
@@ -2343,6 +2567,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Recurrences filter callback (limits number of recurrences).
+	 * 递归过滤器回调(递归限制数)
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
@@ -2396,9 +2621,9 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
     protected function handleChangedParameters()
     {
         if (($this->getOptions() & static::IMMUTABLE) && $this->dateClass === Carbon::class) {
-            $this->setDateClass(CarbonImmutable::class);
+            $this->dateClass = CarbonImmutable::class;
         } elseif (!($this->getOptions() & static::IMMUTABLE) && $this->dateClass === CarbonImmutable::class) {
-            $this->setDateClass(Carbon::class);
+            $this->dateClass = Carbon::class;
         }
 
         $this->validationResult = null;
@@ -2424,6 +2649,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Check whether current value and key pass all the filters.
+	 * 检查当前值和键是否传递所有过滤器
      *
      * @return bool|string
      */
@@ -2453,6 +2679,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Prepare given date to be returned to the external logic.
+	 * 准备给定日期返回到外部逻辑
      *
      * @param CarbonInterface $date
      *
@@ -2471,6 +2698,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Keep incrementing the current date until a valid date is found or the iteration is ended.
+	 * 继续将当前日期递增为一个有效的日期,或者结束迭代。
      *
      * @throws RuntimeException
      *
@@ -2527,6 +2755,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
 
     /**
      * Resolve passed arguments or DatePeriod to a CarbonPeriod object.
+	 * 解决方案通过参数或数据周期到CarbonPeriod对象
      *
      * @param mixed $period
      * @param mixed ...$arguments
@@ -2558,14 +2787,51 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
         if (\is_string($value)) {
             $value = trim($value);
 
-            if (!preg_match('/^P[0-9T]/', $value) &&
-                !preg_match('/^R[0-9]/', $value) &&
-                preg_match('/[a-z0-9]/i', $value)
+            if (!preg_match('/^P[\dT]/', $value) &&
+                !preg_match('/^R\d/', $value) &&
+                preg_match('/[a-z\d]/i', $value)
             ) {
-                return Carbon::parse($value, $this->tzName);
+                $dateClass = $this->dateClass;
+
+                return $dateClass::parse($value, $this->tzName);
             }
         }
 
         return null;
+    }
+
+    private function isInfiniteDate($date): bool
+    {
+        return $date instanceof CarbonInterface && ($date->isEndOfTime() || $date->isStartOfTime());
+    }
+
+    private function rawDate($date): ?DateTimeInterface
+    {
+        if ($date === false || $date === null) {
+            return null;
+        }
+
+        if ($date instanceof CarbonInterface) {
+            return $date->isMutable()
+                ? $date->toDateTime()
+                : $date->toDateTimeImmutable();
+        }
+
+        if (\in_array(\get_class($date), [DateTime::class, DateTimeImmutable::class], true)) {
+            return $date;
+        }
+
+        $class = $date instanceof DateTime ? DateTime::class : DateTimeImmutable::class;
+
+        return new $class($date->format('Y-m-d H:i:s.u'), $date->getTimezone());
+    }
+
+    private static function setDefaultParameters(array &$parameters, array $defaults): void
+    {
+        foreach ($defaults as [$index, $name, $value]) {
+            if (!\array_key_exists($index, $parameters) && !\array_key_exists($name, $parameters)) {
+                $parameters[$index] = $value;
+            }
+        }
     }
 }

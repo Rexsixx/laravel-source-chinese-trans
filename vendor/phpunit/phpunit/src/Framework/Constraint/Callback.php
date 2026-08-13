@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，Framework，限制，回调
+ */
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,9 +15,9 @@
 namespace PHPUnit\Framework\Constraint;
 
 /**
- * Constraint that evaluates against a specified closure.
- *
  * @psalm-template CallbackInput of mixed
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class Callback extends Constraint
 {

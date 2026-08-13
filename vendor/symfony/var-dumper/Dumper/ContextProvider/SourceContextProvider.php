@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，转储，上下文提供者，源上下文提供者
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -19,6 +22,7 @@ use Twig\Template;
 
 /**
  * Tries to provide context from sources (class name, file, line, code excerpt, ...).
+ * 试图从源(类名、文件、行、代码摘录、…)中提供上下文。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
@@ -30,7 +34,7 @@ final class SourceContextProvider implements ContextProviderInterface
     private $projectDir;
     private $fileLinkFormatter;
 
-    public function __construct(string $charset = null, string $projectDir = null, FileLinkFormatter $fileLinkFormatter = null, int $limit = 9)
+    public function __construct(?string $charset = null, ?string $projectDir = null, ?FileLinkFormatter $fileLinkFormatter = null, int $limit = 9)
     {
         $this->charset = $charset;
         $this->projectDir = $projectDir;
@@ -44,7 +48,7 @@ final class SourceContextProvider implements ContextProviderInterface
 
         $file = $trace[1]['file'];
         $line = $trace[1]['line'];
-        $name = false;
+        $name = '-' === $file || 'Standard input code' === $file ? 'Standard input code' : false;
         $fileExcerpt = false;
 
         for ($i = 2; $i < $this->limit; ++$i) {

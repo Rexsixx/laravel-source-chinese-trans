@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，Session，属性，属性包接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
 
 /**
  * Attributes store.
+ * 存储属性。
  *
  * @author Drak <drak@zikula.org>
  */
@@ -22,35 +26,35 @@ interface AttributeBagInterface extends SessionBagInterface
 {
     /**
      * Checks if an attribute is defined.
+	 * 检查是否定义了属性
      *
-     * @param string $name The attribute name
-     *
-     * @return bool true if the attribute is defined, false otherwise
+     * @return bool
      */
-    public function has($name);
+    public function has(string $name);
 
     /**
      * Returns an attribute.
+	 * 返回一个属性
      *
-     * @param string $name    The attribute name
-     * @param mixed  $default The default value if not found
+     * @param mixed $default The default value if not found
      *
      * @return mixed
      */
-    public function get($name, $default = null);
+    public function get(string $name, $default = null);
 
     /**
      * Sets an attribute.
+	 * 设置属性
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      */
-    public function set($name, $value);
+    public function set(string $name, $value);
 
     /**
      * Returns attributes.
+	 * 返回属性
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function all();
 
@@ -58,10 +62,9 @@ interface AttributeBagInterface extends SessionBagInterface
 
     /**
      * Removes an attribute.
-     *
-     * @param string $name
+	 * 移除属性
      *
      * @return mixed The removed value or null when it does not exist
      */
-    public function remove($name);
+    public function remove(string $name);
 }

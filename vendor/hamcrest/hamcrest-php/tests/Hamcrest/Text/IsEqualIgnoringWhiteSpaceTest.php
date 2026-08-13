@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，文本，是平衡白色空间测试
- */
-
 namespace Hamcrest\Text;
 
 class IsEqualIgnoringWhiteSpaceTest extends \Hamcrest\AbstractMatcherTest

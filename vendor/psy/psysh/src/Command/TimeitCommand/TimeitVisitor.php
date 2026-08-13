@@ -1,9 +1,12 @@
 <?php
+/**
+ * Psy，命令，计时指令，Timeit Command
+ */
 
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2023 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,16 +28,19 @@ use Psy\Command\TimeitCommand;
 
 /**
  * A node visitor for instrumenting code to be executed by the `timeit` command.
+ * 通过“timeit”命令执行执行代码的节点访问者。
  *
  * Injects `TimeitCommand::markStart()` at the start of code to be executed, and
  * `TimeitCommand::markEnd()` at the end, and on top-level return statements.
  */
 class TimeitVisitor extends NodeVisitorAbstract
 {
-    private $functionDepth;
+    private int $functionDepth = 0;
 
     /**
      * {@inheritdoc}
+     *
+     * @return Node[]|null Array of nodes
      */
     public function beforeTraverse(array $nodes)
     {
@@ -43,6 +49,8 @@ class TimeitVisitor extends NodeVisitorAbstract
 
     /**
      * {@inheritdoc}
+     *
+     * @return int|Node|null Replacement node (or special return value)
      */
     public function enterNode(Node $node)
     {
@@ -62,6 +70,8 @@ class TimeitVisitor extends NodeVisitorAbstract
 
     /**
      * {@inheritdoc}
+     *
+     * @return int|Node|Node[]|null Replacement node (or special return value)
      */
     public function leaveNode(Node $node)
     {
@@ -72,11 +82,13 @@ class TimeitVisitor extends NodeVisitorAbstract
 
     /**
      * {@inheritdoc}
+     *
+     * @return Node[]|null Array of nodes
      */
     public function afterTraverse(array $nodes)
     {
         // prepend a `markStart` call
-        \array_unshift($nodes, $this->maybeExpression($this->getStartCall()));
+        \array_unshift($nodes, new Expression($this->getStartCall(), []));
 
         // append a `markEnd` call (wrapping the final node, if it's an expression)
         $last = $nodes[\count($nodes) - 1];
@@ -89,7 +101,7 @@ class TimeitVisitor extends NodeVisitorAbstract
         } elseif ($last instanceof Return_) {
             // nothing to do here, we're already ending with a return call
         } else {
-            $nodes[] = $this->maybeExpression($this->getEndCall());
+            $nodes[] = new Expression($this->getEndCall(), []);
         }
 
         return $nodes;
@@ -111,30 +123,13 @@ class TimeitVisitor extends NodeVisitorAbstract
      * Optionally pass in a return value.
      *
      * @param Expr|null $arg
-     *
-     * @return \PhpParser\Node\Expr\StaticCall
      */
-    private function getEndCall(Expr $arg = null): StaticCall
+    private function getEndCall(?Expr $arg = null): StaticCall
     {
         if ($arg === null) {
             $arg = NoReturnValue::create();
         }
 
         return new StaticCall(new FullyQualifiedName(TimeitCommand::class), 'markEnd', [new Arg($arg)]);
-    }
-
-    /**
-     * Compatibility shim for PHP Parser 3.x.
-     *
-     * Wrap $expr in a PhpParser\Node\Stmt\Expression if the class exists.
-     *
-     * @param \PhpParser\Node $expr
-     * @param array           $attrs
-     *
-     * @return \PhpParser\Node\Expr|\PhpParser\Node\Stmt\Expression
-     */
-    private function maybeExpression(Node $expr, array $attrs = [])
-    {
-        return \class_exists(Expression::class) ? new Expression($expr, $attrs) : $expr;
     }
 }

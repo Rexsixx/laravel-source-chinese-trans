@@ -26,6 +26,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface as ContractsTranslatorInterface;
 
+// @codeCoverageIgnoreStart
 if (interface_exists('Symfony\\Contracts\\Translation\\TranslatorInterface') &&
     !interface_exists('Symfony\\Component\\Translation\\TranslatorInterface')
 ) {
@@ -34,16 +35,20 @@ if (interface_exists('Symfony\\Contracts\\Translation\\TranslatorInterface') &&
         'Symfony\\Component\\Translation\\TranslatorInterface'
     );
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Trait Localization.
+ * 特征定位。
  *
  * Embed default and locale translators and translation base methods.
+ * 嵌入默认和区域翻译和翻译基方法。
  */
 trait Localization
 {
     /**
      * Default translator.
+	 * 默认的翻译
      *
      * @var \Symfony\Component\Translation\TranslatorInterface
      */
@@ -51,6 +56,7 @@ trait Localization
 
     /**
      * Specific translator of the current instance.
+	 * 当前实例的特定转换器
      *
      * @var \Symfony\Component\Translation\TranslatorInterface
      */
@@ -101,6 +107,7 @@ trait Localization
 
     /**
      * Return default humanDiff() options (merged flags as integer).
+	 * 返回默认的humanDiff（）选项（合并标志为整数）
      *
      * @return int
      */
@@ -360,6 +367,13 @@ trait Localization
             $weekdays = $messages['weekdays'] ?? [];
             $meridiem = $messages['meridiem'] ?? ['AM', 'PM'];
 
+            if (isset($messages['ordinal_words'])) {
+                $timeString = self::replaceOrdinalWords(
+                    $timeString,
+                    $key === 'from' ? array_flip($messages['ordinal_words']) : $messages['ordinal_words']
+                );
+            }
+
             if ($key === 'from') {
                 foreach (['months', 'weekdays'] as $variable) {
                     $list = $messages[$variable.'_standalone'] ?? null;
@@ -438,7 +452,7 @@ trait Localization
      *
      * @return $this|string
      */
-    public function locale(string $locale = null, ...$fallbackLocales)
+    public function locale(?string $locale = null, ...$fallbackLocales)
     {
         if ($locale === null) {
             return $this->getTranslatorLocale();
@@ -735,7 +749,7 @@ trait Localization
         }
 
         if ($translator && !($translator instanceof LocaleAwareInterface || method_exists($translator, 'getLocale'))) {
-            throw new NotLocaleAwareException($translator);
+            throw new NotLocaleAwareException($translator); // @codeCoverageIgnore
         }
 
         return $translator;
@@ -800,6 +814,7 @@ trait Localization
 
     /**
      * Get an array of translations based on the current date.
+	 * 获取基于当前日期的翻译数组
      *
      * @param callable $translation
      * @param int      $length
@@ -823,5 +838,12 @@ trait Localization
         }
 
         return $list;
+    }
+
+    private static function replaceOrdinalWords(string $timeString, array $ordinalWords): string
+    {
+        return preg_replace_callback('/(?<![a-z])[a-z]+(?![a-z])/i', function (array $match) use ($ordinalWords) {
+            return $ordinalWords[mb_strtolower($match[0])] ?? $match[0];
+        }, $timeString);
     }
 }

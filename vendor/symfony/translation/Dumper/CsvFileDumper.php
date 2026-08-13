@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，转储，Csv 文件转储器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * CsvFileDumper generates a csv formatted string representation of a message catalogue.
+ * CsvFileDumper 生成一个信息目录的csv格式的字符串表示。
  *
  * @author Stealth35
  */
@@ -26,12 +30,12 @@ class CsvFileDumper extends FileDumper
     /**
      * {@inheritdoc}
      */
-    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = [])
+    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = [])
     {
         $handle = fopen('php://memory', 'r+');
 
         foreach ($messages->all($domain) as $source => $target) {
-            fputcsv($handle, [$source, $target], $this->delimiter, $this->enclosure);
+            fputcsv($handle, [$source, $target], $this->delimiter, $this->enclosure, '\\');
         }
 
         rewind($handle);
@@ -43,11 +47,9 @@ class CsvFileDumper extends FileDumper
 
     /**
      * Sets the delimiter and escape character for CSV.
-     *
-     * @param string $delimiter Delimiter character
-     * @param string $enclosure Enclosure character
+	 * 为CSV设置分隔符和escape字符
      */
-    public function setCsvControl($delimiter = ';', $enclosure = '"')
+    public function setCsvControl(string $delimiter = ';', string $enclosure = '"')
     {
         $this->delimiter = $delimiter;
         $this->enclosure = $enclosure;

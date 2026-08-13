@@ -1,6 +1,6 @@
 <?php
 /**
- * 邮件中，等待中邮件
+ * Illuminate，邮件，等待邮件
  */
 
 namespace Illuminate\Mail;
@@ -8,9 +8,12 @@ namespace Illuminate\Mail;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Support\Traits\Conditionable;
 
 class PendingMail
 {
+    use Conditionable;
+
     /**
      * The mailer instance.
 	 * 邮件实例
@@ -29,7 +32,7 @@ class PendingMail
 
     /**
      * The "to" recipients of the message.
-	 * 消息的"to"收件人
+	 * 收件人
      *
      * @var array
      */
@@ -37,7 +40,7 @@ class PendingMail
 
     /**
      * The "cc" recipients of the message.
-	 * 消息的"抄送"收件人
+	 * 抄送人
      *
      * @var array
      */
@@ -45,7 +48,7 @@ class PendingMail
 
     /**
      * The "bcc" recipients of the message.
-	 * 消息的"密件抄送"收件人
+	 * 密送人
      *
      * @var array
      */
@@ -53,7 +56,7 @@ class PendingMail
 
     /**
      * Create a new mailable mailer instance.
-	 * 创建新的可邮件邮件实例
+	 * 创建一个新的可邮件邮件实例
      *
      * @param  \Illuminate\Contracts\Mail\Mailer  $mailer
      * @return void
@@ -79,7 +82,7 @@ class PendingMail
 
     /**
      * Set the recipients of the message.
-	 * 设置消息的收件人
+	 * 设置邮件的收件人
      *
      * @param  mixed  $users
      * @return $this
@@ -97,7 +100,7 @@ class PendingMail
 
     /**
      * Set the recipients of the message.
-	 * 设置电邮的收件人
+	 * 设置邮件的收件人
      *
      * @param  mixed  $users
      * @return $this
@@ -111,7 +114,7 @@ class PendingMail
 
     /**
      * Set the recipients of the message.
-	 * 设置电邮的收件人
+	 * 设置邮件的收件人
      *
      * @param  mixed  $users
      * @return $this
@@ -128,25 +131,11 @@ class PendingMail
 	 * 发送一个新的可邮件消息实例
      *
      * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
-     * @return mixed
+     * @return void
      */
     public function send(MailableContract $mailable)
     {
-        return $this->mailer->send($this->fill($mailable));
-    }
-
-    /**
-     * Send a mailable message immediately.
-	 * 立即发送可发送的消息
-     *
-     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
-     * @return mixed
-     *
-     * @deprecated Use send() instead.
-     */
-    public function sendNow(MailableContract $mailable)
-    {
-        return $this->mailer->send($this->fill($mailable));
+        $this->mailer->send($this->fill($mailable));
     }
 
     /**
@@ -185,7 +174,7 @@ class PendingMail
     {
         return tap($mailable->to($this->to)
             ->cc($this->cc)
-            ->bcc($this->bcc), function ($mailable) {
+            ->bcc($this->bcc), function (MailableContract $mailable) {
                 if ($this->locale) {
                     $mailable->locale($this->locale);
                 }

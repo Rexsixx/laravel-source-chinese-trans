@@ -1,6 +1,6 @@
 <?php
 /**
- * 验证，是否必须
+ * Illuminate，验证，规则，如果需要
  */
 
 namespace Illuminate\Validation\Rules;
@@ -19,7 +19,7 @@ class RequiredIf
 
     /**
      * Create a new required validation rule based on a condition.
-	 * 创建新的所需验证规则根据条件
+	 * 根据条件创建新的所需验证规则
      *
      * @param  callable|bool  $condition
      * @return void

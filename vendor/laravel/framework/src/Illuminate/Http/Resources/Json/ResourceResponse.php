@@ -1,6 +1,6 @@
 <?php
 /**
- * Http，资源响应
+ * Illuminate，Http，资源，Json，资源响应
  */
 
 namespace Illuminate\Http\Resources\Json;
@@ -33,7 +33,7 @@ class ResourceResponse implements Responsable
 
     /**
      * Create an HTTP response that represents the object.
-	 * 创建表示对象的HTTP响应
+	 * 创建一个表示对象的HTTP响应
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
@@ -46,7 +46,9 @@ class ResourceResponse implements Responsable
                 $this->resource->with($request),
                 $this->resource->additional
             ),
-            $this->calculateStatus()
+            $this->calculateStatus(),
+            [],
+            $this->resource->jsonOptions()
         ), function ($response) use ($request) {
             $response->original = $this->resource->resource;
 
@@ -56,7 +58,7 @@ class ResourceResponse implements Responsable
 
     /**
      * Wrap the given data if necessary.
-	 * 包装给定的数据如果有必要
+	 * 必要时包装给定的数据
      *
      * @param  array  $data
      * @param  array  $with
@@ -108,7 +110,7 @@ class ResourceResponse implements Responsable
 
     /**
      * Get the default data wrapper for the resource.
-	 * 得到资源的默认数据包装器
+	 * 获取资源的默认数据包装器
      *
      * @return string
      */

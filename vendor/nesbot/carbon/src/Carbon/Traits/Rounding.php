@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，舍入
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -16,6 +19,7 @@ use Carbon\Exceptions\UnknownUnitException;
 
 /**
  * Trait Rounding.
+ * 舍入特征。
  *
  * Round, ceil, floor units.
  *
@@ -30,6 +34,7 @@ trait Rounding
 
     /**
      * Round the current instance at the given unit with given precision if specified and the given function.
+	 * 如果指定并使用给定函数，则以给定精度四舍五入当前实例的给定单元。
      *
      * @param string    $unit
      * @param float|int $precision
@@ -57,7 +62,6 @@ trait Rounding
             'microsecond' => [0, 999999],
         ]);
         $factor = 1;
-        $initialMonth = $this->month;
 
         if ($normalizedUnit === 'week') {
             $normalizedUnit = 'day';
@@ -77,12 +81,15 @@ trait Rounding
         $found = false;
         $fraction = 0;
         $arguments = null;
+        $initialValue = null;
         $factor = $this->year < 0 ? -1 : 1;
         $changes = [];
+        $minimumInc = null;
 
         foreach ($ranges as $unit => [$minimum, $maximum]) {
             if ($normalizedUnit === $unit) {
                 $arguments = [$this->$unit, $minimum];
+                $initialValue = $this->$unit;
                 $fraction = $precision - floor($precision);
                 $found = true;
 
@@ -93,7 +100,23 @@ trait Rounding
                 $delta = $maximum + 1 - $minimum;
                 $factor /= $delta;
                 $fraction *= $delta;
-                $arguments[0] += ($this->$unit - $minimum) * $factor;
+                $inc = ($this->$unit - $minimum) * $factor;
+
+                if ($inc !== 0.0) {
+                    $minimumInc = $minimumInc ?? ($arguments[0] / pow(2, 52));
+
+                    // If value is still the same when adding a non-zero increment/decrement,
+                    // it means precision got lost in the addition
+                    if (abs($inc) < $minimumInc) {
+                        $inc = $minimumInc * ($inc < 0 ? -1 : 1);
+                    }
+
+                    // If greater than $precision, assume precision loss caused an overflow
+                    if ($function !== 'floor' || abs($arguments[0] + $inc - $initialValue) >= $precision) {
+                        $arguments[0] += $inc;
+                    }
+                }
+
                 $changes[$unit] = round(
                     $minimum + ($fraction ? $fraction * $function(($this->$unit - $minimum) / $fraction) : 0)
                 );
@@ -111,20 +134,18 @@ trait Rounding
         $normalizedValue = floor($function(($value - $minimum) / $precision) * $precision + $minimum);
 
         /** @var CarbonInterface $result */
-        $result = $this->$normalizedUnit($normalizedValue);
+        $result = $this;
 
         foreach ($changes as $unit => $value) {
             $result = $result->$unit($value);
         }
 
-        return $normalizedUnit === 'month' && $precision <= 1 && abs($result->month - $initialMonth) === 2
-            // Re-run the change in case an overflow occurred
-            ? $result->$normalizedUnit($normalizedValue)
-            : $result;
+        return $result->$normalizedUnit($normalizedValue);
     }
 
     /**
      * Truncate the current instance at the given unit with given precision if specified.
+	 * 如果指定，以给定精度截断给定单元的当前实例。
      *
      * @param string    $unit
      * @param float|int $precision
@@ -138,6 +159,7 @@ trait Rounding
 
     /**
      * Ceil the current instance at the given unit with given precision if specified.
+	 * 如果指定，则以给定的精度在给定单元上捕获当前实例。
      *
      * @param string    $unit
      * @param float|int $precision
@@ -151,6 +173,7 @@ trait Rounding
 
     /**
      * Round the current instance second with given precision if specified.
+	 * 如果指定，以给定的精度舍入当前实例秒。
      *
      * @param float|int|string|\DateInterval|null $precision
      * @param string                              $function
@@ -164,6 +187,7 @@ trait Rounding
 
     /**
      * Round the current instance second with given precision if specified.
+	 * 如果指定，以给定的精度舍入当前实例秒。
      *
      * @param float|int|string|\DateInterval|null $precision
      *
@@ -176,6 +200,7 @@ trait Rounding
 
     /**
      * Ceil the current instance second with given precision if specified.
+	 * 如果指定了当前实例，则以给定的精度第二次调用当前实例。
      *
      * @param float|int|string|\DateInterval|null $precision
      *
@@ -188,6 +213,7 @@ trait Rounding
 
     /**
      * Round the current instance week.
+	 * 四舍五入当前实例周
      *
      * @param int $weekStartsAt optional start allow you to specify the day of week to use to start the week
      *
@@ -215,6 +241,7 @@ trait Rounding
 
     /**
      * Ceil the current instance week.
+	 * 指定当前实例周。
      *
      * @param int $weekStartsAt optional start allow you to specify the day of week to use to start the week
      *

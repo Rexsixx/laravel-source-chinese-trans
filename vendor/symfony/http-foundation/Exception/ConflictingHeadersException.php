@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，异常，头文件冲突异常
+ * Symfony，Component，HttpFoundation，异常，头文件冲突异常
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpFoundation\Exception;
 
 /**
  * The HTTP request contains headers with conflicting information.
+ * HTTP请求包含有冲突信息的报头
  *
  * @author Magnus Nordlander <magnus@fervo.se>
  */

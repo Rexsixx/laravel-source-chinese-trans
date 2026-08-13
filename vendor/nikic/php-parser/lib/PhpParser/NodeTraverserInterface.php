@@ -6,28 +6,28 @@
 
 namespace PhpParser;
 
-interface NodeTraverserInterface
-{
+interface NodeTraverserInterface {
     /**
      * Adds a visitor.
+	 * 添加访客
      *
      * @param NodeVisitor $visitor Visitor to add
      */
-    public function addVisitor(NodeVisitor $visitor);
+    public function addVisitor(NodeVisitor $visitor): void;
 
     /**
      * Removes an added visitor.
-     *
-     * @param NodeVisitor $visitor
+	 * 删除已添加的访问者
      */
-    public function removeVisitor(NodeVisitor $visitor);
+    public function removeVisitor(NodeVisitor $visitor): void;
 
     /**
      * Traverses an array of nodes using the registered visitors.
+	 * 使用已注册的访问者遍历节点数组
      *
      * @param Node[] $nodes Array of nodes
      *
      * @return Node[] Traversed array of nodes
      */
-    public function traverse(array $nodes) : array;
+    public function traverse(array $nodes): array;
 }

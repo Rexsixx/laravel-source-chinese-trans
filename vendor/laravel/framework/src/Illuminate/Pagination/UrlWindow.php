@@ -1,6 +1,6 @@
 <?php
 /**
- * 分页，分页URL窗体
+ * Illuminate，分页，Url 窗口
  */
 
 namespace Illuminate\Pagination;
@@ -19,7 +19,7 @@ class UrlWindow
 
     /**
      * Create a new URL window instance.
-	 * 创建新的URL窗体实例
+	 * 创建一个新的URL窗口实例
      *
      * @param  \Illuminate\Contracts\Pagination\LengthAwarePaginator  $paginator
      * @return void
@@ -31,7 +31,7 @@ class UrlWindow
 
     /**
      * Create a new URL window instance.
-	 * 创建新的URL窗体实例
+	 * 创建一个新的URL窗口实例
      *
      * @param  \Illuminate\Contracts\Pagination\LengthAwarePaginator  $paginator
      * @return array
@@ -51,7 +51,7 @@ class UrlWindow
     {
         $onEachSide = $this->paginator->onEachSide;
 
-        if ($this->paginator->lastPage() < ($onEachSide * 2) + 6) {
+        if ($this->paginator->lastPage() < ($onEachSide * 2) + 8) {
             return $this->getSmallSlider();
         }
 
@@ -60,29 +60,29 @@ class UrlWindow
 
     /**
      * Get the slider of URLs there are not enough pages to slide.
-	 * 得到URL的滑块，因为没有足够的页面可以滑动
+	 * 获取url的滑块，因为没有足够的页面可以滑动。
      *
      * @return array
      */
     protected function getSmallSlider()
     {
         return [
-            'first'  => $this->paginator->getUrlRange(1, $this->lastPage()),
+            'first' => $this->paginator->getUrlRange(1, $this->lastPage()),
             'slider' => null,
-            'last'   => null,
+            'last' => null,
         ];
     }
 
     /**
      * Create a URL slider links.
-	 * 创建URL滑块链接
+	 * 创建一个URL滑块链接
      *
      * @param  int  $onEachSide
      * @return array
      */
     protected function getUrlSlider($onEachSide)
     {
-        $window = $onEachSide * 2;
+        $window = $onEachSide + 4;
 
         if (! $this->hasPages()) {
             return ['first' => null, 'slider' => null, 'last' => null];
@@ -91,40 +91,39 @@ class UrlWindow
         // If the current page is very close to the beginning of the page range, we will
         // just render the beginning of the page range, followed by the last 2 of the
         // links in this list, since we will not have room to create a full slider.
-		// 如果当前页面非常接近页面范围的开头，我们将只呈现页面范围的开始，
-		// 然后是此列表中的最后2个链接，因为我们没有空间创建完整的滑块。
+		// 如果当前页面非常接近页面范围的开始，我们将只呈现页面范围的开始部分。
         if ($this->currentPage() <= $window) {
-            return $this->getSliderTooCloseToBeginning($window);
+            return $this->getSliderTooCloseToBeginning($window, $onEachSide);
         }
 
         // If the current page is close to the ending of the page range we will just get
         // this first couple pages, followed by a larger window of these ending pages
         // since we're too close to the end of the list to create a full on slider.
-		// 如果当前页面接近页面范围的末尾，我们将只得到前几页，然后是这些结束页面的较大窗口，
-		// 因为我们离列表末尾太近，无法创建完整的滑块。
+		// 如果当前页接近页范围的末尾，我们仅得到前几页。
         elseif ($this->currentPage() > ($this->lastPage() - $window)) {
-            return $this->getSliderTooCloseToEnding($window);
+            return $this->getSliderTooCloseToEnding($window, $onEachSide);
         }
 
         // If we have enough room on both sides of the current page to build a slider we
         // will surround it with both the beginning and ending caps, with this window
         // of pages in the middle providing a Google style sliding paginator setup.
-		// 如果我们在当前页面的两侧都有足够的空间来构建一个滑块，我们将用首字母和尾字母围绕它，
-		// 中间的页面窗口提供谷歌风格的滑动分页器设置。
+		// 如果我们在当前页面的两边都有足够的空间来构建一个滑动条，
+		// 我们将会用开始和结束的大写字母包围它。
         return $this->getFullSlider($onEachSide);
     }
 
     /**
      * Get the slider of URLs when too close to beginning of window.
-	 * 得到url的滑动条，当太接近窗口开始时。
+	 * 当太接近窗口开始时，获取url的滑动条。
      *
      * @param  int  $window
+     * @param  int  $onEachSide
      * @return array
      */
-    protected function getSliderTooCloseToBeginning($window)
+    protected function getSliderTooCloseToBeginning($window, $onEachSide)
     {
         return [
-            'first' => $this->paginator->getUrlRange(1, $window + 2),
+            'first' => $this->paginator->getUrlRange(1, $window + $onEachSide),
             'slider' => null,
             'last' => $this->getFinish(),
         ];
@@ -132,15 +131,16 @@ class UrlWindow
 
     /**
      * Get the slider of URLs when too close to ending of window.
-	 * 得到url的滑动条当太接近窗口结束时
+	 * 当太接近窗口结束时获取url的滑动条
      *
      * @param  int  $window
+     * @param  int  $onEachSide
      * @return array
      */
-    protected function getSliderTooCloseToEnding($window)
+    protected function getSliderTooCloseToEnding($window, $onEachSide)
     {
         $last = $this->paginator->getUrlRange(
-            $this->lastPage() - ($window + 2),
+            $this->lastPage() - ($window + ($onEachSide - 1)),
             $this->lastPage()
         );
 
@@ -153,7 +153,7 @@ class UrlWindow
 
     /**
      * Get the slider of URLs when a full slider can be made.
-	 * 得到url的滑块当一个完整的滑块可以制作时
+	 * 当一个完整的滑块可以制作时，获取url的滑块。
      *
      * @param  int  $onEachSide
      * @return array
@@ -161,15 +161,15 @@ class UrlWindow
     protected function getFullSlider($onEachSide)
     {
         return [
-            'first'  => $this->getStart(),
+            'first' => $this->getStart(),
             'slider' => $this->getAdjacentUrlRange($onEachSide),
-            'last'   => $this->getFinish(),
+            'last' => $this->getFinish(),
         ];
     }
 
     /**
      * Get the page range for the current page window.
-	 * 得到当前页窗口的页范围
+	 * 获取当前页窗口的页范围
      *
      * @param  int  $onEachSide
      * @return array
@@ -184,7 +184,7 @@ class UrlWindow
 
     /**
      * Get the starting URLs of a pagination slider.
-	 * 得到分页滑块的起始URl
+	 * 获取分页滑块的起始url
      *
      * @return array
      */
@@ -195,7 +195,7 @@ class UrlWindow
 
     /**
      * Get the ending URLs of a pagination slider.
-	 * 得到分页滑块的结束URL
+	 * 获取分页滑块的结束url
      *
      * @return array
      */
@@ -220,7 +220,7 @@ class UrlWindow
 
     /**
      * Get the current page from the paginator.
-	 * 得到当前页从分页器
+	 * 从分页器获取当前页
      *
      * @return int
      */
@@ -231,7 +231,7 @@ class UrlWindow
 
     /**
      * Get the last page from the paginator.
-	 * 得到最后一页从分页器
+	 * 从分页器获取最后一页
      *
      * @return int
      */

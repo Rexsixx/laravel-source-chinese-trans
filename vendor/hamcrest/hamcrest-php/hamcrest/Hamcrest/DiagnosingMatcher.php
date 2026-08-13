@@ -11,6 +11,7 @@ namespace Hamcrest;
 
 /**
  * Official documentation for this class is missing.
+ * 缺少这个类的官方文档。
  */
 abstract class DiagnosingMatcher extends BaseMatcher
 {

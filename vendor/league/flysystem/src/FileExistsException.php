@@ -16,6 +16,7 @@ class FileExistsException extends Exception
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param string        $path
      * @param int           $code
@@ -30,6 +31,7 @@ class FileExistsException extends Exception
 
     /**
      * Get the path which was found.
+	 * 找到找到的路径
      *
      * @return string
      */

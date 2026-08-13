@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，依赖注入，延迟加载片段处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,12 +20,17 @@ use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 
 /**
  * Lazily loads fragment renderers from the dependency injection container.
+ * 从依赖注入容器中惰性加载片段渲染器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class LazyLoadingFragmentHandler extends FragmentHandler
 {
     private $container;
+
+    /**
+     * @var array<string, bool>
+     */
     private $initialized = [];
 
     public function __construct(ContainerInterface $container, RequestStack $requestStack, bool $debug = false)
@@ -35,7 +43,7 @@ class LazyLoadingFragmentHandler extends FragmentHandler
     /**
      * {@inheritdoc}
      */
-    public function render($uri, $renderer = 'inline', array $options = [])
+    public function render($uri, string $renderer = 'inline', array $options = [])
     {
         if (!isset($this->initialized[$renderer]) && $this->container->has($renderer)) {
             $this->addRenderer($this->container->get($renderer));

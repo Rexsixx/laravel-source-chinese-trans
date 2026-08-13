@@ -6,7 +6,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2023 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,56 +18,22 @@ use PhpParser\Parser;
 use PhpParser\ParserFactory as OriginalParserFactory;
 
 /**
- * Parser factory to abstract over PHP parser library versions.
- * 解析器工厂抽象的PHP解析器库版本。
+ * Parser factory to abstract over PHP Parser library versions.
+ * 解析器工厂对PHP解析器库版本进行抽象。
  */
 class ParserFactory
 {
-    const ONLY_PHP5 = 'ONLY_PHP5';
-    const ONLY_PHP7 = 'ONLY_PHP7';
-    const PREFER_PHP5 = 'PREFER_PHP5';
-    const PREFER_PHP7 = 'PREFER_PHP7';
-
     /**
-     * Possible kinds of parsers for the factory, from PHP parser library.
-	 * 来自PHP解析器库的工厂可能类型的解析器种类
-     *
-     * @return array
+     * New parser instance.
      */
-    public static function getPossibleKinds(): array
+    public function createParser(): Parser
     {
-        return ['ONLY_PHP5', 'ONLY_PHP7', 'PREFER_PHP5', 'PREFER_PHP7'];
-    }
+        $factory = new OriginalParserFactory();
 
-    /**
-     * Default kind (if supported, based on current interpreter's version).
-     *
-     * @return string|null
-     */
-    public function getDefaultKind()
-    {
-        return static::ONLY_PHP7;
-    }
-
-    /**
-     * New parser instance with given kind.
-     *
-     * @param string|null $kind One of class constants (only for PHP parser 2.0 and above)
-     *
-     * @return Parser
-     */
-    public function createParser($kind = null): Parser
-    {
-        $originalFactory = new OriginalParserFactory();
-
-        $kind = $kind ?: $this->getDefaultKind();
-
-        if (!\in_array($kind, static::getPossibleKinds())) {
-            throw new \InvalidArgumentException('Unknown parser kind');
+        if (!\method_exists($factory, 'createForHostVersion')) {
+            return $factory->create(OriginalParserFactory::PREFER_PHP7);
         }
 
-        $parser = $originalFactory->create(\constant(OriginalParserFactory::class.'::'.$kind));
-
-        return $parser;
+        return $factory->createForHostVersion();
     }
 }

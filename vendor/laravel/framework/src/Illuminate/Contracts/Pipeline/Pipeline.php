@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，管道接口
+ * Illuminate，契约，管道，管道接口
  */
 
 namespace Illuminate\Contracts\Pipeline;
@@ -11,7 +11,7 @@ interface Pipeline
 {
     /**
      * Set the traveler object being sent on the pipeline.
-	 * 在管道上发送对象
+	 * 设置在管道上发送的旅行者对象
      *
      * @param  mixed  $traveler
      * @return $this
@@ -29,7 +29,7 @@ interface Pipeline
 
     /**
      * Set the method to call on the stops.
-	 * 设置该方法在停止时调用
+	 * 将该方法设置为在止损时调用
      *
      * @param  string  $method
      * @return $this

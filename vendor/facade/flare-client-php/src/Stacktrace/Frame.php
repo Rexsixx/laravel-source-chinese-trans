@@ -1,6 +1,6 @@
 <?php
 /**
- * Facade，Flare Client，Stacktrace，Frame
+ * Facade，FlareClient，Stacktrace，框架
  */
 
 namespace Facade\FlareClient\Stacktrace;

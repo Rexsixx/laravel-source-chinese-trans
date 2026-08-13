@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，命令，描述符号，Html 描述符号
+ * Symfony，Component，VarDumper，命令，描述符号，Html 描述符
  */
 
 /*

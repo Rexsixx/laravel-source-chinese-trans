@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，Session，闪存，自动过期闪存包
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation\Session\Flash;
 
 /**
  * AutoExpireFlashBag flash message container.
+ * AutoExpireFlashBag flash消息容器。
  *
  * @author Drak <drak@zikula.org>
  */
@@ -38,7 +42,7 @@ class AutoExpireFlashBag implements FlashBagInterface
         return $this->name;
     }
 
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
     }
@@ -53,6 +57,7 @@ class AutoExpireFlashBag implements FlashBagInterface
         // The logic: messages from the last request will be stored in new, so we move them to previous
         // This request we will show what is in 'display'.  What is placed into 'new' this time round will
         // be moved to display next time round.
+		// 逻辑：来自最后一个请求的消息将存储在new中，因此我们将它们移动到previous。
         $this->flashes['display'] = \array_key_exists('new', $this->flashes) ? $this->flashes['new'] : [];
         $this->flashes['new'] = [];
     }
@@ -60,7 +65,7 @@ class AutoExpireFlashBag implements FlashBagInterface
     /**
      * {@inheritdoc}
      */
-    public function add($type, $message)
+    public function add(string $type, $message)
     {
         $this->flashes['new'][$type][] = $message;
     }
@@ -68,7 +73,7 @@ class AutoExpireFlashBag implements FlashBagInterface
     /**
      * {@inheritdoc}
      */
-    public function peek($type, array $default = [])
+    public function peek(string $type, array $default = [])
     {
         return $this->has($type) ? $this->flashes['display'][$type] : $default;
     }
@@ -84,7 +89,7 @@ class AutoExpireFlashBag implements FlashBagInterface
     /**
      * {@inheritdoc}
      */
-    public function get($type, array $default = [])
+    public function get(string $type, array $default = [])
     {
         $return = $default;
 
@@ -122,7 +127,7 @@ class AutoExpireFlashBag implements FlashBagInterface
     /**
      * {@inheritdoc}
      */
-    public function set($type, $messages)
+    public function set(string $type, $messages)
     {
         $this->flashes['new'][$type] = (array) $messages;
     }
@@ -130,7 +135,7 @@ class AutoExpireFlashBag implements FlashBagInterface
     /**
      * {@inheritdoc}
      */
-    public function has($type)
+    public function has(string $type)
     {
         return \array_key_exists($type, $this->flashes['display']) && $this->flashes['display'][$type];
     }

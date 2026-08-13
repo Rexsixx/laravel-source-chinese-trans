@@ -1,7 +1,4 @@
 <?php
-/**
- * Egulias，电子邮件验证器，警告，过时的 DTEXT
- */
 
 namespace Egulias\EmailValidator\Warning;
 

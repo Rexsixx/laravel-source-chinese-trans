@@ -1,21 +1,26 @@
 <?php
 /**
- * 数据库，Eloquent改变一个
+ * Illuminate，数据库，Eloquent，关系，变形一对一
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
 
+use Illuminate\Contracts\Database\Eloquent\SupportsPartialRelations;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Concerns\CanBeOneOfMany;
+use Illuminate\Database\Eloquent\Relations\Concerns\ComparesRelatedModels;
 use Illuminate\Database\Eloquent\Relations\Concerns\SupportsDefaultModels;
+use Illuminate\Database\Query\JoinClause;
 
-class MorphOne extends MorphOneOrMany
+class MorphOne extends MorphOneOrMany implements SupportsPartialRelations
 {
-    use SupportsDefaultModels;
+    use CanBeOneOfMany, ComparesRelatedModels, SupportsDefaultModels;
 
     /**
      * Get the results of the relationship.
-	 * 得到关联结果
+	 * 得到关系的结果
      *
      * @return mixed
      */
@@ -60,8 +65,65 @@ class MorphOne extends MorphOneOrMany
     }
 
     /**
+     * Get the relationship query.
+	 * 获取关系查询
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
+     * @param  array|mixed  $columns
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function getRelationExistenceQuery(Builder $query, Builder $parentQuery, $columns = ['*'])
+    {
+        if ($this->isOneOfMany()) {
+            $this->mergeOneOfManyJoinsTo($query);
+        }
+
+        return parent::getRelationExistenceQuery($query, $parentQuery, $columns);
+    }
+
+    /**
+     * Add constraints for inner join subselect for one of many relationships.
+	 * 为多个关系之一的内连接子选择添加约束
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string|null  $column
+     * @param  string|null  $aggregate
+     * @return void
+     */
+    public function addOneOfManySubQueryConstraints(Builder $query, $column = null, $aggregate = null)
+    {
+        $query->addSelect($this->foreignKey, $this->morphType);
+    }
+
+    /**
+     * Get the columns that should be selected by the one of many subquery.
+	 * 获取应由多个子查询之一选择的列
+     *
+     * @return array|string
+     */
+    public function getOneOfManySubQuerySelectColumns()
+    {
+        return [$this->foreignKey, $this->morphType];
+    }
+
+    /**
+     * Add join query constraints for one of many relationships.
+	 * 为多个关系中的一个添加连接查询约束
+     *
+     * @param  \Illuminate\Database\Eloquent\JoinClause  $join
+     * @return void
+     */
+    public function addOneOfManyJoinSubQueryConstraints(JoinClause $join)
+    {
+        $join
+            ->on($this->qualifySubSelectColumn($this->morphType), '=', $this->qualifyRelatedColumn($this->morphType))
+            ->on($this->qualifySubSelectColumn($this->foreignKey), '=', $this->qualifyRelatedColumn($this->foreignKey));
+    }
+
+    /**
      * Make a new related instance for the given model.
-	 * 为给定模型创建新的相关实例
+	 * 为给定模型创建一个新的相关实例
      *
      * @param  \Illuminate\Database\Eloquent\Model  $parent
      * @return \Illuminate\Database\Eloquent\Model
@@ -71,5 +133,17 @@ class MorphOne extends MorphOneOrMany
         return $this->related->newInstance()
                     ->setAttribute($this->getForeignKeyName(), $parent->{$this->localKey})
                     ->setAttribute($this->getMorphType(), $this->morphClass);
+    }
+
+    /**
+     * Get the value of the model's foreign key.
+	 * 获取模型外键的值
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return mixed
+     */
+    protected function getRelatedKeyFrom(Model $model)
+    {
+        return $model->getAttribute($this->getForeignKeyName());
     }
 }

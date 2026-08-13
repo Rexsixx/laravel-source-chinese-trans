@@ -1,6 +1,6 @@
 <?php
 /**
- * 缓存，缓存DynamoDB锁
+ * Illuminate，缓存，DynamoDb 锁
  */
 
 namespace Illuminate\Cache;
@@ -40,9 +40,11 @@ class DynamoDbLock extends Lock
      */
     public function acquire()
     {
-        return $this->dynamo->add(
-            $this->name, $this->owner, $this->seconds
-        );
+        if ($this->seconds > 0) {
+            return $this->dynamo->add($this->name, $this->owner, $this->seconds);
+        } else {
+            return $this->dynamo->add($this->name, $this->owner, 86400);
+        }
     }
 
     /**
@@ -62,7 +64,7 @@ class DynamoDbLock extends Lock
 
     /**
      * Release this lock in disregard of ownership.
-	 * 释放锁，不顾所有权
+	 * 不顾所有权，解除此锁。
      *
      * @return void
      */

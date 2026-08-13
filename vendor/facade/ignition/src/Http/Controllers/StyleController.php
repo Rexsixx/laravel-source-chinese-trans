@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，Http，控制器，样式控制器
+ * Facade，Ignition，Http，控制器，样式控制器
  */
 
 namespace Facade\Ignition\Http\Controllers;
@@ -14,7 +14,8 @@ class StyleController
     {
         return response(
             file_get_contents(Ignition::styles()[$request->style]),
-            200, ['Content-Type' => 'text/css']
+            200,
+            ['Content-Type' => 'text/css']
         );
     }
 }

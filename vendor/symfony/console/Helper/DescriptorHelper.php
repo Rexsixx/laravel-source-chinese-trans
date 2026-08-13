@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，助手，描述符号助手
+ * Symfony，Component，Console，助手，描述符助手
  */
 
 /*
@@ -24,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * This class adds helper method to describe objects in various formats.
+ * 这个类添加辅助方法来描述各种格式的对象。
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  */
@@ -46,16 +47,15 @@ class DescriptorHelper extends Helper
 
     /**
      * Describes an object if supported.
+	 * 如果支持,描述一个对象。
      *
      * Available options are:
      * * format: string, the output format name
      * * raw_text: boolean, sets output type as raw
      *
-     * @param object $object
-     *
      * @throws InvalidArgumentException when the given format is not supported
      */
-    public function describe(OutputInterface $output, $object, array $options = [])
+    public function describe(OutputInterface $output, ?object $object, array $options = [])
     {
         $options = array_merge([
             'raw_text' => false,
@@ -72,12 +72,11 @@ class DescriptorHelper extends Helper
 
     /**
      * Registers a descriptor.
-     *
-     * @param string $format
+	 * 注册描述符
      *
      * @return $this
      */
-    public function register($format, DescriptorInterface $descriptor)
+    public function register(string $format, DescriptorInterface $descriptor)
     {
         $this->descriptors[$format] = $descriptor;
 
@@ -90,5 +89,10 @@ class DescriptorHelper extends Helper
     public function getName()
     {
         return 'descriptor';
+    }
+
+    public function getFormats(): array
+    {
+        return array_keys($this->descriptors);
     }
 }

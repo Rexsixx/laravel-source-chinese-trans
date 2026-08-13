@@ -1,6 +1,6 @@
 <?php
 /**
- * 支持，流程工具
+ * Illuminate，支持，进程常用工具
  */
 
 namespace Illuminate\Support;
@@ -62,7 +62,7 @@ class ProcessUtils
 
     /**
      * Is the given string surrounded by the given character?
-	 * 给定字符串是否被给定字符包围?
+	 * 给定字符串是否被给定字符包围？
      *
      * @param  string  $arg
      * @param  string  $char

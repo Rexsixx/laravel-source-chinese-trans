@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，格式化程序，输出格式化器
+ * Symfony，Component，Console，格式化程序，输出格式化程序
  */
 
 /*
@@ -16,8 +16,11 @@ namespace Symfony\Component\Console\Formatter;
 
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 
+use function Symfony\Component\String\b;
+
 /**
  * Formatter class for console output.
+ * 控制台输出的格式化程序类。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  * @author Roland Franssen <franssen.roland@gmail.com>
@@ -38,12 +41,11 @@ class OutputFormatter implements WrappableOutputFormatterInterface
 
     /**
      * Escapes "<" and ">" special chars in given text.
+	 * 转义给定文本中的“<”和“>”特殊字符
      *
-     * @param string $text Text to escape
-     *
-     * @return string Escaped text
+     * @return string
      */
-    public static function escape($text)
+    public static function escape(string $text)
     {
         $text = preg_replace('/([^\\\\]|^)([<>])/', '$1\\\\$2', $text);
 
@@ -52,6 +54,7 @@ class OutputFormatter implements WrappableOutputFormatterInterface
 
     /**
      * Escapes trailing "\" in given text.
+	 * 转义给定文本中的尾随“\”
      *
      * @internal
      */
@@ -69,6 +72,7 @@ class OutputFormatter implements WrappableOutputFormatterInterface
 
     /**
      * Initializes console output formatter.
+	 * 初始化控制台输出格式化程序
      *
      * @param OutputFormatterStyleInterface[] $styles Array of "name => FormatterStyle" instances
      */
@@ -91,9 +95,9 @@ class OutputFormatter implements WrappableOutputFormatterInterface
     /**
      * {@inheritdoc}
      */
-    public function setDecorated($decorated)
+    public function setDecorated(bool $decorated)
     {
-        $this->decorated = (bool) $decorated;
+        $this->decorated = $decorated;
     }
 
     /**
@@ -107,7 +111,7 @@ class OutputFormatter implements WrappableOutputFormatterInterface
     /**
      * {@inheritdoc}
      */
-    public function setStyle($name, OutputFormatterStyleInterface $style)
+    public function setStyle(string $name, OutputFormatterStyleInterface $style)
     {
         $this->styles[strtolower($name)] = $style;
     }
@@ -115,7 +119,7 @@ class OutputFormatter implements WrappableOutputFormatterInterface
     /**
      * {@inheritdoc}
      */
-    public function hasStyle($name)
+    public function hasStyle(string $name)
     {
         return isset($this->styles[strtolower($name)]);
     }
@@ -123,7 +127,7 @@ class OutputFormatter implements WrappableOutputFormatterInterface
     /**
      * {@inheritdoc}
      */
-    public function getStyle($name)
+    public function getStyle(string $name)
     {
         if (!$this->hasStyle($name)) {
             throw new InvalidArgumentException(sprintf('Undefined style: "%s".', $name));
@@ -135,16 +139,20 @@ class OutputFormatter implements WrappableOutputFormatterInterface
     /**
      * {@inheritdoc}
      */
-    public function format($message)
+    public function format(?string $message)
     {
-        return $this->formatAndWrap((string) $message, 0);
+        return $this->formatAndWrap($message, 0);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function formatAndWrap(string $message, int $width)
+    public function formatAndWrap(?string $message, int $width)
     {
+        if (null === $message) {
+            return '';
+        }
+
         $offset = 0;
         $output = '';
         $openTagRegex = '[a-z](?:[^\\\\<>]*+ | \\\\.)*';
@@ -197,6 +205,7 @@ class OutputFormatter implements WrappableOutputFormatterInterface
 
     /**
      * Tries to create new style instance from string.
+	 * 尝试从字符串中创建新的样式实例
      */
     private function createStyleFromString(string $string): ?OutputFormatterStyleInterface
     {
@@ -236,6 +245,7 @@ class OutputFormatter implements WrappableOutputFormatterInterface
 
     /**
      * Applies current style from stack to text, if must be applied.
+	 * 如果必须应用,将当前样式从堆栈中应用到文本。
      */
     private function applyCurrentStyle(string $text, string $current, int $width, int &$currentLineLength): string
     {
@@ -259,7 +269,7 @@ class OutputFormatter implements WrappableOutputFormatterInterface
         }
 
         preg_match('~(\\n)$~', $text, $matches);
-        $text = $prefix.preg_replace('~([^\\n]{'.$width.'})\\ *~', "\$1\n", $text);
+        $text = $prefix.$this->addLineBreaks($text, $width);
         $text = rtrim($text, "\n").($matches[1] ?? '');
 
         if (!$currentLineLength && '' !== $current && "\n" !== substr($current, -1)) {
@@ -282,5 +292,12 @@ class OutputFormatter implements WrappableOutputFormatterInterface
         }
 
         return implode("\n", $lines);
+    }
+
+    private function addLineBreaks(string $text, int $width): string
+    {
+        $encoding = mb_detect_encoding($text, null, true) ?: 'UTF-8';
+
+        return b($text)->toCodePointString($encoding)->wordwrap($width, "\n", true)->toByteString($encoding);
     }
 }

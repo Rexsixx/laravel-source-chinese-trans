@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，Cookie
+ * Symfony，Component，HttpFoundation，Cookie
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * Represents a cookie.
+ * 表示一个cookie
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
@@ -37,19 +38,17 @@ class Cookie
     private $sameSite;
     private $secureDefault = false;
 
-    private static $reservedCharsList = "=,; \t\r\n\v\f";
+    private const RESERVED_CHARS_LIST = "=,; \t\r\n\v\f";
     private const RESERVED_CHARS_FROM = ['=', ',', ';', ' ', "\t", "\r", "\n", "\v", "\f"];
     private const RESERVED_CHARS_TO = ['%3D', '%2C', '%3B', '%20', '%09', '%0D', '%0A', '%0B', '%0C'];
 
     /**
      * Creates cookie from raw header string.
-     *
-     * @param string $cookie
-     * @param bool   $decode
+	 * 从原始报头字符串创建cookie
      *
      * @return static
      */
-    public static function fromString($cookie, $decode = false)
+    public static function fromString(string $cookie, bool $decode = false)
     {
         $data = [
             'expires' => 0,
@@ -68,15 +67,16 @@ class Cookie
         $value = isset($part[1]) ? ($decode ? urldecode($part[1]) : $part[1]) : null;
 
         $data = HeaderUtils::combine($parts) + $data;
+        $data['expires'] = self::expiresTimestamp($data['expires']);
 
-        if (isset($data['max-age'])) {
+        if (isset($data['max-age']) && ($data['max-age'] > 0 || $data['expires'] > time())) {
             $data['expires'] = time() + (int) $data['max-age'];
         }
 
         return new static($name, $value, $data['expires'], $data['path'], $data['domain'], $data['secure'], $data['httponly'], $data['raw'], $data['samesite']);
     }
 
-    public static function create(string $name, string $value = null, $expire = 0, ?string $path = '/', string $domain = null, bool $secure = null, bool $httpOnly = true, bool $raw = false, ?string $sameSite = self::SAMESITE_LAX): self
+    public static function create(string $name, ?string $value = null, $expire = 0, ?string $path = '/', ?string $domain = null, ?bool $secure = null, bool $httpOnly = true, bool $raw = false, ?string $sameSite = self::SAMESITE_LAX): self
     {
         return new self($name, $value, $expire, $path, $domain, $secure, $httpOnly, $raw, $sameSite);
     }
@@ -85,7 +85,7 @@ class Cookie
      * @param string                        $name     The name of the cookie
      * @param string|null                   $value    The value of the cookie
      * @param int|string|\DateTimeInterface $expire   The time the cookie expires
-     * @param string                        $path     The path on the server in which the cookie will be available on
+     * @param string|null                   $path     The path on the server in which the cookie will be available on
      * @param string|null                   $domain   The domain that the cookie is available to
      * @param bool|null                     $secure   Whether the client should send back the cookie only over HTTPS or null to auto-enable this when the request is already using HTTPS
      * @param bool                          $httpOnly Whether the cookie will be made accessible only through the HTTP protocol
@@ -94,14 +94,10 @@ class Cookie
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(string $name, string $value = null, $expire = 0, ?string $path = '/', string $domain = null, ?bool $secure = false, bool $httpOnly = true, bool $raw = false, string $sameSite = null)
+    public function __construct(string $name, ?string $value = null, $expire = 0, ?string $path = '/', ?string $domain = null, ?bool $secure = null, bool $httpOnly = true, bool $raw = false, ?string $sameSite = 'lax')
     {
-        if (9 > \func_num_args()) {
-            @trigger_error(sprintf('The default value of the "$secure" and "$samesite" arguments of "%s"\'s constructor will respectively change from "false" to "null" and from "null" to "lax" in Symfony 5.0, you should define their values explicitly or use "Cookie::create()" instead.', __METHOD__), \E_USER_DEPRECATED);
-        }
-
         // from PHP source code
-        if ($raw && false !== strpbrk($name, self::$reservedCharsList)) {
+        if ($raw && false !== strpbrk($name, self::RESERVED_CHARS_LIST)) {
             throw new \InvalidArgumentException(sprintf('The cookie name "%s" contains invalid characters.', $name));
         }
 
@@ -109,6 +105,69 @@ class Cookie
             throw new \InvalidArgumentException('The cookie name cannot be empty.');
         }
 
+        $this->name = $name;
+        $this->value = $value;
+        $this->domain = $domain;
+        $this->expire = self::expiresTimestamp($expire);
+        $this->path = empty($path) ? '/' : $path;
+        $this->secure = $secure;
+        $this->httpOnly = $httpOnly;
+        $this->raw = $raw;
+        $this->sameSite = $this->withSameSite($sameSite)->sameSite;
+    }
+
+    /**
+     * Creates a cookie copy with a new value.
+	 * 创建一个具有新值的cookie副本
+     *
+     * @return static
+     */
+    public function withValue(?string $value): self
+    {
+        $cookie = clone $this;
+        $cookie->value = $value;
+
+        return $cookie;
+    }
+
+    /**
+     * Creates a cookie copy with a new domain that the cookie is available to.
+	 * 创建具有可用于该cookie的新域的cookie副本
+     *
+     * @return static
+     */
+    public function withDomain(?string $domain): self
+    {
+        $cookie = clone $this;
+        $cookie->domain = $domain;
+
+        return $cookie;
+    }
+
+    /**
+     * Creates a cookie copy with a new time the cookie expires.
+	 * 使用新的cookie过期时间创建一个cookie副本
+     *
+     * @param int|string|\DateTimeInterface $expire
+     *
+     * @return static
+     */
+    public function withExpires($expire = 0): self
+    {
+        $cookie = clone $this;
+        $cookie->expire = self::expiresTimestamp($expire);
+
+        return $cookie;
+    }
+
+    /**
+     * Converts expires formats to a unix timestamp.
+	 * 将过期格式转换为unix时间戳
+     *
+     * @param int|string|\DateTimeInterface $expire
+     */
+    private static function expiresTimestamp($expire = 0): int
+    {
         // convert expiration time to a Unix timestamp
         if ($expire instanceof \DateTimeInterface) {
             $expire = $expire->format('U');
@@ -120,15 +179,77 @@ class Cookie
             }
         }
 
-        $this->name = $name;
-        $this->value = $value;
-        $this->domain = $domain;
-        $this->expire = 0 < $expire ? (int) $expire : 0;
-        $this->path = empty($path) ? '/' : $path;
-        $this->secure = $secure;
-        $this->httpOnly = $httpOnly;
-        $this->raw = $raw;
+        return 0 < $expire ? (int) $expire : 0;
+    }
 
+    /**
+     * Creates a cookie copy with a new path on the server in which the cookie will be available on.
+	 * 在服务器上创建一个具有新路径的cookie副本，cookie将在该服务器上可用。
+     *
+     * @return static
+     */
+    public function withPath(string $path): self
+    {
+        $cookie = clone $this;
+        $cookie->path = '' === $path ? '/' : $path;
+
+        return $cookie;
+    }
+
+    /**
+     * Creates a cookie copy that only be transmitted over a secure HTTPS connection from the client.
+	 * 创建一个cookie副本，该副本只能通过安全的HTTPS连接从客户端传输。
+     *
+     * @return static
+     */
+    public function withSecure(bool $secure = true): self
+    {
+        $cookie = clone $this;
+        $cookie->secure = $secure;
+
+        return $cookie;
+    }
+
+    /**
+     * Creates a cookie copy that be accessible only through the HTTP protocol.
+	 * 创建一个只能通过HTTP协议访问的cookie副本
+     *
+     * @return static
+     */
+    public function withHttpOnly(bool $httpOnly = true): self
+    {
+        $cookie = clone $this;
+        $cookie->httpOnly = $httpOnly;
+
+        return $cookie;
+    }
+
+    /**
+     * Creates a cookie copy that uses no url encoding.
+	 * 创建一个不使用url编码的cookie副本。
+     *
+     * @return static
+     */
+    public function withRaw(bool $raw = true): self
+    {
+        if ($raw && false !== strpbrk($this->name, self::RESERVED_CHARS_LIST)) {
+            throw new \InvalidArgumentException(sprintf('The cookie name "%s" contains invalid characters.', $this->name));
+        }
+
+        $cookie = clone $this;
+        $cookie->raw = $raw;
+
+        return $cookie;
+    }
+
+    /**
+     * Creates a cookie copy with SameSite attribute.
+	 * 创建具有SameSite属性的cookie副本
+     *
+     * @return static
+     */
+    public function withSameSite(?string $sameSite): self
+    {
         if ('' === $sameSite) {
             $sameSite = null;
         } elseif (null !== $sameSite) {
@@ -139,13 +260,17 @@ class Cookie
             throw new \InvalidArgumentException('The "sameSite" parameter value is not valid.');
         }
 
-        $this->sameSite = $sameSite;
+        $cookie = clone $this;
+        $cookie->sameSite = $sameSite;
+
+        return $cookie;
     }
 
     /**
      * Returns the cookie as a string.
+	 * 以字符串形式返回cookie
      *
-     * @return string The cookie
+     * @return string
      */
     public function __toString()
     {
@@ -192,6 +317,7 @@ class Cookie
 
     /**
      * Gets the name of the cookie.
+	 * 获取cookie的名称
      *
      * @return string
      */
@@ -202,6 +328,7 @@ class Cookie
 
     /**
      * Gets the value of the cookie.
+	 * 获取cookie的值
      *
      * @return string|null
      */
@@ -212,6 +339,7 @@ class Cookie
 
     /**
      * Gets the domain that the cookie is available to.
+	 * 获取cookie可用于的域
      *
      * @return string|null
      */
@@ -222,6 +350,7 @@ class Cookie
 
     /**
      * Gets the time the cookie expires.
+	 * 获取cookie过期的时间
      *
      * @return int
      */
@@ -232,6 +361,7 @@ class Cookie
 
     /**
      * Gets the max-age attribute.
+	 * 获取max-age属性
      *
      * @return int
      */
@@ -244,6 +374,7 @@ class Cookie
 
     /**
      * Gets the path on the server in which the cookie will be available on.
+	 * 获取将在其中提供cookie的服务器上的路径
      *
      * @return string
      */
@@ -254,6 +385,7 @@ class Cookie
 
     /**
      * Checks whether the cookie should only be transmitted over a secure HTTPS connection from the client.
+	 * 检查cookie是否只能通过安全的HTTPS连接从客户端传输
      *
      * @return bool
      */
@@ -264,6 +396,7 @@ class Cookie
 
     /**
      * Checks whether the cookie will be made accessible only through the HTTP protocol.
+	 * 检查cookie是否只能通过HTTP协议访问
      *
      * @return bool
      */
@@ -274,6 +407,7 @@ class Cookie
 
     /**
      * Whether this cookie is about to be cleared.
+	 * 该cookie是否即将被清除
      *
      * @return bool
      */
@@ -284,6 +418,7 @@ class Cookie
 
     /**
      * Checks if the cookie value should be sent with no url encoding.
+	 * 检查是否应该发送不带url编码的cookie值
      *
      * @return bool
      */
@@ -294,6 +429,7 @@ class Cookie
 
     /**
      * Gets the SameSite attribute.
+	 * 获取相同的站点属性
      *
      * @return string|null
      */

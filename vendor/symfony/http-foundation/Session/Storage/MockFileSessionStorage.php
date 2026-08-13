@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，Session，储存，模拟文件会话存储
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -28,10 +31,9 @@ class MockFileSessionStorage extends MockArraySessionStorage
     private $savePath;
 
     /**
-     * @param string $savePath Path of directory to save session files
-     * @param string $name     Session name
+     * @param string|null $savePath Path of directory to save session files
      */
-    public function __construct(string $savePath = null, string $name = 'MOCKSESSID', MetadataBag $metaBag = null)
+    public function __construct(?string $savePath = null, string $name = 'MOCKSESSID', ?MetadataBag $metaBag = null)
     {
         if (null === $savePath) {
             $savePath = sys_get_temp_dir();
@@ -69,7 +71,7 @@ class MockFileSessionStorage extends MockArraySessionStorage
     /**
      * {@inheritdoc}
      */
-    public function regenerate($destroy = false, $lifetime = null)
+    public function regenerate(bool $destroy = false, ?int $lifetime = null)
     {
         if (!$this->started) {
             $this->start();
@@ -117,12 +119,14 @@ class MockFileSessionStorage extends MockArraySessionStorage
 
         // this is needed when the session object is re-used across multiple requests
         // in functional tests.
+		// 当跨多个请求重用会话对象时，需要这样做。
         $this->started = false;
     }
 
     /**
      * Deletes a session from persistent storage.
      * Deliberately leaves session data in memory intact.
+	 * 从持久存储中删除会话。
      */
     private function destroy(): void
     {
@@ -136,6 +140,7 @@ class MockFileSessionStorage extends MockArraySessionStorage
 
     /**
      * Calculate path to file.
+	 * 计算文件的路径
      */
     private function getFilePath(): string
     {
@@ -144,6 +149,7 @@ class MockFileSessionStorage extends MockArraySessionStorage
 
     /**
      * Reads session from storage and loads session.
+	 * 从存储器中读取会话并加载会话
      */
     private function read(): void
     {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，路由的编译器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,12 +16,16 @@ namespace Symfony\Component\Routing;
 
 /**
  * RouteCompiler compiles Route instances to CompiledRoute instances.
+ * routecomcompiler将Route实例编译为CompiledRoute实例。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
  */
 class RouteCompiler implements RouteCompilerInterface
 {
+    /**
+     * @deprecated since Symfony 5.1, to be removed in 6.0
+     */
     public const REGEX_DELIMITER = '#';
 
     /**
@@ -62,7 +69,7 @@ class RouteCompiler implements RouteCompilerInterface
         }
 
         $locale = $route->getDefault('_locale');
-        if (null !== $locale && null !== $route->getDefault('_canonical_route') && preg_quote($locale, self::REGEX_DELIMITER) === $route->getRequirement('_locale')) {
+        if (null !== $locale && null !== $route->getDefault('_canonical_route') && preg_quote($locale) === $route->getRequirement('_locale')) {
             $requirements = $route->getRequirements();
             unset($requirements['_locale']);
             $route->setRequirements($requirements);
@@ -169,8 +176,8 @@ class RouteCompiler implements RouteCompilerInterface
                 $nextSeparator = self::findNextSeparator($followingPattern, $useUtf8);
                 $regexp = sprintf(
                     '[^%s%s]+',
-                    preg_quote($defaultSeparator, self::REGEX_DELIMITER),
-                    $defaultSeparator !== $nextSeparator && '' !== $nextSeparator ? preg_quote($nextSeparator, self::REGEX_DELIMITER) : ''
+                    preg_quote($defaultSeparator),
+                    $defaultSeparator !== $nextSeparator && '' !== $nextSeparator ? preg_quote($nextSeparator) : ''
                 );
                 if (('' !== $nextSeparator && !preg_match('#^\{\w+\}#', $followingPattern)) || '' === $followingPattern) {
                     // When we have a separator, which is disallowed for the variable, we can optimize the regex with a possessive
@@ -225,7 +232,7 @@ class RouteCompiler implements RouteCompilerInterface
         for ($i = 0, $nbToken = \count($tokens); $i < $nbToken; ++$i) {
             $regexp .= self::computeRegexp($tokens, $i, $firstOptional);
         }
-        $regexp = self::REGEX_DELIMITER.'^'.$regexp.'$'.self::REGEX_DELIMITER.'sD'.($isHost ? 'i' : '');
+        $regexp = '{^'.$regexp.'$}sD'.($isHost ? 'i' : '');
 
         // enable Utf8 matching if really required
         if ($needsUtf8) {
@@ -247,6 +254,7 @@ class RouteCompiler implements RouteCompilerInterface
 
     /**
      * Determines the longest static prefix possible for a route.
+	 * 确定路由可能的最长静态前缀
      */
     private static function determineStaticPrefix(Route $route, array $tokens): string
     {
@@ -265,6 +273,7 @@ class RouteCompiler implements RouteCompilerInterface
 
     /**
      * Returns the next static character in the Route pattern that will serve as a separator (or the empty string when none available).
+	 * 返回Route模式中的下一个静态字符，该字符将用作分隔符（或者当没有可用时为空字符串）。
      */
     private static function findNextSeparator(string $pattern, bool $useUtf8): string
     {
@@ -285,26 +294,25 @@ class RouteCompiler implements RouteCompilerInterface
 
     /**
      * Computes the regexp used to match a specific token. It can be static text or a subpattern.
+	 * 计算用于匹配特定令牌的regexp。它可以是静态文本或子模式。
      *
      * @param array $tokens        The route tokens
      * @param int   $index         The index of the current token
      * @param int   $firstOptional The index of the first optional token
-     *
-     * @return string The regexp pattern for a single token
      */
     private static function computeRegexp(array $tokens, int $index, int $firstOptional): string
     {
         $token = $tokens[$index];
         if ('text' === $token[0]) {
             // Text tokens
-            return preg_quote($token[1], self::REGEX_DELIMITER);
+            return preg_quote($token[1]);
         } else {
             // Variable tokens
             if (0 === $index && 0 === $firstOptional) {
                 // When the only token is an optional variable token, the separator is required
-                return sprintf('%s(?P<%s>%s)?', preg_quote($token[1], self::REGEX_DELIMITER), $token[3], $token[2]);
+                return sprintf('%s(?P<%s>%s)?', preg_quote($token[1]), $token[3], $token[2]);
             } else {
-                $regexp = sprintf('%s(?P<%s>%s)', preg_quote($token[1], self::REGEX_DELIMITER), $token[3], $token[2]);
+                $regexp = sprintf('%s(?P<%s>%s)', preg_quote($token[1]), $token[3], $token[2]);
                 if ($index >= $firstOptional) {
                     // Enclose each optional token in a subpattern to make it optional.
                     // "?:" means it is non-capturing, i.e. the portion of the subject string that

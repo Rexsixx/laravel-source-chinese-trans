@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition 契约，可运行解决方案
+ * Facade，IgnitionContracts，可运行的解决方案
  */
 
 namespace Facade\IgnitionContracts;

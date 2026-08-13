@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，抽象翻译程序
+ * Carbon，抽象翻译
  */
 
 /**
@@ -14,6 +14,7 @@
 
 namespace Carbon;
 
+use Carbon\MessageFormatter\MessageFormatterMapper;
 use Closure;
 use ReflectionException;
 use ReflectionFunction;
@@ -25,6 +26,7 @@ abstract class AbstractTranslator extends Translation\Translator
 {
     /**
      * Translator singletons for each language.
+	 * 翻译每种语言的单例
      *
      * @var array
      */
@@ -32,6 +34,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * List of custom localized messages.
+	 * 自定义本地化消息列表
      *
      * @var array
      */
@@ -39,6 +42,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * List of custom directories that contain translation files.
+	 * 包含翻译文件的自定义目录列表
      *
      * @var string[]
      */
@@ -46,6 +50,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Set to true while constructing.
+	 * 在构造时设置为true
      *
      * @var bool
      */
@@ -53,8 +58,9 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * List of locales aliases.
+	 * 区域设置别名列表
      *
-     * @var string[]
+     * @var array<string, string>
      */
     protected $aliases = [
         'me' => 'sr_Latn_ME',
@@ -63,6 +69,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Return a singleton instance of Translator.
+	 * 返回Translator的单例实例
      *
      * @param string|null $locale optional initial locale ("en" - english by default)
      *
@@ -80,18 +87,19 @@ abstract class AbstractTranslator extends Translation\Translator
         return static::$singletons[$key];
     }
 
-    public function __construct($locale, MessageFormatterInterface $formatter = null, $cacheDir = null, $debug = false)
+    public function __construct($locale, ?MessageFormatterInterface $formatter = null, $cacheDir = null, $debug = false)
     {
         parent::setLocale($locale);
         $this->initializing = true;
         $this->directories = [__DIR__.'/Lang'];
         $this->addLoader('array', new ArrayLoader());
-        parent::__construct($locale, $formatter, $cacheDir, $debug);
+        parent::__construct($locale, new MessageFormatterMapper($formatter), $cacheDir, $debug);
         $this->initializing = false;
     }
 
     /**
      * Returns the list of directories translation files are searched in.
+	 * 返回搜索翻译文件的目录列表
      *
      * @return array
      */
@@ -102,6 +110,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Set list of directories translation files are searched in.
+	 * 设置搜索翻译文件的目录列表
      *
      * @param array $directories new directories list
      *
@@ -116,6 +125,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Add a directory to the list translation files are searched in.
+	 * 将目录添加到搜索翻译文件的列表中。
      *
      * @param string $directory new directory
      *
@@ -130,6 +140,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Remove a directory from the list translation files are searched in.
+	 * 从搜索翻译文件的列表中删除一个目录
      *
      * @param string $directory directory path
      *
@@ -161,8 +172,10 @@ abstract class AbstractTranslator extends Translation\Translator
             return true;
         }
 
+        $this->assertValidLocale($locale);
+
         foreach ($this->getDirectories() as $directory) {
-            $data = @include sprintf('%s/%s.php', rtrim($directory, '\\/'), $locale);
+            $data = @include \sprintf('%s/%s.php', rtrim($directory, '\\/'), $locale);
 
             if ($data !== false) {
                 $this->messages[$locale] = $data;
@@ -177,6 +190,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Returns the list of files matching a given locale prefix (or all if empty).
+	 * 返回与给定语言环境前缀匹配的文件列表（如果为空则为全部）
      *
      * @param string $prefix prefix required to filter result
      *
@@ -223,8 +237,8 @@ abstract class AbstractTranslator extends Translation\Translator
 
         $catalogue = $this->getCatalogue($locale);
         $format = $this instanceof TranslatorStrongTypeInterface
-            ? $this->getFromCatalogue($catalogue, (string) $id, $domain) // @codeCoverageIgnore
-            : $this->getCatalogue($locale)->get((string) $id, $domain);
+            ? $this->getFromCatalogue($catalogue, (string) $id, $domain)
+            : $this->getCatalogue($locale)->get((string) $id, $domain); // @codeCoverageIgnore
 
         if ($format instanceof Closure) {
             // @codeCoverageIgnoreStart
@@ -246,6 +260,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Init messages language from matching file in Lang directory.
+	 * 从Lang目录中的匹配文件初始化消息语言
      *
      * @param string $locale
      *
@@ -258,6 +273,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Set messages of a locale and take file first if present.
+	 * 设置区域设置的消息，如果存在，首先获取文件。
      *
      * @param string $locale
      * @param array  $messages
@@ -278,6 +294,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Set messages of the current locale and take file first if present.
+	 * 设置当前语言环境的消息，如果存在，首先获取文件。
      *
      * @param array $messages
      *
@@ -303,6 +320,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Set the current translator locale and indicate if the source locale file exists
+	 * 设置当前的翻译语言环境，并指出源语言环境文件是否存在。
      *
      * @param string $locale locale ex. en
      *
@@ -310,7 +328,7 @@ abstract class AbstractTranslator extends Translation\Translator
      */
     public function setLocale($locale)
     {
-        $locale = preg_replace_callback('/[-_]([a-z]{2,}|[0-9]{2,})/', function ($matches) {
+        $locale = preg_replace_callback('/[-_]([a-z]{2,}|\d{2,})/', function ($matches) {
             // _2-letters or YUE is a region, _3+-letters is a variant
             $upper = strtoupper($matches[1]);
 
@@ -369,6 +387,7 @@ abstract class AbstractTranslator extends Translation\Translator
 
     /**
      * Show locale on var_dump().
+	 * 在var_dump（）上显示区域设置
      *
      * @return array
      */

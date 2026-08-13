@@ -1,6 +1,6 @@
 <?php
 /**
- * 验证，验证已解决特性
+ * Illuminate，验证，当解决时验证 Trait
  */
 
 namespace Illuminate\Validation;
@@ -36,7 +36,7 @@ trait ValidatesWhenResolvedTrait
 
     /**
      * Prepare the data for validation.
-	 * 准备验证数据
+	 * 为验证准备数据
      *
      * @return void
      */
@@ -47,7 +47,7 @@ trait ValidatesWhenResolvedTrait
 
     /**
      * Get the validator instance for the request.
-	 * 得到请求的验证器实例
+	 * 获取请求的验证器实例
      *
      * @return \Illuminate\Validation\Validator
      */

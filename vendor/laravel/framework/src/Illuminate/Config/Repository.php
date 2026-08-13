@@ -1,6 +1,6 @@
 <?php
 /**
- * 配置，资源库
+ * Illuminate，配置，资源库
  */
 
 namespace Illuminate\Config;
@@ -21,7 +21,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Create a new configuration repository.
-	 * 创建新的配置资源库
+	 * 创建一个新的配置资源库
      *
      * @param  array  $items
      * @return void
@@ -45,7 +45,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Get the specified configuration value.
-	 * 得到指定配置值
+	 * 获取指定的配置值
      *
      * @param  array|string  $key
      * @param  mixed  $default
@@ -62,7 +62,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Get many configuration values.
-	 * 得到多个配置值
+	 * 获取许多配置值
      *
      * @param  array  $keys
      * @return array
@@ -84,7 +84,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Set a given configuration value.
-	 * 设置一个配置值
+	 * 设置给定的配置值
      *
      * @param  array|string  $key
      * @param  mixed  $value
@@ -109,7 +109,7 @@ class Repository implements ArrayAccess, ConfigContract
      */
     public function prepend($key, $value)
     {
-        $array = $this->get($key);
+        $array = $this->get($key, []);
 
         array_unshift($array, $value);
 
@@ -118,7 +118,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Push a value onto an array configuration value.
-	 * 写入一个值至配置数组中
+	 * 将一个值压入数组配置值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -126,7 +126,7 @@ class Repository implements ArrayAccess, ConfigContract
      */
     public function push($key, $value)
     {
-        $array = $this->get($key);
+        $array = $this->get($key, []);
 
         $array[] = $value;
 
@@ -135,7 +135,7 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Get all of the configuration items for the application.
-	 * 得到应用所有配置项
+	 * 获取应用程序的所有配置项
      *
      * @return array
      */
@@ -146,11 +146,12 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Determine if the given configuration option exists.
-	 * 判断配置项是否存在
+	 * 确定给定的配置选项是否存在
      *
      * @param  string  $key
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($key)
     {
         return $this->has($key);
@@ -158,11 +159,12 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Get a configuration option.
-	 * 得到配置项
+	 * 获取一个配置选项
      *
      * @param  string  $key
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($key)
     {
         return $this->get($key);
@@ -170,12 +172,13 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Set a configuration option.
-	 * 设置配置项
+	 * 设置一个配置选项
      *
      * @param  string  $key
      * @param  mixed  $value
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($key, $value)
     {
         $this->set($key, $value);
@@ -183,11 +186,12 @@ class Repository implements ArrayAccess, ConfigContract
 
     /**
      * Unset a configuration option.
-	 * 注销配置项
+	 * 取消配置选项
      *
      * @param  string  $key
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($key)
     {
         $this->set($key, null);

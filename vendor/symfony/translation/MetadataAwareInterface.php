@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，元数据意识接口
+ * Symfony，Component，Translation，元数据意识接口
  */
 
 /*
@@ -16,43 +16,38 @@ namespace Symfony\Component\Translation;
 
 /**
  * MetadataAwareInterface.
- * 元数据意识接口。
+ * 元数据意识接口
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 interface MetadataAwareInterface
 {
     /**
      * Gets metadata for the given domain and key.
-	 * 获取给定域和密钥的元数据。
+	 * 获取给定域和密钥的元数据
      *
      * Passing an empty domain will return an array with all metadata indexed by
      * domain and then by key. Passing an empty key will return an array with all
      * metadata for the given domain.
      *
-     * @param string $key    The key
-     * @param string $domain The domain name
-     *
      * @return mixed The value that was set or an array with the domains/keys or null
      */
-    public function getMetadata($key = '', $domain = 'messages');
+    public function getMetadata(string $key = '', string $domain = 'messages');
 
     /**
      * Adds metadata to a message domain.
+	 * 将元数据添加到消息域
      *
-     * @param string $key    The key
-     * @param mixed  $value  The value
-     * @param string $domain The domain name
+     * @param mixed $value
      */
-    public function setMetadata($key, $value, $domain = 'messages');
+    public function setMetadata(string $key, $value, string $domain = 'messages');
 
     /**
      * Deletes metadata for the given key and domain.
+	 * 删除给定键和域的元数据。
      *
      * Passing an empty domain will delete all metadata. Passing an empty key will
      * delete all metadata for the given domain.
-     *
-     * @param string $key    The key
-     * @param string $domain The domain name
      */
-    public function deleteMetadata($key = '', $domain = 'messages');
+    public function deleteMetadata(string $key = '', string $domain = 'messages');
 }

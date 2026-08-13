@@ -1,20 +1,22 @@
 <?php
 /**
- * 缓存，缓存空存储
+ * Illuminate，缓存，零存储
  */
 
 namespace Illuminate\Cache;
 
-class NullStore extends TaggableStore
+use Illuminate\Contracts\Cache\LockProvider;
+
+class NullStore extends TaggableStore implements LockProvider
 {
     use RetrievesMultipleKeys;
 
     /**
      * Retrieve an item from the cache by key.
-	 * 检索项目从缓存中
+	 * 按键从缓存中检索项
      *
      * @param  string  $key
-     * @return mixed
+     * @return void
      */
     public function get($key)
     {
@@ -23,7 +25,7 @@ class NullStore extends TaggableStore
 
     /**
      * Store an item in the cache for a given number of seconds.
-	 * 存储项目在缓存中使用给定的秒数
+	 * 将项存储在缓存中给定的秒数
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -41,7 +43,7 @@ class NullStore extends TaggableStore
      *
      * @param  string  $key
      * @param  mixed  $value
-     * @return int|bool
+     * @return bool
      */
     public function increment($key, $value = 1)
     {
@@ -54,7 +56,7 @@ class NullStore extends TaggableStore
      *
      * @param  string  $key
      * @param  mixed  $value
-     * @return int|bool
+     * @return bool
      */
     public function decrement($key, $value = 1)
     {
@@ -63,7 +65,7 @@ class NullStore extends TaggableStore
 
     /**
      * Store an item in the cache indefinitely.
-	 * 存储项目无限期地在缓存中
+	 * 将项无限期地存储在缓存中
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -75,8 +77,35 @@ class NullStore extends TaggableStore
     }
 
     /**
+     * Get a lock instance.
+	 * 得到锁实例
+     *
+     * @param  string  $name
+     * @param  int  $seconds
+     * @param  string|null  $owner
+     * @return \Illuminate\Contracts\Cache\Lock
+     */
+    public function lock($name, $seconds = 0, $owner = null)
+    {
+        return new NoLock($name, $seconds, $owner);
+    }
+
+    /**
+     * Restore a lock instance using the owner identifier.
+	 * 使用所有者标识符恢复锁实例
+     *
+     * @param  string  $name
+     * @param  string  $owner
+     * @return \Illuminate\Contracts\Cache\Lock
+     */
+    public function restoreLock($name, $owner)
+    {
+        return $this->lock($name, 0, $owner);
+    }
+
+    /**
      * Remove an item from the cache.
-	 * 从缓存中删除项目
+	 * 从缓存中删除项
      *
      * @param  string  $key
      * @return bool
@@ -88,7 +117,7 @@ class NullStore extends TaggableStore
 
     /**
      * Remove all items from the cache.
-	 * 清空缓存中所有项目
+	 * 从缓存中删除所有项
      *
      * @return bool
      */
@@ -99,7 +128,7 @@ class NullStore extends TaggableStore
 
     /**
      * Get the cache key prefix.
-	 * 得到缓存前缀
+	 * 获取缓存键前缀
      *
      * @return string
      */

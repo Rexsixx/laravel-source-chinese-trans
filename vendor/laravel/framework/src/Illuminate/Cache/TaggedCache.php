@@ -1,6 +1,6 @@
 <?php
 /**
- * 缓存，可标记缓存
+ * Illuminate，缓存，Taggable 缓存
  */
 
 namespace Illuminate\Cache;
@@ -15,7 +15,7 @@ class TaggedCache extends Repository
 
     /**
      * The tag set instance.
-	 * 标记设置实例
+	 * 标记集实例
      *
      * @var \Illuminate\Cache\TagSet
      */
@@ -38,7 +38,7 @@ class TaggedCache extends Repository
 
     /**
      * Store multiple items in the cache for a given number of seconds.
-	 * 存储多个项目至缓存中使用给定秒数
+	 * 在给定的秒数内将多个项存储在缓存中
      *
      * @param  array  $values
      * @param  int|null  $ttl
@@ -59,11 +59,11 @@ class TaggedCache extends Repository
      *
      * @param  string  $key
      * @param  mixed  $value
-     * @return void
+     * @return int|bool
      */
     public function increment($key, $value = 1)
     {
-        $this->store->increment($this->itemKey($key), $value);
+        return $this->store->increment($this->itemKey($key), $value);
     }
 
     /**
@@ -72,16 +72,16 @@ class TaggedCache extends Repository
      *
      * @param  string  $key
      * @param  mixed  $value
-     * @return void
+     * @return int|bool
      */
     public function decrement($key, $value = 1)
     {
-        $this->store->decrement($this->itemKey($key), $value);
+        return $this->store->decrement($this->itemKey($key), $value);
     }
 
     /**
      * Remove all items from the cache.
-	 * 清空缓存中所有项目
+	 * 从缓存中删除所有项
      *
      * @return bool
      */
@@ -102,7 +102,7 @@ class TaggedCache extends Repository
 
     /**
      * Get a fully qualified key for a tagged item.
-	 * 得到标记项的完全限定键
+	 * 获取标记项的完全限定键
      *
      * @param  string  $key
      * @return string
@@ -116,7 +116,7 @@ class TaggedCache extends Repository
      * Fire an event for this cache instance.
 	 * 触发此缓存实例的事件
      *
-     * @param  string  $event
+     * @param  \Illuminate\Cache\Events\CacheEvent  $event
      * @return void
      */
     protected function event($event)
@@ -126,7 +126,7 @@ class TaggedCache extends Repository
 
     /**
      * Get the tag set instance.
-	 * 得到标记集实例
+	 * 获取标记集实例
      *
      * @return \Illuminate\Cache\TagSet
      */

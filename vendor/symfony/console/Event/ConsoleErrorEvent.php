@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，事件，控制台错误事件
+ * Symfony，Component，Console，事件，控制台错误事件
  */
 
 /*
@@ -20,6 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Allows to handle throwables thrown while running a command.
+ * 允许在运行命令时处理投掷的投掷。
  *
  * @author Wouter de Jong <wouter@wouterj.nl>
  */
@@ -28,7 +29,7 @@ final class ConsoleErrorEvent extends ConsoleEvent
     private $error;
     private $exitCode;
 
-    public function __construct(InputInterface $input, OutputInterface $output, \Throwable $error, Command $command = null)
+    public function __construct(InputInterface $input, OutputInterface $output, \Throwable $error, ?Command $command = null)
     {
         parent::__construct($command, $input, $output);
 

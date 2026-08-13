@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，队列实体解析接口
+ * Illuminate，契约，队列，实体解析器
  */
 
 namespace Illuminate\Contracts\Queue;

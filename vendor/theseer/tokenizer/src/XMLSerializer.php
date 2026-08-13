@@ -21,11 +21,10 @@ class XMLSerializer {
 
     /**
      * XMLSerializer constructor.
-	 * XMLSerializer构造器
      *
      * @param NamespaceUri $xmlns
      */
-    public function __construct(NamespaceUri $xmlns = null) {
+    public function __construct(?NamespaceUri $xmlns = null) {
         if ($xmlns === null) {
             $xmlns = new NamespaceUri('https://github.com/theseer/tokenizer');
         }

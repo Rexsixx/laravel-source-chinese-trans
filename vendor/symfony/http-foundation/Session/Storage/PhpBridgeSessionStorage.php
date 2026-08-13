@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，Session，储存，PHP Bridge会话存储
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\Proxy\AbstractProxy;
 
 /**
  * Allows session to be started by PHP and managed by Symfony.
+ * 允许会话由PHP启动，由Symfony管理。
  *
  * @author Drak <drak@zikula.org>
  */
@@ -23,7 +27,7 @@ class PhpBridgeSessionStorage extends NativeSessionStorage
     /**
      * @param AbstractProxy|\SessionHandlerInterface|null $handler
      */
-    public function __construct($handler = null, MetadataBag $metaBag = null)
+    public function __construct($handler = null, ?MetadataBag $metaBag = null)
     {
         if (!\extension_loaded('session')) {
             throw new \LogicException('PHP extension "session" is required.');

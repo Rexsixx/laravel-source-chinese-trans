@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，Flare Client，问题，使用时间
+ * Facade，FlareClient，问题，Uses Time
  */
 
 namespace Facade\FlareClient\Concerns;

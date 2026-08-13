@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，迁移状态命令
+ * Illuminate，数据库，控制台，迁移，migrate:status 状态命令
  */
 
 namespace Illuminate\Database\Console\Migrations;
@@ -13,7 +13,7 @@ class StatusCommand extends BaseCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -25,7 +25,7 @@ class StatusCommand extends BaseCommand
      *
      * @var string
      */
-    protected $description = 'Show the status of each migration';
+    protected $description = 'Show the status of each migration';		#显示每个迁移的状态
 
     /**
      * The migrator instance.
@@ -53,32 +53,32 @@ class StatusCommand extends BaseCommand
      * Execute the console command.
 	 * 执行控制台命令
      *
-     * @return void
+     * @return int|null
      */
     public function handle()
     {
-        $this->migrator->setConnection($this->option('database'));
+        return $this->migrator->usingConnection($this->option('database'), function () {
+            if (! $this->migrator->repositoryExists()) {
+                $this->error('Migration table not found.');
 
-        if (! $this->migrator->repositoryExists()) {
-            $this->error('Migration table not found.');
+                return 1;
+            }
 
-            return 1;
-        }
+            $ran = $this->migrator->getRepository()->getRan();
 
-        $ran = $this->migrator->getRepository()->getRan();
+            $batches = $this->migrator->getRepository()->getMigrationBatches();
 
-        $batches = $this->migrator->getRepository()->getMigrationBatches();
-
-        if (count($migrations = $this->getStatusFor($ran, $batches)) > 0) {
-            $this->table(['Ran?', 'Migration', 'Batch'], $migrations);
-        } else {
-            $this->error('No migrations found');
-        }
+            if (count($migrations = $this->getStatusFor($ran, $batches)) > 0) {
+                $this->table(['Ran?', 'Migration', 'Batch'], $migrations);
+            } else {
+                $this->error('No migrations found');
+            }
+        });
     }
 
     /**
      * Get the status for the given ran migrations.
-	 * 得到运行迁移的状态
+	 * 获取给定运行迁移的状态
      *
      * @param  array  $ran
      * @param  array  $batches
@@ -98,7 +98,7 @@ class StatusCommand extends BaseCommand
 
     /**
      * Get an array of all of the migration files.
-	 * 得到所有迁移文件的数组
+	 * 获取所有迁移文件的数组
      *
      * @return array
      */
@@ -109,7 +109,7 @@ class StatusCommand extends BaseCommand
 
     /**
      * Get the console command options.
-	 * 得到控制台命令选项
+	 * 获取控制台命令选项
      *
      * @return array
      */

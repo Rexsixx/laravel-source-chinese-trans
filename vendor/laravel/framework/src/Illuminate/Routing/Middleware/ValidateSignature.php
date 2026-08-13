@@ -1,6 +1,6 @@
 <?php
 /**
- * 路由，中间件验证签名
+ * Illuminate，路由，中间件，验证签名
  */
 
 namespace Illuminate\Routing\Middleware;
@@ -16,13 +16,14 @@ class ValidateSignature
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
+     * @param  string|null  $relative
      * @return \Illuminate\Http\Response
      *
      * @throws \Illuminate\Routing\Exceptions\InvalidSignatureException
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $relative = null)
     {
-        if ($request->hasValidSignature()) {
+        if ($request->hasValidSignature($relative !== 'relative')) {
             return $next($request);
         }
 

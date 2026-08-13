@@ -1,15 +1,16 @@
 <?php
 /**
- * 验证，唯一
+ * Illuminate，验证，规则，唯一
  */
 
 namespace Illuminate\Validation\Rules;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Traits\Conditionable;
 
 class Unique
 {
-    use DatabaseRule;
+    use Conditionable, DatabaseRule;
 
     /**
      * The ID that should be ignored.
@@ -29,7 +30,7 @@ class Unique
 
     /**
      * Ignore the given ID during the unique check.
-	 * 忽略给定的ID在唯一性检查期间
+	 * 在唯一性检查期间忽略给定的ID
      *
      * @param  mixed  $id
      * @param  string|null  $idColumn
@@ -64,8 +65,22 @@ class Unique
     }
 
     /**
+     * Ignore soft deleted models during the unique check.
+	 * 唯一性检查时忽略软删除模型
+     *
+     * @param  string  $deletedAtColumn
+     * @return $this
+     */
+    public function withoutTrashed($deletedAtColumn = 'deleted_at')
+    {
+        $this->whereNull($deletedAtColumn);
+
+        return $this;
+    }
+
+    /**
      * Convert the rule to a validation string.
-	 * 转换规则为验证字符串
+	 * 将规则转换为验证字符串
      *
      * @return string
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，测试，约束，响应有Cookie
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,7 +24,7 @@ final class ResponseHasCookie extends Constraint
     private $path;
     private $domain;
 
-    public function __construct(string $name, string $path = '/', string $domain = null)
+    public function __construct(string $name, string $path = '/', ?string $domain = null)
     {
         $this->name = $name;
         $this->path = $path;

@@ -1,17 +1,17 @@
 <?php
 /**
- * 缓存，缓存阵列锁定
+ * Illuminate，缓存，数组锁
  */
 
 namespace Illuminate\Cache;
 
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 
 class ArrayLock extends Lock
 {
     /**
      * The parent array cache store.
-	 * 缓存存储
+	 * 父数组缓存存储
      *
      * @var \Illuminate\Cache\ArrayStore
      */
@@ -19,7 +19,7 @@ class ArrayLock extends Lock
 
     /**
      * Create a new lock instance.
-	 * 创建新的锁定实例
+	 * 创建新的锁实例
      *
      * @param  \Illuminate\Cache\ArrayStore  $store
      * @param  string  $name
@@ -58,7 +58,7 @@ class ArrayLock extends Lock
 
     /**
      * Determine if the current lock exists.
-	 * 当前锁是否存在
+	 * 确定当前锁是否存在
      *
      * @return bool
      */
@@ -101,7 +101,7 @@ class ArrayLock extends Lock
 
     /**
      * Releases this lock in disregard of ownership.
-	 * 释放锁，而不考虑所有权
+	 * 释放此锁，而不考虑所有权。
      *
      * @return void
      */

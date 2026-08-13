@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，Flare Client，上下文，控制台上下文检测器
+ * Facade，FlareClient，上下文，上下文检测器
  */
 
 namespace Facade\FlareClient\Context;

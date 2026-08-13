@@ -1,10 +1,11 @@
 <?php
 /**
- * 控制台，与IO交互
+ * Illuminate，控制台，问题，与IO交互
  */
 
 namespace Illuminate\Console\Concerns;
 
+use Closure;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
@@ -57,7 +58,7 @@ trait InteractsWithIO
 
     /**
      * Determine if the given argument is present.
-	 * 确定是否给定参数存在
+	 * 确定给定参数是否存在
      *
      * @param  string|int  $name
      * @return bool
@@ -69,7 +70,7 @@ trait InteractsWithIO
 
     /**
      * Get the value of a command argument.
-	 * 得到命令参数的值
+	 * 获取命令参数的值
      *
      * @param  string|null  $key
      * @return string|array|null
@@ -85,7 +86,7 @@ trait InteractsWithIO
 
     /**
      * Get all of the arguments passed to the command.
-	 * 得到传递给命令的所有参数
+	 * 获取传递给命令的所有参数
      *
      * @return array
      */
@@ -96,7 +97,7 @@ trait InteractsWithIO
 
     /**
      * Determine if the given option is present.
-	 * 确定是否给定参数存在
+	 * 确定给定选项是否存在
      *
      * @param  string  $name
      * @return bool
@@ -108,7 +109,7 @@ trait InteractsWithIO
 
     /**
      * Get the value of a command option.
-	 * 得到命令选项的值
+	 * 获取命令选项的值
      *
      * @param  string|null  $key
      * @return string|array|bool|null
@@ -124,7 +125,7 @@ trait InteractsWithIO
 
     /**
      * Get all of the options passed to the command.
-	 * 得到传递给命令的所有选项
+	 * 获取传递给命令的所有选项
      *
      * @return array
      */
@@ -135,7 +136,7 @@ trait InteractsWithIO
 
     /**
      * Confirm a question with the user.
-	 * 确认问题与用户
+	 * 与用户确认问题
      *
      * @param  string  $question
      * @param  bool  $default
@@ -212,16 +213,16 @@ trait InteractsWithIO
 
     /**
      * Give the user a single choice from an array of answers.
-	 * 给用户一个选择从一组答案中
+	 * 从一组答案中给用户一个选择
      *
      * @param  string  $question
      * @param  array  $choices
      * @param  string|null  $default
      * @param  mixed|null  $attempts
-     * @param  bool|null  $multiple
-     * @return string
+     * @param  bool  $multiple
+     * @return string|array
      */
-    public function choice($question, array $choices, $default = null, $attempts = null, $multiple = null)
+    public function choice($question, array $choices, $default = null, $attempts = null, $multiple = false)
     {
         $question = new ChoiceQuestion($question, $choices, $default);
 
@@ -255,6 +256,39 @@ trait InteractsWithIO
         }
 
         $table->render();
+    }
+
+    /**
+     * Execute a given callback while advancing a progress bar.
+	 * 在推进进度条时执行给定的回调
+     *
+     * @param  iterable|int  $totalSteps
+     * @param  \Closure  $callback
+     * @return mixed|void
+     */
+    public function withProgressBar($totalSteps, Closure $callback)
+    {
+        $bar = $this->output->createProgressBar(
+            is_iterable($totalSteps) ? count($totalSteps) : $totalSteps
+        );
+
+        $bar->start();
+
+        if (is_iterable($totalSteps)) {
+            foreach ($totalSteps as $value) {
+                $callback($value, $bar);
+
+                $bar->advance();
+            }
+        } else {
+            $callback($bar);
+        }
+
+        $bar->finish();
+
+        if (is_iterable($totalSteps)) {
+            return $totalSteps;
+        }
     }
 
     /**
@@ -346,7 +380,7 @@ trait InteractsWithIO
 
     /**
      * Write a string in an alert box.
-	 * 写一个字符串作为提示输出
+	 * 在警告框中写一个字符串
      *
      * @param  string  $string
      * @return void
@@ -359,7 +393,19 @@ trait InteractsWithIO
         $this->comment('*     '.$string.'     *');
         $this->comment(str_repeat('*', $length));
 
-        $this->output->newLine();
+        $this->newLine();
+    }
+
+    /**
+     * Write a blank line.
+	 * 写一个空行
+     *
+     * @param  int  $count
+     * @return void
+     */
+    public function newLine($count = 1)
+    {
+        $this->output->newLine($count);
     }
 
     /**
@@ -400,7 +446,7 @@ trait InteractsWithIO
 
     /**
      * Get the verbosity level in terms of Symfony's OutputInterface level.
-	 * 得到冗长级别根据Symfony的OutputInterface级别
+	 * 根据Symfony的OutputInterface级别获取冗长级别
      *
      * @param  string|int|null  $level
      * @return int
@@ -418,7 +464,7 @@ trait InteractsWithIO
 
     /**
      * Get the output implementation.
-	 * 得到输出实现
+	 * 获取输出实现
      *
      * @return \Illuminate\Console\OutputStyle
      */

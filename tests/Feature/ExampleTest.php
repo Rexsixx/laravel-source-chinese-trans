@@ -1,4 +1,7 @@
 <?php
+/**
+ * 测试，特征，用例测试
+ */
 
 namespace Tests\Feature;
 
@@ -9,11 +12,11 @@ class ExampleTest extends TestCase
 {
     /**
      * A basic test example.
-	 * 一个基本的测试用例
+	 * 基本测试用例
      *
      * @return void
      */
-    public function testBasicTest()
+    public function test_example()
     {
         $response = $this->get('/');
 

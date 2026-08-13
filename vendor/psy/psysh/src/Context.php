@@ -6,7 +6,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2023 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,34 +16,35 @@ namespace Psy;
 
 /**
  * The Shell execution context.
+ * Shell执行上下文。
  *
  * This class encapsulates the current variables, most recent return value and
  * exception, and the current namespace.
  */
 class Context
 {
-    private static $specialNames = ['_', '_e', '__out', '__psysh__', 'this'];
+    private const SPECIAL_NAMES = ['_', '_e', '__out', '__psysh__', 'this'];
 
     // Include a very limited number of command-scope magic variable names.
     // This might be a bad idea, but future me can sort it out.
-    private static $commandScopeNames = [
+    private const COMMAND_SCOPE_NAMES = [
         '__function', '__method', '__class', '__namespace', '__file', '__line', '__dir',
     ];
 
-    private $scopeVariables = [];
-    private $commandScopeVariables = [];
-    private $returnValue;
-    private $lastException;
-    private $lastStdout;
-    private $boundObject;
-    private $boundClass;
+    private array $scopeVariables = [];
+    private array $commandScopeVariables = [];
+    /** @var mixed */
+    private $returnValue = null;
+    private ?\Throwable $lastException = null;
+    private ?string $lastStdout = null;
+    private ?object $boundObject = null;
+    private ?string $boundClass = null;
 
     /**
      * Get a context variable.
+	 * 获取一个上下文变量
      *
      * @throws \InvalidArgumentException If the variable is not found in the current context
-     *
-     * @param string $name
      *
      * @return mixed
      */
@@ -95,8 +96,7 @@ class Context
 
     /**
      * Get all defined variables.
-     *
-     * @return array
+	 * 获取所有已定义的变量
      */
     public function getAll(): array
     {
@@ -105,8 +105,6 @@ class Context
 
     /**
      * Get all defined magic variables: $_, $_e, $__out, $__class, $__file, etc.
-     *
-     * @return array
      */
     public function getSpecialVariables(): array
     {
@@ -131,19 +129,18 @@ class Context
 
     /**
      * Set all scope variables.
+	 * 设置所有作用域变量
      *
      * This method does *not* set any of the magic variables: $_, $_e, $__out,
      * $__class, $__file, etc.
-     *
-     * @param array $vars
      */
     public function setAll(array $vars)
     {
-        foreach (self::$specialNames as $key) {
+        foreach (self::SPECIAL_NAMES as $key) {
             unset($vars[$key]);
         }
 
-        foreach (self::$commandScopeNames as $key) {
+        foreach (self::COMMAND_SCOPE_NAMES as $key) {
             unset($vars[$key]);
         }
 
@@ -152,6 +149,7 @@ class Context
 
     /**
      * Set the most recent return value.
+	 * 设置最近的返回值
      *
      * @param mixed $value
      */
@@ -162,6 +160,7 @@ class Context
 
     /**
      * Get the most recent return value.
+	 * 获取最近的返回值
      *
      * @return mixed
      */
@@ -171,21 +170,23 @@ class Context
     }
 
     /**
-     * Set the most recent Exception.
+     * Set the most recent Exception or Error.
+	 * 设置最近的异常或错误
      *
-     * @param \Exception $e
+     * @param \Throwable $e
      */
-    public function setLastException(\Exception $e)
+    public function setLastException(\Throwable $e)
     {
         $this->lastException = $e;
     }
 
     /**
-     * Get the most recent Exception.
+     * Get the most recent Exception or Error.
+	 * 获取最近的Exception或Error
      *
      * @throws \InvalidArgumentException If no Exception has been caught
      *
-     * @return \Exception|null
+     * @return \Throwable|null
      */
     public function getLastException()
     {
@@ -198,8 +199,7 @@ class Context
 
     /**
      * Set the most recent output from evaluated code.
-     *
-     * @param string $lastStdout
+	 * 设置已计算代码的最新输出
      */
     public function setLastStdout(string $lastStdout)
     {
@@ -208,6 +208,7 @@ class Context
 
     /**
      * Get the most recent output from evaluated code.
+	 * 从求值的代码中获取最新的输出
      *
      * @throws \InvalidArgumentException If no output has happened yet
      *
@@ -224,6 +225,7 @@ class Context
 
     /**
      * Set the bound object ($this variable) for the interactive shell.
+	 * 为交互式shell设置绑定对象（$this变量）。
      *
      * Note that this unsets the bound class, if any exists.
      *
@@ -237,6 +239,7 @@ class Context
 
     /**
      * Get the bound object ($this variable) for the interactive shell.
+	 * 获取交互shell的绑定对象（$this变量）
      *
      * @return object|null
      */
@@ -247,6 +250,7 @@ class Context
 
     /**
      * Set the bound class (self) for the interactive shell.
+	 * 为交互式shell设置绑定类（self）。
      *
      * Note that this unsets the bound object, if any exists.
      *
@@ -260,6 +264,7 @@ class Context
 
     /**
      * Get the bound class (self) for the interactive shell.
+	 * 获取交互式shell的绑定类（self）
      *
      * @return string|null
      */
@@ -270,15 +275,13 @@ class Context
 
     /**
      * Set command-scope magic variables: $__class, $__file, etc.
-     *
-     * @param array $commandScopeVariables
      */
     public function setCommandScopeVariables(array $commandScopeVariables)
     {
         $vars = [];
         foreach ($commandScopeVariables as $key => $value) {
             // kind of type check
-            if (\is_scalar($value) && \in_array($key, self::$commandScopeNames)) {
+            if (\is_scalar($value) && \in_array($key, self::COMMAND_SCOPE_NAMES)) {
                 $vars[$key] = $value;
             }
         }
@@ -288,8 +291,6 @@ class Context
 
     /**
      * Get command-scope magic variables: $__class, $__file, etc.
-     *
-     * @return array
      */
     public function getCommandScopeVariables(): array
     {
@@ -306,18 +307,15 @@ class Context
      */
     public function getUnusedCommandScopeVariableNames(): array
     {
-        return \array_diff(self::$commandScopeNames, \array_keys($this->commandScopeVariables));
+        return \array_diff(self::COMMAND_SCOPE_NAMES, \array_keys($this->commandScopeVariables));
     }
 
     /**
      * Check whether a variable name is a magic variable.
-     *
-     * @param string $name
-     *
-     * @return bool
+	 * 检查变量名是否为幻变量
      */
     public static function isSpecialVariableName(string $name): bool
     {
-        return \in_array($name, self::$specialNames) || \in_array($name, self::$commandScopeNames);
+        return \in_array($name, self::SPECIAL_NAMES) || \in_array($name, self::COMMAND_SCOPE_NAMES);
     }
 }

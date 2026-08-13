@@ -1,17 +1,19 @@
 <?php
 /**
- * 控制台，计划完成命令
+ * Illuminate，控制台，调度，schedule:finish 调度完成命令
  */
 
 namespace Illuminate\Console\Scheduling;
 
 use Illuminate\Console\Command;
+use Illuminate\Console\Events\ScheduledBackgroundTaskFinished;
+use Illuminate\Contracts\Events\Dispatcher;
 
 class ScheduleFinishCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -44,6 +46,10 @@ class ScheduleFinishCommand extends Command
     {
         collect($schedule->events())->filter(function ($value) {
             return $value->mutexName() == $this->argument('id');
-        })->each->callAfterCallbacksWithExitCode($this->laravel, $this->argument('code'));
+        })->each(function ($event) {
+            $event->callafterCallbacksWithExitCode($this->laravel, $this->argument('code'));
+
+            $this->laravel->make(Dispatcher::class)->dispatch(new ScheduledBackgroundTaskFinished($event));
+        });
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，解决方案，无效的路由操作解决方案提供者
+ * Facade，Ignition，解决方案，使用默认的 Valet Db凭据解决方案
  */
 
 namespace Facade\Ignition\Solutions;

@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，Http中间件，验证令牌
+ * Illuminate，基础，Http，中间件，检查维护模式
  */
 
 namespace Illuminate\Foundation\Http\Middleware;
@@ -46,7 +46,7 @@ class VerifyCsrfToken
 
     /**
      * Indicates whether the XSRF-TOKEN cookie should be set on the response.
-	 * 指明是否应该在响应上设置XSRF-TOKEN cookie
+	 * 指示是否应该在响应上设置XSRF-TOKEN cookie
      *
      * @var bool
      */
@@ -96,7 +96,7 @@ class VerifyCsrfToken
 
     /**
      * Determine if the HTTP request uses a ‘read’ verb.
-	 * 确定HTTP请求是否使用read
+	 * 确定HTTP请求是否使用'read'谓词
      *
      * @param  \Illuminate\Http\Request  $request
      * @return bool
@@ -157,7 +157,7 @@ class VerifyCsrfToken
 
     /**
      * Get the CSRF token from the request.
-	 * 得到CSRF令牌从请求中
+	 * 从请求中获取CSRF令牌
      *
      * @param  \Illuminate\Http\Request  $request
      * @return string
@@ -190,7 +190,7 @@ class VerifyCsrfToken
 
     /**
      * Add the CSRF token to the response cookies.
-	 * 添加CSRF令牌至响应cookie中
+	 * 将CSRF令牌添加到响应cookie中
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Symfony\Component\HttpFoundation\Response  $response

@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，加载配置文件
+ * Illuminate，基础，引导，加载配置
  */
 
 namespace Illuminate\Foundation\Bootstrap;
@@ -16,7 +16,7 @@ class LoadConfiguration
 {
     /**
      * Bootstrap the given application.
-	 * 引导给定应用 
+	 * 引导给定的应用程序
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -28,8 +28,7 @@ class LoadConfiguration
         // First we will see if we have a cache configuration file. If we do, we'll load
         // the configuration items from that file so that it is very quick. Otherwise
         // we will need to spin through every configuration file and load them all.
-		// 首先，我们将查看是否有缓存配置文件。如果我们这样做，我们将从该文件加载配置项，使其非常快速。
-		// 否则，我们需要浏览每个配置文件并全部加载。
+		// 首先，我们将查看是否有缓存配置文件。如果我们这样做，我们将加载该文件中的配置项。
         if (file_exists($cached = $app->getCachedConfigPath())) {
             $items = require $cached;
 
@@ -39,8 +38,7 @@ class LoadConfiguration
         // Next we will spin through all of the configuration files in the configuration
         // directory and load each one into the repository. This will make all of the
         // options available to the developer for use in various parts of this app.
-		// 接下来，我们将浏览配置目录中的所有配置文件，并将每个文件加载到存储库中。
-		// 这将使开发人员可以在该应用程序的各个部分使用所有选项。
+		// 接下来，我们将浏览配置中的所有配置文件目录并将每个目录加载到存储库中。
         $app->instance('config', $config = new Repository($items));
 
         if (! isset($loadedFromCache)) {
@@ -50,8 +48,7 @@ class LoadConfiguration
         // Finally, we will set the application's environment based on the configuration
         // values that were loaded. We will pass a callback which will be used to get
         // the environment in a web context where an "--env" switch is not present.
-		// 最后，我们将根据加载的配置设置应用程序的环境。
-		// 我们将传递一个回调函数，用于在不存在"--env"开关的web上下文中获取环境。
+		// 最后，我们将根据加载的配置值设置应用程序的环境。
         $app->detectEnvironment(function () use ($config) {
             return $config->get('app.env', 'production');
         });
@@ -63,7 +60,7 @@ class LoadConfiguration
 
     /**
      * Load the configuration items from all of the files.
-	 * 加载配置项从所有文件中
+	 * 从所有文件中加载配置项
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  \Illuminate\Contracts\Config\Repository  $repository
@@ -86,7 +83,7 @@ class LoadConfiguration
 
     /**
      * Get all of the configuration files for the application.
-	 * 得到所有配置文件
+	 * 获取应用程序的所有配置文件
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return array
@@ -110,7 +107,7 @@ class LoadConfiguration
 
     /**
      * Get the configuration file nesting path.
-	 * 得到配置文件嵌套路径
+	 * 获取配置文件嵌套路径
      *
      * @param  \SplFileInfo  $file
      * @param  string  $configPath

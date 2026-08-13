@@ -1,6 +1,6 @@
 <?php
 /**
- * Http，委托至资源
+ * Illuminate，Http，资源，资源委托
  */
 
 namespace Illuminate\Http\Resources;
@@ -14,7 +14,7 @@ trait DelegatesToResource
 
     /**
      * Get the value of the resource's route key.
-	 * 得到资源的路由键的值
+	 * 获取资源的路由键的值
      *
      * @return mixed
      */
@@ -25,7 +25,7 @@ trait DelegatesToResource
 
     /**
      * Get the route key for the resource.
-	 * 得到资源的路由键
+	 * 获取资源的路由键
      *
      * @return string
      */
@@ -39,11 +39,28 @@ trait DelegatesToResource
 	 * 检索绑定值的模型
      *
      * @param  mixed  $value
+     * @param  string|null  $field
      * @return void
      *
      * @throws \Exception
      */
-    public function resolveRouteBinding($value)
+    public function resolveRouteBinding($value, $field = null)
+    {
+        throw new Exception('Resources may not be implicitly resolved from route bindings.');
+    }
+
+    /**
+     * Retrieve the model for a bound value.
+	 * 检索绑定值的模型
+     *
+     * @param  string  $childType
+     * @param  mixed  $value
+     * @param  string|null  $field
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function resolveChildRouteBinding($childType, $value, $field = null)
     {
         throw new Exception('Resources may not be implicitly resolved from route bindings.');
     }
@@ -55,6 +72,7 @@ trait DelegatesToResource
      * @param  mixed  $offset
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->resource[$offset]);
@@ -62,11 +80,12 @@ trait DelegatesToResource
 
     /**
      * Get the value for a given offset.
-	 * 得到给定偏移量的值
+	 * 获取给定偏移量的值
      *
      * @param  mixed  $offset
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->resource[$offset];
@@ -80,6 +99,7 @@ trait DelegatesToResource
      * @param  mixed  $value
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         $this->resource[$offset] = $value;
@@ -92,6 +112,7 @@ trait DelegatesToResource
      * @param  mixed  $offset
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         unset($this->resource[$offset]);
@@ -123,7 +144,7 @@ trait DelegatesToResource
 
     /**
      * Dynamically get properties from the underlying resource.
-	 * 动态获取属性从底层资源
+	 * 从底层资源动态获取属性
      *
      * @param  string  $key
      * @return mixed
@@ -135,7 +156,7 @@ trait DelegatesToResource
 
     /**
      * Dynamically pass method calls to the underlying resource.
-	 * 动态调取方法从底层资源
+	 * 动态地将方法调用传递给底层资源
      *
      * @param  string  $method
      * @param  array  $parameters

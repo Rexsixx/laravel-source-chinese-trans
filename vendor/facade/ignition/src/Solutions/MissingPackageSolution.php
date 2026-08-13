@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，解决方案，丢失解决方案
+ * Facade，Ignition，解决方案，丢失的包解决方案
  */
 
 namespace Facade\Ignition\Solutions;
@@ -10,7 +10,7 @@ use Facade\IgnitionContracts\Solution;
 
 class MissingPackageSolution implements Solution
 {
-    /** @var \Facade\Flare\Support\Packagist\Package */
+    /** @var Package */
     protected $possiblePackage;
 
     public function __construct(Package $possiblePackage)

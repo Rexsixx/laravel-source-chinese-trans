@@ -1,30 +1,23 @@
 <?php
-
-/*
- * This file is part of Collision.
- *
- * (c) Nuno Maduro <enunomaduro@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+/**
+ * NunoMaduro，Collision，契约，处理者
  */
+
+declare(strict_types=1);
 
 namespace NunoMaduro\Collision\Contracts;
 
-use Whoops\Handler\HandlerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Whoops\Handler\HandlerInterface;
 
 /**
- * This is an Collision Handler contract.
- *
- * @author Nuno Maduro <enunomaduro@gmail.com>
+ * @internal
  */
 interface Handler extends HandlerInterface
 {
     /**
      * Sets the output.
-     *
-     * @param  \Symfony\Component\Console\Output\OutputInterface $output
+	 * 设置输出
      *
      * @return \NunoMaduro\Collision\Contracts\Handler
      */
@@ -32,6 +25,7 @@ interface Handler extends HandlerInterface
 
     /**
      * Returns the writer.
+	 * 返回写入器
      *
      * @return \NunoMaduro\Collision\Contracts\Writer
      */

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理器，Web 处理器
- */
+ * Monolog，处理器，Web 处理程序
+ *
 
 /*
  * This file is part of the Monolog package.
@@ -17,6 +17,7 @@ namespace Monolog\Processor;
 
 /**
  * Injects url/method and remote IP of the current web request in all records
+ * 在所有记录中输入当前web请求的url /方法和远程IP
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
@@ -29,6 +30,7 @@ class WebProcessor implements ProcessorInterface
 
     /**
      * Default fields
+	 * 默认字段
      *
      * Array is structured as [key in record.extra => key in $serverData]
      *
@@ -47,7 +49,7 @@ class WebProcessor implements ProcessorInterface
      * @param array<string, mixed>|\ArrayAccess<string, mixed>|null $serverData  Array or object w/ ArrayAccess that provides access to the $_SERVER data
      * @param array<string, string>|array<string>|null              $extraFields Field names and the related key inside $serverData to be added (or just a list of field names to use the default configured $serverData mapping). If not provided it defaults to: [url, ip, http_method, server, referrer] + unique_id if present in server data
      */
-    public function __construct($serverData = null, array $extraFields = null)
+    public function __construct($serverData = null, ?array $extraFields = null)
     {
         if (null === $serverData) {
             $this->serverData = &$_SERVER;

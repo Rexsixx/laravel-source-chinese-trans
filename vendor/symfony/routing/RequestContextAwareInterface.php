@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由选择，请求上下文感知接口
+ * Symfony，Component，Routing，请求上下文感知接口
  */
 
 /*
@@ -18,13 +18,15 @@ interface RequestContextAwareInterface
 {
     /**
      * Sets the request context.
+	 * 设置请求上下文
      */
     public function setContext(RequestContext $context);
 
     /**
      * Gets the request context.
+	 * 得到请求上下文
      *
-     * @return RequestContext The context
+     * @return RequestContext
      */
     public function getContext();
 }

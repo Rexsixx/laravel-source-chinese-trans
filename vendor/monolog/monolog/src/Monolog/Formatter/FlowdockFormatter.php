@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Formatter，Flowdock 格式化
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -13,8 +17,10 @@ namespace Monolog\Formatter;
 
 /**
  * formats the record to be used in the FlowdockHandler
+ * 格式化在FlowdockHandler中使用的记录
  *
  * @author Dominik Liebler <liebler.dominik@gmail.com>
+ * @deprecated Since 2.9.0 and 3.3.0, Flowdock was shutdown we will thus drop this handler in Monolog 4
  */
 class FlowdockFormatter implements FormatterInterface
 {

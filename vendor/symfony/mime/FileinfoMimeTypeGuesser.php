@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，Fileinfo Mime 类型猜测器
+ * Symfony，Component，Mime，Fileinfo Mime 类型猜测器
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\Mime\Exception\LogicException;
 
 /**
  * Guesses the MIME type using the PECL extension FileInfo.
+ * 使用PECL扩展FileInfo猜测MIME类型。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
@@ -27,11 +28,11 @@ class FileinfoMimeTypeGuesser implements MimeTypeGuesserInterface
     private $magicFile;
 
     /**
-     * @param string $magicFile A magic file to use with the finfo instance
+     * @param string|null $magicFile A magic file to use with the finfo instance
      *
      * @see http://www.php.net/manual/en/function.finfo-open.php
      */
-    public function __construct(string $magicFile = null)
+    public function __construct(?string $magicFile = null)
     {
         $this->magicFile = $magicFile;
     }

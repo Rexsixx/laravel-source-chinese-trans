@@ -1,6 +1,6 @@
 <?php
 /**
- * 视图，引擎解析器
+ * Illuminate，视图，引擎，引擎解析器
  */
 
 namespace Illuminate\View\Engines;
@@ -28,7 +28,7 @@ class EngineResolver
 
     /**
      * Register a new engine resolver.
-	 * 注册新的引擎解析器
+	 * 注册一个新的引擎解析器
      *
      * The engine string typically corresponds to a file extension.
      *
@@ -38,14 +38,14 @@ class EngineResolver
      */
     public function register($engine, Closure $resolver)
     {
-        unset($this->resolved[$engine]);
+        $this->forget($engine);
 
         $this->resolvers[$engine] = $resolver;
     }
 
     /**
      * Resolve an engine instance by name.
-	 * 解析引擎实例按名称
+	 * 按名称解析引擎实例
      *
      * @param  string  $engine
      * @return \Illuminate\Contracts\View\Engine
@@ -63,5 +63,17 @@ class EngineResolver
         }
 
         throw new InvalidArgumentException("Engine [{$engine}] not found.");
+    }
+
+    /**
+     * Remove a resolved engine.
+	 * 移除已解析的引擎
+     *
+     * @param  string  $engine
+     * @return void
+     */
+    public function forget($engine)
+    {
+        unset($this->resolved[$engine]);
     }
 }

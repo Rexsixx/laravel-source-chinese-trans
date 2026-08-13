@@ -1,6 +1,6 @@
 <?php
 /**
- * App，服务提供者，授权服务提供者
+ * app，提供者，Auth 认证服务提供者
  */
 
 namespace App\Providers;
@@ -14,15 +14,15 @@ class AuthServiceProvider extends ServiceProvider
      * The policy mappings for the application.
 	 * 应用程序的策略映射
      *
-     * @var array
+     * @var array<class-string, class-string>
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
     ];
 
     /**
      * Register any authentication / authorization services.
-     * 注册任何身份验证/授权服务
+	 * 注册任何身份验证/授权服务
      *
      * @return void
      */

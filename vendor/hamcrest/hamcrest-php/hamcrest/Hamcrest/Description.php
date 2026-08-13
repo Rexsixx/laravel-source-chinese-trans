@@ -12,7 +12,7 @@ namespace Hamcrest;
 /**
  * A description of a Matcher. A Matcher will describe itself to a description
  * which can later be used for reporting.
- * 匹配器的描述。匹配器会向一个描述对象描述自身，该描述对象之后可用于报告。
+ * 匹配器的描述。匹配器将向一个描述对象描述自身，该描述对象随后可用于报告。
  *
  * @see Hamcrest\Matcher::describeTo()
  */
@@ -41,7 +41,6 @@ interface Description
 
     /**
      * Appends an arbitary value to the description.
-	 * 向描述追加任意值
      *
      * @param mixed $value
      *

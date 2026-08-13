@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，缓存回暖，缓存回暖接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpKernel\CacheWarmer;
 
 /**
  * Interface for classes able to warm up the cache.
+ * 接口，用于能够预热缓存的类。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -20,13 +24,14 @@ interface CacheWarmerInterface extends WarmableInterface
 {
     /**
      * Checks whether this warmer is optional or not.
+	 * 检查加热器是否是可选的
      *
      * Optional warmers can be ignored on certain conditions.
      *
      * A warmer should return true if the cache can be
      * generated incrementally and on-demand.
      *
-     * @return bool true if the warmer is optional, false otherwise
+     * @return bool
      */
     public function isOptional();
 }

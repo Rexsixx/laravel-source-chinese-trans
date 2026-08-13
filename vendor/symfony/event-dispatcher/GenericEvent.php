@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，事件调度器，普通事件
+ * Symfony，Component，EventDispatcher，通用事件
  */
 
 /*
@@ -14,12 +14,19 @@
 
 namespace Symfony\Component\EventDispatcher;
 
+use Symfony\Contracts\EventDispatcher\Event;
+
 /**
  * Event encapsulation class.
+ * 事件封装类。
  *
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
+ * 封装事件，从而将观察者与其封装的主题解耦。
  *
  * @author Drak <drak@zikula.org>
+ *
+ * @implements \ArrayAccess<string, mixed>
+ * @implements \IteratorAggregate<string, mixed>
  */
 class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 {
@@ -27,7 +34,8 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
     protected $arguments;
 
     /**
-     * Encapsulate an event with $subject and $args.
+     * Encapsulate an event with $subject and $arguments.
+	 * 用$ subject和$参数封装一个事件
      *
      * @param mixed $subject   The subject of the event, usually an object or a callable
      * @param array $arguments Arguments to store in the event
@@ -40,8 +48,9 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Getter for subject property.
+	 * 主体属性的Getter
      *
-     * @return mixed The observer subject
+     * @return mixed
      */
     public function getSubject()
     {
@@ -50,14 +59,13 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Get argument by key.
+	 * 按键获取参数
      *
-     * @param string $key Key
-     *
-     * @return mixed Contents of array key
+     * @return mixed
      *
      * @throws \InvalidArgumentException if key is not found
      */
-    public function getArgument($key)
+    public function getArgument(string $key)
     {
         if ($this->hasArgument($key)) {
             return $this->arguments[$key];
@@ -68,13 +76,13 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Add argument to event.
+	 * 向事件添加参数
      *
-     * @param string $key   Argument name
-     * @param mixed  $value Value
+     * @param mixed $value Value
      *
      * @return $this
      */
-    public function setArgument($key, $value)
+    public function setArgument(string $key, $value)
     {
         $this->arguments[$key] = $value;
 
@@ -83,6 +91,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Getter for all arguments.
+	 * 所有参数的Getter
      *
      * @return array
      */
@@ -93,8 +102,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Set args property.
-     *
-     * @param array $args Arguments
+	 * 设置args属性
      *
      * @return $this
      */
@@ -107,18 +115,18 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Has argument.
-     *
-     * @param string $key Key of arguments array
+	 * 有参数
      *
      * @return bool
      */
-    public function hasArgument($key)
+    public function hasArgument(string $key)
     {
         return \array_key_exists($key, $this->arguments);
     }
 
     /**
      * ArrayAccess for argument getter.
+	 * 参数getter的ArrayAccess
      *
      * @param string $key Array key
      *
@@ -134,6 +142,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * ArrayAccess for argument setter.
+	 * 参数设置器的ArrayAccess
      *
      * @param string $key   Array key to set
      * @param mixed  $value Value
@@ -148,6 +157,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * ArrayAccess for unset argument.
+	 * 用于未设置参数的ArrayAccess
      *
      * @param string $key Array key
      *
@@ -163,6 +173,7 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * ArrayAccess has argument.
+	 * ArrayAccess有参数
      *
      * @param string $key Array key
      *
@@ -176,8 +187,9 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 
     /**
      * IteratorAggregate for iterating over the object like an array.
+	 * IteratorAggregate用于像数组一样遍历对象
      *
-     * @return \ArrayIterator
+     * @return \ArrayIterator<string, mixed>
      */
     #[\ReturnTypeWillChange]
     public function getIterator()

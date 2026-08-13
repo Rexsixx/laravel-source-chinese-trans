@@ -1,6 +1,6 @@
 <?php
 /**
- * 路由，契约，控制器调度器
+ * Illuminate，路由，契约，控制器调度程序
  */
 
 namespace Illuminate\Routing\Contracts;

@@ -1,6 +1,6 @@
 <?php
 /**
- * COOKIE，加密cookie
+ * Illuminate，Cookie，中间件，加密cookie
  */
 
 namespace Illuminate\Cookie\Middleware;
@@ -17,7 +17,7 @@ class EncryptCookies
 {
     /**
      * The encrypter instance.
-	 * 加密实例
+	 * 加密器实例
      *
      * @var \Illuminate\Contracts\Encryption\Encrypter
      */
@@ -41,7 +41,7 @@ class EncryptCookies
 
     /**
      * Create a new CookieGuard instance.
-	 * 创建新的CookieGuard实例
+	 * 创建一个新的CookieGuard实例
      *
      * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
      * @return void
@@ -86,7 +86,7 @@ class EncryptCookies
     protected function decrypt(Request $request)
     {
         foreach ($request->cookies as $key => $cookie) {
-            if ($this->isDisabled($key)) {
+            if ($this->isDisabled($key) || is_array($cookie)) {
                 continue;
             }
 
@@ -143,7 +143,7 @@ class EncryptCookies
 
     /**
      * Encrypt the cookies on an outgoing response.
-	 * 加密cookie对传出响应
+	 * 对传出响应的cookie进行加密
      *
      * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @return \Symfony\Component\HttpFoundation\Response
@@ -169,7 +169,7 @@ class EncryptCookies
 
     /**
      * Duplicate a cookie with a new value.
-	 * 复制一个cookie用新值
+	 * 用新值复制一个cookie
      *
      * @param  \Symfony\Component\HttpFoundation\Cookie  $cookie
      * @param  mixed  $value

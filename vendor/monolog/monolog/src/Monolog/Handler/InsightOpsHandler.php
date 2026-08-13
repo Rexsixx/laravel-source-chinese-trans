@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，InsightOps 处理程序
+ * Monolog，Handler，Insight Ops 处理器
  */
 
 /*
@@ -19,6 +19,7 @@ use Monolog\Logger;
 
 /**
  * Inspired on LogEntriesHandler.
+ * 灵感来自于日志条目处理程序。
  *
  * @author Robert Kaufmann III <rok3@rok3.me>
  * @author Gabriel Machado <gabriel.ms1@hotmail.com>

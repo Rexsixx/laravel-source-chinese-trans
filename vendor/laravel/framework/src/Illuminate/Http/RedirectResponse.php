@@ -1,6 +1,6 @@
 <?php
 /**
- * Http，回调响应类
+ * Illuminate，Http，重定向响应
  */
 
 namespace Illuminate\Http;
@@ -31,7 +31,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * The session store instance.
-	 * session存储实例
+	 * 会话存储实例
      *
      * @var \Illuminate\Session\Store
      */
@@ -39,7 +39,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Flash a piece of data to the session.
-	 * 写入一段数据
+	 * 将一段数据写入会话
      *
      * @param  string|array  $key
      * @param  mixed  $value
@@ -58,7 +58,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Add multiple cookies to the response.
-	 * 添加多个cookie响应
+	 * 向响应添加多个cookie
      *
      * @param  array  $cookies
      * @return $this
@@ -74,7 +74,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Flash an array of input to the session.
-	 * 写入一个数组
+	 * 将输入数组闪现到会话中
      *
      * @param  array|null  $input
      * @return $this
@@ -90,7 +90,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Remove all uploaded files form the given input array.
-	 * 删除所有上传的文件从给定的输入数组中
+	 * 从给定的输入数组中删除所有上传的文件
      *
      * @param  array  $input
      * @return array
@@ -112,7 +112,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Flash an array of input to the session.
-	 * 写入一个数组至会话
+	 * 将输入数组闪现到会话中
      *
      * @return $this
      */
@@ -123,7 +123,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Flash an array of input to the session.
-	 * 闪存一个数据至会话中
+	 * 将输入数组闪现到会话中
      *
      * @return $this
      */
@@ -134,7 +134,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Flash a container of errors to the session.
-	 * 闪现错误容器到会话中
+	 * 将错误容器闪现到会话中
      *
      * @param  \Illuminate\Contracts\Support\MessageProvider|array|string  $provider
      * @param  string  $key
@@ -159,7 +159,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Parse the given errors into an appropriate value.
-	 * 解析给定的错误为适当的值
+	 * 将给定的错误解析为适当的值
      *
      * @param  \Illuminate\Contracts\Support\MessageProvider|array|string  $provider
      * @return \Illuminate\Support\MessageBag
@@ -174,8 +174,32 @@ class RedirectResponse extends BaseRedirectResponse
     }
 
     /**
+     * Add a fragment identifier to the URL.
+	 * 向URL添加片段标识符
+     *
+     * @param  string  $fragment
+     * @return $this
+     */
+    public function withFragment($fragment)
+    {
+        return $this->withoutFragment()
+                ->setTargetUrl($this->getTargetUrl().'#'.Str::after($fragment, '#'));
+    }
+
+    /**
+     * Remove any fragment identifier from the response URL.
+	 * 从响应URL中删除任何片段标识符
+     *
+     * @return $this
+     */
+    public function withoutFragment()
+    {
+        return $this->setTargetUrl(Str::before($this->getTargetUrl(), '#'));
+    }
+
+    /**
      * Get the original response content.
-	 * 得到原始响应内容
+	 * 获取原始响应内容
      *
      * @return null
      */
@@ -186,7 +210,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Get the request instance.
-	 * 得到请求实例
+	 * 获取请求实例
      *
      * @return \Illuminate\Http\Request|null
      */
@@ -209,7 +233,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Get the session store instance.
-	 * 得到session存储实例
+	 * 得到会话存储实例
      *
      * @return \Illuminate\Session\Store|null
      */
@@ -220,7 +244,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Set the session store instance.
-	 * 设置session存储实例
+	 * 设置会话存储实例
      *
      * @param  \Illuminate\Session\Store  $session
      * @return void
@@ -232,7 +256,7 @@ class RedirectResponse extends BaseRedirectResponse
 
     /**
      * Dynamically bind flash data in the session.
-	 * 动态绑定session中闪存数据
+	 * 动态绑定会话中的flash数据
      *
      * @param  string  $method
      * @param  array  $parameters

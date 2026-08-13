@@ -1,6 +1,6 @@
 <?php
 /**
- * 路由，路由注册器
+ * Illuminate，路由，路由注册器
  */
 
 namespace Illuminate\Routing;
@@ -20,12 +20,15 @@ use InvalidArgumentException;
  * @method \Illuminate\Routing\Route options(string $uri, \Closure|array|string|null $action = null)
  * @method \Illuminate\Routing\Route any(string $uri, \Closure|array|string|null $action = null)
  * @method \Illuminate\Routing\RouteRegistrar as(string $value)
+ * @method \Illuminate\Routing\RouteRegistrar controller(string $controller)
  * @method \Illuminate\Routing\RouteRegistrar domain(string $value)
  * @method \Illuminate\Routing\RouteRegistrar middleware(array|string|null $middleware)
  * @method \Illuminate\Routing\RouteRegistrar name(string $value)
- * @method \Illuminate\Routing\RouteRegistrar namespace(string $value)
+ * @method \Illuminate\Routing\RouteRegistrar namespace(string|null $value)
  * @method \Illuminate\Routing\RouteRegistrar prefix(string  $prefix)
+ * @method \Illuminate\Routing\RouteRegistrar scopeBindings()
  * @method \Illuminate\Routing\RouteRegistrar where(array  $where)
+ * @method \Illuminate\Routing\RouteRegistrar withoutMiddleware(array|string  $middleware)
  */
 class RouteRegistrar
 {
@@ -39,7 +42,7 @@ class RouteRegistrar
 
     /**
      * The attributes to pass on to the router.
-	 * 路由属性
+	 * 要传递给路由器的属性
      *
      * @var array
      */
@@ -47,9 +50,9 @@ class RouteRegistrar
 
     /**
      * The methods to dynamically pass through to the router.
-	 * 动态传递给路由的方法
+	 * 动态传递给路由器的方法
      *
-     * @var array
+     * @var string[]
      */
     protected $passthru = [
         'get', 'post', 'put', 'patch', 'delete', 'options', 'any',
@@ -57,27 +60,38 @@ class RouteRegistrar
 
     /**
      * The attributes that can be set through this class.
-	 * 允许属性
+	 * 可以通过该类设置的属性
      *
-     * @var array
+     * @var string[]
      */
     protected $allowedAttributes = [
-        'as', 'domain', 'middleware', 'name', 'namespace', 'prefix', 'where',
+        'as',
+        'controller',
+        'domain',
+        'middleware',
+        'name',
+        'namespace',
+        'prefix',
+        'scopeBindings',
+        'where',
+        'withoutMiddleware',
     ];
 
     /**
      * The attributes that are aliased.
-	 * 属性别名
+	 * 使用别名的属性
      *
      * @var array
      */
     protected $aliases = [
         'name' => 'as',
+        'scopeBindings' => 'scope_bindings',
+        'withoutMiddleware' => 'excluded_middleware',
     ];
 
     /**
      * Create a new route registrar instance.
-	 * 创建新的路由注册实例
+	 * 创建一个新的路由注册器实例
      *
      * @param  \Illuminate\Routing\Router  $router
      * @return void
@@ -89,7 +103,7 @@ class RouteRegistrar
 
     /**
      * Set the value for a given attribute.
-	 * 设置给定属性值
+	 * 设置给定属性的值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -103,7 +117,21 @@ class RouteRegistrar
             throw new InvalidArgumentException("Attribute [{$key}] does not exist.");
         }
 
-        $this->attributes[Arr::get($this->aliases, $key, $key)] = $value;
+        if ($key === 'middleware') {
+            foreach ($value as $index => $middleware) {
+                $value[$index] = (string) $middleware;
+            }
+        }
+
+        $attributeKey = Arr::get($this->aliases, $key, $key);
+
+        if ($key === 'withoutMiddleware') {
+            $value = array_merge(
+                (array) ($this->attributes[$attributeKey] ?? []), Arr::wrap($value)
+            );
+        }
+
+        $this->attributes[$attributeKey] = $value;
 
         return $this;
     }
@@ -123,6 +151,20 @@ class RouteRegistrar
     }
 
     /**
+     * Route an API resource to a controller.
+	 * 将API资源路由到控制器
+     *
+     * @param  string  $name
+     * @param  string  $controller
+     * @param  array  $options
+     * @return \Illuminate\Routing\PendingResourceRegistration
+     */
+    public function apiResource($name, $controller, array $options = [])
+    {
+        return $this->router->apiResource($name, $controller, $this->attributes + $options);
+    }
+
+    /**
      * Create a route group with shared attributes.
 	 * 创建具有共享属性的路由组
      *
@@ -136,7 +178,7 @@ class RouteRegistrar
 
     /**
      * Register a new route with the given verbs.
-	 * 注册一条新路线用给定的动词
+	 * 用给定的动词注册一条新路线
      *
      * @param  array|string  $methods
      * @param  string  $uri
@@ -150,7 +192,7 @@ class RouteRegistrar
 
     /**
      * Register a new route with the router.
-	 * 注册一条新路线使用路由
+	 * 向路由器注册一条新路由
      *
      * @param  string  $method
      * @param  string  $uri
@@ -168,7 +210,7 @@ class RouteRegistrar
 
     /**
      * Compile the action into an array including the attributes.
-	 * 编译动作成包含属性的数组
+	 * 将动作编译成包含属性的数组
      *
      * @param  \Closure|array|string|null  $action
      * @return array
@@ -186,6 +228,9 @@ class RouteRegistrar
         if (is_array($action) &&
             ! Arr::isAssoc($action) &&
             Reflector::isCallable($action)) {
+            if (strncmp($action[0], '\\', 1)) {
+                $action[0] = '\\'.$action[0];
+            }
             $action = [
                 'uses' => $action[0].'@'.$action[1],
                 'controller' => $action[0].'@'.$action[1],
@@ -197,7 +242,7 @@ class RouteRegistrar
 
     /**
      * Dynamically handle calls into the route registrar.
-	 * 动态调取方法
+	 * 动态处理对路由注册器的调用
      *
      * @param  string  $method
      * @param  array  $parameters
@@ -216,7 +261,7 @@ class RouteRegistrar
                 return $this->attribute($method, is_array($parameters[0]) ? $parameters[0] : $parameters);
             }
 
-            return $this->attribute($method, $parameters[0]);
+            return $this->attribute($method, array_key_exists(0, $parameters) ? $parameters[0] : true);
         }
 
         throw new BadMethodCallException(sprintf(

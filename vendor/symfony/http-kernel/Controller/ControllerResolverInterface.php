@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，控制器，控制器解析器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * A ControllerResolverInterface implementation knows how to determine the
  * controller to execute based on a Request object.
+ * ControllerResolverInterface实现知道如何确定基于Request对象执行的控制器。
  *
  * A Controller can be any valid PHP callable.
  *
@@ -25,6 +29,7 @@ interface ControllerResolverInterface
 {
     /**
      * Returns the Controller instance associated with a Request.
+	 * 返回与请求关联的控制器实例。
      *
      * As several resolvers can exist for a single application, a resolver must
      * return false when it is not able to determine the controller.

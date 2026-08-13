@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，Eloquent有时间戳
+ * Illuminate，数据库，Eloquent，问题，有时间戳
  */
 
 namespace Illuminate\Database\Eloquent\Concerns;
@@ -19,7 +19,7 @@ trait HasTimestamps
 
     /**
      * Update the model's update timestamp.
-	 * 更新模型更新时间戳
+	 * 更新模型的更新时间戳
      *
      * @return bool
      */
@@ -40,7 +40,7 @@ trait HasTimestamps
      *
      * @return void
      */
-    protected function updateTimestamps()
+    public function updateTimestamps()
     {
         $time = $this->freshTimestamp();
 
@@ -59,7 +59,7 @@ trait HasTimestamps
 
     /**
      * Set the value of the "created at" attribute.
-	 * 设置"created at"属性值
+	 * 设置"created at"属性的值
      *
      * @param  mixed  $value
      * @return $this
@@ -73,7 +73,7 @@ trait HasTimestamps
 
     /**
      * Set the value of the "updated at" attribute.
-	 * 设置"updated at"属性值
+	 * 设置"更新时间"属性的值
      *
      * @param  mixed  $value
      * @return $this
@@ -87,7 +87,7 @@ trait HasTimestamps
 
     /**
      * Get a fresh timestamp for the model.
-	 * 得到一个新的时间戳为模型
+	 * 为模型获取一个新的时间戳
      *
      * @return \Illuminate\Support\Carbon
      */
@@ -98,7 +98,7 @@ trait HasTimestamps
 
     /**
      * Get a fresh timestamp for the model.
-	 * 得到一个新的时间戳为模型
+	 * 为模型获取一个新的时间戳
      *
      * @return string
      */
@@ -120,7 +120,7 @@ trait HasTimestamps
 
     /**
      * Get the name of the "created at" column.
-	 * 得到"updated at"列的名称
+	 * 获取"创建位置"列的名称
      *
      * @return string|null
      */
@@ -131,7 +131,7 @@ trait HasTimestamps
 
     /**
      * Get the name of the "updated at" column.
-	 * 得到"updated at"列的名称
+	 * 获取"更新时间"列的名称
      *
      * @return string|null
      */
@@ -142,9 +142,9 @@ trait HasTimestamps
 
     /**
      * Get the fully qualified "created at" column.
-	 * 得到完全限定的"created at"列
+	 * 获取完全限定的"created at"列
      *
-     * @return string
+     * @return string|null
      */
     public function getQualifiedCreatedAtColumn()
     {
@@ -153,9 +153,9 @@ trait HasTimestamps
 
     /**
      * Get the fully qualified "updated at" column.
-	 * 得到完全限定的"updated at"列
+	 * 获取完全限定的"updated at"列
      *
-     * @return string
+     * @return string|null
      */
     public function getQualifiedUpdatedAtColumn()
     {

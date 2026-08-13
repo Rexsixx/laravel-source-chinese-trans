@@ -1,6 +1,6 @@
 <?php
 /**
- * Redis，事件命令执行
+ * Illuminate，Redis，事件，命令执行
  */
 
 namespace Illuminate\Redis\Events;
@@ -9,7 +9,7 @@ class CommandExecuted
 {
     /**
      * The Redis command that was executed.
-	 * 被执行的Redis命令
+	 * 执行的Redis命令
      *
      * @var string
      */

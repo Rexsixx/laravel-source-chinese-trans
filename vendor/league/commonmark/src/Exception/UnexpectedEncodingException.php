@@ -1,7 +1,9 @@
 <?php
 /**
- * League，普通标记，异常，意外的编码异常
+ * League，CommonMark，Exception，意外的编码异常
  */
+
+declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
@@ -14,6 +16,6 @@
 
 namespace League\CommonMark\Exception;
 
-final class UnexpectedEncodingException extends \RuntimeException
+final class UnexpectedEncodingException extends \RuntimeException implements CommonMarkException
 {
 }

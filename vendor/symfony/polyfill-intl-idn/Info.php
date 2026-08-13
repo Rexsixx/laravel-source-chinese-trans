@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Polyfill，Intl，Idn，Info
+ * Symfony，Polyfill，Intl，Idn，信息
  */
 
 /*

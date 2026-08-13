@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，Eloquent关联
+ * Illuminate，数据库，Eloquent，关系，关系抽象类
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -9,6 +9,8 @@ use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\MultipleRecordsFoundException;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Traits\ForwardsCalls;
@@ -41,7 +43,7 @@ abstract class Relation
 
     /**
      * The related model instance.
-	 * 关联模型实例
+	 * 相关的模型实例
      *
      * @var \Illuminate\Database\Eloquent\Model
      */
@@ -56,7 +58,7 @@ abstract class Relation
     protected static $constraints = true;
 
     /**
-     * An array to map class names to their morph names in database.
+     * An array to map class names to their morph names in the database.
 	 * 一个数组，用于将类名映射到数据库中的类名。
      *
      * @var array
@@ -64,8 +66,24 @@ abstract class Relation
     public static $morphMap = [];
 
     /**
+     * Prevents morph relationships without a morph map.
+	 * 防止没有变形映射的变形关系
+     *
+     * @var bool
+     */
+    protected static $requireMorphMap = false;
+
+    /**
+     * The count of self joins.
+	 * 自连接的计数
+     *
+     * @var int
+     */
+    protected static $selfJoinCount = 0;
+
+    /**
      * Create a new relation instance.
-	 * 创建新的关系实例
+	 * 创建一个新的关系实例
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Model  $parent
@@ -82,7 +100,7 @@ abstract class Relation
 
     /**
      * Run a callback with constraints disabled on the relation.
-	 * 运行回调在禁用关系约束的情况下
+	 * 在禁用关系约束的情况下运行回调
      *
      * @param  \Closure  $callback
      * @return mixed
@@ -96,8 +114,7 @@ abstract class Relation
         // When resetting the relation where clause, we want to shift the first element
         // off of the bindings, leaving only the constraints that the developers put
         // as "extra" on the relationships, and not original relation constraints.
-		// 在重置relationship where子句时，我们希望移动第一个元素去掉绑定，
-		// 只留下开发人员对关系施加的“额外”约束，而不是原始关系约束。
+		// 当重置where子句的关系时，我们想要移动绑定的第一个元素。
         try {
             return $callback();
         } finally {
@@ -107,7 +124,7 @@ abstract class Relation
 
     /**
      * Set the base constraints on the relation query.
-	 * 设置基本约束在关系查询上
+	 * 在关系查询上设置基本约束
      *
      * @return void
      */
@@ -115,7 +132,7 @@ abstract class Relation
 
     /**
      * Set the constraints for an eager load of the relation.
-	 * 设置约束为关系的即时加载
+	 * 为关系的即时加载设置约束
      *
      * @param  array  $models
      * @return void
@@ -145,7 +162,7 @@ abstract class Relation
 
     /**
      * Get the results of the relationship.
-	 * 得到得到关系的结果
+	 * 得到关系的结果
      *
      * @return mixed
      */
@@ -153,7 +170,7 @@ abstract class Relation
 
     /**
      * Get the relationship for eager loading.
-	 * 得到急于加载的关系
+	 * 获取急于加载的关系
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -163,8 +180,33 @@ abstract class Relation
     }
 
     /**
+     * Execute the query and get the first result if it's the sole matching record.
+	 * 如果查询是唯一匹配的记录，则执行查询并获得第一个结果。
+     *
+     * @param  array|string  $columns
+     * @return \Illuminate\Database\Eloquent\Model
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws \Illuminate\Database\MultipleRecordsFoundException
+     */
+    public function sole($columns = ['*'])
+    {
+        $result = $this->take(2)->get($columns);
+
+        if ($result->isEmpty()) {
+            throw (new ModelNotFoundException)->setModel(get_class($this->related));
+        }
+
+        if ($result->count() > 1) {
+            throw new MultipleRecordsFoundException;
+        }
+
+        return $result->first();
+    }
+
+    /**
      * Execute the query as a "select" statement.
-	 * 执行查询以"select"语句的形式
+	 * 以"select"语句的形式执行查询
      *
      * @param  array  $columns
      * @return \Illuminate\Database\Eloquent\Collection
@@ -193,7 +235,7 @@ abstract class Relation
 
     /**
      * Run a raw update against the base query.
-	 * 运行原始更新对基本查询
+	 * 对基本查询运行原始更新
      *
      * @param  array  $attributes
      * @return int
@@ -205,7 +247,7 @@ abstract class Relation
 
     /**
      * Add the constraints for a relationship count query.
-	 * 添加约束为关系计数查询
+	 * 为关系计数查询添加约束
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
@@ -220,7 +262,7 @@ abstract class Relation
 
     /**
      * Add the constraints for an internal relationship existence query.
-	 * 添加约束为内部关系存在性查询
+	 * 为内部关系存在性查询添加约束
      *
      * Essentially, these queries compare on column names like whereColumn.
      *
@@ -237,11 +279,23 @@ abstract class Relation
     }
 
     /**
+     * Get a relationship join table hash.
+	 * 获取关系连接表散列
+     *
+     * @param  bool  $incrementJoinCount
+     * @return string
+     */
+    public function getRelationCountHash($incrementJoinCount = true)
+    {
+        return 'laravel_reserved_'.($incrementJoinCount ? static::$selfJoinCount++ : static::$selfJoinCount);
+    }
+
+    /**
      * Get all of the primary keys for an array of models.
-	 * 得到模型数组的所有主键
+	 * 获取模型数组的所有主键
      *
      * @param  array  $models
-     * @param  string  $key
+     * @param  string|null  $key
      * @return array
      */
     protected function getKeys(array $models, $key = null)
@@ -252,8 +306,19 @@ abstract class Relation
     }
 
     /**
+     * Get the query builder that will contain the relationship constraints.
+	 * 获取将包含关系约束的查询生成器
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function getRelationQuery()
+    {
+        return $this->query;
+    }
+
+    /**
      * Get the underlying query for the relation.
-	 * 得到关系的基础查询
+	 * 获取关系的基础查询
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -264,7 +329,7 @@ abstract class Relation
 
     /**
      * Get the base query builder driving the Eloquent builder.
-	 * 得到驱动Eloquent构建器的基本查询构建器
+	 * 获取驱动Eloquent构建器的基本查询构建器
      *
      * @return \Illuminate\Database\Query\Builder
      */
@@ -275,7 +340,7 @@ abstract class Relation
 
     /**
      * Get the parent model of the relation.
-	 * 得到关系的父模型
+	 * 获取关系的父模型
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
@@ -286,7 +351,7 @@ abstract class Relation
 
     /**
      * Get the fully qualified parent key name.
-	 * 得到完全限定父键名
+	 * 获取完全限定父键名
      *
      * @return string
      */
@@ -297,7 +362,7 @@ abstract class Relation
 
     /**
      * Get the related model of the relation.
-	 * 得到关系的相关模型
+	 * 获取关系的相关模型
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
@@ -308,7 +373,7 @@ abstract class Relation
 
     /**
      * Get the name of the "created at" column.
-	 * 得到"创建"列的名称
+	 * 获取"创建位置"列的名称
      *
      * @return string
      */
@@ -319,7 +384,7 @@ abstract class Relation
 
     /**
      * Get the name of the "updated at" column.
-	 * 得到"更新"列的名称
+	 * 获取"更新时间"列的名称
      *
      * @return string
      */
@@ -330,7 +395,7 @@ abstract class Relation
 
     /**
      * Get the name of the related model's "updated at" column.
-	 * 相关模型的"更新"列的名称
+	 * 获取相关模型的"更新时间"列的名称
      *
      * @return string
      */
@@ -341,7 +406,7 @@ abstract class Relation
 
     /**
      * Get the name of the "where in" method for eager loading.
-	 * 得到即时加载的"where in"方法的名称
+	 * 获取即时加载的"where in"方法的名称
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
@@ -353,6 +418,44 @@ abstract class Relation
                     && in_array($model->getKeyType(), ['int', 'integer'])
                         ? 'whereIntegerInRaw'
                         : 'whereIn';
+    }
+
+    /**
+     * Prevent polymorphic relationships from being used without model mappings.
+	 * 防止在没有模型映射的情况下使用多态关系
+     *
+     * @param  bool  $requireMorphMap
+     * @return void
+     */
+    public static function requireMorphMap($requireMorphMap = true)
+    {
+        static::$requireMorphMap = $requireMorphMap;
+    }
+
+    /**
+     * Determine if polymorphic relationships require explicit model mapping.
+	 * 确定多态关系是否需要显式的模型映射
+     *
+     * @return bool
+     */
+    public static function requiresMorphMap()
+    {
+        return static::$requireMorphMap;
+    }
+
+    /**
+     * Define the morph map for polymorphic relations and require all morphed models to be explicitly mapped.
+	 * 为多态关系定义变形映射，并要求显式映射所有变形模型。
+     *
+     * @param  array  $map
+     * @param  bool  $merge
+     * @return array
+     */
+    public static function enforceMorphMap(array $map, $merge = true)
+    {
+        static::requireMorphMap();
+
+        return static::morphMap($map, $merge);
     }
 
     /**
@@ -377,7 +480,7 @@ abstract class Relation
 
     /**
      * Builds a table-keyed array from model class names.
-	 * 构建表键数组根据模型类名
+	 * 根据模型类名构建表键数组
      *
      * @param  string[]|null  $models
      * @return array|null
@@ -395,7 +498,7 @@ abstract class Relation
 
     /**
      * Get the model associated with a custom polymorphic type.
-	 * 得到与自定义多态类型相关联的模型
+	 * 获取与自定义多态类型相关联的模型
      *
      * @param  string  $alias
      * @return string|null
@@ -419,13 +522,7 @@ abstract class Relation
             return $this->macroCall($method, $parameters);
         }
 
-        $result = $this->forwardCallTo($this->query, $method, $parameters);
-
-        if ($result === $this->query) {
-            return $this;
-        }
-
-        return $result;
+        return $this->forwardDecoratedCallTo($this->query, $method, $parameters);
     }
 
     /**

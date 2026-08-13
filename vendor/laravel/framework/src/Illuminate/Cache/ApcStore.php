@@ -1,6 +1,6 @@
 <?php
 /**
- * 缓存，Apc存储，Alternatice PHP Cache，可选PHP缓存
+ * Illuminate，缓存，Apc 存储
  */
 
 namespace Illuminate\Cache;
@@ -11,7 +11,7 @@ class ApcStore extends TaggableStore
 
     /**
      * The APC wrapper instance.
-	 * apc封装实例
+	 * APC封装器实例
      *
      * @var \Illuminate\Cache\ApcWrapper
      */
@@ -19,7 +19,7 @@ class ApcStore extends TaggableStore
 
     /**
      * A string that should be prepended to keys.
-	 * 前缀，应该加在键前的字符串
+	 * 应该加在键前的字符串
      *
      * @var string
      */
@@ -27,7 +27,7 @@ class ApcStore extends TaggableStore
 
     /**
      * Create a new APC store.
-	 * 创建新的apc存储
+	 * 创建新的APC存储
      *
      * @param  \Illuminate\Cache\ApcWrapper  $apc
      * @param  string  $prefix
@@ -41,7 +41,7 @@ class ApcStore extends TaggableStore
 
     /**
      * Retrieve an item from the cache by key.
-	 * 检索一个项目从cache
+	 * 按键从缓存中检索项
      *
      * @param  string|array  $key
      * @return mixed
@@ -57,7 +57,7 @@ class ApcStore extends TaggableStore
 
     /**
      * Store an item in the cache for a given number of seconds.
-	 * 存储一个项目入缓存中使用给定秒数
+	 * 将项存储在缓存中给定的秒数
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -71,7 +71,7 @@ class ApcStore extends TaggableStore
 
     /**
      * Increment the value of an item in the cache.
-	 * 增加缓存中的值
+	 * 增加缓存中项的值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -84,7 +84,7 @@ class ApcStore extends TaggableStore
 
     /**
      * Decrement the value of an item in the cache.
-	 * 递减缓存中项目的值
+	 * 减少缓存中项的值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -97,7 +97,7 @@ class ApcStore extends TaggableStore
 
     /**
      * Store an item in the cache indefinitely.
-	 * 存储一个项目无限期在缓存中
+	 * 将项无限期地存储在缓存中
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -110,7 +110,7 @@ class ApcStore extends TaggableStore
 
     /**
      * Remove an item from the cache.
-	 * 移除项目从缓存中
+	 * 从缓存中删除项
      *
      * @param  string  $key
      * @return bool
@@ -122,7 +122,7 @@ class ApcStore extends TaggableStore
 
     /**
      * Remove all items from the cache.
-	 * 移除所有项目从缓存中
+	 * 从缓存中删除所有项
      *
      * @return bool
      */
@@ -133,7 +133,7 @@ class ApcStore extends TaggableStore
 
     /**
      * Get the cache key prefix.
-	 * 得到缓存前缀
+	 * 获取缓存键前缀
      *
      * @return string
      */

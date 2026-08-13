@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，资源生成命令
+ * Illuminate，基础，控制台，make:resource 资源创建命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -13,7 +13,7 @@ class ResourceMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -29,7 +29,7 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成类的类型
+	 * 生成的类的类型
      *
      * @var string
      */
@@ -52,15 +52,15 @@ class ResourceMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 得到生成器的存根文件
+	 * 获取生成器的存根文件
      *
      * @return string
      */
     protected function getStub()
     {
         return $this->collection()
-                    ? __DIR__.'/stubs/resource-collection.stub'
-                    : __DIR__.'/stubs/resource.stub';
+                    ? $this->resolveStubPath('/stubs/resource-collection.stub')
+                    : $this->resolveStubPath('/stubs/resource.stub');
     }
 
     /**
@@ -73,6 +73,20 @@ class ResourceMakeCommand extends GeneratorCommand
     {
         return $this->option('collection') ||
                Str::endsWith($this->argument('name'), 'Collection');
+    }
+
+    /**
+     * Resolve the fully-qualified path to the stub.
+	 * 解析到存根的全限定路径
+     *
+     * @param  string  $stub
+     * @return string
+     */
+    protected function resolveStubPath($stub)
+    {
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+                        ? $customPath
+                        : __DIR__.$stub;
     }
 
     /**

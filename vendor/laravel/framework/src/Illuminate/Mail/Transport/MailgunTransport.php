@@ -1,18 +1,20 @@
 <?php
 /**
- * 邮件，传输，Mailgun传输
+ * Illuminate，邮件，传输，Mailgun 传输
  */
 
 namespace Illuminate\Mail\Transport;
 
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use Swift_Mime_SimpleMessage;
+use Swift_TransportException;
 
 class MailgunTransport extends Transport
 {
     /**
      * Guzzle client instance.
-	 * 客户端实例
+	 * Guzzle客户端实例
      *
      * @var \GuzzleHttp\ClientInterface
      */
@@ -20,7 +22,7 @@ class MailgunTransport extends Transport
 
     /**
      * The Mailgun API key.
-	 * key
+	 * Mailgun API 密钥
      *
      * @var string
      */
@@ -28,7 +30,7 @@ class MailgunTransport extends Transport
 
     /**
      * The Mailgun email domain.
-	 * 域名
+	 * Mailgun 邮件域名
      *
      * @var string
      */
@@ -36,7 +38,7 @@ class MailgunTransport extends Transport
 
     /**
      * The Mailgun API endpoint.
-	 * 端口
+	 * Mailgun API 终端
      *
      * @var string
      */
@@ -63,6 +65,8 @@ class MailgunTransport extends Transport
 
     /**
      * {@inheritdoc}
+     *
+     * @return int
      */
     public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
     {
@@ -74,15 +78,20 @@ class MailgunTransport extends Transport
 
         $message->setBcc([]);
 
-        $response = $this->client->request(
-            'POST',
-            "https://{$this->endpoint}/v3/{$this->domain}/messages.mime",
-            $this->payload($message, $to)
-        );
+        try {
+            $response = $this->client->request(
+                'POST',
+                "https://{$this->endpoint}/v3/{$this->domain}/messages.mime",
+                $this->payload($message, $to)
+            );
+        } catch (GuzzleException $e) {
+            throw new Swift_TransportException('Request to Mailgun API failed.', $e->getCode(), $e);
+        }
 
-        $message->getHeaders()->addTextHeader(
-            'X-Mailgun-Message-ID', $this->getMessageId($response)
-        );
+        $messageId = $this->getMessageId($response);
+
+        $message->getHeaders()->addTextHeader('X-Message-ID', $messageId);
+        $message->getHeaders()->addTextHeader('X-Mailgun-Message-ID', $messageId);
 
         $message->setBcc($bcc);
 
@@ -93,7 +102,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the HTTP payload for sending the Mailgun message.
-	 * 得到用于发送Mailgun消息的HTTP有效负载
+	 * 获取用于发送Mailgun消息的HTTP有效负载
      *
      * @param  \Swift_Mime_SimpleMessage  $message
      * @param  string  $to
@@ -122,7 +131,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the "to" payload field for the API request.
-	 * 得到API请求的"to"有效负载字段
+	 * 获取API请求的"to"有效负载字段
      *
      * @param  \Swift_Mime_SimpleMessage  $message
      * @return string
@@ -136,7 +145,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get all of the contacts for the message.
-	 * 得到该消息的所有联系人
+	 * 获取该消息的所有联系人
      *
      * @param  \Swift_Mime_SimpleMessage  $message
      * @return array
@@ -150,7 +159,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the message ID from the response.
-	 * 得到响应的消息ID
+	 * 从响应中获取消息ID
      *
      * @param  \Psr\Http\Message\ResponseInterface  $response
      * @return string
@@ -164,7 +173,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the API key being used by the transport.
-	 * 得到传输所使用的API密钥
+	 * 获取传输所使用的API密钥
      *
      * @return string
      */
@@ -187,7 +196,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the domain being used by the transport.
-	 * 得到传输所使用的域
+	 * 获取传输所使用的域
      *
      * @return string
      */
@@ -210,7 +219,7 @@ class MailgunTransport extends Transport
 
     /**
      * Get the API endpoint being used by the transport.
-	 * 得到传输所使用的API端点
+	 * 获取传输所使用的API端点
      *
      * @return string
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * 会话，控制台会话表命令
+ * Illuminate，Session，控制台，session:table 会话表命令
  */
 
 namespace Illuminate\Session\Console;
@@ -13,7 +13,7 @@ class SessionTableCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -75,7 +75,7 @@ class SessionTableCommand extends Command
 
     /**
      * Create a base migration file for the session.
-	 * 创建基本迁移文件为会话
+	 * 为会话创建一个基本迁移文件
      *
      * @return string
      */

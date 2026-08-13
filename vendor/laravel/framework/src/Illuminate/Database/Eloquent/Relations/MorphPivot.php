@@ -1,11 +1,10 @@
 <?php
 /**
- * 数据库，Eloquent改变主
+ * Illuminate，数据库，Eloquent，关系，变形主
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 class MorphPivot extends Pivot
@@ -15,6 +14,7 @@ class MorphPivot extends Pivot
 	 * 多态关系的类型
      *
      * Explicitly define this so it's not included in saved attributes.
+	 * 显式地定义它，使它不包含在保存的属性中。
      *
      * @var string
      */
@@ -22,9 +22,10 @@ class MorphPivot extends Pivot
 
     /**
      * The value of the polymorphic relation.
-	 * 多态关系值 
+	 * 多态关系的值
      *
      * Explicitly define this so it's not included in saved attributes.
+	 * 显式地定义它，使它不包含在保存的属性中。
      *
      * @var string
      */
@@ -32,12 +33,12 @@ class MorphPivot extends Pivot
 
     /**
      * Set the keys for a save update query.
-	 * 为查询更新保存键
+	 * 设置保存更新查询的键
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function setKeysForSaveQuery(Builder $query)
+    protected function setKeysForSaveQuery($query)
     {
         $query->where($this->morphType, $this->morphClass);
 
@@ -45,8 +46,22 @@ class MorphPivot extends Pivot
     }
 
     /**
+     * Set the keys for a select query.
+	 * 为选择查询设置键
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSelectQuery($query)
+    {
+        $query->where($this->morphType, $this->morphClass);
+
+        return parent::setKeysForSelectQuery($query);
+    }
+
+    /**
      * Delete the pivot model record from the database.
-	 * 删除数据透视模型记录
+	 * 从数据库中删除数据透视模型记录
      *
      * @return int
      */
@@ -70,8 +85,19 @@ class MorphPivot extends Pivot
     }
 
     /**
+     * Get the morph type for the pivot.
+	 * 获取pivot的变形类型
+     *
+     * @return string
+     */
+    public function getMorphType()
+    {
+        return $this->morphType;
+    }
+
+    /**
      * Set the morph type for the pivot.
-	 * 设置主的变形类型
+	 * 设置pivot的变形类型
      *
      * @param  string  $morphType
      * @return $this
@@ -85,7 +111,7 @@ class MorphPivot extends Pivot
 
     /**
      * Set the morph class for the pivot.
-	 * 设置变形类为轴
+	 * 为枢轴设置变形类
      *
      * @param  string  $morphClass
      * @return \Illuminate\Database\Eloquent\Relations\MorphPivot
@@ -99,7 +125,7 @@ class MorphPivot extends Pivot
 
     /**
      * Get the queueable identity for the entity.
-	 * 得到实体的可排队标识
+	 * 获取实体的可排队标识
      *
      * @return mixed
      */
@@ -119,7 +145,7 @@ class MorphPivot extends Pivot
 
     /**
      * Get a new query to restore one or more models by their queueable IDs.
-	 * 得到一个新查询，根据可排队id还原一个或多个模型。
+	 * 获取一个新查询，根据可排队id还原一个或多个模型。
      *
      * @param  array|int  $ids
      * @return \Illuminate\Database\Eloquent\Builder
@@ -144,7 +170,7 @@ class MorphPivot extends Pivot
 
     /**
      * Get a new query to restore multiple models by their queueable IDs.
-	 * 得到一个新查询，根据可排队id恢复多个模型
+	 * 获取一个新查询，根据可排队id恢复多个模型。
      *
      * @param  array  $ids
      * @return \Illuminate\Database\Eloquent\Builder

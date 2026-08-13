@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，控制器元数据，参数元数据工厂
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpKernel\ControllerMetadata;
 
 /**
  * Builds {@see ArgumentMetadata} objects based on the given Controller.
+ * 基于给定的控制器构建{@see ArgumentMetadata}对象。
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
@@ -33,13 +37,22 @@ final class ArgumentMetadataFactory implements ArgumentMetadataFactoryInterface
             $class = $reflection->class;
         } else {
             $reflection = new \ReflectionFunction($controller);
-            if ($class = str_contains($reflection->name, '{closure}') ? null : $reflection->getClosureScopeClass()) {
+            if ($class = str_contains($reflection->name, '{closure') ? null : (\PHP_VERSION_ID >= 80111 ? $reflection->getClosureCalledClass() : $reflection->getClosureScopeClass())) {
                 $class = $class->name;
             }
         }
 
         foreach ($reflection->getParameters() as $param) {
-            $arguments[] = new ArgumentMetadata($param->getName(), $this->getType($param, $class), $param->isVariadic(), $param->isDefaultValueAvailable(), $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null, $param->allowsNull());
+            $attributes = [];
+            if (\PHP_VERSION_ID >= 80000) {
+                foreach ($param->getAttributes() as $reflectionAttribute) {
+                    if (class_exists($reflectionAttribute->getName())) {
+                        $attributes[] = $reflectionAttribute->newInstance();
+                    }
+                }
+            }
+
+            $arguments[] = new ArgumentMetadata($param->getName(), $this->getType($param, $class), $param->isVariadic(), $param->isDefaultValueAvailable(), $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null, $param->allowsNull(), $attributes);
         }
 
         return $arguments;
@@ -47,6 +60,7 @@ final class ArgumentMetadataFactory implements ArgumentMetadataFactoryInterface
 
     /**
      * Returns an associated type to the given parameter if available.
+	 * 如果可用，则返回给定参数的关联类型
      */
     private function getType(\ReflectionParameter $parameter, ?string $class): ?string
     {

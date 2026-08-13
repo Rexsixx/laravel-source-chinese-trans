@@ -1,6 +1,6 @@
 <?php
 /**
- * 事件，事件服务提供者
+ * Illuminate，事件，事件服务提供者
  */
 
 namespace Illuminate\Events;

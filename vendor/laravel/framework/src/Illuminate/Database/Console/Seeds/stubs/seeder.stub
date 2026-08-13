@@ -1,14 +1,17 @@
 <?php
 /**
- * 数据库，存根文件
+ * Illuminate，数据库，控制台，播种，存根，虚拟类
  */
+
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class DummyClass extends Seeder
+class {{ class }} extends Seeder
 {
     /**
      * Run the database seeds.
+	 * 运行数据库种子
      *
      * @return void
      */

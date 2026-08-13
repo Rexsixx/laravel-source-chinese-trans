@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -13,6 +17,7 @@ namespace Monolog\Handler;
 
 /**
  * Base Handler class providing basic close() support as well as handleBatch
+ * 基本处理程序类提供基本的close()支持和handleBatch
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
@@ -48,6 +53,15 @@ abstract class Handler implements HandlerInterface
     {
         $this->close();
 
-        return array_keys(get_object_vars($this));
+        $reflClass = new \ReflectionClass($this);
+
+        $keys = [];
+        foreach ($reflClass->getProperties() as $reflProp) {
+            if (!$reflProp->isStatic()) {
+                $keys[] = $reflProp->getName();
+            }
+        }
+
+        return $keys;
     }
 }

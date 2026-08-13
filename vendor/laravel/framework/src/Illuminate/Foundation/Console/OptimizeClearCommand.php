@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，优化清除命令
+ * Illuminate，基础，控制台，optimize:clear 优化清除命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -11,7 +11,7 @@ class OptimizeClearCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -33,6 +33,7 @@ class OptimizeClearCommand extends Command
      */
     public function handle()
     {
+        $this->call('event:clear');
         $this->call('view:clear');
         $this->call('cache:clear');
         $this->call('route:clear');

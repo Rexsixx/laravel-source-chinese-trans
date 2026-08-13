@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，中间件，添加解决方案
+ * Facade，Ignition，中间件，添加解决方案
  */
 
 namespace Facade\Ignition\Middleware;

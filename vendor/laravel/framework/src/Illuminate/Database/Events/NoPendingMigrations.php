@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，事件，没有等待中迁移
+ * Illuminate，数据库，事件，没有挂起的迁移
  */
 
 namespace Illuminate\Database\Events;
@@ -9,7 +9,7 @@ class NoPendingMigrations
 {
     /**
      * The migration method that was called.
-	 * 被调用迁移方法
+	 * 被调用的迁移方法
      *
      * @var string
      */

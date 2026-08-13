@@ -1,6 +1,6 @@
 <?php
 /**
- * TijsVerkoyen，Css内联样式，Css，性质，处理器
+ * TijsVerkoyen，CssToInlineStyles，Css，属性，处理器
  */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css\Property;
@@ -29,6 +29,7 @@ class Processor
             $properties[$i] = trim($properties[$i]);
 
             // if the new property begins with base64 it is part of the current property
+			// 如果新属性以base64开头，则它是当前属性的一部分。
             if (isset($properties[$i + 1]) && strpos(trim($properties[$i + 1]), 'base64,') === 0) {
                 $properties[$i] .= ';' . trim($properties[$i + 1]);
                 $keysToRemove[] = $i + 1;
@@ -54,8 +55,8 @@ class Processor
         $string = str_replace(array("\r", "\n"), '', $string);
         $string = str_replace(array("\t"), ' ', $string);
         $string = str_replace('"', '\'', $string);
-        $string = preg_replace('|/\*.*?\*/|', '', $string);
-        $string = preg_replace('/\s\s+/', ' ', $string);
+        $string = preg_replace('|/\*.*?\*/|', '', $string) ?? $string;
+        $string = preg_replace('/\s\s+/', ' ', $string) ?? $string;
 
         $string = trim($string);
         $string = rtrim($string, ';');
@@ -65,12 +66,13 @@ class Processor
 
     /**
      * Converts a property-string into an object
+	 * 将属性字符串转换为对象
      *
      * @param string $property
      *
      * @return Property|null
      */
-    public function convertToObject($property, Specificity $specificity = null)
+    public function convertToObject($property, ?Specificity $specificity = null)
     {
         if (strpos($property, ':') === false) {
             return null;
@@ -90,12 +92,13 @@ class Processor
 
     /**
      * Converts an array of property-strings into objects
+	 * 将属性字符串的数组转换为对象
      *
      * @param string[] $properties
      *
      * @return Property[]
      */
-    public function convertArrayToObjects(array $properties, Specificity $specificity = null)
+    public function convertArrayToObjects(array $properties, ?Specificity $specificity = null)
     {
         $objects = array();
 
@@ -113,6 +116,7 @@ class Processor
 
     /**
      * Build the property-string for multiple properties
+	 * 为多个属性构建属性字符串
      *
      * @param Property[] $properties
      *

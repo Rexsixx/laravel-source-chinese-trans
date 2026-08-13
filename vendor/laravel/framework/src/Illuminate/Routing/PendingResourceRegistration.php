@@ -1,19 +1,20 @@
 <?php
 /**
- * 路由，路由等待资源注册
+ * Illuminate，路由，待处理资源注册
  */
 
 namespace Illuminate\Routing;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Traits\Macroable;
 
 class PendingResourceRegistration
 {
-    use Macroable;
+    use CreatesRegularExpressionRouteConstraints, Macroable;
 
     /**
      * The resource registrar.
-	 * 资源注册
+	 * 资源注册商
      *
      * @var \Illuminate\Routing\ResourceRegistrar
      */
@@ -37,7 +38,7 @@ class PendingResourceRegistration
 
     /**
      * The resource options.
-	 * 资源操作
+	 * 资源选项
      *
      * @var array
      */
@@ -45,7 +46,7 @@ class PendingResourceRegistration
 
     /**
      * The resource's registration status.
-	 * 资源注册状态
+	 * 资源的注册状态
      *
      * @var bool
      */
@@ -53,7 +54,7 @@ class PendingResourceRegistration
 
     /**
      * Create a new pending resource registration instance.
-	 & 创建新的资源注册实例
+	 * 创建一个新的挂起的资源注册实例
      *
      * @param  \Illuminate\Routing\ResourceRegistrar  $registrar
      * @param  string  $name
@@ -71,7 +72,7 @@ class PendingResourceRegistration
 
     /**
      * Set the methods the controller should apply to.
-	 * 设置控制器应该接受的方法
+	 * 设置控制器应该应用的方法
      *
      * @param  array|string|dynamic  $methods
      * @return \Illuminate\Routing\PendingResourceRegistration
@@ -142,7 +143,7 @@ class PendingResourceRegistration
 
     /**
      * Override a route parameter's name.
-	 * 覆盖路由参数名称
+	 * 重写路由参数的名称
      *
      * @param  string  $previous
      * @param  string  $new
@@ -157,21 +158,57 @@ class PendingResourceRegistration
 
     /**
      * Add middleware to the resource routes.
-	 * 添加中间件
+	 * 向资源路由中添加中间件
      *
      * @param  mixed  $middleware
      * @return \Illuminate\Routing\PendingResourceRegistration
      */
     public function middleware($middleware)
     {
+        $middleware = Arr::wrap($middleware);
+
+        foreach ($middleware as $key => $value) {
+            $middleware[$key] = (string) $value;
+        }
+
         $this->options['middleware'] = $middleware;
 
         return $this;
     }
 
     /**
+     * Specify middleware that should be removed from the resource routes.
+	 * 指定应该从资源路由中删除的中间件
+     *
+     * @param  array|string  $middleware
+     * @return $this|array
+     */
+    public function withoutMiddleware($middleware)
+    {
+        $this->options['excluded_middleware'] = array_merge(
+            (array) ($this->options['excluded_middleware'] ?? []), Arr::wrap($middleware)
+        );
+
+        return $this;
+    }
+
+    /**
+     * Add "where" constraints to the resource routes.
+	 * 为资源路由添加"where"约束
+     *
+     * @param  mixed  $wheres
+     * @return \Illuminate\Routing\PendingResourceRegistration
+     */
+    public function where($wheres)
+    {
+        $this->options['wheres'] = $wheres;
+
+        return $this;
+    }
+
+    /**
      * Indicate that the resource routes should have "shallow" nesting.
-	 * 指明资源路由应该有"浅"嵌套
+	 * 指示资源路由应该有"浅"嵌套
      *
      * @param  bool  $shallow
      * @return \Illuminate\Routing\PendingResourceRegistration
@@ -179,6 +216,34 @@ class PendingResourceRegistration
     public function shallow($shallow = true)
     {
         $this->options['shallow'] = $shallow;
+
+        return $this;
+    }
+
+    /**
+     * Define the callable that should be invoked on a missing model exception.
+	 * 定义在缺失模型异常时应该调用的可调用对象
+     *
+     * @param  callable  $callback
+     * @return $this
+     */
+    public function missing($callback)
+    {
+        $this->options['missing'] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Indicate that the resource routes should be scoped using the given binding fields.
+	 * 指示资源路由应该使用给定的绑定字段限定范围
+     *
+     * @param  array  $fields
+     * @return \Illuminate\Routing\PendingResourceRegistration
+     */
+    public function scoped(array $fields = [])
+    {
+        $this->options['bindingFields'] = $fields;
 
         return $this;
     }

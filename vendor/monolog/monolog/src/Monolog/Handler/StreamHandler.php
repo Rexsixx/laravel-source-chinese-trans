@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，流处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -16,8 +20,10 @@ use Monolog\Utils;
 
 /**
  * Stores to any stream resource
+ * 存储到任何流资源
  *
  * Can be used to store into php://stderr, remote and local files, etc.
+ * 可以用来存储到php://stderr，远程和本地文件等。
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  *
@@ -41,17 +47,22 @@ class StreamHandler extends AbstractProcessingHandler
     protected $filePermission;
     /** @var bool */
     protected $useLocking;
+	/** @var string */
+    protected $fileOpenMode;
     /** @var true|null */
     private $dirCreated = null;
+    /** @var bool */
+    private $retrying = false;
 
     /**
      * @param resource|string $stream         If a missing path can't be created, an UnexpectedValueException will be thrown on first write
      * @param int|null        $filePermission Optional file permissions (default (0644) are only for owner read/write)
      * @param bool            $useLocking     Try to lock log file before doing any writes
+     * @param string          $fileOpenMode   The fopen() mode used when opening a file, if $stream is a file path
      *
      * @throws \InvalidArgumentException If stream is not a resource or string
      */
-    public function __construct($stream, $level = Logger::DEBUG, bool $bubble = true, ?int $filePermission = null, bool $useLocking = false)
+    public function __construct($stream, $level = Logger::DEBUG, bool $bubble = true, ?int $filePermission = null, bool $useLocking = false, $fileOpenMode = 'a')
     {
         parent::__construct($level, $bubble);
 
@@ -78,6 +89,7 @@ class StreamHandler extends AbstractProcessingHandler
             throw new \InvalidArgumentException('A stream must either be a resource or a string.');
         }
 
+        $this->fileOpenMode = $fileOpenMode;
         $this->filePermission = $filePermission;
         $this->useLocking = $useLocking;
     }
@@ -96,6 +108,7 @@ class StreamHandler extends AbstractProcessingHandler
 
     /**
      * Return the currently active stream if it is open
+	 * 如果它是开放的,返回当前的活动流
      *
      * @return resource|null
      */
@@ -106,6 +119,7 @@ class StreamHandler extends AbstractProcessingHandler
 
     /**
      * Return the stream URL if it was configured with a URL and not an active resource
+	 * 如果配置了URL而不是活动资源,则返回流URL
      *
      * @return string|null
      */
@@ -134,12 +148,17 @@ class StreamHandler extends AbstractProcessingHandler
             }
             $this->createDir($url);
             $this->errorMessage = null;
-            set_error_handler([$this, 'customErrorHandler']);
-            $stream = fopen($url, 'a');
-            if ($this->filePermission !== null) {
-                @chmod($url, $this->filePermission);
+            set_error_handler(function (...$args) {
+                return $this->customErrorHandler(...$args);
+            });
+            try {
+                $stream = fopen($url, $this->fileOpenMode);
+                if ($this->filePermission !== null) {
+                    @chmod($url, $this->filePermission);
+                }
+            } finally {
+                restore_error_handler();
             }
-            restore_error_handler();
             if (!is_resource($stream)) {
                 $this->stream = null;
 
@@ -159,8 +178,30 @@ class StreamHandler extends AbstractProcessingHandler
             flock($stream, LOCK_EX);
         }
 
-        $this->streamWrite($stream, $record);
+        $this->errorMessage = null;
+        set_error_handler(function (...$args) {
+            return $this->customErrorHandler(...$args);
+        });
+        try {
+            $this->streamWrite($stream, $record);
+        } finally {
+            restore_error_handler();
+        }
+        if ($this->errorMessage !== null) {
+            $error = $this->errorMessage;
+            // close the resource if possible to reopen it, and retry the failed write
+            if (!$this->retrying && $this->url !== null && $this->url !== 'php://memory') {
+                $this->retrying = true;
+                $this->close();
+                $this->write($record);
 
+                return;
+            }
+
+            throw new \UnexpectedValueException('Writing to the log file failed: '.$error . Utils::getRecordMessageForException($record));
+        }
+
+        $this->retrying = false;
         if ($this->useLocking) {
             flock($stream, LOCK_UN);
         }
@@ -168,6 +209,7 @@ class StreamHandler extends AbstractProcessingHandler
 
     /**
      * Write to stream
+	 * 写入流
      * @param resource $stream
      * @param array    $record
      *
@@ -180,7 +222,7 @@ class StreamHandler extends AbstractProcessingHandler
 
     private function customErrorHandler(int $code, string $msg): bool
     {
-        $this->errorMessage = preg_replace('{^(fopen|mkdir)\(.*?\): }', '', $msg);
+        $this->errorMessage = preg_replace('{^(fopen|mkdir|fwrite)\(.*?\): }', '', $msg);
 
         return true;
     }
@@ -202,6 +244,7 @@ class StreamHandler extends AbstractProcessingHandler
     private function createDir(string $url): void
     {
         // Do not try to create dir if it has already been tried.
+		// 如果已经尝试了,不要尝试创建dir
         if ($this->dirCreated) {
             return;
         }
@@ -209,10 +252,12 @@ class StreamHandler extends AbstractProcessingHandler
         $dir = $this->getDirFromStream($url);
         if (null !== $dir && !is_dir($dir)) {
             $this->errorMessage = null;
-            set_error_handler([$this, 'customErrorHandler']);
+            set_error_handler(function (...$args) {
+                return $this->customErrorHandler(...$args);
+            });
             $status = mkdir($dir, 0777, true);
             restore_error_handler();
-            if (false === $status && !is_dir($dir)) {
+            if (false === $status && !is_dir($dir) && strpos((string) $this->errorMessage, 'File exists') === false) {
                 throw new \UnexpectedValueException(sprintf('There is no existing directory at "%s" and it could not be created: '.$this->errorMessage, $dir));
             }
         }

@@ -1,19 +1,22 @@
 <?php
 /**
- * DeepCopy，深度复制
+ * DeepCopy，DeepCopy
  */
 
 namespace DeepCopy;
 
 use ArrayObject;
 use DateInterval;
+use DatePeriod;
 use DateTimeInterface;
 use DateTimeZone;
 use DeepCopy\Exception\CloneException;
+use DeepCopy\Filter\ChainableFilter;
 use DeepCopy\Filter\Filter;
 use DeepCopy\Matcher\Matcher;
 use DeepCopy\Reflection\ReflectionHelper;
 use DeepCopy\TypeFilter\Date\DateIntervalFilter;
+use DeepCopy\TypeFilter\Date\DatePeriodFilter;
 use DeepCopy\TypeFilter\Spl\ArrayObjectFilter;
 use DeepCopy\TypeFilter\Spl\SplDoublyLinkedListFilter;
 use DeepCopy\TypeFilter\TypeFilter;
@@ -34,6 +37,7 @@ class DeepCopy
 
     /**
      * Filters to apply.
+	 * 使用过滤器
      *
      * @var array Array of ['filter' => Filter, 'matcher' => Matcher] pairs.
      */
@@ -41,6 +45,7 @@ class DeepCopy
 
     /**
      * Type Filters to apply.
+	 * 类型过滤器应用
      *
      * @var array Array of ['filter' => Filter, 'matcher' => Matcher] pairs.
      */
@@ -66,11 +71,13 @@ class DeepCopy
 
         $this->addTypeFilter(new ArrayObjectFilter($this), new TypeMatcher(ArrayObject::class));
         $this->addTypeFilter(new DateIntervalFilter(), new TypeMatcher(DateInterval::class));
+        $this->addTypeFilter(new DatePeriodFilter(), new TypeMatcher(DatePeriod::class));
         $this->addTypeFilter(new SplDoublyLinkedListFilter($this), new TypeMatcher(SplDoublyLinkedList::class));
     }
 
     /**
      * If enabled, will not throw an exception when coming across an uncloneable property.
+	 * 如果启用,将不会抛出一个异常,当它遇到一个不可处理的属性时。
      *
      * @param $skipUncloneable
      *
@@ -85,6 +92,7 @@ class DeepCopy
 
     /**
      * Deep copies the given object.
+	 * 深入复制给定的对象
      *
      * @param mixed $object
      *
@@ -121,9 +129,18 @@ class DeepCopy
         ];
     }
 
+    public function prependTypeFilter(TypeFilter $filter, TypeMatcher $matcher)
+    {
+        array_unshift($this->typeFilters, [
+            'matcher' => $matcher,
+            'filter'  => $filter,
+        ]);
+    }
+
     private function recursiveCopy($var)
     {
         // Matches Type Filter
+		// 匹配式滤波器
         if ($filter = $this->getFirstMatchedTypeFilter($this->typeFilters, $var)) {
             return $filter->apply($var);
         }
@@ -168,6 +185,7 @@ class DeepCopy
 
     /**
      * Copies an object.
+	 * 复制一个对象
      *
      * @param object $object
      *
@@ -226,6 +244,11 @@ class DeepCopy
             return;
         }
 
+        // Ignore readonly properties
+        if (method_exists($property, 'isReadOnly') && $property->isReadOnly()) {
+            return;
+        }
+
         // Apply the filters
         foreach ($this->filters as $item) {
             /** @var Matcher $matcher */
@@ -241,6 +264,10 @@ class DeepCopy
                         return $this->recursiveCopy($object);
                     }
                 );
+
+                if ($filter instanceof ChainableFilter) {
+                    continue;
+                }
 
                 // If a filter matches, we stop processing this property
                 return;
@@ -262,6 +289,7 @@ class DeepCopy
 
     /**
      * Returns first filter that matches variable, `null` if no such filter found.
+	 * 返回第一个匹配变量的过滤器,如果没有这样的过滤器。
      *
      * @param array $filterRecords Associative array with 2 members: 'filter' with value of type {@see TypeFilter} and
      *                             'matcher' with value of type {@see TypeMatcher}
@@ -286,6 +314,7 @@ class DeepCopy
 
     /**
      * Returns first element that matches predicate, `null` if no such element found.
+	 * 如果没有找到这样的元素,就返回与谓词匹配的第一个元素。
      *
      * @param array    $elements Array of ['filter' => Filter, 'matcher' => Matcher] pairs.
      * @param callable $predicate Predicate arguments are: element.

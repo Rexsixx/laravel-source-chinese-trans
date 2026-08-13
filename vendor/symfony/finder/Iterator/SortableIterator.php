@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，探测器，迭代器，合适的迭代器
+ * Symfony，Component，Finder，迭代器，合适的迭代器
  */
 
 /*
@@ -16,8 +16,11 @@ namespace Symfony\Component\Finder\Iterator;
 
 /**
  * SortableIterator applies a sort on a given Iterator.
+ * SortableIterator在给定的Iterator上应用排序。
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @implements \IteratorAggregate<string, \SplFileInfo>
  */
 class SortableIterator implements \IteratorAggregate
 {
@@ -33,7 +36,8 @@ class SortableIterator implements \IteratorAggregate
     private $sort;
 
     /**
-     * @param int|callable $sort The sort type (SORT_BY_NAME, SORT_BY_TYPE, or a PHP callback)
+     * @param \Traversable<string, \SplFileInfo> $iterator
+     * @param int|callable                       $sort     The sort type (SORT_BY_NAME, SORT_BY_TYPE, or a PHP callback)
      *
      * @throws \InvalidArgumentException
      */
@@ -43,15 +47,15 @@ class SortableIterator implements \IteratorAggregate
         $order = $reverseOrder ? -1 : 1;
 
         if (self::SORT_BY_NAME === $sort) {
-            $this->sort = static function ($a, $b) use ($order) {
+            $this->sort = static function (\SplFileInfo $a, \SplFileInfo $b) use ($order) {
                 return $order * strcmp($a->getRealPath() ?: $a->getPathname(), $b->getRealPath() ?: $b->getPathname());
             };
         } elseif (self::SORT_BY_NAME_NATURAL === $sort) {
-            $this->sort = static function ($a, $b) use ($order) {
+            $this->sort = static function (\SplFileInfo $a, \SplFileInfo $b) use ($order) {
                 return $order * strnatcmp($a->getRealPath() ?: $a->getPathname(), $b->getRealPath() ?: $b->getPathname());
             };
         } elseif (self::SORT_BY_TYPE === $sort) {
-            $this->sort = static function ($a, $b) use ($order) {
+            $this->sort = static function (\SplFileInfo $a, \SplFileInfo $b) use ($order) {
                 if ($a->isDir() && $b->isFile()) {
                     return -$order;
                 } elseif ($a->isFile() && $b->isDir()) {
@@ -61,28 +65,28 @@ class SortableIterator implements \IteratorAggregate
                 return $order * strcmp($a->getRealPath() ?: $a->getPathname(), $b->getRealPath() ?: $b->getPathname());
             };
         } elseif (self::SORT_BY_ACCESSED_TIME === $sort) {
-            $this->sort = static function ($a, $b) use ($order) {
+            $this->sort = static function (\SplFileInfo $a, \SplFileInfo $b) use ($order) {
                 return $order * ($a->getATime() - $b->getATime());
             };
         } elseif (self::SORT_BY_CHANGED_TIME === $sort) {
-            $this->sort = static function ($a, $b) use ($order) {
+            $this->sort = static function (\SplFileInfo $a, \SplFileInfo $b) use ($order) {
                 return $order * ($a->getCTime() - $b->getCTime());
             };
         } elseif (self::SORT_BY_MODIFIED_TIME === $sort) {
-            $this->sort = static function ($a, $b) use ($order) {
+            $this->sort = static function (\SplFileInfo $a, \SplFileInfo $b) use ($order) {
                 return $order * ($a->getMTime() - $b->getMTime());
             };
         } elseif (self::SORT_BY_NONE === $sort) {
             $this->sort = $order;
         } elseif (\is_callable($sort)) {
-            $this->sort = $reverseOrder ? static function ($a, $b) use ($sort) { return -$sort($a, $b); } : $sort;
+            $this->sort = $reverseOrder ? static function (\SplFileInfo $a, \SplFileInfo $b) use ($sort) { return -$sort($a, $b); } : $sort;
         } else {
             throw new \InvalidArgumentException('The SortableIterator takes a PHP callable or a valid built-in sort algorithm as an argument.');
         }
     }
 
     /**
-     * @return \Traversable
+     * @return \Traversable<string, \SplFileInfo>
      */
     #[\ReturnTypeWillChange]
     public function getIterator()

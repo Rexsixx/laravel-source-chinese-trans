@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，缓存资源库
+ * Illuminate，契约，缓存，资源库
  */
 
 namespace Illuminate\Contracts\Cache;
@@ -12,7 +12,7 @@ interface Repository extends CacheInterface
 {
     /**
      * Retrieve an item from the cache and delete it.
-	 * 检索项从缓存中并删除它
+	 * 从缓存中检索项并删除它
      *
      * @param  string  $key
      * @param  mixed  $default
@@ -22,7 +22,7 @@ interface Repository extends CacheInterface
 
     /**
      * Store an item in the cache.
-	 * 存储一个项至缓存里
+	 * 在缓存中存储项
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -33,7 +33,7 @@ interface Repository extends CacheInterface
 
     /**
      * Store an item in the cache if the key does not exist.
-	 * 添加一个项至缓存里
+	 * 如果键不存在，则将项存储在缓存中。
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -44,7 +44,7 @@ interface Repository extends CacheInterface
 
     /**
      * Increment the value of an item in the cache.
-	 * 增加值
+	 * 增加缓存中项的值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -64,7 +64,7 @@ interface Repository extends CacheInterface
 
     /**
      * Store an item in the cache indefinitely.
-	 * 保存缓存永久
+	 * 将项无限期地存储在缓存中
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -74,7 +74,7 @@ interface Repository extends CacheInterface
 
     /**
      * Get an item from the cache, or execute the given Closure and store the result.
-	 * 从缓存中获取一个项
+	 * 从缓存中获取一个项，或者执行给定的Closure并存储结果。
      *
      * @param  string  $key
      * @param  \DateTimeInterface|\DateInterval|int|null  $ttl
@@ -105,7 +105,7 @@ interface Repository extends CacheInterface
 
     /**
      * Remove an item from the cache.
-	 * 注册缓存项
+	 * 从缓存中删除项
      *
      * @param  string  $key
      * @return bool
@@ -114,7 +114,7 @@ interface Repository extends CacheInterface
 
     /**
      * Get the cache store implementation.
-	 * 得到缓存存储实现
+	 * 获取缓存存储实现
      *
      * @return \Illuminate\Contracts\Cache\Store
      */

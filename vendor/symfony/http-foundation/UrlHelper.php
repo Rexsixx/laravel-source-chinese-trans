@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，Url 助手
+ * Symfony，Component，HttpFoundation，URL 帮助
  */
 
 /*
@@ -15,9 +15,11 @@
 namespace Symfony\Component\HttpFoundation;
 
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RequestContextAwareInterface;
 
 /**
  * A helper service for manipulating URLs within and outside the request scope.
+ * 用于在请求范围内外操作url的帮助器服务
  *
  * @author Valentin Udaltsov <udaltsov.valentin@gmail.com>
  */
@@ -26,8 +28,15 @@ final class UrlHelper
     private $requestStack;
     private $requestContext;
 
-    public function __construct(RequestStack $requestStack, RequestContext $requestContext = null)
+    /**
+     * @param RequestContextAwareInterface|RequestContext|null $requestContext
+     */
+    public function __construct(RequestStack $requestStack, $requestContext = null)
     {
+        if (null !== $requestContext && !$requestContext instanceof RequestContext && !$requestContext instanceof RequestContextAwareInterface) {
+            throw new \TypeError(__METHOD__.': Argument #2 ($requestContext) must of type Symfony\Component\Routing\RequestContextAwareInterface|Symfony\Component\Routing\RequestContext|null, '.get_debug_type($requestContext).' given.');
+        }
+
         $this->requestStack = $requestStack;
         $this->requestContext = $requestContext;
     }
@@ -38,7 +47,7 @@ final class UrlHelper
             return $path;
         }
 
-        if (null === $request = $this->requestStack->getMasterRequest()) {
+        if (null === $request = $this->requestStack->getMainRequest()) {
             return $this->getAbsoluteUrlFromContext($path);
         }
 
@@ -67,7 +76,7 @@ final class UrlHelper
             return $path;
         }
 
-        if (null === $request = $this->requestStack->getMasterRequest()) {
+        if (null === $request = $this->requestStack->getMainRequest()) {
             return $path;
         }
 
@@ -76,28 +85,36 @@ final class UrlHelper
 
     private function getAbsoluteUrlFromContext(string $path): string
     {
-        if (null === $this->requestContext || '' === $host = $this->requestContext->getHost()) {
+        if (null === $context = $this->requestContext) {
             return $path;
         }
 
-        $scheme = $this->requestContext->getScheme();
+        if ($context instanceof RequestContextAwareInterface) {
+            $context = $context->getContext();
+        }
+
+        if ('' === $host = $context->getHost()) {
+            return $path;
+        }
+
+        $scheme = $context->getScheme();
         $port = '';
 
-        if ('http' === $scheme && 80 !== $this->requestContext->getHttpPort()) {
-            $port = ':'.$this->requestContext->getHttpPort();
-        } elseif ('https' === $scheme && 443 !== $this->requestContext->getHttpsPort()) {
-            $port = ':'.$this->requestContext->getHttpsPort();
+        if ('http' === $scheme && 80 !== $context->getHttpPort()) {
+            $port = ':'.$context->getHttpPort();
+        } elseif ('https' === $scheme && 443 !== $context->getHttpsPort()) {
+            $port = ':'.$context->getHttpsPort();
         }
 
         if ('#' === $path[0]) {
-            $queryString = $this->requestContext->getQueryString();
-            $path = $this->requestContext->getPathInfo().($queryString ? '?'.$queryString : '').$path;
+            $queryString = $context->getQueryString();
+            $path = $context->getPathInfo().($queryString ? '?'.$queryString : '').$path;
         } elseif ('?' === $path[0]) {
-            $path = $this->requestContext->getPathInfo().$path;
+            $path = $context->getPathInfo().$path;
         }
 
         if ('/' !== $path[0]) {
-            $path = rtrim($this->requestContext->getBaseUrl(), '/').'/'.$path;
+            $path = rtrim($context->getBaseUrl(), '/').'/'.$path;
         }
 
         return $scheme.'://'.$host.$port.$path;

@@ -1,6 +1,6 @@
 <?php
 /**
- * 总线，总线调度
+ * Illuminate，总线，调度程序
  */
 
 namespace Illuminate\Bus;
@@ -10,7 +10,11 @@ use Illuminate\Contracts\Bus\QueueingDispatcher;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Queue\Queue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\PendingChain;
 use Illuminate\Pipeline\Pipeline;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Jobs\SyncJob;
+use Illuminate\Support\Collection;
 use RuntimeException;
 
 class Dispatcher implements QueueingDispatcher
@@ -33,7 +37,7 @@ class Dispatcher implements QueueingDispatcher
 
     /**
      * The pipes to send commands through before dispatching.
-	 * 管道发送命令在调度之前
+	 * 在调度之前发送命令的管道
      *
      * @var array
      */
@@ -41,7 +45,7 @@ class Dispatcher implements QueueingDispatcher
 
     /**
      * The command to handler mapping for non-self-handling events.
-	 * 处理命令非自处理事件
+	 * 非自处理事件到处理程序映射的命令
      *
      * @var array
      */
@@ -57,7 +61,7 @@ class Dispatcher implements QueueingDispatcher
 
     /**
      * Create a new command dispatcher instance.
-	 * 创建新的命令调度实例
+	 * 创建一个新的命令调度程序实例
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @param  \Closure|null  $queueResolver
@@ -72,23 +76,43 @@ class Dispatcher implements QueueingDispatcher
 
     /**
      * Dispatch a command to its appropriate handler.
-	 * 分派命令给相应的处理程序
+	 * 将命令分派给相应的处理程序
      *
      * @param  mixed  $command
      * @return mixed
      */
     public function dispatch($command)
     {
-        if ($this->queueResolver && $this->commandShouldBeQueued($command)) {
-            return $this->dispatchToQueue($command);
-        }
-
-        return $this->dispatchNow($command);
+        return $this->queueResolver && $this->commandShouldBeQueued($command)
+                        ? $this->dispatchToQueue($command)
+                        : $this->dispatchNow($command);
     }
 
     /**
      * Dispatch a command to its appropriate handler in the current process.
-	 * 分派命令给当前进程中相应的处理程序
+	 * 将命令分派给当前进程中相应的处理程序
+     *
+     * Queueable jobs will be dispatched to the "sync" queue.
+	 * 可排队作业将被分配到"同步"队列
+     *
+     * @param  mixed  $command
+     * @param  mixed  $handler
+     * @return mixed
+     */
+    public function dispatchSync($command, $handler = null)
+    {
+        if ($this->queueResolver &&
+            $this->commandShouldBeQueued($command) &&
+            method_exists($command, 'onConnection')) {
+            return $this->dispatchToQueue($command->onConnection('sync'));
+        }
+
+        return $this->dispatchNow($command, $handler);
+    }
+
+    /**
+     * Dispatch a command to its appropriate handler in the current process without using the synchronous queue.
+	 * 在不使用同步队列的情况下，将命令分派给当前进程中相应的处理程序。
      *
      * @param  mixed  $command
      * @param  mixed  $handler
@@ -96,13 +120,25 @@ class Dispatcher implements QueueingDispatcher
      */
     public function dispatchNow($command, $handler = null)
     {
+        $uses = class_uses_recursive($command);
+
+        if (in_array(InteractsWithQueue::class, $uses) &&
+            in_array(Queueable::class, $uses) &&
+            ! $command->job) {
+            $command->setJob(new SyncJob($this->container, json_encode([]), 'sync', 'sync'));
+        }
+
         if ($handler || $handler = $this->getCommandHandler($command)) {
             $callback = function ($command) use ($handler) {
-                return $handler->handle($command);
+                $method = method_exists($handler, 'handle') ? 'handle' : '__invoke';
+
+                return $handler->{$method}($command);
             };
         } else {
             $callback = function ($command) {
-                return $this->container->call([$command, 'handle']);
+                $method = method_exists($command, 'handle') ? 'handle' : '__invoke';
+
+                return $this->container->call([$command, $method]);
             };
         }
 
@@ -110,8 +146,46 @@ class Dispatcher implements QueueingDispatcher
     }
 
     /**
+     * Attempt to find the batch with the given ID.
+	 * 尝试查找具有给定ID的批处理
+     *
+     * @param  string  $batchId
+     * @return \Illuminate\Bus\Batch|null
+     */
+    public function findBatch(string $batchId)
+    {
+        return $this->container->make(BatchRepository::class)->find($batchId);
+    }
+
+    /**
+     * Create a new batch of queueable jobs.
+	 * 创建新的批处理可排队任务
+     *
+     * @param  \Illuminate\Support\Collection|array|mixed  $jobs
+     * @return \Illuminate\Bus\PendingBatch
+     */
+    public function batch($jobs)
+    {
+        return new PendingBatch($this->container, Collection::wrap($jobs));
+    }
+
+    /**
+     * Create a new chain of queueable jobs.
+	 * 创建一个新的可排队作业链
+     *
+     * @param  \Illuminate\Support\Collection|array  $jobs
+     * @return \Illuminate\Foundation\Bus\PendingChain
+     */
+    public function chain($jobs)
+    {
+        $jobs = Collection::wrap($jobs);
+
+        return new PendingChain($jobs->shift(), $jobs->toArray());
+    }
+
+    /**
      * Determine if the given command has a handler.
-	 * 判断命令是否有处理程序
+	 * 确定给定命令是否有处理程序
      *
      * @param  mixed  $command
      * @return bool
@@ -151,10 +225,12 @@ class Dispatcher implements QueueingDispatcher
 
     /**
      * Dispatch a command to its appropriate handler behind a queue.
-	 * 分派命令给队列后面相应的处理程序
+	 * 将命令分派到队列后面相应的处理程序
      *
      * @param  mixed  $command
      * @return mixed
+     *
+     * @throws \RuntimeException
      */
     public function dispatchToQueue($command)
     {
@@ -175,7 +251,7 @@ class Dispatcher implements QueueingDispatcher
 
     /**
      * Push the command onto the given queue instance.
-	 * 推入命令至给定的队列实例
+	 * 将命令推入给定的队列实例
      *
      * @param  \Illuminate\Contracts\Queue\Queue  $queue
      * @param  mixed  $command
@@ -200,7 +276,7 @@ class Dispatcher implements QueueingDispatcher
 
     /**
      * Dispatch a command to its appropriate handler after the current process.
-	 * 分派命令给当前进程之后的处理程序
+	 * 在当前进程结束后，将命令分派给相应的处理程序。
      *
      * @param  mixed  $command
      * @param  mixed  $handler
@@ -215,7 +291,7 @@ class Dispatcher implements QueueingDispatcher
 
     /**
      * Set the pipes through which commands should be piped before dispatching.
-	 * 设置命令应该通过的管道在调度之前
+	 * 在调度之前，设置命令应该通过的管道。
      *
      * @param  array  $pipes
      * @return $this
@@ -229,7 +305,7 @@ class Dispatcher implements QueueingDispatcher
 
     /**
      * Map a command to a handler.
-	 * 映射命令到处理程序
+	 * 将命令映射到处理程序
      *
      * @param  array  $map
      * @return $this

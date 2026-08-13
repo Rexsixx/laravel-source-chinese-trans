@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，异常，命令未发现异常
+ * Symfony，Component，Console，异常，命令未发现异常
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\Console\Exception;
 
 /**
  * Represents an incorrect command name typed in the console.
+ * 表示在控制台输入错误的命令名。
  *
  * @author Jérôme Tamarelle <jerome@tamarelle.net>
  */
@@ -29,7 +30,7 @@ class CommandNotFoundException extends \InvalidArgumentException implements Exce
      * @param int             $code         Exception code
      * @param \Throwable|null $previous     Previous exception used for the exception chaining
      */
-    public function __construct(string $message, array $alternatives = [], int $code = 0, \Throwable $previous = null)
+    public function __construct(string $message, array $alternatives = [], int $code = 0, ?\Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
 
@@ -37,7 +38,7 @@ class CommandNotFoundException extends \InvalidArgumentException implements Exce
     }
 
     /**
-     * @return string[] A list of similar defined names
+     * @return string[]
      */
     public function getAlternatives()
     {

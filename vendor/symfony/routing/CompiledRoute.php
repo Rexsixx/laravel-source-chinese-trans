@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由选择，已编译的路由
+ * Symfony，Component，Routing，编译后的路由
  */
 
 /*
@@ -16,7 +16,7 @@ namespace Symfony\Component\Routing;
 
 /**
  * CompiledRoutes are returned by the RouteCompiler class.
- * CompiledRoutes由RouteCompiler类返回。
+ * compileroutes由RouteCompiler类返回。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -41,7 +41,7 @@ class CompiledRoute implements \Serializable
      * @param array       $hostVariables An array of host variables
      * @param array       $variables     An array of variables (variables defined in the path and in the host patterns)
      */
-    public function __construct(string $staticPrefix, string $regex, array $tokens, array $pathVariables, string $hostRegex = null, array $hostTokens = [], array $hostVariables = [], array $variables = [])
+    public function __construct(string $staticPrefix, string $regex, array $tokens, array $pathVariables, ?string $hostRegex = null, array $hostTokens = [], array $hostVariables = [], array $variables = [])
     {
         $this->staticPrefix = $staticPrefix;
         $this->regex = $regex;
@@ -68,12 +68,9 @@ class CompiledRoute implements \Serializable
     }
 
     /**
-     * @return string
-     *
-     * @internal since Symfony 4.3
-     * @final since Symfony 4.3
+     * @internal
      */
-    public function serialize()
+    final public function serialize(): string
     {
         return serialize($this->__serialize());
     }
@@ -91,18 +88,18 @@ class CompiledRoute implements \Serializable
     }
 
     /**
-     * @internal since Symfony 4.3
-     * @final since Symfony 4.3
+     * @internal
      */
-    public function unserialize($serialized)
+    final public function unserialize($serialized)
     {
         $this->__unserialize(unserialize($serialized, ['allowed_classes' => false]));
     }
 
     /**
      * Returns the static prefix.
+	 * 返回静态前缀
      *
-     * @return string The static prefix
+     * @return string
      */
     public function getStaticPrefix()
     {
@@ -111,8 +108,9 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the regex.
+	 * 返回正则表达式
      *
-     * @return string The regex
+     * @return string
      */
     public function getRegex()
     {
@@ -121,8 +119,9 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the host regex.
+	 * 返回主机正则表达式
      *
-     * @return string|null The host regex or null
+     * @return string|null
      */
     public function getHostRegex()
     {
@@ -131,8 +130,9 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the tokens.
+	 * 返回令牌
      *
-     * @return array The tokens
+     * @return array
      */
     public function getTokens()
     {
@@ -141,8 +141,9 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the host tokens.
+	 * 返回主机令牌
      *
-     * @return array The tokens
+     * @return array
      */
     public function getHostTokens()
     {
@@ -151,8 +152,9 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the variables.
+	 * 返回变量
      *
-     * @return array The variables
+     * @return array
      */
     public function getVariables()
     {
@@ -161,8 +163,9 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the path variables.
+	 * 返回路径变量
      *
-     * @return array The variables
+     * @return array
      */
     public function getPathVariables()
     {
@@ -171,8 +174,9 @@ class CompiledRoute implements \Serializable
 
     /**
      * Returns the host variables.
+	 * 返回主机变量
      *
-     * @return array The variables
+     * @return array
      */
     public function getHostVariables()
     {

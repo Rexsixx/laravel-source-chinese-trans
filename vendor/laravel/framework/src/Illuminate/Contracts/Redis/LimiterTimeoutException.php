@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，Redis限制器超时异常接口，待完善
+ * Illuminate，契约，Redis，限制超时异常
  */
 
 namespace Illuminate\Contracts\Redis;

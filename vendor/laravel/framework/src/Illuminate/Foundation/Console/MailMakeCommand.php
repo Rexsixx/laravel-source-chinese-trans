@@ -1,18 +1,22 @@
 <?php
 /**
- * 基础，邮件生成命令
+ * Illuminate，基础，控制台，make:mail 邮件生成命令
  */
 
 namespace Illuminate\Foundation\Console;
 
+use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 class MailMakeCommand extends GeneratorCommand
 {
+    use CreatesMatchingTest;
+
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -28,7 +32,7 @@ class MailMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成类的类型
+	 * 生成的类的类型
      *
      * @var string
      */
@@ -46,20 +50,22 @@ class MailMakeCommand extends GeneratorCommand
             return;
         }
 
-        if ($this->option('markdown')) {
+        if ($this->option('markdown') !== false) {
             $this->writeMarkdownTemplate();
         }
     }
 
     /**
      * Write the Markdown template for the mailable.
-	 * 编写Markdown模板为邮件
+	 * 为邮件编写Markdown模板
      *
      * @return void
      */
     protected function writeMarkdownTemplate()
     {
-        $path = resource_path('views/'.str_replace('.', '/', $this->option('markdown'))).'.blade.php';
+        $path = $this->viewPath(
+            str_replace('.', '/', $this->getView()).'.blade.php'
+        );
 
         if (! $this->files->isDirectory(dirname($path))) {
             $this->files->makeDirectory(dirname($path), 0755, true);
@@ -70,7 +76,7 @@ class MailMakeCommand extends GeneratorCommand
 
     /**
      * Build the class with the given name.
-	 * 构建类使用给定的名称
+	 * 用给定的名称构建类
      *
      * @param  string  $name
      * @return string
@@ -79,29 +85,61 @@ class MailMakeCommand extends GeneratorCommand
     {
         $class = parent::buildClass($name);
 
-        if ($this->option('markdown')) {
-            $class = str_replace('DummyView', $this->option('markdown'), $class);
+        if ($this->option('markdown') !== false) {
+            $class = str_replace(['DummyView', '{{ view }}'], $this->getView(), $class);
         }
 
         return $class;
     }
 
     /**
+     * Get the view name.
+	 * 得到视图名称
+     *
+     * @return string
+     */
+    protected function getView()
+    {
+        $view = $this->option('markdown');
+
+        if (! $view) {
+            $view = 'mail.'.Str::kebab(class_basename($this->argument('name')));
+        }
+
+        return $view;
+    }
+
+    /**
      * Get the stub file for the generator.
-	 * 得到生成器的存根文件
+	 * 获取生成器的存根文件
      *
      * @return string
      */
     protected function getStub()
     {
-        return $this->option('markdown')
-                        ? __DIR__.'/stubs/markdown-mail.stub'
-                        : __DIR__.'/stubs/mail.stub';
+        return $this->resolveStubPath(
+            $this->option('markdown') !== false
+                ? '/stubs/markdown-mail.stub'
+                : '/stubs/mail.stub');
+    }
+
+    /**
+     * Resolve the fully-qualified path to the stub.
+	 * 解析到存根的全限定路径
+     *
+     * @param  string  $stub
+     * @return string
+     */
+    protected function resolveStubPath($stub)
+    {
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+            ? $customPath
+            : __DIR__.$stub;
     }
 
     /**
      * Get the default namespace for the class.
-	 * 得到类的默认命名空间
+	 * 获取类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string
@@ -113,7 +151,7 @@ class MailMakeCommand extends GeneratorCommand
 
     /**
      * Get the console command options.
-	 * 得到控制台命令选项
+	 * 得到控制台命名选项
      *
      * @return array
      */
@@ -122,7 +160,7 @@ class MailMakeCommand extends GeneratorCommand
         return [
             ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the mailable already exists'],
 
-            ['markdown', 'm', InputOption::VALUE_OPTIONAL, 'Create a new Markdown template for the mailable'],
+            ['markdown', 'm', InputOption::VALUE_OPTIONAL, 'Create a new Markdown template for the mailable', false],
         ];
     }
 }

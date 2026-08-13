@@ -1,17 +1,24 @@
 <?php
 /**
- * 视图，Blade编译器
+ * Illuminate，视图，编译，问题，Blade 编译器
  */
 
 namespace Illuminate\View\Compilers;
 
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\ReflectsClosures;
+use Illuminate\View\Component;
 use InvalidArgumentException;
 
 class BladeCompiler extends Compiler implements CompilerInterface
 {
     use Concerns\CompilesAuthorizations,
+        Concerns\CompilesClasses,
         Concerns\CompilesComments,
         Concerns\CompilesComponents,
         Concerns\CompilesConditionals,
@@ -21,11 +28,13 @@ class BladeCompiler extends Compiler implements CompilerInterface
         Concerns\CompilesIncludes,
         Concerns\CompilesInjections,
         Concerns\CompilesJson,
+        Concerns\CompilesJs,
         Concerns\CompilesLayouts,
         Concerns\CompilesLoops,
         Concerns\CompilesRawPhp,
         Concerns\CompilesStacks,
-        Concerns\CompilesTranslations;
+        Concerns\CompilesTranslations,
+        ReflectsClosures;
 
     /**
      * All of the registered extensions.
@@ -45,11 +54,19 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * All custom "condition" handlers.
-	 * 所有自定义"条件"处理程
+	 * 所有自定义"条件"处理程序
      *
      * @var array
      */
     protected $conditions = [];
+
+    /**
+     * All of the registered precompilers.
+	 * 所有注册的预编译器
+     *
+     * @var array
+     */
+    protected $precompilers = [];
 
     /**
      * The file currently being compiled.
@@ -63,10 +80,10 @@ class BladeCompiler extends Compiler implements CompilerInterface
      * All of the available compiler functions.
 	 * 所有可用的编译器函数
      *
-     * @var array
+     * @var string[]
      */
     protected $compilers = [
-        'Comments',
+        // 'Comments',
         'Extensions',
         'Statements',
         'Echos',
@@ -76,7 +93,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      * Array of opening and closing tags for raw echos.
 	 * 原始回声的开始和结束标记数组
      *
-     * @var array
+     * @var string[]
      */
     protected $rawTags = ['{!!', '!!}'];
 
@@ -84,7 +101,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      * Array of opening and closing tags for regular echos.
 	 * 常规回显的开始和结束标记数组
      *
-     * @var array
+     * @var string[]
      */
     protected $contentTags = ['{{', '}}'];
 
@@ -92,7 +109,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      * Array of opening and closing tags for escaped echos.
 	 * 转义回显的开始和结束标记数组
      *
-     * @var array
+     * @var string[]
      */
     protected $escapedTags = ['{{{', '}}}'];
 
@@ -105,7 +122,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
     protected $echoFormat = 'e(%s)';
 
     /**
-     * Array of footer lines to be added to template.
+     * Array of footer lines to be added to the template.
 	 * 要添加到模板中的页脚行数组
      *
      * @var array
@@ -113,12 +130,36 @@ class BladeCompiler extends Compiler implements CompilerInterface
     protected $footer = [];
 
     /**
-     * Array to temporary store the raw blocks found in the template.
+     * Array to temporarily store the raw blocks found in the template.
 	 * 数组来临时存储在模板中找到的原始块
      *
      * @var array
      */
     protected $rawBlocks = [];
+
+    /**
+     * The array of class component aliases and their class names.
+	 * 类组件别名及其类名的数组
+     *
+     * @var array
+     */
+    protected $classComponentAliases = [];
+
+    /**
+     * The array of class component namespaces to autoload from.
+	 * 要从中自动加载的类组件名称空间数组
+     *
+     * @var array
+     */
+    protected $classComponentNamespaces = [];
+
+    /**
+     * Indicates if component tags should be compiled.
+	 * 指示是否应该编译组件标记
+     *
+     * @var bool
+     */
+    protected $compilesComponentTags = true;
 
     /**
      * Compile the view at the given path.
@@ -140,15 +181,17 @@ class BladeCompiler extends Compiler implements CompilerInterface
                 $contents = $this->appendFilePath($contents);
             }
 
-            $this->files->put(
-                $this->getCompiledPath($this->getPath()), $contents
+            $this->ensureCompiledDirectoryExists(
+                $compiledPath = $this->getCompiledPath($this->getPath())
             );
+
+            $this->files->put($compiledPath, $contents);
         }
     }
 
     /**
      * Append the file path to the compiled string.
-	 * 附加文件路径到编译后的字符串
+	 * 将文件路径附加到编译后的字符串
      *
      * @param  string  $contents
      * @return string
@@ -166,7 +209,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Get the open and closing PHP tag tokens from the given string.
-	 * 得到打开和关闭PHP标记令牌从给定字符串中
+	 * 从给定字符串中获取打开和关闭PHP标记令牌
      *
      * @param  string  $contents
      * @return \Illuminate\Support\Collection
@@ -182,7 +225,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Get the path currently being compiled.
-	 * 得到当前正在编译的路径
+	 * 获取当前正在编译的路径
      *
      * @return string
      */
@@ -214,13 +257,22 @@ class BladeCompiler extends Compiler implements CompilerInterface
     {
         [$this->footer, $result] = [[], ''];
 
-        $value = $this->storeUncompiledBlocks($value);
+        // First we will compile the Blade component tags. This is a precompile style
+        // step which compiles the component Blade tags into @component directives
+        // that may be used by Blade. Then we should call any other precompilers.
+		// 首先，我们将编译Blade组件标签。
+        $value = $this->compileComponentTags(
+            $this->compileComments($this->storeUncompiledBlocks($value))
+        );
+
+        foreach ($this->precompilers as $precompiler) {
+            $value = call_user_func($precompiler, $value);
+        }
 
         // Here we will loop through all of the tokens returned by the Zend lexer and
         // parse each one into the corresponding valid PHP. We will then have this
         // template as the correctly rendered PHP that can be rendered natively.
-		// 这里，我们将遍历Zend lexer返回的所有令牌，并将每个令牌解析为相应的有效PHP。
-		// 然后，我们将使用此模板作为可以本地渲染的正确渲染的PHP。
+		// 这里，我们将循环遍历Zend词法分析器返回的所有令牌。
         foreach (token_get_all($value) as $token) {
             $result .= is_array($token) ? $this->parseToken($token) : $token;
         }
@@ -232,13 +284,81 @@ class BladeCompiler extends Compiler implements CompilerInterface
         // If there are any footer lines that need to get added to a template we will
         // add them here at the end of the template. This gets used mainly for the
         // template inheritance via the extends keyword that should be appended.
-		// 如果有任何页脚行需要添加到模板中，我们将在模板末尾添加它们。
-		// 这主要用于通过应附加的extends关键字进行模板继承。
+		// 如果有任何页脚行需要添加到模板。
         if (count($this->footer) > 0) {
             $result = $this->addFooters($result);
         }
 
-        return $result;
+        if (! empty($this->echoHandlers)) {
+            $result = $this->addBladeCompilerVariable($result);
+        }
+
+        return str_replace(
+            ['##BEGIN-COMPONENT-CLASS##', '##END-COMPONENT-CLASS##'],
+            '',
+            $result);
+    }
+
+    /**
+     * Evaluate and render a Blade string to HTML.
+	 * 求值并将Blade字符串呈现为HTML
+     *
+     * @param  string  $string
+     * @param  array  $data
+     * @param  bool  $deleteCachedView
+     * @return string
+     */
+    public static function render($string, $data = [], $deleteCachedView = false)
+    {
+        $component = new class($string) extends Component
+        {
+            protected $template;
+
+            public function __construct($template)
+            {
+                $this->template = $template;
+            }
+
+            public function render()
+            {
+                return $this->template;
+            }
+        };
+
+        $view = Container::getInstance()
+                    ->make(ViewFactory::class)
+                    ->make($component->resolveView(), $data);
+
+        return tap($view->render(), function () use ($view, $deleteCachedView) {
+            if ($deleteCachedView) {
+                unlink($view->getPath());
+            }
+        });
+    }
+
+    /**
+     * Render a component instance to HTML.
+	 * 将组件实例呈现为HTML
+     *
+     * @param  \Illuminate\View\Component  $component
+     * @return string
+     */
+    public static function renderComponent(Component $component)
+    {
+        $data = $component->data();
+
+        $view = value($component->resolveView(), $data);
+
+        if ($view instanceof View) {
+            return $view->with($data)->render();
+        } elseif ($view instanceof Htmlable) {
+            return $view->toHtml();
+        } else {
+            return Container::getInstance()
+                ->make(ViewFactory::class)
+                ->make($view, $data)
+                ->render();
+        }
     }
 
     /**
@@ -304,6 +424,24 @@ class BladeCompiler extends Compiler implements CompilerInterface
     }
 
     /**
+     * Compile the component tags.
+	 * 编译组件标签
+     *
+     * @param  string  $value
+     * @return string
+     */
+    protected function compileComponentTags($value)
+    {
+        if (! $this->compilesComponentTags) {
+            return $value;
+        }
+
+        return (new ComponentTagCompiler(
+            $this->classComponentAliases, $this->classComponentNamespaces, $this
+        ))->compile($value);
+    }
+
+    /**
      * Replace the raw placeholders with the original code stored in the raw blocks.
 	 * 用存储在原始块中的原始代码替换原始占位符
      *
@@ -322,8 +460,8 @@ class BladeCompiler extends Compiler implements CompilerInterface
     }
 
     /**
-     * Get a placeholder to temporary mark the position of raw blocks.
-	 * 得到一个占位符来临时标记原始块的位置
+     * Get a placeholder to temporarily mark the position of raw blocks.
+	 * 获取一个占位符来临时标记原始块的位置
      *
      * @param  int|string  $replace
      * @return string
@@ -335,15 +473,15 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Add the stored footers onto the given content.
-	 * 添加存储的页脚到给定的内容中
+	 * 将存储的页脚添加到给定的内容中
      *
      * @param  string  $result
      * @return string
      */
     protected function addFooters($result)
     {
-        return ltrim($result, PHP_EOL)
-                .PHP_EOL.implode(PHP_EOL, array_reverse($this->footer));
+        return ltrim($result, "\n")
+                ."\n".implode("\n", array_reverse($this->footer));
     }
 
     /**
@@ -420,7 +558,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Call the given directive with the given value.
-	 * 调用给定的指令用给定的值
+	 * 用给定的值调用给定的指令
      *
      * @param  string  $name
      * @param  string|null  $value
@@ -428,6 +566,8 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     protected function callCustomDirective($name, $value)
     {
+        $value = $value ?? '';
+
         if (Str::startsWith($value, '(') && Str::endsWith($value, ')')) {
             $value = Str::substr($value, 1, -1);
         }
@@ -437,7 +577,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Strip the parentheses from the given expression.
-	 * 去掉括号从给定表达式中
+	 * 从给定表达式中去掉括号
      *
      * @param  string  $expression
      * @return string
@@ -465,7 +605,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Get the extensions used by the compiler.
-	 * 得到编译器使用的扩展名
+	 * 获取编译器使用的扩展名
      *
      * @return array
      */
@@ -523,6 +663,90 @@ class BladeCompiler extends Compiler implements CompilerInterface
     }
 
     /**
+     * Register a class-based component alias directive.
+	 * 注册一个基于类的组件别名指令
+     *
+     * @param  string  $class
+     * @param  string|null  $alias
+     * @param  string  $prefix
+     * @return void
+     */
+    public function component($class, $alias = null, $prefix = '')
+    {
+        if (! is_null($alias) && Str::contains($alias, '\\')) {
+            [$class, $alias] = [$alias, $class];
+        }
+
+        if (is_null($alias)) {
+            $alias = Str::contains($class, '\\View\\Components\\')
+                            ? collect(explode('\\', Str::after($class, '\\View\\Components\\')))->map(function ($segment) {
+                                return Str::kebab($segment);
+                            })->implode(':')
+                            : Str::kebab(class_basename($class));
+        }
+
+        if (! empty($prefix)) {
+            $alias = $prefix.'-'.$alias;
+        }
+
+        $this->classComponentAliases[$alias] = $class;
+    }
+
+    /**
+     * Register an array of class-based components.
+	 * 注册一个基于类的组件数组
+     *
+     * @param  array  $components
+     * @param  string  $prefix
+     * @return void
+     */
+    public function components(array $components, $prefix = '')
+    {
+        foreach ($components as $key => $value) {
+            if (is_numeric($key)) {
+                $this->component($value, null, $prefix);
+            } else {
+                $this->component($key, $value, $prefix);
+            }
+        }
+    }
+
+    /**
+     * Get the registered class component aliases.
+	 * 获取已注册的类组件别名
+     *
+     * @return array
+     */
+    public function getClassComponentAliases()
+    {
+        return $this->classComponentAliases;
+    }
+
+    /**
+     * Register a class-based component namespace.
+	 * 注册一个基于类的组件命名空间
+     *
+     * @param  string  $namespace
+     * @param  string  $prefix
+     * @return void
+     */
+    public function componentNamespace($namespace, $prefix)
+    {
+        $this->classComponentNamespaces[$prefix] = $namespace;
+    }
+
+    /**
+     * Get the registered class component namespaces.
+	 * 获取已注册的类组件名称空间
+     *
+     * @return array
+     */
+    public function getClassComponentNamespaces()
+    {
+        return $this->classComponentNamespaces;
+    }
+
+    /**
      * Register a component alias directive.
 	 * 注册一个组件别名指令
      *
@@ -530,7 +754,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
      * @param  string|null  $alias
      * @return void
      */
-    public function component($path, $alias = null)
+    public function aliasComponent($path, $alias = null)
     {
         $alias = $alias ?: Arr::last(explode('.', $path));
 
@@ -555,6 +779,19 @@ class BladeCompiler extends Compiler implements CompilerInterface
      */
     public function include($path, $alias = null)
     {
+        $this->aliasInclude($path, $alias);
+    }
+
+    /**
+     * Register an include alias directive.
+	 * 注册一个包含别名指令
+     *
+     * @param  string  $path
+     * @param  string|null  $alias
+     * @return void
+     */
+    public function aliasInclude($path, $alias = null)
+    {
         $alias = $alias ?: Arr::last(explode('.', $path));
 
         $this->directive($alias, function ($expression) use ($path) {
@@ -566,7 +803,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Register a handler for custom directives.
-	 * 注册一个处理程序为自定义指令
+	 * 为自定义指令注册一个处理程序
      *
      * @param  string  $name
      * @param  callable  $handler
@@ -585,13 +822,25 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Get the list of custom directives.
-	 * 得到自定义指令列表
+	 * 获取自定义指令列表
      *
      * @return array
      */
     public function getCustomDirectives()
     {
         return $this->customDirectives;
+    }
+
+    /**
+     * Register a new precompiler.
+	 * 注册一个新的预编译器
+     *
+     * @param  callable  $precompiler
+     * @return void
+     */
+    public function precompiler(callable $precompiler)
+    {
+        $this->precompilers[] = $precompiler;
     }
 
     /**
@@ -608,7 +857,7 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Set the "echo" format to double encode entities.
-	 * 设置"echo"格式为对实体进行双编码
+	 * 将"echo"格式设置为对实体进行双编码
      *
      * @return void
      */
@@ -619,12 +868,23 @@ class BladeCompiler extends Compiler implements CompilerInterface
 
     /**
      * Set the "echo" format to not double encode entities.
-	 * 设置"echo"格式为不对实体进行双编码
+	 * 将"echo"格式设置为不对实体进行双重编码
      *
      * @return void
      */
     public function withoutDoubleEncoding()
     {
         $this->setEchoFormat('e(%s, false)');
+    }
+
+    /**
+     * Indicate that component tags should not be compiled.
+	 * 指示不应该编译组件标记
+     *
+     * @return void
+     */
+    public function withoutComponentTags()
+    {
+        $this->compilesComponentTags = false;
     }
 }

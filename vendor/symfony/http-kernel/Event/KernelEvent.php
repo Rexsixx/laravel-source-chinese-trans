@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，事件，内核事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -11,12 +14,13 @@
 
 namespace Symfony\Component\HttpKernel\Event;
 
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Base class for events thrown in the HttpKernel component.
+ * Base class for events dispatched in the HttpKernel component.
+ * 在HttpKernel组件中调度的事件的基类。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
@@ -28,7 +32,7 @@ class KernelEvent extends Event
 
     /**
      * @param int $requestType The request type the kernel is currently processing; one of
-     *                         HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST
+     *                         HttpKernelInterface::MAIN_REQUEST or HttpKernelInterface::SUB_REQUEST
      */
     public function __construct(HttpKernelInterface $kernel, Request $request, ?int $requestType)
     {
@@ -39,6 +43,7 @@ class KernelEvent extends Event
 
     /**
      * Returns the kernel in which this event was thrown.
+	 * 返回引发此事件的内核
      *
      * @return HttpKernelInterface
      */
@@ -49,6 +54,7 @@ class KernelEvent extends Event
 
     /**
      * Returns the request the kernel is currently processing.
+	 * 返回内核当前正在处理的请求
      *
      * @return Request
      */
@@ -59,8 +65,9 @@ class KernelEvent extends Event
 
     /**
      * Returns the request type the kernel is currently processing.
+	 * 返回当前处理的请求类型
      *
-     * @return int One of HttpKernelInterface::MASTER_REQUEST and
+     * @return int One of HttpKernelInterface::MAIN_REQUEST and
      *             HttpKernelInterface::SUB_REQUEST
      */
     public function getRequestType()
@@ -69,12 +76,26 @@ class KernelEvent extends Event
     }
 
     /**
+     * Checks if this is the main request.
+	 * 检查是否这是主请求
+     */
+    public function isMainRequest(): bool
+    {
+        return HttpKernelInterface::MAIN_REQUEST === $this->requestType;
+    }
+
+    /**
      * Checks if this is a master request.
+	 * 检查是否这是一个主请求
      *
-     * @return bool True if the request is a master request
+     * @return bool
+     *
+     * @deprecated since symfony/http-kernel 5.3, use isMainRequest() instead
      */
     public function isMasterRequest()
     {
-        return HttpKernelInterface::MASTER_REQUEST === $this->requestType;
+        trigger_deprecation('symfony/http-kernel', '5.3', '"%s()" is deprecated, use "isMainRequest()" instead.', __METHOD__);
+
+        return $this->isMainRequest();
     }
 }

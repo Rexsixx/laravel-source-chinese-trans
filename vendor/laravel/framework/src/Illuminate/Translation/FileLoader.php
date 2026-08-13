@@ -1,6 +1,6 @@
 <?php
 /**
- * 翻译，文件加载
+ * Illuminate，翻译，文件装载
  */
 
 namespace Illuminate\Translation;
@@ -21,7 +21,7 @@ class FileLoader implements Loader
 
     /**
      * The default path for the loader.
-	 * 默认路径
+	 * 加载器的默认路径
      *
      * @var string
      */
@@ -29,7 +29,7 @@ class FileLoader implements Loader
 
     /**
      * All of the registered paths to JSON translation files.
-	 * 所有已注册命名空间的数组
+	 * 所有注册到JSON翻译文件的路径
      *
      * @var array
      */
@@ -45,7 +45,7 @@ class FileLoader implements Loader
 
     /**
      * Create a new file loader instance.
-	 * 创建新的文件加载实例
+	 * 创建一个新的文件加载器实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string  $path
@@ -122,7 +122,7 @@ class FileLoader implements Loader
 
     /**
      * Load a locale from a given path.
-	 * 加载区域设置从给定路径
+	 * 从给定路径加载区域设置
      *
      * @param  string  $path
      * @param  string  $locale
@@ -167,7 +167,7 @@ class FileLoader implements Loader
 
     /**
      * Add a new namespace to the loader.
-	 * 添加一个新的命名空间至加载器
+	 * 向加载器添加一个新的命名空间
      *
      * @param  string  $namespace
      * @param  string  $hint
@@ -176,6 +176,17 @@ class FileLoader implements Loader
     public function addNamespace($namespace, $hint)
     {
         $this->hints[$namespace] = $hint;
+    }
+
+    /**
+     * Get an array of all the registered namespaces.
+	 * 获取所有已注册名称空间的数组
+     *
+     * @return array
+     */
+    public function namespaces()
+    {
+        return $this->hints;
     }
 
     /**
@@ -191,13 +202,13 @@ class FileLoader implements Loader
     }
 
     /**
-     * Get an array of all the registered namespaces.
-	 * 得到所有已注册名称空间的数组
+     * Get an array of all the registered paths to JSON translation files.
+	 * 获取JSON翻译文件的所有注册路径的数组
      *
      * @return array
      */
-    public function namespaces()
+    public function jsonPaths()
     {
-        return $this->hints;
+        return $this->jsonPaths;
     }
 }

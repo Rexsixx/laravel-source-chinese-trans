@@ -1,19 +1,20 @@
 <?php
 /**
- * 基础，虚拟类根文件
+ * Illuminate，基础，控制台，存根，基本策略
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
 use Illuminate\Auth\Access\HandlesAuthorization;
-use NamespacedDummyUserModel;
+use {{ namespacedUserModel }};
 
-class DummyClass
+class {{ class }}
 {
     use HandlesAuthorization;
 
     /**
      * Create a new policy instance.
+	 * 创建一个新的策略实例
      *
      * @return void
      */

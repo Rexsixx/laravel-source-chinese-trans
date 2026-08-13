@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，处理程序，处理程序接口
+ * Whoops，处理器，处理器接口
  */
 
 /**
@@ -10,7 +10,7 @@
 
 namespace Whoops\Handler;
 
-use Whoops\Exception\Inspector;
+use Whoops\Inspector\InspectorInterface;
 use Whoops\RunInterface;
 
 interface HandlerInterface
@@ -33,8 +33,8 @@ interface HandlerInterface
     public function setException($exception);
 
     /**
-     * @param  Inspector $inspector
+     * @param  InspectorInterface $inspector
      * @return void
      */
-    public function setInspector(Inspector $inspector);
+    public function setInspector(InspectorInterface $inspector);
 }

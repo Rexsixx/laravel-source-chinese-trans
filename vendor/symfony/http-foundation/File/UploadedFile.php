@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，文件，已上传文件
+ * Symfony，Component，HttpFoundation，文件，上传文件
  */
 
 /*
@@ -27,6 +27,7 @@ use Symfony\Component\Mime\MimeTypes;
 
 /**
  * A file uploaded through a form.
+ * 通过表单上传的文件。
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  * @author Florian Eckerstorfer <florian@eckerstorfer.org>
@@ -41,6 +42,7 @@ class UploadedFile extends File
 
     /**
      * Accepts the information of the uploaded file as provided by the PHP global $_FILES.
+	 * 接受PHP全局变量$_FILES提供的上传文件的信息
      *
      * The file object is only created when the uploaded file is valid (i.e. when the
      * isValid() method returns true). Otherwise the only methods that could be called
@@ -63,17 +65,10 @@ class UploadedFile extends File
      * @throws FileException         If file_uploads is disabled
      * @throws FileNotFoundException If the file does not exist
      */
-    public function __construct(string $path, string $originalName, string $mimeType = null, int $error = null, $test = false)
+    public function __construct(string $path, string $originalName, ?string $mimeType = null, ?int $error = null, bool $test = false)
     {
         $this->originalName = $this->getName($originalName);
         $this->mimeType = $mimeType ?: 'application/octet-stream';
-
-        if (4 < \func_num_args() ? !\is_bool($test) : null !== $error && @filesize($path) === $error) {
-            @trigger_error(sprintf('Passing a size as 4th argument to the constructor of "%s" is deprecated since Symfony 4.1.', __CLASS__), \E_USER_DEPRECATED);
-            $error = $test;
-            $test = 5 < \func_num_args() ? func_get_arg(5) : false;
-        }
-
         $this->error = $error ?: \UPLOAD_ERR_OK;
         $this->test = $test;
 
@@ -82,11 +77,12 @@ class UploadedFile extends File
 
     /**
      * Returns the original file name.
+	 * 返回原始文件名。
      *
      * It is extracted from the request from which the file has been uploaded.
-     * Then it should not be considered as a safe value.
+     * This should not be considered as a safe value to use for a file name on your servers.
      *
-     * @return string The original name
+     * @return string
      */
     public function getClientOriginalName()
     {
@@ -95,11 +91,12 @@ class UploadedFile extends File
 
     /**
      * Returns the original file extension.
+	 * 返回原始文件扩展名。
      *
      * It is extracted from the original file name that was uploaded.
-     * Then it should not be considered as a safe value.
+     * This should not be considered as a safe value to use for a file name on your servers.
      *
-     * @return string The extension
+     * @return string
      */
     public function getClientOriginalExtension()
     {
@@ -108,6 +105,7 @@ class UploadedFile extends File
 
     /**
      * Returns the file mime type.
+	 * 返回文件mime类型。
      *
      * The client mime type is extracted from the request from which the file
      * was uploaded, so it should not be considered as a safe value.
@@ -115,7 +113,7 @@ class UploadedFile extends File
      * For a trusted mime type, use getMimeType() instead (which guesses the mime
      * type based on the file content).
      *
-     * @return string The mime type
+     * @return string
      *
      * @see getMimeType()
      */
@@ -126,6 +124,7 @@ class UploadedFile extends File
 
     /**
      * Returns the extension based on the client mime type.
+	 * 返回基于客户端mime类型的扩展名
      *
      * If the mime type is unknown, returns null.
      *
@@ -136,40 +135,28 @@ class UploadedFile extends File
      * For a trusted extension, use guessExtension() instead (which guesses
      * the extension based on the guessed mime type for the file).
      *
-     * @return string|null The guessed extension or null if it cannot be guessed
+     * @return string|null
      *
      * @see guessExtension()
      * @see getClientMimeType()
      */
     public function guessClientExtension()
     {
+        if (!class_exists(MimeTypes::class)) {
+            throw new \LogicException('You cannot guess the extension as the Mime component is not installed. Try running "composer require symfony/mime".');
+        }
+
         return MimeTypes::getDefault()->getExtensions($this->getClientMimeType())[0] ?? null;
     }
 
     /**
-     * Returns the file size.
-     *
-     * It is extracted from the request from which the file has been uploaded.
-     * Then it should not be considered as a safe value.
-     *
-     * @deprecated since Symfony 4.1, use getSize() instead.
-     *
-     * @return int|null The file sizes
-     */
-    public function getClientSize()
-    {
-        @trigger_error(sprintf('The "%s()" method is deprecated since Symfony 4.1. Use getSize() instead.', __METHOD__), \E_USER_DEPRECATED);
-
-        return $this->getSize();
-    }
-
-    /**
      * Returns the upload error.
+	 * 返回上传错误。
      *
      * If the upload was successful, the constant UPLOAD_ERR_OK is returned.
      * Otherwise one of the other UPLOAD_ERR_XXX constants is returned.
      *
-     * @return int The upload error
+     * @return int
      */
     public function getError()
     {
@@ -177,9 +164,10 @@ class UploadedFile extends File
     }
 
     /**
-     * Returns whether the file was uploaded successfully.
+     * Returns whether the file has been uploaded with HTTP and no error occurred.
+	 * 返回文件是否已通过HTTP上传且未发生错误
      *
-     * @return bool True if the file has been uploaded with HTTP and no error occurred
+     * @return bool
      */
     public function isValid()
     {
@@ -190,15 +178,13 @@ class UploadedFile extends File
 
     /**
      * Moves the file to a new location.
+	 * 将文件移动到新位置
      *
-     * @param string $directory The destination folder
-     * @param string $name      The new file name
-     *
-     * @return File A File object representing the new file
+     * @return File
      *
      * @throws FileException if, for any reason, the file could not have been moved
      */
-    public function move($directory, $name = null)
+    public function move(string $directory, ?string $name = null)
     {
         if ($this->isValid()) {
             if ($this->test) {
@@ -208,8 +194,11 @@ class UploadedFile extends File
             $target = $this->getTargetFile($directory, $name);
 
             set_error_handler(function ($type, $msg) use (&$error) { $error = $msg; });
-            $moved = move_uploaded_file($this->getPathname(), $target);
-            restore_error_handler();
+            try {
+                $moved = move_uploaded_file($this->getPathname(), $target);
+            } finally {
+                restore_error_handler();
+            }
             if (!$moved) {
                 throw new FileException(sprintf('Could not move the file "%s" to "%s" (%s).', $this->getPathname(), $target, strip_tags($error)));
             }
@@ -241,19 +230,21 @@ class UploadedFile extends File
 
     /**
      * Returns the maximum size of an uploaded file as configured in php.ini.
+	 * 返回在php.ini中配置的上传文件的最大大小
      *
      * @return int|float The maximum size of an uploaded file in bytes (returns float if size > PHP_INT_MAX)
      */
     public static function getMaxFilesize()
     {
-        $sizePostMax = self::parseFilesize(ini_get('post_max_size'));
-        $sizeUploadMax = self::parseFilesize(ini_get('upload_max_filesize'));
+        $sizePostMax = self::parseFilesize(\ini_get('post_max_size'));
+        $sizeUploadMax = self::parseFilesize(\ini_get('upload_max_filesize'));
 
         return min($sizePostMax ?: \PHP_INT_MAX, $sizeUploadMax ?: \PHP_INT_MAX);
     }
 
     /**
      * Returns the given size from an ini value in bytes.
+	 * 以字节为单位从ini值返回给定的大小
      *
      * @return int|float Returns float if size > PHP_INT_MAX
      */
@@ -276,11 +267,11 @@ class UploadedFile extends File
 
         switch (substr($size, -1)) {
             case 't': $max *= 1024;
-            // no break
+                // no break
             case 'g': $max *= 1024;
-            // no break
+                // no break
             case 'm': $max *= 1024;
-            // no break
+                // no break
             case 'k': $max *= 1024;
         }
 
@@ -289,8 +280,9 @@ class UploadedFile extends File
 
     /**
      * Returns an informative upload error message.
+	 * 返回信息丰富的上传错误消息
      *
-     * @return string The error message regarding the specified error code
+     * @return string
      */
     public function getErrorMessage()
     {

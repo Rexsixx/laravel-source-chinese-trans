@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，错误处理器，Throwable工具包
+ * Symfony，Component，ErrorHandler，Throwable 工具包
  */
 
 /*

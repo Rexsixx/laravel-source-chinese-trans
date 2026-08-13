@@ -1,12 +1,12 @@
 <?php
 /**
- * Psy，代码清理器，抽象类通行证
+ * Psy，代码清洁，抽象类通行证
  */
 
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2023 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,17 +21,19 @@ use Psy\Exception\FatalErrorException;
 
 /**
  * The abstract class pass handles abstract classes and methods, complaining if there are too few or too many of either.
- * 抽象类传递处理抽象类和方法,如果存在太少或太多,则会抱怨。
+ * 抽象类传递处理抽象类和方法，如果其中任何一个太少或太多，都会发出警告。
  */
 class AbstractClassPass extends CodeCleanerPass
 {
-    private $class;
-    private $abstractMethods;
+    private Class_ $class;
+    private array $abstractMethods;
 
     /**
      * @throws FatalErrorException if the node is an abstract function with a body
      *
      * @param Node $node
+     *
+     * @return int|Node|null Replacement node (or special return value)
      */
     public function enterNode(Node $node)
     {
@@ -45,7 +47,7 @@ class AbstractClassPass extends CodeCleanerPass
 
                 if ($node->stmts !== null) {
                     $msg = \sprintf('Abstract function %s cannot contain body', $name);
-                    throw new FatalErrorException($msg, 0, \E_ERROR, null, $node->getLine());
+                    throw new FatalErrorException($msg, 0, \E_ERROR, null, $node->getStartLine());
                 }
             }
         }
@@ -55,6 +57,8 @@ class AbstractClassPass extends CodeCleanerPass
      * @throws FatalErrorException if the node is a non-abstract class with abstract methods
      *
      * @param Node $node
+     *
+     * @return int|Node|Node[]|null Replacement node (or special return value)
      */
     public function leaveNode(Node $node)
     {
@@ -68,7 +72,7 @@ class AbstractClassPass extends CodeCleanerPass
                     ($count === 1) ? '' : 's',
                     \implode(', ', $this->abstractMethods)
                 );
-                throw new FatalErrorException($msg, 0, \E_ERROR, null, $node->getLine());
+                throw new FatalErrorException($msg, 0, \E_ERROR, null, $node->getStartLine());
             }
         }
     }

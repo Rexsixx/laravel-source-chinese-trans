@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
 /**
- * SebastianBergmann，代码覆盖率，版本
+ * SebastianBergmann，CodeCoverage，版本
  */
 
 /*
- * This file is part of the php-code-coverage package.
+ * This file is part of phpunit/php-code-coverage.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
@@ -14,6 +14,7 @@
  */
 namespace SebastianBergmann\CodeCoverage;
 
+use function dirname;
 use SebastianBergmann\Version as VersionId;
 
 final class Version
@@ -26,8 +27,7 @@ final class Version
     public static function id(): string
     {
         if (self::$version === null) {
-            $version       = new VersionId('7.0.15', \dirname(__DIR__));
-            self::$version = $version->getVersion();
+            self::$version = (new VersionId('9.2.32', dirname(__DIR__)))->getVersion();
         }
 
         return self::$version;

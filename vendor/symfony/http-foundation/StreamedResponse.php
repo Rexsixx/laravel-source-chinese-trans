@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，流响应
+ * Symfony，Component，HttpFoundation，流响应
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * StreamedResponse represents a streamed HTTP response.
+ * StreamedResponse表示流的HTTP响应
  *
  * A StreamedResponse uses a callback for its content.
  *
@@ -33,12 +34,7 @@ class StreamedResponse extends Response
     protected $streamed;
     private $headersSent;
 
-    /**
-     * @param callable|null $callback A valid PHP callback or null to set it later
-     * @param int           $status   The response status code
-     * @param array         $headers  An array of response headers
-     */
-    public function __construct(callable $callback = null, int $status = 200, array $headers = [])
+    public function __construct(?callable $callback = null, int $status = 200, array $headers = [])
     {
         parent::__construct(null, $status, $headers);
 
@@ -51,20 +47,24 @@ class StreamedResponse extends Response
 
     /**
      * Factory method for chainability.
+	 * 可链性的工厂方法
      *
      * @param callable|null $callback A valid PHP callback or null to set it later
-     * @param int           $status   The response status code
-     * @param array         $headers  An array of response headers
      *
      * @return static
+     *
+     * @deprecated since Symfony 5.1, use __construct() instead.
      */
-    public static function create($callback = null, $status = 200, $headers = [])
+    public static function create($callback = null, int $status = 200, array $headers = [])
     {
+        trigger_deprecation('symfony/http-foundation', '5.1', 'The "%s()" method is deprecated, use "new %s()" instead.', __METHOD__, static::class);
+
         return new static($callback, $status, $headers);
     }
 
     /**
      * Sets the PHP callback associated with this Response.
+	 * 设置与此响应关联的PHP回调
      *
      * @return $this
      */
@@ -79,6 +79,7 @@ class StreamedResponse extends Response
      * {@inheritdoc}
      *
      * This method only sends the headers once.
+	 * 这个方法只发送一次报头
      *
      * @return $this
      */
@@ -97,6 +98,7 @@ class StreamedResponse extends Response
      * {@inheritdoc}
      *
      * This method only sends the content once.
+	 * 此方法只发送一次内容
      *
      * @return $this
      */
@@ -120,11 +122,11 @@ class StreamedResponse extends Response
     /**
      * {@inheritdoc}
      *
-     * @throws \LogicException when the content is not null
-     *
      * @return $this
+     *
+     * @throws \LogicException when the content is not null
      */
-    public function setContent($content)
+    public function setContent(?string $content)
     {
         if (null !== $content) {
             throw new \LogicException('The content cannot be set on a StreamedResponse instance.');

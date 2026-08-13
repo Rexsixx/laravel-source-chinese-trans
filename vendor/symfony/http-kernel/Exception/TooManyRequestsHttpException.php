@@ -1,7 +1,11 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，异常，请求过多Http异常
+ */
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -24,8 +28,19 @@ class TooManyRequestsHttpException extends HttpException
      * @param \Throwable|null $previous   The previous exception
      * @param int|null        $code       The internal exception code
      */
-    public function __construct($retryAfter = null, ?string $message = '', \Throwable $previous = null, ?int $code = 0, array $headers = [])
+    public function __construct($retryAfter = null, ?string $message = '', ?\Throwable $previous = null, ?int $code = 0, array $headers = [])
     {
+        if (null === $message) {
+            trigger_deprecation('symfony/http-kernel', '5.3', 'Passing null as $message to "%s()" is deprecated, pass an empty string instead.', __METHOD__);
+
+            $message = '';
+        }
+        if (null === $code) {
+            trigger_deprecation('symfony/http-kernel', '5.3', 'Passing null as $code to "%s()" is deprecated, pass 0 instead.', __METHOD__);
+
+            $code = 0;
+        }
+
         if ($retryAfter) {
             $headers['Retry-After'] = $retryAfter;
         }

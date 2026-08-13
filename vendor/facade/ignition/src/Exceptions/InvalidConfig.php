@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，异常，无效配置
+ * Facade，Ignition，异常，无效配置
  */
 
 namespace Facade\Ignition\Exceptions;

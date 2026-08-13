@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，连接工厂
+ * Illuminate，数据库，连接器，连接工厂
  */
 
 namespace Illuminate\Database\Connectors;
@@ -27,7 +27,7 @@ class ConnectionFactory
 
     /**
      * Create a new connection factory instance.
-	 * 创建新的连接工厂实例
+	 * 创建一个新的连接工厂实例
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
@@ -71,7 +71,7 @@ class ConnectionFactory
 
     /**
      * Create a single database connection instance.
-	 * 创建单数据库连接实例
+	 * 创建单个数据库连接实例
      *
      * @param  array  $config
      * @return \Illuminate\Database\Connection
@@ -86,8 +86,8 @@ class ConnectionFactory
     }
 
     /**
-     * Create a single database connection instance.
-	 * 创建数据库读写实例(翻译不对改了)
+     * Create a read / write database connection instance.
+	 * 创建一个读写数据库连接实例
      *
      * @param  array  $config
      * @return \Illuminate\Database\Connection
@@ -101,7 +101,7 @@ class ConnectionFactory
 
     /**
      * Create a new PDO instance for reading.
-	 * 创建新的PDO实例用于读取 
+	 * 创建一个新的PDO实例用于读取
      *
      * @param  array  $config
      * @return \Closure
@@ -113,7 +113,7 @@ class ConnectionFactory
 
     /**
      * Get the read configuration for a read / write connection.
-	 * 得到读配置从读写连接
+	 * 获取读/写连接的读配置
      *
      * @param  array  $config
      * @return array
@@ -126,8 +126,8 @@ class ConnectionFactory
     }
 
     /**
-     * Get the read configuration for a read / write connection.
-	 * 得到读配置从读写连接
+     * Get the write configuration for a read / write connection.
+	 * 获取读/写连接的写配置
      *
      * @param  array  $config
      * @return array
@@ -141,7 +141,7 @@ class ConnectionFactory
 
     /**
      * Get a read / write level configuration.
-	 * 得到读写级别配置
+	 * 获取读/写级别配置
      *
      * @param  array  $config
      * @param  string  $type
@@ -156,7 +156,7 @@ class ConnectionFactory
 
     /**
      * Merge a configuration for a read / write connection.
-	 * 合并读取连接配置
+	 * 合并读写连接的配置
      *
      * @param  array  $config
      * @param  array  $merge
@@ -169,7 +169,7 @@ class ConnectionFactory
 
     /**
      * Create a new Closure that resolves to a PDO instance.
-	 * 创建一个解析为PDO实例的新闭包
+	 * 创建一个解析为PDO实例的新Closure
      *
      * @param  array  $config
      * @return \Closure
@@ -183,10 +183,12 @@ class ConnectionFactory
 
     /**
      * Create a new Closure that resolves to a PDO instance with a specific host or an array of hosts.
-	 * 创建新的闭包，解析为具有特定主机或主机数组的PDO实例
+	 * 创建一个新的Closure，它解析为具有特定主机或主机数组的PDO实例。
      *
      * @param  array  $config
      * @return \Closure
+     *
+     * @throws \PDOException
      */
     protected function createPdoResolverWithHosts(array $config)
     {
@@ -258,7 +260,6 @@ class ConnectionFactory
             return $this->container->make($key);
         }
 
-		//核心代码，根据驱动选择连接器
         switch ($config['driver']) {
             case 'mysql':
                 return new MySqlConnector;
@@ -270,7 +271,7 @@ class ConnectionFactory
                 return new SqlServerConnector;
         }
 
-        throw new InvalidArgumentException("Unsupported driver [{$config['driver']}]");
+        throw new InvalidArgumentException("Unsupported driver [{$config['driver']}].");
     }
 
     /**
@@ -303,6 +304,6 @@ class ConnectionFactory
                 return new SqlServerConnection($connection, $database, $prefix, $config);
         }
 
-        throw new InvalidArgumentException("Unsupported driver [{$driver}]");
+        throw new InvalidArgumentException("Unsupported driver [{$driver}].");
     }
 }

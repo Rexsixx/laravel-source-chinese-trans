@@ -1,27 +1,28 @@
 <?php
 /**
- * 支持，门面队列
+ * Illuminate，支持，门面，队列
  */
 
 namespace Illuminate\Support\Facades;
 
+use Illuminate\Queue\Worker;
 use Illuminate\Support\Testing\Fakes\QueueFake;
 
 /**
+ * @method static \Illuminate\Contracts\Queue\Job|null pop(string $queue = null)
+ * @method static \Illuminate\Contracts\Queue\Queue setConnectionName(string $name)
  * @method static int size(string $queue = null)
+ * @method static mixed bulk(array $jobs, mixed $data = '', string $queue = null)
+ * @method static mixed later(\DateTimeInterface|\DateInterval|int $delay, string|object $job, mixed $data = '', string $queue = null)
+ * @method static mixed laterOn(string $queue, \DateTimeInterface|\DateInterval|int $delay, string|object $job, mixed $data = '')
  * @method static mixed push(string|object $job, mixed $data = '', $queue = null)
  * @method static mixed pushOn(string $queue, string|object $job, mixed $data = '')
  * @method static mixed pushRaw(string $payload, string $queue = null, array $options = [])
- * @method static mixed later(\DateTimeInterface|\DateInterval|int $delay, string|object $job, mixed $data = '', string $queue = null)
- * @method static mixed laterOn(string $queue, \DateTimeInterface|\DateInterval|int $delay, string|object $job, mixed $data = '')
- * @method static mixed bulk(array $jobs, mixed $data = '', string $queue = null)
- * @method static \Illuminate\Contracts\Queue\Job|null pop(string $queue = null)
  * @method static string getConnectionName()
- * @method static \Illuminate\Contracts\Queue\Queue setConnectionName(string $name)
+ * @method static void assertNotPushed(string|\Closure $job, callable $callback = null)
  * @method static void assertNothingPushed()
- * @method static void assertNotPushed(string $job, callable $callback = null)
- * @method static void assertPushed(string $job, callable|int $callback = null)
- * @method static void assertPushedOn(string $queue, string $job, callable|int $callback = null)
+ * @method static void assertPushed(string|\Closure $job, callable|int $callback = null)
+ * @method static void assertPushedOn(string $queue, string|\Closure $job, callable $callback = null)
  * @method static void assertPushedWithChain(string $job, array $expectedChain = [], callable $callback = null)
  *
  * @see \Illuminate\Queue\QueueManager
@@ -30,8 +31,21 @@ use Illuminate\Support\Testing\Fakes\QueueFake;
 class Queue extends Facade
 {
     /**
+     * Register a callback to be executed to pick jobs.
+	 * 注册一个要执行的回调函数来选择作业
+     *
+     * @param  string  $workerName
+     * @param  callable  $callback
+     * @return void
+     */
+    public static function popUsing($workerName, $callback)
+    {
+        return Worker::popUsing($workerName, $callback);
+    }
+
+    /**
      * Replace the bound instance with a fake.
-	 * 替换绑定实例为伪实例
+	 * 将绑定实例替换为伪实例
      *
      * @return \Illuminate\Support\Testing\Fakes\QueueFake
      */
@@ -44,7 +58,7 @@ class Queue extends Facade
 
     /**
      * Get the registered name of the component.
-	 * 得到组件注册名
+	 * 获取组件的注册名称
      *
      * @return string
      */

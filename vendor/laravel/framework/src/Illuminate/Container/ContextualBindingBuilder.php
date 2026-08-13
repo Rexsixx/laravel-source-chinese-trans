@@ -1,6 +1,6 @@
 <?php
 /**
- * 容器，上下文绑定生成器
+ * Illuminate，容器，上下文绑定构建器
  */
 
 namespace Illuminate\Container;
@@ -28,7 +28,7 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
 
     /**
      * The abstract target.
-	 * 抽象类目标
+	 * 抽象目标
      *
      * @var string
      */
@@ -36,7 +36,7 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
 
     /**
      * Create a new contextual binding builder.
-	 * 创建新的上下文绑定生成器
+	 * 创建一个新的上下文绑定构建器
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @param  string|array  $concrete
@@ -66,7 +66,7 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
      * Define the implementation for the contextual binding.
 	 * 定义上下文绑定的实现
      *
-     * @param  \Closure|string  $implementation
+     * @param  \Closure|string|array  $implementation
      * @return void
      */
     public function give($implementation)
@@ -74,5 +74,36 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
         foreach (Util::arrayWrap($this->concrete) as $concrete) {
             $this->container->addContextualBinding($concrete, $this->needs, $implementation);
         }
+    }
+
+    /**
+     * Define tagged services to be used as the implementation for the contextual binding.
+	 * 定义标记的服务，用作上下文绑定的实现。
+     *
+     * @param  string  $tag
+     * @return void
+     */
+    public function giveTagged($tag)
+    {
+        $this->give(function ($container) use ($tag) {
+            $taggedServices = $container->tagged($tag);
+
+            return is_array($taggedServices) ? $taggedServices : iterator_to_array($taggedServices);
+        });
+    }
+
+    /**
+     * Specify the configuration item to bind as a primitive.
+	 * 指定要绑定的配置项作为原语
+     *
+     * @param  string  $key
+     * @param  ?string  $default
+     * @return void
+     */
+    public function giveConfig($key, $default = null)
+    {
+        $this->give(function ($container) use ($key, $default) {
+            return $container->get('config')->get($key, $default);
+        });
     }
 }

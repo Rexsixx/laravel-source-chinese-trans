@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，电子邮件验证器，确认，错误，传真电子邮件
+ * Egulias，EmailValidator，确认，错误，传真电子邮件
  */
 
 namespace Egulias\EmailValidator\Validation\Error;

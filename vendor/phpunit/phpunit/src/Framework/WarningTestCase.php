@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * PHPUnit，Framework，警告测试用例
+ */
+ 
 /*
  * This file is part of PHPUnit.
  *
@@ -15,17 +20,17 @@ namespace PHPUnit\Framework;
 final class WarningTestCase extends TestCase
 {
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $backupGlobals = false;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $backupStaticAttributes = false;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $runTestInSeparateProcess = false;
 

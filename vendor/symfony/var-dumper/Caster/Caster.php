@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，Caster，Caster
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Helper for filtering out properties in casters.
+ * 用于过滤casters属性的助手。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *
@@ -39,18 +43,16 @@ class Caster
 
     /**
      * Casts objects to arrays and adds the dynamic property prefix.
+	 * 将对象投射到数组中,并添加动态属性前缀。
      *
-     * @param object $obj          The object to cast
-     * @param bool   $hasDebugInfo Whether the __debugInfo method exists on $obj or not
-     *
-     * @return array The array-cast of the object, with prefixed dynamic properties
+     * @param bool $hasDebugInfo Whether the __debugInfo method exists on $obj or not
      */
-    public static function castObject($obj, string $class, bool $hasDebugInfo = false, string $debugClass = null): array
+    public static function castObject(object $obj, string $class, bool $hasDebugInfo = false, ?string $debugClass = null): array
     {
         if ($hasDebugInfo) {
             try {
                 $debugInfo = $obj->__debugInfo();
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 // ignore failing __debugInfo()
                 $hasDebugInfo = false;
             }
@@ -69,7 +71,7 @@ class Caster
             $i = 0;
             $prefixedKeys = [];
             foreach ($a as $k => $v) {
-                if (isset($k[0]) ? "\0" !== $k[0] : \PHP_VERSION_ID >= 70200) {
+                if ("\0" !== ($k[0] ?? '')) {
                     if (!isset($publicProperties[$class])) {
                         foreach ((new \ReflectionClass($class))->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {
                             $publicProperties[$class][$prop->name] = true;
@@ -111,6 +113,7 @@ class Caster
 
     /**
      * Filters out the specified properties.
+	 * 过滤出指定的属性。
      *
      * By default, a single match in the $filter bit field filters properties out, following an "or" logic.
      * When EXCLUDE_STRICT is set, an "and" logic is applied: all bits must match for a property to be removed.
@@ -118,9 +121,7 @@ class Caster
      * @param array    $a                The array containing the properties to filter
      * @param int      $filter           A bit field of Caster::EXCLUDE_* constants specifying which properties to filter out
      * @param string[] $listedProperties List of properties to exclude when Caster::EXCLUDE_VERBOSE is set, and to preserve when Caster::EXCLUDE_NOT_IMPORTANT is set
-     * @param int      &$count           Set to the number of removed properties
-     *
-     * @return array The filtered array
+     * @param int|null &$count           Set to the number of removed properties
      */
     public static function filter(array $a, int $filter, array $listedProperties = [], ?int &$count = 0): array
     {

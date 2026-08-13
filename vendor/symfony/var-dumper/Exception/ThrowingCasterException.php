@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，Var Dumper，异常，Throwing Caster 异常
- */
 
 /*
  * This file is part of the Symfony package.

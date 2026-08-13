@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，事件，查询执行
+ * Illuminate，数据库，事件，查询执行
  */
 
 namespace Illuminate\Database\Events;
@@ -41,7 +41,7 @@ class QueryExecuted
 
     /**
      * The database connection name.
-	 * 数据库连接名
+	 * 数据库连接名称
      *
      * @var string
      */

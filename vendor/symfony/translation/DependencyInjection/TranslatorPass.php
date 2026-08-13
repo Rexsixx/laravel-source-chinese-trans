@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，依赖注入，翻译器通过
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -24,8 +27,12 @@ class TranslatorPass implements CompilerPassInterface
     private $debugCommandServiceId;
     private $updateCommandServiceId;
 
-    public function __construct(string $translatorServiceId = 'translator.default', string $readerServiceId = 'translation.reader', string $loaderTag = 'translation.loader', string $debugCommandServiceId = 'console.command.translation_debug', string $updateCommandServiceId = 'console.command.translation_update')
+    public function __construct(string $translatorServiceId = 'translator.default', string $readerServiceId = 'translation.reader', string $loaderTag = 'translation.loader', string $debugCommandServiceId = 'console.command.translation_debug', string $updateCommandServiceId = 'console.command.translation_extract')
     {
+        if (0 < \func_num_args()) {
+            trigger_deprecation('symfony/translation', '5.3', 'Configuring "%s" is deprecated.', __CLASS__);
+        }
+
         $this->translatorServiceId = $translatorServiceId;
         $this->readerServiceId = $readerServiceId;
         $this->loaderTag = $loaderTag;
@@ -68,7 +75,7 @@ class TranslatorPass implements CompilerPassInterface
             return;
         }
 
-        $paths = array_keys($container->getDefinition('twig.template_iterator')->getArgument(2));
+        $paths = array_keys($container->getDefinition('twig.template_iterator')->getArgument(1));
         if ($container->hasDefinition($this->debugCommandServiceId)) {
             $definition = $container->getDefinition($this->debugCommandServiceId);
             $definition->replaceArgument(4, $container->getParameter('twig.default_path'));

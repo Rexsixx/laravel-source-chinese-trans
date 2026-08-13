@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，数组，系列匹配一次
- */
-
 namespace Hamcrest\Arrays;
 
 /*

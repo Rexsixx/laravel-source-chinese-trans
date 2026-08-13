@@ -1,6 +1,6 @@
 <?php
 /**
- * 缓存，Redis锁
+ * Illuminate，缓存，Redis 锁
  */
 
 namespace Illuminate\Cache;
@@ -60,7 +60,7 @@ class RedisLock extends Lock
 
     /**
      * Releases this lock in disregard of ownership.
-	 * 释放此锁，而不考虑所有权
+	 * 释放此锁，而不考虑所有权。
      *
      * @return void
      */
@@ -78,5 +78,16 @@ class RedisLock extends Lock
     protected function getCurrentOwner()
     {
         return $this->redis->get($this->name);
+    }
+
+    /**
+     * Get the name of the Redis connection being used to manage the lock.
+	 * 获取用于管理锁的Redis连接的名称
+     *
+     * @return string
+     */
+    public function getConnectionName()
+    {
+        return $this->redis->getName();
     }
 }

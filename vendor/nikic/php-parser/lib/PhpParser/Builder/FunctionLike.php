@@ -1,20 +1,25 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，建立者，类似于函数
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser\BuilderHelpers;
 use PhpParser\Node;
 
-abstract class FunctionLike extends Declaration
-{
-    protected $returnByRef = false;
-    protected $params = [];
+abstract class FunctionLike extends Declaration {
+    protected bool $returnByRef = false;
+    /** @var Node\Param[] */
+    protected array $params = [];
 
-    /** @var string|Node\Name|Node\NullableType|null */
-    protected $returnType = null;
+    /** @var Node\Identifier|Node\Name|Node\ComplexType|null */
+    protected ?Node $returnType = null;
 
     /**
      * Make the function return by reference.
+	 * 使函数通过引用返回
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -26,6 +31,7 @@ abstract class FunctionLike extends Declaration
 
     /**
      * Adds a parameter.
+	 * 添加参数
      *
      * @param Node\Param|Param $param The parameter to add
      *
@@ -45,8 +51,9 @@ abstract class FunctionLike extends Declaration
 
     /**
      * Adds multiple parameters.
+	 * 添加多个参数
      *
-     * @param array $params The parameters to add
+     * @param (Node\Param|Param)[] $params The parameters to add
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -60,6 +67,7 @@ abstract class FunctionLike extends Declaration
 
     /**
      * Sets the return type for PHP 7.
+	 * 设置PHP 7的返回类型
      *
      * @param string|Node\Name|Node\Identifier|Node\ComplexType $type
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，翻译，翻译特点
+ * Symfony，Component，Translation，翻译特征
  */
 
 /*
@@ -47,7 +47,7 @@ trait TranslatorTrait
     /**
      * {@inheritdoc}
      */
-    public function trans(?string $id, array $parameters = [], string $domain = null, string $locale = null): string
+    public function trans(?string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
         if (null === $id || '' === $id) {
             return '';
@@ -137,6 +137,7 @@ EOF;
 
     /**
      * Returns the plural position to use for the given locale and number.
+	 * 返回指定区域和数字的复数位置。
      *
      * The plural rules are derived from code of the Zend Framework (2010-09-25),
      * which is subject to the new BSD license (http://framework.zend.com/license/new-bsd).

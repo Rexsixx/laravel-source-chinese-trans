@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，Http，请求，共享报告请求
+ * Facade，Ignition，Http，请求，共享报告请求
  */
 
 namespace Facade\Ignition\Http\Requests;

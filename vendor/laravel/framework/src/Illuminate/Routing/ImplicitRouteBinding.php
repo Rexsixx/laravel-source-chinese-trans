@@ -1,12 +1,13 @@
 <?php
 /**
- * 路由，路由隐式路由绑定
+ * Illuminate，路由，隐式路由绑定
  */
 
 namespace Illuminate\Routing;
 
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Reflector;
 use Illuminate\Support\Str;
 
@@ -39,7 +40,23 @@ class ImplicitRouteBinding
 
             $instance = $container->make(Reflector::getParameterClassName($parameter));
 
-            if (! $model = $instance->resolveRouteBinding($parameterValue)) {
+            $parent = $route->parentOfParameter($parameterName);
+
+            $routeBindingMethod = $route->allowsTrashedBindings() && in_array(SoftDeletes::class, class_uses_recursive($instance))
+                        ? 'resolveSoftDeletableRouteBinding'
+                        : 'resolveRouteBinding';
+
+            if ($parent instanceof UrlRoutable && ($route->enforcesScopedBindings() || array_key_exists($parameterName, $route->bindingFields()))) {
+                $childRouteBindingMethod = $route->allowsTrashedBindings() && in_array(SoftDeletes::class, class_uses_recursive($instance))
+                            ? 'resolveSoftDeletableChildRouteBinding'
+                            : 'resolveChildRouteBinding';
+
+                if (! $model = $parent->{$childRouteBindingMethod}(
+                    $parameterName, $parameterValue, $route->bindingFieldFor($parameterName)
+                )) {
+                    throw (new ModelNotFoundException)->setModel(get_class($instance), [$parameterValue]);
+                }
+            } elseif (! $model = $instance->{$routeBindingMethod}($parameterValue, $route->bindingFieldFor($parameterName))) {
                 throw (new ModelNotFoundException)->setModel(get_class($instance), [$parameterValue]);
             }
 
@@ -49,7 +66,7 @@ class ImplicitRouteBinding
 
     /**
      * Return the parameter name if it exists in the given parameters.
-	 * 返回参数名如果给定参数存在
+	 * 如果参数名存在于给定参数中，则返回参数名
      *
      * @param  string  $name
      * @param  array  $parameters

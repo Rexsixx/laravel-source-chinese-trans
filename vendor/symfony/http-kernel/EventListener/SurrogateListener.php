@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，事件监听器，代理侦听器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -12,23 +15,24 @@
 namespace Symfony\Component\HttpKernel\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpCache\HttpCache;
 use Symfony\Component\HttpKernel\HttpCache\SurrogateInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * SurrogateListener adds a Surrogate-Control HTTP header when the Response needs to be parsed for Surrogates.
+ * 当需要为代理解析响应时，SurrogateListener添加了一个代理控制HTTP报头。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
- * @final since Symfony 4.3
+ * @final
  */
 class SurrogateListener implements EventSubscriberInterface
 {
     private $surrogate;
 
-    public function __construct(SurrogateInterface $surrogate = null)
+    public function __construct(?SurrogateInterface $surrogate = null)
     {
         $this->surrogate = $surrogate;
     }
@@ -36,9 +40,9 @@ class SurrogateListener implements EventSubscriberInterface
     /**
      * Filters the Response.
      */
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event)
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 
@@ -58,7 +62,7 @@ class SurrogateListener implements EventSubscriberInterface
         $surrogate->addSurrogateControl($event->getResponse());
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::RESPONSE => 'onKernelResponse',

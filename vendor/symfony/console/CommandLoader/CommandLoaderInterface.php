@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，命令加载器，命令加载器接口
+ * Symfony，Component，Console，命令加载，命令加载接口
  */
 
 /*
@@ -24,26 +24,24 @@ interface CommandLoaderInterface
 {
     /**
      * Loads a command.
-     *
-     * @param string $name
+	 * 加载命令
      *
      * @return Command
      *
      * @throws CommandNotFoundException
      */
-    public function get($name);
+    public function get(string $name);
 
     /**
      * Checks if a command exists.
-     *
-     * @param string $name
+	 * 检查命令是否存在
      *
      * @return bool
      */
-    public function has($name);
+    public function has(string $name);
 
     /**
-     * @return string[] All registered command names
+     * @return string[]
      */
     public function getNames();
 }

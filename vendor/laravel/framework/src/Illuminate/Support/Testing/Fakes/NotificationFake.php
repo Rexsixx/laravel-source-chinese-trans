@@ -1,22 +1,25 @@
 <?php
 /**
- * 支持，通知伪造
+ * Illuminate，支持，测试，假装，假的通知
  */
 
 namespace Illuminate\Support\Testing\Fakes;
 
+use Closure;
 use Exception;
 use Illuminate\Contracts\Notifications\Dispatcher as NotificationDispatcher;
 use Illuminate\Contracts\Notifications\Factory as NotificationFactory;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
+use Illuminate\Support\Traits\ReflectsClosures;
 use PHPUnit\Framework\Assert as PHPUnit;
 
 class NotificationFake implements NotificationDispatcher, NotificationFactory
 {
-    use Macroable;
+    use Macroable, ReflectsClosures;
 
     /**
      * All of the notifications that have been sent.
@@ -35,11 +38,26 @@ class NotificationFake implements NotificationDispatcher, NotificationFactory
     public $locale;
 
     /**
+     * Assert if a notification was sent on-demand based on a truth-test callback.
+	 * 判断是否根据真值测试回调按需发送通知
+     *
+     * @param  string|\Closure  $notification
+     * @param  callable|null  $callback
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function assertSentOnDemand($notification, $callback = null)
+    {
+        $this->assertSentTo(new AnonymousNotifiable, $notification, $callback);
+    }
+
+    /**
      * Assert if a notification was sent based on a truth-test callback.
 	 * 判断通知是否基于真值测试回调发送
      *
      * @param  mixed  $notifiable
-     * @param  string  $notification
+     * @param  string|\Closure  $notification
      * @param  callable|null  $callback
      * @return void
      *
@@ -59,6 +77,10 @@ class NotificationFake implements NotificationDispatcher, NotificationFactory
             return;
         }
 
+        if ($notification instanceof Closure) {
+            [$notification, $callback] = [$this->firstClosureParameterType($notification), $notification];
+        }
+
         if (is_numeric($callback)) {
             return $this->assertSentToTimes($notifiable, $notification, $callback);
         }
@@ -67,6 +89,19 @@ class NotificationFake implements NotificationDispatcher, NotificationFactory
             $this->sent($notifiable, $notification, $callback)->count() > 0,
             "The expected [{$notification}] notification was not sent."
         );
+    }
+
+    /**
+     * Assert if a notification was sent on-demand a number of times.
+	 * 判断通知是否按需发送了多次
+     *
+     * @param  string  $notification
+     * @param  int  $times
+     * @return void
+     */
+    public function assertSentOnDemandTimes($notification, $times = 1)
+    {
+        return $this->assertSentToTimes(new AnonymousNotifiable, $notification, $times);
     }
 
     /**
@@ -80,8 +115,10 @@ class NotificationFake implements NotificationDispatcher, NotificationFactory
      */
     public function assertSentToTimes($notifiable, $notification, $times = 1)
     {
-        PHPUnit::assertTrue(
-            ($count = $this->sent($notifiable, $notification)->count()) === $times,
+        $count = $this->sent($notifiable, $notification)->count();
+
+        PHPUnit::assertSame(
+            $times, $count,
             "Expected [{$notification}] to be sent {$times} times, but was sent {$count} times."
         );
     }
@@ -91,7 +128,7 @@ class NotificationFake implements NotificationDispatcher, NotificationFactory
 	 * 确定是否根据真值测试回调发送了通知
      *
      * @param  mixed  $notifiable
-     * @param  string  $notification
+     * @param  string|\Closure  $notification
      * @param  callable|null  $callback
      * @return void
      *
@@ -111,8 +148,12 @@ class NotificationFake implements NotificationDispatcher, NotificationFactory
             return;
         }
 
-        PHPUnit::assertTrue(
-            $this->sent($notifiable, $notification, $callback)->count() === 0,
+        if ($notification instanceof Closure) {
+            [$notification, $callback] = [$this->firstClosureParameterType($notification), $notification];
+        }
+
+        PHPUnit::assertCount(
+            0, $this->sent($notifiable, $notification, $callback),
             "The unexpected [{$notification}] notification was sent."
         );
     }
@@ -132,11 +173,11 @@ class NotificationFake implements NotificationDispatcher, NotificationFactory
      * Assert the total amount of times a notification was sent.
 	 * 断言发送通知的总次数
      *
-     * @param  int  $expectedCount
      * @param  string  $notification
+     * @param  int  $expectedCount
      * @return void
      */
-    public function assertTimesSent($expectedCount, $notification)
+    public function assertSentTimes($notification, $expectedCount)
     {
         $actualCount = collect($this->notifications)
             ->flatten(1)
@@ -151,8 +192,23 @@ class NotificationFake implements NotificationDispatcher, NotificationFactory
     }
 
     /**
+     * Assert the total amount of times a notification was sent.
+	 * 断言发送通知的总次数
+     *
+     * @param  int  $expectedCount
+     * @param  string  $notification
+     * @return void
+     *
+     * @deprecated Use the assertSentTimes method instead
+     */
+    public function assertTimesSent($expectedCount, $notification)
+    {
+        $this->assertSentTimes($notification, $expectedCount);
+    }
+
+    /**
      * Get all of the notifications matching a truth-test callback.
-	 * 得到所有与true-test回调匹配的通知
+	 * 获取所有与true -test回调匹配的通知
      *
      * @param  mixed  $notifiable
      * @param  string  $notification
@@ -191,7 +247,7 @@ class NotificationFake implements NotificationDispatcher, NotificationFactory
 
     /**
      * Get all of the notifications for a notifiable entity by type.
-	 * 按类型得到可通知实体的所有通知
+	 * 按类型获取可通知实体的所有通知
      *
      * @param  mixed  $notifiable
      * @param  string  $notification
@@ -204,7 +260,7 @@ class NotificationFake implements NotificationDispatcher, NotificationFactory
 
     /**
      * Send the given notification to the given notifiable entities.
-	 * 发送到给定的可通知实体将给定的通知
+	 * 将给定的通知发送到给定的可通知实体
      *
      * @param  \Illuminate\Support\Collection|array|mixed  $notifiables
      * @param  mixed  $notification
@@ -212,7 +268,7 @@ class NotificationFake implements NotificationDispatcher, NotificationFactory
      */
     public function send($notifiables, $notification)
     {
-        return $this->sendNow($notifiables, $notification);
+        $this->sendNow($notifiables, $notification);
     }
 
     /**
@@ -235,9 +291,24 @@ class NotificationFake implements NotificationDispatcher, NotificationFactory
                 $notification->id = Str::uuid()->toString();
             }
 
+            $notifiableChannels = $channels ?: $notification->via($notifiable);
+
+            if (method_exists($notification, 'shouldSend')) {
+                $notifiableChannels = array_filter(
+                    $notifiableChannels,
+                    function ($channel) use ($notification, $notifiable) {
+                        return $notification->shouldSend($notifiable, $channel) !== false;
+                    }
+                );
+
+                if (empty($notifiableChannels)) {
+                    continue;
+                }
+            }
+
             $this->notifications[get_class($notifiable)][$notifiable->getKey()][get_class($notification)][] = [
                 'notification' => $notification,
-                'channels' => $channels ?: $notification->via($notifiable),
+                'channels' => $notifiableChannels,
                 'notifiable' => $notifiable,
                 'locale' => $notification->locale ?? $this->locale ?? value(function () use ($notifiable) {
                     if ($notifiable instanceof HasLocalePreference) {
@@ -250,7 +321,7 @@ class NotificationFake implements NotificationDispatcher, NotificationFactory
 
     /**
      * Get a channel instance by name.
-	 * 得到通道实例按名称
+	 * 按名称获取通道实例
      *
      * @param  string|null  $name
      * @return mixed

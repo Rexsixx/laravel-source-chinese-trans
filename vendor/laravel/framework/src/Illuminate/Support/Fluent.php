@@ -1,6 +1,6 @@
 <?php
 /**
- * 支持，流畅
+ * Illuminate，支持，流畅的
  */
 
 namespace Illuminate\Support;
@@ -14,7 +14,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 {
     /**
      * All of the attributes set on the fluent instance.
-	 * 设置所有属性在流畅实例上
+	 * 在流畅实例上设置的所有属性
      *
      * @var array
      */
@@ -22,7 +22,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
     /**
      * Create a new fluent instance.
-	 * 新建新的流畅实例
+	 * 创建新的流畅实例
      *
      * @param  array|object  $attributes
      * @return void
@@ -36,7 +36,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
     /**
      * Get an attribute from the fluent instance.
-	 * 得到属性从流畅实例
+	 * 从流畅实例获取属性
      *
      * @param  string  $key
      * @param  mixed  $default
@@ -53,7 +53,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
     /**
      * Get the attributes from the fluent instance.
-	 * 得到多个属性从流畅实例
+	 * 从流畅实例获取属性
      *
      * @return array
      */
@@ -64,7 +64,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
     /**
      * Convert the fluent instance to an array.
-	 * 转换fluent实例为数组
+	 * 转换流畅实例为数组
      *
      * @return array
      */
@@ -75,10 +75,11 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
     /**
      * Convert the object into something JSON serializable.
-	 * 转换对象为JSON可序列化的对象
+	 * 将对象转换为JSON可序列化的对象
      *
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->toArray();
@@ -86,7 +87,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
     /**
      * Convert the fluent instance to JSON.
-	 * 转换fluent实例为JSON
+	 * 将fluent实例转换为JSON
      *
      * @param  int  $options
      * @return string
@@ -103,6 +104,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
      * @param  string  $offset
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->attributes[$offset]);
@@ -110,11 +112,12 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
     /**
      * Get the value for a given offset.
-	 * 得到给定偏移量的值
+	 * 获取给定偏移量的值
      *
      * @param  string  $offset
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->get($offset);
@@ -122,12 +125,13 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
     /**
      * Set the value at the given offset.
-	 * 设置给定偏移量的值
+	 * 在给定的偏移量处设置值
      *
      * @param  string  $offset
      * @param  mixed  $value
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         $this->attributes[$offset] = $value;
@@ -135,11 +139,12 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
     /**
      * Unset the value at the given offset.
-	 * 注销给定偏移量的值
+	 * 在给定偏移量处取消值的设置
      *
      * @param  string  $offset
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         unset($this->attributes[$offset]);
@@ -174,7 +179,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
     /**
      * Dynamically set the value of an attribute.
-	 * 动态设置属性值
+	 * 动态设置属性的值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -187,7 +192,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
     /**
      * Dynamically check if an attribute is set.
-	 * 动态检查属性是否设置
+	 * 动态检查是否设置了属性
      *
      * @param  string  $key
      * @return bool
@@ -199,7 +204,7 @@ class Fluent implements Arrayable, ArrayAccess, Jsonable, JsonSerializable
 
     /**
      * Dynamically unset an attribute.
-	 * 动态注册属性
+	 * 动态取消设置属性
      *
      * @param  string  $key
      * @return void

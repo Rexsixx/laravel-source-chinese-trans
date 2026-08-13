@@ -47,6 +47,7 @@ if (!function_exists('anArray')) {
 if (!function_exists('hasItemInArray')) {
     /**
      * Evaluates to true if any item in an array satisfies the given matcher.
+	 * 如果数组中的任何项满足给定的matcher,则评估为true。
      *
      * @param mixed $item as a {@link Hamcrest\Matcher} or a value.
      *
@@ -61,6 +62,7 @@ if (!function_exists('hasItemInArray')) {
 if (!function_exists('hasValue')) {
     /**
      * Evaluates to true if any item in an array satisfies the given matcher.
+	 * 如果数组中的任何项满足给定的matcher,则评估为true。
      *
      * @param mixed $item as a {@link Hamcrest\Matcher} or a value.
      *

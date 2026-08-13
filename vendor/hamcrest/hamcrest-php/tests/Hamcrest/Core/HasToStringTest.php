@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，核心，Php表单
+ * Hamcrest，核心，Php 表单
  */
 
 namespace Hamcrest\Core;

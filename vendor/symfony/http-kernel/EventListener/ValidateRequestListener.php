@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，事件监听器，验证请求监听器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -12,24 +15,25 @@
 namespace Symfony\Component\HttpKernel\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Validates Requests.
+ * 验证请求
  *
  * @author Magnus Nordlander <magnus@fervo.se>
  *
- * @final since Symfony 4.3
+ * @final
  */
 class ValidateRequestListener implements EventSubscriberInterface
 {
     /**
      * Performs the validation.
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
         $request = $event->getRequest();
@@ -44,7 +48,7 @@ class ValidateRequestListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => [

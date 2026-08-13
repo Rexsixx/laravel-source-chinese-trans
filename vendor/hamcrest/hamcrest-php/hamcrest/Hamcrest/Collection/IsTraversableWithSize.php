@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，采集，可遍历的大小
+ * Hamcrest，集合，可遍历的大小
  */
 
 namespace Hamcrest\Collection;

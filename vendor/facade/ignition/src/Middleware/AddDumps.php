@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，中间件，添加转储
+ * Facade，Ignition，中间件，添加转储
  */
 
 namespace Facade\Ignition\Middleware;

@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，广播工厂接口
+ * Illuminate，契约，广播，工厂
  */
 
 namespace Illuminate\Contracts\Broadcasting;
@@ -9,10 +9,10 @@ interface Factory
 {
     /**
      * Get a broadcaster implementation by name.
-	 * 得到一个广播实现按名称
+	 * 按名称获取广播器实现
      *
      * @param  string|null  $name
-     * @return void
+     * @return \Illuminate\Contracts\Broadcasting\Broadcaster
      */
     public function connection($name = null);
 }

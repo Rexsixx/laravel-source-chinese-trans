@@ -6,7 +6,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2023 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -24,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * 与当前代码缓冲区交互。
  *
  * Shows and clears the buffer for the current multi-line expression.
+ * 显示并清除当前多行表达式的缓冲区。
  */
 class BufferCommand extends Command
 {
@@ -50,12 +51,16 @@ HELP
 
     /**
      * {@inheritdoc}
+     *
+     * @return int 0 if everything went fine, or an exit code
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $buf = $this->getApplication()->getCodeBuffer();
+        $shell = $this->getShell();
+
+        $buf = $shell->getCodeBuffer();
         if ($input->getOption('clear')) {
-            $this->getApplication()->resetCodeBuffer();
+            $shell->resetCodeBuffer();
             $output->writeln($this->formatLines($buf, 'urgent'), ShellOutput::NUMBER_LINES);
         } else {
             $output->writeln($this->formatLines($buf), ShellOutput::NUMBER_LINES);

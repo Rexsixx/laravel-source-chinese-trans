@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，翻译，翻译接口
+ * Symfony，Component，Translation，翻译接口
  */
 
 /*
@@ -67,5 +67,5 @@ interface TranslatorInterface
      *
      * @throws \InvalidArgumentException If the locale contains invalid characters
      */
-    public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null);
+    public function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null);
 }

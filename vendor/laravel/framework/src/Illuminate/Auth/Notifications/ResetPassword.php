@@ -1,6 +1,6 @@
 <?php
 /**
- * 授权，重置密码
+ * Illuminate，认证，通知，重置密码
  */
 
 namespace Illuminate\Auth\Notifications;
@@ -18,6 +18,14 @@ class ResetPassword extends Notification
      * @var string
      */
     public $token;
+
+    /**
+     * The callback that should be used to create the reset password URL.
+	 * 应该用于创建重置密码URL的回调
+     *
+     * @var \Closure|null
+     */
+    public static $createUrlCallback;
 
     /**
      * The callback that should be used to build the mail message.
@@ -64,12 +72,55 @@ class ResetPassword extends Notification
             return call_user_func(static::$toMailCallback, $notifiable, $this->token);
         }
 
+        return $this->buildMailMessage($this->resetUrl($notifiable));
+    }
+
+    /**
+     * Get the reset password notification mail message for the given URL.
+	 * 获取给定URL的重置密码通知邮件消息
+     *
+     * @param  string  $url
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    protected function buildMailMessage($url)
+    {
         return (new MailMessage)
             ->subject(Lang::get('Reset Password Notification'))
             ->line(Lang::get('You are receiving this email because we received a password reset request for your account.'))
-            ->action(Lang::get('Reset Password'), url(route('password.reset', ['token' => $this->token, 'email' => $notifiable->getEmailForPasswordReset()], false)))
+            ->action(Lang::get('Reset Password'), $url)
             ->line(Lang::get('This password reset link will expire in :count minutes.', ['count' => config('auth.passwords.'.config('auth.defaults.passwords').'.expire')]))
             ->line(Lang::get('If you did not request a password reset, no further action is required.'));
+    }
+
+    /**
+     * Get the reset URL for the given notifiable.
+	 * 获取给定通知对象的重置URL
+     *
+     * @param  mixed  $notifiable
+     * @return string
+     */
+    protected function resetUrl($notifiable)
+    {
+        if (static::$createUrlCallback) {
+            return call_user_func(static::$createUrlCallback, $notifiable, $this->token);
+        }
+
+        return url(route('password.reset', [
+            'token' => $this->token,
+            'email' => $notifiable->getEmailForPasswordReset(),
+        ], false));
+    }
+
+    /**
+     * Set a callback that should be used when creating the reset password button URL.
+	 * 设置一个在创建重置密码按钮URL时应该使用的回调
+     *
+     * @param  \Closure  $callback
+     * @return void
+     */
+    public static function createUrlUsing($callback)
+    {
+        static::$createUrlCallback = $callback;
     }
 
     /**

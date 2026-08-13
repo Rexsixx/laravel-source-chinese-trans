@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，转储，Ini 文件转储器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * IniFileDumper generates an ini formatted string representation of a message catalogue.
+ * IniFileDumper生成一个消息目录的ini格式化字符串表示。
  *
  * @author Stealth35
  */
@@ -23,7 +27,7 @@ class IniFileDumper extends FileDumper
     /**
      * {@inheritdoc}
      */
-    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = [])
+    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = [])
     {
         $output = '';
 

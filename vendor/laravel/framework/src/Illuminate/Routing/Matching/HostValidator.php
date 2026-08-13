@@ -1,6 +1,6 @@
 <?php
 /**
- * 路由，匹配主机验证
+ * Illuminate，路由，匹配，主机验证器
  */
 
 namespace Illuminate\Routing\Matching;
@@ -12,7 +12,7 @@ class HostValidator implements ValidatorInterface
 {
     /**
      * Validate a given rule against a route and request.
-	 * 验证给定的规则
+	 * 针对路由和请求验证给定的规则
      *
      * @param  \Illuminate\Routing\Route  $route
      * @param  \Illuminate\Http\Request  $request

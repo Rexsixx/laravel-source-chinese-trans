@@ -1,6 +1,6 @@
 <?php
 /**
- * 翻译，数组加载
+ * Illuminate，翻译，数组加载器
  */
 
 namespace Illuminate\Translation;
@@ -11,7 +11,7 @@ class ArrayLoader implements Loader
 {
     /**
      * All of the translation messages.
-	 * 所有翻译信息
+	 * 所有的翻译信息
      *
      * @var array
      */
@@ -19,7 +19,7 @@ class ArrayLoader implements Loader
 
     /**
      * Load the messages for the given locale.
-	 * 导入本地信息
+	 * 加载给定区域设置的消息
      *
      * @param  string  $locale
      * @param  string  $group
@@ -35,7 +35,7 @@ class ArrayLoader implements Loader
 
     /**
      * Add a new namespace to the loader.
-	 * 添加新的命名空间
+	 * 向加载器添加一个新的命名空间
      *
      * @param  string  $namespace
      * @param  string  $hint
@@ -48,7 +48,7 @@ class ArrayLoader implements Loader
 
     /**
      * Add a new JSON path to the loader.
-	 * 添加一个新的JSON路径向加载器
+	 * 向加载器添加一个新的JSON路径
      *
      * @param  string  $path
      * @return void
@@ -60,7 +60,7 @@ class ArrayLoader implements Loader
 
     /**
      * Add messages to the loader.
-	 * 添加消息至加载程序
+	 * 向加载程序添加消息
      *
      * @param  string  $locale
      * @param  string  $group
@@ -79,7 +79,7 @@ class ArrayLoader implements Loader
 
     /**
      * Get an array of all the registered namespaces.
-	 * 得到所有已注册命名空间的数组
+	 * 获取所有已注册名称空间的数组
      *
      * @return array
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，转储，上下文提供者，Cli上下文提供者
+ * Symfony，Component，VarDumper，转储，上下文提供者，Cli 上下文提供者
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\VarDumper\Dumper\ContextProvider;
 
 /**
  * Tries to provide context on CLI.
+ * 试图在CLI上提供上下文。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */

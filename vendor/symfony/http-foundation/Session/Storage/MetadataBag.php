@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，Session，储存，元数据包
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
 
 /**
  * Metadata container.
+ * 元数据容器
  *
  * Adds metadata to the session.
  *
@@ -43,6 +47,7 @@ class MetadataBag implements SessionBagInterface
 
     /**
      * Unix timestamp.
+	 * Unix间戳
      *
      * @var int
      */
@@ -84,6 +89,7 @@ class MetadataBag implements SessionBagInterface
 
     /**
      * Gets the lifetime that the session cookie was set with.
+	 * 获取会话cookie所设置的生存期
      *
      * @return int
      */
@@ -94,13 +100,14 @@ class MetadataBag implements SessionBagInterface
 
     /**
      * Stamps a new session's metadata.
+	 * 戳记新会话的元数据
      *
-     * @param int $lifetime Sets the cookie lifetime for the session cookie. A null value
-     *                      will leave the system settings unchanged, 0 sets the cookie
-     *                      to expire with browser session. Time is in seconds, and is
-     *                      not a Unix timestamp.
+     * @param int|null $lifetime Sets the cookie lifetime for the session cookie. A null value
+     *                           will leave the system settings unchanged, 0 sets the cookie
+     *                           to expire with browser session. Time is in seconds, and is
+     *                           not a Unix timestamp.
      */
-    public function stampNew($lifetime = null)
+    public function stampNew(?int $lifetime = null)
     {
         $this->stampCreated($lifetime);
     }
@@ -115,6 +122,7 @@ class MetadataBag implements SessionBagInterface
 
     /**
      * Gets the created timestamp metadata.
+	 * 获取创建的时间戳元数据
      *
      * @return int Unix timestamp
      */
@@ -125,6 +133,7 @@ class MetadataBag implements SessionBagInterface
 
     /**
      * Gets the last used metadata.
+	 * 获取最后使用的元数据
      *
      * @return int Unix timestamp
      */
@@ -139,6 +148,7 @@ class MetadataBag implements SessionBagInterface
     public function clear()
     {
         // nothing to do
+        return null;
     }
 
     /**
@@ -151,18 +161,17 @@ class MetadataBag implements SessionBagInterface
 
     /**
      * Sets name.
-     *
-     * @param string $name
+	 * 设置名称
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
     }
 
-    private function stampCreated(int $lifetime = null): void
+    private function stampCreated(?int $lifetime = null): void
     {
         $timeStamp = time();
         $this->meta[self::CREATED] = $this->meta[self::UPDATED] = $this->lastUsed = $timeStamp;
-        $this->meta[self::LIFETIME] = $lifetime ?? (int) ini_get('session.cookie_lifetime');
+        $this->meta[self::LIFETIME] = $lifetime ?? (int) \ini_get('session.cookie_lifetime');
     }
 }

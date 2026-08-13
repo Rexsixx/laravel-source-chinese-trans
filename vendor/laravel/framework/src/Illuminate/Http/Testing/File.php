@@ -1,6 +1,6 @@
 <?php
 /**
- * Http，文件
+ * Illuminate，Http，测试，文件
  */
 
 namespace Illuminate\Http\Testing;
@@ -11,7 +11,7 @@ class File extends UploadedFile
 {
     /**
      * The name of the file.
-	 * 文件名
+	 * 文件的名称
      *
      * @var string
      */
@@ -27,7 +27,7 @@ class File extends UploadedFile
 
     /**
      * The "size" to report.
-	 * 要报告的大小 
+	 * 报告的"大小"
      *
      * @var int
      */
@@ -62,7 +62,7 @@ class File extends UploadedFile
 
     /**
      * Create a new fake file.
-	 * 创建新的伪装文件
+	 * 创建一个新的假文件
      *
      * @param  string  $name
      * @param  string|int  $kilobytes
@@ -75,7 +75,7 @@ class File extends UploadedFile
 
     /**
      * Create a new fake file with content.
-	 * 创建新的伪装文件使用内容
+	 * 创建一个包含内容的新假文件
      *
      * @param  string  $name
      * @param  string  $content
@@ -88,7 +88,7 @@ class File extends UploadedFile
 
     /**
      * Create a new fake image.
-	 * 创建新的伪装图片
+	 * 创建一个新的假图片
      *
      * @param  string  $name
      * @param  int  $width
@@ -116,10 +116,11 @@ class File extends UploadedFile
 
     /**
      * Get the size of the file.
-	 * 得到文件大小 
+	 * 获取文件的大小
      *
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function getSize()
     {
         return $this->sizeToReport ?: parent::getSize();
@@ -141,7 +142,7 @@ class File extends UploadedFile
 
     /**
      * Get the MIME type of the file.
-	 * 得到文件的MIME类型
+	 * 获取文件的MIME类型
      *
      * @return string
      */
@@ -152,7 +153,7 @@ class File extends UploadedFile
 
     /**
      * Get the path to the temporary file.
-	 * 得到临时文件的路径
+	 * 获取临时文件的路径
      *
      * @return string
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，插件，列表文件
+ * League，Flysystem，Plugin，文件列表
  */
 
 namespace League\Flysystem\Plugin;
@@ -9,7 +9,7 @@ class ListFiles extends AbstractPlugin
 {
     /**
      * Get the method name.
-	 * 获取方法名
+	 * 得到方法名称
      *
      * @return string
      */
@@ -20,6 +20,7 @@ class ListFiles extends AbstractPlugin
 
     /**
      * List all files in the directory.
+	 * 列出目录中的所有文件
      *
      * @param string $directory
      * @param bool   $recursive

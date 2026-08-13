@@ -1,6 +1,6 @@
 <?php
 /**
- * 路由，路由组
+ * Illuminate，路由，路由组
  */
 
 namespace Illuminate\Routing;
@@ -11,21 +11,26 @@ class RouteGroup
 {
     /**
      * Merge route groups into a new array.
-	 * 合并路由组为新的数组
+	 * 合并路由组合到一个新的数组中
      *
      * @param  array  $new
      * @param  array  $old
+     * @param  bool  $prependExistingPrefix
      * @return array
      */
-    public static function merge($new, $old)
+    public static function merge($new, $old, $prependExistingPrefix = true)
     {
         if (isset($new['domain'])) {
             unset($old['domain']);
         }
 
+        if (isset($new['controller'])) {
+            unset($old['controller']);
+        }
+
         $new = array_merge(static::formatAs($new, $old), [
             'namespace' => static::formatNamespace($new, $old),
-            'prefix' => static::formatPrefix($new, $old),
+            'prefix' => static::formatPrefix($new, $old, $prependExistingPrefix),
             'where' => static::formatWhere($new, $old),
         ]);
 
@@ -36,7 +41,7 @@ class RouteGroup
 
     /**
      * Format the namespace for the new group attributes.
-	 * 格式化名称空间为新组属性
+	 * 为新组属性格式化命名空间
      *
      * @param  array  $new
      * @param  array  $old
@@ -55,22 +60,27 @@ class RouteGroup
 
     /**
      * Format the prefix for the new group attributes.
-	 * 格式化前缀为新组属性
+	 * 格式化新组属性的前缀
      *
      * @param  array  $new
      * @param  array  $old
+     * @param  bool  $prependExistingPrefix
      * @return string|null
      */
-    protected static function formatPrefix($new, $old)
+    protected static function formatPrefix($new, $old, $prependExistingPrefix = true)
     {
-        $old = $old['prefix'] ?? null;
+        $old = $old['prefix'] ?? '';
 
-        return isset($new['prefix']) ? trim($old, '/').'/'.trim($new['prefix'], '/') : $old;
+        if ($prependExistingPrefix) {
+            return isset($new['prefix']) ? trim($old, '/').'/'.trim($new['prefix'], '/') : $old;
+        } else {
+            return isset($new['prefix']) ? trim($new['prefix'], '/').'/'.trim($old, '/') : $old;
+        }
     }
 
     /**
      * Format the "wheres" for the new group attributes.
-	 * 格式化wheres为新组属性
+	 * 为新组属性设置"where"的格式
      *
      * @param  array  $new
      * @param  array  $old

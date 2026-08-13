@@ -1,33 +1,27 @@
 <?php
 /**
- * NunoMaduro，冲突，提供商
+ * NunoMaduro，Collision，提供者
  */
 
-/**
- * This file is part of Collision.
- *
- * (c) Nuno Maduro <enunomaduro@gmail.com>
- *
- *  For the full copyright and license information, please view the LICENSE
- *  file that was distributed with this source code.
- */
+declare(strict_types=1);
 
 namespace NunoMaduro\Collision;
 
-use Whoops\Run;
-use Whoops\RunInterface;
 use NunoMaduro\Collision\Contracts\Handler as HandlerContract;
 use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
+use Whoops\Run;
+use Whoops\RunInterface;
 
 /**
- * This is an Collision Provider implementation.
+ * @internal
  *
- * @author Nuno Maduro <enunomaduro@gmail.com>
+ * @see \Tests\Unit\ProviderTest
  */
-class Provider implements ProviderContract
+final class Provider implements ProviderContract
 {
     /**
      * Holds an instance of the Run.
+	 * 保存Run的实例
      *
      * @var \Whoops\RunInterface
      */
@@ -35,6 +29,7 @@ class Provider implements ProviderContract
 
     /**
      * Holds an instance of the handler.
+	 * 保存处理程序的实例
      *
      * @var \NunoMaduro\Collision\Contracts\Handler
      */
@@ -42,14 +37,12 @@ class Provider implements ProviderContract
 
     /**
      * Creates a new instance of the Provider.
-     *
-     * @param \Whoops\RunInterface|null $run
-     * @param \NunoMaduro\Collision\Contracts\Handler|null $handler
+	 * 创建提供程序的新实例
      */
     public function __construct(RunInterface $run = null, HandlerContract $handler = null)
     {
-        $this->run = $run ?: new Run;
-        $this->handler = $handler ?: new Handler;
+        $this->run     = $run ?: new Run();
+        $this->handler = $handler ?: new Handler();
     }
 
     /**

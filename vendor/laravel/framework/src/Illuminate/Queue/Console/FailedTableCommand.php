@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，控制台，失败的表命令
+ * Illuminate，队列，控制台，queue:failed-table 失败表命令
  */
 
 namespace Illuminate\Queue\Console;
@@ -14,7 +14,7 @@ class FailedTableCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -43,7 +43,7 @@ class FailedTableCommand extends Command
 
     /**
      * Create a new failed queue jobs table command instance.
-	 * 创建新的失败作业工作表命令实例
+	 * 创建一个新的失败队列作业表命令实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  \Illuminate\Support\Composer  $composer
@@ -78,7 +78,7 @@ class FailedTableCommand extends Command
 
     /**
      * Create a base migration file for the table.
-	 * 创建一个基本迁移文件为表
+	 * 为表创建一个基本迁移文件
      *
      * @param  string  $table
      * @return string
@@ -92,7 +92,7 @@ class FailedTableCommand extends Command
 
     /**
      * Replace the generated migration with the failed job table stub.
-	 * 替换生成的迁移用失败的作业存根
+	 * 用失败的作业表存根替换生成的迁移
      *
      * @param  string  $path
      * @param  string  $table

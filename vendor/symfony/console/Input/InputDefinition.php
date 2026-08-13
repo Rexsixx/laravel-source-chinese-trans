@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，输入，输入定义
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * A InputDefinition represents a set of valid command line arguments and options.
+ * InputDefinition表示一组有效的命令行参数和选项。
  *
  * Usage:
  *
@@ -30,9 +34,10 @@ class InputDefinition
 {
     private $arguments;
     private $requiredCount;
-    private $hasAnArrayArgument = false;
-    private $hasOptional;
+    private $lastArrayArgument;
+    private $lastOptionalArgument;
     private $options;
+    private $negations;
     private $shortcuts;
 
     /**
@@ -45,6 +50,7 @@ class InputDefinition
 
     /**
      * Sets the definition of the input.
+	 * 设置输入的定义
      */
     public function setDefinition(array $definition)
     {
@@ -64,24 +70,26 @@ class InputDefinition
 
     /**
      * Sets the InputArgument objects.
+	 * 设置InputArgument对象
      *
      * @param InputArgument[] $arguments An array of InputArgument objects
      */
-    public function setArguments($arguments = [])
+    public function setArguments(array $arguments = [])
     {
         $this->arguments = [];
         $this->requiredCount = 0;
-        $this->hasOptional = false;
-        $this->hasAnArrayArgument = false;
+        $this->lastOptionalArgument = null;
+        $this->lastArrayArgument = null;
         $this->addArguments($arguments);
     }
 
     /**
      * Adds an array of InputArgument objects.
+	 * 添加一个输入参数对象数组
      *
      * @param InputArgument[] $arguments An array of InputArgument objects
      */
-    public function addArguments($arguments = [])
+    public function addArguments(?array $arguments = [])
     {
         if (null !== $arguments) {
             foreach ($arguments as $argument) {
@@ -99,22 +107,22 @@ class InputDefinition
             throw new LogicException(sprintf('An argument with name "%s" already exists.', $argument->getName()));
         }
 
-        if ($this->hasAnArrayArgument) {
-            throw new LogicException('Cannot add an argument after an array argument.');
+        if (null !== $this->lastArrayArgument) {
+            throw new LogicException(sprintf('Cannot add a required argument "%s" after an array argument "%s".', $argument->getName(), $this->lastArrayArgument->getName()));
         }
 
-        if ($argument->isRequired() && $this->hasOptional) {
-            throw new LogicException('Cannot add a required argument after an optional one.');
+        if ($argument->isRequired() && null !== $this->lastOptionalArgument) {
+            throw new LogicException(sprintf('Cannot add a required argument "%s" after an optional one "%s".', $argument->getName(), $this->lastOptionalArgument->getName()));
         }
 
         if ($argument->isArray()) {
-            $this->hasAnArrayArgument = true;
+            $this->lastArrayArgument = $argument;
         }
 
         if ($argument->isRequired()) {
             ++$this->requiredCount;
         } else {
-            $this->hasOptional = true;
+            $this->lastOptionalArgument = $argument;
         }
 
         $this->arguments[$argument->getName()] = $argument;
@@ -122,10 +130,11 @@ class InputDefinition
 
     /**
      * Returns an InputArgument by name or by position.
+	 * 以名字或位置返回InputArgument
      *
      * @param string|int $name The InputArgument name or position
      *
-     * @return InputArgument An InputArgument object
+     * @return InputArgument
      *
      * @throws InvalidArgumentException When argument given doesn't exist
      */
@@ -142,10 +151,11 @@ class InputDefinition
 
     /**
      * Returns true if an InputArgument object exists by name or position.
+	 * 如果一个InputArgument对象以名称或位置存在,则返回true。
      *
      * @param string|int $name The InputArgument name or position
      *
-     * @return bool true if the InputArgument object exists, false otherwise
+     * @return bool
      */
     public function hasArgument($name)
     {
@@ -156,8 +166,9 @@ class InputDefinition
 
     /**
      * Gets the array of InputArgument objects.
+	 * 获取InputArgument对象的数组
      *
-     * @return InputArgument[] An array of InputArgument objects
+     * @return InputArgument[]
      */
     public function getArguments()
     {
@@ -166,18 +177,20 @@ class InputDefinition
 
     /**
      * Returns the number of InputArguments.
+	 * 返回InputArguments的数量
      *
-     * @return int The number of InputArguments
+     * @return int
      */
     public function getArgumentCount()
     {
-        return $this->hasAnArrayArgument ? \PHP_INT_MAX : \count($this->arguments);
+        return null !== $this->lastArrayArgument ? \PHP_INT_MAX : \count($this->arguments);
     }
 
     /**
      * Returns the number of required InputArguments.
+	 * 返回所需的预付款数量
      *
-     * @return int The number of required InputArguments
+     * @return int
      */
     public function getArgumentRequiredCount()
     {
@@ -199,22 +212,25 @@ class InputDefinition
 
     /**
      * Sets the InputOption objects.
+	 * 设置InputOption对象
      *
      * @param InputOption[] $options An array of InputOption objects
      */
-    public function setOptions($options = [])
+    public function setOptions(array $options = [])
     {
         $this->options = [];
         $this->shortcuts = [];
+        $this->negations = [];
         $this->addOptions($options);
     }
 
     /**
      * Adds an array of InputOption objects.
+	 * 添加一个InputOption对象的数组
      *
      * @param InputOption[] $options An array of InputOption objects
      */
-    public function addOptions($options = [])
+    public function addOptions(array $options = [])
     {
         foreach ($options as $option) {
             $this->addOption($option);
@@ -227,6 +243,9 @@ class InputDefinition
     public function addOption(InputOption $option)
     {
         if (isset($this->options[$option->getName()]) && !$option->equals($this->options[$option->getName()])) {
+            throw new LogicException(sprintf('An option named "%s" already exists.', $option->getName()));
+        }
+        if (isset($this->negations[$option->getName()])) {
             throw new LogicException(sprintf('An option named "%s" already exists.', $option->getName()));
         }
 
@@ -244,18 +263,25 @@ class InputDefinition
                 $this->shortcuts[$shortcut] = $option->getName();
             }
         }
+
+        if ($option->isNegatable()) {
+            $negatedName = 'no-'.$option->getName();
+            if (isset($this->options[$negatedName])) {
+                throw new LogicException(sprintf('An option named "%s" already exists.', $negatedName));
+            }
+            $this->negations[$negatedName] = $option->getName();
+        }
     }
 
     /**
      * Returns an InputOption by name.
+	 * 以名字返回一个InputOption
      *
-     * @param string $name The InputOption name
-     *
-     * @return InputOption A InputOption object
+     * @return InputOption
      *
      * @throws InvalidArgumentException When option given doesn't exist
      */
-    public function getOption($name)
+    public function getOption(string $name)
     {
         if (!$this->hasOption($name)) {
             throw new InvalidArgumentException(sprintf('The "--%s" option does not exist.', $name));
@@ -266,23 +292,23 @@ class InputDefinition
 
     /**
      * Returns true if an InputOption object exists by name.
+	 * 如果一个InputOption对象以名称存在,返回true。
      *
      * This method can't be used to check if the user included the option when
      * executing the command (use getOption() instead).
      *
-     * @param string $name The InputOption name
-     *
-     * @return bool true if the InputOption object exists, false otherwise
+     * @return bool
      */
-    public function hasOption($name)
+    public function hasOption(string $name)
     {
         return isset($this->options[$name]);
     }
 
     /**
      * Gets the array of InputOption objects.
+	 * 获取InputOption对象的数组
      *
-     * @return InputOption[] An array of InputOption objects
+     * @return InputOption[]
      */
     public function getOptions()
     {
@@ -291,24 +317,31 @@ class InputDefinition
 
     /**
      * Returns true if an InputOption object exists by shortcut.
+	 * 如果一个InputOption对象以快捷方式存在,则返回true。
      *
-     * @param string $name The InputOption shortcut
-     *
-     * @return bool true if the InputOption object exists, false otherwise
+     * @return bool
      */
-    public function hasShortcut($name)
+    public function hasShortcut(string $name)
     {
         return isset($this->shortcuts[$name]);
     }
 
     /**
-     * Gets an InputOption by shortcut.
-     *
-     * @param string $shortcut The Shortcut name
-     *
-     * @return InputOption An InputOption object
+     * Returns true if an InputOption object exists by negated name.
+	 * 如果一个InputOption对象以否定的名称存在,返回true。
      */
-    public function getOptionForShortcut($shortcut)
+    public function hasNegation(string $name): bool
+    {
+        return isset($this->negations[$name]);
+    }
+
+    /**
+     * Gets an InputOption by shortcut.
+	 * 通过快捷方式获得一种咒语
+     *
+     * @return InputOption
+     */
+    public function getOptionForShortcut(string $shortcut)
     {
         return $this->getOption($this->shortcutToName($shortcut));
     }
@@ -328,6 +361,7 @@ class InputDefinition
 
     /**
      * Returns the InputOption name given a shortcut.
+	 * 返回InputOption的名称
      *
      * @throws InvalidArgumentException When option given does not exist
      *
@@ -343,13 +377,29 @@ class InputDefinition
     }
 
     /**
-     * Gets the synopsis.
+     * Returns the InputOption name given a negation.
+	 * 通过否定返回InputOption名称
      *
-     * @param bool $short Whether to return the short version (with options folded) or not
+     * @throws InvalidArgumentException When option given does not exist
      *
-     * @return string The synopsis
+     * @internal
      */
-    public function getSynopsis($short = false)
+    public function negationToName(string $negation): string
+    {
+        if (!isset($this->negations[$negation])) {
+            throw new InvalidArgumentException(sprintf('The "--%s" option does not exist.', $negation));
+        }
+
+        return $this->negations[$negation];
+    }
+
+    /**
+     * Gets the synopsis.
+	 * 获取概要
+     *
+     * @return string
+     */
+    public function getSynopsis(bool $short = false)
     {
         $elements = [];
 
@@ -368,7 +418,8 @@ class InputDefinition
                 }
 
                 $shortcut = $option->getShortcut() ? sprintf('-%s|', $option->getShortcut()) : '';
-                $elements[] = sprintf('[%s--%s%s]', $shortcut, $option->getName(), $value);
+                $negation = $option->isNegatable() ? sprintf('|--no-%s', $option->getName()) : '';
+                $elements[] = sprintf('[%s--%s%s%s]', $shortcut, $option->getName(), $value, $negation);
             }
         }
 

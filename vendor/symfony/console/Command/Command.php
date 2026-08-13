@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，命令，Command
+ * Symfony，Component，Console，命令，命令
  */
 
 /*
@@ -15,6 +15,9 @@
 namespace Symfony\Component\Console\Command;
 
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Completion\CompletionInput;
+use Symfony\Component\Console\Completion\CompletionSuggestions;
 use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Exception\LogicException;
@@ -27,16 +30,26 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Base class for all commands.
- * 所有命令的基类。
+ * 所有命令的基类
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class Command
 {
+    // see https://tldp.org/LDP/abs/html/exitcodes.html
+    public const SUCCESS = 0;
+    public const FAILURE = 1;
+    public const INVALID = 2;
+
     /**
      * @var string|null The default command name
      */
     protected static $defaultName;
+
+    /**
+     * @var string|null The default command description
+     */
+    protected static $defaultDescription;
 
     private $application;
     private $name;
@@ -46,23 +59,40 @@ class Command
     private $hidden = false;
     private $help = '';
     private $description = '';
+    private $fullDefinition;
     private $ignoreValidationErrors = false;
-    private $applicationDefinitionMerged = false;
-    private $applicationDefinitionMergedWithArgs = false;
     private $code;
     private $synopsis = [];
     private $usages = [];
     private $helperSet;
 
     /**
-     * @return string|null The default command name or null when no default name is set
+     * @return string|null
      */
     public static function getDefaultName()
     {
         $class = static::class;
+
+        if (\PHP_VERSION_ID >= 80000 && $attribute = (new \ReflectionClass($class))->getAttributes(AsCommand::class)) {
+            return $attribute[0]->newInstance()->name;
+        }
+
         $r = new \ReflectionProperty($class, 'defaultName');
 
         return $class === $r->class ? static::$defaultName : null;
+    }
+
+    public static function getDefaultDescription(): ?string
+    {
+        $class = static::class;
+
+        if (\PHP_VERSION_ID >= 80000 && $attribute = (new \ReflectionClass($class))->getAttributes(AsCommand::class)) {
+            return $attribute[0]->newInstance()->description;
+        }
+
+        $r = new \ReflectionProperty($class, 'defaultDescription');
+
+        return $class === $r->class ? static::$defaultDescription : null;
     }
 
     /**
@@ -70,12 +100,27 @@ class Command
      *
      * @throws LogicException When the command name is empty
      */
-    public function __construct(string $name = null)
+    public function __construct(?string $name = null)
     {
         $this->definition = new InputDefinition();
 
-        if (null !== $name || null !== $name = static::getDefaultName()) {
+        if (null === $name && null !== $name = static::getDefaultName()) {
+            $aliases = explode('|', $name);
+
+            if ('' === $name = array_shift($aliases)) {
+                $this->setHidden(true);
+                $name = array_shift($aliases);
+            }
+
+            $this->setAliases($aliases);
+        }
+
+        if (null !== $name) {
             $this->setName($name);
+        }
+
+        if ('' === $this->description) {
+            $this->setDescription(static::getDefaultDescription() ?? '');
         }
 
         $this->configure();
@@ -83,6 +128,7 @@ class Command
 
     /**
      * Ignores validation errors.
+	 * 忽略验证错误
      *
      * This is mainly useful for the help command.
      */
@@ -91,7 +137,7 @@ class Command
         $this->ignoreValidationErrors = true;
     }
 
-    public function setApplication(Application $application = null)
+    public function setApplication(?Application $application = null)
     {
         $this->application = $application;
         if ($application) {
@@ -99,6 +145,8 @@ class Command
         } else {
             $this->helperSet = null;
         }
+
+        $this->fullDefinition = null;
     }
 
     public function setHelperSet(HelperSet $helperSet)
@@ -108,8 +156,9 @@ class Command
 
     /**
      * Gets the helper set.
+	 * 获取助手集合
      *
-     * @return HelperSet|null A HelperSet instance
+     * @return HelperSet|null
      */
     public function getHelperSet()
     {
@@ -118,8 +167,9 @@ class Command
 
     /**
      * Gets the application instance for this command.
+	 * 获取此命令的应用程序实例
      *
-     * @return Application|null An Application instance
+     * @return Application|null
      */
     public function getApplication()
     {
@@ -128,8 +178,9 @@ class Command
 
     /**
      * Checks whether the command is enabled or not in the current environment.
+	 * 检查命令是否在当前环境中启用。
      *
-     * Override this to check for x or y and return false if the command can not
+     * Override this to check for x or y and return false if the command cannot
      * run properly under the current conditions.
      *
      * @return bool
@@ -141,6 +192,7 @@ class Command
 
     /**
      * Configures the current command.
+	 * 配置当前命令
      */
     protected function configure()
     {
@@ -148,6 +200,7 @@ class Command
 
     /**
      * Executes the current command.
+	 * 执行当前命令。
      *
      * This method is not abstract because you can use this class
      * as a concrete class. In this case, instead of defining the
@@ -167,6 +220,7 @@ class Command
 
     /**
      * Interacts with the user.
+	 * 与用户交互。
      *
      * This method is executed before the InputDefinition is validated.
      * This means that this is the only place where the command can
@@ -179,6 +233,7 @@ class Command
     /**
      * Initializes the command after the input has been bound and before the input
      * is validated.
+	 * 在绑定输入之后和输入之前初始化命令得到验证。
      *
      * This is mainly useful when a lot of commands extends one main command
      * where some things need to be initialized based on the input arguments and options.
@@ -192,6 +247,7 @@ class Command
 
     /**
      * Runs the command.
+	 * 运行命令。
      *
      * The code to execute is either defined directly with the
      * setCode() method or by overriding the execute() method
@@ -199,23 +255,19 @@ class Command
      *
      * @return int The command exit code
      *
-     * @throws \Exception When binding input fails. Bypass this by calling {@link ignoreValidationErrors()}.
+     * @throws ExceptionInterface When input binding fails. Bypass this by calling {@link ignoreValidationErrors()}.
      *
      * @see setCode()
      * @see execute()
      */
     public function run(InputInterface $input, OutputInterface $output)
     {
-        // force the creation of the synopsis before the merge with the app definition
-        $this->getSynopsis(true);
-        $this->getSynopsis(false);
-
         // add the application arguments and options
         $this->mergeApplicationDefinition();
 
         // bind the input against the command specific arguments/options
         try {
-            $input->bind($this->definition);
+            $input->bind($this->getDefinition());
         } catch (ExceptionInterface $e) {
             if (!$this->ignoreValidationErrors) {
                 throw $e;
@@ -259,7 +311,7 @@ class Command
             $statusCode = $this->execute($input, $output);
 
             if (!\is_int($statusCode)) {
-                @trigger_error(sprintf('Return value of "%s::execute()" should always be of the type int since Symfony 4.4, %s returned.', static::class, \gettype($statusCode)), \E_USER_DEPRECATED);
+                throw new \TypeError(sprintf('Return value of "%s::execute()" must be of the type int, "%s" returned.', static::class, get_debug_type($statusCode)));
             }
         }
 
@@ -267,7 +319,16 @@ class Command
     }
 
     /**
+     * Adds suggestions to $suggestions for the current completion input (e.g. option or argument).
+	 * 为当前完成输入(例如选项或参数)添加建议
+     */
+    public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
+    {
+    }
+
+    /**
      * Sets the code to execute when running this command.
+	 * 在运行此命令时设置执行的代码。
      *
      * If this method is used, it overrides the code defined
      * in the execute() method.
@@ -303,32 +364,35 @@ class Command
 
     /**
      * Merges the application definition with the command definition.
+	 * 使用命令定义将应用程序定义合并。
      *
      * This method is not part of public API and should not be used directly.
      *
      * @param bool $mergeArgs Whether to merge or not the Application definition arguments to Command definition arguments
+     *
+     * @internal
      */
-    public function mergeApplicationDefinition($mergeArgs = true)
+    public function mergeApplicationDefinition(bool $mergeArgs = true)
     {
-        if (null === $this->application || (true === $this->applicationDefinitionMerged && ($this->applicationDefinitionMergedWithArgs || !$mergeArgs))) {
+        if (null === $this->application) {
             return;
         }
 
-        $this->definition->addOptions($this->application->getDefinition()->getOptions());
-
-        $this->applicationDefinitionMerged = true;
+        $this->fullDefinition = new InputDefinition();
+        $this->fullDefinition->setOptions($this->definition->getOptions());
+        $this->fullDefinition->addOptions($this->application->getDefinition()->getOptions());
 
         if ($mergeArgs) {
-            $currentArguments = $this->definition->getArguments();
-            $this->definition->setArguments($this->application->getDefinition()->getArguments());
-            $this->definition->addArguments($currentArguments);
-
-            $this->applicationDefinitionMergedWithArgs = true;
+            $this->fullDefinition->setArguments($this->application->getDefinition()->getArguments());
+            $this->fullDefinition->addArguments($this->definition->getArguments());
+        } else {
+            $this->fullDefinition->setArguments($this->definition->getArguments());
         }
     }
 
     /**
      * Sets an array of argument and option instances.
+	 * 设置一个参数数组和选项实例。
      *
      * @param array|InputDefinition $definition An array of argument and option instances or a definition instance
      *
@@ -342,17 +406,34 @@ class Command
             $this->definition->setDefinition($definition);
         }
 
-        $this->applicationDefinitionMerged = false;
+        $this->fullDefinition = null;
 
         return $this;
     }
 
     /**
      * Gets the InputDefinition attached to this Command.
+	 * 获取连接到这个命令的InputDefinition
      *
-     * @return InputDefinition An InputDefinition instance
+     * @return InputDefinition
      */
     public function getDefinition()
+    {
+        return $this->fullDefinition ?? $this->getNativeDefinition();
+    }
+
+    /**
+     * Gets the InputDefinition to be used to create representations of this Command.
+	 * 获取用于创建此命令的表示的InputDefinition。
+     *
+     * Can be overridden to provide the original command representation when it would otherwise
+     * be changed by merging with the application InputDefinition.
+     *
+     * This method is not part of public API and should not be used directly.
+     *
+     * @return InputDefinition
+     */
+    public function getNativeDefinition()
     {
         if (null === $this->definition) {
             throw new LogicException(sprintf('Command class "%s" is not correctly initialized. You probably forgot to call the parent constructor.', static::class));
@@ -362,74 +443,62 @@ class Command
     }
 
     /**
-     * Gets the InputDefinition to be used to create representations of this Command.
-     *
-     * Can be overridden to provide the original command representation when it would otherwise
-     * be changed by merging with the application InputDefinition.
-     *
-     * This method is not part of public API and should not be used directly.
-     *
-     * @return InputDefinition An InputDefinition instance
-     */
-    public function getNativeDefinition()
-    {
-        return $this->getDefinition();
-    }
-
-    /**
      * Adds an argument.
+	 * 添加参数
      *
-     * @param string   $name        The argument name
-     * @param int|null $mode        The argument mode: InputArgument::REQUIRED or InputArgument::OPTIONAL
-     * @param string   $description A description text
-     * @param mixed    $default     The default value (for InputArgument::OPTIONAL mode only)
-     *
-     * @throws InvalidArgumentException When argument mode is not valid
+     * @param int|null $mode    The argument mode: InputArgument::REQUIRED or InputArgument::OPTIONAL
+     * @param mixed    $default The default value (for InputArgument::OPTIONAL mode only)
      *
      * @return $this
+     *
+     * @throws InvalidArgumentException When argument mode is not valid
      */
-    public function addArgument($name, $mode = null, $description = '', $default = null)
+    public function addArgument(string $name, ?int $mode = null, string $description = '', $default = null)
     {
         $this->definition->addArgument(new InputArgument($name, $mode, $description, $default));
+        if (null !== $this->fullDefinition) {
+            $this->fullDefinition->addArgument(new InputArgument($name, $mode, $description, $default));
+        }
 
         return $this;
     }
 
     /**
      * Adds an option.
+	 * 添加选项
      *
-     * @param string            $name        The option name
-     * @param string|array|null $shortcut    The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
-     * @param int|null          $mode        The option mode: One of the InputOption::VALUE_* constants
-     * @param string            $description A description text
-     * @param mixed             $default     The default value (must be null for InputOption::VALUE_NONE)
-     *
-     * @throws InvalidArgumentException If option mode is invalid or incompatible
+     * @param string|array|null $shortcut The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
+     * @param int|null          $mode     The option mode: One of the InputOption::VALUE_* constants
+     * @param mixed             $default  The default value (must be null for InputOption::VALUE_NONE)
      *
      * @return $this
+     *
+     * @throws InvalidArgumentException If option mode is invalid or incompatible
      */
-    public function addOption($name, $shortcut = null, $mode = null, $description = '', $default = null)
+    public function addOption(string $name, $shortcut = null, ?int $mode = null, string $description = '', $default = null)
     {
         $this->definition->addOption(new InputOption($name, $shortcut, $mode, $description, $default));
+        if (null !== $this->fullDefinition) {
+            $this->fullDefinition->addOption(new InputOption($name, $shortcut, $mode, $description, $default));
+        }
 
         return $this;
     }
 
     /**
      * Sets the name of the command.
+	 * 设置命令名称
      *
      * This method can set both the namespace and the name if
      * you separate them by a colon (:)
      *
      *     $command->setName('foo:bar');
      *
-     * @param string $name The command name
-     *
      * @return $this
      *
      * @throws InvalidArgumentException When the name is invalid
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->validateName($name);
 
@@ -440,15 +509,14 @@ class Command
 
     /**
      * Sets the process title of the command.
+	 * 设置命令的进程标题
      *
      * This feature should be used only when creating a long process command,
      * like a daemon.
      *
-     * @param string $title The process title
-     *
      * @return $this
      */
-    public function setProcessTitle($title)
+    public function setProcessTitle(string $title)
     {
         $this->processTitle = $title;
 
@@ -457,6 +525,7 @@ class Command
 
     /**
      * Returns the command name.
+	 * 返回命令名
      *
      * @return string|null
      */
@@ -467,12 +536,15 @@ class Command
 
     /**
      * @param bool $hidden Whether or not the command should be hidden from the list of commands
+     *                     The default value will be true in Symfony 6.0
      *
      * @return $this
+     *
+     * @final since Symfony 5.1
      */
-    public function setHidden($hidden)
+    public function setHidden(bool $hidden /* = true */)
     {
-        $this->hidden = (bool) $hidden;
+        $this->hidden = $hidden;
 
         return $this;
     }
@@ -487,12 +559,11 @@ class Command
 
     /**
      * Sets the description for the command.
-     *
-     * @param string $description The description for the command
+	 * 设置命令的描述
      *
      * @return $this
      */
-    public function setDescription($description)
+    public function setDescription(string $description)
     {
         $this->description = $description;
 
@@ -501,8 +572,9 @@ class Command
 
     /**
      * Returns the description for the command.
+	 * 返回命令的描述
      *
-     * @return string The description for the command
+     * @return string
      */
     public function getDescription()
     {
@@ -511,12 +583,11 @@ class Command
 
     /**
      * Sets the help for the command.
-     *
-     * @param string $help The help for the command
+	 * 为命令设置帮助
      *
      * @return $this
      */
-    public function setHelp($help)
+    public function setHelp(string $help)
     {
         $this->help = $help;
 
@@ -525,8 +596,9 @@ class Command
 
     /**
      * Returns the help for the command.
+	 * 返回命令的帮助
      *
-     * @return string The help for the command
+     * @return string
      */
     public function getHelp()
     {
@@ -537,7 +609,7 @@ class Command
      * Returns the processed help for the command replacing the %command.name% and
      * %command.full_name% patterns with the real values dynamically.
      *
-     * @return string The processed help for the command
+     * @return string
      */
     public function getProcessedHelp()
     {
@@ -558,6 +630,7 @@ class Command
 
     /**
      * Sets the aliases for the command.
+	 * 为命令设置别名
      *
      * @param string[] $aliases An array of aliases for the command
      *
@@ -565,25 +638,25 @@ class Command
      *
      * @throws InvalidArgumentException When an alias is invalid
      */
-    public function setAliases($aliases)
+    public function setAliases(iterable $aliases)
     {
-        if (!\is_array($aliases) && !$aliases instanceof \Traversable) {
-            throw new InvalidArgumentException('$aliases must be an array or an instance of \Traversable.');
-        }
+        $list = [];
 
         foreach ($aliases as $alias) {
             $this->validateName($alias);
+            $list[] = $alias;
         }
 
-        $this->aliases = $aliases;
+        $this->aliases = \is_array($aliases) ? $aliases : $list;
 
         return $this;
     }
 
     /**
      * Returns the aliases for the command.
+	 * 返回命令的别名
      *
-     * @return array An array of aliases for the command
+     * @return array
      */
     public function getAliases()
     {
@@ -592,12 +665,13 @@ class Command
 
     /**
      * Returns the synopsis for the command.
+	 * 返回命令的概要
      *
      * @param bool $short Whether to show the short version of the synopsis (with options folded) or not
      *
-     * @return string The synopsis
+     * @return string
      */
-    public function getSynopsis($short = false)
+    public function getSynopsis(bool $short = false)
     {
         $key = $short ? 'short' : 'long';
 
@@ -609,13 +683,12 @@ class Command
     }
 
     /**
-     * Add a command usage example.
-     *
-     * @param string $usage The usage, it'll be prefixed with the command name
+     * Add a command usage example, it'll be prefixed with the command name.
+	 * 添加一个命令使用示例,它将用命令名来前缀。
      *
      * @return $this
      */
-    public function addUsage($usage)
+    public function addUsage(string $usage)
     {
         if (!str_starts_with($usage, $this->name)) {
             $usage = sprintf('%s %s', $this->name, $usage);
@@ -628,6 +701,7 @@ class Command
 
     /**
      * Returns alternative usages of the command.
+	 * 返回命令的替代用法
      *
      * @return array
      */
@@ -638,15 +712,14 @@ class Command
 
     /**
      * Gets a helper instance by name.
+	 * 通过名称获取辅助实例
      *
-     * @param string $name The helper name
-     *
-     * @return mixed The helper value
+     * @return mixed
      *
      * @throws LogicException           if no HelperSet is defined
      * @throws InvalidArgumentException if the helper is not defined
      */
-    public function getHelper($name)
+    public function getHelper(string $name)
     {
         if (null === $this->helperSet) {
             throw new LogicException(sprintf('Cannot retrieve helper "%s" because there is no HelperSet defined. Did you forget to add your command to the application or to set the application on the command using the setApplication() method? You can also set the HelperSet directly using the setHelperSet() method.', $name));
@@ -657,6 +730,7 @@ class Command
 
     /**
      * Validates a command name.
+	 * 验证命令名。
      *
      * It must be non-empty and parts can optionally be separated by ":".
      *

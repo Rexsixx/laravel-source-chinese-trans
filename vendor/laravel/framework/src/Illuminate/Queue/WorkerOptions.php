@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，执行者选项
+ * Illuminate，队列，工作者选项
  */
 
 namespace Illuminate\Queue;
@@ -8,16 +8,24 @@ namespace Illuminate\Queue;
 class WorkerOptions
 {
     /**
-     * The number of seconds before a released job will be available.
-	 * 一个即将释放的作业的秒数
+     * The name of the worker.
+	 * 工作者名称
      *
      * @var int
      */
-    public $delay;
+    public $name;
+
+    /**
+     * The number of seconds to wait before retrying a job that encountered an uncaught exception.
+	 * 在重试遇到未捕获异常的作业之前等待的秒数
+     *
+     * @var int
+     */
+    public $backoff;
 
     /**
      * The maximum amount of RAM the worker may consume.
-	 * 最大RAM量执行者可能消耗的
+	 * 工作线程可能消耗的最大RAM量
      *
      * @var int
      */
@@ -25,7 +33,7 @@ class WorkerOptions
 
     /**
      * The maximum number of seconds a child worker may run.
-	 * 最大秒数子线程可以运行的
+	 * 子线程可以运行的最大秒数
      *
      * @var int
      */
@@ -33,15 +41,23 @@ class WorkerOptions
 
     /**
      * The number of seconds to wait in between polling the queue.
-	 * 最大秒数在轮询队列之间等待
+	 * 轮询队列之间等待的秒数
      *
      * @var int
      */
     public $sleep;
 
     /**
+     * The number of seconds to rest between jobs.
+	 * 作业之间的休息秒数
+     *
+     * @var int
+     */
+    public $rest;
+
+    /**
      * The maximum amount of times a job may be attempted.
-	 * 最大次数可以尝试作业的
+	 * 可以尝试作业的最大次数
      *
      * @var int
      */
@@ -49,41 +65,66 @@ class WorkerOptions
 
     /**
      * Indicates if the worker should run in maintenance mode.
-	 * 指明执行者是否应在维护模式下运行
+	 * 指示工作线程是否应在维护模式下运行
      *
      * @var bool
      */
     public $force;
 
     /**
-     * Indicates if the worker should stop when queue is empty.
-	 * 指明执行者是否应该停止当队列为空时
+     * Indicates if the worker should stop when the queue is empty.
+	 * 指示工作线程是否应该在队列为空时停止
      *
      * @var bool
      */
     public $stopWhenEmpty;
 
     /**
-     * Create a new worker options instance.
-	 * 创建新的执行者选项实例
+     * The maximum number of jobs to run.
+	 * 要运行的最大作业数
      *
-     * @param  int  $delay
+     * @var int
+     */
+    public $maxJobs;
+
+    /**
+     * The maximum number of seconds a worker may live.
+	 * 一个工作线程可以存活的最大秒数
+     *
+     * @var int
+     */
+    public $maxTime;
+
+    /**
+     * Create a new worker options instance.
+	 * 创建一个新的工作者选项实例
+     *
+     * @param  string  $name
+     * @param  int  $backoff
      * @param  int  $memory
      * @param  int  $timeout
      * @param  int  $sleep
      * @param  int  $maxTries
      * @param  bool  $force
      * @param  bool  $stopWhenEmpty
+     * @param  int  $maxJobs
+     * @param  int  $maxTime
+     * @param  int  $rest
      * @return void
      */
-    public function __construct($delay = 0, $memory = 128, $timeout = 60, $sleep = 3, $maxTries = 1, $force = false, $stopWhenEmpty = false)
+    public function __construct($name = 'default', $backoff = 0, $memory = 128, $timeout = 60, $sleep = 3, $maxTries = 1,
+                                $force = false, $stopWhenEmpty = false, $maxJobs = 0, $maxTime = 0, $rest = 0)
     {
-        $this->delay = $delay;
+        $this->name = $name;
+        $this->backoff = $backoff;
         $this->sleep = $sleep;
+        $this->rest = $rest;
         $this->force = $force;
         $this->memory = $memory;
         $this->timeout = $timeout;
         $this->maxTries = $maxTries;
         $this->stopWhenEmpty = $stopWhenEmpty;
+        $this->maxJobs = $maxJobs;
+        $this->maxTime = $maxTime;
     }
 }

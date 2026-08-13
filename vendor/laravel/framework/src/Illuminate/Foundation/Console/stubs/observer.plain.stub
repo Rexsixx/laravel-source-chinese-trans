@@ -1,11 +1,11 @@
 <?php
 /**
- * 基础，虚拟类根文件
+ * Illuminate，基础，控制台，存根，观察者模式基本
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
-class DummyClass
+class {{ class }}
 {
     //
 }

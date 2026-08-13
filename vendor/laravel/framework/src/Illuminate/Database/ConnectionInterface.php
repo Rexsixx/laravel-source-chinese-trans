@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，连接接口
+ * Illuminate，数据库，连接接口
  */
 
 namespace Illuminate\Database;
@@ -11,7 +11,7 @@ interface ConnectionInterface
 {
     /**
      * Begin a fluent query against a database table.
-	 * 开始对数据库表进行流畅的查询，执行
+	 * 开始对数据库表进行流畅的查询
      *
      * @param  \Closure|\Illuminate\Database\Query\Builder|string  $table
      * @param  string|null  $as
@@ -21,7 +21,7 @@ interface ConnectionInterface
 
     /**
      * Get a new raw query expression.
-	 * 得到一个原始查询表达式
+	 * 获取一个新的原始查询表达式
      *
      * @param  mixed  $value
      * @return \Illuminate\Database\Query\Expression
@@ -30,7 +30,7 @@ interface ConnectionInterface
 
     /**
      * Run a select statement and return a single result.
-	 * 执行一个查询语言返回单个结果
+	 * 运行一个select语句并返回一个结果
      *
      * @param  string  $query
      * @param  array  $bindings
@@ -41,7 +41,7 @@ interface ConnectionInterface
 
     /**
      * Run a select statement against the database.
-	 * 运行查询语句
+	 * 对数据库运行一条选择语句
      *
      * @param  string  $query
      * @param  array  $bindings
@@ -52,7 +52,7 @@ interface ConnectionInterface
 
     /**
      * Run a select statement against the database and returns a generator.
-	 * 运行select语句并返回生成器对数据库
+	 * 对数据库运行select语句并返回生成器
      *
      * @param  string  $query
      * @param  array  $bindings
@@ -63,7 +63,7 @@ interface ConnectionInterface
 
     /**
      * Run an insert statement against the database.
-	 * 运行插入语句
+	 * 对数据库运行一条插入语句
      *
      * @param  string  $query
      * @param  array  $bindings
@@ -73,7 +73,7 @@ interface ConnectionInterface
 
     /**
      * Run an update statement against the database.
-	 * 运行更新语句
+	 * 对数据库运行一条更新语句
      *
      * @param  string  $query
      * @param  array  $bindings
@@ -83,7 +83,7 @@ interface ConnectionInterface
 
     /**
      * Run a delete statement against the database.
-	 * 运行删除语句
+	 * 对数据库运行delete语句
      *
      * @param  string  $query
      * @param  array  $bindings
@@ -93,7 +93,7 @@ interface ConnectionInterface
 
     /**
      * Execute an SQL statement and return the boolean result.
-	 * 执行SQL语句
+	 * 执行SQL语句并返回布尔结果
      *
      * @param  string  $query
      * @param  array  $bindings
@@ -103,7 +103,7 @@ interface ConnectionInterface
 
     /**
      * Run an SQL statement and get the number of rows affected.
-	 * 运行SQL语句，返回影响行数
+	 * 运行一条SQL语句，获取受影响的行数。
      *
      * @param  string  $query
      * @param  array  $bindings
@@ -113,7 +113,7 @@ interface ConnectionInterface
 
     /**
      * Run a raw, unprepared query against the PDO connection.
-	 * 运行一个未准备的原始查询对PDO连接
+	 * 对PDO连接运行一个未准备的原始查询
      *
      * @param  string  $query
      * @return bool
@@ -131,7 +131,7 @@ interface ConnectionInterface
 
     /**
      * Execute a Closure within a transaction.
-	 * 执行闭包在事务中
+	 * 在事务中执行闭包
      *
      * @param  \Closure  $callback
      * @param  int  $attempts
@@ -143,7 +143,7 @@ interface ConnectionInterface
 
     /**
      * Start a new database transaction.
-	 * 开始一个事务
+	 * 启动一个新的数据库事务
      *
      * @return void
      */
@@ -151,7 +151,7 @@ interface ConnectionInterface
 
     /**
      * Commit the active database transaction.
-	 * 提交事务
+	 * 提交活动数据库事务
      *
      * @return void
      */
@@ -167,7 +167,7 @@ interface ConnectionInterface
 
     /**
      * Get the number of active transactions.
-	 * 得到事务级别
+	 * 获取活动事务的数量
      *
      * @return int
      */
@@ -175,10 +175,18 @@ interface ConnectionInterface
 
     /**
      * Execute the given callback in "dry run" mode.
-	 * 以"预演"模式执行给定的回调函数
+	 * 以“预演”模式执行给定的回调函数
      *
      * @param  \Closure  $callback
      * @return array
      */
     public function pretend(Closure $callback);
+
+    /**
+     * Get the name of the connected database.
+	 * 获取所连接数据库的名称
+     *
+     * @return string
+     */
+    public function getDatabaseName();
 }

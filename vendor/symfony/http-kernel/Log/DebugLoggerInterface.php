@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，日志，调试记录器接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * DebugLoggerInterface.
+ * 调试记录器接口
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -22,28 +26,27 @@ interface DebugLoggerInterface
 {
     /**
      * Returns an array of logs.
+	 * 返回一个日志数组。
      *
      * A log is an array with the following mandatory keys:
      * timestamp, message, priority, and priorityName.
      * It can also have an optional context key containing an array.
      *
-     * @param Request|null $request The request to get logs for
-     *
-     * @return array An array of logs
+     * @return array
      */
-    public function getLogs(/* Request $request = null */);
+    public function getLogs(?Request $request = null);
 
     /**
      * Returns the number of errors.
+	 * 返回错误的数量
      *
-     * @param Request|null $request The request to count logs for
-     *
-     * @return int The number of errors
+     * @return int
      */
-    public function countErrors(/* Request $request = null */);
+    public function countErrors(?Request $request = null);
 
     /**
      * Removes all log records.
+	 * 删除所有日志记录
      */
     public function clear();
 }

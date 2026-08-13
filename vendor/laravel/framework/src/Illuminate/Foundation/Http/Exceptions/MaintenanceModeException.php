@@ -1,20 +1,23 @@
 <?php
 /**
- * 基础，维护模式异常
+ * Illuminate，基础，Http，异常，维护模式异常
  */
 
 namespace Illuminate\Foundation\Http\Exceptions;
 
-use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
+use Throwable;
 
+/**
+ * @deprecated Will be removed in a future Laravel version.
+ */
 class MaintenanceModeException extends ServiceUnavailableHttpException
 {
     /**
      * When the application was put in maintenance mode.
-	 * 当应用程序处于维护模式
+	 * 当应用程序处于维护模式时
      *
      * @var \Illuminate\Support\Carbon
      */
@@ -43,11 +46,11 @@ class MaintenanceModeException extends ServiceUnavailableHttpException
      * @param  int  $time
      * @param  int|null  $retryAfter
      * @param  string|null  $message
-     * @param  \Exception|null  $previous
+     * @param  \Throwable|null  $previous
      * @param  int  $code
      * @return void
      */
-    public function __construct($time, $retryAfter = null, $message = null, Exception $previous = null, $code = 0)
+    public function __construct($time, $retryAfter = null, $message = null, Throwable $previous = null, $code = 0)
     {
         parent::__construct($retryAfter, $message, $previous, $code);
 

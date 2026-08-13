@@ -1,9 +1,12 @@
 <?php
+/**
+ * Psy，命令，列表命令，计数器
+ */
 
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2023 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,6 +22,7 @@ use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Abstract Enumerator class.
+ * 抽象枚举类。
  */
 abstract class Enumerator
 {
@@ -31,11 +35,12 @@ abstract class Enumerator
     const IS_CLASS = 'class';
     const IS_FUNCTION = 'function';
 
-    private $filter;
-    private $presenter;
+    private FilterOptions $filter;
+    private Presenter $presenter;
 
     /**
      * Enumerator constructor.
+	 * 枚举函数构造函数
      *
      * @param Presenter $presenter
      */
@@ -47,6 +52,7 @@ abstract class Enumerator
 
     /**
      * Return a list of categorized things with the given input options and target.
+	 * 返回给定的输入选项和目标的分类清单
      *
      * @param InputInterface  $input
      * @param \Reflector|null $reflector
@@ -54,7 +60,7 @@ abstract class Enumerator
      *
      * @return array
      */
-    public function enumerate(InputInterface $input, \Reflector $reflector = null, $target = null): array
+    public function enumerate(InputInterface $input, ?\Reflector $reflector = null, $target = null): array
     {
         $this->filter->bind($input);
 
@@ -82,7 +88,7 @@ abstract class Enumerator
      *
      * @return array
      */
-    abstract protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null): array;
+    abstract protected function listItems(InputInterface $input, ?\Reflector $reflector = null, $target = null): array;
 
     protected function showItem($name)
     {

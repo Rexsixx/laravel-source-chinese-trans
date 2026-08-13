@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，数组，是数组大小
+ * Hamcrest，数组，是否数组大小
  */
 
 namespace Hamcrest\Arrays;
@@ -39,7 +39,7 @@ class IsArrayWithSize extends FeatureMatcher
 
     /**
      * Does array size satisfy a given matcher?
-	 * 数组大小是否满足给定的匹配器？
+	 * 数组大小是否满足给定的匹配器
      *
      * @param \Hamcrest\Matcher|int $size as a {@link Hamcrest\Matcher} or a value.
      *
@@ -67,7 +67,6 @@ class IsArrayWithSize extends FeatureMatcher
 
     /**
      * Matches an empty array.
-	 * 匹配空数组
      *
      * @factory
      */

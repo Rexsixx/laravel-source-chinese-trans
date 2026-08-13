@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，探测器，迭代器，自定义过滤器迭代器
+ * Symfony，Component，Finder，迭代器，自定义过滤器迭代器
  */
 
 /*
@@ -16,19 +16,22 @@ namespace Symfony\Component\Finder\Iterator;
 
 /**
  * CustomFilterIterator filters files by applying anonymous functions.
+ * CustomFilterIterator通过应用匿名函数来过滤文件。
  *
  * The anonymous function receives a \SplFileInfo and must return false
  * to remove files.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @extends \FilterIterator<string, \SplFileInfo>
  */
 class CustomFilterIterator extends \FilterIterator
 {
     private $filters = [];
 
     /**
-     * @param \Iterator  $iterator The Iterator to filter
-     * @param callable[] $filters  An array of PHP callbacks
+     * @param \Iterator<string, \SplFileInfo> $iterator The Iterator to filter
+     * @param callable[]                      $filters  An array of PHP callbacks
      *
      * @throws \InvalidArgumentException
      */
@@ -46,8 +49,9 @@ class CustomFilterIterator extends \FilterIterator
 
     /**
      * Filters the iterator values.
+	 * 过滤迭代器值
      *
-     * @return bool true if the value should be kept, false otherwise
+     * @return bool
      */
     #[\ReturnTypeWillChange]
     public function accept()

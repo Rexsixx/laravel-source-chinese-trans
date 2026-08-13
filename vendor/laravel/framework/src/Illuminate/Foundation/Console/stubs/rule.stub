@@ -1,16 +1,17 @@
 <?php
 /**
- * 基础，虚拟类根文件
+ * Illuminate，基础，控制台，存根，规则
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
-use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Contracts\Validation\{{ ruleType }};
 
-class DummyClass implements Rule
+class {{ class }} implements {{ ruleType }}
 {
     /**
      * Create a new rule instance.
+	 * 创建新的规则实例
      *
      * @return void
      */
@@ -21,6 +22,7 @@ class DummyClass implements Rule
 
     /**
      * Determine if the validation rule passes.
+	 * 确定验证规则是否通过
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -33,6 +35,7 @@ class DummyClass implements Rule
 
     /**
      * Get the validation error message.
+	 * 获取验证错误消息
      *
      * @return string
      */

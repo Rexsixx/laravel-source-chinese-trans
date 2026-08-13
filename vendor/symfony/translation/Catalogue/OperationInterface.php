@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，目录，操作接口
+ * Symfony，Component，Translation，目录，操作接口
  */
 
 /*
@@ -18,6 +18,7 @@ use Symfony\Component\Translation\MessageCatalogueInterface;
 
 /**
  * Represents an operation on catalogue(s).
+ * 代表目录的操作。
  *
  * An instance of this interface performs an operation on one or more catalogues and
  * stores intermediate and final results of the operation.
@@ -39,6 +40,7 @@ interface OperationInterface
 {
     /**
      * Returns domains affected by operation.
+	 * 返回受操作影响的域。
      *
      * @return array
      */
@@ -46,33 +48,29 @@ interface OperationInterface
 
     /**
      * Returns all valid messages ('all') after operation.
-     *
-     * @param string $domain
+	 * 操作后返回所有有效消息（'all'）
      *
      * @return array
      */
-    public function getMessages($domain);
+    public function getMessages(string $domain);
 
     /**
      * Returns new messages ('new') after operation.
      *
-     * @param string $domain
-     *
      * @return array
      */
-    public function getNewMessages($domain);
+    public function getNewMessages(string $domain);
 
     /**
      * Returns obsolete messages ('obsolete') after operation.
      *
-     * @param string $domain
-     *
      * @return array
      */
-    public function getObsoleteMessages($domain);
+    public function getObsoleteMessages(string $domain);
 
     /**
      * Returns resulting catalogue ('result').
+	 * 返回结果目录(“结果”)
      *
      * @return MessageCatalogueInterface
      */

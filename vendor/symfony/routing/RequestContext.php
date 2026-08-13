@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由选择，请求上下文
+ * Symfony，Component，Routing，请求上下文
  */
 
 /*
@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Holds information about the current request.
+ * 保存有关当前请求的信息。
  *
  * This class implements a fluent interface.
  *
@@ -48,8 +49,26 @@ class RequestContext
         $this->setQueryString($queryString);
     }
 
+    public static function fromUri(string $uri, string $host = 'localhost', string $scheme = 'http', int $httpPort = 80, int $httpsPort = 443): self
+    {
+        $uri = parse_url($uri);
+        $scheme = $uri['scheme'] ?? $scheme;
+        $host = $uri['host'] ?? $host;
+
+        if (isset($uri['port'])) {
+            if ('http' === $scheme) {
+                $httpPort = $uri['port'];
+            } elseif ('https' === $scheme) {
+                $httpsPort = $uri['port'];
+            }
+        }
+
+        return new self($uri['path'] ?? '', 'GET', $host, $scheme, $httpPort, $httpsPort);
+    }
+
     /**
      * Updates the RequestContext information based on a HttpFoundation Request.
+	 * 基于HttpFoundation请求更新RequestContext信息
      *
      * @return $this
      */
@@ -69,8 +88,9 @@ class RequestContext
 
     /**
      * Gets the base URL.
+	 * 得到基本URL 
      *
-     * @return string The base URL
+     * @return string
      */
     public function getBaseUrl()
     {
@@ -79,22 +99,22 @@ class RequestContext
 
     /**
      * Sets the base URL.
-     *
-     * @param string $baseUrl The base URL
+	 * 设置基本URL
      *
      * @return $this
      */
-    public function setBaseUrl($baseUrl)
+    public function setBaseUrl(string $baseUrl)
     {
-        $this->baseUrl = $baseUrl;
+        $this->baseUrl = rtrim($baseUrl, '/');
 
         return $this;
     }
 
     /**
      * Gets the path info.
+	 * 获取路径信息。
      *
-     * @return string The path info
+     * @return string
      */
     public function getPathInfo()
     {
@@ -103,12 +123,11 @@ class RequestContext
 
     /**
      * Sets the path info.
-     *
-     * @param string $pathInfo The path info
+	 * 设置路径信息
      *
      * @return $this
      */
-    public function setPathInfo($pathInfo)
+    public function setPathInfo(string $pathInfo)
     {
         $this->pathInfo = $pathInfo;
 
@@ -120,7 +139,7 @@ class RequestContext
      *
      * The method is always an uppercased string.
      *
-     * @return string The HTTP method
+     * @return string
      */
     public function getMethod()
     {
@@ -130,11 +149,9 @@ class RequestContext
     /**
      * Sets the HTTP method.
      *
-     * @param string $method The HTTP method
-     *
      * @return $this
      */
-    public function setMethod($method)
+    public function setMethod(string $method)
     {
         $this->method = strtoupper($method);
 
@@ -146,7 +163,7 @@ class RequestContext
      *
      * The host is always lowercased because it must be treated case-insensitive.
      *
-     * @return string The HTTP host
+     * @return string
      */
     public function getHost()
     {
@@ -156,11 +173,9 @@ class RequestContext
     /**
      * Sets the HTTP host.
      *
-     * @param string $host The HTTP host
-     *
      * @return $this
      */
-    public function setHost($host)
+    public function setHost(string $host)
     {
         $this->host = strtolower($host);
 
@@ -170,7 +185,7 @@ class RequestContext
     /**
      * Gets the HTTP scheme.
      *
-     * @return string The HTTP scheme
+     * @return string
      */
     public function getScheme()
     {
@@ -180,11 +195,9 @@ class RequestContext
     /**
      * Sets the HTTP scheme.
      *
-     * @param string $scheme The HTTP scheme
-     *
      * @return $this
      */
-    public function setScheme($scheme)
+    public function setScheme(string $scheme)
     {
         $this->scheme = strtolower($scheme);
 
@@ -194,7 +207,7 @@ class RequestContext
     /**
      * Gets the HTTP port.
      *
-     * @return int The HTTP port
+     * @return int
      */
     public function getHttpPort()
     {
@@ -204,13 +217,11 @@ class RequestContext
     /**
      * Sets the HTTP port.
      *
-     * @param int $httpPort The HTTP port
-     *
      * @return $this
      */
-    public function setHttpPort($httpPort)
+    public function setHttpPort(int $httpPort)
     {
-        $this->httpPort = (int) $httpPort;
+        $this->httpPort = $httpPort;
 
         return $this;
     }
@@ -218,7 +229,7 @@ class RequestContext
     /**
      * Gets the HTTPS port.
      *
-     * @return int The HTTPS port
+     * @return int
      */
     public function getHttpsPort()
     {
@@ -228,21 +239,19 @@ class RequestContext
     /**
      * Sets the HTTPS port.
      *
-     * @param int $httpsPort The HTTPS port
-     *
      * @return $this
      */
-    public function setHttpsPort($httpsPort)
+    public function setHttpsPort(int $httpsPort)
     {
-        $this->httpsPort = (int) $httpsPort;
+        $this->httpsPort = $httpsPort;
 
         return $this;
     }
 
     /**
-     * Gets the query string.
+     * Gets the query string without the "?".
      *
-     * @return string The query string without the "?"
+     * @return string
      */
     public function getQueryString()
     {
@@ -252,11 +261,9 @@ class RequestContext
     /**
      * Sets the query string.
      *
-     * @param string $queryString The query string (after "?")
-     *
      * @return $this
      */
-    public function setQueryString($queryString)
+    public function setQueryString(?string $queryString)
     {
         // string cast to be fault-tolerant, accepting null
         $this->queryString = (string) $queryString;
@@ -266,8 +273,9 @@ class RequestContext
 
     /**
      * Returns the parameters.
+	 * 返回参数
      *
-     * @return array The parameters
+     * @return array
      */
     public function getParameters()
     {
@@ -276,6 +284,7 @@ class RequestContext
 
     /**
      * Sets the parameters.
+	 * 设置参数
      *
      * @param array $parameters The parameters
      *
@@ -290,40 +299,43 @@ class RequestContext
 
     /**
      * Gets a parameter value.
+	 * 得到参数值
      *
-     * @param string $name A parameter name
-     *
-     * @return mixed The parameter value or null if nonexistent
+     * @return mixed
      */
-    public function getParameter($name)
+    public function getParameter(string $name)
     {
         return $this->parameters[$name] ?? null;
     }
 
     /**
      * Checks if a parameter value is set for the given parameter.
+	 * 检查是否为给定参数设置了参数值
      *
-     * @param string $name A parameter name
-     *
-     * @return bool True if the parameter value is set, false otherwise
+     * @return bool
      */
-    public function hasParameter($name)
+    public function hasParameter(string $name)
     {
         return \array_key_exists($name, $this->parameters);
     }
 
     /**
      * Sets a parameter value.
+	 * 设置参数值
      *
-     * @param string $name      A parameter name
-     * @param mixed  $parameter The parameter value
+     * @param mixed $parameter The parameter value
      *
      * @return $this
      */
-    public function setParameter($name, $parameter)
+    public function setParameter(string $name, $parameter)
     {
         $this->parameters[$name] = $parameter;
 
         return $this;
+    }
+
+    public function isSecure(): bool
+    {
+        return 'https' === $this->scheme;
     }
 }

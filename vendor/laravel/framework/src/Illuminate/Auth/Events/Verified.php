@@ -1,6 +1,6 @@
 <?php
 /**
- * 授权，事件，已验证
+ * Illuminate，认证，事件，已验证
  */
 
 namespace Illuminate\Auth\Events;
@@ -13,7 +13,7 @@ class Verified
 
     /**
      * The verified user.
-	 * 已验证的用户
+	 * 已验证用户
      *
      * @var \Illuminate\Contracts\Auth\MustVerifyEmail
      */

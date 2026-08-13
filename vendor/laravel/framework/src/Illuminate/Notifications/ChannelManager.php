@@ -1,6 +1,6 @@
 <?php
 /**
- * 通知，通道管理
+ * Illuminate，通知，通道管理器
  */
 
 namespace Illuminate\Notifications;
@@ -16,7 +16,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 {
     /**
      * The default channel used to deliver messages.
-	 * 用于传递消息的默认通道
+	 * 用于传递消息的默认频道
      *
      * @var string
      */
@@ -40,7 +40,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
      */
     public function send($notifiables, $notification)
     {
-        return (new NotificationSender(
+        (new NotificationSender(
             $this, $this->container->make(Bus::class), $this->container->make(Dispatcher::class), $this->locale)
         )->send($notifiables, $notification);
     }
@@ -56,14 +56,14 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
      */
     public function sendNow($notifiables, $notification, array $channels = null)
     {
-        return (new NotificationSender(
+        (new NotificationSender(
             $this, $this->container->make(Bus::class), $this->container->make(Dispatcher::class), $this->locale)
         )->sendNow($notifiables, $notification, $channels);
     }
 
     /**
      * Get a channel instance.
-	 * 得到通知实例
+	 * 得到通道实例
      *
      * @param  string|null  $name
      * @return mixed
@@ -75,7 +75,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Create an instance of the database driver.
-	 * 创建一个数据库驱动实例
+	 * 创建数据库驱动程序的实例
      *
      * @return \Illuminate\Notifications\Channels\DatabaseChannel
      */
@@ -86,7 +86,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Create an instance of the broadcast driver.
-	 * 创建一个广播驱动实例
+	 * 创建广播驱动程序的实例
      *
      * @return \Illuminate\Notifications\Channels\BroadcastChannel
      */
@@ -108,7 +108,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Create a new driver instance.
-	 * 创建新的的驱动实例
+	 * 创建新的驱动实例
      *
      * @param  string  $driver
      * @return mixed
@@ -130,7 +130,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Get the default channel driver name.
-	 * 得到默认通道驱动名
+	 * 获取默认通道驱动程序名称
      *
      * @return string
      */
@@ -141,7 +141,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Get the default channel driver name.
-	 * 得到默认通道驱动程序名称
+	 * 获取默认通道驱动程序名称
      *
      * @return string
      */
@@ -152,7 +152,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Set the default channel driver name.
-	 * 设置默认通道驱动名称
+	 * 设置默认通道驱动程序名称
      *
      * @param  string  $channel
      * @return void
@@ -164,7 +164,7 @@ class ChannelManager extends Manager implements DispatcherContract, FactoryContr
 
     /**
      * Set the locale of notifications.
-	 * 设置通知区域
+	 * 设置通知的区域设置
      *
      * @param  string  $locale
      * @return $this

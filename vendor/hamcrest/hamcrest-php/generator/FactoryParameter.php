@@ -1,6 +1,6 @@
 <?php
 /**
- * 工厂参数
+ * Factory Parameter
  */
 
 /*
@@ -59,6 +59,7 @@ class FactoryParameter
 
     /**
      * Compute the type code for the paramater.
+	 * 计算履进表的类型代码
      *
      * @return string
      */
@@ -88,6 +89,7 @@ class FactoryParameter
 
     /**
      * Compute qualified name for the given type.
+	 * 计算给定类型的合格名称。
      *
      * This function knows how to prefix class names with a leading slash and
      * also how to handle PHP 8's union types.

@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Formatter，Json 格式化
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -15,6 +19,7 @@ use Throwable;
 
 /**
  * Encodes whatever record data is passed to it as json
+ * 将传递给它的任何记录数据编码为json
  *
  * This can be useful to log to databases or remote APIs
  *
@@ -63,6 +68,7 @@ class JsonFormatter extends NormalizerFormatter
 
     /**
      * True if newlines are appended to every formatted record
+	 * 如果新行被附加到每个格式化的记录
      */
     public function isAppendingNewlines(): bool
     {
@@ -121,6 +127,7 @@ class JsonFormatter extends NormalizerFormatter
 
     /**
      * Return a JSON-encoded array of records.
+	 * 返回一个json编码的记录数组
      *
      * @phpstan-param Record[] $records
      */
@@ -151,6 +158,7 @@ class JsonFormatter extends NormalizerFormatter
 
     /**
      * Normalizes given $data.
+	 * 将给定的$数据规范化
      *
      * @param mixed $data
      *
@@ -178,12 +186,29 @@ class JsonFormatter extends NormalizerFormatter
             return $normalized;
         }
 
-        if ($data instanceof \DateTimeInterface) {
-            return $this->formatDate($data);
-        }
+        if (is_object($data)) {
+            if ($data instanceof \DateTimeInterface) {
+                return $this->formatDate($data);
+            }
 
-        if ($data instanceof Throwable) {
-            return $this->normalizeException($data, $depth);
+            if ($data instanceof Throwable) {
+                return $this->normalizeException($data, $depth);
+            }
+
+            // if the object has specific json serializability we want to make sure we skip the __toString treatment below
+            if ($data instanceof \JsonSerializable) {
+                return $data;
+            }
+
+            if (\get_class($data) === '__PHP_Incomplete_Class') {
+                return new \ArrayObject($data);
+            }
+
+            if (method_exists($data, '__toString')) {
+                return $data->__toString();
+            }
+
+            return $data;
         }
 
         if (is_resource($data)) {

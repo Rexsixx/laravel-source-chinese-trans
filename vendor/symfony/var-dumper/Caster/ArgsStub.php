@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，Caster，Args 存根
+ * Symfony，Component，VarDumper，Caster，Args 存根
  */
 
 /*
@@ -32,7 +32,7 @@ class ArgsStub extends EnumStub
 
         $values = [];
         foreach ($args as $k => $v) {
-            $values[$k] = !is_scalar($v) && !$v instanceof Stub ? new CutStub($v) : $v;
+            $values[$k] = !\is_scalar($v) && !$v instanceof Stub ? new CutStub($v) : $v;
         }
         if (null === $params) {
             parent::__construct($values, false);

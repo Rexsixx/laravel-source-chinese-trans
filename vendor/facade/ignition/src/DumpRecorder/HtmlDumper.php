@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，Dump 记录器，Html 存储器
+ * Facade，Ignition，转储记录器，Html 转储
  */
 
 namespace Facade\Ignition\DumpRecorder;
@@ -24,7 +24,7 @@ class HtmlDumper extends BaseHtmlDumper
 
     public function dump(Data $data, $output = null, array $extraDisplayOptions = []): string
     {
-        return parent::dump($data, true, [
+        return (string)parent::dump($data, true, [
             'maxDepth' => 3,
             'maxStringLength' => 160,
         ]);

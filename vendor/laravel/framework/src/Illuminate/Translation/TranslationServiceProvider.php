@@ -1,6 +1,6 @@
 <?php
 /**
- * 翻译，翻译服务提供商
+ * Illuminate，翻译，翻译服务提供者
  */
 
 namespace Illuminate\Translation;
@@ -26,8 +26,7 @@ class TranslationServiceProvider extends ServiceProvider implements DeferrablePr
             // When registering the translator component, we'll need to set the default
             // locale as well as the fallback locale. So, we'll grab the application
             // configuration so we can easily get both of these values from there.
-			// 注册翻译器组件时，我们需要设置默认区域设置和回退区域设置。
-			// 因此，我们将获取应用程序配置，以便从那里轻松获取这两个值。
+			// 在注册转换器组件时，我们需要设置默认值以及备用地点。
             $locale = $app['config']['app.locale'];
 
             $trans = new Translator($loader, $locale);
@@ -53,7 +52,7 @@ class TranslationServiceProvider extends ServiceProvider implements DeferrablePr
 
     /**
      * Get the services provided by the provider.
-	 * 得到服务提供者
+	 * 获取提供者提供的服务
      *
      * @return array
      */

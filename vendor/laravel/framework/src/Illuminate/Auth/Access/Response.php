@@ -1,6 +1,6 @@
 <?php
 /**
- * 授权，响应
+ * Illuminate，认证，访问，响应
  */
 
 namespace Illuminate\Auth\Access;
@@ -19,7 +19,7 @@ class Response implements Arrayable
 
     /**
      * The response message.
-	 * 响应信息
+	 * 响应消息
      *
      * @var string|null
      */
@@ -77,7 +77,7 @@ class Response implements Arrayable
 
     /**
      * Determine if the response was allowed.
-	 * 确定是否响应是允许的
+	 * 确定是否允许响应
      *
      * @return bool
      */
@@ -88,7 +88,7 @@ class Response implements Arrayable
 
     /**
      * Determine if the response was denied.
-	 * 确定是否响应是禁止的
+	 * 确定响应是否被拒绝
      *
      * @return bool
      */
@@ -99,7 +99,7 @@ class Response implements Arrayable
 
     /**
      * Get the response message.
-	 * 得到响应消息
+	 * 获取响应消息
      *
      * @return string|null
      */
@@ -110,7 +110,7 @@ class Response implements Arrayable
 
     /**
      * Get the response code / reason.
-	 * 得到响应代码/原因
+	 * 获取响应代码/原因
      *
      * @return mixed
      */
@@ -121,7 +121,7 @@ class Response implements Arrayable
 
     /**
      * Throw authorization exception if response was denied.
-	 * 抛出授权异常，如果拒绝响应。
+	 * 如果拒绝响应，则抛出授权异常。
      *
      * @return \Illuminate\Auth\Access\Response
      *
@@ -154,7 +154,7 @@ class Response implements Arrayable
 
     /**
      * Get the string representation of the message.
-	 * 得到消息的字符串表示形式
+	 * 获取消息的字符串表示形式
      *
      * @return string
      */

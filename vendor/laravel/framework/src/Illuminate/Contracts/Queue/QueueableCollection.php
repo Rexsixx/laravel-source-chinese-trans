@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，可排队集合接口
+ * Illuminate，契约，队列，可队列集合
  */
 
 namespace Illuminate\Contracts\Queue;
@@ -9,7 +9,7 @@ interface QueueableCollection
 {
     /**
      * Get the type of the entities being queued.
-	 * 得到排队实体类型
+	 * 获取正在排队的实体的类型
      *
      * @return string|null
      */
@@ -17,7 +17,7 @@ interface QueueableCollection
 
     /**
      * Get the identifiers for all of the entities.
-	 * 得到队列的实体标识符
+	 * 获取所有实体的标识符
      *
      * @return array
      */
@@ -25,7 +25,7 @@ interface QueueableCollection
 
     /**
      * Get the relationships of the entities being queued.
-	 * 得到正在排队的实体关系
+	 * 获取正在排队的实体之间的关系
      *
      * @return array
      */
@@ -33,7 +33,7 @@ interface QueueableCollection
 
     /**
      * Get the connection of the entities being queued.
-	 * 得到正在排队的实体连接
+	 * 获取正在排队的实体的连接
      *
      * @return string|null
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，数据采集器，异常数据收集器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,23 +19,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * ExceptionDataCollector.
- *
  * @author Fabien Potencier <fabien@symfony.com>
  *
- * @final since Symfony 4.4
+ * @final
  */
 class ExceptionDataCollector extends DataCollector
 {
     /**
      * {@inheritdoc}
-     *
-     * @param \Throwable|null $exception
      */
-    public function collect(Request $request, Response $response/*, \Throwable $exception = null*/)
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null)
     {
-        $exception = 2 < \func_num_args() ? func_get_arg(2) : null;
-
         if (null !== $exception) {
             $this->data = [
                 'exception' => FlattenException::createFromThrowable($exception),
@@ -48,19 +45,12 @@ class ExceptionDataCollector extends DataCollector
         $this->data = [];
     }
 
-    /**
-     * Checks if the exception is not null.
-     *
-     * @return bool true if the exception is not null, false otherwise
-     */
-    public function hasException()
+    public function hasException(): bool
     {
         return isset($this->data['exception']);
     }
 
     /**
-     * Gets the exception.
-     *
      * @return \Exception|FlattenException
      */
     public function getException()
@@ -68,42 +58,22 @@ class ExceptionDataCollector extends DataCollector
         return $this->data['exception'];
     }
 
-    /**
-     * Gets the exception message.
-     *
-     * @return string The exception message
-     */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->data['exception']->getMessage();
     }
 
-    /**
-     * Gets the exception code.
-     *
-     * @return int The exception code
-     */
-    public function getCode()
+    public function getCode(): int
     {
         return $this->data['exception']->getCode();
     }
 
-    /**
-     * Gets the status code.
-     *
-     * @return int The status code
-     */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->data['exception']->getStatusCode();
     }
 
-    /**
-     * Gets the exception trace.
-     *
-     * @return array The exception trace
-     */
-    public function getTrace()
+    public function getTrace(): array
     {
         return $this->data['exception']->getTrace();
     }
@@ -111,7 +81,7 @@ class ExceptionDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'exception';
     }

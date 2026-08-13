@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，事件调度接口
+ * Illuminate，契约，事件，调度程序
  */
 
 namespace Illuminate\Contracts\Events;
@@ -9,13 +9,13 @@ interface Dispatcher
 {
     /**
      * Register an event listener with the dispatcher.
-	 * 注册一个事件监听器
+	 * 向调度程序注册事件监听器
      *
-     * @param  string|array  $events
-     * @param  \Closure|string  $listener
+     * @param  \Closure|string|array  $events
+     * @param  \Closure|string|array|null  $listener
      * @return void
      */
-    public function listen($events, $listener);
+    public function listen($events, $listener = null);
 
     /**
      * Determine if a given event has listeners.
@@ -28,7 +28,7 @@ interface Dispatcher
 
     /**
      * Register an event subscriber with the dispatcher.
-	 * 注册事件订阅者使用调度程序
+	 * 向调度程序注册事件订阅者
      *
      * @param  object|string  $subscriber
      * @return void
@@ -37,7 +37,7 @@ interface Dispatcher
 
     /**
      * Dispatch an event until the first non-null response is returned.
-	 * 调度一个事件，直到返回第一个非空响应
+	 * 调度一个事件，直到返回第一个非空响应。
      *
      * @param  string|object  $event
      * @param  mixed  $payload
@@ -58,7 +58,7 @@ interface Dispatcher
 
     /**
      * Register an event and payload to be fired later.
-	 * 注册事件并延迟启动
+	 * 注册稍后要触发的事件和有效负载
      *
      * @param  string  $event
      * @param  array  $payload
@@ -77,7 +77,7 @@ interface Dispatcher
 
     /**
      * Remove a set of listeners from the dispatcher.
-	 * 删除一组监听器从调度中
+	 * 从调度程序中删除一组监听器
      *
      * @param  string  $event
      * @return void
@@ -86,7 +86,7 @@ interface Dispatcher
 
     /**
      * Forget all of the queued listeners.
-	 * 注销所有排队的监听器
+	 * 忘记所有排队的监听器
      *
      * @return void
      */

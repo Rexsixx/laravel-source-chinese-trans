@@ -8,8 +8,7 @@ namespace Hamcrest;
 /**
  * Convenient base class for Matchers that require a value of a specific type.
  * This simply checks the type and then casts.
- * 为需要特定类型值的匹配器提供方便的基类。
- * 这只是检查类型，然后进行强制转换。
+ * 适用于需要特定类型值的匹配器的便捷基类。它只需检查类型，然后进行类型转换。
  */
 
 abstract class TypeSafeDiagnosingMatcher extends TypeSafeMatcher
@@ -30,6 +29,7 @@ abstract class TypeSafeDiagnosingMatcher extends TypeSafeMatcher
     /**
      * Subclasses should implement these. The item will already have been checked for
      * the specific type.
+	 * 子类应实现这些方法。项目已针对特定类型进行了检查。
      */
     abstract protected function matchesSafelyWithDiagnosticDescription($item, Description $mismatchDescription);
 }

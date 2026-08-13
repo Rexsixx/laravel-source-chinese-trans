@@ -1,6 +1,6 @@
 <?php
 /**
- * 授权，令牌守卫
+ * Illuminate，认证，令牌守卫
  */
 
 namespace Illuminate\Auth;
@@ -47,7 +47,7 @@ class TokenGuard implements Guard
 
     /**
      * Create a new authentication guard.
-	 * 创建新的身份验证保护
+	 * 创建一个新的身份验证保护
      *
      * @param  \Illuminate\Contracts\Auth\UserProvider  $provider
      * @param  \Illuminate\Http\Request  $request
@@ -72,7 +72,7 @@ class TokenGuard implements Guard
 
     /**
      * Get the currently authenticated user.
-	 * 得到当前已验证用户
+	 * 获取当前经过身份验证的用户
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
@@ -81,8 +81,7 @@ class TokenGuard implements Guard
         // If we've already retrieved the user for the current request we can just
         // return it back immediately. We do not want to fetch the user data on
         // every call to this method because that would be tremendously slow.
-		// 如果我们已经检索到当前请求的用户，我们可以立即将其返回。
-		// 我们不想在每次调用此方法时都获取用户数据，因为这会非常慢。
+		// 如果我们已经为当前请求检索了用户，我们就可以立即返回。
         if (! is_null($this->user)) {
             return $this->user;
         }
@@ -102,7 +101,7 @@ class TokenGuard implements Guard
 
     /**
      * Get the token for the current request.
-	 * 得令牌当前请求
+	 * 获取当前请求的令牌
      *
      * @return string
      */

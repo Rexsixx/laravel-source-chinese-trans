@@ -8,10 +8,11 @@ namespace League\Flysystem;
 use RuntimeException;
 use SplFileInfo;
 
-class NotSupportedException extends RuntimeException
+class NotSupportedException extends RuntimeException implements FilesystemException
 {
     /**
      * Create a new exception for a link.
+	 * 为链接创建一个新的异常
      *
      * @param SplFileInfo $file
      *
@@ -26,6 +27,7 @@ class NotSupportedException extends RuntimeException
 
     /**
      * Create a new exception for a link.
+	 * 为链接创建一个新的异常
      *
      * @param string $systemType
      *

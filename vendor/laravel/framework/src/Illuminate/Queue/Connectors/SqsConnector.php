@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，连接器，Sqs连接器
+ * Illuminate，队列，连接器，Sqs 连接器
  */
 
 namespace Illuminate\Queue\Connectors;
@@ -27,13 +27,17 @@ class SqsConnector implements ConnectorInterface
         }
 
         return new SqsQueue(
-            new SqsClient($config), $config['queue'], $config['prefix'] ?? ''
+            new SqsClient($config),
+            $config['queue'],
+            $config['prefix'] ?? '',
+            $config['suffix'] ?? '',
+            $config['after_commit'] ?? null
         );
     }
 
     /**
      * Get the default configuration for SQS.
-	 * 得到默认配置
+	 * 获取SQS的默认配置
      *
      * @param  array  $config
      * @return array

@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，电子邮件验证器，异常，未关闭的评论
+ * Egulias，EmailValidator，异常，未关闭的评论
  */
 
 namespace Egulias\EmailValidator\Exception;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，缓存清理，缓存清理接口
+ * Symfony，Component，HttpKernel，缓存清除，缓存清除接口
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpKernel\CacheClearer;
 
 /**
  * CacheClearerInterface.
+ * 缓存清除接口
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
@@ -23,8 +24,7 @@ interface CacheClearerInterface
 {
     /**
      * Clears any caches necessary.
-     *
-     * @param string $cacheDir The cache directory
+	 * 清除任何必要的缓存
      */
-    public function clear($cacheDir);
+    public function clear(string $cacheDir);
 }

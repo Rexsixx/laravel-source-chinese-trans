@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，依赖注入，片段渲染器通道
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ use Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface;
 
 /**
  * Adds services tagged kernel.fragment_renderer as HTTP content rendering strategies.
+ * 添加标记为kernel.fragment_renderer的服务作为HTTP内容呈现策略。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -30,6 +34,10 @@ class FragmentRendererPass implements CompilerPassInterface
 
     public function __construct(string $handlerService = 'fragment.handler', string $rendererTag = 'kernel.fragment_renderer')
     {
+        if (0 < \func_num_args()) {
+            trigger_deprecation('symfony/http-kernel', '5.3', 'Configuring "%s" is deprecated.', __CLASS__);
+        }
+
         $this->handlerService = $handlerService;
         $this->rendererTag = $rendererTag;
     }

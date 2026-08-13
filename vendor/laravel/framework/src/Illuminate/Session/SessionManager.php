@@ -1,6 +1,6 @@
 <?php
 /**
- * Session，Session管理类，核心类
+ * Illuminate，Session，会话管理器
  */
 
 namespace Illuminate\Session;
@@ -22,6 +22,17 @@ class SessionManager extends Manager
     }
 
     /**
+     * Create an instance of the "null" session driver.
+	 * 创建"null"会话驱动程序的实例
+     *
+     * @return \Illuminate\Session\Store
+     */
+    protected function createNullDriver()
+    {
+        return $this->buildSession(new NullSessionHandler);
+    }
+
+    /**
      * Create an instance of the "array" session driver.
 	 * 创建"array"会话驱动程序的实例
      *
@@ -29,7 +40,9 @@ class SessionManager extends Manager
      */
     protected function createArrayDriver()
     {
-        return $this->buildSession(new NullSessionHandler);
+        return $this->buildSession(new ArraySessionHandler(
+            $this->config->get('session.lifetime')
+        ));
     }
 
     /**
@@ -90,7 +103,7 @@ class SessionManager extends Manager
 
     /**
      * Get the database connection for the database driver.
-	 * 得到数据库驱动程序的数据库连接
+	 * 获取数据库驱动程序的数据库连接
      *
      * @return \Illuminate\Database\Connection
      */
@@ -209,8 +222,30 @@ class SessionManager extends Manager
     }
 
     /**
+     * Determine if requests for the same session should wait for each to finish before executing.
+	 * 确定对同一会话的请求是否应该等待每个请求完成后再执行
+     *
+     * @return bool
+     */
+    public function shouldBlock()
+    {
+        return $this->config->get('session.block', false);
+    }
+
+    /**
+     * Get the name of the cache store / driver that should be used to acquire session locks.
+	 * 获取应该用于获取会话锁的缓存存储/驱动程序的名称
+     *
+     * @return string|null
+     */
+    public function blockDriver()
+    {
+        return $this->config->get('session.block_store');
+    }
+
+    /**
      * Get the session configuration.
-	 * 得到会话配置
+	 * 获取会话配置
      *
      * @return array
      */
@@ -221,7 +256,7 @@ class SessionManager extends Manager
 
     /**
      * Get the default session driver name.
-	 * 得到默认会话驱动程序名称
+	 * 获取默认会话驱动程序名称
      *
      * @return string
      */
@@ -232,7 +267,7 @@ class SessionManager extends Manager
 
     /**
      * Set the default session driver name.
-	 * 设置默认会话驱动名
+	 * 设置默认的会话驱动程序名称
      *
      * @param  string  $name
      * @return void

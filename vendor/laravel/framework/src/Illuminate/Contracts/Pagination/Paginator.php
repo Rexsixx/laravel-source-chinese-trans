@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，分页接口
+ * Illuminate，契约，分页，分页器
  */
 
 namespace Illuminate\Contracts\Pagination;
@@ -9,7 +9,7 @@ interface Paginator
 {
     /**
      * Get the URL for a given page.
-	 * 得到给定页面的URL
+	 * 获取给定页面的URL
      *
      * @param  int  $page
      * @return string
@@ -18,7 +18,7 @@ interface Paginator
 
     /**
      * Add a set of query string values to the paginator.
-	 * 添加查询字符串值至分页器
+	 * 向分页器添加一组查询字符串值
      *
      * @param  array|string  $key
      * @param  string|null  $value
@@ -37,7 +37,7 @@ interface Paginator
 
     /**
      * The URL for the next page, or null.
-	 × 下一页URL，或者为空
+	 * 下一页的URL，或者为空。
      *
      * @return string|null
      */
@@ -45,7 +45,7 @@ interface Paginator
 
     /**
      * Get the URL for the previous page, or null.
-	 * 得到前一页的URL，或者为空
+	 * 获取前一页的URL，否则为空。
      *
      * @return string|null
      */
@@ -53,7 +53,7 @@ interface Paginator
 
     /**
      * Get all of the items being paginated.
-	 * 得到所有被分页的项
+	 * 获取所有被分页的项
      *
      * @return array
      */
@@ -61,7 +61,7 @@ interface Paginator
 
     /**
      * Get the "index" of the first item being paginated.
-	 * 得到第一个被分页项的"索引"
+	 * 获取第一个被分页项的"索引"
      *
      * @return int
      */
@@ -69,7 +69,7 @@ interface Paginator
 
     /**
      * Get the "index" of the last item being paginated.
-	 * 得到最后一个被分页项的"索引"
+	 * 获取最后一个被分页项的"索引"
      *
      * @return int
      */
@@ -109,7 +109,7 @@ interface Paginator
 
     /**
      * Get the base path for paginator generated URLs.
-	 * 得到分页器生成的url的基本路径
+	 * 获取分页器生成的url的基本路径
      *
      * @return string|null
      */
@@ -125,7 +125,7 @@ interface Paginator
 
     /**
      * Determine if the list of items is not empty.
-	 * 确定项目列表是否不为空
+	 * 确定项目列表是否为空
      *
      * @return bool
      */
@@ -133,7 +133,7 @@ interface Paginator
 
     /**
      * Render the paginator using a given view.
-	 * 呈现分页器使用视图
+	 * 使用给定视图呈现分页器
      *
      * @param  string|null  $view
      * @param  array  $data

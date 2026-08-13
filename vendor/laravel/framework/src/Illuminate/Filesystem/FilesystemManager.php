@@ -1,6 +1,6 @@
 <?php
 /**
- * 文件系统，文件系统管理
+ * Illuminate，文件系统，文件系统管理程序
  */
 
 namespace Illuminate\Filesystem;
@@ -35,7 +35,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * The array of resolved filesystem drivers.
-	 * 文件系统驱动数组
+	 * 已解析的文件系统驱动程序数组
      *
      * @var array
      */
@@ -43,7 +43,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * The registered custom driver creators.
-	 * 已注册自定义驱动程序创建者
+	 * 注册的自定义驱动程序创建者
      *
      * @var array
      */
@@ -51,7 +51,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Create a new filesystem manager instance.
-	 * 创建新的文件管理实例
+	 * 创建一个新的文件系统管理器实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -63,7 +63,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Get a filesystem instance.
-	 * 得到文件系统实例
+	 * 获取文件系统实例
      *
      * @param  string|null  $name
      * @return \Illuminate\Contracts\Filesystem\Filesystem
@@ -75,7 +75,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Get a filesystem instance.
-	 * 得到文件系统实例
+	 * 获取文件系统实例
      *
      * @param  string|null  $name
      * @return \Illuminate\Contracts\Filesystem\Filesystem
@@ -89,7 +89,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Get a default cloud filesystem instance.
-	 * 得到默认云文件系统实例
+	 * 获取一个默认的云文件系统实例
      *
      * @return \Illuminate\Contracts\Filesystem\Filesystem
      */
@@ -98,6 +98,21 @@ class FilesystemManager implements FactoryContract
         $name = $this->getDefaultCloudDriver();
 
         return $this->disks[$name] = $this->get($name);
+    }
+
+    /**
+     * Build an on-demand disk.
+	 * 构建按需磁盘
+     *
+     * @param  string|array  $config
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    public function build($config)
+    {
+        return $this->resolve('ondemand', is_array($config) ? $config : [
+            'driver' => 'local',
+            'root' => $config,
+        ]);
     }
 
     /**
@@ -117,13 +132,14 @@ class FilesystemManager implements FactoryContract
 	 * 解析给定的磁盘
      *
      * @param  string  $name
+     * @param  array|null  $config
      * @return \Illuminate\Contracts\Filesystem\Filesystem
      *
      * @throws \InvalidArgumentException
      */
-    protected function resolve($name)
+    protected function resolve($name, $config = null)
     {
-        $config = $this->getConfig($name);
+        $config = $config ?? $this->getConfig($name);
 
         if (empty($config['driver'])) {
             throw new InvalidArgumentException("Disk [{$name}] does not have a configured driver.");
@@ -137,16 +153,16 @@ class FilesystemManager implements FactoryContract
 
         $driverMethod = 'create'.ucfirst($name).'Driver';
 
-        if (method_exists($this, $driverMethod)) {
-            return $this->{$driverMethod}($config);
-        } else {
+        if (! method_exists($this, $driverMethod)) {
             throw new InvalidArgumentException("Driver [{$name}] is not supported.");
         }
+
+        return $this->{$driverMethod}($config);
     }
 
     /**
      * Call a custom driver creator.
-	 * 调取自定义驱动创建者
+	 * 调用自定义驱动程序创建者
      *
      * @param  array  $config
      * @return \Illuminate\Contracts\Filesystem\Filesystem
@@ -184,7 +200,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Create an instance of the ftp driver.
-	 * 创建ftp驱动实例
+	 * 创建ftp驱动程序的实例
      *
      * @param  array  $config
      * @return \Illuminate\Contracts\Filesystem\Filesystem
@@ -212,7 +228,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Create an instance of the Amazon S3 driver.
-	 * 创建一个s3实例
+	 * 创建Amazon S3驱动程序的实例
      *
      * @param  array  $config
      * @return \Illuminate\Contracts\Filesystem\Cloud
@@ -234,7 +250,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Format the given S3 configuration with the default options.
-	 * 格式化给定的S3配置使用默认选项
+	 * 使用默认选项格式化给定的S3配置
      *
      * @param  array  $config
      * @return array
@@ -252,7 +268,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Create a Flysystem instance with the given adapter.
-	 * 创建一个Flysystem实例使用给定的适配器
+	 * 使用给定的适配器创建一个Flysystem实例
      *
      * @param  \League\Flysystem\AdapterInterface  $adapter
      * @param  array  $config
@@ -262,7 +278,7 @@ class FilesystemManager implements FactoryContract
     {
         $cache = Arr::pull($config, 'cache');
 
-        $config = Arr::only($config, ['visibility', 'disable_asserts', 'url']);
+        $config = Arr::only($config, ['visibility', 'disable_asserts', 'url', 'temporary_url']);
 
         if ($cache) {
             $adapter = new CachedAdapter($adapter, $this->createCacheStore($cache));
@@ -273,7 +289,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Create a cache store instance.
-	 * 创建一个缓存存储实例
+	 * 创建缓存存储实例
      *
      * @param  mixed  $config
      * @return \League\Flysystem\Cached\CacheInterface
@@ -307,7 +323,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Set the given disk instance.
-	 * 设置给定磁盘实例
+	 * 设置给定的磁盘实例
      *
      * @param  string  $name
      * @param  mixed  $disk
@@ -322,7 +338,8 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Get the filesystem connection configuration.
-	 * 得到文件系统连接配置
+	 * 获取文件系统连接配置
+     *
      * @param  string  $name
      * @return array
      */
@@ -333,7 +350,7 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Get the default driver name.
-	 * 得到默认驱动名
+	 * 获取默认驱动程序名称
      *
      * @return string
      */
@@ -344,18 +361,18 @@ class FilesystemManager implements FactoryContract
 
     /**
      * Get the default cloud driver name.
-	 * 得到默认云驱动名称
+	 * 获取默认的云驱动程序名称
      *
      * @return string
      */
     public function getDefaultCloudDriver()
     {
-        return $this->app['config']['filesystems.cloud'];
+        return $this->app['config']['filesystems.cloud'] ?? 's3';
     }
 
     /**
      * Unset the given disk instances.
-	 * 注销给定磁盘实例
+	 * 取消给定磁盘实例的设置
      *
      * @param  array|string  $disk
      * @return $this
@@ -370,8 +387,22 @@ class FilesystemManager implements FactoryContract
     }
 
     /**
+     * Disconnect the given disk and remove from local cache.
+	 * 断开给定磁盘的连接并从本地缓存中删除
+     *
+     * @param  string|null  $name
+     * @return void
+     */
+    public function purge($name = null)
+    {
+        $name = $name ?? $this->getDefaultDriver();
+
+        unset($this->disks[$name]);
+    }
+
+    /**
      * Register a custom driver creator Closure.
-	 * 注册自定义驱动创建者闭包
+	 * 注册自定义驱动程序创建器Closure
      *
      * @param  string  $driver
      * @param  \Closure  $callback
@@ -385,8 +416,22 @@ class FilesystemManager implements FactoryContract
     }
 
     /**
+     * Set the application instance used by the manager.
+	 * 设置管理员使用的应用实例
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @return $this
+     */
+    public function setApplication($app)
+    {
+        $this->app = $app;
+
+        return $this;
+    }
+
+    /**
      * Dynamically call the default driver instance.
-	 * 动态调取默认驱动实例
+	 * 动态调用默认驱动程序实例
      *
      * @param  string  $method
      * @param  array  $parameters

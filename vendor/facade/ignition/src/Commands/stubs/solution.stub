@@ -1,6 +1,6 @@
 <?php
 /**
- * DummyNamespace，虚拟类
+ * DummyNamespace，存根
  */
 
 namespace DummyNamespace;

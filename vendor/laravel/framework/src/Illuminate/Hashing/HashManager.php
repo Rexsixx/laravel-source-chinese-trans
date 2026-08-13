@@ -1,6 +1,6 @@
 <?php
 /**
- * 哈希，哈希管理
+ * Illuminate，哈希，哈希管理器
  */
 
 namespace Illuminate\Hashing;
@@ -12,7 +12,7 @@ class HashManager extends Manager implements Hasher
 {
     /**
      * Create an instance of the Bcrypt hash Driver.
-	 * 创建哈希驱动实例
+	 * 创建Bcrypt哈希驱动程序的实例
      *
      * @return \Illuminate\Hashing\BcryptHasher
      */
@@ -23,7 +23,7 @@ class HashManager extends Manager implements Hasher
 
     /**
      * Create an instance of the Argon2i hash Driver.
-	 * 创建Argon2i哈希驱动程序实例
+	 * 创建Argon2i哈希驱动程序的实例
      *
      * @return \Illuminate\Hashing\ArgonHasher
      */
@@ -34,7 +34,7 @@ class HashManager extends Manager implements Hasher
 
     /**
      * Create an instance of the Argon2id hash Driver.
-	 * 创建Argon2i哈希驱动程序实例
+	 * 创建Argon2id哈希驱动程序的实例
      *
      * @return \Illuminate\Hashing\Argon2IdHasher
      */
@@ -45,7 +45,7 @@ class HashManager extends Manager implements Hasher
 
     /**
      * Get information about the given hashed value.
-	 * 得到有关给定散列值的信息
+	 * 获取有关给定散列值的信息
      *
      * @param  string  $hashedValue
      * @return array
@@ -70,7 +70,7 @@ class HashManager extends Manager implements Hasher
 
     /**
      * Check the given plain value against a hash.
-	 * 检查给定的普通值根据散列
+	 * 根据散列检查给定的普通值
      *
      * @param  string  $value
      * @param  string  $hashedValue
@@ -97,7 +97,7 @@ class HashManager extends Manager implements Hasher
 
     /**
      * Get the default driver name.
-	 * 得到默认驱动名
+	 * 得到默认驱动名称
      *
      * @return string
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，Eloquent，JSON编码异常
+ * Illuminate，数据库，Eloquent，Json 编码异常
  */
 
 namespace Illuminate\Database\Eloquent;
@@ -11,7 +11,7 @@ class JsonEncodingException extends RuntimeException
 {
     /**
      * Create a new JSON encoding exception for the model.
-	 * 创建新的JSON编码异常为模型
+	 * 为模型创建一个新的JSON编码异常
      *
      * @param  mixed  $model
      * @param  string  $message
@@ -23,8 +23,23 @@ class JsonEncodingException extends RuntimeException
     }
 
     /**
+     * Create a new JSON encoding exception for the resource.
+	 * 为资源创建一个新的JSON编码异常
+     *
+     * @param  \Illuminate\Http\Resources\Json\JsonResource  $resource
+     * @param  string  $message
+     * @return static
+     */
+    public static function forResource($resource, $message)
+    {
+        $model = $resource->resource;
+
+        return new static('Error encoding resource ['.get_class($resource).'] with model ['.get_class($model).'] with ID ['.$model->getKey().'] to JSON: '.$message);
+    }
+
+    /**
      * Create a new JSON encoding exception for an attribute.
-	 * 创建新的JSON编码异常为属性
+	 * 为属性创建一个新的JSON编码异常
      *
      * @param  mixed  $model
      * @param  mixed  $key

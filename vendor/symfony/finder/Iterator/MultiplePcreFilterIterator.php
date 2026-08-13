@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Finder，迭代器，多重过滤器迭代器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,8 +16,14 @@ namespace Symfony\Component\Finder\Iterator;
 
 /**
  * MultiplePcreFilterIterator filters files using patterns (regexps, globs or strings).
+ * MultiplePcreFilterIterator使用模式（regexp， globs或字符串）过滤文件。
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @template-covariant TKey
+ * @template-covariant TValue
+ *
+ * @extends \FilterIterator<TKey, TValue>
  */
 abstract class MultiplePcreFilterIterator extends \FilterIterator
 {
@@ -23,8 +32,8 @@ abstract class MultiplePcreFilterIterator extends \FilterIterator
 
     /**
      * @param \Iterator $iterator        The Iterator to filter
-     * @param array     $matchPatterns   An array of patterns that need to match
-     * @param array     $noMatchPatterns An array of patterns that need to not match
+     * @param string[]  $matchPatterns   An array of patterns that need to match
+     * @param string[]  $noMatchPatterns An array of patterns that need to not match
      */
     public function __construct(\Iterator $iterator, array $matchPatterns, array $noMatchPatterns)
     {
@@ -41,16 +50,15 @@ abstract class MultiplePcreFilterIterator extends \FilterIterator
 
     /**
      * Checks whether the string is accepted by the regex filters.
+	 * 检查字符串是否被正则表达式过滤器接受。
      *
      * If there is no regexps defined in the class, this method will accept the string.
      * Such case can be handled by child classes before calling the method if they want to
      * apply a different behavior.
      *
-     * @param string $string The string to be matched against filters
-     *
      * @return bool
      */
-    protected function isAccepted($string)
+    protected function isAccepted(string $string)
     {
         // should at least not match one rule to exclude
         foreach ($this->noMatchRegexps as $regex) {
@@ -76,12 +84,11 @@ abstract class MultiplePcreFilterIterator extends \FilterIterator
 
     /**
      * Checks whether the string is a regex.
+	 * 检查字符串是否为正则表达式
      *
-     * @param string $str
-     *
-     * @return bool Whether the given string is a regex
+     * @return bool
      */
-    protected function isRegex($str)
+    protected function isRegex(string $str)
     {
         $availableModifiers = 'imsxuADU';
 
@@ -109,10 +116,9 @@ abstract class MultiplePcreFilterIterator extends \FilterIterator
 
     /**
      * Converts string into regexp.
+	 * 将字符串转换为regexp
      *
-     * @param string $str Pattern
-     *
-     * @return string regexp corresponding to a given string
+     * @return string
      */
-    abstract protected function toRegex($str);
+    abstract protected function toRegex(string $str);
 }

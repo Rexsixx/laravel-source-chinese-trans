@@ -6,7 +6,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2023 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,13 +17,13 @@ namespace Psy;
 /**
  * Helpers for bypassing visibility restrictions, mostly used in code generated
  * by the `sudo` command.
- * 用于绕过可见性限制,主要用于由“sudo”命令生成的代码。
+ * 用于绕过可见性限制的帮助程序，主要用于生成的代码。
  */
 class Sudo
 {
     /**
      * Fetch a property of an object, bypassing visibility restrictions.
-	 * 获取对象的属性,绕过能见度限制。
+	 * 获取对象的属性，绕过可见性限制。
      *
      * @param object $object
      * @param string $property property name
@@ -32,13 +32,14 @@ class Sudo
      */
     public static function fetchProperty($object, string $property)
     {
-        $prop = static::getProperty(new \ReflectionObject($object), $property);
+        $prop = self::getProperty(new \ReflectionObject($object), $property);
 
         return $prop->getValue($object);
     }
 
     /**
      * Assign the value of a property of an object, bypassing visibility restrictions.
+	 * 为对象的属性赋值，绕过可见性限制。
      *
      * @param object $object
      * @param string $property property name
@@ -48,7 +49,7 @@ class Sudo
      */
     public static function assignProperty($object, string $property, $value)
     {
-        $prop = static::getProperty(new \ReflectionObject($object), $property);
+        $prop = self::getProperty(new \ReflectionObject($object), $property);
         $prop->setValue($object, $value);
 
         return $value;
@@ -56,6 +57,7 @@ class Sudo
 
     /**
      * Call a method on an object, bypassing visibility restrictions.
+	 * 调用对象上的方法，绕过可见性限制。
      *
      * @param object $object
      * @param string $method  method name
@@ -63,12 +65,8 @@ class Sudo
      *
      * @return mixed
      */
-    public static function callMethod($object, string $method, $args = null)
+    public static function callMethod($object, string $method, ...$args)
     {
-        $args = \func_get_args();
-        $object = \array_shift($args);
-        $method = \array_shift($args);
-
         $refl = new \ReflectionObject($object);
         $reflMethod = $refl->getMethod($method);
         $reflMethod->setAccessible(true);
@@ -78,6 +76,7 @@ class Sudo
 
     /**
      * Fetch a property of a class, bypassing visibility restrictions.
+	 * 获取类的属性，绕过可见性限制。
      *
      * @param string|object $class    class name or instance
      * @param string        $property property name
@@ -86,7 +85,7 @@ class Sudo
      */
     public static function fetchStaticProperty($class, string $property)
     {
-        $prop = static::getProperty(new \ReflectionClass($class), $property);
+        $prop = self::getProperty(new \ReflectionClass($class), $property);
         $prop->setAccessible(true);
 
         return $prop->getValue();
@@ -94,6 +93,7 @@ class Sudo
 
     /**
      * Assign the value of a static property of a class, bypassing visibility restrictions.
+	 * 为类的静态属性赋值，绕过可见性限制。
      *
      * @param string|object $class    class name or instance
      * @param string        $property property name
@@ -103,14 +103,21 @@ class Sudo
      */
     public static function assignStaticProperty($class, string $property, $value)
     {
-        $prop = static::getProperty(new \ReflectionClass($class), $property);
-        $prop->setValue($value);
+        $prop = self::getProperty(new \ReflectionClass($class), $property);
+        $refl = $prop->getDeclaringClass();
+
+        if (\method_exists($refl, 'setStaticPropertyValue')) {
+            $refl->setStaticPropertyValue($property, $value);
+        } else {
+            $prop->setValue($value);
+        }
 
         return $value;
     }
 
     /**
      * Call a static method on a class, bypassing visibility restrictions.
+	 * 调用类上的静态方法，绕过可见性限制。
      *
      * @param string|object $class   class name or instance
      * @param string        $method  method name
@@ -118,12 +125,8 @@ class Sudo
      *
      * @return mixed
      */
-    public static function callStatic($class, string $method, $args = null)
+    public static function callStatic($class, string $method, ...$args)
     {
-        $args = \func_get_args();
-        $class = \array_shift($args);
-        $method = \array_shift($args);
-
         $refl = new \ReflectionClass($class);
         $reflMethod = $refl->getMethod($method);
         $reflMethod->setAccessible(true);
@@ -133,6 +136,7 @@ class Sudo
 
     /**
      * Fetch a class constant, bypassing visibility restrictions.
+	 * 获取类常量，绕过可见性限制。
      *
      * @param string|object $class class name or instance
      * @param string        $const constant name
@@ -142,6 +146,11 @@ class Sudo
     public static function fetchClassConst($class, string $const)
     {
         $refl = new \ReflectionClass($class);
+
+        // Special case the ::class magic constant, because `getConstant` does the wrong thing here.
+        if ($const === 'class') {
+            return $refl->getName();
+        }
 
         do {
             if ($refl->hasConstant($const)) {
@@ -155,7 +164,27 @@ class Sudo
     }
 
     /**
+     * Construct an instance of a class, bypassing private constructors.
+	 * 构造类的实例，绕过私有构造函数。
+     *
+     * @param string $class   class name
+     * @param mixed  $args...
+     */
+    public static function newInstance(string $class, ...$args)
+    {
+        $refl = new \ReflectionClass($class);
+        $instance = $refl->newInstanceWithoutConstructor();
+
+        $constructor = $refl->getConstructor();
+        $constructor->setAccessible(true);
+        $constructor->invokeArgs($instance, $args);
+
+        return $instance;
+    }
+
+    /**
      * Get a ReflectionProperty from an object (or its parent classes).
+	 * 从对象（或它的父类）获取一个ReflectionProperty
      *
      * @throws \ReflectionException if neither the object nor any of its parents has this property
      *

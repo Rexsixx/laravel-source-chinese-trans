@@ -1,6 +1,6 @@
 <?php
 /**
- * Facade，Flare Client，时间，Time
+ * Facade，FlareClient，时间，时间 
  */
 
 namespace Facade\FlareClient\Time;

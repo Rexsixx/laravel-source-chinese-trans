@@ -1,7 +1,8 @@
 <?php
 /**
- * Symfony，组件，控制台，描述符号，Descriptor
+ * Symfony，Component，Console，描述符号，描述符
  */
+
 
 /*
  * This file is part of the Symfony package.
@@ -37,7 +38,7 @@ abstract class Descriptor implements DescriptorInterface
     /**
      * {@inheritdoc}
      */
-    public function describe(OutputInterface $output, $object, array $options = [])
+    public function describe(OutputInterface $output, object $object, array $options = [])
     {
         $this->output = $output;
 
@@ -58,43 +59,46 @@ abstract class Descriptor implements DescriptorInterface
                 $this->describeApplication($object, $options);
                 break;
             default:
-                throw new InvalidArgumentException(sprintf('Object of type "%s" is not describable.', \get_class($object)));
+                throw new InvalidArgumentException(sprintf('Object of type "%s" is not describable.', get_debug_type($object)));
         }
     }
 
     /**
      * Writes content to output.
-     *
-     * @param string $content
-     * @param bool   $decorated
+	 * 写入内容到输出
      */
-    protected function write($content, $decorated = false)
+    protected function write(string $content, bool $decorated = false)
     {
         $this->output->write($content, false, $decorated ? OutputInterface::OUTPUT_NORMAL : OutputInterface::OUTPUT_RAW);
     }
 
     /**
      * Describes an InputArgument instance.
+	 * 描述一个InputArgument实例
      */
     abstract protected function describeInputArgument(InputArgument $argument, array $options = []);
 
     /**
      * Describes an InputOption instance.
+	 * 描述一个InputOption实例
      */
     abstract protected function describeInputOption(InputOption $option, array $options = []);
 
     /**
      * Describes an InputDefinition instance.
+	 * 描述InputDefinition实例
      */
     abstract protected function describeInputDefinition(InputDefinition $definition, array $options = []);
 
     /**
      * Describes a Command instance.
+	 * 描述一个命令实例
      */
     abstract protected function describeCommand(Command $command, array $options = []);
 
     /**
      * Describes an Application instance.
+	 * 描述一个应用程序实例
      */
     abstract protected function describeApplication(Application $application, array $options = []);
 }

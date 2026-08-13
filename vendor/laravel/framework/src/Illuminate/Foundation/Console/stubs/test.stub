@@ -1,22 +1,23 @@
 <?php
 /**
- * 基础，虚拟类根文件
+ * Illuminate，基础，控制台，存根，测试
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class DummyClass extends TestCase
+class {{ class }} extends TestCase
 {
     /**
      * A basic feature test example.
+	 * 一个基本的特性测试示例
      *
      * @return void
      */
-    public function testExample()
+    public function test_example()
     {
         $response = $this->get('/');
 

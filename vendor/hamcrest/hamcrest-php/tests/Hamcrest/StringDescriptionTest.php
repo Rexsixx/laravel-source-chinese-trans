@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，样本自我描述
+ * Hamcrest, 样本自我描述
  */
 
 namespace Hamcrest;

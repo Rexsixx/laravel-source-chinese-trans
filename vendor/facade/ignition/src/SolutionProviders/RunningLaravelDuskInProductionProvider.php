@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，解决方案提供者，RunningLaravelDuskInProductionProvider
+ * Facade，Ignition，解决方案提供程序，在生产供应商中运行 Laravel黄昏
  */
 
 namespace Facade\Ignition\SolutionProviders;

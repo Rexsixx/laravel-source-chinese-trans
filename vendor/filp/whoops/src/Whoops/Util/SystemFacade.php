@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，Util，系统门面
+ * Whoops，工具，系统门面
  */
 
 /**

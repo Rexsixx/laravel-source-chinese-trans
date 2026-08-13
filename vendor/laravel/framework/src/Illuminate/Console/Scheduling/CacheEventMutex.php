@@ -1,17 +1,17 @@
 <?php
 /**
- * 控制台，缓存事件互斥锁
+ * Illuminate，控制台，调度，缓存事件互斥锁
  */
 
 namespace Illuminate\Console\Scheduling;
 
 use Illuminate\Contracts\Cache\Factory as Cache;
 
-class CacheEventMutex implements EventMutex
+class CacheEventMutex implements EventMutex, CacheAware
 {
     /**
      * The cache repository implementation.
-	 * 缓存资源库实现
+	 * 缓存存储库实现
      *
      * @var \Illuminate\Contracts\Cache\Factory
      */
@@ -27,7 +27,7 @@ class CacheEventMutex implements EventMutex
 
     /**
      * Create a new overlapping strategy.
-	 * 创建新的重叠策略
+	 * 创建一个新的重叠策略
      *
      * @param  \Illuminate\Contracts\Cache\Factory  $cache
      * @return void

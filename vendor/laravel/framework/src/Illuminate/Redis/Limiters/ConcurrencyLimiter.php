@@ -1,13 +1,13 @@
 <?php
 /**
- * Redis，并发限制器
+ * Illuminate，Redis，限值器，并发限制器
  */
 
 namespace Illuminate\Redis\Limiters;
 
-use Exception;
 use Illuminate\Contracts\Redis\LimiterTimeoutException;
 use Illuminate\Support\Str;
+use Throwable;
 
 class ConcurrencyLimiter
 {
@@ -21,7 +21,7 @@ class ConcurrencyLimiter
 
     /**
      * The name of the limiter.
-	 * 限制名称
+	 * 限制器的名称
      *
      * @var string
      */
@@ -45,7 +45,7 @@ class ConcurrencyLimiter
 
     /**
      * Create a new concurrency limiter instance.
-	 * 创建新的并发限制器实例
+	 * 创建一个新的并发限制器实例
      *
      * @param  \Illuminate\Redis\Connections\Connection  $redis
      * @param  string  $name
@@ -70,7 +70,7 @@ class ConcurrencyLimiter
      * @return bool
      *
      * @throws \Illuminate\Contracts\Redis\LimiterTimeoutException
-     * @throws \Exception
+     * @throws \Throwable
      */
     public function block($timeout, $callback = null)
     {
@@ -91,7 +91,7 @@ class ConcurrencyLimiter
                 return tap($callback(), function () use ($slot, $id) {
                     $this->release($slot, $id);
                 });
-            } catch (Exception $exception) {
+            } catch (Throwable $exception) {
                 $this->release($slot, $id);
 
                 throw $exception;
@@ -122,7 +122,7 @@ class ConcurrencyLimiter
 
     /**
      * Get the Lua script for acquiring a lock.
-	 * 得到用于获取锁的Lua脚本
+	 * 获取用于获取锁的Lua脚本
      *
      * KEYS    - The keys that represent available slots
      * ARGV[1] - The limiter name

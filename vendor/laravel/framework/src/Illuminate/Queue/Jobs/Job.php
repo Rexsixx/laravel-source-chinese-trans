@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，任务，任务抽象类
+ * Illuminate，队列，作业，作业抽象类
  */
 
 namespace Illuminate\Queue\Jobs;
@@ -16,7 +16,7 @@ abstract class Job
 
     /**
      * The job handler instance.
-	 * 作业处理实例
+	 * 作业处理程序实例
      *
      * @var mixed
      */
@@ -32,7 +32,7 @@ abstract class Job
 
     /**
      * Indicates if the job has been deleted.
-	 * 指明作业是否已删除
+	 * 指示作业是否已删除
      *
      * @var bool
      */
@@ -40,7 +40,7 @@ abstract class Job
 
     /**
      * Indicates if the job has been released.
-	 * 指明作业是否已释放
+	 * 指示作业是否已释放
      *
      * @var bool
      */
@@ -48,7 +48,7 @@ abstract class Job
 
     /**
      * Indicates if the job has failed.
-	 * 指明作业已失败
+	 * 指示作业是否失败
      *
      * @var bool
      */
@@ -56,7 +56,7 @@ abstract class Job
 
     /**
      * The name of the connection the job belongs to.
-	 * 作业所属的连接名称
+	 * 作业所属的连接的名称
      *
      * @var string
      */
@@ -64,7 +64,7 @@ abstract class Job
 
     /**
      * The name of the queue the job belongs to.
-	 * 作业所属队列名称
+	 * 作业所属队列的名称
      *
      * @var string
      */
@@ -72,7 +72,7 @@ abstract class Job
 
     /**
      * Get the job identifier.
-	 * 得到作业标识符
+	 * 得到工作标识符
      *
      * @return string
      */
@@ -80,15 +80,26 @@ abstract class Job
 
     /**
      * Get the raw body of the job.
-	 * 得到作业原始主体
+	 * 得到工作的原始主体
      *
      * @return string
      */
     abstract public function getRawBody();
 
     /**
+     * Get the UUID of the job.
+	 * 得到作作业的UUID
+     *
+     * @return string|null
+     */
+    public function uuid()
+    {
+        return $this->payload()['uuid'] ?? null;
+    }
+
+    /**
      * Fire the job.
-	 * 启动作业
+	 * 辞掉这份工作
      *
      * @return void
      */
@@ -114,7 +125,7 @@ abstract class Job
 
     /**
      * Determine if the job has been deleted.
-	 * 确定作业是否被删除
+	 * 确定作业是否已删除
      *
      * @return bool
      */
@@ -125,7 +136,7 @@ abstract class Job
 
     /**
      * Release the job back into the queue.
-	 * 释放作业回队列
+	 * 将作业释放回队列
      *
      * @param  int  $delay
      * @return void
@@ -170,7 +181,7 @@ abstract class Job
 
     /**
      * Mark the job as "failed".
-	 * 标记作业为"失败"
+	 * 标记作业为失败
      *
      * @return void
      */
@@ -198,8 +209,7 @@ abstract class Job
             // If the job has failed, we will delete it, call the "failed" method and then call
             // an event indicating the job has failed so it can be logged if needed. This is
             // to allow every developer to better keep monitor of their failed queue jobs.
-			// 如果作业失败，我们将删除它，调用"failed"方法，然后调用一个表示作业失败的事件，
-			// 以便在需要时记录下来。这是为了让每个开发人员更好地监控他们失败的队列作业。
+			// 如果作业失败，我们将删除它，调用"失败"方法，然后调用指示作业失败的事件。
             $this->delete();
 
             $this->failed($e);
@@ -224,7 +234,7 @@ abstract class Job
         [$class, $method] = JobName::parse($payload['job']);
 
         if (method_exists($this->instance = $this->resolve($class), 'failed')) {
-            $this->instance->failed($payload['data'], $e);
+            $this->instance->failed($payload['data'], $e, $payload['uuid'] ?? '');
         }
     }
 
@@ -253,7 +263,7 @@ abstract class Job
 
     /**
      * Get the decoded body of the job.
-	 * 得到解码后的作业主体
+	 * 得到解码后的文件
      *
      * @return array
      */
@@ -274,14 +284,36 @@ abstract class Job
     }
 
     /**
-     * Get the number of seconds to delay a failed job before retrying it.
-	 * 得到在重试失败作业之前延迟该作业的秒数
+     * Get the number of times to attempt a job after an exception.
+	 * 得到在发生异常后尝试作业的次数
      *
      * @return int|null
      */
-    public function delaySeconds()
+    public function maxExceptions()
     {
-        return $this->payload()['delay'] ?? null;
+        return $this->payload()['maxExceptions'] ?? null;
+    }
+
+    /**
+     * Determine if the job should fail when it timeouts.
+	 * 确定作业超时时是否应该失败
+     *
+     * @return bool
+     */
+    public function shouldFailOnTimeout()
+    {
+        return $this->payload()['failOnTimeout'] ?? false;
+    }
+
+    /**
+     * The number of seconds to wait before retrying a job that encountered an uncaught exception.
+	 * 在重试遇到未捕获异常的作业之前等待的秒数
+     *
+     * @return int|null
+     */
+    public function backoff()
+    {
+        return $this->payload()['backoff'] ?? $this->payload()['delay'] ?? null;
     }
 
     /**
@@ -301,14 +333,14 @@ abstract class Job
      *
      * @return int|null
      */
-    public function timeoutAt()
+    public function retryUntil()
     {
-        return $this->payload()['timeoutAt'] ?? null;
+        return $this->payload()['retryUntil'] ?? $this->payload()['timeoutAt'] ?? null;
     }
 
     /**
      * Get the name of the queued job class.
-	 * 得到队列作业类的名称
+	 * 得到排队作业类的名称
      *
      * @return string
      */

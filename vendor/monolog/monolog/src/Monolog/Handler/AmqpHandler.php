@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Handler，Amqp 处理程序
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -27,6 +31,32 @@ class AmqpHandler extends AbstractProcessingHandler
      * @var AMQPExchange|AMQPChannel $exchange
      */
     protected $exchange;
+    /** @var array<string, mixed> */
+    private $extraAttributes = [];
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getExtraAttributes(): array
+    {
+        return $this->extraAttributes;
+    }
+
+    /**
+     * Configure extra attributes to pass to the AMQPExchange (if you are using the amqp extension)
+	 * 配置额外属性传递给AMQPExchange(如果您使用amqp扩展)
+     *
+     * @param array<string, mixed> $extraAttributes  One of content_type, content_encoding,
+     *                                               message_id, user_id, app_id, delivery_mode,
+     *                                               priority, timestamp, expiration, type
+     *                                               or reply_to, headers.
+     * @return AmqpHandler
+     */
+    public function setExtraAttributes(array $extraAttributes): self
+    {
+        $this->extraAttributes = $extraAttributes;
+        return $this;
+    }
 
     /**
      * @var string
@@ -60,14 +90,18 @@ class AmqpHandler extends AbstractProcessingHandler
         $routingKey = $this->getRoutingKey($record);
 
         if ($this->exchange instanceof AMQPExchange) {
+            $attributes = [
+                'delivery_mode' => 2,
+                'content_type'  => 'application/json',
+            ];
+            if ($this->extraAttributes) {
+                $attributes = array_merge($attributes, $this->extraAttributes);
+            }
             $this->exchange->publish(
                 $data,
                 $routingKey,
                 0,
-                [
-                    'delivery_mode' => 2,
-                    'content_type' => 'application/json',
-                ]
+                $attributes
             );
         } else {
             $this->exchange->basic_publish(
@@ -110,6 +144,7 @@ class AmqpHandler extends AbstractProcessingHandler
 
     /**
      * Gets the routing key for the AMQP exchange
+	 * 获取AMQP交换的路由键
      *
      * @phpstan-param Record $record
      */
@@ -122,13 +157,14 @@ class AmqpHandler extends AbstractProcessingHandler
 
     private function createAmqpMessage(string $data): AMQPMessage
     {
-        return new AMQPMessage(
-            $data,
-            [
-                'delivery_mode' => 2,
-                'content_type' => 'application/json',
-            ]
-        );
+        $attributes = [
+            'delivery_mode' => 2,
+            'content_type' => 'application/json',
+        ];
+        if ($this->extraAttributes) {
+            $attributes = array_merge($attributes, $this->extraAttributes);
+        }
+        return new AMQPMessage($data, $attributes);
     }
 
     /**

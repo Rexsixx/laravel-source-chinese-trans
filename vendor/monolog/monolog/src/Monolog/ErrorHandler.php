@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，错误处理器
+ * Monolog，错误处理程序
  */
 
 /*
@@ -20,8 +20,10 @@ use Psr\Log\LogLevel;
 
 /**
  * Monolog error handler
+ * Monolog错误处理程序
  *
  * A facility to enable logging of runtime errors, exceptions and fatal errors.
+ * 一个用于记录运行时错误、异常和致命错误的工具。
  *
  * Quick setup: <code>ErrorHandler::register($logger);</code>
  *
@@ -50,8 +52,8 @@ class ErrorHandler
     private $fatalLevel = LogLevel::ALERT;
     /** @var ?string */
     private $reservedMemory = null;
-    /** @var ?mixed */
-    private $lastFatalTrace;
+    /** @var ?array{type: int, message: string, file: string, line: int, trace: mixed} */
+    private $lastFatalData = null;
     /** @var int[] */
     private static $fatalErrors = [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR];
 
@@ -62,6 +64,7 @@ class ErrorHandler
 
     /**
      * Registers a new ErrorHandler for a given Logger
+	 * 为给定的Logger注册一个新的ErrorHandler
      *
      * By default it will handle errors, exceptions and fatal errors
      *
@@ -202,7 +205,7 @@ class ErrorHandler
             ($this->previousExceptionHandler)($e);
         }
 
-        if (!headers_sent() && !ini_get('display_errors')) {
+        if (!headers_sent() && in_array(strtolower((string) ini_get('display_errors')), ['0', '', 'false', 'off', 'none', 'no'], true)) {
             http_response_code(500);
         }
 
@@ -227,7 +230,7 @@ class ErrorHandler
         } else {
             $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
             array_shift($trace); // Exclude handleError from trace
-            $this->lastFatalTrace = $trace;
+            $this->lastFatalData = ['type' => $code, 'message' => $message, 'file' => $file, 'line' => $line, 'trace' => $trace];
         }
 
         if ($this->previousErrorHandler === true) {
@@ -246,12 +249,18 @@ class ErrorHandler
     {
         $this->reservedMemory = '';
 
-        $lastError = error_get_last();
+        if (is_array($this->lastFatalData)) {
+            $lastError = $this->lastFatalData;
+        } else {
+            $lastError = error_get_last();
+        }
+
         if ($lastError && in_array($lastError['type'], self::$fatalErrors, true)) {
+            $trace = $lastError['trace'] ?? null;
             $this->logger->log(
                 $this->fatalLevel,
                 'Fatal Error ('.self::codeToString($lastError['type']).'): '.$lastError['message'],
-                ['code' => $lastError['type'], 'message' => $lastError['message'], 'file' => $lastError['file'], 'line' => $lastError['line'], 'trace' => $this->lastFatalTrace]
+                ['code' => $lastError['type'], 'message' => $lastError['message'], 'file' => $lastError['file'], 'line' => $lastError['line'], 'trace' => $trace]
             );
 
             if ($this->logger instanceof Logger) {

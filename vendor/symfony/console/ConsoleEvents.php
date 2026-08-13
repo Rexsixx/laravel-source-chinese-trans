@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，控制台事件
+ * Symfony，Component，Console，控制台事件
  */
 
 /*
@@ -14,9 +14,14 @@
 
 namespace Symfony\Component\Console;
 
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
+use Symfony\Component\Console\Event\ConsoleErrorEvent;
+use Symfony\Component\Console\Event\ConsoleSignalEvent;
+use Symfony\Component\Console\Event\ConsoleTerminateEvent;
+
 /**
  * Contains all events dispatched by an Application.
- * 包含应用程序发送的所有事件。
+ * 包含应用程序分派的所有事件
  *
  * @author Francesco Levorato <git@flevour.net>
  */
@@ -32,6 +37,14 @@ final class ConsoleEvents
     public const COMMAND = 'console.command';
 
     /**
+     * The SIGNAL event allows you to perform some actions
+     * after the command execution was interrupted.
+     *
+     * @Event("Symfony\Component\Console\Event\ConsoleSignalEvent")
+     */
+    public const SIGNAL = 'console.signal';
+
+    /**
      * The TERMINATE event allows you to attach listeners after a command is
      * executed by the console.
      *
@@ -41,6 +54,7 @@ final class ConsoleEvents
 
     /**
      * The ERROR event occurs when an uncaught exception or error appears.
+	 * 当出现异常或错误时,会发生错误事件。
      *
      * This event allows you to deal with the exception/error or
      * to modify the thrown exception.
@@ -48,4 +62,17 @@ final class ConsoleEvents
      * @Event("Symfony\Component\Console\Event\ConsoleErrorEvent")
      */
     public const ERROR = 'console.error';
+
+    /**
+     * Event aliases.
+	 * 事件别名。
+     *
+     * These aliases can be consumed by RegisterListenersPass.
+     */
+    public const ALIASES = [
+        ConsoleCommandEvent::class => self::COMMAND,
+        ConsoleErrorEvent::class => self::ERROR,
+        ConsoleSignalEvent::class => self::SIGNAL,
+        ConsoleTerminateEvent::class => self::TERMINATE,
+    ];
 }

@@ -6,7 +6,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2023 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -23,15 +23,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Show the context of where you opened the debugger.
+ * 显示打开调试器的位置。
  */
 class WhereamiCommand extends Command
 {
-    private $backtrace;
+    private array $backtrace;
 
-    /**
-     * @param string|null $colorMode (deprecated and ignored)
-     */
-    public function __construct($colorMode = null)
+    public function __construct()
     {
         $this->backtrace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS);
 
@@ -67,6 +65,7 @@ HELP
 
     /**
      * Obtains the correct stack frame in the full backtrace.
+	 * 在完整的回溯中获得正确的堆栈帧
      *
      * @return array
      */
@@ -112,8 +111,10 @@ HELP
 
     /**
      * {@inheritdoc}
+     *
+     * @return int 0 if everything went fine, or an exit code
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $info = $this->fileInfo();
         $num = $input->getOption('num');
@@ -145,8 +146,6 @@ HELP
      * Replace the given directory from the start of a filepath.
      *
      * @param string $file
-     *
-     * @return string
      */
     private function replaceCwd(string $file): string
     {

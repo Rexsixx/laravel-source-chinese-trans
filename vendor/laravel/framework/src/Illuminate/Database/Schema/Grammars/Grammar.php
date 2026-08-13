@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，语法抽象类
+ * Illuminate，数据库，架构，语法，语法抽象类
  */
 
 namespace Illuminate\Database\Schema\Grammars;
@@ -12,13 +12,14 @@ use Illuminate\Database\Grammar as BaseGrammar;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Fluent;
+use LogicException;
 use RuntimeException;
 
 abstract class Grammar extends BaseGrammar
 {
     /**
      * If this Grammar supports schema changes wrapped in a transaction.
-	 * 是否此语法支持封装在事务中的模式更改
+	 * 如果此语法支持封装在事务中的模式更改
      *
      * @var bool
      */
@@ -31,6 +32,35 @@ abstract class Grammar extends BaseGrammar
      * @var array
      */
     protected $fluentCommands = [];
+
+    /**
+     * Compile a create database command.
+	 * 编译一个创建数据库命令
+     *
+     * @param  string  $name
+     * @param  \Illuminate\Database\Connection  $connection
+     * @return void
+     *
+     * @throws \LogicException
+     */
+    public function compileCreateDatabase($name, $connection)
+    {
+        throw new LogicException('This database driver does not support creating databases.');
+    }
+
+    /**
+     * Compile a drop database if exists command.
+	 * 编译一个drop database if exists命令
+     *
+     * @param  string  $name
+     * @return void
+     *
+     * @throws \LogicException
+     */
+    public function compileDropDatabaseIfExists($name)
+    {
+        throw new LogicException('This database driver does not support dropping databases.');
+    }
 
     /**
      * Compile a rename column command.
@@ -48,7 +78,7 @@ abstract class Grammar extends BaseGrammar
 
     /**
      * Compile a change column command into a series of SQL statements.
-	 * 编译更改列命令成一系列SQL语句
+	 * 将更改列命令编译成一系列SQL语句
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Illuminate\Support\Fluent  $command
@@ -60,6 +90,34 @@ abstract class Grammar extends BaseGrammar
     public function compileChange(Blueprint $blueprint, Fluent $command, Connection $connection)
     {
         return ChangeColumn::compile($this, $blueprint, $command, $connection);
+    }
+
+    /**
+     * Compile a fulltext index key command.
+	 * 编译一个全文索引键命令
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @return string
+     *
+     * @throws \RuntimeException
+     */
+    public function compileFulltext(Blueprint $blueprint, Fluent $command)
+    {
+        throw new RuntimeException('This database driver does not support fulltext index creation.');
+    }
+
+    /**
+     * Compile a drop fulltext index command.
+	 * 编译一个删除全文索引命令
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @return string
+     */
+    public function compileDropFullText(Blueprint $blueprint, Fluent $command)
+    {
+        throw new RuntimeException('This database driver does not support fulltext index creation.');
     }
 
     /**
@@ -75,7 +133,7 @@ abstract class Grammar extends BaseGrammar
         // We need to prepare several of the elements of the foreign key definition
         // before we can create the SQL, such as wrapping the tables and convert
         // an array of columns to comma-delimited strings for the SQL queries.
-		// 在创建SQL之前，我们需要准备外键定义的几个元素，例如包装表并将列数组转换为逗号分隔的字符串以用于SQL查询。
+		// 我们需要准备外键定义的几个元素在我们创建SQL前。
         $sql = sprintf('alter table %s add constraint %s ',
             $this->wrapTable($blueprint),
             $this->wrap($command->index)
@@ -84,8 +142,7 @@ abstract class Grammar extends BaseGrammar
         // Once we have the initial portion of the SQL statement we will add on the
         // key name, table name, and referenced columns. These will complete the
         // main portion of the SQL statement and this SQL will almost be done.
-		// 一旦我们有了SQL语句的初始部分，我们将添加键名、表名和引用的列。
-		// 这些将完成SQL语句的主要部分，而这个SQL几乎就要完成了。
+		// 一旦我们有了SQL语句的初始部分，我们将添加键名、表名和引用列。
         $sql .= sprintf('foreign key (%s) references %s (%s)',
             $this->columnize($command->columns),
             $this->wrapTable($command->on),
@@ -95,8 +152,7 @@ abstract class Grammar extends BaseGrammar
         // Once we have the basic foreign key creation statement constructed we can
         // build out the syntax for what should happen on an update or delete of
         // the affected columns, which will get something like "cascade", etc.
-		// 一旦我们构造了基本的外键创建语句，我们就可以构建出在更新或删除受影响的列时应该发生的语法，
-		// 这将得到类似"级联"等的结果。
+		// 一旦构造了基本的外键创建语句，就可以的更新或删除时应该发生的情况构建语法。
         if (! is_null($command->onDelete)) {
             $sql .= " on delete {$command->onDelete}";
         }
@@ -123,8 +179,7 @@ abstract class Grammar extends BaseGrammar
             // Each of the column types have their own compiler functions which are tasked
             // with turning the column definition into its SQL format for this platform
             // used by the connection. The column's modifiers are compiled and added.
-			// 每种列类型都有自己的编译器函数，其任务是将列定义转换为连接所使用的此平台的SQL格式。
-			// 列的修饰符被编译和添加。
+			// 每种列类型都有自己的编译器函数。
             $sql = $this->wrap($column).' '.$this->getType($column);
 
             $columns[] = $this->addModifiers($sql, $blueprint, $column);
@@ -135,7 +190,7 @@ abstract class Grammar extends BaseGrammar
 
     /**
      * Get the SQL for the column data type.
-	 * 得到列数据类型的SQL
+	 * 获取列数据类型的SQL
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
@@ -147,7 +202,7 @@ abstract class Grammar extends BaseGrammar
 
     /**
      * Create the column definition for a generated, computed column type.
-	 * 为生成的、计算的列类型创建列定义。
+	 * 为生成的、计算的列类型创建列定义
      *
      * @param  \Illuminate\Support\Fluent  $column
      * @return void
@@ -156,12 +211,12 @@ abstract class Grammar extends BaseGrammar
      */
     protected function typeComputed(Fluent $column)
     {
-        throw new RuntimeException('This database driver does not support the computed type.');
+        throw new RuntimeException('This database driver does not support the computed type.');		#此数据库驱动程序不支持计算类型
     }
 
     /**
      * Add the column modifiers to the definition.
-	 * 添加列修饰符到定义中
+	 * 将列修饰符添加到定义中
      *
      * @param  string  $sql
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
@@ -181,7 +236,7 @@ abstract class Grammar extends BaseGrammar
 
     /**
      * Get the primary key command if it exists on the blueprint.
-	 * 得到主键命令如果蓝图上存在主键命令
+	 * 如果蓝图上存在主键命令，则获取主键命令。
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  string  $name
@@ -198,7 +253,8 @@ abstract class Grammar extends BaseGrammar
 
     /**
      * Get all of the commands with a given name.
-	 * 得到具有给定名称的所有命令
+	 * 获取具有给定名称的所有命令
+	 * 
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  string  $name
@@ -213,7 +269,7 @@ abstract class Grammar extends BaseGrammar
 
     /**
      * Add a prefix to an array of values.
-	 * 添加前缀至数组值
+	 * 向值数组添加前缀
      *
      * @param  string  $prefix
      * @param  array  $values
@@ -228,7 +284,7 @@ abstract class Grammar extends BaseGrammar
 
     /**
      * Wrap a table in keyword identifiers.
-	 * 包装表用关键字标识符
+	 * 用关键字标识符包装表
      *
      * @param  mixed  $table
      * @return string
@@ -242,7 +298,7 @@ abstract class Grammar extends BaseGrammar
 
     /**
      * Wrap a value in keyword identifiers.
-	 * 包装值用关键字标识符
+	 * 将值包装在关键字标识符中
      *
      * @param  \Illuminate\Database\Query\Expression|string  $value
      * @param  bool  $prefixAlias
@@ -257,7 +313,7 @@ abstract class Grammar extends BaseGrammar
 
     /**
      * Format a value so that it can be used in "default" clauses.
-	 * 格式化一个值，以便它可以在"default"子句中使用。
+	 * 格式化一个值，以便它可以在“default”子句中使用。
      *
      * @param  mixed  $value
      * @return string
@@ -292,7 +348,7 @@ abstract class Grammar extends BaseGrammar
 
     /**
      * Get the fluent commands for the grammar.
-	 * 得到流利的语法命令
+	 * 获得流利的语法命令
      *
      * @return array
      */

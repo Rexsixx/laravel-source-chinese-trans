@@ -1,27 +1,47 @@
 <?php
 /**
- * 支持，服务提供者抽象类
+ * Illuminate，支持，服务提供者抽象类，提供给服务提供者继承使用
  */
 
 namespace Illuminate\Support;
 
+use Closure;
 use Illuminate\Console\Application as Artisan;
+use Illuminate\Contracts\Foundation\CachesConfiguration;
+use Illuminate\Contracts\Foundation\CachesRoutes;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Database\Eloquent\Factory as ModelFactory;
+use Illuminate\View\Compilers\BladeCompiler;
 
 abstract class ServiceProvider
 {
     /**
      * The application instance.
-	 * app应用实例
+	 * 应用实例
      *
      * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
     /**
+     * All of the registered booting callbacks.
+	 * 所有已注册的引导回调
+     *
+     * @var array
+     */
+    protected $bootingCallbacks = [];
+
+    /**
+     * All of the registered booted callbacks.
+	 * 所有已注册的启动回调
+     *
+     * @var array
+     */
+    protected $bootedCallbacks = [];
+
+    /**
      * The paths that should be published.
-	 * 将要被发布的路径
+	 * 应该发布的路径
      *
      * @var array
      */
@@ -29,7 +49,7 @@ abstract class ServiceProvider
 
     /**
      * The paths that should be published by group.
-	 * 将要被发布的路径分组
+	 * 应按组发布的路径
      *
      * @var array
      */
@@ -37,7 +57,7 @@ abstract class ServiceProvider
 
     /**
      * Create a new service provider instance.
-	 * 创建新的服务提供者接口
+	 * 创建新的服务提供者实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -49,7 +69,7 @@ abstract class ServiceProvider
 
     /**
      * Register any application services.
-	 * 注册任何应用服务
+	 * 注册任何应用程序服务，服务提供者自己去完善
      *
      * @return void
      */
@@ -59,8 +79,66 @@ abstract class ServiceProvider
     }
 
     /**
+     * Register a booting callback to be run before the "boot" method is called.
+	 * 注册一个启动回调，以便在调用"boot"方法之前运行。
+     *
+     * @param  \Closure  $callback
+     * @return void
+     */
+    public function booting(Closure $callback)
+    {
+        $this->bootingCallbacks[] = $callback;
+    }
+
+    /**
+     * Register a booted callback to be run after the "boot" method is called.
+	 * 注册一个被引导的回调，在"boot"方法被调用后运行。
+     *
+     * @param  \Closure  $callback
+     * @return void
+     */
+    public function booted(Closure $callback)
+    {
+        $this->bootedCallbacks[] = $callback;
+    }
+
+    /**
+     * Call the registered booting callbacks.
+	 * 调用注册的引导回调函数
+     *
+     * @return void
+     */
+    public function callBootingCallbacks()
+    {
+        $index = 0;
+
+        while ($index < count($this->bootingCallbacks)) {
+            $this->app->call($this->bootingCallbacks[$index]);
+
+            $index++;
+        }
+    }
+
+    /**
+     * Call the registered booted callbacks.
+	 * 调用已注册的已引导回调函数
+     *
+     * @return void
+     */
+    public function callBootedCallbacks()
+    {
+        $index = 0;
+
+        while ($index < count($this->bootedCallbacks)) {
+            $this->app->call($this->bootedCallbacks[$index]);
+
+            $index++;
+        }
+    }
+
+    /**
      * Merge the given configuration with the existing configuration.
-	 * 合并给定的配置与现有配置
+	 * 将给定的配置与现有配置合并
      *
      * @param  string  $path
      * @param  string  $key
@@ -68,30 +146,32 @@ abstract class ServiceProvider
      */
     protected function mergeConfigFrom($path, $key)
     {
-        if (! $this->app->configurationIsCached()) {
-            $this->app['config']->set($key, array_merge(
-                require $path, $this->app['config']->get($key, [])
+        if (! ($this->app instanceof CachesConfiguration && $this->app->configurationIsCached())) {
+            $config = $this->app->make('config');
+
+            $config->set($key, array_merge(
+                require $path, $config->get($key, [])
             ));
         }
     }
 
     /**
      * Load the given routes file if routes are not already cached.
-	 * 加载给定的路由文件，如果路由尚未缓存
+	 * 如果路由尚未缓存，则加载给定的路由文件。
      *
      * @param  string  $path
      * @return void
      */
     protected function loadRoutesFrom($path)
     {
-        if (! $this->app->routesAreCached()) {
+        if (! ($this->app instanceof CachesRoutes && $this->app->routesAreCached())) {
             require $path;
         }
     }
 
     /**
      * Register a view file namespace.
-	 * 加载视图文件命名空间
+	 * 注册一个视图文件命名空间
      *
      * @param  string|array  $path
      * @param  string  $namespace
@@ -110,6 +190,23 @@ abstract class ServiceProvider
             }
 
             $view->addNamespace($namespace, $path);
+        });
+    }
+
+    /**
+     * Register the given view components with a custom prefix.
+	 * 用自定义前缀注册给定的视图组件
+     *
+     * @param  string  $prefix
+     * @param  array  $components
+     * @return void
+     */
+    protected function loadViewComponentsAs($prefix, array $components)
+    {
+        $this->callAfterResolving(BladeCompiler::class, function ($blade) use ($prefix, $components) {
+            foreach ($components as $alias => $component) {
+                $blade->component($component, is_string($alias) ? $alias : null, $prefix);
+            }
         });
     }
 
@@ -162,6 +259,8 @@ abstract class ServiceProvider
      * Register Eloquent model factory paths.
 	 * 注册Eloquent模型工厂路径
      *
+     * @deprecated Will be removed in a future Laravel version.
+     *
      * @param  array|string  $paths
      * @return void
      */
@@ -176,7 +275,7 @@ abstract class ServiceProvider
 
     /**
      * Setup an after resolving listener, or fire immediately if already resolved.
-	 * 设置一个解析后的监听器，立即触发如果已经解析。
+	 * 设置一个解析后的监听器，如果已经解析，则立即触发。
      *
      * @param  string  $name
      * @param  callable  $callback
@@ -193,7 +292,7 @@ abstract class ServiceProvider
 
     /**
      * Register paths to be published by the publish command.
-	 * 注册要发布的路径使用publish命令
+	 * 使用publish命令注册要发布的路径
      *
      * @param  array  $paths
      * @param  mixed  $groups
@@ -226,7 +325,7 @@ abstract class ServiceProvider
 
     /**
      * Add a publish group / tag to the service provider.
-	 * 添加服务提供者至发布组/标记
+	 * 向服务提供者添加发布组/标记
      *
      * @param  string  $group
      * @param  array  $paths
@@ -245,7 +344,7 @@ abstract class ServiceProvider
 
     /**
      * Get the paths to publish.
-	 * 得到发布路径
+	 * 获取发布路径
      *
      * @param  string|null  $provider
      * @param  string|null  $group
@@ -264,7 +363,7 @@ abstract class ServiceProvider
 
     /**
      * Get the paths for the provider or group (or both).
-	 * 得到提供程序或组(或两者)的路径
+	 * 获取提供程序或组（或两者）的路径
      *
      * @param  string|null  $provider
      * @param  string|null  $group
@@ -285,7 +384,7 @@ abstract class ServiceProvider
 
     /**
      * Get the paths for the provider and group.
-	 * 得到提供者和组的路径
+	 * 获取提供程序和组的路径
      *
      * @param  string  $provider
      * @param  string  $group
@@ -302,7 +401,7 @@ abstract class ServiceProvider
 
     /**
      * Get the service providers available for publishing.
-	 * 得到可用于发布的服务提供者
+	 * 获取可用于发布的服务提供者
      *
      * @return array
      */
@@ -313,7 +412,7 @@ abstract class ServiceProvider
 
     /**
      * Get the groups available for publishing.
-	 * 得到可用于发布的组
+	 * 获取可用于发布的组
      *
      * @return array
      */
@@ -340,7 +439,7 @@ abstract class ServiceProvider
 
     /**
      * Get the services provided by the provider.
-	 * 得到提供的服务通过提供者
+	 * 获取提供者提供的服务
      *
      * @return array
      */
@@ -351,7 +450,7 @@ abstract class ServiceProvider
 
     /**
      * Get the events that trigger this service provider to register.
-	 * 得到触发此服务提供者注册的事件
+	 * 获取触发此服务提供者注册的事件
      *
      * @return array
      */

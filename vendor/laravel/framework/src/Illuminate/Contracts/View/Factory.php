@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，视图工厂接口
+ * Illuminate，契约，视图，工厂接口
  */
 
 namespace Illuminate\Contracts\View;
@@ -9,7 +9,7 @@ interface Factory
 {
     /**
      * Determine if a given view exists.
-	 * 确定视图是否存在
+	 * 确定给定视图是否存在
      *
      * @param  string  $view
      * @return bool
@@ -18,7 +18,7 @@ interface Factory
 
     /**
      * Get the evaluated view contents for the given path.
-	 * 得到给定路径的求值视图内容
+	 * 获取给定路径的求值视图内容
      *
      * @param  string  $path
      * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
@@ -29,7 +29,7 @@ interface Factory
 
     /**
      * Get the evaluated view contents for the given view.
-	 * 得到给定视图的求值视图内容
+	 * 获取给定视图的求值视图内容
      *
      * @param  string  $view
      * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
@@ -40,7 +40,7 @@ interface Factory
 
     /**
      * Add a piece of shared data to the environment.
-	 * 添加一段共享数据至环境
+	 * 向环境中添加一段共享数据
      *
      * @param  array|string  $key
      * @param  mixed  $value
@@ -50,7 +50,7 @@ interface Factory
 
     /**
      * Register a view composer event.
-	 * 注册一个新的视图事件
+	 * 注册一个视图编写器事件
      *
      * @param  array|string  $views
      * @param  \Closure|string  $callback
@@ -60,7 +60,7 @@ interface Factory
 
     /**
      * Register a view creator event.
-	 * 注册一个视图创建事件
+	 * 注册一个视图创建者事件
      *
      * @param  array|string  $views
      * @param  \Closure|string  $callback
@@ -70,7 +70,7 @@ interface Factory
 
     /**
      * Add a new namespace to the loader.
-	 * 添加一个新的命名空间
+	 * 向加载器添加一个新的命名空间
      *
      * @param  string  $namespace
      * @param  string|array  $hints

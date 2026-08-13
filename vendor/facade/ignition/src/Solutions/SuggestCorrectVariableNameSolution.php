@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，解决方案，建议正确的变量名解决方案
+ * Facade，Ignition，解决方案，建议正确的变量名解决方案
  */
 
 namespace Facade\Ignition\Solutions;
@@ -14,6 +14,9 @@ class SuggestCorrectVariableNameSolution implements Solution
 
     /** @var string */
     private $viewFile;
+
+    /** @var string|null */
+    private $suggested;
 
     public function __construct($variableName = null, $viewFile = null, $suggested = null)
     {
@@ -34,8 +37,6 @@ class SuggestCorrectVariableNameSolution implements Solution
 
     public function getSolutionDescription(): string
     {
-        $path = str_replace(base_path().'/', '', $this->viewFile);
-
         return "Did you mean `$$this->suggested`?";
     }
 

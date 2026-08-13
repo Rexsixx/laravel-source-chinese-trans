@@ -1,7 +1,4 @@
 <?php
-/**
- * Carbon，异常，错误比较单元异常
- */
 
 /**
  * This file is part of the Carbon package.
@@ -32,7 +29,7 @@ class UnknownUnitException extends UnitException
      * @param int            $code
      * @param Throwable|null $previous
      */
-    public function __construct($unit, $code = 0, Throwable $previous = null)
+    public function __construct($unit, $code = 0, ?Throwable $previous = null)
     {
         $this->unit = $unit;
 

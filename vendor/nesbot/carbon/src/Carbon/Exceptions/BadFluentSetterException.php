@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，糟糕流畅的Setter异常
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -18,6 +21,7 @@ class BadFluentSetterException extends BaseBadMethodCallException implements Bad
 {
     /**
      * The setter.
+	 * setter
      *
      * @var string
      */
@@ -25,20 +29,22 @@ class BadFluentSetterException extends BaseBadMethodCallException implements Bad
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param string         $setter
      * @param int            $code
      * @param Throwable|null $previous
      */
-    public function __construct($setter, $code = 0, Throwable $previous = null)
+    public function __construct($setter, $code = 0, ?Throwable $previous = null)
     {
         $this->setter = $setter;
 
-        parent::__construct(sprintf("Unknown fluent setter '%s'", $setter), $code, $previous);
+        parent::__construct(\sprintf("Unknown fluent setter '%s'", $setter), $code, $previous);
     }
 
     /**
      * Get the setter.
+	 * 得到setter
      *
      * @return string
      */

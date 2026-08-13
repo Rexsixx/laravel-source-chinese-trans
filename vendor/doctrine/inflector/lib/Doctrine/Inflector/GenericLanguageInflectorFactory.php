@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，偏转器，通用语言偏转器工厂
+ * Doctrine，Inflector，通用语言影响器工厂
  */
 
 declare(strict_types=1);

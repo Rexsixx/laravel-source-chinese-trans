@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，Eloquent, 软删除范围
+ * Illuminate，数据库，Eloquent，软删除范围
  */
 
 namespace Illuminate\Database\Eloquent;
@@ -9,9 +9,9 @@ class SoftDeletingScope implements Scope
 {
     /**
      * All of the extensions to be added to the builder.
-	 * 所有扩展被添加到构建器中的
+	 * 要添加到构建器中的所有扩展
      *
-     * @var array
+     * @var string[]
      */
     protected $extensions = ['Restore', 'WithTrashed', 'WithoutTrashed', 'OnlyTrashed'];
 
@@ -30,7 +30,7 @@ class SoftDeletingScope implements Scope
 
     /**
      * Extend the query builder with the needed functions.
-	 * 扩展查询生成器用所需的函数
+	 * 用所需的函数扩展查询生成器
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @return void
@@ -52,7 +52,7 @@ class SoftDeletingScope implements Scope
 
     /**
      * Get the "deleted at" column for the builder.
-	 * 得到构建器的"删除时间"列
+	 * 获取构建器的"删除时间"列
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @return string
@@ -68,7 +68,7 @@ class SoftDeletingScope implements Scope
 
     /**
      * Add the restore extension to the builder.
-	 * 添加还原扩展向构建器
+	 * 向构建器添加还原扩展
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @return void
@@ -84,7 +84,7 @@ class SoftDeletingScope implements Scope
 
     /**
      * Add the with-trashed extension to the builder.
-	 * 添加带垃圾的扩展到构建器中
+	 * 将带垃圾的扩展添加到构建器中
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @return void
@@ -102,7 +102,7 @@ class SoftDeletingScope implements Scope
 
     /**
      * Add the without-trashed extension to the builder.
-	 * 添加无垃圾扩展到构建器中
+	 * 向构建器中添加无垃圾扩展
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @return void

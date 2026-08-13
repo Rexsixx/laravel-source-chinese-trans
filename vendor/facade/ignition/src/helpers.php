@@ -1,7 +1,9 @@
 <?php
 /**
- * 门面，Ignition，助手
+ * Facade，Ignition，辅助
  */
+
+use Facade\FlareClient\Flare;
 
 if (! function_exists('ddd')) {
     function ddd()
@@ -16,7 +18,7 @@ if (! function_exists('ddd')) {
 
         $handler = app(\Facade\Ignition\ErrorPage\ErrorPageHandler::class);
 
-        $client = app()->make('flare.client');
+        $client = app()->make(Flare::class);
 
         $report = $client->createReportFromMessage('Dump, Die, Debug', 'info');
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，命令环境
+ * Illuminate，基础，控制台，env 环境命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -11,7 +11,7 @@ class EnvironmentCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */

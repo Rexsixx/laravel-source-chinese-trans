@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，依赖注入，注册语言环境感知服务通行证
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Register all services that have the "kernel.locale_aware" tag into the listener.
+ * 注册所有具有“内核”的服务。Locale_aware”标记放入侦听器。
  *
  * @author Pierre Bobiet <pierrebobiet@gmail.com>
  */
@@ -28,6 +32,10 @@ class RegisterLocaleAwareServicesPass implements CompilerPassInterface
 
     public function __construct(string $listenerServiceId = 'locale_aware_listener', string $localeAwareTag = 'kernel.locale_aware')
     {
+        if (0 < \func_num_args()) {
+            trigger_deprecation('symfony/http-kernel', '5.3', 'Configuring "%s" is deprecated.', __CLASS__);
+        }
+
         $this->listenerServiceId = $listenerServiceId;
         $this->localeAwareTag = $localeAwareTag;
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，支持，Packagist，Packagist
+ * Facade，Ignition，支持，包装机构，包装机构
  */
 
 namespace Facade\Ignition\Support\Packagist;
@@ -10,7 +10,7 @@ class Packagist
     /**
      * @param string $className
      *
-     * @return \Facade\Flare\Support\Packagist\Package[]
+     * @return \Facade\Ignition\Support\Packagist\Package[]
      */
     public static function findPackagesForClassName(string $className): array
     {

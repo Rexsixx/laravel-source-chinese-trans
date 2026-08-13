@@ -1,6 +1,6 @@
 <?php
 /**
- * 授权，访问令牌库接口
+ * Illuminate，认证，密码，令牌库接口
  */
 
 namespace Illuminate\Auth\Passwords;
@@ -29,6 +29,15 @@ interface TokenRepositoryInterface
     public function exists(CanResetPasswordContract $user, $token);
 
     /**
+     * Determine if the given user recently created a password reset token.
+	 * 确定给定用户最近是否创建了密码重置令牌
+     *
+     * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
+     * @return bool
+     */
+    public function recentlyCreatedToken(CanResetPasswordContract $user);
+
+    /**
      * Delete a token record.
 	 * 删除token记录
      *
@@ -39,7 +48,7 @@ interface TokenRepositoryInterface
 
     /**
      * Delete expired tokens.
-	 * 删除过期token
+	 * 删除超时令牌
      *
      * @return void
      */

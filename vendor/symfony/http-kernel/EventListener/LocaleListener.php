@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，事件监听器，区域监听器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,29 +18,34 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RequestContextAwareInterface;
 
 /**
  * Initializes the locale based on the current request.
+ * 根据当前的请求初始化语言环境。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
- * @final since Symfony 4.3
+ * @final
  */
 class LocaleListener implements EventSubscriberInterface
 {
     private $router;
     private $defaultLocale;
     private $requestStack;
+    private $useAcceptLanguageHeader;
+    private $enabledLocales;
 
-    public function __construct(RequestStack $requestStack, string $defaultLocale = 'en', RequestContextAwareInterface $router = null)
+    public function __construct(RequestStack $requestStack, string $defaultLocale = 'en', ?RequestContextAwareInterface $router = null, bool $useAcceptLanguageHeader = false, array $enabledLocales = [])
     {
         $this->defaultLocale = $defaultLocale;
         $this->requestStack = $requestStack;
         $this->router = $router;
+        $this->useAcceptLanguageHeader = $useAcceptLanguageHeader;
+        $this->enabledLocales = $enabledLocales;
     }
 
     public function setDefaultLocale(KernelEvent $event)
@@ -45,7 +53,7 @@ class LocaleListener implements EventSubscriberInterface
         $event->getRequest()->setDefaultLocale($this->defaultLocale);
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
 
@@ -64,6 +72,11 @@ class LocaleListener implements EventSubscriberInterface
     {
         if ($locale = $request->attributes->get('_locale')) {
             $request->setLocale($locale);
+        } elseif ($this->useAcceptLanguageHeader && $this->enabledLocales) {
+            if ($request->getLanguages() && $preferredLanguage = $request->getPreferredLanguage($this->enabledLocales)) {
+                $request->setLocale($preferredLanguage);
+            }
+            $request->attributes->set('_vary_by_language', true);
         }
     }
 
@@ -74,7 +87,7 @@ class LocaleListener implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => [

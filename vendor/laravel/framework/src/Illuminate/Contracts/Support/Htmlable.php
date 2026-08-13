@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，HTML接口
+ * Illuminate，契约，支持，Html
  */
 
 namespace Illuminate\Contracts\Support;
@@ -9,7 +9,7 @@ interface Htmlable
 {
     /**
      * Get content as a string of HTML.
-	 * 得到内容为HTML
+	 * 获取HTML字符串形式的内容
      *
      * @return string
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，包清单
+ * Illuminate，基础，软件包清单
  */
 
 namespace Illuminate\Foundation;
@@ -28,7 +28,7 @@ class PackageManifest
 
     /**
      * The vendor path.
-	 * 提供路径
+	 * 供应商路径
      *
      * @var string
      */
@@ -44,7 +44,7 @@ class PackageManifest
 
     /**
      * The loaded manifest array.
-	 * 导入清单
+	 * 加载的清单数组
      *
      * @var array
      */
@@ -52,7 +52,7 @@ class PackageManifest
 
     /**
      * Create a new package manifest instance.
-	 * 创建新的包实例
+	 * 创建一个新的包清单实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string  $basePath
@@ -69,7 +69,7 @@ class PackageManifest
 
     /**
      * Get all of the service provider class names for all packages.
-	 * 得到所有的服务提供者类名
+	 * 获取所有包的所有服务提供者类名
      *
      * @return array
      */
@@ -80,7 +80,7 @@ class PackageManifest
 
     /**
      * Get all of the aliases for all packages.
-	 * 得到所有的别名
+	 * 获取所有包的所有别名
      *
      * @return array
      */
@@ -91,7 +91,7 @@ class PackageManifest
 
     /**
      * Get all of the values for all packages for the given configuration name.
-	 * 得到所有的配置值 
+	 * 获取给定配置名称下所有包的所有值
      *
      * @param  string  $key
      * @return array
@@ -105,7 +105,7 @@ class PackageManifest
 
     /**
      * Get the current package manifest.
-	 * 得到当前包清单
+	 * 获取当前的包清单
      *
      * @return array
      */
@@ -115,17 +115,17 @@ class PackageManifest
             return $this->manifest;
         }
 
-        if (! file_exists($this->manifestPath)) {
+        if (! is_file($this->manifestPath)) {
             $this->build();
         }
 
-        return $this->manifest = file_exists($this->manifestPath) ?
+        return $this->manifest = is_file($this->manifestPath) ?
             $this->files->getRequire($this->manifestPath) : [];
     }
 
     /**
      * Build the manifest and write it to disk.
-	 * 建立清单并写入磁盘
+	 * 构建清单并将其写入磁盘
      *
      * @return void
      */
@@ -152,7 +152,7 @@ class PackageManifest
 
     /**
      * Format the given package name.
-	 * 格式化给定包名
+	 * 格式化给定的包名
      *
      * @param  string  $package
      * @return string
@@ -164,13 +164,13 @@ class PackageManifest
 
     /**
      * Get all of the package names that should be ignored.
-	 * 得到所有应该忽略的包名
+	 * 获取所有应该忽略的包名
      *
      * @return array
      */
     protected function packagesToIgnore()
     {
-        if (! file_exists($this->basePath.'/composer.json')) {
+        if (! is_file($this->basePath.'/composer.json')) {
             return [];
         }
 
@@ -181,7 +181,7 @@ class PackageManifest
 
     /**
      * Write the given manifest array to disk.
-	 * 写入给定清单至磁盘
+	 * 将给定的清单数组写入磁盘
      *
      * @param  array  $manifest
      * @return void
@@ -190,8 +190,8 @@ class PackageManifest
      */
     protected function write(array $manifest)
     {
-        if (! is_writable(dirname($this->manifestPath))) {
-            throw new Exception('The '.dirname($this->manifestPath).' directory must be present and writable.');
+        if (! is_writable($dirname = dirname($this->manifestPath))) {
+            throw new Exception("The {$dirname} directory must be present and writable.");
         }
 
         $this->files->replace(

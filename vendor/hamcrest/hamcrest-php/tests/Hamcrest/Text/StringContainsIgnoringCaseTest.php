@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，文本，字符串包含忽略大小写测试
- */
-
 namespace Hamcrest\Text;
 
 class StringContainsIgnoringCaseTest extends \Hamcrest\AbstractMatcherTest

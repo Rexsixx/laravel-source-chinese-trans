@@ -1,6 +1,6 @@
 <?php
 /**
- * 控制台，命令完成
+ * Illuminate，控制台，事件，命令完成
  */
 
 namespace Illuminate\Console\Events;
@@ -12,7 +12,7 @@ class CommandFinished
 {
     /**
      * The command name.
-	 * 命令名
+	 * 命令名称
      *
      * @var string
      */
@@ -28,7 +28,7 @@ class CommandFinished
 
     /**
      * The command output implementation.
-	 * 输出命令实现
+	 * 命令输出实现
      *
      * @var \Symfony\Component\Console\Output\OutputInterface|null
      */

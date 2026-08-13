@@ -1,6 +1,6 @@
 <?php
 /**
- * 邮件，事件，消息发送
+ * Illuminate，邮件，事件，消息已发送
  */
 
 namespace Illuminate\Mail\Events;
@@ -11,7 +11,7 @@ class MessageSent
 {
     /**
      * The Swift message instance.
-	 * Swift信息实例
+	 * Swift消息实例
      *
      * @var \Swift_Message
      */
@@ -19,7 +19,7 @@ class MessageSent
 
     /**
      * The message data.
-	 * 信息数据
+	 * 消息数据
      *
      * @var array
      */
@@ -41,7 +41,7 @@ class MessageSent
 
     /**
      * Get the serializable representation of the object.
-	 * 得到对象的可序列化表示形式
+	 * 获取对象的可序列化表示形式
      *
      * @return array
      */
@@ -64,7 +64,7 @@ class MessageSent
 
     /**
      * Marshal the object from its serialized data.
-	 * 封装对象从对象的序列化数据
+	 * 从对象的序列化数据封送对象
      *
      * @param  array  $data
      * @return void

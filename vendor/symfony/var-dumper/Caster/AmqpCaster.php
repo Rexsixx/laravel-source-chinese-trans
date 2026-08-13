@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，Caster，Amqp Caster
+ * Symfony，Component，VarDumper，魔术师，Amqp Caster
  */
 
 /*
@@ -22,7 +22,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  *
- * @final since Symfony 4.4
+ * @final
  */
 class AmqpCaster
 {
@@ -50,7 +50,7 @@ class AmqpCaster
         \AMQP_EX_TYPE_HEADERS => 'AMQP_EX_TYPE_HEADERS',
     ];
 
-    public static function castConnection(\AMQPConnection $c, array $a, Stub $stub, $isNested)
+    public static function castConnection(\AMQPConnection $c, array $a, Stub $stub, bool $isNested)
     {
         $prefix = Caster::PREFIX_VIRTUAL;
 
@@ -83,7 +83,7 @@ class AmqpCaster
         return $a;
     }
 
-    public static function castChannel(\AMQPChannel $c, array $a, Stub $stub, $isNested)
+    public static function castChannel(\AMQPChannel $c, array $a, Stub $stub, bool $isNested)
     {
         $prefix = Caster::PREFIX_VIRTUAL;
 
@@ -106,7 +106,7 @@ class AmqpCaster
         return $a;
     }
 
-    public static function castQueue(\AMQPQueue $c, array $a, Stub $stub, $isNested)
+    public static function castQueue(\AMQPQueue $c, array $a, Stub $stub, bool $isNested)
     {
         $prefix = Caster::PREFIX_VIRTUAL;
 
@@ -129,7 +129,7 @@ class AmqpCaster
         return $a;
     }
 
-    public static function castExchange(\AMQPExchange $c, array $a, Stub $stub, $isNested)
+    public static function castExchange(\AMQPExchange $c, array $a, Stub $stub, bool $isNested)
     {
         $prefix = Caster::PREFIX_VIRTUAL;
 
@@ -157,7 +157,7 @@ class AmqpCaster
         return $a;
     }
 
-    public static function castEnvelope(\AMQPEnvelope $c, array $a, Stub $stub, $isNested, $filter = 0)
+    public static function castEnvelope(\AMQPEnvelope $c, array $a, Stub $stub, bool $isNested, int $filter = 0)
     {
         $prefix = Caster::PREFIX_VIRTUAL;
 

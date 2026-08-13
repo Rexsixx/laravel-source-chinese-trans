@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，错误页面，Ignition Whoops 处理程序
+ * Facade，Ignition，错误页面，Ignition Whoops Handler
  */
 
 namespace Facade\Ignition\ErrorPage;
@@ -29,8 +29,6 @@ class IgnitionWhoopsHandler extends Handler
         } catch (Error $error) {
             // Errors aren't caught by Whoops.
             // Convert the error to an exception and throw again.
-			// 错误不会被Whoops捕获。
-			// 将错误转换为异常并再次抛出。
 
             throw new ErrorException(
                 $error->getMessage(),

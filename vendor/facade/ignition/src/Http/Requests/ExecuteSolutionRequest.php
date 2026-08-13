@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，Http，请求，执行解决方案请求
+ * Facade，Ignition，Http，请求，执行解决方案请求
  */
 
 namespace Facade\Ignition\Http\Requests;
@@ -27,6 +27,7 @@ class ExecuteSolutionRequest extends FormRequest
 
         abort_if(is_null($solution), 404, 'Solution could not be found');
 
+        /** @var Solution */
         return $solution;
     }
 

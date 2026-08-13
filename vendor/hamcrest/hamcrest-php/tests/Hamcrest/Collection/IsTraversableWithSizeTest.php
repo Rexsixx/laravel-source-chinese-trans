@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，集合，是否可遍历大小测试
+ * Hamcrest，收集，是否用尺寸可以穿越测试
  */
 
 namespace Hamcrest\Collection;

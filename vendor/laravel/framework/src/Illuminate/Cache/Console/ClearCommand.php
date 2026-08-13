@@ -1,6 +1,6 @@
 <?php
 /**
- * 缓存，控制台，清除命令
+ * Illuminate，缓存，控制台，cache:clear 清除命令
  */
 
 namespace Illuminate\Cache\Console;
@@ -15,7 +15,7 @@ class ClearCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -31,7 +31,7 @@ class ClearCommand extends Command
 
     /**
      * The cache manager instance.
-	 * 缓存管理实例
+	 * 缓存管理器实例
      *
      * @var \Illuminate\Cache\CacheManager
      */
@@ -109,7 +109,7 @@ class ClearCommand extends Command
 
     /**
      * Get the cache instance for the command.
-	 * 得到命令的缓存实例
+	 * 获取命令的缓存实例
      *
      * @return \Illuminate\Cache\Repository
      */
@@ -122,18 +122,18 @@ class ClearCommand extends Command
 
     /**
      * Get the tags passed to the command.
-	 * 得到传递给命令的标记
+	 * 获取传递给命令的标记
      *
      * @return array
      */
     protected function tags()
     {
-        return array_filter(explode(',', $this->option('tags')));
+        return array_filter(explode(',', $this->option('tags') ?? ''));
     }
 
     /**
      * Get the console command arguments.
-	 * 得到控制台命令参数
+	 * 获取控制台命令参数
      *
      * @return array
      */

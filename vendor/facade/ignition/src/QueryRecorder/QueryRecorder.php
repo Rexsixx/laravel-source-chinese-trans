@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，查询记录器，Query Recorder
+ * Facade，Ignition，查询记录器，查询记录器
  */
 
 namespace Facade\Ignition\QueryRecorder;
@@ -16,9 +16,20 @@ class QueryRecorder
     /** @var \Illuminate\Contracts\Foundation\Application */
     protected $app;
 
-    public function __construct(Application $app)
-    {
+    /** @var bool */
+    private $reportBindings;
+
+    /** @var int|null */
+    private $maxQueries;
+
+    public function __construct(
+        Application $app,
+        bool $reportBindings = true,
+        ?int $maxQueries = null
+    ) {
         $this->app = $app;
+        $this->reportBindings = $reportBindings;
+        $this->maxQueries = $maxQueries;
     }
 
     public function register()
@@ -30,13 +41,11 @@ class QueryRecorder
 
     public function record(QueryExecuted $queryExecuted)
     {
-        $maximumQueries = $this->app['config']->get('flare.reporting.maximum_number_of_collected_queries', 200);
+        $this->queries[] = Query::fromQueryExecutedEvent($queryExecuted, $this->reportBindings);
 
-        $reportBindings = $this->app['config']->get('flare.reporting.report_query_bindings', true);
-
-        $this->queries[] = Query::fromQueryExecutedEvent($queryExecuted, $reportBindings);
-
-        $this->queries = array_slice($this->queries, $maximumQueries * -1, $maximumQueries);
+        if (is_int($this->maxQueries)) {
+            $this->queries = array_slice($this->queries, -$this->maxQueries);
+        }
     }
 
     public function getQueries(): array
@@ -53,5 +62,29 @@ class QueryRecorder
     public function reset()
     {
         $this->queries = [];
+    }
+
+    public function getReportBindings(): bool
+    {
+        return $this->reportBindings;
+    }
+
+    public function setReportBindings(bool $reportBindings): self
+    {
+        $this->reportBindings = $reportBindings;
+
+        return $this;
+    }
+
+    public function getMaxQueries(): ?int
+    {
+        return $this->maxQueries;
+    }
+
+    public function setMaxQueries(?int $maxQueries): self
+    {
+        $this->maxQueries = $maxQueries;
+
+        return $this;
     }
 }

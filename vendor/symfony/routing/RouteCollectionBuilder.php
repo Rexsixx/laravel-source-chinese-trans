@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，路由集合生成器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -14,11 +17,17 @@ namespace Symfony\Component\Routing;
 use Symfony\Component\Config\Exception\LoaderLoadException;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\ResourceInterface;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+
+trigger_deprecation('symfony/routing', '5.1', 'The "%s" class is deprecated, use "%s" instead.', RouteCollectionBuilder::class, RoutingConfigurator::class);
 
 /**
  * Helps add and import routes into a RouteCollection.
+ * 帮助在RouteCollection中添加和导入路由。
  *
  * @author Ryan Weaver <ryan@knpuniversity.com>
+ *
+ * @deprecated since Symfony 5.1, use RoutingConfigurator instead
  */
 class RouteCollectionBuilder
 {
@@ -38,25 +47,24 @@ class RouteCollectionBuilder
     private $methods;
     private $resources = [];
 
-    public function __construct(LoaderInterface $loader = null)
+    public function __construct(?LoaderInterface $loader = null)
     {
         $this->loader = $loader;
     }
 
     /**
      * Import an external routing resource and returns the RouteCollectionBuilder.
+	 * 导入外部路由资源并返回RouteCollectionBuilder。
      *
      *     $routes->import('blog.yml', '/blog');
      *
-     * @param mixed       $resource
-     * @param string|null $prefix
-     * @param string      $type
+     * @param mixed $resource
      *
      * @return self
      *
      * @throws LoaderLoadException
      */
-    public function import($resource, $prefix = '/', $type = null)
+    public function import($resource, string $prefix = '/', ?string $type = null)
     {
         /** @var RouteCollection[] $collections */
         $collections = $this->load($resource, $type);
@@ -86,14 +94,11 @@ class RouteCollectionBuilder
 
     /**
      * Adds a route and returns it for future modification.
-     *
-     * @param string      $path       The route path
-     * @param string      $controller The route's controller
-     * @param string|null $name       The name to give this route
+	 * 添加路由并返回以备将来修改
      *
      * @return Route
      */
-    public function add($path, $controller, $name = null)
+    public function add(string $path, string $controller, ?string $name = null)
     {
         $route = new Route($path);
         $route->setDefault('_controller', $controller);
@@ -104,6 +109,7 @@ class RouteCollectionBuilder
 
     /**
      * Returns a RouteCollectionBuilder that can be configured and then added with mount().
+	 * 返回一个可以配置的RouteCollectionBuilder，然后用mount（）添加。
      *
      * @return self
      */
@@ -114,10 +120,8 @@ class RouteCollectionBuilder
 
     /**
      * Add a RouteCollectionBuilder.
-     *
-     * @param string $prefix
      */
-    public function mount($prefix, self $builder)
+    public function mount(string $prefix, self $builder)
     {
         $builder->prefix = trim(trim($prefix), '/');
         $this->routes[] = $builder;
@@ -125,12 +129,11 @@ class RouteCollectionBuilder
 
     /**
      * Adds a Route object to the builder.
-     *
-     * @param string|null $name
+	 * 将Route对象添加到构建器中
      *
      * @return $this
      */
-    public function addRoute(Route $route, $name = null)
+    public function addRoute(Route $route, ?string $name = null)
     {
         if (null === $name) {
             // used as a flag to know which routes will need a name later
@@ -144,12 +147,11 @@ class RouteCollectionBuilder
 
     /**
      * Sets the host on all embedded routes (unless already set).
-     *
-     * @param string $pattern
+	 * 在所有嵌入路由上设置主机（除非已经设置）
      *
      * @return $this
      */
-    public function setHost($pattern)
+    public function setHost(?string $pattern)
     {
         $this->host = $pattern;
 
@@ -158,12 +160,11 @@ class RouteCollectionBuilder
 
     /**
      * Sets a condition on all embedded routes (unless already set).
-     *
-     * @param string $condition
+	 * 在所有嵌入路由上设置一个条件（除非已经设置）
      *
      * @return $this
      */
-    public function setCondition($condition)
+    public function setCondition(?string $condition)
     {
         $this->condition = $condition;
 
@@ -174,12 +175,11 @@ class RouteCollectionBuilder
      * Sets a default value that will be added to all embedded routes (unless that
      * default value is already set).
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return $this
      */
-    public function setDefault($key, $value)
+    public function setDefault(string $key, $value)
     {
         $this->defaults[$key] = $value;
 
@@ -190,12 +190,11 @@ class RouteCollectionBuilder
      * Sets a requirement that will be added to all embedded routes (unless that
      * requirement is already set).
      *
-     * @param string $key
-     * @param mixed  $regex
+     * @param mixed $regex
      *
      * @return $this
      */
-    public function setRequirement($key, $regex)
+    public function setRequirement(string $key, $regex)
     {
         $this->requirements[$key] = $regex;
 
@@ -206,12 +205,11 @@ class RouteCollectionBuilder
      * Sets an option that will be added to all embedded routes (unless that
      * option is already set).
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return $this
      */
-    public function setOption($key, $value)
+    public function setOption(string $key, $value)
     {
         $this->options[$key] = $value;
 
@@ -220,6 +218,7 @@ class RouteCollectionBuilder
 
     /**
      * Sets the schemes on all embedded routes (unless already set).
+	 * 在所有嵌入路由上设置方案（除非已经设置）
      *
      * @param array|string $schemes
      *
@@ -234,6 +233,7 @@ class RouteCollectionBuilder
 
     /**
      * Sets the methods on all embedded routes (unless already set).
+	 * 设置所有嵌入路由上的方法（除非已经设置）
      *
      * @param array|string $methods
      *
@@ -248,6 +248,7 @@ class RouteCollectionBuilder
 
     /**
      * Adds a resource for this collection.
+	 * 为此集合添加资源
      *
      * @return $this
      */
@@ -260,6 +261,7 @@ class RouteCollectionBuilder
 
     /**
      * Creates the final RouteCollection and returns it.
+	 * 创建最终的RouteCollection并返回它
      *
      * @return RouteCollection
      */
@@ -324,6 +326,7 @@ class RouteCollectionBuilder
 
     /**
      * Generates a route name based on details of this route.
+	 * 根据路由的详细信息生成路由名称
      */
     private function generateRouteName(Route $route): string
     {
@@ -341,6 +344,7 @@ class RouteCollectionBuilder
 
     /**
      * Finds a loader able to load an imported resource and loads it.
+	 * 查找能够加载导入资源的加载器并加载它。
      *
      * @param mixed       $resource A resource
      * @param string|null $type     The resource type or null if unknown
@@ -349,7 +353,7 @@ class RouteCollectionBuilder
      *
      * @throws LoaderLoadException If no loader is found
      */
-    private function load($resource, string $type = null): array
+    private function load($resource, ?string $type = null): array
     {
         if (null === $this->loader) {
             throw new \BadMethodCallException('Cannot import other routing resources: you must pass a LoaderInterface when constructing RouteCollectionBuilder.');

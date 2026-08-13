@@ -1,12 +1,15 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点访问者抽象
+ */
+
 namespace PhpParser;
 
 /**
  * @codeCoverageIgnore
  */
-class NodeVisitorAbstract implements NodeVisitor
-{
+abstract class NodeVisitorAbstract implements NodeVisitor {
     public function beforeTraverse(array $nodes) {
         return null;
     }

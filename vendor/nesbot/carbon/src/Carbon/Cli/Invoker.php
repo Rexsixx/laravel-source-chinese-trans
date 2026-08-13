@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，命令行，调用者
+ * Carbon，Cli，调用者
  */
 
 /**

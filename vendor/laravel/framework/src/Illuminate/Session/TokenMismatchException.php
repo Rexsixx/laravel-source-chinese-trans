@@ -1,6 +1,6 @@
 <?php
 /**
- * Session，令牌失配异常，待完善类
+ * Illuminate，Session，令牌不匹配异常
  */
 
 namespace Illuminate\Session;

@@ -1,6 +1,6 @@
 <?php
 /**
- * 授权，验证
+ * Illuminate，认证，中间件，验证身份
  */
 
 namespace Illuminate\Auth\Middleware;
@@ -8,12 +8,13 @@ namespace Illuminate\Auth\Middleware;
 use Closure;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Auth\Factory as Auth;
+use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
 
-class Authenticate
+class Authenticate implements AuthenticatesRequests
 {
     /**
      * The authentication factory instance.
-	 * 认证工厂实例
+	 * 身份验证工厂实例
      *
      * @var \Illuminate\Contracts\Auth\Factory
      */
@@ -21,7 +22,7 @@ class Authenticate
 
     /**
      * Create a new middleware instance.
-	 * 创建中间件实例
+	 * 创建新的中间件实例
      *
      * @param  \Illuminate\Contracts\Auth\Factory  $auth
      * @return void
@@ -51,7 +52,7 @@ class Authenticate
 
     /**
      * Determine if the user is logged in to any of the given guards.
-	 * 确定用户是否登录到任何给定的警卫
+	 * 确定用户是否登录到任何给定的守卫
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  array  $guards
@@ -93,7 +94,7 @@ class Authenticate
 
     /**
      * Get the path the user should be redirected to when they are not authenticated.
-	 * 得到用户未经过身份验证时应重定向到的路径
+	 * 获取用户未经过身份验证时应重定向到的路径
      *
      * @param  \Illuminate\Http\Request  $request
      * @return string|null

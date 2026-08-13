@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，事件，控制台命令事件
+ * Symfony，Component，Console，事件，控制台命令事件
  */
 
 /*
@@ -15,16 +15,20 @@
 namespace Symfony\Component\Console\Event;
 
 /**
- * Allows to do things before the command is executed, like skipping the command or changing the input.
+ * Allows to do things before the command is executed, like skipping the command or executing code before the command is
+ * going to be executed.
+ * 允许在命令执行之前做一些事情,比如在命令之前跳过命令或执行代码将被执行。
+ *
+ * Changing the input arguments will have no effect.
+ * 改变输入参数将没有效果。
  *
  * @author Fabien Potencier <fabien@symfony.com>
- *
- * @final since Symfony 4.4
  */
-class ConsoleCommandEvent extends ConsoleEvent
+final class ConsoleCommandEvent extends ConsoleEvent
 {
     /**
      * The return code for skipped commands, this will also be passed into the terminate event.
+	 * 跳过命令的返回代码,这也将传递到终止事件。
      */
     public const RETURN_CODE_DISABLED = 113;
 
@@ -35,30 +39,23 @@ class ConsoleCommandEvent extends ConsoleEvent
 
     /**
      * Disables the command, so it won't be run.
-     *
-     * @return bool
+	 * 禁用命令,所以它不会运行
      */
-    public function disableCommand()
+    public function disableCommand(): bool
     {
         return $this->commandShouldRun = false;
     }
 
-    /**
-     * Enables the command.
-     *
-     * @return bool
-     */
-    public function enableCommand()
+    public function enableCommand(): bool
     {
         return $this->commandShouldRun = true;
     }
 
     /**
      * Returns true if the command is runnable, false otherwise.
-     *
-     * @return bool
+	 * 如果命令是可运行的,则返回true,否则将返回true。
      */
-    public function commandShouldRun()
+    public function commandShouldRun(): bool
     {
         return $this->commandShouldRun;
     }

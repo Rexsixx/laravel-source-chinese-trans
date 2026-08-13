@@ -1,25 +1,29 @@
 <?php
 /**
- * 门面，Ignition，日志记录器，Log Recorder
+ * Facade，Ignition，记录记录器，记录记录器
  */
 
 namespace Facade\Ignition\LogRecorder;
 
-use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Log\Events\MessageLogged;
+use Throwable;
 
 class LogRecorder
 {
-    /** @var \Facade\Flare\LogRecorder\LogMessage[] */
+    /** @var \Facade\Ignition\LogRecorder\LogMessage[] */
     protected $logMessages = [];
 
     /** @var \Illuminate\Contracts\Foundation\Application */
     protected $app;
 
-    public function __construct(Application $app)
+    /** @var int|null */
+    private $maxLogs;
+
+    public function __construct(Application $app, ?int $maxLogs = null)
     {
         $this->app = $app;
+        $this->maxLogs = $maxLogs;
     }
 
     public function register(): self
@@ -36,6 +40,10 @@ class LogRecorder
         }
 
         $this->logMessages[] = LogMessage::fromMessageLoggedEvent($event);
+
+        if (is_int($this->maxLogs)) {
+            $this->logMessages = array_slice($this->logMessages, -$this->maxLogs);
+        }
     }
 
     public function getLogMessages(): array
@@ -60,7 +68,7 @@ class LogRecorder
             return false;
         }
 
-        if (! $event->context['exception'] instanceof Exception) {
+        if (! $event->context['exception'] instanceof Throwable) {
             return false;
         }
 
@@ -70,5 +78,17 @@ class LogRecorder
     public function reset(): void
     {
         $this->logMessages = [];
+    }
+
+    public function getMaxLogs(): ?int
+    {
+        return $this->maxLogs;
+    }
+
+    public function setMaxLogs(?int $maxLogs): self
+    {
+        $this->maxLogs = $maxLogs;
+
+        return $this;
     }
 }

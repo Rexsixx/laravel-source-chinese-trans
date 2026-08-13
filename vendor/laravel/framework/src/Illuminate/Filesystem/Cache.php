@@ -1,6 +1,6 @@
 <?php
 /**
- * 文件系统，缓存Cache
+ * Illuminate，文件系统，缓存
  */
 
 namespace Illuminate\Filesystem;
@@ -12,7 +12,7 @@ class Cache extends AbstractCache
 {
     /**
      * The cache repository implementation.
-	 * 缓存资源库接口
+	 * 缓存存储库实现
      *
      * @var \Illuminate\Contracts\Cache\Repository
      */
@@ -20,7 +20,7 @@ class Cache extends AbstractCache
 
     /**
      * The cache key.
-	 * 缓存KEY
+	 * 缓存主键
      *
      * @var string
      */
@@ -28,7 +28,7 @@ class Cache extends AbstractCache
 
     /**
      * The cache expiration time in seconds.
-	 ×　缓存超时秒
+	 * 缓存过期时间（以秒为单位）
      *
      * @var int|null
      */
@@ -36,7 +36,7 @@ class Cache extends AbstractCache
 
     /**
      * Create a new cache instance.
-	 * 创建新的缓存实例
+	 * 创建一个新的缓存实例
      *
      * @param  \Illuminate\Contracts\Cache\Repository  $repository
      * @param  string  $key

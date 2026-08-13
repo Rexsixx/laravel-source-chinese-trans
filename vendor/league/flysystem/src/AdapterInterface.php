@@ -19,6 +19,7 @@ interface AdapterInterface extends ReadInterface
 
     /**
      * Write a new file.
+	 * 编写一个新文件
      *
      * @param string $path
      * @param string $contents
@@ -30,6 +31,7 @@ interface AdapterInterface extends ReadInterface
 
     /**
      * Write a new file using a stream.
+	 * 使用流编写新文件
      *
      * @param string   $path
      * @param resource $resource
@@ -41,6 +43,7 @@ interface AdapterInterface extends ReadInterface
 
     /**
      * Update a file.
+	 * 更新文件
      *
      * @param string $path
      * @param string $contents
@@ -52,6 +55,7 @@ interface AdapterInterface extends ReadInterface
 
     /**
      * Update a file using a stream.
+	 * 使用流更新文件
      *
      * @param string   $path
      * @param resource $resource
@@ -63,6 +67,7 @@ interface AdapterInterface extends ReadInterface
 
     /**
      * Rename a file.
+	 * 重命名文件
      *
      * @param string $path
      * @param string $newpath
@@ -73,6 +78,7 @@ interface AdapterInterface extends ReadInterface
 
     /**
      * Copy a file.
+	 * 复制文件
      *
      * @param string $path
      * @param string $newpath
@@ -83,6 +89,7 @@ interface AdapterInterface extends ReadInterface
 
     /**
      * Delete a file.
+	 * 删除文件
      *
      * @param string $path
      *
@@ -92,6 +99,7 @@ interface AdapterInterface extends ReadInterface
 
     /**
      * Delete a directory.
+	 * 删除目录
      *
      * @param string $dirname
      *
@@ -101,6 +109,7 @@ interface AdapterInterface extends ReadInterface
 
     /**
      * Create a directory.
+	 * 创建目录
      *
      * @param string $dirname directory name
      * @param Config $config
@@ -111,6 +120,7 @@ interface AdapterInterface extends ReadInterface
 
     /**
      * Set the visibility for a file.
+	 * 设置文件的可见性
      *
      * @param string $path
      * @param string $visibility

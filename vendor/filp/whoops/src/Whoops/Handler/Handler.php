@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，处理程序，Handler
+ * Whoops，处理器，处理器
  */
 
 /**
@@ -10,7 +10,7 @@
 
 namespace Whoops\Handler;
 
-use Whoops\Exception\Inspector;
+use Whoops\Inspector\InspectorInterface;
 use Whoops\RunInterface;
 
 /**
@@ -20,9 +20,8 @@ use Whoops\RunInterface;
 abstract class Handler implements HandlerInterface
 {
     /*
-     * Return constants that can be returned from Handler::handle
-     * to message the handler walker.
-	 * 返回可以从 Handler::handle 返回的常量，以向处理程序遍历器发送消息。
+     Return constants that can be returned from Handler::handle
+     to message the handler walker.
      */
     const DONE         = 0x10; // returning this is optional, only exists for
                                // semantic purposes
@@ -42,7 +41,7 @@ abstract class Handler implements HandlerInterface
     private $run;
 
     /**
-     * @var Inspector $inspector
+     * @var InspectorInterface $inspector
      */
     private $inspector;
 
@@ -68,15 +67,15 @@ abstract class Handler implements HandlerInterface
     }
 
     /**
-     * @param Inspector $inspector
+     * @param InspectorInterface $inspector
      */
-    public function setInspector(Inspector $inspector)
+    public function setInspector(InspectorInterface $inspector)
     {
         $this->inspector = $inspector;
     }
 
     /**
-     * @return Inspector
+     * @return InspectorInterface
      */
     protected function getInspector()
     {

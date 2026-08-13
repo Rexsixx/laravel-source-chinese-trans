@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，重定向响应
+ * Symfony，Component，HttpFoundation，重定向响应
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * RedirectResponse represents an HTTP response doing a redirect.
+ * RedirectResponse表示执行重定向的HTTP响应
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -25,6 +26,7 @@ class RedirectResponse extends Response
 
     /**
      * Creates a redirect response so that it conforms to the rules defined for a redirect status code.
+	 * 创建重定向响应，使其符合为重定向状态码定义的规则。
      *
      * @param string $url     The URL to redirect to. The URL should be a full URL, with schema etc.,
      *                        but practically every browser redirects on paths only as well
@@ -35,13 +37,8 @@ class RedirectResponse extends Response
      *
      * @see https://tools.ietf.org/html/rfc2616#section-10.3
      */
-    public function __construct(?string $url, int $status = 302, array $headers = [])
+    public function __construct(string $url, int $status = 302, array $headers = [])
     {
-        if (null === $url) {
-            @trigger_error(sprintf('Passing a null url when instantiating a "%s" is deprecated since Symfony 4.4.', __CLASS__), \E_USER_DEPRECATED);
-            $url = '';
-        }
-
         parent::__construct('', $status, $headers);
 
         $this->setTargetUrl($url);
@@ -57,22 +54,26 @@ class RedirectResponse extends Response
 
     /**
      * Factory method for chainability.
+	 * 可链性的工厂方法
      *
-     * @param string $url     The url to redirect to
-     * @param int    $status  The response status code
-     * @param array  $headers An array of response headers
+     * @param string $url The URL to redirect to
      *
      * @return static
+     *
+     * @deprecated since Symfony 5.1, use __construct() instead.
      */
-    public static function create($url = '', $status = 302, $headers = [])
+    public static function create($url = '', int $status = 302, array $headers = [])
     {
+        trigger_deprecation('symfony/http-foundation', '5.1', 'The "%s()" method is deprecated, use "new %s()" instead.', __METHOD__, static::class);
+
         return new static($url, $status, $headers);
     }
 
     /**
      * Returns the target URL.
+	 * 返回目标URL
      *
-     * @return string target URL
+     * @return string
      */
     public function getTargetUrl()
     {
@@ -81,16 +82,15 @@ class RedirectResponse extends Response
 
     /**
      * Sets the redirect target of this response.
-     *
-     * @param string $url The URL to redirect to
+	 * 设置此响应的重定向目标
      *
      * @return $this
      *
      * @throws \InvalidArgumentException
      */
-    public function setTargetUrl($url)
+    public function setTargetUrl(string $url)
     {
-        if ('' === ($url ?? '')) {
+        if ('' === $url) {
             throw new \InvalidArgumentException('Cannot redirect to an empty URL.');
         }
 
@@ -111,6 +111,7 @@ class RedirectResponse extends Response
 </html>', htmlspecialchars($url, \ENT_QUOTES, 'UTF-8')));
 
         $this->headers->set('Location', $url);
+        $this->headers->set('Content-Type', 'text/html; charset=utf-8');
 
         return $this;
     }

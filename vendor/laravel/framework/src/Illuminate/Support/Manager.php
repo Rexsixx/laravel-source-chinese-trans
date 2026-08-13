@@ -1,6 +1,6 @@
 <?php
 /**
- * 支持，管理抽象类
+ * Illuminate，支持，管理者
  */
 
 namespace Illuminate\Support;
@@ -18,16 +18,6 @@ abstract class Manager
      * @var \Illuminate\Contracts\Container\Container
      */
     protected $container;
-
-    /**
-     * The container instance.
-	 * 容器实例
-     *
-     * @var \Illuminate\Contracts\Container\Container
-     *
-     * @deprecated Use the $container property instead.
-     */
-    protected $app;
 
     /**
      * The configuration repository instance.
@@ -55,21 +45,20 @@ abstract class Manager
 
     /**
      * Create a new manager instance.
-	 * 创建新的管理实例
+	 * 创建一个新的管理器实例
      *
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
     public function __construct(Container $container)
     {
-        $this->app = $container;
         $this->container = $container;
         $this->config = $container->make('config');
     }
 
     /**
      * Get the default driver name.
-	 * 得到默认驱动名称
+	 * 获取默认驱动程序名称
      *
      * @return string
      */
@@ -77,9 +66,9 @@ abstract class Manager
 
     /**
      * Get a driver instance.
-	 * 得到驱动实例
+	 * 获取驱动程序实例
      *
-     * @param  string  $driver
+     * @param  string|null  $driver
      * @return mixed
      *
      * @throws \InvalidArgumentException
@@ -97,8 +86,7 @@ abstract class Manager
         // If the given driver has not been created before, we will create the instances
         // here and cache it so we can return it next time very quickly. If there is
         // already a driver created by this name, we'll just return that instance.
-		// 如果给定的驱动程序以前没有创建过，我们将在这里创建实例并缓存它，这样我们下次就可以很快地返回它。
-		// 如果已经有一个以此名称创建的驱动程序，我们将只返回该实例。
+		// 如果之前没有创建给定的驱动程序，我们将在这里创建实例并缓存它。
         if (! isset($this->drivers[$driver])) {
             $this->drivers[$driver] = $this->createDriver($driver);
         }
@@ -108,7 +96,7 @@ abstract class Manager
 
     /**
      * Create a new driver instance.
-	 * 创建新的驱动实例
+	 * 创建一个新的驱动程序实例
      *
      * @param  string  $driver
      * @return mixed
@@ -120,9 +108,7 @@ abstract class Manager
         // First, we will determine if a custom driver creator exists for the given driver and
         // if it does not we will check for a creator method for the driver. Custom creator
         // callbacks allow developers to build their own "drivers" easily using Closures.
-		// 首先，我们将确定给定驱动程序是否存在自定义驱动程序创建者，
-		// 如果不存在，我们将检查驱动程序的创建者方法。
-		// 自定义创建者回调允许开发人员使用闭包轻松构建自己的"驱动程序"。
+		// 首先，我们将确定给定驱动程序是否存在自定义驱动程序创建器。
         if (isset($this->customCreators[$driver])) {
             return $this->callCustomCreator($driver);
         } else {
@@ -138,7 +124,7 @@ abstract class Manager
 
     /**
      * Call a custom driver creator.
-	 * 调用自定义驱动创建者
+	 * 调用自定义驱动程序创建者
      *
      * @param  string  $driver
      * @return mixed
@@ -150,7 +136,7 @@ abstract class Manager
 
     /**
      * Register a custom driver creator Closure.
-	 * 注册一个自定义驱动创建者闭包
+	 * 注册自定义驱动程序创建器Closure
      *
      * @param  string  $driver
      * @param  \Closure  $callback
@@ -165,7 +151,7 @@ abstract class Manager
 
     /**
      * Get all of the created "drivers".
-	 * 得到所有创建者"驱动"
+	 * 获取所有创建的"驱动程序"
      *
      * @return array
      */
@@ -175,8 +161,46 @@ abstract class Manager
     }
 
     /**
+     * Get the container instance used by the manager.
+	 * 获取管理器使用的容器实例
+     *
+     * @return \Illuminate\Contracts\Container\Container
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
+     * Set the container instance used by the manager.
+	 * 设置管理器使用的容器实例
+     *
+     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @return $this
+     */
+    public function setContainer(Container $container)
+    {
+        $this->container = $container;
+
+        return $this;
+    }
+
+    /**
+     * Forget all of the resolved driver instances.
+	 * 忘记所有已解析的驱动程序实例
+     *
+     * @return $this
+     */
+    public function forgetDrivers()
+    {
+        $this->drivers = [];
+
+        return $this;
+    }
+
+    /**
      * Dynamically call the default driver instance.
-	 * 动态调取默认驱动实例
+	 * 动态调用默认驱动程序实例
      *
      * @param  string  $method
      * @param  array  $parameters

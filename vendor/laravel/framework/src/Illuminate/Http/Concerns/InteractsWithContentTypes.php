@@ -1,6 +1,6 @@
 <?php
 /**
- * Http，与内容类型交互
+ * Illuminate，Http，问题，与内容类型交互
  */
 
 namespace Illuminate\Http\Concerns;
@@ -10,27 +10,8 @@ use Illuminate\Support\Str;
 trait InteractsWithContentTypes
 {
     /**
-     * Determine if the given content types match.
-	 * 确定是否给定的内容类型匹配
-     *
-     * @param  string  $actual
-     * @param  string  $type
-     * @return bool
-     */
-    public static function matchesType($actual, $type)
-    {
-        if ($actual === $type) {
-            return true;
-        }
-
-        $split = explode('/', $actual);
-
-        return isset($split[1]) && preg_match('#'.preg_quote($split[0], '#').'/.+\+'.preg_quote($split[1], '#').'#', $type);
-    }
-
-    /**
      * Determine if the request is sending JSON.
-	 * 确定是否请求发送JSON
+	 * 确定请求是否正在发送JSON
      *
      * @return bool
      */
@@ -41,7 +22,7 @@ trait InteractsWithContentTypes
 
     /**
      * Determine if the current request probably expects a JSON response.
-	 * 确定当前请求是否可能期望Json响应
+	 * 确定当前请求是否可能期望JSON响应
      *
      * @return bool
      */
@@ -52,7 +33,7 @@ trait InteractsWithContentTypes
 
     /**
      * Determine if the current request is asking for JSON.
-	 * 确定当前请求是否请求json
+	 * 确定当前请求是否请求JSON
      *
      * @return bool
      */
@@ -60,7 +41,7 @@ trait InteractsWithContentTypes
     {
         $acceptable = $this->getAcceptableContentTypes();
 
-        return isset($acceptable[0]) && Str::contains($acceptable[0], ['/json', '+json']);
+        return isset($acceptable[0]) && Str::contains(strtolower($acceptable[0]), ['/json', '+json']);
     }
 
     /**
@@ -86,6 +67,10 @@ trait InteractsWithContentTypes
             }
 
             foreach ($types as $type) {
+                $accept = strtolower($accept);
+
+                $type = strtolower($type);
+
                 if ($this->matchesType($accept, $type) || $accept === strtok($type, '/').'/*') {
                     return true;
                 }
@@ -97,7 +82,7 @@ trait InteractsWithContentTypes
 
     /**
      * Return the most suitable content type from the given array based on content negotiation.
-	 * 返回最合适的内容类型根据内容协商从给定数组
+	 * 根据内容协商从给定数组返回最合适的内容类型
      *
      * @param  string|array  $contentTypes
      * @return string|null
@@ -119,6 +104,10 @@ trait InteractsWithContentTypes
                 if (! is_null($mimeType = $this->getMimeType($contentType))) {
                     $type = $mimeType;
                 }
+
+                $accept = strtolower($accept);
+
+                $type = strtolower($type);
 
                 if ($this->matchesType($type, $accept) || $accept === strtok($type, '/').'/*') {
                     return $contentType;
@@ -144,7 +133,7 @@ trait InteractsWithContentTypes
 
     /**
      * Determines whether a request accepts JSON.
-	 * 确定请求是否接受Json
+	 * 确定请求是否接受JSON
      *
      * @return bool
      */
@@ -155,7 +144,7 @@ trait InteractsWithContentTypes
 
     /**
      * Determines whether a request accepts HTML.
-	 * 确定请求是否接受Html
+	 * 确定请求是否接受HTML
      *
      * @return bool
      */
@@ -165,8 +154,27 @@ trait InteractsWithContentTypes
     }
 
     /**
+     * Determine if the given content types match.
+	 * 确定给定的内容类型是否匹配
+     *
+     * @param  string  $actual
+     * @param  string  $type
+     * @return bool
+     */
+    public static function matchesType($actual, $type)
+    {
+        if ($actual === $type) {
+            return true;
+        }
+
+        $split = explode('/', $actual);
+
+        return isset($split[1]) && preg_match('#'.preg_quote($split[0], '#').'/.+\+'.preg_quote($split[1], '#').'#', $type);
+    }
+
+    /**
      * Get the data format expected in the response.
-	 * 得到数据格式
+	 * 设置响应中期望的数据格式
      *
      * @param  string  $default
      * @return string

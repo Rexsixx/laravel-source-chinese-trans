@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，偏转器，语言偏转器工厂
+ * Doctrine，Inflector，语言影响器工厂
  */
 
 declare(strict_types=1);
@@ -23,7 +23,7 @@ interface LanguageInflectorFactory
 
     /**
      * Applies custom rules for pluralisation
-	 * 为复数应用自定义规则
+	 * 应用自定义规则
      *
      * @param bool $reset If true, will unset default inflections for all new rules
      *
@@ -33,7 +33,7 @@ interface LanguageInflectorFactory
 
     /**
      * Builds the inflector instance with all applicable rules
-	 * 使用所有适用规则构建影响器实例
+	 * 用所有适用的规则构建发型器实例
      */
     public function build(): Inflector;
 }

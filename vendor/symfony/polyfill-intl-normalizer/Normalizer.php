@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Polyfill，Intl，Normalizer，标准化者
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Polyfill\Intl\Normalizer;
 
 /**
  * Normalizer is a PHP fallback implementation of the Normalizer class provided by the intl extension.
+ * Normalizer是intl扩展提供的Normalizer类的PHP回退实现。
  *
  * It has been validated with Unicode 6.3 Normalization Conformance Test.
  * See http://www.unicode.org/reports/tr15/ for detailed info about Unicode normalizations.
@@ -90,7 +94,7 @@ class Normalizer
             self::$cC = self::getData('combiningClass');
         }
 
-        if (null !== $mbEncoding = (2 /* MB_OVERLOAD_STRING */ & (int) ini_get('mbstring.func_overload')) ? mb_internal_encoding() : null) {
+        if (null !== $mbEncoding = (2 /* MB_OVERLOAD_STRING */ & (int) \ini_get('mbstring.func_overload')) ? mb_internal_encoding() : null) {
             mb_internal_encoding('8bit');
         }
 

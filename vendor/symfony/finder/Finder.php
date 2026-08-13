@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，探测器，Finder
+ * Symfony，Component，Finder，寻找器
  */
 
 /*
@@ -29,6 +29,7 @@ use Symfony\Component\Finder\Iterator\SortableIterator;
 
 /**
  * Finder allows to build rules to find files and directories.
+ * Finder允许构建查找文件和目录的规则。
  *
  * It is a thin wrapper around several specialized iterator classes.
  *
@@ -39,6 +40,8 @@ use Symfony\Component\Finder\Iterator\SortableIterator;
  *     $finder = Finder::create()->files()->name('*.php')->in(__DIR__);
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @implements \IteratorAggregate<string, SplFileInfo>
  */
 class Finder implements \IteratorAggregate, \Countable
 {
@@ -75,6 +78,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Creates a new Finder.
+	 * 创建一个新的Finder
      *
      * @return static
      */
@@ -85,6 +89,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Restricts the matching to directories only.
+	 * 仅将匹配限制为目录
      *
      * @return $this
      */
@@ -97,6 +102,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Restricts the matching to files only.
+	 * 只对文件进行匹配
      *
      * @return $this
      */
@@ -109,6 +115,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Adds tests for the directory depth.
+	 * 为目录深度添加测试。
      *
      * Usage:
      *
@@ -134,6 +141,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Adds tests for file dates (last modified).
+	 * 添加文件日期（上次修改）的测试。
      *
      * The date must be something that strtotime() is able to parse:
      *
@@ -162,11 +170,12 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Adds rules that files must match.
+	 * 添加文件必须匹配的规则。
      *
      * You can use patterns (delimited with / sign), globs or simple strings.
      *
-     *     $finder->name('*.php')
-     *     $finder->name('/\.php$/') // same as above
+     *     $finder->name('/\.php$/')
+     *     $finder->name('*.php') // same as above, without dot files
      *     $finder->name('test.php')
      *     $finder->name(['test.py', 'test.php'])
      *
@@ -185,6 +194,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Adds rules that files must not match.
+	 * 添加文件不能匹配的规则
      *
      * @param string|string[] $patterns A pattern (a regexp, a glob, or a string) or an array of patterns
      *
@@ -201,6 +211,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Adds tests that file contents must match.
+	 * 添加文件内容必须匹配的测试。
      *
      * Strings or PCRE patterns can be used:
      *
@@ -223,6 +234,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Adds tests that file contents must not match.
+	 * 添加文件内容必须不匹配的测试。
      *
      * Strings or PCRE patterns can be used:
      *
@@ -245,6 +257,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Adds rules that filenames must match.
+	 * 添加文件名必须匹配的规则。
      *
      * You can use patterns (delimited with / sign) or simple strings.
      *
@@ -269,6 +282,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Adds rules that filenames must not match.
+	 * 添加文件名不能匹配的规则。
      *
      * You can use patterns (delimited with / sign) or simple strings.
      *
@@ -293,6 +307,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Adds tests for file sizes.
+	 * 添加文件大小测试
      *
      *     $finder->size('> 10K');
      *     $finder->size('<= 1Ki');
@@ -317,6 +332,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Excludes directories.
+	 * 不包括目录。
      *
      * Directories passed as argument must be relative to the ones defined with the `in()` method. For example:
      *
@@ -337,16 +353,15 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Excludes "hidden" directories and files (starting with a dot).
+	 * 排除“隐藏”目录和文件（以点开始）。
      *
      * This option is enabled by default.
-     *
-     * @param bool $ignoreDotFiles Whether to exclude "hidden" files or not
      *
      * @return $this
      *
      * @see ExcludeDirectoryFilterIterator
      */
-    public function ignoreDotFiles($ignoreDotFiles)
+    public function ignoreDotFiles(bool $ignoreDotFiles)
     {
         if ($ignoreDotFiles) {
             $this->ignore |= static::IGNORE_DOT_FILES;
@@ -359,16 +374,15 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Forces the finder to ignore version control directories.
+	 * 强制查找器忽略版本控制目录。
      *
      * This option is enabled by default.
-     *
-     * @param bool $ignoreVCS Whether to exclude VCS files or not
      *
      * @return $this
      *
      * @see ExcludeDirectoryFilterIterator
      */
-    public function ignoreVCS($ignoreVCS)
+    public function ignoreVCS(bool $ignoreVCS)
     {
         if ($ignoreVCS) {
             $this->ignore |= static::IGNORE_VCS_FILES;
@@ -381,6 +395,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Forces Finder to obey .gitignore and ignore files based on rules listed there.
+	 * 迫使Finder服从。根据上面列出的规则忽略文件。
      *
      * This option is disabled by default.
      *
@@ -399,6 +414,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Adds VCS patterns.
+	 * 添加VCS模式
      *
      * @see ignoreVCS()
      *
@@ -415,6 +431,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Sorts files and directories by an anonymous function.
+	 * 通过匿名函数对文件和目录进行排序。
      *
      * The anonymous function receives two \SplFileInfo instances to compare.
      *
@@ -433,22 +450,16 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Sorts files and directories by name.
+	 * 按名称对文件和目录进行排序。
      *
      * This can be slow as all the matching files and directories must be retrieved for comparison.
-     *
-     * @param bool $useNaturalSort Whether to use natural sort or not, disabled by default
      *
      * @return $this
      *
      * @see SortableIterator
      */
-    public function sortByName(/* bool $useNaturalSort = false */)
+    public function sortByName(bool $useNaturalSort = false)
     {
-        if (\func_num_args() < 1 && __CLASS__ !== static::class && __CLASS__ !== (new \ReflectionMethod($this, __FUNCTION__))->getDeclaringClass()->getName() && !$this instanceof \PHPUnit\Framework\MockObject\MockObject && !$this instanceof \Prophecy\Prophecy\ProphecySubjectInterface && !$this instanceof \Mockery\MockInterface) {
-            @trigger_error(sprintf('The "%s()" method will have a new "bool $useNaturalSort = false" argument in version 5.0, not defining it is deprecated since Symfony 4.2.', __METHOD__), \E_USER_DEPRECATED);
-        }
-        $useNaturalSort = 0 < \func_num_args() && func_get_arg(0);
-
         $this->sort = $useNaturalSort ? Iterator\SortableIterator::SORT_BY_NAME_NATURAL : Iterator\SortableIterator::SORT_BY_NAME;
 
         return $this;
@@ -456,6 +467,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Sorts files and directories by type (directories before files), then by name.
+	 * 按类型（目录在文件之前）对文件和目录排序，然后按名称排序。
      *
      * This can be slow as all the matching files and directories must be retrieved for comparison.
      *
@@ -472,6 +484,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Sorts files and directories by the last accessed time.
+	 * 按最后访问时间对文件和目录进行排序。
      *
      * This is the time that the file was last accessed, read or written to.
      *
@@ -490,6 +503,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Reverses the sorting.
+	 * 反转排序
      *
      * @return $this
      */
@@ -502,6 +516,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Sorts files and directories by the last inode changed time.
+	 * 按最后更改的索引节点时间对文件和目录进行排序。
      *
      * This is the time that the inode information was last modified (permissions, owner, group or other metadata).
      *
@@ -522,6 +537,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Sorts files and directories by the last modified time.
+	 * 按最后修改时间对文件和目录进行排序。
      *
      * This is the last time the actual contents of the file were last modified.
      *
@@ -540,6 +556,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Filters the iterator with an anonymous function.
+	 * 使用匿名函数过滤迭代器。
      *
      * The anonymous function receives a \SplFileInfo and must return false
      * to remove files.
@@ -557,6 +574,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Forces the following of symlinks.
+	 * 强制执行以下符号链接
      *
      * @return $this
      */
@@ -569,22 +587,22 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Tells finder to ignore unreadable directories.
+	 * 告诉查找器忽略不可读的目录。
      *
      * By default, scanning unreadable directories content throws an AccessDeniedException.
      *
-     * @param bool $ignore
-     *
      * @return $this
      */
-    public function ignoreUnreadableDirs($ignore = true)
+    public function ignoreUnreadableDirs(bool $ignore = true)
     {
-        $this->ignoreUnreadableDirs = (bool) $ignore;
+        $this->ignoreUnreadableDirs = $ignore;
 
         return $this;
     }
 
     /**
      * Searches files and directories which match defined rules.
+	 * 搜索符合定义规则的文件和目录
      *
      * @param string|string[] $dirs A directory path or an array of directories
      *
@@ -598,26 +616,27 @@ class Finder implements \IteratorAggregate, \Countable
 
         foreach ((array) $dirs as $dir) {
             if (is_dir($dir)) {
-                $resolvedDirs[] = $this->normalizeDir($dir);
+                $resolvedDirs[] = [$this->normalizeDir($dir)];
             } elseif ($glob = glob($dir, (\defined('GLOB_BRACE') ? \GLOB_BRACE : 0) | \GLOB_ONLYDIR | \GLOB_NOSORT)) {
                 sort($glob);
-                $resolvedDirs = array_merge($resolvedDirs, array_map([$this, 'normalizeDir'], $glob));
+                $resolvedDirs[] = array_map([$this, 'normalizeDir'], $glob);
             } else {
                 throw new DirectoryNotFoundException(sprintf('The "%s" directory does not exist.', $dir));
             }
         }
 
-        $this->dirs = array_merge($this->dirs, $resolvedDirs);
+        $this->dirs = array_merge($this->dirs, ...$resolvedDirs);
 
         return $this;
     }
 
     /**
      * Returns an Iterator for the current Finder configuration.
+	 * 返回当前Finder配置的迭代器。
      *
      * This method implements the IteratorAggregate interface.
      *
-     * @return \Iterator|SplFileInfo[] An iterator
+     * @return \Iterator<string, SplFileInfo>
      *
      * @throws \LogicException if the in() method has not been called
      */
@@ -658,16 +677,15 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Appends an existing set of files/directories to the finder.
+	 * 将一组现有的文件/目录追加到查找器。
      *
      * The set can be another Finder, an Iterator, an IteratorAggregate, or even a plain array.
-     *
-     * @param iterable $iterator
      *
      * @return $this
      *
      * @throws \InvalidArgumentException when the given argument is not iterable
      */
-    public function append($iterator)
+    public function append(iterable $iterator)
     {
         if ($iterator instanceof \IteratorAggregate) {
             $this->iterators[] = $iterator->getIterator();
@@ -689,6 +707,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Check if any results were found.
+	 * 检查是否发现任何结果
      *
      * @return bool
      */
@@ -703,6 +722,7 @@ class Finder implements \IteratorAggregate, \Countable
 
     /**
      * Counts all the results collected by the iterators.
+	 * 计算迭代器收集的所有结果
      *
      * @return int
      */
@@ -723,14 +743,6 @@ class Finder implements \IteratorAggregate, \Countable
 
         if (static::IGNORE_DOT_FILES === (static::IGNORE_DOT_FILES & $this->ignore)) {
             $notPaths[] = '#(^|/)\..+(/|$)#';
-        }
-
-        if (static::IGNORE_VCS_IGNORED_FILES === (static::IGNORE_VCS_IGNORED_FILES & $this->ignore)) {
-            $gitignoreFilePath = sprintf('%s/.gitignore', $dir);
-            if (!is_readable($gitignoreFilePath)) {
-                throw new \RuntimeException(sprintf('The "ignoreVCSIgnored" option cannot be used by the Finder as the "%s" file is not readable.', $gitignoreFilePath));
-            }
-            $notPaths = array_merge($notPaths, [Gitignore::toRegex(file_get_contents($gitignoreFilePath))]);
         }
 
         $minDepth = 0;
@@ -801,11 +813,16 @@ class Finder implements \IteratorAggregate, \Countable
             $iterator = new Iterator\PathFilterIterator($iterator, $this->paths, $notPaths);
         }
 
+        if (static::IGNORE_VCS_IGNORED_FILES === (static::IGNORE_VCS_IGNORED_FILES & $this->ignore)) {
+            $iterator = new Iterator\VcsIgnoredFilterIterator($iterator, $dir);
+        }
+
         return $iterator;
     }
 
     /**
      * Normalizes given directory names by removing trailing slashes.
+	 * 通过删除拖拽的斜杠来标准化给定的目录名称
      *
      * Excluding: (s)ftp:// or ssh2.(s)ftp:// wrapper
      */

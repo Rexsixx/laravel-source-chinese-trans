@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，Composer服务提供者
+ * Illuminate，基础，提供者，Composer 服务提供者
  */
 
 namespace Illuminate\Foundation\Providers;
@@ -26,7 +26,7 @@ class ComposerServiceProvider extends ServiceProvider implements DeferrableProvi
 
     /**
      * Get the services provided by the provider.
-	 * 得到服务提供者
+	 * 获取提供者提供的服务
      *
      * @return array
      */

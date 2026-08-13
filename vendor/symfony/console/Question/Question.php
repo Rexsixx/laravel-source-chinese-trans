@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，问题，问题
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * Represents a Question.
+ * 代表一个问题。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -30,6 +34,7 @@ class Question
     private $default;
     private $normalizer;
     private $trimmable = true;
+    private $multiline = false;
 
     /**
      * @param string                     $question The question to ask to the user
@@ -43,6 +48,7 @@ class Question
 
     /**
      * Returns the question.
+	 * 返回这个问题
      *
      * @return string
      */
@@ -53,6 +59,7 @@ class Question
 
     /**
      * Returns the default answer.
+	 * 返回默认的答案
      *
      * @return string|bool|int|float|null
      */
@@ -62,7 +69,30 @@ class Question
     }
 
     /**
+     * Returns whether the user response accepts newline characters.
+	 * 返回用户响应是否接受新行字符
+     */
+    public function isMultiline(): bool
+    {
+        return $this->multiline;
+    }
+
+    /**
+     * Sets whether the user response should accept newline characters.
+	 * 设置用户响应是否应该接受newline字符
+     *
+     * @return $this
+     */
+    public function setMultiline(bool $multiline): self
+    {
+        $this->multiline = $multiline;
+
+        return $this;
+    }
+
+    /**
      * Returns whether the user response must be hidden.
+	 * 返回是否必须隐藏用户响应
      *
      * @return bool
      */
@@ -73,26 +103,26 @@ class Question
 
     /**
      * Sets whether the user response must be hidden or not.
-     *
-     * @param bool $hidden
+	 * 设置用户响应是否必须隐藏
      *
      * @return $this
      *
      * @throws LogicException In case the autocompleter is also used
      */
-    public function setHidden($hidden)
+    public function setHidden(bool $hidden)
     {
         if ($this->autocompleterCallback) {
             throw new LogicException('A hidden question cannot use the autocompleter.');
         }
 
-        $this->hidden = (bool) $hidden;
+        $this->hidden = $hidden;
 
         return $this;
     }
 
     /**
-     * In case the response can not be hidden, whether to fallback on non-hidden question or not.
+     * In case the response cannot be hidden, whether to fallback on non-hidden question or not.
+	 * 如果不能隐藏响应,是否要对非隐藏的问题进行回选。
      *
      * @return bool
      */
@@ -102,21 +132,21 @@ class Question
     }
 
     /**
-     * Sets whether to fallback on non-hidden question if the response can not be hidden.
-     *
-     * @param bool $fallback
+     * Sets whether to fallback on non-hidden question if the response cannot be hidden.
+	 * 设置是否返回不隐藏的问题,如果响应不能隐藏。
      *
      * @return $this
      */
-    public function setHiddenFallback($fallback)
+    public function setHiddenFallback(bool $fallback)
     {
-        $this->hiddenFallback = (bool) $fallback;
+        $this->hiddenFallback = $fallback;
 
         return $this;
     }
 
     /**
      * Gets values for the autocompleter.
+	 * 获取自动完成器的值
      *
      * @return iterable|null
      */
@@ -129,15 +159,13 @@ class Question
 
     /**
      * Sets values for the autocompleter.
-     *
-     * @param iterable|null $values
+	 * 为自动完成器设置值
      *
      * @return $this
      *
-     * @throws InvalidArgumentException
      * @throws LogicException
      */
-    public function setAutocompleterValues($values)
+    public function setAutocompleterValues(?iterable $values)
     {
         if (\is_array($values)) {
             $values = $this->isAssoc($values) ? array_merge(array_keys($values), array_values($values)) : array_values($values);
@@ -150,10 +178,8 @@ class Question
             $callback = static function () use ($values, &$valueCache) {
                 return $valueCache ?? $valueCache = iterator_to_array($values, false);
             };
-        } elseif (null === $values) {
-            $callback = null;
         } else {
-            throw new InvalidArgumentException('Autocompleter values can be either an array, "null" or a "Traversable" object.');
+            $callback = null;
         }
 
         return $this->setAutocompleterCallback($callback);
@@ -161,6 +187,7 @@ class Question
 
     /**
      * Gets the callback function used for the autocompleter.
+	 * 获取用于自动完成器的回调函数
      */
     public function getAutocompleterCallback(): ?callable
     {
@@ -169,12 +196,13 @@ class Question
 
     /**
      * Sets the callback function used for the autocompleter.
+	 * 设置用于自动完成器的回调函数。
      *
      * The callback is passed the user input as argument and should return an iterable of corresponding suggestions.
      *
      * @return $this
      */
-    public function setAutocompleterCallback(callable $callback = null): self
+    public function setAutocompleterCallback(?callable $callback = null): self
     {
         if ($this->hidden && null !== $callback) {
             throw new LogicException('A hidden question cannot use the autocompleter.');
@@ -187,10 +215,11 @@ class Question
 
     /**
      * Sets a validator for the question.
+	 * 为问题设置验证器
      *
      * @return $this
      */
-    public function setValidator(callable $validator = null)
+    public function setValidator(?callable $validator = null)
     {
         $this->validator = $validator;
 
@@ -199,6 +228,7 @@ class Question
 
     /**
      * Gets the validator for the question.
+	 * 获取问题的验证器
      *
      * @return callable|null
      */
@@ -209,22 +239,18 @@ class Question
 
     /**
      * Sets the maximum number of attempts.
+	 * 设置最大尝试次数。
      *
      * Null means an unlimited number of attempts.
-     *
-     * @param int|null $attempts
      *
      * @return $this
      *
      * @throws InvalidArgumentException in case the number of attempts is invalid
      */
-    public function setMaxAttempts($attempts)
+    public function setMaxAttempts(?int $attempts)
     {
-        if (null !== $attempts) {
-            $attempts = (int) $attempts;
-            if ($attempts < 1) {
-                throw new InvalidArgumentException('Maximum number of attempts must be a positive value.');
-            }
+        if (null !== $attempts && $attempts < 1) {
+            throw new InvalidArgumentException('Maximum number of attempts must be a positive value.');
         }
 
         $this->attempts = $attempts;
@@ -234,6 +260,7 @@ class Question
 
     /**
      * Gets the maximum number of attempts.
+	 * 获取尝试的最大次数。
      *
      * Null means an unlimited number of attempts.
      *
@@ -246,6 +273,7 @@ class Question
 
     /**
      * Sets a normalizer for the response.
+	 * 为响应设置一个标准化器。
      *
      * The normalizer can be a callable (a string), a closure or a class implementing __invoke.
      *
@@ -260,6 +288,7 @@ class Question
 
     /**
      * Gets the normalizer for the response.
+	 * 得到响应的标准化器。
      *
      * The normalizer can ba a callable (a string), a closure or a class implementing __invoke.
      *
@@ -270,7 +299,7 @@ class Question
         return $this->normalizer;
     }
 
-    protected function isAssoc($array)
+    protected function isAssoc(array $array)
     {
         return (bool) \count(array_filter(array_keys($array), 'is_string'));
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * 验证，验证属性
+ * Illuminate，验证，问题，验证属性
  */
 
 namespace Illuminate\Validation\Concerns;
@@ -8,7 +8,6 @@ namespace Illuminate\Validation\Concerns;
 use Countable;
 use DateTime;
 use DateTimeInterface;
-use DateTimeZone;
 use Egulias\EmailValidator\EmailValidator;
 use Egulias\EmailValidator\Validation\DNSCheckValidation;
 use Egulias\EmailValidator\Validation\MultipleValidationWithAnd;
@@ -18,7 +17,6 @@ use Egulias\EmailValidator\Validation\SpoofCheckValidation;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Exists;
@@ -27,7 +25,6 @@ use Illuminate\Validation\ValidationData;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Throwable;
 
 trait ValidatesAttributes
 {
@@ -36,6 +33,7 @@ trait ValidatesAttributes
 	 * 验证一个属性是否被"接受"
      *
      * This validation rule implies the attribute is "required".
+	 * 该验证规则暗示该属性是"必需的"
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -46,6 +44,72 @@ trait ValidatesAttributes
         $acceptable = ['yes', 'on', '1', 1, true, 'true'];
 
         return $this->validateRequired($attribute, $value) && in_array($value, $acceptable, true);
+    }
+
+    /**
+     * Validate that an attribute was "accepted" when another attribute has a given value.
+	 * 当另一个属性具有给定值时，验证一个属性是否被"接受"。
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  mixed  $parameters
+     * @return bool
+     */
+    public function validateAcceptedIf($attribute, $value, $parameters)
+    {
+        $acceptable = ['yes', 'on', '1', 1, true, 'true'];
+
+        $this->requireParameterCount(2, $parameters, 'accepted_if');
+
+        [$values, $other] = $this->parseDependentRuleParameters($parameters);
+
+        if (in_array($other, $values, is_bool($other) || is_null($other))) {
+            return $this->validateRequired($attribute, $value) && in_array($value, $acceptable, true);
+        }
+
+        return true;
+    }
+
+    /**
+     * Validate that an attribute was "declined".
+	 * 验证属性是否被"拒绝"
+     *
+     * This validation rule implies the attribute is "required".
+	 * 该验证规则暗示该属性是"必需的"
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @return bool
+     */
+    public function validateDeclined($attribute, $value)
+    {
+        $acceptable = ['no', 'off', '0', 0, false, 'false'];
+
+        return $this->validateRequired($attribute, $value) && in_array($value, $acceptable, true);
+    }
+
+    /**
+     * Validate that an attribute was "declined" when another attribute has a given value.
+	 * 当另一个属性具有给定值时，验证一个属性是否被"拒绝"
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  mixed  $parameters
+     * @return bool
+     */
+    public function validateDeclinedIf($attribute, $value, $parameters)
+    {
+        $acceptable = ['no', 'off', '0', 0, false, 'false'];
+
+        $this->requireParameterCount(2, $parameters, 'declined_if');
+
+        [$values, $other] = $this->parseDependentRuleParameters($parameters);
+
+        if (in_array($other, $values, is_bool($other) || is_null($other))) {
+            return $this->validateRequired($attribute, $value) && in_array($value, $acceptable, true);
+        }
+
+        return true;
     }
 
     /**
@@ -78,6 +142,7 @@ trait ValidatesAttributes
 	 * 第一次验证失败时"中断"
      *
      * Always returns true, just lets us put "bail" in rules.
+	 * 总是返回true，只是让我们在规则中加入"保释"。
      *
      * @return bool
      */
@@ -179,7 +244,7 @@ trait ValidatesAttributes
 
     /**
      * Get the date format for an attribute if it has one.
-	 * 得到属性的日期格式(如果属性有)
+	 * 获取属性的日期格式（如果属性有）
      *
      * @param  string  $attribute
      * @return string|null
@@ -193,26 +258,16 @@ trait ValidatesAttributes
 
     /**
      * Get the date timestamp.
-	 * 得到日期时间戳
+	 * 获取日期时间戳
      *
      * @param  mixed  $value
      * @return int
      */
     protected function getDateTimestamp($value)
     {
-        if ($value instanceof DateTimeInterface) {
-            return $value->getTimestamp();
-        }
+        $date = is_null($value) ? null : $this->getDateTime($value);
 
-        if ($this->isTestingRelativeDateTime($value)) {
-            $date = $this->getDateTime($value);
-
-            if (! is_null($date)) {
-                return $date->getTimestamp();
-            }
-        }
-
-        return strtotime($value);
+        return $date ? $date->getTimestamp() : null;
     }
 
     /**
@@ -230,15 +285,19 @@ trait ValidatesAttributes
         $firstDate = $this->getDateTimeWithOptionalFormat($format, $first);
 
         if (! $secondDate = $this->getDateTimeWithOptionalFormat($format, $second)) {
-            $secondDate = $this->getDateTimeWithOptionalFormat($format, $this->getValue($second));
+            if (is_null($second = $this->getValue($second))) {
+                return true;
+            }
+
+            $secondDate = $this->getDateTimeWithOptionalFormat($format, $second);
         }
 
-        return ($firstDate && $secondDate) && ($this->compare($firstDate, $secondDate, $operator));
+        return ($firstDate && $secondDate) && $this->compare($firstDate, $secondDate, $operator);
     }
 
     /**
      * Get a DateTime instance from a string.
-	 * 得到DateTime实例从字符串中
+	 * 从字符串中获取DateTime实例
      *
      * @param  string  $format
      * @param  string  $value
@@ -255,7 +314,7 @@ trait ValidatesAttributes
 
     /**
      * Get a DateTime instance from a string with no format.
-	 * 得到DateTime实例从没有格式的字符串中
+	 * 从没有格式的字符串中获取DateTime实例
      *
      * @param  string  $value
      * @return \DateTime|null
@@ -263,28 +322,10 @@ trait ValidatesAttributes
     protected function getDateTime($value)
     {
         try {
-            if ($this->isTestingRelativeDateTime($value)) {
-                return @Date::parse($value) ?: null;
-            }
-
-            return date_create($value) ?: null;
+            return @Date::parse($value) ?: null;
         } catch (Exception $e) {
             //
         }
-    }
-
-    /**
-     * Check if the given value should be adjusted to Carbon::getTestNow().
-	 * 检查给定的值是否应该调整为Carbon::getTestNow()
-     *
-     * @param  mixed  $value
-     * @return bool
-     */
-    protected function isTestingRelativeDateTime($value)
-    {
-        return Carbon::hasTestNow() && is_string($value) && (
-            $value === 'now' || Carbon::hasRelativeKeywords($value)
-        );
     }
 
     /**
@@ -340,11 +381,44 @@ trait ValidatesAttributes
      *
      * @param  string  $attribute
      * @param  mixed  $value
+     * @param  array  $parameters
      * @return bool
      */
-    public function validateArray($attribute, $value)
+    public function validateArray($attribute, $value, $parameters = [])
     {
-        return is_array($value);
+        if (! is_array($value)) {
+            return false;
+        }
+
+        if (empty($parameters)) {
+            return true;
+        }
+
+        return empty(array_diff_key($value, array_fill_keys($parameters, '')));
+    }
+
+    /**
+     * Validate that an array has all of the given keys.
+	 * 验证数组是否具有所有给定的键
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  array  $parameters
+     * @return bool
+     */
+    public function validateRequiredArrayKeys($attribute, $value, $parameters)
+    {
+        if (! is_array($value)) {
+            return false;
+        }
+
+        foreach ($parameters as $param) {
+            if (! Arr::exists($value, $param)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -394,6 +468,29 @@ trait ValidatesAttributes
     }
 
     /**
+     * Validate that the password of the currently authenticated user matches the given value.
+	 * 验证当前经过身份验证的用户的密码是否与给定值匹配
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  array  $parameters
+     * @return bool
+     */
+    protected function validateCurrentPassword($attribute, $value, $parameters)
+    {
+        $auth = $this->container->make('auth');
+        $hasher = $this->container->make('hash');
+
+        $guard = $auth->guard(Arr::first($parameters));
+
+        if ($guard->guest()) {
+            return false;
+        }
+
+        return $hasher->check($value, $guard->user()->getAuthPassword());
+    }
+
+    /**
      * Validate that an attribute is a valid date.
 	 * 验证属性是否为有效日期
      *
@@ -407,7 +504,11 @@ trait ValidatesAttributes
             return true;
         }
 
-        if ((! is_string($value) && ! is_numeric($value)) || strtotime($value) === false) {
+        try {
+            if ((! is_string($value) && ! is_numeric($value)) || strtotime($value) === false) {
+                return false;
+            }
+        } catch (Exception $e) {
             return false;
         }
 
@@ -433,11 +534,15 @@ trait ValidatesAttributes
             return false;
         }
 
-        $format = $parameters[0];
+        foreach ($parameters as $format) {
+            $date = DateTime::createFromFormat('!'.$format, $value);
 
-        $date = DateTime::createFromFormat('!'.$format, $value);
+            if ($date && $date->format($format) == $value) {
+                return true;
+            }
+        }
 
-        return $date && $date->format($format) == $value;
+        return false;
     }
 
     /**
@@ -470,14 +575,12 @@ trait ValidatesAttributes
         $this->requireParameterCount(1, $parameters, 'different');
 
         foreach ($parameters as $parameter) {
-            if (! Arr::has($this->data, $parameter)) {
-                return false;
-            }
+            if (Arr::has($this->data, $parameter)) {
+                $other = Arr::get($this->data, $parameter);
 
-            $other = Arr::get($this->data, $parameter);
-
-            if ($value === $other) {
-                return false;
+                if ($value === $other) {
+                    return false;
+                }
             }
         }
 
@@ -516,7 +619,7 @@ trait ValidatesAttributes
 
         $length = strlen((string) $value);
 
-        return ! preg_match('/[^0-9.]/', $value)
+        return ! preg_match('/[^0-9]/', $value)
                     && $length >= $parameters[0] && $length <= $parameters[1];
     }
 
@@ -613,7 +716,7 @@ trait ValidatesAttributes
             return empty(preg_grep('/^'.preg_quote($value, '/').'$/iu', $data));
         }
 
-        return ! in_array($value, array_values($data));
+        return ! in_array($value, array_values($data), in_array('strict', $parameters));
     }
 
     /**
@@ -640,7 +743,7 @@ trait ValidatesAttributes
 
     /**
      * Extract the distinct values from the data.
-	 * 提取不同的值从数据中
+	 * 从数据中提取不同的值
      *
      * @param  string  $attribute
      * @return array
@@ -677,19 +780,23 @@ trait ValidatesAttributes
             ->unique()
             ->map(function ($validation) {
                 if ($validation === 'rfc') {
-                    return new RFCValidation();
+                    return new RFCValidation;
                 } elseif ($validation === 'strict') {
-                    return new NoRFCWarningsValidation();
+                    return new NoRFCWarningsValidation;
                 } elseif ($validation === 'dns') {
-                    return new DNSCheckValidation();
+                    return new DNSCheckValidation;
                 } elseif ($validation === 'spoof') {
-                    return new SpoofCheckValidation();
+                    return new SpoofCheckValidation;
                 } elseif ($validation === 'filter') {
-                    return new FilterEmailValidation();
+                    return new FilterEmailValidation;
+                } elseif ($validation === 'filter_unicode') {
+                    return FilterEmailValidation::unicode();
+                } elseif (is_string($validation) && class_exists($validation)) {
+                    return $this->container->make($validation);
                 }
             })
             ->values()
-            ->all() ?: [new RFCValidation()];
+            ->all() ?: [new RFCValidation];
 
         return (new EmailValidator)->isValid($value, new MultipleValidationWithAnd($validations));
     }
@@ -712,8 +819,7 @@ trait ValidatesAttributes
         // The second parameter position holds the name of the column that should be
         // verified as existing. If this parameter is not specified we will guess
         // that the columns being "verified" shares the given attribute's name.
-		// 第二个参数位置包含应验证为存在的列的名称。
-		// 如果未指定此参数，我们将猜测正在“验证”的列共享给定属性的名称。
+		// 第二个参数位置保存应该使用的列名称
         $column = $this->getQueryColumn($parameters, $attribute);
 
         $expected = is_array($value) ? count(array_unique($value)) : 1;
@@ -725,7 +831,7 @@ trait ValidatesAttributes
 
     /**
      * Get the number of records that exist in storage.
-	 * 得到存储中存在的记录数
+	 * 获取存储中存在的记录数
      *
      * @param  mixed  $connection
      * @param  string  $table
@@ -736,7 +842,7 @@ trait ValidatesAttributes
      */
     protected function getExistCount($connection, $table, $column, $value, $parameters)
     {
-        $verifier = $this->getPresenceVerifierFor($connection);
+        $verifier = $this->getPresenceVerifier($connection);
 
         $extra = $this->getExtraConditions(
             array_values(array_slice($parameters, 2))
@@ -767,19 +873,18 @@ trait ValidatesAttributes
     {
         $this->requireParameterCount(1, $parameters, 'unique');
 
-        [$connection, $table] = $this->parseTable($parameters[0]);
+        [$connection, $table, $idColumn] = $this->parseTable($parameters[0]);
 
         // The second parameter position holds the name of the column that needs to
         // be verified as unique. If this parameter isn't specified we will just
         // assume that this column to be verified shares the attribute's name.
-		// 第二个参数位置保存需要验证为唯一的列的名称。
-		// 如果没有指定此参数，我们将假设要验证的列共享该属性的名称。
+		// 第二个参数位置保存需要的列的名称。
         $column = $this->getQueryColumn($parameters, $attribute);
 
-        [$idColumn, $id] = [null, null];
+        $id = null;
 
         if (isset($parameters[2])) {
-            [$idColumn, $id] = $this->getUniqueIds($parameters);
+            [$idColumn, $id] = $this->getUniqueIds($idColumn, $parameters);
 
             if (! is_null($id)) {
                 $id = stripslashes($id);
@@ -789,9 +894,8 @@ trait ValidatesAttributes
         // The presence verifier is responsible for counting rows within this store
         // mechanism which might be a relational database or any other permanent
         // data store like Redis, etc. We will use it to determine uniqueness.
-		// 存在验证器负责计算此存储机制中的行数，该存储机制可能是关系数据库或任何其他永久数据存储，
-		// 如Redis等。我们将使用它来确定唯一性。
-        $verifier = $this->getPresenceVerifierFor($connection);
+		// 状态验证器负责计算此存储中的行数。
+        $verifier = $this->getPresenceVerifier($connection);
 
         $extra = $this->getUniqueExtra($parameters);
 
@@ -806,14 +910,15 @@ trait ValidatesAttributes
 
     /**
      * Get the excluded ID column and value for the unique rule.
-	 * 得到唯一规则的排除ID列和值
+	 * 获取唯一规则的排除ID列和值
      *
+     * @param  string|null  $idColumn
      * @param  array  $parameters
      * @return array
      */
-    protected function getUniqueIds($parameters)
+    protected function getUniqueIds($idColumn, $parameters)
     {
-        $idColumn = $parameters[3] ?? 'id';
+        $idColumn = $idColumn ?? $parameters[3] ?? 'id';
 
         return [$idColumn, $this->prepareUniqueId($parameters[2])];
     }
@@ -844,7 +949,7 @@ trait ValidatesAttributes
 
     /**
      * Get the extra conditions for a unique rule.
-	 * 得到唯一规则的额外条件
+	 * 获取唯一规则的额外条件
      *
      * @param  array  $parameters
      * @return array
@@ -873,16 +978,21 @@ trait ValidatesAttributes
             $model = new $table;
 
             $table = $model->getTable();
-
             $connection = $connection ?? $model->getConnectionName();
+
+            if (Str::contains($table, '.') && Str::startsWith($table, $connection)) {
+                $connection = null;
+            }
+
+            $idColumn = $model->getKeyName();
         }
 
-        return [$connection, $table];
+        return [$connection, $table, $idColumn ?? null];
     }
 
     /**
      * Get the column name for an exists / unique query.
-	 * 得到存在/唯一查询的列名
+	 * 获取存在/唯一查询的列名
      *
      * @param  array  $parameters
      * @param  string  $attribute
@@ -896,7 +1006,7 @@ trait ValidatesAttributes
 
     /**
      * Guess the database column from the given attribute name.
-	 * 猜测数据库列根据给定的属性名
+	 * 根据给定的属性名猜测数据库列
      *
      * @param  string  $attribute
      * @return string
@@ -913,7 +1023,7 @@ trait ValidatesAttributes
 
     /**
      * Get the extra conditions for a unique / exists rule.
-	 * 得到唯一/存在规则的额外条件
+	 * 获取唯一/存在规则的额外条件
      *
      * @param  array  $segments
      * @return array
@@ -999,7 +1109,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute is less than another attribute.
-	 * 确认一个属性小于另一个属性
+	 * 验证一个属性是否小于另一个属性
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -1143,7 +1253,7 @@ trait ValidatesAttributes
     }
 
     /**
-     * Validate that the values of an attribute is in another attribute.
+     * Validate that the values of an attribute are in another attribute.
 	 * 验证一个属性的值是否在另一个属性中
      *
      * @param  string  $attribute
@@ -1219,6 +1329,19 @@ trait ValidatesAttributes
     }
 
     /**
+     * Validate that an attribute is a valid MAC address.
+	 * 验证属性是否为有效的MAC地址
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @return bool
+     */
+    public function validateMacAddress($attribute, $value)
+    {
+        return filter_var($value, FILTER_VALIDATE_MAC) !== false;
+    }
+
+    /**
      * Validate the attribute is a valid JSON string.
 	 * 验证属性是否为有效的JSON字符串
      *
@@ -1263,7 +1386,7 @@ trait ValidatesAttributes
 
     /**
      * Validate the guessed extension of a file upload is in a set of file extensions.
-	 * 验证文件上传的猜测扩展名在一组文件扩展名中
+	 * 在一组文件扩展名中验证文件上传的猜测扩展名
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -1351,10 +1474,35 @@ trait ValidatesAttributes
     }
 
     /**
+     * Validate the value of an attribute is a multiple of a given value.
+	 * 验证属性的值是给定值的倍数
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  array  $parameters
+     * @return bool
+     */
+    public function validateMultipleOf($attribute, $value, $parameters)
+    {
+        $this->requireParameterCount(1, $parameters, 'multiple_of');
+
+        if (! $this->validateNumeric($attribute, $value) || ! $this->validateNumeric($attribute, $parameters[0])) {
+            return false;
+        }
+
+        if ((float) $parameters[0] === 0.0) {
+            return false;
+        }
+
+        return bcmod($value, $parameters[0], 16) === '0.0000000000000000';
+    }
+
+    /**
      * "Indicate" validation should pass if value is null.
 	 * 如果value为空，"指示"验证应该通过。
      *
      * Always returns true, just lets us put "nullable" in rules.
+	 * 总是返回true，只是让我们在规则中加入"nullable"。
      *
      * @return bool
      */
@@ -1391,8 +1539,8 @@ trait ValidatesAttributes
     }
 
     /**
-     * Validate that the current logged in user's password matches the given value.
-	 * 验证当前登录用户的密码是否与给定值匹配
+     * Validate that the password of the currently authenticated user matches the given value.
+	 * 验证当前经过身份验证的用户的密码是否与给定值匹配
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -1401,16 +1549,7 @@ trait ValidatesAttributes
      */
     protected function validatePassword($attribute, $value, $parameters)
     {
-        $auth = $this->container->make('auth');
-        $hasher = $this->container->make('hash');
-
-        $guard = $auth->guard(Arr::first($parameters));
-
-        if ($guard->guest()) {
-            return false;
-        }
-
-        return $hasher->check($value, $guard->user()->getAuthPassword());
+        return $this->validateCurrentPassword($attribute, $value, $parameters);
     }
 
     /**
@@ -1506,7 +1645,7 @@ trait ValidatesAttributes
             return true;
         }
 
-        [$values, $other] = $this->prepareValuesAndOther($parameters);
+        [$values, $other] = $this->parseDependentRuleParameters($parameters);
 
         if (in_array($other, $values, is_bool($other) || is_null($other))) {
             return $this->validateRequired($attribute, $value);
@@ -1516,8 +1655,91 @@ trait ValidatesAttributes
     }
 
     /**
+     * Validate that an attribute does not exist.
+	 * 验证某个属性不存在
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  mixed  $parameters
+     * @return bool
+     */
+    public function validateProhibited($attribute, $value)
+    {
+        return false;
+    }
+
+    /**
+     * Validate that an attribute does not exist when another attribute has a given value.
+	 * 当另一个属性具有给定值时，验证该属性不存在。
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  mixed  $parameters
+     * @return bool
+     */
+    public function validateProhibitedIf($attribute, $value, $parameters)
+    {
+        $this->requireParameterCount(2, $parameters, 'prohibited_if');
+
+        [$values, $other] = $this->parseDependentRuleParameters($parameters);
+
+        if (in_array($other, $values, is_bool($other) || is_null($other))) {
+            return ! $this->validateRequired($attribute, $value);
+        }
+
+        return true;
+    }
+
+    /**
+     * Validate that an attribute does not exist unless another attribute has a given value.
+	 * 验证一个属性是否不存在，除非另一个属性具有给定的值。
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  mixed  $parameters
+     * @return bool
+     */
+    public function validateProhibitedUnless($attribute, $value, $parameters)
+    {
+        $this->requireParameterCount(2, $parameters, 'prohibited_unless');
+
+        [$values, $other] = $this->parseDependentRuleParameters($parameters);
+
+        if (! in_array($other, $values, is_bool($other) || is_null($other))) {
+            return ! $this->validateRequired($attribute, $value);
+        }
+
+        return true;
+    }
+
+    /**
+     * Validate that other attributes do not exist when this attribute exists.
+	 * 验证此属性存在时是否存在其他属性
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  mixed  $parameters
+     * @return bool
+     */
+    public function validateProhibits($attribute, $value, $parameters)
+    {
+        return ! Arr::hasAny($this->data, $parameters);
+    }
+
+    /**
+     * Indicate that an attribute is excluded.
+	 * 指示排除某个属性
+     *
+     * @return bool
+     */
+    public function validateExclude()
+    {
+        return false;
+    }
+
+    /**
      * Indicate that an attribute should be excluded when another attribute has a given value.
-	 * 指明当另一个属性具有给定值时应排除该属性
+	 * 指示当另一个属性具有给定值时应排除该属性
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -1532,14 +1754,14 @@ trait ValidatesAttributes
             return true;
         }
 
-        [$values, $other] = $this->prepareValuesAndOther($parameters);
+        [$values, $other] = $this->parseDependentRuleParameters($parameters);
 
         return ! in_array($other, $values, is_bool($other) || is_null($other));
     }
 
     /**
      * Indicate that an attribute should be excluded when another attribute does not have a given value.
-	 * 指明当另一个属性没有给定值时应排除该属性
+	 * 指示当另一个属性没有给定值时应排除该属性
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -1550,7 +1772,7 @@ trait ValidatesAttributes
     {
         $this->requireParameterCount(2, $parameters, 'exclude_unless');
 
-        [$values, $other] = $this->prepareValuesAndOther($parameters);
+        [$values, $other] = $this->parseDependentRuleParameters($parameters);
 
         return in_array($other, $values, is_bool($other) || is_null($other));
     }
@@ -1568,10 +1790,30 @@ trait ValidatesAttributes
     {
         $this->requireParameterCount(2, $parameters, 'required_unless');
 
-        [$values, $other] = $this->prepareValuesAndOther($parameters);
+        [$values, $other] = $this->parseDependentRuleParameters($parameters);
 
         if (! in_array($other, $values, is_bool($other) || is_null($other))) {
             return $this->validateRequired($attribute, $value);
+        }
+
+        return true;
+    }
+
+    /**
+     * Indicate that an attribute should be excluded when another attribute is missing.
+	 * 指示在缺少另一个属性时应排除该属性
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  mixed  $parameters
+     * @return bool
+     */
+    public function validateExcludeWithout($attribute, $value, $parameters)
+    {
+        $this->requireParameterCount(1, $parameters, 'exclude_without');
+
+        if ($this->anyFailingRequired($parameters)) {
+            return false;
         }
 
         return true;
@@ -1584,7 +1826,7 @@ trait ValidatesAttributes
      * @param  array  $parameters
      * @return array
      */
-    protected function prepareValuesAndOther($parameters)
+    public function parseDependentRuleParameters($parameters)
     {
         $other = Arr::get($this->data, $parameters[0]);
 
@@ -1615,7 +1857,7 @@ trait ValidatesAttributes
 
     /**
      * Convert the given values to boolean if they are string "true" / "false".
-	 * 如果给定的值是字符串"true" / "false"，则将其转换为布尔值。
+	 * 如果给定的值是字符串"true"/"false"，则将其转换为布尔值。
      *
      * @param  array  $values
      * @return array
@@ -1666,7 +1908,7 @@ trait ValidatesAttributes
     }
 
     /**
-     * Validate that an attribute exists when all other attributes exists.
+     * Validate that an attribute exists when all other attributes exist.
 	 * 当所有其他属性都存在时，验证一个属性是否存在。
      *
      * @param  string  $attribute
@@ -1794,6 +2036,7 @@ trait ValidatesAttributes
 	 * "验证"可选属性
      *
      * Always returns true, just lets us put sometimes in rules.
+	 * 总是返回true，只是让我们加入规则。
      *
      * @return bool
      */
@@ -1845,7 +2088,7 @@ trait ValidatesAttributes
 
     /**
      * Validate that an attribute is a valid timezone.
-	 * 验证属性是一个有效的时区
+	 * 验证属性是否为有效的时区
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -1853,15 +2096,7 @@ trait ValidatesAttributes
      */
     public function validateTimezone($attribute, $value)
     {
-        try {
-            new DateTimeZone($value);
-        } catch (Exception $e) {
-            return false;
-        } catch (Throwable $e) {
-            return false;
-        }
-
-        return true;
+        return in_array($value, timezone_identifiers_list(), true);
     }
 
     /**
@@ -1880,11 +2115,12 @@ trait ValidatesAttributes
 
         /*
          * This pattern is derived from Symfony\Component\Validator\Constraints\UrlValidator (5.0.7).
+		 * 此模式源自Symfony\Component\Validator\Constraints\UrlValidator(5.0.7)。
          *
          * (c) Fabien Potencier <fabien@symfony.com> http://symfony.com
          */
         $pattern = '~^
-            (aaa|aaas|about|acap|acct|acd|acr|adiumxtra|adt|afp|afs|aim|amss|android|appdata|apt|ark|attachment|aw|barion|beshare|bitcoin|bitcoincash|blob|bolo|browserext|calculator|callto|cap|cast|casts|chrome|chrome-extension|cid|coap|coap\+tcp|coap\+ws|coaps|coaps\+tcp|coaps\+ws|com-eventbrite-attendee|content|conti|crid|cvs|dab|data|dav|diaspora|dict|did|dis|dlna-playcontainer|dlna-playsingle|dns|dntp|dpp|drm|drop|dtn|dvb|ed2k|elsi|example|facetime|fax|feed|feedready|file|filesystem|finger|first-run-pen-experience|fish|fm|ftp|fuchsia-pkg|geo|gg|git|gizmoproject|go|gopher|graph|gtalk|h323|ham|hcap|hcp|http|https|hxxp|hxxps|hydrazone|iax|icap|icon|im|imap|info|iotdisco|ipn|ipp|ipps|irc|irc6|ircs|iris|iris\.beep|iris\.lwz|iris\.xpc|iris\.xpcs|isostore|itms|jabber|jar|jms|keyparc|lastfm|ldap|ldaps|leaptofrogans|lorawan|lvlt|magnet|mailserver|mailto|maps|market|message|mid|mms|modem|mongodb|moz|ms-access|ms-browser-extension|ms-calculator|ms-drive-to|ms-enrollment|ms-excel|ms-eyecontrolspeech|ms-gamebarservices|ms-gamingoverlay|ms-getoffice|ms-help|ms-infopath|ms-inputapp|ms-lockscreencomponent-config|ms-media-stream-id|ms-mixedrealitycapture|ms-mobileplans|ms-officeapp|ms-people|ms-project|ms-powerpoint|ms-publisher|ms-restoretabcompanion|ms-screenclip|ms-screensketch|ms-search|ms-search-repair|ms-secondary-screen-controller|ms-secondary-screen-setup|ms-settings|ms-settings-airplanemode|ms-settings-bluetooth|ms-settings-camera|ms-settings-cellular|ms-settings-cloudstorage|ms-settings-connectabledevices|ms-settings-displays-topology|ms-settings-emailandaccounts|ms-settings-language|ms-settings-location|ms-settings-lock|ms-settings-nfctransactions|ms-settings-notifications|ms-settings-power|ms-settings-privacy|ms-settings-proximity|ms-settings-screenrotation|ms-settings-wifi|ms-settings-workplace|ms-spd|ms-sttoverlay|ms-transit-to|ms-useractivityset|ms-virtualtouchpad|ms-visio|ms-walk-to|ms-whiteboard|ms-whiteboard-cmd|ms-word|msnim|msrp|msrps|mss|mtqp|mumble|mupdate|mvn|news|nfs|ni|nih|nntp|notes|ocf|oid|onenote|onenote-cmd|opaquelocktoken|openpgp4fpr|pack|palm|paparazzi|payto|pkcs11|platform|pop|pres|prospero|proxy|pwid|psyc|pttp|qb|query|redis|rediss|reload|res|resource|rmi|rsync|rtmfp|rtmp|rtsp|rtsps|rtspu|s3|secondlife|service|session|sftp|sgn|shttp|sieve|simpleledger|sip|sips|skype|smb|sms|smtp|snews|snmp|soap\.beep|soap\.beeps|soldat|spiffe|spotify|ssh|steam|stun|stuns|submit|svn|tag|teamspeak|tel|teliaeid|telnet|tftp|things|thismessage|tip|tn3270|tool|turn|turns|tv|udp|unreal|urn|ut2004|v-event|vemmi|ventrilo|videotex|vnc|view-source|wais|webcal|wpid|ws|wss|wtai|wyciwyg|xcon|xcon-userid|xfire|xmlrpc\.beep|xmlrpc\.beeps|xmpp|xri|ymsgr|z39\.50|z39\.50r|z39\.50s)://                                 # protocol
+            (aaa|aaas|about|acap|acct|acd|acr|adiumxtra|adt|afp|afs|aim|amss|android|appdata|apt|ark|attachment|aw|barion|beshare|bitcoin|bitcoincash|blob|bolo|browserext|calculator|callto|cap|cast|casts|chrome|chrome-extension|cid|coap|coap\+tcp|coap\+ws|coaps|coaps\+tcp|coaps\+ws|com-eventbrite-attendee|content|conti|crid|cvs|dab|data|dav|diaspora|dict|did|dis|dlna-playcontainer|dlna-playsingle|dns|dntp|dpp|drm|drop|dtn|dvb|ed2k|elsi|example|facetime|fax|feed|feedready|file|filesystem|finger|first-run-pen-experience|fish|fm|ftp|fuchsia-pkg|geo|gg|git|gizmoproject|go|gopher|graph|gtalk|h323|ham|hcap|hcp|http|https|hxxp|hxxps|hydrazone|iax|icap|icon|im|imap|info|iotdisco|ipn|ipp|ipps|irc|irc6|ircs|iris|iris\.beep|iris\.lwz|iris\.xpc|iris\.xpcs|isostore|itms|jabber|jar|jms|keyparc|lastfm|ldap|ldaps|leaptofrogans|lorawan|lvlt|magnet|mailserver|mailto|maps|market|message|mid|mms|modem|mongodb|moz|ms-access|ms-browser-extension|ms-calculator|ms-drive-to|ms-enrollment|ms-excel|ms-eyecontrolspeech|ms-gamebarservices|ms-gamingoverlay|ms-getoffice|ms-help|ms-infopath|ms-inputapp|ms-lockscreencomponent-config|ms-media-stream-id|ms-mixedrealitycapture|ms-mobileplans|ms-officeapp|ms-people|ms-project|ms-powerpoint|ms-publisher|ms-restoretabcompanion|ms-screenclip|ms-screensketch|ms-search|ms-search-repair|ms-secondary-screen-controller|ms-secondary-screen-setup|ms-settings|ms-settings-airplanemode|ms-settings-bluetooth|ms-settings-camera|ms-settings-cellular|ms-settings-cloudstorage|ms-settings-connectabledevices|ms-settings-displays-topology|ms-settings-emailandaccounts|ms-settings-language|ms-settings-location|ms-settings-lock|ms-settings-nfctransactions|ms-settings-notifications|ms-settings-power|ms-settings-privacy|ms-settings-proximity|ms-settings-screenrotation|ms-settings-wifi|ms-settings-workplace|ms-spd|ms-sttoverlay|ms-transit-to|ms-useractivityset|ms-virtualtouchpad|ms-visio|ms-walk-to|ms-whiteboard|ms-whiteboard-cmd|ms-word|msnim|msrp|msrps|mss|mtqp|mumble|mupdate|mvn|news|nfs|ni|nih|nntp|notes|ocf|oid|onenote|onenote-cmd|opaquelocktoken|openpgp4fpr|pack|palm|paparazzi|payto|pkcs11|platform|pop|pres|prospero|proxy|pwid|psyc|pttp|qb|query|redis|rediss|reload|res|resource|rmi|rsync|rtmfp|rtmp|rtsp|rtsps|rtspu|s3|secondlife|service|session|sftp|sgn|shttp|sieve|simpleledger|sip|sips|skype|smb|sms|smtp|snews|snmp|soap\.beep|soap\.beeps|soldat|spiffe|spotify|ssh|steam|stun|stuns|submit|svn|tag|teamspeak|tel|teliaeid|telnet|tftp|tg|things|thismessage|tip|tn3270|tool|ts3server|turn|turns|tv|udp|unreal|urn|ut2004|v-event|vemmi|ventrilo|videotex|vnc|view-source|wais|webcal|wpid|ws|wss|wtai|wyciwyg|xcon|xcon-userid|xfire|xmlrpc\.beep|xmlrpc\.beeps|xmpp|xri|ymsgr|z39\.50|z39\.50r|z39\.50s)://                                 # protocol
             (((?:[\_\.\pL\pN-]|%[0-9A-Fa-f]{2})+:)?((?:[\_\.\pL\pN-]|%[0-9A-Fa-f]{2})+)@)?  # basic auth
             (
                 ([\pL\pN\pS\-\_\.])+(\.?([\pL\pN]|xn\-\-[\pL\pN-]+)+\.?) # a domain name
@@ -1919,7 +2155,7 @@ trait ValidatesAttributes
 
     /**
      * Get the size of an attribute.
-	 * 得到属性的大小
+	 * 获取属性的大小
      *
      * @param  string  $attribute
      * @param  mixed  $value
@@ -1933,9 +2169,7 @@ trait ValidatesAttributes
         // return the proper size accordingly. If it is a number, then number itself
         // is the size. If it is a file, we take kilobytes, and for a string the
         // entire length of the string will be considered the attribute size.
-		// 此方法将确定属性是数字、字符串还是文件，并相应地返回正确的大小。
-		// 如果它是一个数字，那么数字本身就是大小。如果是文件，我们取千字节，
-		// 对于字符串，字符串的整个长度将被视为属性大小。
+		// 这个方法将确定属性是数字、字符串。
         if (is_numeric($value) && $hasNumeric) {
             return $value;
         } elseif (is_array($value)) {
@@ -1944,7 +2178,7 @@ trait ValidatesAttributes
             return $value->getSize() / 1024;
         }
 
-        return mb_strlen($value);
+        return mb_strlen($value ?? '');
     }
 
     /**
@@ -1999,7 +2233,7 @@ trait ValidatesAttributes
      * @param  array  $parameters
      * @return array
      */
-    protected function parseNamedParameters($parameters)
+    public function parseNamedParameters($parameters)
     {
         return array_reduce($parameters, function ($result, $item) {
             [$key, $value] = array_pad(explode('=', $item, 2), 2, null);
@@ -2043,7 +2277,7 @@ trait ValidatesAttributes
 
     /**
      * Adds the existing rule to the numericRules array if the attribute's value is numeric.
-	 * 如果属性的值为数字，则将现有规则添加到numericRules数组中.
+	 * 如果属性的值为数字，则将现有规则添加到numericRules数组中。
      *
      * @param  string  $attribute
      * @param  string  $rule

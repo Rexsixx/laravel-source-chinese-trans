@@ -1,6 +1,6 @@
 <?php
 /**
- * 通知，通知发送
+ * Illuminate，通知，事件，通知已发送
  */
 
 namespace Illuminate\Notifications\Events;
@@ -14,7 +14,7 @@ class NotificationSent
 
     /**
      * The notifiable entity who received the notification.
-	 * 通知实例应收到通知的
+	 * 收到通知的应通知实体
      *
      * @var mixed
      */

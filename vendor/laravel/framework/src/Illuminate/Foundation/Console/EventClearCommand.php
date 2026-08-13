@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，事件清除命令
+ * Illuminate，基础，控制台，event:clear 事件清除命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -12,14 +12,14 @@ class EventClearCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
     protected $name = 'event:clear';
 
     /**
-     * The console command description.
+     * The console command description.、
 	 * 控制台命令描述
      *
      * @var string
@@ -36,7 +36,7 @@ class EventClearCommand extends Command
 
     /**
      * Create a new config clear command instance.
-	 * 创建新的配置清除命令实例
+	 * 创建新的config clear命令实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void

@@ -1,16 +1,17 @@
 <?php
 /**
- * 基础，虚拟类根文件
+ * Illuminate，基础，控制台，存根，频道
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
-use NamespacedDummyUserModel;
+use {{ namespacedUserModel }};
 
-class DummyClass
+class {{ class }}
 {
     /**
      * Create a new channel instance.
+	 * 创建新的频道实例
      *
      * @return void
      */
@@ -21,11 +22,12 @@ class DummyClass
 
     /**
      * Authenticate the user's access to the channel.
+	 * 验证用户对通道的访问
      *
-     * @param  \NamespacedDummyUserModel  $user
+     * @param  \{{ namespacedUserModel }}  $user
      * @return array|bool
      */
-    public function join(DummyUser $user)
+    public function join({{ userModel }} $user)
     {
         //
     }

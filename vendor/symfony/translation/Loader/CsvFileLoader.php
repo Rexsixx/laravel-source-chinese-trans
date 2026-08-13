@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，载入程序，Csv 文件装载机
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
  * CsvFileLoader loads translations from CSV files.
+ * CsvFileLoader 加载CSV文件的翻译。
  *
  * @author Saša Stamenković <umpirsky@gmail.com>
  */
@@ -22,12 +26,12 @@ class CsvFileLoader extends FileLoader
 {
     private $delimiter = ';';
     private $enclosure = '"';
-    private $escape = '\\';
+    private $escape = '';
 
     /**
      * {@inheritdoc}
      */
-    protected function loadResource($resource)
+    protected function loadResource(string $resource)
     {
         $messages = [];
 
@@ -38,7 +42,7 @@ class CsvFileLoader extends FileLoader
         }
 
         $file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::SKIP_EMPTY);
-        $file->setCsvControl($this->delimiter, $this->enclosure, $this->escape);
+        $file->setCsvControl($this->delimiter, $this->enclosure, '' === $this->escape && \PHP_VERSION_ID < 70400 ? '\\' : $this->escape);
 
         foreach ($file as $data) {
             if (false === $data) {
@@ -55,15 +59,12 @@ class CsvFileLoader extends FileLoader
 
     /**
      * Sets the delimiter, enclosure, and escape character for CSV.
-     *
-     * @param string $delimiter Delimiter character
-     * @param string $enclosure Enclosure character
-     * @param string $escape    Escape character
+	 * 设置CSV的分隔符、外壳和escape字符。
      */
-    public function setCsvControl($delimiter = ';', $enclosure = '"', $escape = '\\')
+    public function setCsvControl(string $delimiter = ';', string $enclosure = '"', string $escape = '')
     {
         $this->delimiter = $delimiter;
         $this->enclosure = $enclosure;
-        $this->escape = $escape;
+        $this->escape = '' === $escape && \PHP_VERSION_ID < 70400 ? '\\' : $escape;
     }
 }

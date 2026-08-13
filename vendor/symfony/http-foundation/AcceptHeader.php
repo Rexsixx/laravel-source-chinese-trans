@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，接受头
+ * Symfony，Component，HttpFoundation，接收头
  */
 
 /*
@@ -19,6 +19,7 @@ class_exists(AcceptHeaderItem::class);
 
 /**
  * Represents an Accept-* header.
+ * 表示Accept-*报头
  *
  * An accept header is compound with a list of items,
  * sorted by descending quality.
@@ -49,16 +50,15 @@ class AcceptHeader
 
     /**
      * Builds an AcceptHeader instance from a string.
-     *
-     * @param string $headerValue
+	 * 从字符串生成一个AcceptHeader实例
      *
      * @return self
      */
-    public static function fromString($headerValue)
+    public static function fromString(?string $headerValue)
     {
         $index = 0;
 
-        $parts = HeaderUtils::split((string) $headerValue, ',;=');
+        $parts = HeaderUtils::split($headerValue ?? '', ',;=');
 
         return new self(array_map(function ($subParts) use (&$index) {
             $part = array_shift($subParts);
@@ -73,6 +73,7 @@ class AcceptHeader
 
     /**
      * Returns header value's string representation.
+	 * 返回报头值的字符串表示形式
      *
      * @return string
      */
@@ -83,30 +84,29 @@ class AcceptHeader
 
     /**
      * Tests if header has given value.
-     *
-     * @param string $value
+	 * 测试头文件是否给定值
      *
      * @return bool
      */
-    public function has($value)
+    public function has(string $value)
     {
         return isset($this->items[$value]);
     }
 
     /**
      * Returns given value's item, if exists.
-     *
-     * @param string $value
+	 * 返回给定值的项，如果存在。
      *
      * @return AcceptHeaderItem|null
      */
-    public function get($value)
+    public function get(string $value)
     {
         return $this->items[$value] ?? $this->items[explode('/', $value)[0].'/*'] ?? $this->items['*/*'] ?? $this->items['*'] ?? null;
     }
 
     /**
      * Adds an item.
+	 * 添加项目
      *
      * @return $this
      */
@@ -120,6 +120,7 @@ class AcceptHeader
 
     /**
      * Returns all items.
+	 * 返回所有项目
      *
      * @return AcceptHeaderItem[]
      */
@@ -132,12 +133,11 @@ class AcceptHeader
 
     /**
      * Filters items on their value using given regex.
-     *
-     * @param string $pattern
+	 * 使用给定的正则表达式过滤项的值
      *
      * @return self
      */
-    public function filter($pattern)
+    public function filter(string $pattern)
     {
         return new self(array_filter($this->items, function (AcceptHeaderItem $item) use ($pattern) {
             return preg_match($pattern, $item->getValue());
@@ -146,6 +146,7 @@ class AcceptHeader
 
     /**
      * Returns first item.
+	 * 返回第一项
      *
      * @return AcceptHeaderItem|null
      */
@@ -158,6 +159,7 @@ class AcceptHeader
 
     /**
      * Sorts items by descending quality.
+	 * 按质量降序排序
      */
     private function sort(): void
     {

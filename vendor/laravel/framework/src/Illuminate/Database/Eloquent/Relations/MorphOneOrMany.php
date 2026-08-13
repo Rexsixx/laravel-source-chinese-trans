@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，Eloquent变形一个或多个
+ * Illuminate，数据库，Eloquent，关系，变形一个或多个
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -12,7 +12,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 {
     /**
      * The foreign key type for the relationship.
-	 * 关联的外键类型
+	 * 关系的外键类型
      *
      * @var string
      */
@@ -28,7 +28,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * Create a new morph one or many relationship instance.
-	 * 创建一个或多个关系实例
+	 * 创建一个或多个关系实例的新变形
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Model  $parent
@@ -48,22 +48,22 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * Set the base constraints on the relation query.
-	 * 设置基本约束在关系查询上
+	 * 在关系查询上设置基本约束
      *
      * @return void
      */
     public function addConstraints()
     {
         if (static::$constraints) {
-            parent::addConstraints();
+            $this->getRelationQuery()->where($this->morphType, $this->morphClass);
 
-            $this->query->where($this->morphType, $this->morphClass);
+            parent::addConstraints();
         }
     }
 
     /**
      * Set the constraints for an eager load of the relation.
-	 * 设置约束为关系的即时加载
+	 * 为关系的即时加载设置约束
      *
      * @param  array  $models
      * @return void
@@ -72,12 +72,12 @@ abstract class MorphOneOrMany extends HasOneOrMany
     {
         parent::addEagerConstraints($models);
 
-        $this->query->where($this->morphType, $this->morphClass);
+        $this->getRelationQuery()->where($this->morphType, $this->morphClass);
     }
 
     /**
      * Set the foreign ID and type for creating a related model.
-	 * 设置外部ID和类型为创建相关模型
+	 * 为创建相关模型设置外部ID和类型
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return void
@@ -91,7 +91,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * Get the relationship query.
-	 * 得到关系查询
+	 * 获取关系查询
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
@@ -107,7 +107,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * Get the foreign key "type" name.
-	 * 得到外键"类型"名称
+	 * 获取外键"类型"名称
      *
      * @return string
      */
@@ -118,7 +118,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * Get the plain morph type name without the table.
-	 * 得到不含表的普通变形类型名称
+	 * 获取不含表的普通变形类型名称
      *
      * @return string
      */
@@ -129,7 +129,7 @@ abstract class MorphOneOrMany extends HasOneOrMany
 
     /**
      * Get the class name of the parent model.
-	 * 得到父模型的类名
+	 * 获取父模型的类名
      *
      * @return string
      */

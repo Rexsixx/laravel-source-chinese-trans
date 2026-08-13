@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，控制台，忘记失败命令
+ * Illuminate，队列，控制台，忘记失败命令
  */
 
 namespace Illuminate\Queue\Console;
@@ -23,7 +23,7 @@ class ForgetFailedCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Delete a failed queue job';
+    protected $description = 'Delete a failed queue job';		#删除失败的队列作业
 
     /**
      * Execute the console command.

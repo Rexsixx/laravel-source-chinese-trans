@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，探测器，比较器，数字比较器
+ * Symfony，Component，Finder，比较器，数字比较器
  */
 
 /*
@@ -17,6 +17,7 @@ namespace Symfony\Component\Finder\Comparator;
 /**
  * NumberComparator compiles a simple comparison to an anonymous
  * subroutine, which you can call with a value to be tested again.
+ * NumberComparator将一个简单的比较编译为一个匿名的子例程，您可以用要再次测试的值调用它。
  *
  * Now this would be very pointless, if NumberCompare didn't understand
  * magnitudes.
@@ -38,7 +39,7 @@ namespace Symfony\Component\Finder\Comparator;
 class NumberComparator extends Comparator
 {
     /**
-     * @param string|int $test A comparison string or an integer
+     * @param string|null $test A comparison string or null
      *
      * @throws \InvalidArgumentException If the test is not understood
      */
@@ -76,7 +77,6 @@ class NumberComparator extends Comparator
             }
         }
 
-        $this->setTarget($target);
-        $this->setOperator($matches[1] ?? '==');
+        parent::__construct($target, $matches[1] ?: '==');
     }
 }

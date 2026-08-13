@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，数组，是否数组包含主键
+ * Hamcrest，数组，是否数组容器主键
  */
 
 namespace Hamcrest\Arrays;

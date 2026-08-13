@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，配置缓存命令
+ * Illuminate，基础，控制台，config:cache 配置缓存命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -15,7 +15,7 @@ class ConfigCacheCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -23,15 +23,15 @@ class ConfigCacheCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命描述
+	 * 控制台命令描述
      *
      * @var string
      */
-    protected $description = 'Create a cache file for faster configuration loading';
+    protected $description = 'Create a cache file for faster configuration loading';		#创建缓存文件以加快配置加载
 
     /**
      * The filesystem instance.
-	 * 文件系统实例
+	 * 系统系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -39,7 +39,7 @@ class ConfigCacheCommand extends Command
 
     /**
      * Create a new config cache command instance.
-	 * 创建新的配置缓存命令实例
+	 * 创建一个新的config cache命令实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void

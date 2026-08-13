@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，PHPConsole 处理程序
- */
+ * Monolog，处理程序，PHP 控制台处理程序
+ *
 
 /*
  * This file is part of the Monolog package.
@@ -25,11 +25,12 @@ use PhpConsole\Helper;
 
 /**
  * Monolog handler for Google Chrome extension "PHP Console"
+ * 谷歌Chrome扩展“PHP控制台”的Monolog处理程序
  *
  * Display PHP error/debug log messages in Google Chrome console and notification popups, executes PHP code remotely
  *
  * Usage:
- * 1. Install Google Chrome extension https://chrome.google.com/webstore/detail/php-console/nfhmhhlpfleoednkpnnnkolmclajemef
+ * 1. Install Google Chrome extension [now dead and removed from the chrome store]
  * 2. See overview https://github.com/barbushin/php-console#overview
  * 3. Install PHP Console library https://github.com/barbushin/php-console#installation
  * 4. Example (result will looks like http://i.hizliresim.com/vg3Pz4.png)
@@ -43,6 +44,7 @@ use PhpConsole\Helper;
  * @author Sergey Barbushin https://www.linkedin.com/in/barbushin
  *
  * @phpstan-import-type Record from \Monolog\Logger
+ * @deprecated Since 2.8.0 and 3.2.0, PHPConsole is abandoned and thus we will drop this handler in Monolog 4
  */
 class PHPConsoleHandler extends AbstractProcessingHandler
 {
@@ -182,6 +184,7 @@ class PHPConsoleHandler extends AbstractProcessingHandler
 
     /**
      * Writes the record down to the log of the implementing handler
+	 * 将记录向下写入实现处理程序的日志
      */
     protected function write(array $record): void
     {

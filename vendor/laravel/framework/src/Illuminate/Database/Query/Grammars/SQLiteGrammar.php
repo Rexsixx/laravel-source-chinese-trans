@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，语法，SQLite语法
+ * Illuminate，数据库，查询，语法，SQLite 语法
  */
 
 namespace Illuminate\Database\Query\Grammars;
@@ -13,9 +13,9 @@ class SQLiteGrammar extends Grammar
 {
     /**
      * All of the available clause operators.
-	 * 所有可用子句操作符
+	 * 所有可用的子句操作符
      *
-     * @var array
+     * @var string[]
      */
     protected $operators = [
         '=', '<', '>', '<=', '>=', '<>', '!=',
@@ -38,7 +38,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Wrap a union subquery in parentheses.
-	 * 包装联合子查询在括号中
+	 * 将联合子查询包装在括号中
      *
      * @param  string  $sql
      * @return string
@@ -50,7 +50,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where date" clause.
-	 * 编译"where date"子句
+	 * 编译一个"where date"子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -63,7 +63,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where day" clause.
-	 * 编译"where day"子句
+	 * 编写一个"where day"子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -76,7 +76,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where month" clause.
-	 * 编译"where month"子句
+	 * 编写"where month"子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -89,7 +89,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where year" clause.
-	 * 编译"where year"子句
+	 * 编写一个"where year"子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -102,7 +102,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "where time" clause.
-	 * 编译"where time"子句
+	 * 编写一个"where time"子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $where
@@ -115,7 +115,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a date based where clause.
-	 * 编译基于日期的where子句
+	 * 编译一个基于日期的where子句
      *
      * @param  string  $type
      * @param  \Illuminate\Database\Query\Builder  $query
@@ -131,7 +131,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "JSON length" statement into SQL.
-	 * 编译"JSON length"子句至SQL
+	 * 将"JSON长度"语句编译成SQL
      *
      * @param  string  $column
      * @param  string  $operator
@@ -147,7 +147,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile an update statement into SQL.
-	 * 编译update语句成SQL
+	 * 将update语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
@@ -164,7 +164,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile an insert ignore statement into SQL.
-	 * 编译插入忽略语句成SQL
+	 * 将插入忽略语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
@@ -199,8 +199,33 @@ class SQLiteGrammar extends Grammar
     }
 
     /**
+     * Compile an "upsert" statement into SQL.
+	 * 将"upsert"语句编译成SQL
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $values
+     * @param  array  $uniqueBy
+     * @param  array  $update
+     * @return string
+     */
+    public function compileUpsert(Builder $query, array $values, array $uniqueBy, array $update)
+    {
+        $sql = $this->compileInsert($query, $values);
+
+        $sql .= ' on conflict ('.$this->columnize($uniqueBy).') do update set ';
+
+        $columns = collect($update)->map(function ($value, $key) {
+            return is_numeric($key)
+                ? $this->wrap($value).' = '.$this->wrapValue('excluded').'.'.$this->wrap($value)
+                : $this->wrap($key).' = '.$this->parameter($value);
+        })->implode(', ');
+
+        return $sql.$columns;
+    }
+
+    /**
      * Group the nested JSON columns.
-	 * 分组嵌套的JSON列
+	 * 对嵌套的JSON列进行分组
      *
      * @param  array  $values
      * @return array
@@ -220,7 +245,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a "JSON" patch statement into SQL.
-	 * 编译"JSON"补丁语句成SQL
+	 * 将"JSON"补丁语句编译成SQL
      *
      * @param  string  $column
      * @param  mixed  $value
@@ -233,7 +258,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile an update statement with joins or limit into SQL.
-	 * 编译带有连接或限制的更新语句成SQL
+	 * 将带有连接或限制的更新语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
@@ -254,7 +279,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Prepare the bindings for an update statement.
-	 * 准备绑定为更新语句
+	 * 为更新语句准备绑定
      *
      * @param  array  $bindings
      * @param  array  $values
@@ -279,7 +304,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a delete statement into SQL.
-	 * 编译delete语句成SQL
+	 * 将delete语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
@@ -295,7 +320,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a delete statement with joins or limit into SQL.
-	 * 编译带有连接或限制的删除语句成SQL
+	 * 将带有连接或限制的删除语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
@@ -313,7 +338,7 @@ class SQLiteGrammar extends Grammar
 
     /**
      * Compile a truncate table statement into SQL.
-	 * 编译截断表语句成SQL
+	 * 将截断表语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return array

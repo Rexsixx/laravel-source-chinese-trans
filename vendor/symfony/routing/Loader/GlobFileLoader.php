@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，加载器，Glob 文件装入器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * GlobFileLoader loads files from a glob pattern.
+ * GlobFileLoader从glob模式加载文件。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -24,7 +28,7 @@ class GlobFileLoader extends FileLoader
     /**
      * {@inheritdoc}
      */
-    public function load($resource, $type = null)
+    public function load($resource, ?string $type = null)
     {
         $collection = new RouteCollection();
 
@@ -40,7 +44,7 @@ class GlobFileLoader extends FileLoader
     /**
      * {@inheritdoc}
      */
-    public function supports($resource, $type = null)
+    public function supports($resource, ?string $type = null)
     {
         return 'glob' === $type;
     }

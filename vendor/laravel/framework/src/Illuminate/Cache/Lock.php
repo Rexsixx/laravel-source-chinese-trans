@@ -1,6 +1,6 @@
 <?php
 /**
- * 缓存，缓存锁抽象类
+ * Illuminate，缓存，锁抽象类
  */
 
 namespace Illuminate\Cache;
@@ -24,7 +24,7 @@ abstract class Lock implements LockContract
 
     /**
      * The number of seconds the lock should be maintained.
-	 * 锁定时间秒
+	 * 应该维护锁的秒数
      *
      * @var int
      */
@@ -32,11 +32,19 @@ abstract class Lock implements LockContract
 
     /**
      * The scope identifier of this lock.
-	 * 锁的所有者
+	 * 此锁的作用域标识符
      *
      * @var string
      */
     protected $owner;
+
+    /**
+     * The number of milliseconds to wait before re-attempting to acquire a lock while blocking.
+	 * 在阻塞时重新尝试获取锁之前等待的毫秒数
+     *
+     * @var int
+     */
+    protected $sleepMilliseconds = 250;
 
     /**
      * Create a new lock instance.
@@ -76,7 +84,7 @@ abstract class Lock implements LockContract
 
     /**
      * Returns the owner value written into the driver for this lock.
-	 * 返回所有者
+	 * 返回写入此锁的驱动程序的所有者值
      *
      * @return string
      */
@@ -119,7 +127,7 @@ abstract class Lock implements LockContract
         $starting = $this->currentTime();
 
         while (! $this->acquire()) {
-            usleep(250 * 1000);
+            usleep($this->sleepMilliseconds * 1000);
 
             if ($this->currentTime() - $seconds >= $starting) {
                 throw new LockTimeoutException;
@@ -157,5 +165,19 @@ abstract class Lock implements LockContract
     protected function isOwnedByCurrentProcess()
     {
         return $this->getCurrentOwner() === $this->owner;
+    }
+
+    /**
+     * Specify the number of milliseconds to sleep in between blocked lock acquisition attempts.
+	 * 指定被阻塞的锁获取尝试之间的睡眠毫秒数
+     *
+     * @param  int  $milliseconds
+     * @return $this
+     */
+    public function betweenBlockedAttemptsSleepFor($milliseconds)
+    {
+        $this->sleepMilliseconds = $milliseconds;
+
+        return $this;
     }
 }

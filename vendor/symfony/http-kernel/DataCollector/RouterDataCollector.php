@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，数据采集器，路由器数据采集器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -14,7 +17,7 @@ namespace Symfony\Component\HttpKernel\DataCollector;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -22,7 +25,7 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 class RouterDataCollector extends DataCollector
 {
     /**
-     * @var \SplObjectStorage
+     * @var \SplObjectStorage<Request, callable>
      */
     protected $controllers;
 
@@ -34,11 +37,9 @@ class RouterDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      *
-     * @param \Throwable|null $exception
-     *
-     * @final since Symfony 4.4
+     * @final
      */
-    public function collect(Request $request, Response $response/*, \Throwable $exception = null*/)
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null)
     {
         if ($response instanceof RedirectResponse) {
             $this->data['redirect'] = true;
@@ -70,10 +71,9 @@ class RouterDataCollector extends DataCollector
 
     /**
      * Remembers the controller associated to each request.
-     *
-     * @final since Symfony 4.3
+	 * 记住与每个请求相关联的控制器
      */
-    public function onKernelController(FilterControllerEvent $event)
+    public function onKernelController(ControllerEvent $event)
     {
         $this->controllers[$event->getRequest()] = $event->getController();
     }
@@ -87,7 +87,7 @@ class RouterDataCollector extends DataCollector
     }
 
     /**
-     * @return string|null The target URL
+     * @return string|null
      */
     public function getTargetUrl()
     {
@@ -95,7 +95,7 @@ class RouterDataCollector extends DataCollector
     }
 
     /**
-     * @return string|null The target route
+     * @return string|null
      */
     public function getTargetRoute()
     {

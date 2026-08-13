@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，依赖注入，XliffLint 命令
+ * Symfony，Component，Translation，命令，Xliff Lint 指令
  */
 
 /*
@@ -14,7 +14,10 @@
 
 namespace Symfony\Component\Translation\Command;
 
+use Symfony\Component\Console\CI\GithubActionReporter;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Completion\CompletionInput;
+use Symfony\Component\Console\Completion\CompletionSuggestions;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,6 +29,7 @@ use Symfony\Component\Translation\Util\XliffUtils;
 
 /**
  * Validates XLIFF files syntax and outputs encountered errors.
+ * 验证XLIFF文件的语法和输出遇到错误
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  * @author Robin Chalas <robin.chalas@gmail.com>
@@ -34,6 +38,7 @@ use Symfony\Component\Translation\Util\XliffUtils;
 class XliffLintCommand extends Command
 {
     protected static $defaultName = 'lint:xliff';
+    protected static $defaultDescription = 'Lint an XLIFF file and outputs encountered errors';
 
     private $format;
     private $displayCorrectFiles;
@@ -41,7 +46,7 @@ class XliffLintCommand extends Command
     private $isReadableProvider;
     private $requireStrictFileNames;
 
-    public function __construct(string $name = null, callable $directoryIteratorProvider = null, callable $isReadableProvider = null, bool $requireStrictFileNames = true)
+    public function __construct(?string $name = null, ?callable $directoryIteratorProvider = null, ?callable $isReadableProvider = null, bool $requireStrictFileNames = true)
     {
         parent::__construct($name);
 
@@ -56,9 +61,9 @@ class XliffLintCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Lint an XLIFF file and outputs encountered errors')
+            ->setDescription(self::$defaultDescription)
             ->addArgument('filename', InputArgument::IS_ARRAY, 'A file, a directory or "-" for reading from STDIN')
-            ->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format', 'txt')
+            ->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> command lints an XLIFF file and outputs to STDOUT
 the first encountered syntax error.
@@ -85,22 +90,15 @@ EOF
     {
         $io = new SymfonyStyle($input, $output);
         $filenames = (array) $input->getArgument('filename');
-        $this->format = $input->getOption('format');
+        $this->format = $input->getOption('format') ?? (GithubActionReporter::isGithubActionEnvironment() ? 'github' : 'txt');
         $this->displayCorrectFiles = $output->isVerbose();
 
         if (['-'] === $filenames) {
             return $this->display($io, [$this->validate(file_get_contents('php://stdin'))]);
         }
 
-        // @deprecated to be removed in 5.0
         if (!$filenames) {
-            if (0 !== ftell(\STDIN)) {
-                throw new RuntimeException('Please provide a filename or pipe file content to STDIN.');
-            }
-
-            @trigger_error('Piping content from STDIN to the "lint:xliff" command without passing the dash symbol "-" as argument is deprecated since Symfony 4.4.', \E_USER_DEPRECATED);
-
-            return $this->display($io, [$this->validate(file_get_contents('php://stdin'))]);
+            throw new RuntimeException('Please provide a filename or pipe file content to STDIN.');
         }
 
         $filesInfo = [];
@@ -117,7 +115,7 @@ EOF
         return $this->display($io, $filesInfo);
     }
 
-    private function validate(string $content, string $file = null): array
+    private function validate(string $content, ?string $file = null): array
     {
         $errors = [];
 
@@ -169,15 +167,18 @@ EOF
                 return $this->displayTxt($io, $files);
             case 'json':
                 return $this->displayJson($io, $files);
+            case 'github':
+                return $this->displayTxt($io, $files, true);
             default:
                 throw new InvalidArgumentException(sprintf('The format "%s" is not supported.', $this->format));
         }
     }
 
-    private function displayTxt(SymfonyStyle $io, array $filesInfo)
+    private function displayTxt(SymfonyStyle $io, array $filesInfo, bool $errorAsGithubAnnotations = false)
     {
         $countFiles = \count($filesInfo);
         $erroredFiles = 0;
+        $githubReporter = $errorAsGithubAnnotations ? new GithubActionReporter($io) : null;
 
         foreach ($filesInfo as $info) {
             if ($info['valid'] && $this->displayCorrectFiles) {
@@ -185,9 +186,15 @@ EOF
             } elseif (!$info['valid']) {
                 ++$erroredFiles;
                 $io->text('<error> ERROR </error>'.($info['file'] ? sprintf(' in %s', $info['file']) : ''));
-                $io->listing(array_map(function ($error) {
+                $io->listing(array_map(function ($error) use ($info, $githubReporter) {
                     // general document errors have a '-1' line number
-                    return -1 === $error['line'] ? $error['message'] : sprintf('Line %d, Column %d: %s', $error['line'], $error['column'], $error['message']);
+                    $line = -1 === $error['line'] ? null : $error['line'];
+
+                    if ($githubReporter) {
+                        $githubReporter->error($error['message'], $info['file'], $line, null !== $line ? $error['column'] : null);
+                    }
+
+                    return null === $line ? $error['message'] : sprintf('Line %d, Column %d: %s', $line, $error['column'], $error['message']);
                 }, $info['messages']));
             }
         }
@@ -272,5 +279,12 @@ EOF
         }
 
         return null;
+    }
+
+    public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
+    {
+        if ($input->mustSuggestOptionValuesFor('format')) {
+            $suggestions->suggestValues(['txt', 'json', 'github']);
+        }
     }
 }

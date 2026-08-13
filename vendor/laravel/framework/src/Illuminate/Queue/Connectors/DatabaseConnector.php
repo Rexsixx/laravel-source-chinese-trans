@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，连接器，数据库连接
+ * Illuminate，队列，连接器，数据库连接器
  */
 
 namespace Illuminate\Queue\Connectors;
@@ -20,7 +20,7 @@ class DatabaseConnector implements ConnectorInterface
 
     /**
      * Create a new connector instance.
-	 * 创建新的连接实例
+	 * 创建新的连接器实例
      *
      * @param  \Illuminate\Database\ConnectionResolverInterface  $connections
      * @return void
@@ -43,7 +43,8 @@ class DatabaseConnector implements ConnectorInterface
             $this->connections->connection($config['connection'] ?? null),
             $config['table'],
             $config['queue'],
-            $config['retry_after'] ?? 60
+            $config['retry_after'] ?? 60,
+            $config['after_commit'] ?? null
         );
     }
 }

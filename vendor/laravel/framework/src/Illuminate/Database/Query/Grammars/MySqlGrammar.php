@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，语法，MySql语法
+ * Illuminate，数据库，查询，语法，MySql 语法
  */
 
 namespace Illuminate\Database\Query\Grammars;
@@ -12,15 +12,78 @@ class MySqlGrammar extends Grammar
 {
     /**
      * The grammar specific operators.
-	 * 语法特定操作符
+	 * 语法特定的操作符
      *
-     * @var array
+     * @var string[]
      */
     protected $operators = ['sounds like'];
 
     /**
+     * Add a "where null" clause to the query.
+	 * 向查询添加"where null"子句
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $where
+     * @return string
+     */
+    protected function whereNull(Builder $query, $where)
+    {
+        if ($this->isJsonSelector($where['column'])) {
+            [$field, $path] = $this->wrapJsonFieldAndPath($where['column']);
+
+            return '(json_extract('.$field.$path.') is null OR json_type(json_extract('.$field.$path.')) = \'NULL\')';
+        }
+
+        return parent::whereNull($query, $where);
+    }
+
+    /**
+     * Add a "where not null" clause to the query.
+	 * 在查询中添加"where not null"子句
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $where
+     * @return string
+     */
+    protected function whereNotNull(Builder $query, $where)
+    {
+        if ($this->isJsonSelector($where['column'])) {
+            [$field, $path] = $this->wrapJsonFieldAndPath($where['column']);
+
+            return '(json_extract('.$field.$path.') is not null AND json_type(json_extract('.$field.$path.')) != \'NULL\')';
+        }
+
+        return parent::whereNotNull($query, $where);
+    }
+
+    /**
+     * Compile a "where fulltext" clause.
+	 * 编译一个"where全文”子句
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $where
+     * @return string
+     */
+    public function whereFullText(Builder $query, $where)
+    {
+        $columns = $this->columnize($where['columns']);
+
+        $value = $this->parameter($where['value']);
+
+        $mode = ($where['options']['mode'] ?? []) === 'boolean'
+            ? ' in boolean mode'
+            : ' in natural language mode';
+
+        $expanded = ($where['options']['expanded'] ?? []) && ($where['options']['mode'] ?? []) !== 'boolean'
+            ? ' with query expansion'
+            : '';
+
+        return "match ({$columns}) against (".$value."{$mode}{$expanded})";
+    }
+
+    /**
      * Compile an insert ignore statement into SQL.
-	 * 编译插入忽略语句成SQL
+	 * 将插入忽略语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
@@ -33,7 +96,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile a "JSON contains" statement into SQL.
-	 * 编译"JSON contains”语句成SQL
+	 * 将"JSON contains"语句编译成SQL
      *
      * @param  string  $column
      * @param  string  $value
@@ -48,7 +111,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile a "JSON length" statement into SQL.
-	 * 编译"JSON length"语句成SQL
+	 * 将"JSON长度"语句编译成SQL
      *
      * @param  string  $column
      * @param  string  $operator
@@ -64,7 +127,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile the random statement into SQL.
-	 * 编译附机语句为SQL
+	 * 将随机语句编译成SQL
      *
      * @param  string  $seed
      * @return string
@@ -76,7 +139,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile the lock into SQL.
-	 * 编译锁为SQL
+	 * 将锁编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  bool|string  $value
@@ -93,7 +156,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Compile an insert statement into SQL.
-	 * 编译插入语句为SQL
+	 * 将插入语句编译成SQL
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $values
@@ -128,8 +191,31 @@ class MySqlGrammar extends Grammar
     }
 
     /**
+     * Compile an "upsert" statement into SQL.
+	 * 将"upsert"语句编译成SQL
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $values
+     * @param  array  $uniqueBy
+     * @param  array  $update
+     * @return string
+     */
+    public function compileUpsert(Builder $query, array $values, array $uniqueBy, array $update)
+    {
+        $sql = $this->compileInsert($query, $values).' on duplicate key update ';
+
+        $columns = collect($update)->map(function ($value, $key) {
+            return is_numeric($key)
+                ? $this->wrap($value).' = values('.$this->wrap($value).')'
+                : $this->wrap($key).' = '.$this->parameter($value);
+        })->implode(', ');
+
+        return $sql.$columns;
+    }
+
+    /**
      * Prepare a JSON column being updated using the JSON_SET function.
-	 * 使用JSON_SET函数准备要更新的JSON
+	 * 使用JSON_SET函数准备要更新的JSON列
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -177,9 +263,10 @@ class MySqlGrammar extends Grammar
 
     /**
      * Prepare the bindings for an update statement.
-	 * 准备绑定为更新语句
+	 * 为更新语句准备绑定
      *
      * Booleans, integers, and doubles are inserted into JSON updates as raw values.
+	 * 布尔值、整数和双精度值作为原始值插入JSON更新中。
      *
      * @param  array  $bindings
      * @param  array  $values
@@ -212,8 +299,7 @@ class MySqlGrammar extends Grammar
         // When using MySQL, delete statements may contain order by statements and limits
         // so we will compile both of those here. Once we have finished compiling this
         // we will return the completed SQL statement so it will be executed for us.
-		// 用MySQL时，delete语句可能包含order by语句和limits，因此我们将在这里编译这两个语句。
-		// 一旦我们完成编译，我们将返回完整的SQL语句，以便为我们执行。
+		// 使用MySQL时，delete语句可能包含order by语句和limits。
         if (! empty($query->orders)) {
             $sql .= ' '.$this->compileOrders($query, $query->orders);
         }
@@ -227,7 +313,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Wrap a single string in keyword identifiers.
-	 * 包装单个字符串在关键字标识符中
+	 * 在关键字标识符中包装单个字符串
      *
      * @param  string  $value
      * @return string
@@ -239,7 +325,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Wrap the given JSON selector.
-	 * 包装给定JSON选择器
+	 * 包装给定的JSON选择器
      *
      * @param  string  $value
      * @return string
@@ -253,7 +339,7 @@ class MySqlGrammar extends Grammar
 
     /**
      * Wrap the given JSON selector for boolean values.
-	 * 包装给定的JSON选择器为布尔值
+	 * 将给定的JSON选择器包装为布尔值
      *
      * @param  string  $value
      * @return string

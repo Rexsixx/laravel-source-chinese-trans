@@ -1,20 +1,22 @@
 <?php
 /**
- * 路由，控制台控制器设置命令
+ * Illuminate，路由，控制台，make:controller 控制器设置命令
  */
 
 namespace Illuminate\Routing\Console;
 
+use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Console\GeneratorCommand;
-use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputOption;
 
 class ControllerMakeCommand extends GeneratorCommand
 {
+    use CreatesMatchingTest;
+
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -22,7 +24,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令说明
      *
      * @var string
      */
@@ -30,7 +32,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成类的类型，默认为控制器
+	 * 生成的类的类型
      *
      * @var string
      */
@@ -46,7 +48,9 @@ class ControllerMakeCommand extends GeneratorCommand
     {
         $stub = null;
 
-        if ($this->option('parent')) {
+        if ($type = $this->option('type')) {
+            $stub = "/stubs/controller.{$type}.stub";
+        } elseif ($this->option('parent')) {
             $stub = '/stubs/controller.nested.stub';
         } elseif ($this->option('model')) {
             $stub = '/stubs/controller.model.stub';
@@ -64,7 +68,21 @@ class ControllerMakeCommand extends GeneratorCommand
 
         $stub = $stub ?? '/stubs/controller.plain.stub';
 
-        return __DIR__.$stub;
+        return $this->resolveStubPath($stub);
+    }
+
+    /**
+     * Resolve the fully-qualified path to the stub.
+	 * 解析到存根的全限定路径
+     *
+     * @param  string  $stub
+     * @return string
+     */
+    protected function resolveStubPath($stub)
+    {
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+                        ? $customPath
+                        : __DIR__.$stub;
     }
 
     /**
@@ -81,9 +99,10 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * Build the class with the given name.
-	 * 构建给定名称类
+	 * 用给定的名称构建类
      *
-     * Remove the base controller import if we are already in base namespace.
+     * Remove the base controller import if we are already in the base namespace.
+	 * 如果我们已经在基命名空间中，请删除基控制器导入。
      *
      * @param  string  $name
      * @return string
@@ -127,8 +146,14 @@ class ControllerMakeCommand extends GeneratorCommand
 
         return [
             'ParentDummyFullModelClass' => $parentModelClass,
+            '{{ namespacedParentModel }}' => $parentModelClass,
+            '{{namespacedParentModel}}' => $parentModelClass,
             'ParentDummyModelClass' => class_basename($parentModelClass),
+            '{{ parentModel }}' => class_basename($parentModelClass),
+            '{{parentModel}}' => class_basename($parentModelClass),
             'ParentDummyModelVariable' => lcfirst(class_basename($parentModelClass)),
+            '{{ parentModelVariable }}' => lcfirst(class_basename($parentModelClass)),
+            '{{parentModelVariable}}' => lcfirst(class_basename($parentModelClass)),
         ];
     }
 
@@ -149,10 +174,18 @@ class ControllerMakeCommand extends GeneratorCommand
             }
         }
 
+        $replace = $this->buildFormRequestReplacements($replace, $modelClass);
+
         return array_merge($replace, [
             'DummyFullModelClass' => $modelClass,
+            '{{ namespacedModel }}' => $modelClass,
+            '{{namespacedModel}}' => $modelClass,
             'DummyModelClass' => class_basename($modelClass),
+            '{{ model }}' => class_basename($modelClass),
+            '{{model}}' => class_basename($modelClass),
             'DummyModelVariable' => lcfirst(class_basename($modelClass)),
+            '{{ modelVariable }}' => lcfirst(class_basename($modelClass)),
+            '{{modelVariable}}' => lcfirst(class_basename($modelClass)),
         ]);
     }
 
@@ -171,18 +204,80 @@ class ControllerMakeCommand extends GeneratorCommand
             throw new InvalidArgumentException('Model name contains invalid characters.');
         }
 
-        $model = trim(str_replace('/', '\\', $model), '\\');
+        return $this->qualifyModel($model);
+    }
 
-        if (! Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
-            $model = $rootNamespace.$model;
+    /**
+     * Build the model replacement values.
+	 * 构建模型替换值
+     *
+     * @param  array  $replace
+     * @param  string  $modelClass
+     * @return array
+     */
+    protected function buildFormRequestReplacements(array $replace, $modelClass)
+    {
+        [$namespace, $storeRequestClass, $updateRequestClass] = [
+            'Illuminate\\Http', 'Request', 'Request',
+        ];
+
+        if ($this->option('requests')) {
+            $namespace = 'App\\Http\\Requests';
+
+            [$storeRequestClass, $updateRequestClass] = $this->generateFormRequests(
+                $modelClass, $storeRequestClass, $updateRequestClass
+            );
         }
 
-        return $model;
+        $namespacedRequests = $namespace.'\\'.$storeRequestClass.';';
+
+        if ($storeRequestClass !== $updateRequestClass) {
+            $namespacedRequests .= PHP_EOL.'use '.$namespace.'\\'.$updateRequestClass.';';
+        }
+
+        return array_merge($replace, [
+            '{{ storeRequest }}' => $storeRequestClass,
+            '{{storeRequest}}' => $storeRequestClass,
+            '{{ updateRequest }}' => $updateRequestClass,
+            '{{updateRequest}}' => $updateRequestClass,
+            '{{ namespacedStoreRequest }}' => $namespace.'\\'.$storeRequestClass,
+            '{{namespacedStoreRequest}}' => $namespace.'\\'.$storeRequestClass,
+            '{{ namespacedUpdateRequest }}' => $namespace.'\\'.$updateRequestClass,
+            '{{namespacedUpdateRequest}}' => $namespace.'\\'.$updateRequestClass,
+            '{{ namespacedRequests }}' => $namespacedRequests,
+            '{{namespacedRequests}}' => $namespacedRequests,
+        ]);
+    }
+
+    /**
+     * Generate the form requests for the given model and classes.
+	 * 为给定的模型和类生成表单请求
+     *
+     * @param  string  $modelName
+     * @param  string  $storeRequestClass
+     * @param  string  $updateRequestClass
+     * @return array
+     */
+    protected function generateFormRequests($modelClass, $storeRequestClass, $updateRequestClass)
+    {
+        $storeRequestClass = 'Store'.class_basename($modelClass).'Request';
+
+        $this->call('make:request', [
+            'name' => $storeRequestClass,
+        ]);
+
+        $updateRequestClass = 'Update'.class_basename($modelClass).'Request';
+
+        $this->call('make:request', [
+            'name' => $updateRequestClass,
+        ]);
+
+        return [$storeRequestClass, $updateRequestClass];
     }
 
     /**
      * Get the console command options.
-	 * 得到控制台命令操作
+	 * 获取控制台命令选项
      *
      * @return array
      */
@@ -190,11 +285,13 @@ class ControllerMakeCommand extends GeneratorCommand
     {
         return [
             ['api', null, InputOption::VALUE_NONE, 'Exclude the create and edit methods from the controller.'],
+            ['type', null, InputOption::VALUE_REQUIRED, 'Manually specify the controller stub file to use.'],
             ['force', null, InputOption::VALUE_NONE, 'Create the class even if the controller already exists'],
             ['invokable', 'i', InputOption::VALUE_NONE, 'Generate a single method, invokable controller class.'],
             ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource controller for the given model.'],
             ['parent', 'p', InputOption::VALUE_OPTIONAL, 'Generate a nested resource controller class.'],
             ['resource', 'r', InputOption::VALUE_NONE, 'Generate a resource controller class.'],
+            ['requests', 'R', InputOption::VALUE_NONE, 'Generate FormRequest classes for store and update.'],
         ];
     }
 }

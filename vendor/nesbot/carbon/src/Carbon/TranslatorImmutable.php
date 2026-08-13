@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，翻译器不可变
+ * Carbon，译者不可变
  */
 
 /**
@@ -23,7 +23,7 @@ class TranslatorImmutable extends Translator
     /** @var bool */
     private $constructed = false;
 
-    public function __construct($locale, MessageFormatterInterface $formatter = null, $cacheDir = null, $debug = false)
+    public function __construct($locale, ?MessageFormatterInterface $formatter = null, $cacheDir = null, $debug = false)
     {
         parent::__construct($locale, $formatter, $cacheDir, $debug);
         $this->constructed = true;
@@ -69,7 +69,7 @@ class TranslatorImmutable extends Translator
     /**
      * @codeCoverageIgnore
      */
-    public function setConfigCacheFactory(ConfigCacheFactoryInterface $configCacheFactory)
+    public function setConfigCacheFactory(ConfigCacheFactoryInterface $configCacheFactory): void
     {
         $this->disallowMutation(__METHOD__);
 

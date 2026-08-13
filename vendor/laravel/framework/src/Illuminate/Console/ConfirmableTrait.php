@@ -1,6 +1,6 @@
 <?php
 /**
- * 控制台，可确定特性
+ * Illuminate，控制台，可确定的特征
  */
 
 namespace Illuminate\Console;
@@ -9,9 +9,10 @@ trait ConfirmableTrait
 {
     /**
      * Confirm before proceeding with the action.
-	 * 进行确认在继续操作之前
+	 * 在继续操作之前进行确认
      *
      * This method only asks for confirmation in production.
+	 * 此方法仅在生产中要求确认
      *
      * @param  string  $warning
      * @param  \Closure|bool|null  $callback
@@ -44,7 +45,7 @@ trait ConfirmableTrait
 
     /**
      * Get the default confirmation callback.
-	 * 得到默认的确认回调
+	 * 获取默认的确认回调
      *
      * @return \Closure
      */

@@ -1,6 +1,11 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，CodeCoverage，报告，Xml，Directory
+ */
+
 /*
- * This file is part of the php-code-coverage package.
+ * This file is part of phpunit/php-code-coverage.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
@@ -9,6 +14,9 @@
  */
 namespace SebastianBergmann\CodeCoverage\Report\Xml;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for phpunit/php-code-coverage
+ */
 final class Directory extends Node
 {
 }

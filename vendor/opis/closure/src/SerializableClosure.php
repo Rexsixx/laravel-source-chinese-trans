@@ -1,6 +1,6 @@
 <?php
 /**
- * Opis，闭包，可序列化的闭包
+ * NunoMaduro，闭包，可序列化的关闭
  */
 
 /* ===========================================================================
@@ -18,6 +18,7 @@ use ReflectionObject;
 
 /**
  * Provides a wrapper for serialization of closures
+ * 提供用于闭包序列化的包装器。
  */
 class SerializableClosure implements Serializable
 {

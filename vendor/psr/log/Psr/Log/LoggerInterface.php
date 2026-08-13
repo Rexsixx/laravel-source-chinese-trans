@@ -1,9 +1,13 @@
 <?php
+/**
+ * Psr，Log，日志接口
+ */
 
 namespace Psr\Log;
 
 /**
  * Describes a logger instance.
+ * 描述一个logger实例。
  *
  * The message MUST be a string or object implementing __toString().
  *
@@ -21,6 +25,7 @@ interface LoggerInterface
 {
     /**
      * System is unusable.
+	 * 系统不可用
      *
      * @param string  $message
      * @param mixed[] $context
@@ -31,6 +36,7 @@ interface LoggerInterface
 
     /**
      * Action must be taken immediately.
+	 * 必须立即采取行动。
      *
      * Example: Entire website down, database unavailable, etc. This should
      * trigger the SMS alerts and wake you up.
@@ -44,6 +50,7 @@ interface LoggerInterface
 
     /**
      * Critical conditions.
+	 * 临界状态
      *
      * Example: Application component unavailable, unexpected exception.
      *
@@ -102,6 +109,7 @@ interface LoggerInterface
 
     /**
      * Detailed debug information.
+	 * 详细的调试信息
      *
      * @param string  $message
      * @param mixed[] $context
@@ -112,6 +120,7 @@ interface LoggerInterface
 
     /**
      * Logs with an arbitrary level.
+	 * 具有任意级别的日志
      *
      * @param mixed   $level
      * @param string  $message

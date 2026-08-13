@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，输入，输入参数
+ * Symfony，Component，Console，输入，输入参数
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * Represents a command line argument.
+ * 表示命令行参数。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -35,13 +36,13 @@ class InputArgument
 
     /**
      * @param string                           $name        The argument name
-     * @param int|null                         $mode        The argument mode: self::REQUIRED or self::OPTIONAL
+     * @param int|null                         $mode        The argument mode: a bit mask of self::REQUIRED, self::OPTIONAL and self::IS_ARRAY
      * @param string                           $description A description text
      * @param string|bool|int|float|array|null $default     The default value (for self::OPTIONAL mode only)
      *
      * @throws InvalidArgumentException When argument mode is not valid
      */
-    public function __construct(string $name, int $mode = null, string $description = '', $default = null)
+    public function __construct(string $name, ?int $mode = null, string $description = '', $default = null)
     {
         if (null === $mode) {
             $mode = self::OPTIONAL;
@@ -58,8 +59,9 @@ class InputArgument
 
     /**
      * Returns the argument name.
+	 * 返回参数名称
      *
-     * @return string The argument name
+     * @return string
      */
     public function getName()
     {
@@ -68,6 +70,7 @@ class InputArgument
 
     /**
      * Returns true if the argument is required.
+	 * 如果需要论证,返回true
      *
      * @return bool true if parameter mode is self::REQUIRED, false otherwise
      */
@@ -78,6 +81,7 @@ class InputArgument
 
     /**
      * Returns true if the argument can take multiple values.
+	 * 如果参数可以取多个值,返回true。
      *
      * @return bool true if mode is self::IS_ARRAY, false otherwise
      */
@@ -88,6 +92,7 @@ class InputArgument
 
     /**
      * Sets the default value.
+	 * 设置默认值
      *
      * @param string|bool|int|float|array|null $default
      *
@@ -95,7 +100,7 @@ class InputArgument
      */
     public function setDefault($default = null)
     {
-        if (self::REQUIRED === $this->mode && null !== $default) {
+        if ($this->isRequired() && null !== $default) {
             throw new LogicException('Cannot set a default value except for InputArgument::OPTIONAL mode.');
         }
 
@@ -112,6 +117,7 @@ class InputArgument
 
     /**
      * Returns the default value.
+	 * 返回默认值
      *
      * @return string|bool|int|float|array|null
      */
@@ -122,8 +128,9 @@ class InputArgument
 
     /**
      * Returns the description text.
+	 * 返回描述文本
      *
-     * @return string The description text
+     * @return string
      */
     public function getDescription()
     {

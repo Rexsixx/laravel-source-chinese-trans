@@ -1,26 +1,27 @@
 <?php
 /**
- * TijsVerkoyen，Css内联样式，Css To Inline Styles
+ * TijsVerkoyen，CssToInlineStyles，Css 到内联样式
  */
 
 namespace TijsVerkoyen\CssToInlineStyles;
 
-use Symfony\Component\CssSelector\CssSelector;
 use Symfony\Component\CssSelector\CssSelectorConverter;
 use Symfony\Component\CssSelector\Exception\ExceptionInterface;
 use TijsVerkoyen\CssToInlineStyles\Css\Processor;
 use TijsVerkoyen\CssToInlineStyles\Css\Property\Processor as PropertyProcessor;
+use TijsVerkoyen\CssToInlineStyles\Css\Property\Property;
 use TijsVerkoyen\CssToInlineStyles\Css\Rule\Processor as RuleProcessor;
 
 class CssToInlineStyles
 {
+    /**
+     * @var CssSelectorConverter
+     */
     private $cssConverter;
 
     public function __construct()
     {
-        if (class_exists('Symfony\Component\CssSelector\CssSelectorConverter')) {
-            $this->cssConverter = new CssSelectorConverter();
-        }
+        $this->cssConverter = new CssSelectorConverter();
     }
 
     /**
@@ -55,10 +56,11 @@ class CssToInlineStyles
     }
 
     /**
-     * Inline the given properties on an given DOMElement
+     * Inline the given properties on a given DOMElement
+	 * 在给定的DOMElement上内联的给定属性
      *
      * @param \DOMElement             $element
-     * @param Css\Property\Property[] $properties
+     * @param Property[] $properties
      *
      * @return \DOMElement
      */
@@ -92,10 +94,11 @@ class CssToInlineStyles
 
     /**
      * Get the current inline styles for a given DOMElement
+	 * 为给定的DOMElement获取当前的内联样式
      *
      * @param \DOMElement $element
      *
-     * @return Css\Property\Property[]
+     * @return Property[]
      */
     public function getInlineStyles(\DOMElement $element)
     {
@@ -117,7 +120,7 @@ class CssToInlineStyles
     {
         $document = new \DOMDocument('1.0', 'UTF-8');
         $internalErrors = libxml_use_internal_errors(true);
-        $document->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+        $document->loadHTML(mb_encode_numericentity($html, [0x80, 0x10FFFF, 0, 0x1FFFFF], 'UTF-8'));
         libxml_use_internal_errors($internalErrors);
         $document->formatOutput = true;
 
@@ -134,12 +137,25 @@ class CssToInlineStyles
         // retrieve the document element
         // we do it this way to preserve the utf-8 encoding
         $htmlElement = $document->documentElement;
+
+        if ($htmlElement === null) {
+            throw new \RuntimeException('Failed to get HTML from empty document.');
+        }
+
         $html = $document->saveHTML($htmlElement);
+
+        if ($html === false) {
+            throw new \RuntimeException('Failed to get HTML from document.');
+        }
+
         $html = trim($html);
 
         // retrieve the doctype
         $document->removeChild($htmlElement);
         $doctype = $document->saveHTML();
+        if ($doctype === false) {
+            $doctype = '';
+        }
         $doctype = trim($doctype);
 
         // if it is the html5 doctype convert it to lowercase
@@ -162,6 +178,7 @@ class CssToInlineStyles
             return $document;
         }
 
+        /** @var \SplObjectStorage<\DOMElement, array<string, Property>> $propertyStorage */
         $propertyStorage = new \SplObjectStorage();
 
         $xPath = new \DOMXPath($document);
@@ -170,12 +187,7 @@ class CssToInlineStyles
 
         foreach ($rules as $rule) {
             try {
-                if (null !== $this->cssConverter) {
-                    $expression = $this->cssConverter->toXPath($rule->getSelector());
-                } else {
-                    // Compatibility layer for Symfony 2.7 and older
-                    $expression = CssSelector::toXPath($rule->getSelector());
-                }
+                $expression = $this->cssConverter->toXPath($rule->getSelector());
             } catch (ExceptionInterface $e) {
                 continue;
             }
@@ -187,6 +199,7 @@ class CssToInlineStyles
             }
 
             foreach ($elements as $element) {
+                \assert($element instanceof \DOMElement);
                 $propertyStorage[$element] = $this->calculatePropertiesToBeApplied(
                     $rule->getProperties(),
                     $propertyStorage->contains($element) ? $propertyStorage[$element] : array()
@@ -203,13 +216,14 @@ class CssToInlineStyles
 
     /**
      * Merge the CSS rules to determine the applied properties.
+	 * 合并CSS规则以确定应用属性
      *
-     * @param Css\Property\Property[] $properties
-     * @param Css\Property\Property[] $cssProperties existing applied properties indexed by name
+     * @param Property[] $properties
+     * @param array<string, Property> $cssProperties existing applied properties indexed by name
      *
-     * @return Css\Property\Property[] updated properties, indexed by name
+     * @return array<string, Property> updated properties, indexed by name
      */
-    private function calculatePropertiesToBeApplied(array $properties, array $cssProperties)
+    private function calculatePropertiesToBeApplied(array $properties, array $cssProperties): array
     {
         if (empty($properties)) {
             return $cssProperties;
@@ -227,6 +241,8 @@ class CssToInlineStyles
                 //overrule if current property is important and existing is not, else check specificity
                 $overrule = !$existingProperty->isImportant() && $property->isImportant();
                 if (!$overrule) {
+                    \assert($existingProperty->getOriginalSpecificity() !== null, 'Properties created for parsed CSS always have their associated specificity.');
+                    \assert($property->getOriginalSpecificity() !== null, 'Properties created for parsed CSS always have their associated specificity.');
                     $overrule = $existingProperty->getOriginalSpecificity()->compareTo($property->getOriginalSpecificity()) <= 0;
                 }
 

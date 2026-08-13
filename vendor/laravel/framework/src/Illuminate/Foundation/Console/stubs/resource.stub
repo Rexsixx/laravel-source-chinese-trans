@@ -1,19 +1,20 @@
 <?php
 /**
- * 基础，虚拟类根文件
+ * Illuminate，基础，控制台，存根，资源
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DummyClass extends JsonResource
+class {{ class }} extends JsonResource
 {
     /**
      * Transform the resource into an array.
+	 * 转换资源为数组
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
     {

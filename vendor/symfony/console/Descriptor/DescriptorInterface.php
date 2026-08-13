@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，描述符号，描述符号借口
+ * Symfony，Component，Console，描述符号，描述接口
  */
 
 /*
@@ -18,15 +18,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Descriptor interface.
+ * 描述接口
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  */
 interface DescriptorInterface
 {
-    /**
-     * Describes an object if supported.
-     *
-     * @param object $object
-     */
-    public function describe(OutputInterface $output, $object, array $options = []);
+    public function describe(OutputInterface $output, object $object, array $options = []);
 }

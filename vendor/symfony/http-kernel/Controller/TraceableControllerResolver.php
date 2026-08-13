@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，控制器，可跟踪控制器解析器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -35,10 +38,10 @@ class TraceableControllerResolver implements ControllerResolverInterface
     {
         $e = $this->stopwatch->start('controller.get_callable');
 
-        $ret = $this->resolver->getController($request);
-
-        $e->stop();
-
-        return $ret;
+        try {
+            return $this->resolver->getController($request);
+        } finally {
+            $e->stop();
+        }
     }
 }

@@ -1,17 +1,17 @@
 <?php
 /**
- * 控制台，计划任务完成
+ * Illuminate，控制台，事件，计划任务完成
  */
 
 namespace Illuminate\Console\Events;
 
 use Illuminate\Console\Scheduling\Event;
 
-class  
+class ScheduledTaskFinished
 {
     /**
      * The scheduled event that ran.
-	 * 已运行计划事件
+	 * 已运行的计划事件
      *
      * @var \Illuminate\Console\Scheduling\Event
      */
@@ -19,7 +19,7 @@ class
 
     /**
      * The runtime of the scheduled event.
-	 * 计划事件的运行时间
+	 * 计划事件的运行时
      *
      * @var float
      */

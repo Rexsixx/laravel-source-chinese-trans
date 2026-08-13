@@ -1,6 +1,6 @@
 <?php
 /**
- * 支持，高级收集代理
+ * Illuminate，支持，高阶排序代理
  */
 
 namespace Illuminate\Support;
@@ -17,7 +17,7 @@ class HigherOrderTapProxy
 
     /**
      * Create a new tap proxy instance.
-	 * 创建新的tap代理实例
+	 * 创建一个新的tap代理实例
      *
      * @param  mixed  $target
      * @return void

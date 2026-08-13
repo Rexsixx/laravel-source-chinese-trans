@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，探测器，异常，访问拒绝异常
+ * Symfony，Component，Finder，异常，访问拒绝异常
  */
 
 /*

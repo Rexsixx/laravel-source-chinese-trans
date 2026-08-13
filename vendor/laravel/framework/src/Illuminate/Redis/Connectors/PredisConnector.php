@@ -1,6 +1,6 @@
 <?php
 /**
- * Redis，Predis连接
+ * Illuminate，Redis，连接器，Predis 连接器
  */
 
 namespace Illuminate\Redis\Connectors;
@@ -15,7 +15,7 @@ class PredisConnector implements Connector
 {
     /**
      * Create a new clustered Predis connection.
-	 * 创建新的集群Predis连接
+	 * 创建一个新的集群Predis连接
      *
      * @param  array  $config
      * @param  array  $options
@@ -27,12 +27,16 @@ class PredisConnector implements Connector
             ['timeout' => 10.0], $options, Arr::pull($config, 'options', [])
         );
 
+        if (isset($config['prefix'])) {
+            $formattedOptions['prefix'] = $config['prefix'];
+        }
+
         return new PredisConnection(new Client($config, $formattedOptions));
     }
 
     /**
      * Create a new clustered Predis connection.
-	 * 创建新的集群Predis连接
+	 * 创建一个新的集群Predis连接
      *
      * @param  array  $config
      * @param  array  $clusterOptions
@@ -42,6 +46,10 @@ class PredisConnector implements Connector
     public function connectToCluster(array $config, array $clusterOptions, array $options)
     {
         $clusterSpecificOptions = Arr::pull($config, 'options', []);
+
+        if (isset($config['prefix'])) {
+            $clusterSpecificOptions['prefix'] = $config['prefix'];
+        }
 
         return new PredisClusterConnection(new Client(array_values($config), array_merge(
             $options, $clusterOptions, $clusterSpecificOptions

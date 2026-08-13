@@ -1,6 +1,6 @@
 <?php
 /**
- * 文件系统，文件系统
+ * Illuminate，文件系统，文件系统
  */
 
 namespace Illuminate\Filesystem;
@@ -8,8 +8,13 @@ namespace Illuminate\Filesystem;
 use ErrorException;
 use FilesystemIterator;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Traits\Macroable;
+use RuntimeException;
+use SplFileObject;
+use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Mime\MimeTypes;
 
 class Filesystem
 {
@@ -17,7 +22,7 @@ class Filesystem
 
     /**
      * Determine if a file or directory exists.
-	 * 确定是否文件或目录存在
+	 * 确定文件或目录是否存在
      *
      * @param  string  $path
      * @return bool
@@ -29,7 +34,7 @@ class Filesystem
 
     /**
      * Determine if a file or directory is missing.
-	 * 确定是否文件或目录丢失
+	 * 确定文件或目录是否丢失
      *
      * @param  string  $path
      * @return bool
@@ -41,7 +46,7 @@ class Filesystem
 
     /**
      * Get the contents of a file.
-	 * 得到文件内容
+	 * 获取文件的内容
      *
      * @param  string  $path
      * @param  bool  $lock
@@ -55,12 +60,12 @@ class Filesystem
             return $lock ? $this->sharedGet($path) : file_get_contents($path);
         }
 
-        throw new FileNotFoundException("File does not exist at path {$path}");
+        throw new FileNotFoundException("File does not exist at path {$path}.");
     }
 
     /**
      * Get contents of a file with shared access.
-	 * 得到有共享权限文件内容
+	 * 获取具有共享访问权限的文件的内容
      *
      * @param  string  $path
      * @return string
@@ -90,37 +95,87 @@ class Filesystem
 
     /**
      * Get the returned value of a file.
-	 * 得到文件返回值
+	 * 获取文件的返回值
      *
      * @param  string  $path
+     * @param  array  $data
      * @return mixed
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function getRequire($path)
+    public function getRequire($path, array $data = [])
     {
         if ($this->isFile($path)) {
-            return require $path;
+            $__path = $path;
+            $__data = $data;
+
+            return (static function () use ($__path, $__data) {
+                extract($__data, EXTR_SKIP);
+
+                return require $__path;
+            })();
         }
 
-        throw new FileNotFoundException("File does not exist at path {$path}");
+        throw new FileNotFoundException("File does not exist at path {$path}.");
     }
 
     /**
      * Require the given file once.
-	 * 引入文件
+	 * 需求给定的文件一次
      *
-     * @param  string  $file
+     * @param  string  $path
+     * @param  array  $data
      * @return mixed
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function requireOnce($file)
+    public function requireOnce($path, array $data = [])
     {
-        require_once $file;
+        if ($this->isFile($path)) {
+            $__path = $path;
+            $__data = $data;
+
+            return (static function () use ($__path, $__data) {
+                extract($__data, EXTR_SKIP);
+
+                return require_once $__path;
+            })();
+        }
+
+        throw new FileNotFoundException("File does not exist at path {$path}.");
+    }
+
+    /**
+     * Get the contents of a file one line at a time.
+	 * 一次一行地获取文件的内容
+     *
+     * @param  string  $path
+     * @return \Illuminate\Support\LazyCollection
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function lines($path)
+    {
+        if (! $this->isFile($path)) {
+            throw new FileNotFoundException(
+                "File does not exist at path {$path}."
+            );
+        }
+
+        return LazyCollection::make(function () use ($path) {
+            $file = new SplFileObject($path);
+
+            $file->setFlags(SplFileObject::DROP_NEW_LINE);
+
+            while (! $file->eof()) {
+                yield $file->fgets();
+            }
+        });
     }
 
     /**
      * Get the MD5 hash of the file at the given path.
-	 * 得到文件MD5哈希
+	 * 获取给定路径上文件的MD5哈希值
      *
      * @param  string  $path
      * @return string
@@ -132,7 +187,7 @@ class Filesystem
 
     /**
      * Write the contents of a file.
-	 * 写入文件内容
+	 * 写入文件的内容
      *
      * @param  string  $path
      * @param  string  $contents
@@ -146,7 +201,7 @@ class Filesystem
 
     /**
      * Write the contents of a file, replacing it atomically if it already exists.
-	 * 写入文件的内容，如果它已经存在，则自动替换它
+	 * 写入文件的内容，如果它已经存在，则自动替换它。
      *
      * @param  string  $path
      * @param  string  $content
@@ -155,7 +210,6 @@ class Filesystem
     public function replace($path, $content)
     {
         // If the path already exists and is a symlink, get the real path...
-		// 如果路径已经存在并且是一个符号链接，则获取真实路径…
         clearstatcache(true, $path);
 
         $path = realpath($path) ?: $path;
@@ -163,7 +217,7 @@ class Filesystem
         $tempPath = tempnam(dirname($path), basename($path));
 
         // Fix permissions of tempPath because `tempnam()` creates it with permissions set to 0600...
-		// 修复临时路径，因为'tempnam()'创建它时权限设置为0600…
+		// 修复tempPath的权限，因为'tempnam()'创建它时权限设置为0600…
         chmod($tempPath, 0777 - umask());
 
         file_put_contents($tempPath, $content);
@@ -172,8 +226,22 @@ class Filesystem
     }
 
     /**
+     * Replace a given string within a given file.
+	 * 替换给定文件中的给定字符串
+     *
+     * @param  array|string  $search
+     * @param  array|string  $replace
+     * @param  string  $path
+     * @return void
+     */
+    public function replaceInFile($search, $replace, $path)
+    {
+        file_put_contents($path, str_replace($search, $replace, file_get_contents($path)));
+    }
+
+    /**
      * Prepend to a file.
-	 * 添加至文件
+	 * 添加到文件中
      *
      * @param  string  $path
      * @param  string  $data
@@ -190,7 +258,7 @@ class Filesystem
 
     /**
      * Append to a file.
-	 * 追加文件
+	 * 追加至文件
      *
      * @param  string  $path
      * @param  string  $data
@@ -203,7 +271,7 @@ class Filesystem
 
     /**
      * Get or set UNIX mode of a file or directory.
-	 * 得到或设置文件或目录的UNIX模式
+	 * 获取或设置文件或目录的UNIX模式
      *
      * @param  string  $path
      * @param  int|null  $mode
@@ -220,7 +288,7 @@ class Filesystem
 
     /**
      * Delete the file at a given path.
-	 * 删除文件
+	 * 删除指定路径下的文件
      *
      * @param  string|array  $paths
      * @return bool
@@ -233,7 +301,9 @@ class Filesystem
 
         foreach ($paths as $path) {
             try {
-                if (! @unlink($path)) {
+                if (@unlink($path)) {
+                    clearstatcache(false, $path);
+                } else {
                     $success = false;
                 }
             } catch (ErrorException $e) {
@@ -246,7 +316,7 @@ class Filesystem
 
     /**
      * Move a file to a new location.
-	 * 移动文件到新位置
+	 * 将文件移动到新位置
      *
      * @param  string  $path
      * @param  string  $target
@@ -290,8 +360,31 @@ class Filesystem
     }
 
     /**
+     * Create a relative symlink to the target file or directory.
+	 * 创建到目标文件或目录的相对符号链接
+     *
+     * @param  string  $target
+     * @param  string  $link
+     * @return void
+     *
+     * @throws \RuntimeException
+     */
+    public function relativeLink($target, $link)
+    {
+        if (! class_exists(SymfonyFilesystem::class)) {
+            throw new RuntimeException(
+                'To enable support for relative links, please install the symfony/filesystem package.'
+            );
+        }
+
+        $relativeTarget = (new SymfonyFilesystem)->makePathRelative($target, dirname($link));
+
+        $this->link($relativeTarget, $link);
+    }
+
+    /**
      * Extract the file name from a file path.
-	 * 提取文件名从文件路径中
+	 * 从文件路径中提取文件名
      *
      * @param  string  $path
      * @return string
@@ -303,7 +396,7 @@ class Filesystem
 
     /**
      * Extract the trailing name component from a file path.
-	 * 提取尾随名称组件
+	 * 从文件路径中提取尾随名称组件
      *
      * @param  string  $path
      * @return string
@@ -315,7 +408,7 @@ class Filesystem
 
     /**
      * Extract the parent directory from a file path.
-	 * 提取父目录从文件路径
+	 * 从文件路径中提取父目录
      *
      * @param  string  $path
      * @return string
@@ -327,7 +420,7 @@ class Filesystem
 
     /**
      * Extract the file extension from a file path.
-	 * 提取文件扩展名从文件路径
+	 * 从文件路径中提取文件扩展名
      *
      * @param  string  $path
      * @return string
@@ -338,8 +431,28 @@ class Filesystem
     }
 
     /**
+     * Guess the file extension from the mime-type of a given file.
+	 * 根据给定文件的mime类型猜测文件扩展名
+     *
+     * @param  string  $path
+     * @return string|null
+     *
+     * @throws \RuntimeException
+     */
+    public function guessExtension($path)
+    {
+        if (! class_exists(MimeTypes::class)) {
+            throw new RuntimeException(
+                'To enable support for guessing extensions, please install the symfony/mime package.'
+            );
+        }
+
+        return (new MimeTypes)->getExtensions($this->mimeType($path))[0] ?? null;
+    }
+
+    /**
      * Get the file type of a given file.
-	 * 得到文件类型
+	 * 获取给定文件的文件类型
      *
      * @param  string  $path
      * @return string
@@ -351,7 +464,7 @@ class Filesystem
 
     /**
      * Get the mime-type of a given file.
-	 * 得到给定文件的mime类型
+	 * 获取给定文件的mime类型
      *
      * @param  string  $path
      * @return string|false
@@ -363,7 +476,7 @@ class Filesystem
 
     /**
      * Get the file size of a given file.
-	 & 得到文件大小
+	 * 获取给定文件的文件大小
      *
      * @param  string  $path
      * @return int
@@ -375,7 +488,7 @@ class Filesystem
 
     /**
      * Get the file's last modification time.
-	 * 得到文档最后修改时间
+	 * 获取文件的最后修改时间
      *
      * @param  string  $path
      * @return int
@@ -387,7 +500,7 @@ class Filesystem
 
     /**
      * Determine if the given path is a directory.
-	 * 确定是否给定路径是目录
+	 * 确定给定的路径是否是一个目录
      *
      * @param  string  $directory
      * @return bool
@@ -399,7 +512,7 @@ class Filesystem
 
     /**
      * Determine if the given path is readable.
-	 * 确定是否给定路径可读
+	 * 确定给定的路径是否可读
      *
      * @param  string  $path
      * @return bool
@@ -411,7 +524,7 @@ class Filesystem
 
     /**
      * Determine if the given path is writable.
-	 * 确定是否给定路径可写
+	 * 确定给定的路径是否可写
      *
      * @param  string  $path
      * @return bool
@@ -423,7 +536,7 @@ class Filesystem
 
     /**
      * Determine if the given path is a file.
-	 * 确定是否给定路径为文件
+	 * 确定给定的路径是否是一个文件
      *
      * @param  string  $file
      * @return bool
@@ -448,7 +561,7 @@ class Filesystem
 
     /**
      * Get an array of all files in a directory.
-	 * 得到目录下文件数组
+	 * 获取目录中所有文件的数组
      *
      * @param  string  $directory
      * @param  bool  $hidden
@@ -464,7 +577,7 @@ class Filesystem
 
     /**
      * Get all of the files from the given directory (recursive).
-	 * 得到目录下文件数组(递归)
+	 * 从给定目录（递归）获取所有文件
      *
      * @param  string  $directory
      * @param  bool  $hidden
@@ -480,7 +593,7 @@ class Filesystem
 
     /**
      * Get all of the directories within a given directory.
-	 * 得到目录下所有目录
+	 * 获取给定目录中的所有目录
      *
      * @param  string  $directory
      * @return array
@@ -551,7 +664,8 @@ class Filesystem
 
     /**
      * Copy a directory from one location to another.
-	 * 复制文件至另外
+	 * 将目录从一个位置复制到另一个位置
+	 * 
      *
      * @param  string  $directory
      * @param  string  $destination
@@ -569,11 +683,8 @@ class Filesystem
         // If the destination directory does not actually exist, we will go ahead and
         // create it recursively, which just gets the destination prepared to copy
         // the files over. Once we make the directory we'll proceed the copying.
-		// 如果目标目录实际上不存在，我们将继续递归创建它，这会将目标做好复制的准备。
-		// 一旦我们创建了目录，我们将继续复制。
-        if (! $this->isDirectory($destination)) {
-            $this->makeDirectory($destination, 0777, true);
-        }
+		// 如果目标目录实际上不存在，我们将继续递归地创建它。
+        $this->ensureDirectoryExists($destination, 0777);
 
         $items = new FilesystemIterator($directory, $options);
 
@@ -581,8 +692,7 @@ class Filesystem
             // As we spin through items, we will check to see if the current file is actually
             // a directory or a file. When it is actually a directory we will need to call
             // back into this function recursively to keep copying these nested folders.
-			// 当我们浏览项目时，我们将检查当前文件是否真的是目录或文件。
-			// 当它是一个目录时，我们需要调用递归返回此函数以继续复制这些嵌套文件夹。
+			// 在遍历项时，我们将检查当前文件实际上是否目录或文件。
             $target = $destination.'/'.$item->getBasename();
 
             if ($item->isDir()) {
@@ -596,8 +706,7 @@ class Filesystem
             // If the current items is just a regular file, we will just copy this to the new
             // location and keep looping. If for some reason the copy fails we'll bail out
             // and return false, so the developer is aware that the copy process failed.
-			// 如果当前项目人是一个常规文件，我们将只需将其复制到新的定位并保持循环。
-			// 如果出于某种原因，副本失败了，我们将退出并返回false，这样开发人员就知道了。
+			// 如果当前项目只是一个常规文件，我们将把它复制到新的定位并循环。
             else {
                 if (! $this->copy($item->getPathname(), $target)) {
                     return false;
@@ -630,8 +739,7 @@ class Filesystem
             // If the item is a directory, we can just recurse into the function and
             // delete that sub-directory otherwise we'll just delete the file and
             // keep iterating through each file until the directory is cleaned.
-			// 如果项目是一个目录，我们可以递归到函数中删除该子目录，
-			// 否则我们只能删除文件并不断迭代每个文件，直到目录被清理干净。
+			// 如果项是一个目录，我们可以递归到函数，否则删除该子目录。
             if ($item->isDir() && ! $item->isLink()) {
                 $this->deleteDirectory($item->getPathname());
             }
@@ -639,8 +747,7 @@ class Filesystem
             // If the item is just a file, we can go ahead and delete it since we're
             // just looping through and waxing all of the files in this directory
             // and calling directories recursively, so we delete the real path.
-			// 如果该项目只是一个文件，我们可以继续删除它。
-			// 因为我们只需循环并对该目录中的所有文件递归调用，以至删除真实路径。
+			// 如果项目只是一个文件，我们可以继续并删除它，因为我们循环遍历并删除这个目录中的所有文件。
             else {
                 $this->delete($item->getPathname());
             }
@@ -655,7 +762,7 @@ class Filesystem
 
     /**
      * Remove all of the directories within a given directory.
-	 * 删除多个目录
+	 * 删除给定目录中的所有目录
      *
      * @param  string  $directory
      * @return bool

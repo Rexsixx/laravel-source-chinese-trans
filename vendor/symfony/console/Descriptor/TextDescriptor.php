@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，描述符号，文本描述符号
+ * Symfony，Component，Console，描述符号，文本描述符
  */
 
 /*
@@ -24,6 +24,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Text descriptor.
+ * 文本描述符
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  *
@@ -42,7 +43,7 @@ class TextDescriptor extends Descriptor
             $default = '';
         }
 
-        $totalWidth = $options['total_width'] ?? Helper::strlen($argument->getName());
+        $totalWidth = $options['total_width'] ?? Helper::width($argument->getName());
         $spacingWidth = $totalWidth - \strlen($argument->getName());
 
         $this->writeText(sprintf('  <info>%s</info>  %s%s%s',
@@ -77,10 +78,10 @@ class TextDescriptor extends Descriptor
         $totalWidth = $options['total_width'] ?? $this->calculateTotalWidthForOptions([$option]);
         $synopsis = sprintf('%s%s',
             $option->getShortcut() ? sprintf('-%s, ', $option->getShortcut()) : '    ',
-            sprintf('--%s%s', $option->getName(), $value)
+            sprintf($option->isNegatable() ? '--%1$s|--no-%1$s' : '--%1$s%2$s', $option->getName(), $value)
         );
 
-        $spacingWidth = $totalWidth - Helper::strlen($synopsis);
+        $spacingWidth = $totalWidth - Helper::width($synopsis);
 
         $this->writeText(sprintf('  <info>%s</info>  %s%s%s%s',
             $synopsis,
@@ -99,7 +100,7 @@ class TextDescriptor extends Descriptor
     {
         $totalWidth = $this->calculateTotalWidthForOptions($definition->getOptions());
         foreach ($definition->getArguments() as $argument) {
-            $totalWidth = max($totalWidth, Helper::strlen($argument->getName()));
+            $totalWidth = max($totalWidth, Helper::width($argument->getName()));
         }
 
         if ($definition->getArguments()) {
@@ -139,8 +140,6 @@ class TextDescriptor extends Descriptor
      */
     protected function describeCommand(Command $command, array $options = [])
     {
-        $command->getSynopsis(true);
-        $command->getSynopsis(false);
         $command->mergeApplicationDefinition(false);
 
         if ($description = $command->getDescription()) {
@@ -157,7 +156,7 @@ class TextDescriptor extends Descriptor
         }
         $this->writeText("\n");
 
-        $definition = $command->getNativeDefinition();
+        $definition = $command->getDefinition();
         if ($definition->getOptions() || $definition->getArguments()) {
             $this->writeText("\n");
             $this->describeInputDefinition($definition, $options);
@@ -239,7 +238,7 @@ class TextDescriptor extends Descriptor
 
                 foreach ($namespace['commands'] as $name) {
                     $this->writeText("\n");
-                    $spacingWidth = $width - Helper::strlen($name);
+                    $spacingWidth = $width - Helper::width($name);
                     $command = $commands[$name];
                     $commandAliases = $name === $command->getName() ? $this->getCommandAliasesText($command) : '';
                     $this->writeText(sprintf('  <info>%s</info>%s%s', $name, str_repeat(' ', $spacingWidth), $commandAliases.$command->getDescription()), $options);
@@ -263,6 +262,7 @@ class TextDescriptor extends Descriptor
 
     /**
      * Formats command aliases to show them in the command description.
+	 * 格式命令别名,以显示在命令描述中
      */
     private function getCommandAliasesText(Command $command): string
     {
@@ -278,6 +278,7 @@ class TextDescriptor extends Descriptor
 
     /**
      * Formats input option/argument default value.
+	 * 格式输入选项/参数默认值
      *
      * @param mixed $default
      */
@@ -309,12 +310,12 @@ class TextDescriptor extends Descriptor
 
         foreach ($commands as $command) {
             if ($command instanceof Command) {
-                $widths[] = Helper::strlen($command->getName());
+                $widths[] = Helper::width($command->getName());
                 foreach ($command->getAliases() as $alias) {
-                    $widths[] = Helper::strlen($alias);
+                    $widths[] = Helper::width($alias);
                 }
             } else {
-                $widths[] = Helper::strlen($command);
+                $widths[] = Helper::width($command);
             }
         }
 
@@ -329,10 +330,11 @@ class TextDescriptor extends Descriptor
         $totalWidth = 0;
         foreach ($options as $option) {
             // "-" + shortcut + ", --" + name
-            $nameLength = 1 + max(Helper::strlen($option->getShortcut()), 1) + 4 + Helper::strlen($option->getName());
-
-            if ($option->acceptValue()) {
-                $valueLength = 1 + Helper::strlen($option->getName()); // = + value
+            $nameLength = 1 + max(Helper::width($option->getShortcut()), 1) + 4 + Helper::width($option->getName());
+            if ($option->isNegatable()) {
+                $nameLength += 6 + Helper::width($option->getName()); // |--no- + name
+            } elseif ($option->acceptValue()) {
+                $valueLength = 1 + Helper::width($option->getName()); // = + value
                 $valueLength += $option->isValueOptional() ? 2 : 0; // [ + ]
 
                 $nameLength += $valueLength;

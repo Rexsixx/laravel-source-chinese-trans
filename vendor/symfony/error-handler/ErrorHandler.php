@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，错误处理器，Error Handler
+ * Symfony，Component，ErrorHandler，错误处理程序
  */
 
 /*
@@ -28,6 +28,7 @@ use Symfony\Component\ErrorHandler\Exception\SilencedErrorContext;
 
 /**
  * A generic ErrorHandler for the PHP engine.
+ * PHP引擎的通用ErrorHandler。
  *
  * Provides five bit fields that control how errors are handled:
  * - thrownErrors: errors thrown as \ErrorException
@@ -58,7 +59,6 @@ class ErrorHandler
         \E_USER_DEPRECATED => 'User Deprecated',
         \E_NOTICE => 'Notice',
         \E_USER_NOTICE => 'User Notice',
-        \E_STRICT => 'Runtime Notice',
         \E_WARNING => 'Warning',
         \E_USER_WARNING => 'User Warning',
         \E_COMPILE_WARNING => 'Compile Warning',
@@ -76,7 +76,6 @@ class ErrorHandler
         \E_USER_DEPRECATED => [null, LogLevel::INFO],
         \E_NOTICE => [null, LogLevel::WARNING],
         \E_USER_NOTICE => [null, LogLevel::WARNING],
-        \E_STRICT => [null, LogLevel::WARNING],
         \E_WARNING => [null, LogLevel::WARNING],
         \E_USER_WARNING => [null, LogLevel::WARNING],
         \E_COMPILE_WARNING => [null, LogLevel::WARNING],
@@ -94,7 +93,7 @@ class ErrorHandler
     private $tracedErrors = 0x77FB; // E_ALL - E_STRICT - E_PARSE
     private $screamedErrors = 0x55; // E_ERROR + E_CORE_ERROR + E_COMPILE_ERROR + E_PARSE
     private $loggedErrors = 0;
-    private $traceReflector;
+    private $configureException;
     private $debug;
 
     private $isRecursive = 0;
@@ -110,8 +109,9 @@ class ErrorHandler
 
     /**
      * Registers the error handler.
+	 * 注册错误处理程序
      */
-    public static function register(self $handler = null, bool $replace = true): self
+    public static function register(?self $handler = null, bool $replace = true): self
     {
         if (null === self::$reservedMemory) {
             self::$reservedMemory = str_repeat('x', 32768);
@@ -160,6 +160,7 @@ class ErrorHandler
 
     /**
      * Calls a function and turns any PHP error into \ErrorException.
+	 * 调用一个函数并将任何PHP错误转换为\ ErrorException
      *
      * @return mixed What $function(...$arguments) returns
      *
@@ -184,19 +185,31 @@ class ErrorHandler
         }
     }
 
-    public function __construct(BufferingLogger $bootstrappingLogger = null, bool $debug = false)
+    public function __construct(?BufferingLogger $bootstrappingLogger = null, bool $debug = false)
     {
+        if (\PHP_VERSION_ID < 80400) {
+            $this->levels[\E_STRICT] = 'Runtime Notice';
+            $this->loggers[\E_STRICT] = [null, LogLevel::WARNING];
+        }
+
         if ($bootstrappingLogger) {
             $this->bootstrappingLogger = $bootstrappingLogger;
             $this->setDefaultLogger($bootstrappingLogger);
         }
-        $this->traceReflector = new \ReflectionProperty(\Exception::class, 'trace');
-        $this->traceReflector->setAccessible(true);
+        $traceReflector = new \ReflectionProperty(\Exception::class, 'trace');
+        $traceReflector->setAccessible(true);
+        $this->configureException = \Closure::bind(static function ($e, $trace, $file = null, $line = null) use ($traceReflector) {
+            $traceReflector->setValue($e, $trace);
+            $e->file = $file ?? $e->file;
+            $e->line = $line ?? $e->line;
+        }, null, new class() extends \Exception {
+        });
         $this->debug = $debug;
     }
 
     /**
      * Sets a logger to non assigned errors levels.
+	 * 设置一个记录器到不指定的错误级别
      *
      * @param LoggerInterface $logger  A PSR-3 logger to put as default for the given levels
      * @param array|int|null  $levels  An array map of E_* to LogLevel::* or an integer bit field of E_* constants
@@ -229,6 +242,7 @@ class ErrorHandler
 
     /**
      * Sets a logger for each error level.
+	 * 为每个错误级别设置记录器
      *
      * @param array $loggers Error levels to [LoggerInterface|null, LogLevel::*] map
      *
@@ -282,6 +296,7 @@ class ErrorHandler
 
     /**
      * Sets a user exception handler.
+	 * 设置用户异常处理程序
      *
      * @param callable(\Throwable $e)|null $handler
      *
@@ -297,6 +312,7 @@ class ErrorHandler
 
     /**
      * Sets the PHP error levels that throw an exception when a PHP error occurs.
+	 * 设置发生PHP错误时抛出异常的PHP错误级别
      *
      * @param int  $levels  A bit field of E_* constants for thrown errors
      * @param bool $replace Replace or amend the previous value
@@ -317,6 +333,7 @@ class ErrorHandler
 
     /**
      * Sets the PHP error levels for which local variables are preserved.
+	 * 设置保留局部变量的PHP错误级别
      *
      * @param int  $levels  A bit field of E_* constants for scoped errors
      * @param bool $replace Replace or amend the previous value
@@ -336,6 +353,7 @@ class ErrorHandler
 
     /**
      * Sets the PHP error levels for which the stack trace is preserved.
+	 * 设置为其保留堆栈跟踪的PHP错误级别
      *
      * @param int  $levels  A bit field of E_* constants for traced errors
      * @param bool $replace Replace or amend the previous value
@@ -355,6 +373,7 @@ class ErrorHandler
 
     /**
      * Sets the error levels where the @-operator is ignored.
+	 * 设置忽略@-操作符的错误级别。
      *
      * @param int  $levels  A bit field of E_* constants for screamed errors
      * @param bool $replace Replace or amend the previous value
@@ -374,11 +393,12 @@ class ErrorHandler
 
     /**
      * Re-registers as a PHP error handler if levels changed.
+	 * 如果级别改变，重新注册为PHP错误处理程序。
      */
     private function reRegister(int $prev): void
     {
-        if ($prev !== $this->thrownErrors | $this->loggedErrors) {
-            $handler = set_error_handler('var_dump');
+        if ($prev !== ($this->thrownErrors | $this->loggedErrors)) {
+            $handler = set_error_handler('is_int');
             $handler = \is_array($handler) ? $handler[0] : null;
             restore_error_handler();
             if ($handler === $this) {
@@ -394,6 +414,7 @@ class ErrorHandler
 
     /**
      * Handles errors by filtering then logging them according to the configured bit fields.
+	 * 通过过滤然后根据配置的位字段记录错误来处理错误
      *
      * @return bool Returns false when no handling happens so that the PHP engine can handle the error itself
      *
@@ -454,7 +475,7 @@ class ErrorHandler
                 return true;
             }
         } else {
-            if (false !== strpos($message, '@anonymous')) {
+            if (PHP_VERSION_ID < 80303 && false !== strpos($message, '@anonymous')) {
                 $backtrace = debug_backtrace(false, 5);
 
                 for ($i = 1; isset($backtrace[$i]); ++$i) {
@@ -462,8 +483,7 @@ class ErrorHandler
                         && ('trigger_error' === $backtrace[$i]['function'] || 'user_error' === $backtrace[$i]['function'])
                     ) {
                         if ($backtrace[$i]['args'][0] !== $message) {
-                            $message = $this->parseAnonymousClass($backtrace[$i]['args'][0]);
-                            $logMessage = $this->levels[$type].': '.$message;
+                            $message = $backtrace[$i]['args'][0];
                         }
 
                         break;
@@ -471,14 +491,19 @@ class ErrorHandler
                 }
             }
 
+            if (false !== strpos($message, "@anonymous\0")) {
+                $message = $this->parseAnonymousClass($message);
+                $logMessage = $this->levels[$type].': '.$message;
+            }
+
             $errorAsException = new \ErrorException($logMessage, 0, $type, $file, $line);
 
             if ($throw || $this->tracedErrors & $type) {
                 $backtrace = $errorAsException->getTrace();
                 $lightTrace = $this->cleanTrace($backtrace, $type, $file, $line, $throw);
-                $this->traceReflector->setValue($errorAsException, $lightTrace);
+                ($this->configureException)($errorAsException, $lightTrace, $file, $line);
             } else {
-                $this->traceReflector->setValue($errorAsException, []);
+                ($this->configureException)($errorAsException, []);
                 $backtrace = [];
             }
         }
@@ -510,7 +535,12 @@ class ErrorHandler
                         }
 
                         // Display the original error message instead of the default one.
-                        $this->handleException($errorAsException);
+                        $exitCode = self::$exitCode;
+                        try {
+                            $this->handleException($errorAsException);
+                        } finally {
+                            self::$exitCode = $exitCode;
+                        }
 
                         // Stop the process by giving back the error to the native handler.
                         return false;
@@ -525,7 +555,7 @@ class ErrorHandler
             $log = 0;
         } else {
             if (\PHP_VERSION_ID < (\PHP_VERSION_ID < 70400 ? 70316 : 70404)) {
-                $currentErrorHandler = set_error_handler('var_dump');
+                $currentErrorHandler = set_error_handler('is_int');
                 restore_error_handler();
             }
 
@@ -547,6 +577,7 @@ class ErrorHandler
 
     /**
      * Handles an exception by logging then forwarding it to another handler.
+	 * 通过记录异常，然后将其转发给另一个处理程序来处理异常。
      *
      * @internal
      */
@@ -625,12 +656,13 @@ class ErrorHandler
 
     /**
      * Shutdown registered function for handling PHP fatal errors.
+	 * 关闭处理PHP致命错误的注册函数
      *
      * @param array|null $error An array as returned by error_get_last()
      *
      * @internal
      */
-    public static function handleFatalError(array $error = null): void
+    public static function handleFatalError(?array $error = null): void
     {
         if (null === self::$reservedMemory) {
             return;
@@ -642,7 +674,7 @@ class ErrorHandler
         $sameHandlerLimit = 10;
 
         while (!\is_array($handler) || !$handler[0] instanceof self) {
-            $handler = set_exception_handler('var_dump');
+            $handler = set_exception_handler('is_int');
             restore_exception_handler();
 
             if (!$handler) {
@@ -662,6 +694,10 @@ class ErrorHandler
             set_exception_handler($h);
         }
         if (!$handler) {
+            if (null === $error && $exitCode = self::$exitCode) {
+                register_shutdown_function('register_shutdown_function', function () use ($exitCode) { exit($exitCode); });
+            }
+
             return;
         }
         if ($handler !== $h) {
@@ -697,14 +733,14 @@ class ErrorHandler
             // Ignore this re-throw
         }
 
-        if ($exit && self::$exitCode) {
-            $exitCode = self::$exitCode;
+        if ($exit && $exitCode = self::$exitCode) {
             register_shutdown_function('register_shutdown_function', function () use ($exitCode) { exit($exitCode); });
         }
     }
 
     /**
      * Renders the given exception.
+	 * 呈现给定的异常。
      *
      * As this method is mainly called during boot where nothing is yet available,
      * the output is always either HTML or CLI depending where PHP runs.
@@ -728,6 +764,7 @@ class ErrorHandler
 
     /**
      * Override this method if you want to define more error enhancers.
+	 * 如果要定义更多的错误增强程序，请重写此方法。
      *
      * @return ErrorEnhancerInterface[]
      */
@@ -742,8 +779,9 @@ class ErrorHandler
 
     /**
      * Cleans the trace by removing function arguments and the frames added by the error handler and DebugClassLoader.
+	 * 通过删除函数参数和错误处理程序和DebugClassLoader添加的帧来清除跟踪
      */
-    private function cleanTrace(array $backtrace, int $type, string $file, int $line, bool $throw): array
+    private function cleanTrace(array $backtrace, int $type, string &$file, int &$line, bool $throw): array
     {
         $lightTrace = $backtrace;
 
@@ -751,6 +789,19 @@ class ErrorHandler
             if (isset($backtrace[$i]['file'], $backtrace[$i]['line']) && $backtrace[$i]['line'] === $line && $backtrace[$i]['file'] === $file) {
                 $lightTrace = \array_slice($lightTrace, 1 + $i);
                 break;
+            }
+        }
+        if (\E_USER_DEPRECATED === $type) {
+            for ($i = 0; isset($lightTrace[$i]); ++$i) {
+                if (!isset($lightTrace[$i]['file'], $lightTrace[$i]['line'], $lightTrace[$i]['function'])) {
+                    continue;
+                }
+                if (!isset($lightTrace[$i]['class']) && 'trigger_deprecation' === $lightTrace[$i]['function']) {
+                    $file = $lightTrace[$i]['file'];
+                    $line = $lightTrace[$i]['line'];
+                    $lightTrace = \array_slice($lightTrace, 1 + $i);
+                    break;
+                }
             }
         }
         if (class_exists(DebugClassLoader::class, false)) {
@@ -772,10 +823,11 @@ class ErrorHandler
     /**
      * Parse the error message by removing the anonymous class notation
      * and using the parent class instead if possible.
+	 * 通过删除匿名类符号来解析错误消息如果可能的话，使用父类代替。
      */
     private function parseAnonymousClass(string $message): string
     {
-        return preg_replace_callback('/[a-zA-Z_\x7f-\xff][\\\\a-zA-Z0-9_\x7f-\xff]*+@anonymous\x00.*?\.php(?:0x?|:[0-9]++\$)[0-9a-fA-F]++/', static function ($m) {
+        return preg_replace_callback('/[a-zA-Z_\x7f-\xff][\\\\a-zA-Z0-9_\x7f-\xff]*+@anonymous\x00.*?\.php(?:0x?|:[0-9]++\$)?[0-9a-fA-F]++/', static function ($m) {
             return class_exists($m[0], false) ? (get_parent_class($m[0]) ?: key(class_implements($m[0])) ?: 'class').'@anonymous' : $m[0];
         }, $message);
     }

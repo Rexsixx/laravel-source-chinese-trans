@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，控制器，控制器解析器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * This implementation uses the '_controller' request attribute to determine
  * the controller to execute.
+ * 这个实现使用‘_controller’请求属性来确定要执行的控制器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
@@ -25,7 +29,7 @@ class ControllerResolver implements ControllerResolverInterface
 {
     private $logger;
 
-    public function __construct(LoggerInterface $logger = null)
+    public function __construct(?LoggerInterface $logger = null)
     {
         $this->logger = $logger;
     }
@@ -72,7 +76,7 @@ class ControllerResolver implements ControllerResolverInterface
 
         if (\is_object($controller)) {
             if (!\is_callable($controller)) {
-                throw new \InvalidArgumentException(sprintf('The controller for URI "%s" is not callable: '.$this->getControllerError($controller), $request->getPathInfo()));
+                throw new \InvalidArgumentException(sprintf('The controller for URI "%s" is not callable: ', $request->getPathInfo()).$this->getControllerError($controller));
             }
 
             return $controller;
@@ -89,7 +93,7 @@ class ControllerResolver implements ControllerResolverInterface
         }
 
         if (!\is_callable($callable)) {
-            throw new \InvalidArgumentException(sprintf('The controller for URI "%s" is not callable: '.$this->getControllerError($callable), $request->getPathInfo()));
+            throw new \InvalidArgumentException(sprintf('The controller for URI "%s" is not callable: ', $request->getPathInfo()).$this->getControllerError($callable));
         }
 
         return $callable;
@@ -97,14 +101,13 @@ class ControllerResolver implements ControllerResolverInterface
 
     /**
      * Returns a callable for the given controller.
+	 * 返回给定控制器的可调用对象
      *
-     * @param string $controller A Controller string
-     *
-     * @return callable A PHP callable
+     * @return callable
      *
      * @throws \InvalidArgumentException When the controller cannot be created
      */
-    protected function createController($controller)
+    protected function createController(string $controller)
     {
         if (!str_contains($controller, '::')) {
             $controller = $this->instantiateController($controller);
@@ -141,12 +144,11 @@ class ControllerResolver implements ControllerResolverInterface
 
     /**
      * Returns an instantiated controller.
-     *
-     * @param string $class A class name
+	 * 返回实例化的控制器
      *
      * @return object
      */
-    protected function instantiateController($class)
+    protected function instantiateController(string $class)
     {
         return new $class();
     }
@@ -165,11 +167,11 @@ class ControllerResolver implements ControllerResolverInterface
             $availableMethods = $this->getClassMethodsWithoutMagicMethods($callable);
             $alternativeMsg = $availableMethods ? sprintf(' or use one of the available methods: "%s"', implode('", "', $availableMethods)) : '';
 
-            return sprintf('Controller class "%s" cannot be called without a method name. You need to implement "__invoke"%s.', \get_class($callable), $alternativeMsg);
+            return sprintf('Controller class "%s" cannot be called without a method name. You need to implement "__invoke"%s.', get_debug_type($callable), $alternativeMsg);
         }
 
         if (!\is_array($callable)) {
-            return sprintf('Invalid type for controller given, expected string, array or object, got "%s".', \gettype($callable));
+            return sprintf('Invalid type for controller given, expected string, array or object, got "%s".', get_debug_type($callable));
         }
 
         if (!isset($callable[0]) || !isset($callable[1]) || 2 !== \count($callable)) {
@@ -182,7 +184,7 @@ class ControllerResolver implements ControllerResolverInterface
             return sprintf('Class "%s" does not exist.', $controller);
         }
 
-        $className = \is_object($controller) ? \get_class($controller) : $controller;
+        $className = \is_object($controller) ? get_debug_type($controller) : $controller;
 
         if (method_exists($controller, $method)) {
             return sprintf('Method "%s" on class "%s" should be public and non-abstract.', $method, $className);

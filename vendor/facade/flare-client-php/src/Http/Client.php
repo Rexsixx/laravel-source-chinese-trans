@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，Flare Client，Http，客户端
+ * Facade，FlareClient，Http，客户端
  */
 
 namespace Facade\FlareClient\Http;

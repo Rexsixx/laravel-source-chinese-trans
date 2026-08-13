@@ -1,6 +1,6 @@
 <?php
 /**
- * Http，设置缓存头
+ * Illuminate，Http，中间件，设置缓存头
  */
 
 namespace Illuminate\Http\Middleware;
@@ -12,7 +12,7 @@ class SetCacheHeaders
 {
     /**
      * Add cache related HTTP headers.
-	 * 添加缓存HTTP头
+	 * 添加与缓存相关的HTTP头
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -53,14 +53,14 @@ class SetCacheHeaders
 
     /**
      * Parse the given header options.
-	 * 解析给定的头选项
+	 * 解析给定的标头选项
      *
      * @param  string  $options
      * @return array
      */
     protected function parseOptions($options)
     {
-        return collect(explode(';', $options))->mapWithKeys(function ($option) {
+        return collect(explode(';', rtrim($options, ';')))->mapWithKeys(function ($option) {
             $data = explode('=', $option, 2);
 
             return [$data[0] => $data[1] ?? true];

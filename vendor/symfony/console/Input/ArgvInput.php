@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，输入，Argv 输入
+ * Symfony，Component，Console，输入，Argv 输入
  */
 
 /*
@@ -18,6 +18,7 @@ use Symfony\Component\Console\Exception\RuntimeException;
 
 /**
  * ArgvInput represents an input coming from the CLI arguments.
+ * ArgvInput表示来自CLI参数的输入。
  *
  * Usage:
  *
@@ -46,10 +47,7 @@ class ArgvInput extends Input
     private $tokens;
     private $parsed;
 
-    /**
-     * @param array|null $argv An array of parameters from the CLI (in the argv format)
-     */
-    public function __construct(array $argv = null, InputDefinition $definition = null)
+    public function __construct(?array $argv = null, ?InputDefinition $definition = null)
     {
         $argv = $argv ?? $_SERVER['argv'] ?? [];
 
@@ -74,22 +72,30 @@ class ArgvInput extends Input
         $parseOptions = true;
         $this->parsed = $this->tokens;
         while (null !== $token = array_shift($this->parsed)) {
-            if ($parseOptions && '' == $token) {
-                $this->parseArgument($token);
-            } elseif ($parseOptions && '--' == $token) {
-                $parseOptions = false;
-            } elseif ($parseOptions && str_starts_with($token, '--')) {
-                $this->parseLongOption($token);
-            } elseif ($parseOptions && '-' === $token[0] && '-' !== $token) {
-                $this->parseShortOption($token);
-            } else {
-                $this->parseArgument($token);
-            }
+            $parseOptions = $this->parseToken($token, $parseOptions);
         }
+    }
+
+    protected function parseToken(string $token, bool $parseOptions): bool
+    {
+        if ($parseOptions && '' == $token) {
+            $this->parseArgument($token);
+        } elseif ($parseOptions && '--' == $token) {
+            return false;
+        } elseif ($parseOptions && str_starts_with($token, '--')) {
+            $this->parseLongOption($token);
+        } elseif ($parseOptions && '-' === $token[0] && '-' !== $token) {
+            $this->parseShortOption($token);
+        } else {
+            $this->parseArgument($token);
+        }
+
+        return $parseOptions;
     }
 
     /**
      * Parses a short option.
+	 * 替换一个简短的选项
      */
     private function parseShortOption(string $token)
     {
@@ -109,6 +115,7 @@ class ArgvInput extends Input
 
     /**
      * Parses a short option set.
+	 * 解析一个短选项集
      *
      * @throws RuntimeException When option given doesn't exist
      */
@@ -134,6 +141,7 @@ class ArgvInput extends Input
 
     /**
      * Parses a long option.
+	 * Parses有一个很长的选择
      */
     private function parseLongOption(string $token)
     {
@@ -151,6 +159,7 @@ class ArgvInput extends Input
 
     /**
      * Parses an argument.
+	 * 解析参数
      *
      * @throws RuntimeException When too many arguments are given
      */
@@ -171,16 +180,31 @@ class ArgvInput extends Input
         // unexpected argument
         } else {
             $all = $this->definition->getArguments();
-            if (\count($all)) {
-                throw new RuntimeException(sprintf('Too many arguments, expected arguments "%s".', implode('" "', array_keys($all))));
+            $symfonyCommandName = null;
+            if (($inputArgument = $all[$key = array_key_first($all)] ?? null) && 'command' === $inputArgument->getName()) {
+                $symfonyCommandName = $this->arguments['command'] ?? null;
+                unset($all[$key]);
             }
 
-            throw new RuntimeException(sprintf('No arguments expected, got "%s".', $token));
+            if (\count($all)) {
+                if ($symfonyCommandName) {
+                    $message = sprintf('Too many arguments to "%s" command, expected arguments "%s".', $symfonyCommandName, implode('" "', array_keys($all)));
+                } else {
+                    $message = sprintf('Too many arguments, expected arguments "%s".', implode('" "', array_keys($all)));
+                }
+            } elseif ($symfonyCommandName) {
+                $message = sprintf('No arguments expected for "%s" command, got "%s".', $symfonyCommandName, $token);
+            } else {
+                $message = sprintf('No arguments expected, got "%s".', $token);
+            }
+
+            throw new RuntimeException($message);
         }
     }
 
     /**
      * Adds a short option value.
+	 * 添加一个短期选项值
      *
      * @throws RuntimeException When option given doesn't exist
      */
@@ -195,13 +219,24 @@ class ArgvInput extends Input
 
     /**
      * Adds a long option value.
+	 * 添加一个长选项值
      *
      * @throws RuntimeException When option given doesn't exist
      */
     private function addLongOption(string $name, $value)
     {
         if (!$this->definition->hasOption($name)) {
-            throw new RuntimeException(sprintf('The "--%s" option does not exist.', $name));
+            if (!$this->definition->hasNegation($name)) {
+                throw new RuntimeException(sprintf('The "--%s" option does not exist.', $name));
+            }
+
+            $optionName = $this->definition->negationToName($name);
+            if (null !== $value) {
+                throw new RuntimeException(sprintf('The "--%s" option does not accept a value.', $name));
+            }
+            $this->options[$optionName] = false;
+
+            return;
         }
 
         $option = $this->definition->getOption($name);
@@ -276,7 +311,7 @@ class ArgvInput extends Input
     /**
      * {@inheritdoc}
      */
-    public function hasParameterOption($values, $onlyParams = false)
+    public function hasParameterOption($values, bool $onlyParams = false)
     {
         $values = (array) $values;
 
@@ -301,7 +336,7 @@ class ArgvInput extends Input
     /**
      * {@inheritdoc}
      */
-    public function getParameterOption($values, $default = false, $onlyParams = false)
+    public function getParameterOption($values, $default = false, bool $onlyParams = false)
     {
         $values = (array) $values;
         $tokens = $this->tokens;
@@ -331,6 +366,7 @@ class ArgvInput extends Input
 
     /**
      * Returns a stringified representation of the args passed to the command.
+	 * 返回args传递给命令的stringified表示
      *
      * @return string
      */

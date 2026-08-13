@@ -29,6 +29,7 @@ interface Matcher extends SelfDescribing
 
     /**
      * Evaluates the matcher for argument <var>$item</var>.
+	 * 计算参数<var>$item</var>的匹配器
      *
      * @param mixed $item the object against which the matcher is evaluated.
      *

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，测试员，测试员特征
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -11,10 +14,12 @@
 
 namespace Symfony\Component\Console\Tester;
 
+use PHPUnit\Framework\Assert;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
+use Symfony\Component\Console\Tester\Constraint\CommandIsSuccessful;
 
 /**
  * @author Amrouche Hamza <hamza.simperfit@gmail.com>
@@ -25,15 +30,20 @@ trait TesterTrait
     private $output;
     private $inputs = [];
     private $captureStreamsIndependently = false;
+    /** @var InputInterface */
+    private $input;
+    /** @var int */
+    private $statusCode;
 
     /**
      * Gets the display returned by the last execution of the command or application.
+	 * 获取最后执行命令或应用程序返回的显示
      *
-     * @param bool $normalize Whether to normalize end of lines to \n or not
+     * @return string
      *
-     * @return string The display
+     * @throws \RuntimeException If it's called before the execute method
      */
-    public function getDisplay($normalize = false)
+    public function getDisplay(bool $normalize = false)
     {
         if (null === $this->output) {
             throw new \RuntimeException('Output not initialized, did you execute the command before requesting the display?');
@@ -52,12 +62,13 @@ trait TesterTrait
 
     /**
      * Gets the output written to STDERR by the application.
+	 * 通过应用程序获取写入STDERR的输出。
      *
      * @param bool $normalize Whether to normalize end of lines to \n or not
      *
      * @return string
      */
-    public function getErrorOutput($normalize = false)
+    public function getErrorOutput(bool $normalize = false)
     {
         if (!$this->captureStreamsIndependently) {
             throw new \LogicException('The error output is not available when the tester is run without "capture_stderr_separately" option set.');
@@ -76,8 +87,9 @@ trait TesterTrait
 
     /**
      * Gets the input instance used by the last execution of the command or application.
+	 * 获取命令或应用程序最后执行的输入实例
      *
-     * @return InputInterface The current input instance
+     * @return InputInterface
      */
     public function getInput()
     {
@@ -86,8 +98,9 @@ trait TesterTrait
 
     /**
      * Gets the output instance used by the last execution of the command or application.
+	 * 获取命令或应用程序最后执行的输出实例
      *
-     * @return OutputInterface The current output instance
+     * @return OutputInterface
      */
     public function getOutput()
     {
@@ -96,16 +109,29 @@ trait TesterTrait
 
     /**
      * Gets the status code returned by the last execution of the command or application.
+	 * 获取最后执行命令或应用程序返回的状态代码
      *
-     * @return int The status code
+     * @return int
+     *
+     * @throws \RuntimeException If it's called before the execute method
      */
     public function getStatusCode()
     {
+        if (null === $this->statusCode) {
+            throw new \RuntimeException('Status code not initialized, did you execute the command before requesting the status code?');
+        }
+
         return $this->statusCode;
+    }
+
+    public function assertCommandIsSuccessful(string $message = ''): void
+    {
+        Assert::assertThat($this->statusCode, new CommandIsSuccessful(), $message);
     }
 
     /**
      * Sets the user inputs.
+	 * 设置用户输入
      *
      * @param array $inputs An array of strings representing each input
      *                      passed to the command input stream
@@ -121,6 +147,7 @@ trait TesterTrait
 
     /**
      * Initializes the output property.
+	 * 初始化输出属性
      *
      * Available options:
      *

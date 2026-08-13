@@ -1,22 +1,25 @@
 <?php
 /**
- * 控制台，计划运行命令
+ * Illuminate，控制台，调度，schedule:run 调度运行命令
  */
 
 namespace Illuminate\Console\Scheduling;
 
 use Illuminate\Console\Command;
+use Illuminate\Console\Events\ScheduledTaskFailed;
 use Illuminate\Console\Events\ScheduledTaskFinished;
 use Illuminate\Console\Events\ScheduledTaskSkipped;
 use Illuminate\Console\Events\ScheduledTaskStarting;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Facades\Date;
+use Throwable;
 
 class ScheduleRunCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -32,7 +35,7 @@ class ScheduleRunCommand extends Command
 
     /**
      * The schedule instance.
-	 * 计划实例
+	 * 调度实例
      *
      * @var \Illuminate\Console\Scheduling\Schedule
      */
@@ -48,7 +51,7 @@ class ScheduleRunCommand extends Command
 
     /**
      * Check if any events ran.
-	 * 检查是否运行了任何事件
+	 * 检查是否事件运行
      *
      * @var bool
      */
@@ -61,6 +64,14 @@ class ScheduleRunCommand extends Command
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
     protected $dispatcher;
+
+    /**
+     * The exception handler.
+	 * 异常处理程序
+     *
+     * @var \Illuminate\Contracts\Debug\ExceptionHandler
+     */
+    protected $handler;
 
     /**
      * Create a new command instance.
@@ -81,12 +92,14 @@ class ScheduleRunCommand extends Command
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @param  \Illuminate\Contracts\Events\Dispatcher  $dispatcher
+     * @param  \Illuminate\Contracts\Debug\ExceptionHandler  $handler
      * @return void
      */
-    public function handle(Schedule $schedule, Dispatcher $dispatcher)
+    public function handle(Schedule $schedule, Dispatcher $dispatcher, ExceptionHandler $handler)
     {
         $this->schedule = $schedule;
         $this->dispatcher = $dispatcher;
+        $this->handler = $handler;
 
         foreach ($this->schedule->dueEvents($this->laravel) as $event) {
             if (! $event->filtersPass($this->laravel)) {
@@ -134,19 +147,25 @@ class ScheduleRunCommand extends Command
      */
     protected function runEvent($event)
     {
-        $this->line('<info>Running scheduled command:</info> '.$event->getSummaryForDisplay());
+        $this->line('<info>['.date('c').'] Running scheduled command:</info> '.$event->getSummaryForDisplay());
 
         $this->dispatcher->dispatch(new ScheduledTaskStarting($event));
 
         $start = microtime(true);
 
-        $event->run($this->laravel);
+        try {
+            $event->run($this->laravel);
 
-        $this->dispatcher->dispatch(new ScheduledTaskFinished(
-            $event,
-            round(microtime(true) - $start, 2)
-        ));
+            $this->dispatcher->dispatch(new ScheduledTaskFinished(
+                $event,
+                round(microtime(true) - $start, 2)
+            ));
 
-        $this->eventsRan = true;
+            $this->eventsRan = true;
+        } catch (Throwable $e) {
+            $this->dispatcher->dispatch(new ScheduledTaskFailed($event, $e));
+
+            $this->handler->report($e);
+        }
     }
 }

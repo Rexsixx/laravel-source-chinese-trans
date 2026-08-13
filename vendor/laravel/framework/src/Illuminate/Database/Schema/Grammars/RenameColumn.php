@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，重命名列
+ * Illuminate，数据库，架构，语法，重命名列
  */
 
 namespace Illuminate\Database\Schema\Grammars;
@@ -26,20 +26,22 @@ class RenameColumn
      */
     public static function compile(Grammar $grammar, Blueprint $blueprint, Fluent $command, Connection $connection)
     {
+        $schema = $connection->getDoctrineSchemaManager();
+        $databasePlatform = $schema->getDatabasePlatform();
+        $databasePlatform->registerDoctrineTypeMapping('enum', 'string');
+
         $column = $connection->getDoctrineColumn(
             $grammar->getTablePrefix().$blueprint->getTable(), $command->from
         );
 
-        $schema = $connection->getDoctrineSchemaManager();
-
-        return (array) $schema->getDatabasePlatform()->getAlterTableSQL(static::getRenamedDiff(
+        return (array) $databasePlatform->getAlterTableSQL(static::getRenamedDiff(
             $grammar, $blueprint, $command, $column, $schema
         ));
     }
 
     /**
      * Get a new column instance with the new column name.
-	 * 得到具有新列名的新列实例
+	 * 获取具有新列名的新列实例
      *
      * @param  \Illuminate\Database\Schema\Grammars\Grammar  $grammar
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
@@ -57,7 +59,7 @@ class RenameColumn
 
     /**
      * Set the renamed columns on the table diff.
-	 * 设置重命名的列在表diff上
+	 * 在表diff上设置重命名的列
      *
      * @param  \Doctrine\DBAL\Schema\TableDiff  $tableDiff
      * @param  \Illuminate\Support\Fluent  $command
@@ -75,7 +77,7 @@ class RenameColumn
 
     /**
      * Get the writable column options.
-	 * 得到可写列选项
+	 * 获取可写列选项
      *
      * @param  \Doctrine\DBAL\Schema\Column  $column
      * @return array

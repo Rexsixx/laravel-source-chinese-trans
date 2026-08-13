@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，解决方案，解决方案转换器
+ * Facade，Ignition，解决方案，解决变化
  */
 
 namespace Facade\Ignition\Solutions;
@@ -8,6 +8,7 @@ namespace Facade\Ignition\Solutions;
 use Facade\IgnitionContracts\RunnableSolution;
 use Facade\IgnitionContracts\Solution;
 use Illuminate\Contracts\Support\Arrayable;
+use Throwable;
 
 class SolutionTransformer implements Arrayable
 {
@@ -32,7 +33,16 @@ class SolutionTransformer implements Arrayable
             'run_button_text' => $isRunnable ? $this->solution->getRunButtonText() : '',
             'run_parameters' => $isRunnable ? $this->solution->getRunParameters() : [],
             'action_description' => $isRunnable ? $this->solution->getSolutionActionDescription() : '',
-            'execute_endpoint' => action('\Facade\Ignition\Http\Controllers\ExecuteSolutionController'),
+            'execute_endpoint' => $this->executeEndpoint(),
         ];
+    }
+
+    protected function executeEndpoint(): string
+    {
+        try {
+            return action('\Facade\Ignition\Http\Controllers\ExecuteSolutionController');
+        } catch (Throwable $exception) {
+            return '';
+        }
     }
 }

@@ -1,10 +1,11 @@
 <?php
 /**
- * 事件，呼叫队列监听者
+ * Illuminate，事件，呼叫队列监听器
  */
 
 namespace Illuminate\Events;
 
+use Illuminate\Bus\Queueable;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Queue\Job;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,11 +13,11 @@ use Illuminate\Queue\InteractsWithQueue;
 
 class CallQueuedListener implements ShouldQueue
 {
-    use InteractsWithQueue;
+    use InteractsWithQueue, Queueable;
 
     /**
      * The listener class name.
-	 * 监听类名
+	 * 监听器类名
      *
      * @var string
      */
@@ -24,7 +25,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The listener method.
-	 * 监听方法
+	 * 监听器方法名
      *
      * @var string
      */
@@ -32,7 +33,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The data to be passed to the listener.
-	 * 数据要传递给侦听器的
+	 * 要传递给监听器的数据
      *
      * @var array
      */
@@ -40,35 +41,51 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * The number of times the job may be attempted.
-	 * 可能尝试该作业的次数
+	 * 可能尝试该任务的次数
      *
      * @var int
      */
     public $tries;
 
     /**
-     * The number of seconds to wait before retrying the job.
-	 * 秒数重试作业之前等待的
+     * The maximum number of exceptions allowed, regardless of attempts.
+	 * 允许的最大异常数，无论是否尝试。
      *
      * @var int
      */
-    public $retryAfter;
+    public $maxExceptions;
+
+    /**
+     * The number of seconds to wait before retrying a job that encountered an uncaught exception.
+	 * 在重试遇到未捕获异常的作业之前等待的秒数
+     *
+     * @var int
+     */
+    public $backoff;
 
     /**
      * The timestamp indicating when the job should timeout.
-	 * 指明作业何时应该超时的时间戳
+	 * 指示作业何时应该超时的时间戳
      *
      * @var int
      */
-    public $timeoutAt;
+    public $retryUntil;
 
     /**
      * The number of seconds the job can run before timing out.
-	 * 可以运行的秒数作业在超时之前
+	 * 作业在超时之前可以运行的秒数
      *
      * @var int
      */
     public $timeout;
+
+    /**
+     * Indicates if the job should be encrypted.
+	 * 指明任务是否应该加密
+     *
+     * @var bool
+     */
+    public $shouldBeEncrypted = false;
 
     /**
      * Create a new job instance.
@@ -88,7 +105,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Handle the queued job.
-	 * 处理排队任务
+	 * 处理队列任务
      *
      * @param  \Illuminate\Container\Container  $container
      * @return void
@@ -106,7 +123,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Set the job instance of the given class if necessary.
-	 * 设置给定类的作业实例如果需要。
+	 * 如果需要，设置给定类的作业实例。
      *
      * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  object  $instance
@@ -123,11 +140,11 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Call the failed method on the job instance.
-	 * 调取失败方法在任务实例中
+	 * 在作业实例上调用失败的方法
      *
      * The event instance and the exception will be passed.
      *
-     * @param  \Exception  $e
+     * @param  \Throwable  $e
      * @return void
      */
     public function failed($e)
@@ -145,7 +162,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Unserialize the data if needed.
-	 * 反序列化
+	 * 如果需要，将数据反序列化。
      *
      * @return void
      */
@@ -158,7 +175,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Get the display name for the queued job.
-	 * 得到显示名称
+	 * 获取排队作业的显示名称
      *
      * @return string
      */
@@ -169,7 +186,7 @@ class CallQueuedListener implements ShouldQueue
 
     /**
      * Prepare the instance for cloning.
-	 * 准备克隆实例
+	 * 为克隆准备实例
      *
      * @return void
      */

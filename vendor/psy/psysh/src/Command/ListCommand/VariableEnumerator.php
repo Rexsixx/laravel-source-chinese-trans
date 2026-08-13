@@ -1,9 +1,12 @@
 <?php
+/**
+ * Psy，命令，列表命令，变量枚举器
+ */
 
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2023 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,11 +20,12 @@ use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Variable Enumerator class.
+ * 变量枚举类。
  */
 class VariableEnumerator extends Enumerator
 {
     // n.b. this array is the order in which special variables will be listed
-    private static $specialNames = [
+    private const SPECIAL_NAMES = [
         '_', '_e', '__out', '__function', '__method', '__class', '__namespace', '__file', '__line', '__dir',
     ];
 
@@ -29,6 +33,7 @@ class VariableEnumerator extends Enumerator
 
     /**
      * Variable Enumerator constructor.
+	 * 变量枚举函数构造函数。
      *
      * Unlike most other enumerators, the Variable Enumerator needs access to
      * the current scope variables, so we need to pass it a Context instance.
@@ -45,7 +50,7 @@ class VariableEnumerator extends Enumerator
     /**
      * {@inheritdoc}
      */
-    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null): array
+    protected function listItems(InputInterface $input, ?\Reflector $reflector = null, $target = null): array
     {
         // only list variables when no Reflector is present.
         if ($reflector !== null || $target !== null) {
@@ -80,8 +85,8 @@ class VariableEnumerator extends Enumerator
     {
         $scopeVars = $this->context->getAll();
         \uksort($scopeVars, function ($a, $b) {
-            $aIndex = \array_search($a, self::$specialNames);
-            $bIndex = \array_search($b, self::$specialNames);
+            $aIndex = \array_search($a, self::SPECIAL_NAMES);
+            $bIndex = \array_search($b, self::SPECIAL_NAMES);
 
             if ($aIndex !== false) {
                 if ($bIndex !== false) {
@@ -100,7 +105,7 @@ class VariableEnumerator extends Enumerator
 
         $ret = [];
         foreach ($scopeVars as $name => $val) {
-            if (!$showAll && \in_array($name, self::$specialNames)) {
+            if (!$showAll && \in_array($name, self::SPECIAL_NAMES)) {
                 continue;
             }
 
@@ -126,7 +131,7 @@ class VariableEnumerator extends Enumerator
                 $fname = '$'.$name;
                 $ret[$fname] = [
                     'name'  => $fname,
-                    'style' => \in_array($name, self::$specialNames) ? self::IS_PRIVATE : self::IS_PUBLIC,
+                    'style' => \in_array($name, self::SPECIAL_NAMES) ? self::IS_PRIVATE : self::IS_PUBLIC,
                     'value' => $this->presentRef($val),
                 ];
             }

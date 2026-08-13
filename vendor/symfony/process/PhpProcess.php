@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，进程，php 进程
+ * Symfony，Component，Process，Php的过程
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\Process\Exception\RuntimeException;
 
 /**
  * PhpProcess runs a PHP script in an independent process.
+ * PhpProcess在一个独立的进程中运行PHP脚本。
  *
  *     $p = new PhpProcess('<?php echo "foo"; ?>');
  *     $p->run();
@@ -35,7 +36,7 @@ class PhpProcess extends Process
      * @param int         $timeout The timeout in seconds
      * @param array|null  $php     Path to the PHP binary to use with any additional arguments
      */
-    public function __construct(string $script, string $cwd = null, array $env = null, int $timeout = 60, array $php = null)
+    public function __construct(string $script, ?string $cwd = null, ?array $env = null, int $timeout = 60, ?array $php = null)
     {
         if (null === $php) {
             $executableFinder = new PhpExecutableFinder();
@@ -56,27 +57,15 @@ class PhpProcess extends Process
     /**
      * {@inheritdoc}
      */
-    public static function fromShellCommandline(string $command, string $cwd = null, array $env = null, $input = null, ?float $timeout = 60)
+    public static function fromShellCommandline(string $command, ?string $cwd = null, ?array $env = null, $input = null, ?float $timeout = 60)
     {
         throw new LogicException(sprintf('The "%s()" method cannot be called when using "%s".', __METHOD__, self::class));
     }
 
     /**
-     * Sets the path to the PHP binary to use.
-     *
-     * @deprecated since Symfony 4.2, use the $php argument of the constructor instead.
-     */
-    public function setPhpBinary($php)
-    {
-        @trigger_error(sprintf('The "%s()" method is deprecated since Symfony 4.2, use the $php argument of the constructor instead.', __METHOD__), \E_USER_DEPRECATED);
-
-        $this->setCommandLine($php);
-    }
-
-    /**
      * {@inheritdoc}
      */
-    public function start(callable $callback = null, array $env = [])
+    public function start(?callable $callback = null, array $env = [])
     {
         if (null === $this->getCommandLine()) {
             throw new RuntimeException('Unable to find the PHP executable.');

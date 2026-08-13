@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，路由URL生成器接口
+ * Illuminate，契约，路由，URL 生成器
  */
 
 namespace Illuminate\Contracts\Routing;
@@ -9,7 +9,7 @@ interface UrlGenerator
 {
     /**
      * Get the current URL for the request.
-	 * 得到当前请求URL
+	 * 获取请求的当前URL
      *
      * @return string
      */
@@ -17,7 +17,7 @@ interface UrlGenerator
 
     /**
      * Get the URL for the previous request.
-	 * 得到前一个请求的URL
+	 * 获取前一个请求的URL
      *
      * @param  mixed  $fallback
      * @return string
@@ -26,7 +26,7 @@ interface UrlGenerator
 
     /**
      * Generate an absolute URL to the given path.
-	 * 生成一个真正的URL
+	 * 生成给定路径的绝对URL
      *
      * @param  string  $path
      * @param  mixed  $extra
@@ -57,7 +57,7 @@ interface UrlGenerator
 
     /**
      * Get the URL to a named route.
-	 * 得到命名路由的URL
+	 * 获取一个命名路由的URL
      *
      * @param  string  $name
      * @param  mixed  $parameters
@@ -70,7 +70,7 @@ interface UrlGenerator
 
     /**
      * Get the URL to a controller action.
-	 * 得到控制器动作的URL
+	 * 获取一个控制器动作的URL
      *
      * @param  string|array  $action
      * @param  mixed  $parameters

@@ -1,17 +1,17 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，构建器
+ * PhpParser，构建者
  */
 
 namespace PhpParser;
 
-interface Builder
-{
+interface Builder {
     /**
      * Returns the built node.
+	 * 返回构建的节点
      *
      * @return Node The built node
      */
-    public function getNode() : Node;
+    public function getNode(): Node;
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，事件监听器，测试会话监听器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -14,12 +17,17 @@ namespace Symfony\Component\HttpKernel\EventListener;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+trigger_deprecation('symfony/http-kernel', '5.4', '"%s" is deprecated, use "%s" instead.', TestSessionListener::class, SessionListener::class);
+
 /**
  * Sets the session in the request.
+ * 设置请求中的会话
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
  * @final
+ *
+ * @deprecated since Symfony 5.4, use SessionListener instead
  */
 class TestSessionListener extends AbstractTestSessionListener
 {
@@ -33,10 +41,10 @@ class TestSessionListener extends AbstractTestSessionListener
 
     protected function getSession(): ?SessionInterface
     {
-        if (!$this->container->has('session')) {
-            return null;
+        if ($this->container->has('session')) {
+            return $this->container->get('session');
         }
 
-        return $this->container->get('session');
+        return null;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，清除编译命令
+ * Illuminate，基础，控制台，clear-compiled 清除编译命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -11,7 +11,7 @@ class ClearCompiledCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -19,7 +19,7 @@ class ClearCompiledCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令描述 
      *
      * @var string
      */
@@ -33,11 +33,11 @@ class ClearCompiledCommand extends Command
      */
     public function handle()
     {
-        if (file_exists($servicesPath = $this->laravel->getCachedServicesPath())) {
+        if (is_file($servicesPath = $this->laravel->getCachedServicesPath())) {
             @unlink($servicesPath);
         }
 
-        if (file_exists($packagesPath = $this->laravel->getCachedPackagesPath())) {
+        if (is_file($packagesPath = $this->laravel->getCachedPackagesPath())) {
             @unlink($packagesPath);
         }
 

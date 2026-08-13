@@ -6,7 +6,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2023 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,8 +19,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Clear the Psy Shell.
+ * 清除Psy Shell。
  *
  * Just what it says on the tin.
+ * 正如它在tin里说的那样
  */
 class ClearCommand extends Command
 {
@@ -44,8 +46,10 @@ HELP
 
     /**
      * {@inheritdoc}
+     *
+     * @return int 0 if everything went fine, or an exit code
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->write(\sprintf('%c[2J%c[0;0f', 27, 27));
 

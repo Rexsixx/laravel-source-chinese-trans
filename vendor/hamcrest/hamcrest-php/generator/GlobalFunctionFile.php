@@ -1,6 +1,6 @@
 <?php
 /**
- * 全局函数文件
+ * Global Function File
  */
 
 /*

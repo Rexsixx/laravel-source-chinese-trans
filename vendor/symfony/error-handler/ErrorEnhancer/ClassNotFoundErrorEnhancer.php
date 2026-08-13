@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，ErrorHandler，错误增强器，类未找到错误增强器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -11,8 +14,7 @@
 
 namespace Symfony\Component\ErrorHandler\ErrorEnhancer;
 
-use Composer\Autoload\ClassLoader as ComposerClassLoader;
-use Symfony\Component\ClassLoader\ClassLoader as SymfonyClassLoader;
+use Composer\Autoload\ClassLoader;
 use Symfony\Component\ErrorHandler\DebugClassLoader;
 use Symfony\Component\ErrorHandler\Error\ClassNotFoundError;
 use Symfony\Component\ErrorHandler\Error\FatalError;
@@ -22,9 +24,6 @@ use Symfony\Component\ErrorHandler\Error\FatalError;
  */
 class ClassNotFoundErrorEnhancer implements ErrorEnhancerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function enhance(\Throwable $error): ?\Throwable
     {
         // Some specific versions of PHP produce a fatal error when extending a not found class.
@@ -61,6 +60,7 @@ class ClassNotFoundErrorEnhancer implements ErrorEnhancerInterface
 
     /**
      * Tries to guess the full namespace for a given class name.
+	 * 尝试猜测给定类名的完整名称空间。
      *
      * By default, it looks for PSR-0 and PSR-4 classes registered via a Symfony or a Composer
      * autoloader (that should cover all common cases).
@@ -91,28 +91,28 @@ class ClassNotFoundErrorEnhancer implements ErrorEnhancerInterface
                 }
             }
 
-            if ($function[0] instanceof ComposerClassLoader || $function[0] instanceof SymfonyClassLoader) {
+            if ($function[0] instanceof ClassLoader) {
                 foreach ($function[0]->getPrefixes() as $prefix => $paths) {
                     foreach ($paths as $path) {
-                        $classes = array_merge($classes, $this->findClassInPath($path, $class, $prefix));
+                        $classes[] = $this->findClassInPath($path, $class, $prefix);
                     }
                 }
-            }
-            if ($function[0] instanceof ComposerClassLoader) {
+
                 foreach ($function[0]->getPrefixesPsr4() as $prefix => $paths) {
                     foreach ($paths as $path) {
-                        $classes = array_merge($classes, $this->findClassInPath($path, $class, $prefix));
+                        $classes[] = $this->findClassInPath($path, $class, $prefix);
                     }
                 }
             }
         }
 
-        return array_unique($classes);
+        return array_unique(array_merge([], ...$classes));
     }
 
     private function findClassInPath(string $path, string $class, string $prefix): array
     {
-        if (!$path = realpath($path.'/'.strtr($prefix, '\\_', '//')) ?: realpath($path.'/'.\dirname(strtr($prefix, '\\_', '//'))) ?: realpath($path)) {
+        $path = realpath($path.'/'.strtr($prefix, '\\_', '//')) ?: realpath($path.'/'.\dirname(strtr($prefix, '\\_', '//'))) ?: realpath($path);
+        if (!$path || !is_dir($path)) {
             return [];
         }
 

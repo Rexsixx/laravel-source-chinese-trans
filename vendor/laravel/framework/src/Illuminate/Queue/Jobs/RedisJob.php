@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，任务，Redis作业
+ * Illuminate，队列，作业，Redis作业
  */
 
 namespace Illuminate\Queue\Jobs;
@@ -21,7 +21,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * The Redis raw job payload.
-	 * Redis原始作业负载
+	 * Redis的原始工作负载
      *
      * @var string
      */
@@ -29,7 +29,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * The JSON decoded version of "$job".
-	 * JSON解码版本
+	 * "$job"的JSON解码版本
      *
      * @var array
      */
@@ -37,7 +37,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * The Redis job payload inside the reserved queue.
-	 * Redis作业负载在预留队列内
+	 * 预留队列内的Redis作业负载
      *
      * @var string
      */
@@ -60,8 +60,7 @@ class RedisJob extends Job implements JobContract
         // The $job variable is the original job JSON as it existed in the ready queue while
         // the $reserved variable is the raw JSON in the reserved queue. The exact format
         // of the reserved job is required in order for us to properly delete its data.
-		// $job变量是就绪队列中存在的原始作业JSON，而$reserved变量是保留队列中的原始JSON。
-		// 需要保留作业的确切格式，以便我们正确删除其数据。
+		// $job变量是原始作业JSON，因为它存在于就绪队列中。
         $this->job = $job;
         $this->redis = $redis;
         $this->queue = $queue;
@@ -85,7 +84,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Delete the job from the queue.
-	 * 删除作业从队列
+	 * 从队列中删除作业
      *
      * @return void
      */
@@ -98,7 +97,7 @@ class RedisJob extends Job implements JobContract
 
     /**
      * Release the job back into the queue.
-	 * 释放作业回队列
+	 * 将作业释放回队列
      *
      * @param  int  $delay
      * @return void
@@ -125,7 +124,7 @@ class RedisJob extends Job implements JobContract
      * Get the job identifier.
 	 * 得到作业标识符
      *
-     * @return string
+     * @return string|null
      */
     public function getJobId()
     {

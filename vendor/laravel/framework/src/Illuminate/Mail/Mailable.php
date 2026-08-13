@@ -1,31 +1,34 @@
 <?php
 /**
- * 邮件，可邮寄的
+ * Illuminate，邮件，可邮寄的
  */
 
 namespace Illuminate\Mail;
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
+use Illuminate\Contracts\Mail\Factory as MailFactory;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
-use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Contracts\Queue\Factory as Queue;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\Localizable;
+use PHPUnit\Framework\Assert as PHPUnit;
 use ReflectionClass;
 use ReflectionProperty;
 
 class Mailable implements MailableContract, Renderable
 {
-    use ForwardsCalls, Localizable;
+    use Conditionable, ForwardsCalls, Localizable;
 
     /**
      * The locale of the message.
-	 * 本地信息
+	 * 消息的区域设置
      *
      * @var string
      */
@@ -33,7 +36,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The person the message is from.
-	 * 从，发件人
+	 * 发件人
      *
      * @var array
      */
@@ -41,7 +44,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The "to" recipients of the message.
-	 * 至，收件人
+	 * 收件人
      *
      * @var array
      */
@@ -49,7 +52,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The "cc" recipients of the message.
-	 * 抄送
+	 * 抄送人
      *
      * @var array
      */
@@ -57,6 +60,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The "bcc" recipients of the message.
+	 * 密件抄送人
      *
      * @var array
      */
@@ -64,7 +68,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The "reply to" recipients of the message.
-	 * 回复
+	 * 回复收件人
      *
      * @var array
      */
@@ -72,7 +76,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The subject of the message.
-	 * 主题
+	 * 消息主题
      *
      * @var string
      */
@@ -80,15 +84,15 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The Markdown template for the message (if applicable).
-	 * Markdown模板
+	 * 消息的Markdown模板（如果适用）
      *
      * @var string
      */
-    protected $markdown;
+    public $markdown;
 
     /**
      * The HTML to use for the message.
-	 * HTML
+	 * 用于消息的HTML
      *
      * @var string
      */
@@ -96,7 +100,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The view to use for the message.
-	 * 预览
+	 * 要用于消息的视图
      *
      * @var string
      */
@@ -112,7 +116,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The view data for the message.
-	 * 视图数据
+	 * 消息的视图数据
      *
      * @var array
      */
@@ -120,7 +124,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The attachments for the message.
-	 * 附件
+	 * 消息的附件
      *
      * @var array
      */
@@ -128,7 +132,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The raw attachments for the message.
-	 * 原始附件
+	 * 消息的原始附件
      *
      * @var array
      */
@@ -136,7 +140,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The attachments from a storage disk.
-	 * 存储磁盘的附件
+	 * 来自存储磁盘的附件
      *
      * @var array
      */
@@ -144,11 +148,35 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * The callbacks for the message.
-	 * 回调
+	 * 消息的回调
      *
      * @var array
      */
     public $callbacks = [];
+
+    /**
+     * The name of the theme that should be used when formatting the message.
+	 * 在格式化消息时应使用的主题名称
+     *
+     * @var string|null
+     */
+    public $theme;
+
+    /**
+     * The name of the mailer that should send the message.
+	 * 应该发送邮件的邮件者的名称
+     *
+     * @var string
+     */
+    public $mailer;
+
+    /**
+     * The rendered mailable views for testing / assertions.
+	 * 为测试/断言呈现的可邮寄视图
+     *
+     * @var array
+     */
+    protected $assertionableRenderStrings;
 
     /**
      * The callback that should be invoked while building the view data.
@@ -160,15 +188,19 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Send the message using the given mailer.
-	 * 发送消息使用给定的邮件发送器
+	 * 使用给定的邮件发送器发送消息
      *
-     * @param  \Illuminate\Contracts\Mail\Mailer  $mailer
+     * @param  \Illuminate\Contracts\Mail\Factory|\Illuminate\Contracts\Mail\Mailer  $mailer
      * @return void
      */
-    public function send(MailerContract $mailer)
+    public function send($mailer)
     {
-        return $this->withLocale($this->locale, function () use ($mailer) {
+        $this->withLocale($this->locale, function () use ($mailer) {
             Container::getInstance()->call([$this, 'build']);
+
+            $mailer = $mailer instanceof MailFactory
+                            ? $mailer->mailer($this->mailer)
+                            : $mailer;
 
             return $mailer->send($this->buildView(), $this->buildViewData(), function ($message) {
                 $this->buildFrom($message)
@@ -182,7 +214,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Queue the message for sending.
-	 * 排队消息等待发送
+	 * 将消息排队等待发送
      *
      * @param  \Illuminate\Contracts\Queue\Factory  $queue
      * @return mixed
@@ -204,7 +236,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Deliver the queued message after the given delay.
-	 * 交付排队消息在给定的延迟之后
+	 * 在给定的延迟之后交付排队消息
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  \Illuminate\Contracts\Queue\Factory  $queue
@@ -229,12 +261,16 @@ class Mailable implements MailableContract, Renderable
      */
     protected function newQueuedJob()
     {
-        return new SendQueuedMailable($this);
+        return (new SendQueuedMailable($this))
+                    ->through(array_merge(
+                        method_exists($this, 'middleware') ? $this->middleware() : [],
+                        $this->middleware ?? []
+                    ));
     }
 
     /**
      * Render the mailable into a view.
-	 * 呈现邮件到视图
+	 * 将邮件呈现到视图中
      *
      * @return string
      *
@@ -253,7 +289,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Build the view for the message.
-	 * 构建视图
+	 * 为消息构建视图
      *
      * @return array|string
      *
@@ -283,7 +319,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Build the Markdown view for the message.
-	 * 构建Markdown视图
+	 * 为消息构建Markdown视图
      *
      * @return array
      *
@@ -307,7 +343,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Build the view data for the message.
-	 * 构建视图数据
+	 * 为消息构建视图数据
      *
      * @return array
      *
@@ -332,7 +368,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Build the text view for a Markdown message.
-	 * 构建文本视图为Markdown信息
+	 * 为Markdown消息构建文本视图
      *
      * @param  \Illuminate\Mail\Markdown  $markdown
      * @param  array  $data
@@ -346,7 +382,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Add the sender to the message.
-	 * 添加发送者到信息中
+	 * 将发送者添加到消息中
      *
      * @param  \Illuminate\Mail\Message  $message
      * @return $this
@@ -362,7 +398,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Add all of the recipients to the message.
-	 * 添加所有收件人到邮件中
+	 * 将所有收件人添加到邮件中
      *
      * @param  \Illuminate\Mail\Message  $message
      * @return $this
@@ -380,7 +416,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Set the subject for the message.
-	 * 设置主题为邮件
+	 * 为邮件设置主题
      *
      * @param  \Illuminate\Mail\Message  $message
      * @return $this
@@ -398,7 +434,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Add all of the attachments to the message.
-	 * 添加所有附件到消息中
+	 * 将所有附件添加到消息中
      *
      * @param  \Illuminate\Mail\Message  $message
      * @return $this
@@ -422,7 +458,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Add all of the disk attachments to the message.
-	 * 添加所有磁盘附件到消息中
+	 * 将所有磁盘附件添加到消息中
      *
      * @param  \Illuminate\Mail\Message  $message
      * @return void
@@ -444,7 +480,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Run the callbacks for the message.
-	 * 运行信息的回调
+	 * 运行消息的回调
      *
      * @param  \Illuminate\Mail\Message  $message
      * @return $this
@@ -477,6 +513,7 @@ class Mailable implements MailableContract, Renderable
 	 * 设置此消息的优先级
      *
      * The value is an integer where 1 is the highest priority and 5 is the lowest.
+	 * 整数形式，优先级为1最高，优先级为5最低。
      *
      * @param  int  $level
      * @return $this
@@ -633,6 +670,10 @@ class Mailable implements MailableContract, Renderable
      */
     protected function setAddress($address, $name = null, $property = 'to')
     {
+        if (empty($address)) {
+            return $this;
+        }
+
         foreach ($this->addressesToArray($address, $name) as $recipient) {
             $recipient = $this->normalizeRecipient($recipient);
 
@@ -647,7 +688,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Convert the given recipient arguments to an array.
-	 * 转换给定的接收方参数为数组
+	 * 将给定的接收方参数转换为数组
      *
      * @param  object|array|string  $address
      * @param  string|null  $name
@@ -664,7 +705,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Convert the given recipient into an object.
-	 * 转换给定的接收方为对象
+	 * 将给定的接收者转换为对象
      *
      * @param  mixed  $recipient
      * @return object
@@ -672,6 +713,12 @@ class Mailable implements MailableContract, Renderable
     protected function normalizeRecipient($recipient)
     {
         if (is_array($recipient)) {
+            if (array_values($recipient) === $recipient) {
+                return (object) array_map(function ($email) {
+                    return compact('email');
+                }, $recipient);
+            }
+
             return (object) $recipient;
         } elseif (is_string($recipient)) {
             return (object) ['email' => $recipient];
@@ -691,6 +738,10 @@ class Mailable implements MailableContract, Renderable
      */
     protected function hasRecipient($address, $name = null, $property = 'to')
     {
+        if (empty($address)) {
+            return false;
+        }
+
         $expected = $this->normalizeRecipient(
             $this->addressesToArray($address, $name)[0]
         );
@@ -711,7 +762,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Set the subject of the message.
-	 * 设置消息主题
+	 * 设置邮件的主题
      *
      * @param  string  $subject
      * @return $this
@@ -725,7 +776,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Set the Markdown template for the message.
-	 * 设置消息的文本模板
+	 * 为邮件设置Markdown模板
      *
      * @param  string  $view
      * @param  array  $data
@@ -757,7 +808,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Set the rendered HTML content for the message.
-	 * 设置消息的呈现的HTML内容
+	 * 为消息设置呈现的HTML内容
      *
      * @param  string  $html
      * @return $this
@@ -806,7 +857,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Attach a file to the message.
-	 * 附加文件到消息中
+	 * 将文件附加到消息中
      *
      * @param  string  $file
      * @param  array  $options
@@ -824,7 +875,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Attach a file to the message from storage.
-	 * 附加文件到消息中从存储
+	 * 将文件从存储器附加到消息上
      *
      * @param  string  $path
      * @param  string|null  $name
@@ -838,7 +889,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Attach a file to the message from storage.
-	 * 附加文件到消息中从存储
+	 * 将文件从存储器附加到消息上
      *
      * @param  string  $disk
      * @param  string  $path
@@ -862,7 +913,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Attach in-memory data as an attachment.
-	 * 附加内存中的数据作为附件
+	 * 将内存中的数据作为附件附加
      *
      * @param  string  $data
      * @param  string  $name
@@ -881,8 +932,135 @@ class Mailable implements MailableContract, Renderable
     }
 
     /**
+     * Assert that the given text is present in the HTML email body.
+	 * 断言给定的文本存在于HTML电子邮件正文中
+     *
+     * @param  string  $string
+     * @return $this
+     */
+    public function assertSeeInHtml($string)
+    {
+        [$html, $text] = $this->renderForAssertions();
+
+        PHPUnit::assertTrue(
+            Str::contains($html, $string),
+            "Did not see expected text [{$string}] within email body."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the given text is not present in the HTML email body.
+	 * 断言给定的文本不存在于HTML邮件正文中
+     *
+     * @param  string  $string
+     * @return $this
+     */
+    public function assertDontSeeInHtml($string)
+    {
+        [$html, $text] = $this->renderForAssertions();
+
+        PHPUnit::assertFalse(
+            Str::contains($html, $string),
+            "Saw unexpected text [{$string}] within email body."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the given text is present in the plain-text email body.
+	 * 断言给定的文本存在于纯文本电子邮件正文中
+     *
+     * @param  string  $string
+     * @return $this
+     */
+    public function assertSeeInText($string)
+    {
+        [$html, $text] = $this->renderForAssertions();
+
+        PHPUnit::assertTrue(
+            Str::contains($text, $string),
+            "Did not see expected text [{$string}] within text email body."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the given text is not present in the plain-text email body.
+	 * 断言给定的文本不存在于纯文本电子邮件正文中
+     *
+     * @param  string  $string
+     * @return $this
+     */
+    public function assertDontSeeInText($string)
+    {
+        [$html, $text] = $this->renderForAssertions();
+
+        PHPUnit::assertFalse(
+            Str::contains($text, $string),
+            "Saw unexpected text [{$string}] within text email body."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Render the HTML and plain-text version of the mailable into views for assertions.
+	 * 将可邮件的HTML和纯文本版本呈现到断言视图中
+     *
+     * @return array
+     *
+     * @throws \ReflectionException
+     */
+    protected function renderForAssertions()
+    {
+        if ($this->assertionableRenderStrings) {
+            return $this->assertionableRenderStrings;
+        }
+
+        return $this->assertionableRenderStrings = $this->withLocale($this->locale, function () {
+            Container::getInstance()->call([$this, 'build']);
+
+            $html = Container::getInstance()->make('mailer')->render(
+                $view = $this->buildView(), $this->buildViewData()
+            );
+
+            if (is_array($view) && isset($view[1])) {
+                $text = $view[1];
+            }
+
+            $text = $text ?? $view['text'] ?? '';
+
+            if (! empty($text) && ! $text instanceof Htmlable) {
+                $text = Container::getInstance()->make('mailer')->render(
+                    $text, $this->buildViewData()
+                );
+            }
+
+            return [(string) $html, (string) $text];
+        });
+    }
+
+    /**
+     * Set the name of the mailer that should send the message.
+	 * 设置应该发送邮件的邮件发件人的名称
+     *
+     * @param  string  $mailer
+     * @return $this
+     */
+    public function mailer($mailer)
+    {
+        $this->mailer = $mailer;
+
+        return $this;
+    }
+
+    /**
      * Register a callback to be called with the Swift message instance.
-	 * 注册一个回调函数在Swift消息实例中
+	 * 在Swift消息实例中注册一个回调函数
      *
      * @param  callable  $callback
      * @return $this
@@ -908,7 +1086,7 @@ class Mailable implements MailableContract, Renderable
 
     /**
      * Dynamically bind parameters to the message.
-	 * 动态绑定参数
+	 * 动态地将参数绑定到消息
      *
      * @param  string  $method
      * @param  array  $parameters

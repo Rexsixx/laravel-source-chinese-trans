@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，异常，无效参数异常
+ * Symfony，Component，Console，异常，无效参数异常
  */
 
 /*

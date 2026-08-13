@@ -1,18 +1,19 @@
 <?php
 /**
- * 数据库，查询异常
+ * Illuminate，数据库，查询异常
  */
 
 namespace Illuminate\Database;
 
 use Illuminate\Support\Str;
 use PDOException;
+use Throwable;
 
 class QueryException extends PDOException
 {
     /**
      * The SQL for the query.
-	 * 查询SQL
+	 * 用于查询的SQL
      *
      * @var string
      */
@@ -20,7 +21,7 @@ class QueryException extends PDOException
 
     /**
      * The bindings for the query.
-	 * 绑定查询
+	 * 查询的绑定
      *
      * @var array
      */
@@ -28,14 +29,14 @@ class QueryException extends PDOException
 
     /**
      * Create a new query exception instance.
-	 * 创建新查询异常实例
+	 * 创建一个新的查询异常实例
      *
      * @param  string  $sql
      * @param  array  $bindings
-     * @param  \Exception  $previous
+     * @param  \Throwable  $previous
      * @return void
      */
-    public function __construct($sql, array $bindings, $previous)
+    public function __construct($sql, array $bindings, Throwable $previous)
     {
         parent::__construct('', 0, $previous);
 
@@ -51,21 +52,21 @@ class QueryException extends PDOException
 
     /**
      * Format the SQL error message.
-	 * 格式化SQL错误信息
+	 * 格式化SQL错误消息
      *
      * @param  string  $sql
      * @param  array  $bindings
-     * @param  \Exception  $previous
+     * @param  \Throwable  $previous
      * @return string
      */
-    protected function formatMessage($sql, $bindings, $previous)
+    protected function formatMessage($sql, $bindings, Throwable $previous)
     {
         return $previous->getMessage().' (SQL: '.Str::replaceArray('?', $bindings, $sql).')';
     }
 
     /**
      * Get the SQL for the query.
-	 * 得到查询SQL
+	 * 获取查询的SQL
      *
      * @return string
      */
@@ -76,7 +77,7 @@ class QueryException extends PDOException
 
     /**
      * Get the bindings for the query.
-	 * 得到绑定查询
+	 * 获取查询的绑定
      *
      * @return array
      */

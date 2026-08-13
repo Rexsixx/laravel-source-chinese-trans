@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，接受头项目
+ * Symfony，Component，HttpFoundation，测试，接收报头项
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * Represents an Accept-* header item.
+ * 表示Accept-*报头项
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  */
@@ -36,14 +37,13 @@ class AcceptHeaderItem
 
     /**
      * Builds an AcceptHeaderInstance instance from a string.
-     *
-     * @param string $itemValue
+	 * 从字符串构建一个AcceptHeaderInstance实例
      *
      * @return self
      */
-    public static function fromString($itemValue)
+    public static function fromString(?string $itemValue)
     {
-        $parts = HeaderUtils::split($itemValue, ';=');
+        $parts = HeaderUtils::split($itemValue ?? '', ';=');
 
         $part = array_shift($parts);
         $attributes = HeaderUtils::combine($parts);
@@ -53,6 +53,7 @@ class AcceptHeaderItem
 
     /**
      * Returns header value's string representation.
+	 * 返回报头值的字符串表示形式
      *
      * @return string
      */
@@ -68,12 +69,11 @@ class AcceptHeaderItem
 
     /**
      * Set the item value.
-     *
-     * @param string $value
+	 * 设置项目值
      *
      * @return $this
      */
-    public function setValue($value)
+    public function setValue(string $value)
     {
         $this->value = $value;
 
@@ -82,6 +82,7 @@ class AcceptHeaderItem
 
     /**
      * Returns the item value.
+	 * 返回项值
      *
      * @return string
      */
@@ -92,12 +93,11 @@ class AcceptHeaderItem
 
     /**
      * Set the item quality.
-     *
-     * @param float $quality
+	 * 设置项目质量
      *
      * @return $this
      */
-    public function setQuality($quality)
+    public function setQuality(float $quality)
     {
         $this->quality = $quality;
 
@@ -106,6 +106,7 @@ class AcceptHeaderItem
 
     /**
      * Returns the item quality.
+	 * 返回项目质量
      *
      * @return float
      */
@@ -116,12 +117,11 @@ class AcceptHeaderItem
 
     /**
      * Set the item index.
-     *
-     * @param int $index
+	 * 设置项目索引
      *
      * @return $this
      */
-    public function setIndex($index)
+    public function setIndex(int $index)
     {
         $this->index = $index;
 
@@ -130,6 +130,7 @@ class AcceptHeaderItem
 
     /**
      * Returns the item index.
+	 * 返回项目索引
      *
      * @return int
      */
@@ -140,31 +141,31 @@ class AcceptHeaderItem
 
     /**
      * Tests if an attribute exists.
-     *
-     * @param string $name
+	 * 测试属性是否存在
      *
      * @return bool
      */
-    public function hasAttribute($name)
+    public function hasAttribute(string $name)
     {
         return isset($this->attributes[$name]);
     }
 
     /**
      * Returns an attribute by its name.
+	 * 按名称返回属性
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param mixed $default
      *
      * @return mixed
      */
-    public function getAttribute($name, $default = null)
+    public function getAttribute(string $name, $default = null)
     {
         return $this->attributes[$name] ?? $default;
     }
 
     /**
      * Returns all attributes.
+	 * 返回所有属性
      *
      * @return array
      */
@@ -175,18 +176,16 @@ class AcceptHeaderItem
 
     /**
      * Set an attribute.
-     *
-     * @param string $name
-     * @param string $value
+	 * 设置属性
      *
      * @return $this
      */
-    public function setAttribute($name, $value)
+    public function setAttribute(string $name, string $value)
     {
         if ('q' === $name) {
             $this->quality = (float) $value;
         } else {
-            $this->attributes[$name] = (string) $value;
+            $this->attributes[$name] = $value;
         }
 
         return $this;

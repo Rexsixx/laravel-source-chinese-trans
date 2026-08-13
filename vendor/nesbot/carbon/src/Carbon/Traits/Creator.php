@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，创造者
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -19,6 +22,8 @@ use Carbon\Exceptions\InvalidFormatException;
 use Carbon\Exceptions\OutOfRangeException;
 use Carbon\Translator;
 use Closure;
+use DateMalformedStringException;
+use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Exception;
@@ -26,6 +31,7 @@ use ReturnTypeWillChange;
 
 /**
  * Trait Creator.
+ * 特征的创造者。
  *
  * Static creators.
  *
@@ -39,6 +45,7 @@ trait Creator
 
     /**
      * The errors that can occur.
+	 * 可能发生的错误
      *
      * @var array
      */
@@ -46,6 +53,7 @@ trait Creator
 
     /**
      * Create a new Carbon instance.
+	 * 创建一个新的Carbon实例。
      *
      * Please see the testing aids section (specifically static::setTestNow())
      * for more on the possibility of this constructor returning a test instance.
@@ -79,8 +87,8 @@ trait Creator
 
         // Work-around for PHP bug https://bugs.php.net/bug.php?id=67127
         if (!str_contains((string) .1, '.')) {
-            $locale = setlocale(LC_NUMERIC, '0');
-            setlocale(LC_NUMERIC, 'C');
+            $locale = setlocale(LC_NUMERIC, '0'); // @codeCoverageIgnore
+            setlocale(LC_NUMERIC, 'C'); // @codeCoverageIgnore
         }
 
         try {
@@ -92,7 +100,7 @@ trait Creator
         $this->constructedObjectId = spl_object_hash($this);
 
         if (isset($locale)) {
-            setlocale(LC_NUMERIC, $locale);
+            setlocale(LC_NUMERIC, $locale); // @codeCoverageIgnore
         }
 
         self::setLastErrors(parent::getLastErrors());
@@ -100,6 +108,7 @@ trait Creator
 
     /**
      * Get timezone from a datetime instance.
+	 * 从datetime实例获取时区
      *
      * @param DateTimeInterface        $date
      * @param DateTimeZone|string|null $tz
@@ -112,7 +121,7 @@ trait Creator
             $safeTz = static::safeCreateDateTimeZone($tz);
 
             if ($safeTz) {
-                return $date->setTimezone($safeTz);
+                return ($date instanceof DateTimeImmutable ? $date : clone $date)->setTimezone($safeTz);
             }
 
             return $date;
@@ -125,6 +134,7 @@ trait Creator
 
     /**
      * Update constructedObjectId on cloned.
+	 * 更新克隆上的constructedobjecid
      */
     public function __clone()
     {
@@ -133,6 +143,7 @@ trait Creator
 
     /**
      * Create a Carbon instance from a DateTime one.
+	 * 从DateTime实例创建一个Carbon实例
      *
      * @param DateTimeInterface $date
      *
@@ -148,7 +159,7 @@ trait Creator
 
         $instance = new static($date->format('Y-m-d H:i:s.u'), $date->getTimezone());
 
-        if ($date instanceof CarbonInterface || $date instanceof Options) {
+        if ($date instanceof CarbonInterface) {
             $settings = $date->getSettings();
 
             if (!$date->hasLocalTranslator()) {
@@ -163,6 +174,7 @@ trait Creator
 
     /**
      * Create a carbon instance from a string.
+	 * 从字符串创建一个carbon实例。
      *
      * This is an alias for the constructor that allows better fluent syntax
      * as it allows you to do Carbon::parse('Monday next week')->fn() rather
@@ -184,7 +196,13 @@ trait Creator
         try {
             return new static($time, $tz);
         } catch (Exception $exception) {
-            $date = @static::now($tz)->change($time);
+            // @codeCoverageIgnoreStart
+            try {
+                $date = @static::now($tz)->change($time);
+            } catch (DateMalformedStringException $ignoredException) {
+                $date = null;
+            }
+            // @codeCoverageIgnoreEnd
 
             if (!$date) {
                 throw new InvalidFormatException("Could not parse '$time': ".$exception->getMessage(), 0, $exception);
@@ -196,6 +214,7 @@ trait Creator
 
     /**
      * Create a carbon instance from a string.
+	 * 从字符串创建一个carbon实例。
      *
      * This is an alias for the constructor that allows better fluent syntax
      * as it allows you to do Carbon::parse('Monday next week')->fn() rather
@@ -225,6 +244,7 @@ trait Creator
 
     /**
      * Create a carbon instance from a localized string (in French, Japanese, Arabic, etc.).
+	 * 从本地化字符串（法语、日语、阿拉伯语等）创建一个碳实例。
      *
      * @param string                   $time   date/time string in the given language (may also contain English).
      * @param string|null              $locale if locale is null or not specified, current global locale will be
@@ -242,6 +262,7 @@ trait Creator
 
     /**
      * Get a Carbon instance for the current date and time.
+	 * 获取当前日期和时间的Carbon实例
      *
      * @param DateTimeZone|string|null $tz
      *
@@ -354,13 +375,13 @@ trait Creator
      * If $hour is not null then the default values for $minute and $second
      * will be 0.
      *
-     * @param int|null                 $year
-     * @param int|null                 $month
-     * @param int|null                 $day
-     * @param int|null                 $hour
-     * @param int|null                 $minute
-     * @param int|null                 $second
-     * @param DateTimeZone|string|null $tz
+     * @param DateTimeInterface|int|null $year
+     * @param int|null                   $month
+     * @param int|null                   $day
+     * @param int|null                   $hour
+     * @param int|null                   $minute
+     * @param int|null                   $second
+     * @param DateTimeZone|string|null   $tz
      *
      * @throws InvalidFormatException
      *
@@ -414,7 +435,7 @@ trait Creator
         }
 
         $second = ($second < 10 ? '0' : '').number_format($second, 6);
-        $instance = static::rawCreateFromFormat('!Y-n-j G:i:s.u', sprintf('%s-%s-%s %s:%02s:%02s', $year, $month, $day, $hour, $minute, $second), $tz);
+        $instance = static::rawCreateFromFormat('!Y-n-j G:i:s.u', \sprintf('%s-%s-%s %s:%02s:%02s', $year, $month, $day, $hour, $minute, $second), $tz);
 
         if ($fixYear !== null) {
             $instance = $instance->addYears($fixYear);
@@ -634,6 +655,10 @@ trait Creator
             $time = preg_replace('/^(.*)(am|pm|AM|PM)(.*)$/U', '$1$3 $2', $time);
         }
 
+        if ($tz === false) {
+            $tz = null;
+        }
+
         // First attempt to create an instance, so that error messages are based on the unmodified format.
         $date = self::createFromFormatAndTimezone($format, $time, $tz);
         $lastErrors = parent::getLastErrors();
@@ -651,12 +676,14 @@ trait Creator
                 $tz = clone $mock->getTimezone();
             }
 
-            // Set microseconds to zero to match behavior of DateTime::createFromFormat()
-            // See https://bugs.php.net/bug.php?id=74332
-            $mock = $mock->copy()->microsecond(0);
+            $mock = $mock->copy();
 
             // Prepend mock datetime only if the format does not contain non escaped unix epoch reset flag.
             if (!preg_match("/{$nonEscaped}[!|]/", $format)) {
+                if (preg_match('/[HhGgisvuB]/', $format)) {
+                    $mock = $mock->setTime(0, 0);
+                }
+
                 $format = static::MOCK_DATETIME_FORMAT.' '.$format;
                 $time = ($mock instanceof self ? $mock->rawFormat(static::MOCK_DATETIME_FORMAT) : $mock->format(static::MOCK_DATETIME_FORMAT)).' '.$time;
             }
@@ -862,6 +889,19 @@ trait Creator
      */
     public static function createFromLocaleFormat($format, $locale, $time, $tz = null)
     {
+        $format = preg_replace_callback(
+            '/(?:\\\\[a-zA-Z]|[bfkqCEJKQRV]){2,}/',
+            static function (array $match) use ($locale): string {
+                $word = str_replace('\\', '', $match[0]);
+                $translatedWord = static::translateTimeString($word, $locale, 'en');
+
+                return $word === $translatedWord
+                    ? $match[0]
+                    : preg_replace('/[a-zA-Z]/', '\\\\$0', $translatedWord);
+            },
+            $format
+        );
+
         return static::rawCreateFromFormat($format, static::translateTimeString($time, $locale, 'en'), $tz);
     }
 
@@ -907,9 +947,9 @@ trait Creator
         if (\is_string($var)) {
             $var = trim($var);
 
-            if (!preg_match('/^P[0-9T]/', $var) &&
-                !preg_match('/^R[0-9]/', $var) &&
-                preg_match('/[a-z0-9]/i', $var)
+            if (!preg_match('/^P[\dT]/', $var) &&
+                !preg_match('/^R\d/', $var) &&
+                preg_match('/[a-z\d]/i', $var)
             ) {
                 $date = static::parse($var);
             }
@@ -921,13 +961,20 @@ trait Creator
     /**
      * Set last errors.
      *
-     * @param array $lastErrors
+     * @param array|bool $lastErrors
      *
      * @return void
      */
-    private static function setLastErrors(array $lastErrors)
+    private static function setLastErrors($lastErrors)
     {
-        static::$lastErrors = $lastErrors;
+        if (\is_array($lastErrors) || $lastErrors === false) {
+            static::$lastErrors = \is_array($lastErrors) ? $lastErrors : [
+                'warning_count' => 0,
+                'warnings' => [],
+                'error_count' => 0,
+                'errors' => [],
+            ];
+        }
     }
 
     /**

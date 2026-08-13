@@ -1,6 +1,6 @@
 <?php
 /**
- * 分页，分页服务提供者
+ * Illuminate，分页，分页服务提供者
  */
 
 namespace Illuminate\Pagination;
@@ -11,7 +11,7 @@ class PaginationServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-	 * 引导应用服务
+	 * 引导任何应用程序服务
      *
      * @return void
      */
@@ -34,22 +34,6 @@ class PaginationServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        Paginator::viewFactoryResolver(function () {
-            return $this->app['view'];
-        });
-
-        Paginator::currentPathResolver(function () {
-            return $this->app['request']->url();
-        });
-
-        Paginator::currentPageResolver(function ($pageName = 'page') {
-            $page = $this->app['request']->input($pageName);
-
-            if (filter_var($page, FILTER_VALIDATE_INT) !== false && (int) $page >= 1) {
-                return (int) $page;
-            }
-
-            return 1;
-        });
+        PaginationState::resolveUsing($this->app);
     }
 }

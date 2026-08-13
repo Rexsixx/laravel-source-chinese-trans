@@ -1,6 +1,6 @@
 <?php
 /**
- * 控制台，回调事件
+ * Illuminate，控制台，调度，回调事件
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -9,12 +9,13 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Reflector;
 use InvalidArgumentException;
 use LogicException;
+use Throwable;
 
 class CallbackEvent extends Event
 {
     /**
      * The callback to call.
-	 * 回调请求
+	 * 要调用的回调
      *
      * @var string
      */
@@ -84,6 +85,12 @@ class CallbackEvent extends Event
             $response = is_object($this->callback)
                         ? $container->call([$this->callback, '__invoke'], $this->parameters)
                         : $container->call($this->callback, $this->parameters);
+
+            $this->exitCode = $response === false ? 1 : 0;
+        } catch (Throwable $e) {
+            $this->exitCode = 1;
+
+            throw $e;
         } finally {
             $this->removeMutex();
 
@@ -134,7 +141,7 @@ class CallbackEvent extends Event
 
     /**
      * Allow the event to only run on one server for each cron expression.
-	 * 允许事件仅在一台服务器上运行，对于每个cron表达式
+	 * 对于每个cron表达式，允许事件仅在一台服务器上运行。
      *
      * @return $this
      *
@@ -146,6 +153,7 @@ class CallbackEvent extends Event
             throw new LogicException(
                 "A scheduled event name is required to only run on one server. Use the 'name' method before 'onOneServer'."
             );
+			// 计划事件名称只需要在一台服务器上运行，在onOneServer之前使用name方法。
         }
 
         $this->onOneServer = true;
@@ -155,7 +163,7 @@ class CallbackEvent extends Event
 
     /**
      * Get the mutex name for the scheduled command.
-	 * 得到计划命令的互斥对象名称
+	 * 获取计划命令的互斥对象名称
      *
      * @return string
      */
@@ -166,7 +174,7 @@ class CallbackEvent extends Event
 
     /**
      * Get the summary of the event for display.
-	 * 得到要显示的事件摘要
+	 * 获取要显示的事件摘要
      *
      * @return string
      */

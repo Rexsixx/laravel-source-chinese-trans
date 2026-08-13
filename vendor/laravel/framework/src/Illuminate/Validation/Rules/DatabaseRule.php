@@ -1,6 +1,6 @@
 <?php
 /**
- * 验证，数据库规则
+ * Illuminate，验证，规则，数据库规则
  */
 
 namespace Illuminate\Validation\Rules;
@@ -60,7 +60,7 @@ trait DatabaseRule
 
     /**
      * Resolves the name of the table from the given string.
-	 * 解析表的名称从给定字符串中
+	 * 从给定字符串中解析表的名称
      *
      * @param  string  $table
      * @return string
@@ -72,7 +72,15 @@ trait DatabaseRule
         }
 
         if (is_subclass_of($table, Model::class)) {
-            return (new $table)->getTable();
+            $model = new $table;
+
+            if (Str::contains($model->getTable(), '.')) {
+                return $table;
+            }
+
+            return implode('.', array_map(function (string $part) {
+                return trim($part, '.');
+            }, array_filter([$model->getConnectionName(), $model->getTable()])));
         }
 
         return $table;
@@ -80,10 +88,10 @@ trait DatabaseRule
 
     /**
      * Set a "where" constraint on the query.
-	 * 设置"where"约束在查询上
+	 * 在查询上设置"where"约束
      *
      * @param  \Closure|string  $column
-     * @param  array|string|null  $value
+     * @param  array|string|int|null  $value
      * @return $this
      */
     public function where($column, $value = null)
@@ -96,6 +104,10 @@ trait DatabaseRule
             return $this->using($column);
         }
 
+        if (is_null($value)) {
+            return $this->whereNull($column);
+        }
+
         $this->wheres[] = compact('column', 'value');
 
         return $this;
@@ -103,7 +115,7 @@ trait DatabaseRule
 
     /**
      * Set a "where not" constraint on the query.
-	 * 设置"where not"约束在查询上
+	 * 在查询上设置"where not"约束
      *
      * @param  string  $column
      * @param  array|string  $value
@@ -120,7 +132,7 @@ trait DatabaseRule
 
     /**
      * Set a "where null" constraint on the query.
-	 * 设置"where null"约束在查询上
+	 * 在查询上设置"where null"约束
      *
      * @param  string  $column
      * @return $this
@@ -132,7 +144,7 @@ trait DatabaseRule
 
     /**
      * Set a "where not null" constraint on the query.
-	 * 设置"where not null"约束在查询上
+	 * 在查询上设置"where not null"约束
      *
      * @param  string  $column
      * @return $this
@@ -144,7 +156,7 @@ trait DatabaseRule
 
     /**
      * Set a "where in" constraint on the query.
-	 * 设置"where in"约束在查询上
+	 * 在查询上设置"where in"约束
      *
      * @param  string  $column
      * @param  array  $values
@@ -159,7 +171,7 @@ trait DatabaseRule
 
     /**
      * Set a "where not in" constraint on the query.
-	 * 设置"where not in"约束在查询上
+	 * 在查询上设置"where not in"约束
      *
      * @param  string  $column
      * @param  array  $values
@@ -174,7 +186,7 @@ trait DatabaseRule
 
     /**
      * Register a custom query callback.
-	 * 注册自定义查询回调
+	 * 注册一个自定义查询回调
      *
      * @param  \Closure  $callback
      * @return $this
@@ -188,7 +200,7 @@ trait DatabaseRule
 
     /**
      * Get the custom query callbacks for the rule.
-	 * 得到规则的自定义查询回调
+	 * 获取规则的自定义查询回调
      *
      * @return array
      */

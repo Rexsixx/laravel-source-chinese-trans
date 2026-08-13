@@ -1,12 +1,13 @@
 <?php
 /**
- * 基础，供应商发布命令
+ * Illuminate，基础，控制台，vendor:publish 供应商发布命令
  */
 
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Foundation\Events\VendorTagPublished;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 use League\Flysystem\Adapter\Local as LocalAdapter;
@@ -25,7 +26,7 @@ class VendorPublishCommand extends Command
 
     /**
      * The provider to publish.
-	 * 要发布提供者
+	 * 要发布的提供者
      *
      * @var string
      */
@@ -174,14 +175,18 @@ class VendorPublishCommand extends Command
     {
         $published = false;
 
-        foreach ($this->pathsToPublish($tag) as $from => $to) {
+        $pathsToPublish = $this->pathsToPublish($tag);
+
+        foreach ($pathsToPublish as $from => $to) {
             $this->publishItem($from, $to);
 
             $published = true;
         }
 
         if ($published === false) {
-            $this->error('Unable to locate publishable resources.');
+            $this->comment('No publishable resources for tag ['.$tag.'].');
+        } else {
+            $this->laravel['events']->dispatch(new VendorTagPublished($tag, $pathsToPublish));
         }
     }
 
@@ -201,7 +206,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Publish the given item from and to the given location.
-	 * 发布给定的项从给定位置到给定位置
+	 * 将给定的项从给定位置发布到给定位置
      *
      * @param  string  $from
      * @param  string  $to
@@ -220,7 +225,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Publish the file to the given path.
-	 * 发布文件到给定的路径
+	 * 将文件发布到给定的路径
      *
      * @param  string  $from
      * @param  string  $to
@@ -273,7 +278,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Create the directory to house the published files if needed.
-	 * 如果需要，创建目录来存放发布的文件
+	 * 如果需要，创建目录来存放发布的文件。
      *
      * @param  string  $directory
      * @return void
@@ -287,7 +292,7 @@ class VendorPublishCommand extends Command
 
     /**
      * Write a status message to the console.
-	 * 写入状态消息向控制台
+	 * 向控制台写入状态消息
      *
      * @param  string  $from
      * @param  string  $to

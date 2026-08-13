@@ -1,6 +1,6 @@
 <?php
 /**
- * 授权，事件，经过验证的
+ * Illuminate，认证，事件，经过验证的
  */
 
 namespace Illuminate\Auth\Events;
@@ -21,7 +21,7 @@ class Validated
 
     /**
      * The user retrieved and validated from the User Provider.
-	 * 检索和验证用户从用户提供程序中
+	 * 从用户提供程序中检索和验证的用户
      *
      * @var \Illuminate\Contracts\Auth\Authenticatable
      */

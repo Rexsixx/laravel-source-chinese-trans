@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Formatter，Line 格式化
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -15,6 +19,7 @@ use Monolog\Utils;
 
 /**
  * Formats incoming records into a one-line string
+ * 将传入的记录格式化为一行字符串
  *
  * This is especially useful for logging to files
  *
@@ -153,6 +158,12 @@ class LineFormatter extends NormalizerFormatter
 
         if ($previous = $e->getPrevious()) {
             do {
+                $depth++;
+                if ($depth > $this->maxNormalizeDepth) {
+                    $str .= "\n[previous exception] Over " . $this->maxNormalizeDepth . ' levels deep, aborting normalization';
+                    break;
+                }
+
                 $str .= "\n[previous exception] " . $this->formatException($previous);
             } while ($previous = $previous->getPrevious());
         }
@@ -180,7 +191,11 @@ class LineFormatter extends NormalizerFormatter
     {
         if ($this->allowInlineLineBreaks) {
             if (0 === strpos($str, '{')) {
-                return str_replace(array('\r', '\n'), array("\r", "\n"), $str);
+                $str = preg_replace('/(?<!\\\\)\\\\[rn]/', "\n", $str);
+                if (null === $str) {
+                    $pcreErrorCode = preg_last_error();
+                    throw new \RuntimeException('Failed to run preg_replace: ' . $pcreErrorCode . ' / ' . Utils::pcreLastErrorMessage($pcreErrorCode));
+                }
             }
 
             return $str;

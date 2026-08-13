@@ -1,6 +1,6 @@
 <?php
 /**
- * 授权，密码重置服务提供者
+ * Illuminate，认证，密码，重置密码服务提供者
  */
 
 namespace Illuminate\Auth\Passwords;
@@ -23,7 +23,7 @@ class PasswordResetServiceProvider extends ServiceProvider implements Deferrable
 
     /**
      * Register the password broker instance.
-	 * 注册密码破解实例
+	 * 注册密码代理实例
      *
      * @return void
      */

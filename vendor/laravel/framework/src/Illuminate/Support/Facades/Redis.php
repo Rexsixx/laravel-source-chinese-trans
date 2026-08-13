@@ -1,6 +1,6 @@
 <?php
 /**
- * 支持，门面Redis
+ * Illuminate，支持，门面，Redis
  */
 
 namespace Illuminate\Support\Facades;
@@ -17,7 +17,7 @@ class Redis extends Facade
 {
     /**
      * Get the registered name of the component.
-	 * 得到组件注册名
+	 * 获取组件的注册名称
      *
      * @return string
      */

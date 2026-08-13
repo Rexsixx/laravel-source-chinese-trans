@@ -1,6 +1,6 @@
 <?php
 /**
- * 授权，密码代理
+ * Illuminate，认证，密码，密码代理
  */
 
 namespace Illuminate\Auth\Passwords;
@@ -46,37 +46,40 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Send a password reset link to a user.
-	 * 向用户发送密码重置链接
+	 * 发送密码重置链接给用户
      *
      * @param  array  $credentials
+     * @param  \Closure|null  $callback
      * @return string
      */
-    public function sendResetLink(array $credentials)
+    public function sendResetLink(array $credentials, Closure $callback = null)
     {
         // First we will check to see if we found a user at the given credentials and
         // if we did not we will redirect back to this current URI with a piece of
         // "flash" data in the session to indicate to the developers the errors.
-		// 首先，我们将检查是否在给定的凭据中找到了用户，如果没有，
-		// 我们将在会话中使用一段"flash"数据重定向回当前URI，以向开发人员指示错误。
+		// 首先，我们将检查是否在给定凭据和上找到了用户。
         $user = $this->getUser($credentials);
 
         if (is_null($user)) {
             return static::INVALID_USER;
         }
 
-        if (method_exists($this->tokens, 'recentlyCreatedToken') &&
-            $this->tokens->recentlyCreatedToken($user)) {
+        if ($this->tokens->recentlyCreatedToken($user)) {
             return static::RESET_THROTTLED;
         }
 
-        // Once we have the reset token, we are ready to send the message out to this
-        // user with a link to reset their password. We will then redirect back to
-        // the current URI having nothing set in the session to indicate errors.
-		// 一旦我们有了重置令牌，我们就可以向该用户发送消息，并附上重置密码的链接。
-		// 然后，我们将重定向回会话中没有设置任何指示错误的当前URI。
-        $user->sendPasswordResetNotification(
-            $this->tokens->create($user)
-        );
+        $token = $this->tokens->create($user);
+
+        if ($callback) {
+            $callback($user, $token);
+        } else {
+            // Once we have the reset token, we are ready to send the message out to this
+            // user with a link to reset their password. We will then redirect back to
+            // the current URI having nothing set in the session to indicate errors.
+			// 一旦我们有了重置令牌，我们就准备好将消息发送到带有重置密码链接的用户。
+
+            $user->sendPasswordResetNotification($token);
+        }
 
         return static::RESET_LINK_SENT;
     }
@@ -96,8 +99,7 @@ class PasswordBroker implements PasswordBrokerContract
         // If the responses from the validate method is not a user instance, we will
         // assume that it is a redirect and simply return it from this method and
         // the user is properly redirected having an error message on the post.
-		// 如果来自validate方法的响应不是用户实例，我们将假设它是一个重定向，
-		// 并简单地从该方法返回它，并且用户被正确重定向，并在帖子上显示错误消息。
+		// 如果validate方法的响应不是用户实例，我们将假设它是一个重定向，并简单地返回它。
         if (! $user instanceof CanResetPasswordContract) {
             return $user;
         }
@@ -107,8 +109,7 @@ class PasswordBroker implements PasswordBrokerContract
         // Once the reset has been validated, we'll call the given callback with the
         // new password. This gives the user an opportunity to store the password
         // in their persistent storage. Then we'll delete the token and return.
-		// 一旦重置被验证，我们将使用新密码调用给定的回调。
-		// 这为用户提供了将密码存储在持久存储器中的机会。然后我们将删除令牌并返回。
+		// 一旦重置被确认，我们将使用新密码进行回调。
         $callback($user, $password);
 
         $this->tokens->delete($user);
@@ -138,7 +139,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Get the user for the given credentials.
-	 * 得到给定凭据的用户
+	 * 获取给定凭据的用户
      *
      * @param  array  $credentials
      * @return \Illuminate\Contracts\Auth\CanResetPassword|null
@@ -160,7 +161,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Create a new password reset token for the given user.
-	 * 创建一个新的密码重置令牌为给定用户
+	 * 为给定用户创建一个新的密码重置令牌
      *
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @return string
@@ -197,7 +198,7 @@ class PasswordBroker implements PasswordBrokerContract
 
     /**
      * Get the password reset token repository implementation.
-	 * 得到密码重置令牌存储库实现
+	 * 获取密码重置令牌存储库实现
      *
      * @return \Illuminate\Auth\Passwords\TokenRepositoryInterface
      */

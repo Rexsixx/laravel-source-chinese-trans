@@ -1,7 +1,11 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，异常，Http 异常
+ */
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -13,6 +17,7 @@ namespace Symfony\Component\HttpKernel\Exception;
 
 /**
  * HttpException.
+ * Http异常
  *
  * @author Kris Wallsmith <kris@symfony.com>
  */
@@ -21,8 +26,19 @@ class HttpException extends \RuntimeException implements HttpExceptionInterface
     private $statusCode;
     private $headers;
 
-    public function __construct(int $statusCode, ?string $message = '', \Throwable $previous = null, array $headers = [], ?int $code = 0)
+    public function __construct(int $statusCode, ?string $message = '', ?\Throwable $previous = null, array $headers = [], ?int $code = 0)
     {
+        if (null === $message) {
+            trigger_deprecation('symfony/http-kernel', '5.3', 'Passing null as $message to "%s()" is deprecated, pass an empty string instead.', __METHOD__);
+
+            $message = '';
+        }
+        if (null === $code) {
+            trigger_deprecation('symfony/http-kernel', '5.3', 'Passing null as $code to "%s()" is deprecated, pass 0 instead.', __METHOD__);
+
+            $code = 0;
+        }
+
         $this->statusCode = $statusCode;
         $this->headers = $headers;
 
@@ -41,6 +57,7 @@ class HttpException extends \RuntimeException implements HttpExceptionInterface
 
     /**
      * Set response headers.
+	 * 设置响应报头
      *
      * @param array $headers Response headers
      */

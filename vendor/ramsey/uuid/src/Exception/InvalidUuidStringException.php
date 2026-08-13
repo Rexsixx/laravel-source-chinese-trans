@@ -1,6 +1,6 @@
 <?php
 /**
- * Ramsey，Uuid，异常，无效的Uuid字符串异常
+ * Ramsey，Uuid，异常，无效的 Uuid字符串异常
  */
 
 /**
@@ -11,19 +11,19 @@
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @link https://benramsey.com/projects/ramsey-uuid/ Documentation
- * @link https://packagist.org/packages/ramsey/uuid Packagist
- * @link https://github.com/ramsey/uuid GitHub
  */
+
+declare(strict_types=1);
 
 namespace Ramsey\Uuid\Exception;
 
-use InvalidArgumentException;
-
 /**
- * Thrown to indicate that the parsed UUID string is invalid.
- * 被抛出,以指示解析的UUID字符串无效。
+ * Thrown to indicate that the string received is not a valid UUID
+ * 被抛出,以指示接收的字符串并不是一个有效的UUID
+ *
+ * The InvalidArgumentException that this extends is the ramsey/uuid version
+ * of this exception. It exists in the same namespace as this class.
  */
-class InvalidUuidStringException extends InvalidArgumentException
+class InvalidUuidStringException extends InvalidArgumentException implements UuidExceptionInterface
 {
 }

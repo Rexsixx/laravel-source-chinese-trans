@@ -1,100 +1,257 @@
 <?php
 /**
- * Dotenv，Dotenv
+ * Dotenv，点 env
  */
+
+declare(strict_types=1);
 
 namespace Dotenv;
 
-use Dotenv\Environment\DotenvFactory;
-use Dotenv\Environment\FactoryInterface;
 use Dotenv\Exception\InvalidPathException;
+use Dotenv\Loader\Loader;
+use Dotenv\Loader\LoaderInterface;
+use Dotenv\Parser\Parser;
+use Dotenv\Parser\ParserInterface;
+use Dotenv\Repository\Adapter\ArrayAdapter;
+use Dotenv\Repository\Adapter\PutenvAdapter;
+use Dotenv\Repository\RepositoryBuilder;
+use Dotenv\Repository\RepositoryInterface;
+use Dotenv\Store\StoreBuilder;
+use Dotenv\Store\StoreInterface;
+use Dotenv\Store\StringStore;
 
-/**
- * This is the dotenv class.
- *
- * It's responsible for loading a `.env` file in the given directory and
- * setting the environment variables.
- */
 class Dotenv
 {
     /**
-     * The loader instance.
-	 * 加载器实例
+     * The store instance.
+	 * 存储实例
      *
-     * @var \Dotenv\Loader
+     * @var \Dotenv\Store\StoreInterface
      */
-    protected $loader;
+    private $store;
+
+    /**
+     * The parser instance.
+	 * 解析器实例
+     *
+     * @var \Dotenv\Parser\ParserInterface
+     */
+    private $parser;
+
+    /**
+     * The loader instance.
+	 * 加载实例
+     *
+     * @var \Dotenv\Loader\LoaderInterface
+     */
+    private $loader;
+
+    /**
+     * The repository instance.
+	 * 存储库实例
+     *
+     * @var \Dotenv\Repository\RepositoryInterface
+     */
+    private $repository;
 
     /**
      * Create a new dotenv instance.
+	 * 创建一个新的dotenv实例
      *
-     * @param \Dotenv\Loader $loader
+     * @param \Dotenv\Store\StoreInterface           $store
+     * @param \Dotenv\Parser\ParserInterface         $parser
+     * @param \Dotenv\Loader\LoaderInterface         $loader
+     * @param \Dotenv\Repository\RepositoryInterface $repository
      *
      * @return void
      */
-    public function __construct(Loader $loader)
-    {
+    public function __construct(
+        StoreInterface $store,
+        ParserInterface $parser,
+        LoaderInterface $loader,
+        RepositoryInterface $repository
+    ) {
+        $this->store = $store;
+        $this->parser = $parser;
         $this->loader = $loader;
+        $this->repository = $repository;
     }
 
     /**
      * Create a new dotenv instance.
+	 * 创建一个新的dotenv实例
      *
-     * @param string|string[]                           $paths
-     * @param string|null                               $file
-     * @param \Dotenv\Environment\FactoryInterface|null $envFactory
+     * @param \Dotenv\Repository\RepositoryInterface $repository
+     * @param string|string[]                        $paths
+     * @param string|string[]|null                   $names
+     * @param bool                                   $shortCircuit
+     * @param string|null                            $fileEncoding
      *
      * @return \Dotenv\Dotenv
      */
-    public static function create($paths, $file = null, FactoryInterface $envFactory = null)
+    public static function create(RepositoryInterface $repository, $paths, $names = null, bool $shortCircuit = true, ?string $fileEncoding = null)
     {
-        $loader = new Loader(
-            self::getFilePaths((array) $paths, $file ?: '.env'),
-            $envFactory ?: new DotenvFactory(),
-            true
-        );
+        $builder = $names === null ? StoreBuilder::createWithDefaultName() : StoreBuilder::createWithNoNames();
 
-        return new self($loader);
+        foreach ((array) $paths as $path) {
+            $builder = $builder->addPath($path);
+        }
+
+        foreach ((array) $names as $name) {
+            $builder = $builder->addName($name);
+        }
+
+        if ($shortCircuit) {
+            $builder = $builder->shortCircuit();
+        }
+
+        return new self($builder->fileEncoding($fileEncoding)->make(), new Parser(), new Loader(), $repository);
     }
 
     /**
-     * Returns the full paths to the files.
+     * Create a new mutable dotenv instance with default repository.
+	 * 在默认存储库中创建一个新的可变dotenv实例
      *
-     * @param string[] $paths
-     * @param string   $file
+     * @param string|string[]      $paths
+     * @param string|string[]|null $names
+     * @param bool                 $shortCircuit
+     * @param string|null          $fileEncoding
      *
-     * @return string[]
+     * @return \Dotenv\Dotenv
      */
-    private static function getFilePaths(array $paths, $file)
+    public static function createMutable($paths, $names = null, bool $shortCircuit = true, ?string $fileEncoding = null)
     {
-        return array_map(function ($path) use ($file) {
-            return rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$file;
-        }, $paths);
+        $repository = RepositoryBuilder::createWithDefaultAdapters()->make();
+
+        return self::create($repository, $paths, $names, $shortCircuit, $fileEncoding);
     }
 
     /**
-     * Load environment file in given directory.
+     * Create a new mutable dotenv instance with default repository with the putenv adapter.
+	 * 使用putenv适配器创建一个新的可变dotenv实例
      *
-     * @throws \Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidFileException
+     * @param string|string[]      $paths
+     * @param string|string[]|null $names
+     * @param bool                 $shortCircuit
+     * @param string|null          $fileEncoding
      *
-     * @return array<string|null>
+     * @return \Dotenv\Dotenv
      */
-    public function load()
+    public static function createUnsafeMutable($paths, $names = null, bool $shortCircuit = true, ?string $fileEncoding = null)
     {
-        return $this->loadData();
+        $repository = RepositoryBuilder::createWithDefaultAdapters()
+            ->addAdapter(PutenvAdapter::class)
+            ->make();
+
+        return self::create($repository, $paths, $names, $shortCircuit, $fileEncoding);
     }
 
     /**
-     * Load environment file in given directory, silently failing if it doesn't exist.
+     * Create a new immutable dotenv instance with default repository.
+	 * 在默认存储库中创建一个新的不可变的
+     *
+     * @param string|string[]      $paths
+     * @param string|string[]|null $names
+     * @param bool                 $shortCircuit
+     * @param string|null          $fileEncoding
+     *
+     * @return \Dotenv\Dotenv
+     */
+    public static function createImmutable($paths, $names = null, bool $shortCircuit = true, ?string $fileEncoding = null)
+    {
+        $repository = RepositoryBuilder::createWithDefaultAdapters()->immutable()->make();
+
+        return self::create($repository, $paths, $names, $shortCircuit, $fileEncoding);
+    }
+
+    /**
+     * Create a new immutable dotenv instance with default repository with the putenv adapter.
+	 * 使用putenv适配器创建一个新的不可变的dotenv实例
+     *
+     * @param string|string[]      $paths
+     * @param string|string[]|null $names
+     * @param bool                 $shortCircuit
+     * @param string|null          $fileEncoding
+     *
+     * @return \Dotenv\Dotenv
+     */
+    public static function createUnsafeImmutable($paths, $names = null, bool $shortCircuit = true, ?string $fileEncoding = null)
+    {
+        $repository = RepositoryBuilder::createWithDefaultAdapters()
+            ->addAdapter(PutenvAdapter::class)
+            ->immutable()
+            ->make();
+
+        return self::create($repository, $paths, $names, $shortCircuit, $fileEncoding);
+    }
+
+    /**
+     * Create a new dotenv instance with an array backed repository.
+	 * 用一个数组支持的存储库创建一个新的dotenv实例
+     *
+     * @param string|string[]      $paths
+     * @param string|string[]|null $names
+     * @param bool                 $shortCircuit
+     * @param string|null          $fileEncoding
+     *
+     * @return \Dotenv\Dotenv
+     */
+    public static function createArrayBacked($paths, $names = null, bool $shortCircuit = true, ?string $fileEncoding = null)
+    {
+        $repository = RepositoryBuilder::createWithNoAdapters()->addAdapter(ArrayAdapter::class)->make();
+
+        return self::create($repository, $paths, $names, $shortCircuit, $fileEncoding);
+    }
+
+    /**
+     * Parse the given content and resolve nested variables.
+	 * 解析给定的内容并解析嵌套变量
+     *
+     * This method behaves just like load(), only without mutating your actual
+     * environment. We do this by using an array backed repository.
+     *
+     * @param string $content
      *
      * @throws \Dotenv\Exception\InvalidFileException
      *
-     * @return array<string|null>
+     * @return array<string,string|null>
+     */
+    public static function parse(string $content)
+    {
+        $repository = RepositoryBuilder::createWithNoAdapters()->addAdapter(ArrayAdapter::class)->make();
+
+        $phpdotenv = new self(new StringStore($content), new Parser(), new Loader(), $repository);
+
+        return $phpdotenv->load();
+    }
+
+    /**
+     * Read and load environment file(s).
+	 * 读取和加载环境文件
+     *
+     * @throws \Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidEncodingException|\Dotenv\Exception\InvalidFileException
+     *
+     * @return array<string,string|null>
+     */
+    public function load()
+    {
+        $entries = $this->parser->parse($this->store->read());
+
+        return $this->loader->load($this->repository, $entries);
+    }
+
+    /**
+     * Read and load environment file(s), silently failing if no files can be read.
+	 * 读取和加载环境文件,如果没有文件可以读取,则静默失败
+     *
+     * @throws \Dotenv\Exception\InvalidEncodingException|\Dotenv\Exception\InvalidFileException
+     *
+     * @return array<string,string|null>
      */
     public function safeLoad()
     {
         try {
-            return $this->loadData();
+            return $this->load();
         } catch (InvalidPathException $e) {
             // suppressing exception
             return [];
@@ -102,33 +259,8 @@ class Dotenv
     }
 
     /**
-     * Load environment file in given directory.
-     *
-     * @throws \Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidFileException
-     *
-     * @return array<string|null>
-     */
-    public function overload()
-    {
-        return $this->loadData(true);
-    }
-
-    /**
-     * Actually load the data.
-     *
-     * @param bool $overload
-     *
-     * @throws \Dotenv\Exception\InvalidPathException|\Dotenv\Exception\InvalidFileException
-     *
-     * @return array<string|null>
-     */
-    protected function loadData($overload = false)
-    {
-        return $this->loader->setImmutable(!$overload)->load();
-    }
-
-    /**
      * Required ensures that the specified variables exist, and returns a new validator object.
+	 * 需要确保指定的变量存在,并返回一个新的验证器对象
      *
      * @param string|string[] $variables
      *
@@ -136,11 +268,12 @@ class Dotenv
      */
     public function required($variables)
     {
-        return new Validator((array) $variables, $this->loader);
+        return (new Validator($this->repository, (array) $variables))->required();
     }
 
     /**
      * Returns a new validator object that won't check if the specified variables exist.
+	 * 返回一个无法检查指定变量是否存在的新验证器对象
      *
      * @param string|string[] $variables
      *
@@ -148,16 +281,6 @@ class Dotenv
      */
     public function ifPresent($variables)
     {
-        return new Validator((array) $variables, $this->loader, false);
-    }
-
-    /**
-     * Get the list of environment variables declared inside the 'env' file.
-     *
-     * @return string[]
-     */
-    public function getEnvironmentVariableNames()
-    {
-        return $this->loader->getEnvironmentVariableNames();
+        return new Validator($this->repository, (array) $variables);
     }
 }

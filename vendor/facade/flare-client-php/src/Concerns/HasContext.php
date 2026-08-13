@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，Flare Client，问题，有上下文
+ * Facade，FlareClient，问题，有上下文
  */
 
 namespace Facade\FlareClient\Concerns;

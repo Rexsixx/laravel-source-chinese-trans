@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，Session，储存，处理器，迁移会话处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -14,6 +17,7 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 /**
  * Migrating session handler for migrating from one handler to another. It reads
  * from the current handler and writes both the current and new ones.
+ * 迁移会话处理程序，用于从一个处理程序迁移到另一个处理程序。
  *
  * It ignores errors from the new handler.
  *
@@ -22,7 +26,14 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
  */
 class MigratingSessionHandler implements \SessionHandlerInterface, \SessionUpdateTimestampHandlerInterface
 {
+    /**
+     * @var \SessionHandlerInterface&\SessionUpdateTimestampHandlerInterface
+     */
     private $currentHandler;
+
+    /**
+     * @var \SessionHandlerInterface&\SessionUpdateTimestampHandlerInterface
+     */
     private $writeOnlyHandler;
 
     public function __construct(\SessionHandlerInterface $currentHandler, \SessionHandlerInterface $writeOnlyHandler)

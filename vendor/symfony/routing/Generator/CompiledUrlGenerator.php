@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，生成器，编译Url生成器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,13 +20,14 @@ use Symfony\Component\Routing\RequestContext;
 
 /**
  * Generates URLs based on rules dumped by CompiledUrlGeneratorDumper.
+ * 根据CompiledUrlGeneratorDumper转储的规则生成url。
  */
 class CompiledUrlGenerator extends UrlGenerator
 {
     private $compiledRoutes = [];
     private $defaultLocale;
 
-    public function __construct(array $compiledRoutes, RequestContext $context, LoggerInterface $logger = null, string $defaultLocale = null)
+    public function __construct(array $compiledRoutes, RequestContext $context, ?LoggerInterface $logger = null, ?string $defaultLocale = null)
     {
         $this->compiledRoutes = $compiledRoutes;
         $this->context = $context;
@@ -31,7 +35,7 @@ class CompiledUrlGenerator extends UrlGenerator
         $this->defaultLocale = $defaultLocale;
     }
 
-    public function generate($name, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
+    public function generate(string $name, array $parameters = [], int $referenceType = self::ABSOLUTE_PATH)
     {
         $locale = $parameters['_locale']
             ?? $this->context->getParameter('_locale')
@@ -50,7 +54,11 @@ class CompiledUrlGenerator extends UrlGenerator
             throw new RouteNotFoundException(sprintf('Unable to generate a URL for the named route "%s" as such route does not exist.', $name));
         }
 
-        [$variables, $defaults, $requirements, $tokens, $hostTokens, $requiredSchemes] = $this->compiledRoutes[$name];
+        [$variables, $defaults, $requirements, $tokens, $hostTokens, $requiredSchemes, $deprecations] = $this->compiledRoutes[$name] + [6 => []];
+
+        foreach ($deprecations as $deprecation) {
+            trigger_deprecation($deprecation['package'], $deprecation['version'], $deprecation['message']);
+        }
 
         if (isset($defaults['_canonical_route']) && isset($defaults['_locale'])) {
             if (!\in_array('_locale', $variables, true)) {

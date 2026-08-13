@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，Eloquent有多个关系
+ * Illuminate，数据库，Eloquent，关系，有多个
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -41,7 +41,7 @@ class HasMany extends HasOneOrMany
 
     /**
      * Match the eagerly loaded results to their parents.
-	 * 将急切加载的结果与他们的父类匹配
+	 * 将急切加载的结果与他们的父母匹配
      *
      * @param  array  $models
      * @param  \Illuminate\Database\Eloquent\Collection  $results

@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，队列作业接口
+ * Illuminate，契约，队列，作业接口
  */
 
 namespace Illuminate\Contracts\Queue;
@@ -8,8 +8,16 @@ namespace Illuminate\Contracts\Queue;
 interface Job
 {
     /**
+     * Get the UUID of the job.
+	 * 获取作业的UUID
+     *
+     * @return string|null
+     */
+    public function uuid();
+
+    /**
      * Get the job identifier.
-	 * 得到作业标识符
+	 * 获取任务标识符
      *
      * @return string
      */
@@ -17,7 +25,7 @@ interface Job
 
     /**
      * Get the decoded body of the job.
-	 * 得到解码后的作业正文
+	 * 拿到解码后的文件
      *
      * @return array
      */
@@ -25,7 +33,7 @@ interface Job
 
     /**
      * Fire the job.
-	 * 启动作业
+	 * 启动这个任务
      *
      * @return void
      */
@@ -33,8 +41,9 @@ interface Job
 
     /**
      * Release the job back into the queue.
+	 * 将作业释放回队列
+     *
      * Accepts a delay specified in seconds.
-	 * 释放作业返回队列
      *
      * @param  int  $delay
      * @return void
@@ -43,7 +52,7 @@ interface Job
 
     /**
      * Determine if the job was released back into the queue.
-	 * 确定作业是否释放回队列
+	 * 确定作业是否被释放回队列
      *
      * @return bool
      */
@@ -51,7 +60,7 @@ interface Job
 
     /**
      * Delete the job from the queue.
-	 * 删除作业从队列中
+	 * 从队列中删除任务
      *
      * @return void
      */
@@ -59,7 +68,7 @@ interface Job
 
     /**
      * Determine if the job has been deleted.
-	 * 确定作业是否被删除
+	 * 确定作业是否已删除
      *
      * @return bool
      */
@@ -67,7 +76,7 @@ interface Job
 
     /**
      * Determine if the job has been deleted or released.
-	 * 确定作业是否被删除或释放
+	 * 确定作业是否已被删除或释放
      *
      * @return bool
      */
@@ -75,7 +84,7 @@ interface Job
 
     /**
      * Get the number of times the job has been attempted.
-	 * 得到作业被尝试的次数
+	 * 获取该任务被尝试的次数
      *
      * @return int
      */
@@ -83,7 +92,7 @@ interface Job
 
     /**
      * Determine if the job has been marked as a failure.
-	 * 确定作业是否被标记为失败
+	 * 确定作业是否已被标记为失败
      *
      * @return bool
      */
@@ -91,7 +100,7 @@ interface Job
 
     /**
      * Mark the job as "failed".
-	 * 标记作业为失败
+	 * 把这项工作标记为"失败"
      *
      * @return void
      */
@@ -108,15 +117,23 @@ interface Job
 
     /**
      * Get the number of times to attempt a job.
-	 * 得到最大尝试次数
+	 * 获取尝试某项工作的次数
      *
      * @return int|null
      */
     public function maxTries();
 
     /**
+     * Get the maximum number of exceptions allowed, regardless of attempts.
+	 * 获取允许的最大异常数，无论尝试次数如何。
+     *
+     * @return int|null
+     */
+    public function maxExceptions();
+
+    /**
      * Get the number of seconds the job can run.
-	 * 得到任务执行超时时间
+	 * 获取作业可以运行的秒数
      *
      * @return int|null
      */
@@ -124,15 +141,15 @@ interface Job
 
     /**
      * Get the timestamp indicating when the job should timeout.
-	 * 得到指示作业何时应该超时的时间戳
+	 * 获取指示作业何时应该超时的时间戳
      *
      * @return int|null
      */
-    public function timeoutAt();
+    public function retryUntil();
 
     /**
      * Get the name of the queued job class.
-	 * 得到队列任务类名称
+	 * 获取排队作业类的名称
      *
      * @return string
      */
@@ -140,7 +157,7 @@ interface Job
 
     /**
      * Get the resolved name of the queued job class.
-	 * 得到排队作业类的解析名称
+	 * 获取排队作业类的解析名称
      *
      * Resolves the name of "wrapped" jobs such as class-based handlers.
      *
@@ -150,7 +167,7 @@ interface Job
 
     /**
      * Get the name of the connection the job belongs to.
-	 * 得到作业所属的连接的名称
+	 * 获取作业所属的连接的名称
      *
      * @return string
      */
@@ -158,7 +175,7 @@ interface Job
 
     /**
      * Get the name of the queue the job belongs to.
-	 * 得到作业所属队列的名称
+	 * 获取作业所属队列的名称
      *
      * @return string
      */
@@ -166,7 +183,7 @@ interface Job
 
     /**
      * Get the raw body string for the job.
-	 * 得到作业的原始主体字符串
+	 * 获取工作的原始主体字符串
      *
      * @return string
      */

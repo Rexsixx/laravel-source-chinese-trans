@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，视图清除命令
+ * Illuminate，基础，控制台，view:clear 视图清除命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -13,7 +13,7 @@ class ViewClearCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称 view:clear
      *
      * @var string
      */
@@ -37,7 +37,7 @@ class ViewClearCommand extends Command
 
     /**
      * Create a new config clear command instance.
-	 * 创建新的配置清除命令实例
+	 * 创建新的config clear命令实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void

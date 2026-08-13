@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，控制台，监听命令
+ * Illuminate，队列，控制台，queue:listen 监听命令
  */
 
 namespace Illuminate\Queue\Console;
@@ -13,13 +13,15 @@ class ListenCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
     protected $signature = 'queue:listen
                             {connection? : The name of connection}
-                            {--delay=0 : The number of seconds to delay failed jobs}
+                            {--name=default : The name of the worker}
+                            {--delay=0 : The number of seconds to delay failed jobs (Deprecated)}
+                            {--backoff=0 : The number of seconds to wait before retrying a job that encountered an uncaught exception}
                             {--force : Force the worker to run even in maintenance mode}
                             {--memory=128 : The memory limit in megabytes}
                             {--queue= : The queue to listen on}
@@ -37,7 +39,7 @@ class ListenCommand extends Command
 
     /**
      * The queue listener instance.
-	 * 队列监听实例
+	 * 队列监听器实例
      *
      * @var \Illuminate\Queue\Listener
      */
@@ -45,7 +47,7 @@ class ListenCommand extends Command
 
     /**
      * Create a new queue listen command.
-	 * 创建新的队列监听命令
+	 * 创建一个新的queue listen命令
      *
      * @param  \Illuminate\Queue\Listener  $listener
      * @return void
@@ -68,8 +70,7 @@ class ListenCommand extends Command
         // We need to get the right queue for the connection which is set in the queue
         // configuration file for the application. We will pull it based on the set
         // connection being run for the queue operation currently being executed.
-		// 我们需要为应用程序的队列配置文件中设置的连接获取正确的队列。
-		// 我们将根据当前正在执行的队列操作正在运行的集合连接来拉取它。
+		// 我们需要为在队列中设置的连接获得正确的队列应用程序的配置文件
         $queue = $this->getQueue(
             $connection = $this->input->getArgument('connection')
         );
@@ -81,7 +82,7 @@ class ListenCommand extends Command
 
     /**
      * Get the name of the queue connection to listen on.
-	 * 得到要侦听的队列连接名
+	 * 获取要监听的队列连接的名称
      *
      * @param  string  $connection
      * @return string
@@ -103,17 +104,25 @@ class ListenCommand extends Command
      */
     protected function gatherOptions()
     {
+        $backoff = $this->hasOption('backoff')
+                ? $this->option('backoff')
+                : $this->option('delay');
+
         return new ListenerOptions(
-            $this->option('env'), $this->option('delay'),
-            $this->option('memory'), $this->option('timeout'),
-            $this->option('sleep'), $this->option('tries'),
+            $this->option('name'),
+            $this->option('env'),
+            $backoff,
+            $this->option('memory'),
+            $this->option('timeout'),
+            $this->option('sleep'),
+            $this->option('tries'),
             $this->option('force')
         );
     }
 
     /**
      * Set the options on the queue listener.
-	 * 设置队列监听者选项
+	 * 设置队列监听器上的选项
      *
      * @param  \Illuminate\Queue\Listener  $listener
      * @return void

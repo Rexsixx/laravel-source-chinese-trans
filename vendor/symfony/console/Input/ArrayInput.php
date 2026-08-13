@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，输入，Array 输入
+ * Symfony，Component，Console，输入，Argv 输入
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\Console\Exception\InvalidOptionException;
 
 /**
  * ArrayInput represents an input provided as an array.
+ * ArrayInput表示提供的输入作为数组。
  *
  * Usage:
  *
@@ -30,7 +31,7 @@ class ArrayInput extends Input
 {
     private $parameters;
 
-    public function __construct(array $parameters, InputDefinition $definition = null)
+    public function __construct(array $parameters, ?InputDefinition $definition = null)
     {
         $this->parameters = $parameters;
 
@@ -56,7 +57,7 @@ class ArrayInput extends Input
     /**
      * {@inheritdoc}
      */
-    public function hasParameterOption($values, $onlyParams = false)
+    public function hasParameterOption($values, bool $onlyParams = false)
     {
         $values = (array) $values;
 
@@ -80,7 +81,7 @@ class ArrayInput extends Input
     /**
      * {@inheritdoc}
      */
-    public function getParameterOption($values, $default = false, $onlyParams = false)
+    public function getParameterOption($values, $default = false, bool $onlyParams = false)
     {
         $values = (array) $values;
 
@@ -103,6 +104,7 @@ class ArrayInput extends Input
 
     /**
      * Returns a stringified representation of the args passed to the command.
+	 * 返回args传递给命令的stringified表示
      *
      * @return string
      */
@@ -148,6 +150,7 @@ class ArrayInput extends Input
 
     /**
      * Adds a short option value.
+	 * 添加一个短期选项值
      *
      * @throws InvalidOptionException When option given doesn't exist
      */
@@ -162,6 +165,7 @@ class ArrayInput extends Input
 
     /**
      * Adds a long option value.
+	 * 增加一个长选项值
      *
      * @throws InvalidOptionException When option given doesn't exist
      * @throws InvalidOptionException When a required value is missing
@@ -169,7 +173,14 @@ class ArrayInput extends Input
     private function addLongOption(string $name, $value)
     {
         if (!$this->definition->hasOption($name)) {
-            throw new InvalidOptionException(sprintf('The "--%s" option does not exist.', $name));
+            if (!$this->definition->hasNegation($name)) {
+                throw new InvalidOptionException(sprintf('The "--%s" option does not exist.', $name));
+            }
+
+            $optionName = $this->definition->negationToName($name);
+            $this->options[$optionName] = false;
+
+            return;
         }
 
         $option = $this->definition->getOption($name);
@@ -189,6 +200,7 @@ class ArrayInput extends Input
 
     /**
      * Adds an argument value.
+	 * 添加一个参数值
      *
      * @param string|int $name  The argument name
      * @param mixed      $value The value for the argument

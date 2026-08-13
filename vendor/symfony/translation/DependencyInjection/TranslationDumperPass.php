@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，依赖注入，翻译转储通过
+ * Symfony，Component，Translation，依赖注入，平移存储
  */
 
 /*
@@ -29,6 +29,10 @@ class TranslationDumperPass implements CompilerPassInterface
 
     public function __construct(string $writerServiceId = 'translation.writer', string $dumperTag = 'translation.dumper')
     {
+        if (1 < \func_num_args()) {
+            trigger_deprecation('symfony/translation', '5.3', 'Configuring "%s" is deprecated.', __CLASS__);
+        }
+
         $this->writerServiceId = $writerServiceId;
         $this->dumperTag = $dumperTag;
     }

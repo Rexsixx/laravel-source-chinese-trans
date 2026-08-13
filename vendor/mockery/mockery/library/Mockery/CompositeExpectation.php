@@ -1,42 +1,71 @@
 <?php
 /**
- * Mockery，复合的期望
+ * Mockery，复合期望
  */
 
 /**
- * Mockery
+ * Mockery (https://docs.mockery.io/)
  *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://github.com/padraic/mockery/blob/master/LICENSE
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to padraic@php.net so we can send you a copy immediately.
- *
- * @category   Mockery
- * @package    Mockery
- * @copyright  Copyright (c) 2010 Pádraic Brady (http://blog.astrumfutura.com)
- * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
+ * @copyright https://github.com/mockery/mockery/blob/HEAD/COPYRIGHT.md
+ * @license https://github.com/mockery/mockery/blob/HEAD/LICENSE BSD 3-Clause License
+ * @link https://github.com/mockery/mockery for the canonical source repository
  */
 
 namespace Mockery;
+
+use function array_map;
+use function current;
+use function implode;
+use function reset;
 
 class CompositeExpectation implements ExpectationInterface
 {
     /**
      * Stores an array of all expectations for this composite
+	 * 存储对该复合材料的所有期望的数组
      *
-     * @var array
+     * @var array<ExpectationInterface>
      */
-    protected $_expectations = array();
+    protected $_expectations = [];
+
+    /**
+     * Intercept any expectation calls and direct against all expectations
+	 * 拦截任何期望调用,并直接反对所有期望
+     *
+     * @param string $method
+     *
+     * @return self
+     */
+    public function __call($method, array $args)
+    {
+        foreach ($this->_expectations as $expectation) {
+            $expectation->{$method}(...$args);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Return the string summary of this composite expectation
+	 * 返回复合期望的字符串摘要
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        $parts = array_map(static function (ExpectationInterface $expectation): string {
+            return (string) $expectation;
+        }, $this->_expectations);
+
+        return '[' . implode(', ', $parts) . ']';
+    }
 
     /**
      * Add an expectation to the composite
+	 * 对复合材料添加一个期望
      *
-     * @param \Mockery\Expectation|\Mockery\CompositeExpectation $expectation
+     * @param ExpectationInterface|HigherOrderMessage $expectation
+     *
      * @return void
      */
     public function add($expectation)
@@ -54,32 +83,33 @@ class CompositeExpectation implements ExpectationInterface
 
     /**
      * Set a return value, or sequential queue of return values
+	 * 设置返回值,或返回值的顺序队列
      *
      * @param mixed ...$args
+     *
      * @return self
      */
     public function andReturns(...$args)
     {
-        return call_user_func_array([$this, 'andReturn'], $args);
+        return $this->andReturn(...$args);
     }
 
     /**
-     * Intercept any expectation calls and direct against all expectations
+     * Return the parent mock of the first expectation
+	 * 返回第一个期望的父模型
      *
-     * @param string $method
-     * @param array $args
-     * @return self
+     * @return LegacyMockInterface&MockInterface
      */
-    public function __call($method, array $args)
+    public function getMock()
     {
-        foreach ($this->_expectations as $expectation) {
-            call_user_func_array(array($expectation, $method), $args);
-        }
-        return $this;
+        reset($this->_expectations);
+        $first = current($this->_expectations);
+        return $first->getMock();
     }
 
     /**
      * Return order number of the first expectation
+	 * 第一个期望的返回顺序号
      *
      * @return int
      */
@@ -91,21 +121,10 @@ class CompositeExpectation implements ExpectationInterface
     }
 
     /**
-     * Return the parent mock of the first expectation
-     *
-     * @return \Mockery\MockInterface|\Mockery\LegacyMockInterface
-     */
-    public function getMock()
-    {
-        reset($this->_expectations);
-        $first = current($this->_expectations);
-        return $first->getMock();
-    }
-
-    /**
      * Mockery API alias to getMock
+	 * 用API别名获取getMock
      *
-     * @return \Mockery\LegacyMockInterface|\Mockery\MockInterface
+     * @return LegacyMockInterface&MockInterface
      */
     public function mock()
     {
@@ -113,46 +132,32 @@ class CompositeExpectation implements ExpectationInterface
     }
 
     /**
-     * Starts a new expectation addition on the first mock which is the primary
-     * target outside of a demeter chain
+     * Starts a new expectation addition on the first mock which is the primary target outside of a demeter chain
+	 * 在第一个mock上启动一个新的期望添加，该mock是demeter链之外的主要目标。
      *
      * @param mixed ...$args
-     * @return \Mockery\Expectation
-     */
-    public function shouldReceive(...$args)
-    {
-        reset($this->_expectations);
-        $first = current($this->_expectations);
-        return call_user_func_array(array($first->getMock(), 'shouldReceive'), $args);
-    }
-
-    /**
-     * Starts a new expectation addition on the first mock which is the primary
-     * target outside of a demeter chain
      *
-     * @param mixed ...$args
-     * @return \Mockery\Expectation
+     * @return Expectation
      */
     public function shouldNotReceive(...$args)
     {
         reset($this->_expectations);
         $first = current($this->_expectations);
-        return call_user_func_array(array($first->getMock(), 'shouldNotReceive'), $args);
+        return $first->getMock()->shouldNotReceive(...$args);
     }
 
     /**
-     * Return the string summary of this composite expectation
+     * Starts a new expectation addition on the first mock which is the primary target, outside of a demeter chain
+	 * 在第一个模拟中启动一个新的期望添加,这是一个demeter链之外的主要目标
      *
-     * @return string
+     * @param mixed ...$args
+     *
+     * @return Expectation
      */
-    public function __toString()
+    public function shouldReceive(...$args)
     {
-        $return = '[';
-        $parts = array();
-        foreach ($this->_expectations as $exp) {
-            $parts[] = (string) $exp;
-        }
-        $return .= implode(', ', $parts) . ']';
-        return $return;
+        reset($this->_expectations);
+        $first = current($this->_expectations);
+        return $first->getMock()->shouldReceive(...$args);
     }
 }

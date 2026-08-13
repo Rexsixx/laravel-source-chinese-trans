@@ -1,6 +1,6 @@
 <?php
 /**
- * App，Http，Kernel内核
+ * app，Http，内核
  */
 
 namespace App\Http;
@@ -11,16 +11,18 @@ class Kernel extends HttpKernel
 {
     /**
      * The application's global HTTP middleware stack.
-	 * 应用全局Http中间件堆栈
+	 * 应用的全局HTTP中间件堆栈
      *
      * These middleware are run during every request to your application.
-     * 这些中间件在对应用程序的每次请求期间运行
+	 * 这些中间件在对应用的每次请求期间运行
      *
-     * @var array
+     * @var array<int, class-string|string>
      */
     protected $middleware = [
+        // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
-        \App\Http\Middleware\CheckForMaintenanceMode::class,
+        \Fruitcake\Cors\HandleCors::class,
+        \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
@@ -28,9 +30,9 @@ class Kernel extends HttpKernel
 
     /**
      * The application's route middleware groups.
-	 * 应用的路由中间件组
+	 * 应用程序的路由中间件组
      *
-     * @var array
+     * @var array<string, array<int, class-string|string>>
      */
     protected $middlewareGroups = [
         'web' => [
@@ -44,24 +46,23 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:60,1',
+            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
 
     /**
      * The application's route middleware.
-	 * 应用的路由中间件
+	 * 应用程序的路由中间件
      *
      * These middleware may be assigned to groups or used individually.
-	 * 这些中间件可以被分配到组或单独使用。
      *
-     * @var array
+     * @var array<string, class-string|string>
      */
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
@@ -69,24 +70,5 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-    ];
-
-    /**
-     * The priority-sorted list of middleware.
-	 * 中间件的优先级排序。
-     *
-     * This forces non-global middleware to always be in the given order.
-	 * 这迫使非全局中间件始终处于给定的顺序。
-     *
-     * @var array
-     */
-    protected $middlewarePriority = [
-        \Illuminate\Session\Middleware\StartSession::class,
-        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \App\Http\Middleware\Authenticate::class,
-        \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        \Illuminate\Session\Middleware\AuthenticateSession::class,
-        \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        \Illuminate\Auth\Middleware\Authorize::class,
     ];
 }

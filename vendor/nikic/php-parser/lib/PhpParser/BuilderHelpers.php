@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * PhpParser，构建器助手
+ * PhpParser，建立者辅助
  */
 
 namespace PhpParser;
@@ -10,25 +10,27 @@ use PhpParser\Node\ComplexType;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
+use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\NullableType;
 use PhpParser\Node\Scalar;
 use PhpParser\Node\Stmt;
 
 /**
  * This class defines helpers used in the implementation of builders. Don't use it directly.
+ * 该类定义了在构建器的实现中使用的帮助程序。不要直接使用。
  *
  * @internal
  */
-final class BuilderHelpers
-{
+final class BuilderHelpers {
     /**
      * Normalizes a node: Converts builder objects to nodes.
+	 * 规范化节点：将构建器对象转换为节点。
      *
      * @param Node|Builder $node The node to normalize
      *
      * @return Node The normalized node
      */
-    public static function normalizeNode($node) : Node {
+    public static function normalizeNode($node): Node {
         if ($node instanceof Builder) {
             return $node->getNode();
         }
@@ -42,6 +44,7 @@ final class BuilderHelpers
 
     /**
      * Normalizes a node to a statement.
+	 * 将节点规范化为语句。
      *
      * Expressions are wrapped in a Stmt\Expression node.
      *
@@ -49,7 +52,7 @@ final class BuilderHelpers
      *
      * @return Stmt The normalized statement node
      */
-    public static function normalizeStmt($node) : Stmt {
+    public static function normalizeStmt($node): Stmt {
         $node = self::normalizeNode($node);
         if ($node instanceof Stmt) {
             return $node;
@@ -64,12 +67,13 @@ final class BuilderHelpers
 
     /**
      * Normalizes strings to Identifier.
+	 * 将字符串规范化为标识符
      *
      * @param string|Identifier $name The identifier to normalize
      *
      * @return Identifier The normalized identifier
      */
-    public static function normalizeIdentifier($name) : Identifier {
+    public static function normalizeIdentifier($name): Identifier {
         if ($name instanceof Identifier) {
             return $name;
         }
@@ -83,6 +87,7 @@ final class BuilderHelpers
 
     /**
      * Normalizes strings to Identifier, also allowing expressions.
+	 * 将字符串规范化为标识符，也允许表达式。
      *
      * @param string|Identifier|Expr $name The identifier to normalize
      *
@@ -102,12 +107,13 @@ final class BuilderHelpers
 
     /**
      * Normalizes a name: Converts string names to Name nodes.
+	 * 规范化名称：将字符串名称转换为名称节点。
      *
      * @param Name|string $name The name to normalize
      *
      * @return Name The normalized name
      */
-    public static function normalizeName($name) : Name {
+    public static function normalizeName($name): Name {
         if ($name instanceof Name) {
             return $name;
         }
@@ -133,6 +139,7 @@ final class BuilderHelpers
 
     /**
      * Normalizes a name: Converts string names to Name nodes, while also allowing expressions.
+	 * 规范化名称：将字符串名称转换为name节点，同时也允许表达式。
      *
      * @param Expr|Name|string $name The name to normalize
      *
@@ -154,6 +161,7 @@ final class BuilderHelpers
 
     /**
      * Normalizes a type: Converts plain-text type names into proper AST representation.
+	 * 规范化类型：将纯文本类型名称转换为适当的AST表示。
      *
      * In particular, builtin types become Identifiers, custom types become Names and nullables
      * are wrapped in NullableType nodes.
@@ -182,7 +190,20 @@ final class BuilderHelpers
         }
 
         $builtinTypes = [
-            'array', 'callable', 'string', 'int', 'float', 'bool', 'iterable', 'void', 'object', 'mixed', 'never',
+            'array',
+            'callable',
+            'bool',
+            'int',
+            'float',
+            'string',
+            'iterable',
+            'void',
+            'object',
+            'null',
+            'false',
+            'mixed',
+            'never',
+            'true',
         ];
 
         $lowerType = strtolower($type);
@@ -206,11 +227,11 @@ final class BuilderHelpers
      * Normalizes a value: Converts nulls, booleans, integers,
      * floats, strings and arrays into their respective nodes
      *
-     * @param Node\Expr|bool|null|int|float|string|array $value The value to normalize
+     * @param Node\Expr|bool|null|int|float|string|array|\UnitEnum $value The value to normalize
      *
      * @return Expr The normalized value
      */
-    public static function normalizeValue($value) : Expr {
+    public static function normalizeValue($value): Expr {
         if ($value instanceof Node\Expr) {
             return $value;
         }
@@ -228,11 +249,11 @@ final class BuilderHelpers
         }
 
         if (is_int($value)) {
-            return new Scalar\LNumber($value);
+            return new Scalar\Int_($value);
         }
 
         if (is_float($value)) {
-            return new Scalar\DNumber($value);
+            return new Scalar\Float_($value);
         }
 
         if (is_string($value)) {
@@ -245,12 +266,12 @@ final class BuilderHelpers
             foreach ($value as $itemKey => $itemValue) {
                 // for consecutive, numeric keys don't generate keys
                 if (null !== $lastKey && ++$lastKey === $itemKey) {
-                    $items[] = new Expr\ArrayItem(
+                    $items[] = new Node\ArrayItem(
                         self::normalizeValue($itemValue)
                     );
                 } else {
                     $lastKey = null;
-                    $items[] = new Expr\ArrayItem(
+                    $items[] = new Node\ArrayItem(
                         self::normalizeValue($itemValue),
                         self::normalizeValue($itemKey)
                     );
@@ -260,17 +281,22 @@ final class BuilderHelpers
             return new Expr\Array_($items);
         }
 
+        if ($value instanceof \UnitEnum) {
+            return new Expr\ClassConstFetch(new FullyQualified(\get_class($value)), new Identifier($value->name));
+        }
+
         throw new \LogicException('Invalid value');
     }
 
     /**
      * Normalizes a doc comment: Converts plain strings to PhpParser\Comment\Doc.
+	 * 将普通字符串转换为PhpParser\ comment \ doc
      *
      * @param Comment\Doc|string $docComment The doc comment to normalize
      *
      * @return Comment\Doc The normalized doc comment
      */
-    public static function normalizeDocComment($docComment) : Comment\Doc {
+    public static function normalizeDocComment($docComment): Comment\Doc {
         if ($docComment instanceof Comment\Doc) {
             return $docComment;
         }
@@ -284,13 +310,13 @@ final class BuilderHelpers
 
     /**
      * Normalizes a attribute: Converts attribute to the Attribute Group if needed.
+	 * 规范化属性：根据需要将属性转换为属性组。
      *
      * @param Node\Attribute|Node\AttributeGroup $attribute
      *
      * @return Node\AttributeGroup The Attribute Group
      */
-    public static function normalizeAttribute($attribute) : Node\AttributeGroup
-    {
+    public static function normalizeAttribute($attribute): Node\AttributeGroup {
         if ($attribute instanceof Node\AttributeGroup) {
             return $attribute;
         }
@@ -304,14 +330,25 @@ final class BuilderHelpers
 
     /**
      * Adds a modifier and returns new modifier bitmask.
+	 * 添加一个修饰符并返回新的修饰符位掩码
      *
      * @param int $modifiers Existing modifiers
-     * @param int $modifier  Modifier to set
+     * @param int $modifier Modifier to set
      *
      * @return int New modifiers
      */
-    public static function addModifier(int $modifiers, int $modifier) : int {
-        Stmt\Class_::verifyModifier($modifiers, $modifier);
+    public static function addModifier(int $modifiers, int $modifier): int {
+        Modifiers::verifyModifier($modifiers, $modifier);
         return $modifiers | $modifier;
+    }
+
+    /**
+     * Adds a modifier and returns new modifier bitmask.
+	 * 添加一个修饰符并返回新的修饰符位掩码
+     * @return int New modifiers
+     */
+    public static function addClassModifier(int $existingModifiers, int $modifierToSet): int {
+        Modifiers::verifyClassModifier($existingModifiers, $modifierToSet);
+        return $existingModifiers | $modifierToSet;
     }
 }

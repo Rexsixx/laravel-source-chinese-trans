@@ -1,19 +1,22 @@
 <?php
 /**
- * 队列，可序列化的闭包
+ * Illuminate，队列，可序列化的闭包
  */
 
 namespace Illuminate\Queue;
 
 use Opis\Closure\SerializableClosure as OpisSerializableClosure;
 
+/**
+ * @deprecated This class will be removed in Laravel 9.
+ */
 class SerializableClosure extends OpisSerializableClosure
 {
     use SerializesAndRestoresModelIdentifiers;
 
     /**
      * Transform the use variables before serialization.
-	 * 转换use变量在序列化之前
+	 * 在序列化之前转换use变量
      *
      * @param  array  $data
      * @return array

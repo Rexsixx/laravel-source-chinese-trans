@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，优化命令
+ * Illuminate，基础，控制台，optimize 优化命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -11,7 +11,7 @@ class OptimizeCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -27,7 +27,7 @@ class OptimizeCommand extends Command
 
     /**
      * Execute the console command.
-	 * 执行控制台命令
+	 * 执行console命令
      *
      * @return void
      */

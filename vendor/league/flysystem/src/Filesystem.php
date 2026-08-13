@@ -11,12 +11,13 @@ use League\Flysystem\Plugin\PluggableTrait;
 use League\Flysystem\Util\ContentListingFormatter;
 
 /**
- * @method array getWithMetadata(string $path, array $metadata)
- * @method bool  forceCopy(string $path, string $newpath)
- * @method bool  forceRename(string $path, string $newpath)
- * @method array listFiles(string $path = '', boolean $recursive = false)
- * @method array listPaths(string $path = '', boolean $recursive = false)
- * @method array listWith(array $keys = [], $directory = '', $recursive = false)
+ * @method void        emptyDir(string $dirname)
+ * @method array|false getWithMetadata(string $path, string[] $metadata)
+ * @method bool        forceCopy(string $path, string $newpath)
+ * @method bool        forceRename(string $path, string $newpath)
+ * @method array       listFiles(string $path = '', boolean $recursive = false)
+ * @method string[]    listPaths(string $path = '', boolean $recursive = false)
+ * @method array       listWith(string[] $keys = [], $directory = '', $recursive = false)
  */
 class Filesystem implements FilesystemInterface
 {
@@ -30,6 +31,7 @@ class Filesystem implements FilesystemInterface
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param AdapterInterface $adapter
      * @param Config|array     $config
@@ -42,6 +44,7 @@ class Filesystem implements FilesystemInterface
 
     /**
      * Get the Adapter.
+	 * 获取适配器
      *
      * @return AdapterInterface adapter
      */
@@ -77,7 +80,7 @@ class Filesystem implements FilesystemInterface
      */
     public function writeStream($path, $resource, array $config = [])
     {
-        if ( ! is_resource($resource)) {
+        if ( ! is_resource($resource) || get_resource_type($resource) !== 'stream') {
             throw new InvalidArgumentException(__METHOD__ . ' expects argument #2 to be a valid resource.');
         }
 
@@ -110,7 +113,7 @@ class Filesystem implements FilesystemInterface
      */
     public function putStream($path, $resource, array $config = [])
     {
-        if ( ! is_resource($resource)) {
+        if ( ! is_resource($resource) || get_resource_type($resource) !== 'stream') {
             throw new InvalidArgumentException(__METHOD__ . ' expects argument #2 to be a valid resource.');
         }
 
@@ -118,7 +121,7 @@ class Filesystem implements FilesystemInterface
         $config = $this->prepareConfig($config);
         Util::rewindStream($resource);
 
-        if ( ! $this->getAdapter() instanceof CanOverwriteFiles &&$this->has($path)) {
+        if ( ! $this->getAdapter() instanceof CanOverwriteFiles && $this->has($path)) {
             return (bool) $this->getAdapter()->updateStream($path, $resource, $config);
         }
 
@@ -161,7 +164,7 @@ class Filesystem implements FilesystemInterface
      */
     public function updateStream($path, $resource, array $config = [])
     {
-        if ( ! is_resource($resource)) {
+        if ( ! is_resource($resource) || get_resource_type($resource) !== 'stream') {
             throw new InvalidArgumentException(__METHOD__ . ' expects argument #2 to be a valid resource.');
         }
 
@@ -273,7 +276,8 @@ class Filesystem implements FilesystemInterface
         $directory = Util::normalizePath($directory);
         $contents = $this->getAdapter()->listContents($directory, $recursive);
 
-        return (new ContentListingFormatter($directory, $recursive))->formatListing($contents);
+        return (new ContentListingFormatter($directory, $recursive, $this->config->get('case_sensitive', true)))
+            ->formatListing($contents);
     }
 
     /**
@@ -303,7 +307,7 @@ class Filesystem implements FilesystemInterface
             return false;
         }
 
-        return $object['timestamp'];
+        return (int) $object['timestamp'];
     }
 
     /**
@@ -367,7 +371,7 @@ class Filesystem implements FilesystemInterface
 
         if ( ! $handler) {
             $metadata = $this->getMetadata($path);
-            $handler = $metadata['type'] === 'file' ? new File($this, $path) : new Directory($this, $path);
+            $handler = ($metadata && $metadata['type'] === 'file') ? new File($this, $path) : new Directory($this, $path);
         }
 
         $handler->setPath($path);
@@ -378,6 +382,7 @@ class Filesystem implements FilesystemInterface
 
     /**
      * Assert a file is present.
+	 * 维护一个文件
      *
      * @param string $path path to file
      *
@@ -394,6 +399,7 @@ class Filesystem implements FilesystemInterface
 
     /**
      * Assert a file is absent.
+	 * 声明一个文件不在
      *
      * @param string $path path to file
      *

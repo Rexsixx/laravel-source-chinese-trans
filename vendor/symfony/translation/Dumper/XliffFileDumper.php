@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，转储，Xliff 文件转储器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * XliffFileDumper generates xliff files from a message catalogue.
+ * XliffFileDumper从消息目录中生成xliff文件
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
@@ -24,7 +28,7 @@ class XliffFileDumper extends FileDumper
     /**
      * {@inheritdoc}
      */
-    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = [])
+    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = [])
     {
         $xliffVersion = '1.2';
         if (\array_key_exists('xliff_version', $options)) {
@@ -196,7 +200,7 @@ class XliffFileDumper extends FileDumper
         return $dom->saveXML();
     }
 
-    private function hasMetadataArrayInfo(string $key, array $metadata = null): bool
+    private function hasMetadataArrayInfo(string $key, ?array $metadata = null): bool
     {
         return is_iterable($metadata[$key] ?? null);
     }

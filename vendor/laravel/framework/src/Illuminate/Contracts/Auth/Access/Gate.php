@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，大门
+ * Illuminate，契约，认证，进入，大门
  */
 
 namespace Illuminate\Contracts\Auth\Access;
@@ -18,7 +18,7 @@ interface Gate
 
     /**
      * Define a new ability.
-	 * 定义新的能力
+	 * 定义一个新能力
      *
      * @param  string  $ability
      * @param  callable|string  $callback
@@ -39,7 +39,7 @@ interface Gate
 
     /**
      * Define a policy class for a given class type.
-	 * 定义策略类为给定的类类型
+	 * 为给定的类类型定义策略类
      *
      * @param  string  $class
      * @param  string  $policy
@@ -49,7 +49,7 @@ interface Gate
 
     /**
      * Register a callback to run before all Gate checks.
-	 * 注册一个回调以便在所有Gate检查之前运行
+	 * 注册一个回调，在所有Gate检查之前运行。
      *
      * @param  callable  $callback
      * @return $this
@@ -58,7 +58,7 @@ interface Gate
 
     /**
      * Register a callback to run after all Gate checks.
-	 * 注册一个回调以便在所有Gate检查之后运行
+	 * 注册一个回调，在所有Gate检查之后运行。
      *
      * @param  callable  $callback
      * @return $this
@@ -129,7 +129,7 @@ interface Gate
 
     /**
      * Get the raw result from the authorization callback.
-	 * 得到原始结果从授权回调
+	 * 从授权回调获取原始结果
      *
      * @param  string  $ability
      * @param  array|mixed  $arguments
@@ -141,7 +141,7 @@ interface Gate
 
     /**
      * Get a policy instance for a given class.
-	 * 得到给定类的策略实例
+	 * 获取给定类的策略实例
      *
      * @param  object|string  $class
      * @return mixed
@@ -152,7 +152,7 @@ interface Gate
 
     /**
      * Get a guard instance for the given user.
-	 * 得到给定用户的保护实例
+	 * 获取给定用户的保护实例
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable|mixed  $user
      * @return static
@@ -161,7 +161,7 @@ interface Gate
 
     /**
      * Get all of the defined abilities.
-	 * 得到所有已定义的能力
+	 * 获得所有已定义的能力
      *
      * @return array
      */

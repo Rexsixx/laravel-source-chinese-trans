@@ -1,14 +1,12 @@
 <?php
 /**
- * Redis，Predis连接
+ * Illuminate，Redis，连接，Predis 连接
  */
 
 namespace Illuminate\Redis\Connections;
 
 use Closure;
 use Illuminate\Contracts\Redis\Connection as ConnectionContract;
-use Predis\Command\ServerFlushDatabase;
-use Predis\Connection\Aggregate\ClusterInterface;
 
 /**
  * @mixin \Predis\Client
@@ -17,7 +15,7 @@ class PredisConnection extends Connection implements ConnectionContract
 {
     /**
      * The Predis client.
-	 * Predis客户端
+	 * Predisp客户端
      *
      * @var \Predis\Client
      */
@@ -37,7 +35,7 @@ class PredisConnection extends Connection implements ConnectionContract
 
     /**
      * Subscribe to a set of given channels for messages.
-	 * 订阅一组给定的通道为消息
+	 * 为消息订阅一组给定的通道
      *
      * @param  array|string  $channels
      * @param  \Closure  $callback
@@ -57,22 +55,5 @@ class PredisConnection extends Connection implements ConnectionContract
         }
 
         unset($loop);
-    }
-
-    /**
-     * Flush the selected Redis database.
-	 * 清除已选择的Predis数据库
-     *
-     * @return void
-     */
-    public function flushdb()
-    {
-        if (! $this->client->getConnection() instanceof ClusterInterface) {
-            return $this->command('flushdb');
-        }
-
-        foreach ($this->getConnection() as $node) {
-            $node->executeCommand(new ServerFlushDatabase);
-        }
     }
 }

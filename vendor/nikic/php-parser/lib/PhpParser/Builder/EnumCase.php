@@ -1,4 +1,7 @@
 <?php
+/**
+ * PhpParser，建立者，枚举用例
+ */
 
 declare(strict_types=1);
 
@@ -10,19 +13,21 @@ use PhpParser\Node;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Stmt;
 
-class EnumCase implements PhpParser\Builder
-{
+class EnumCase implements PhpParser\Builder {
+    /** @var Identifier|string */
     protected $name;
-    protected $value = null;
-    protected $attributes = [];
+    protected ?Node\Expr $value = null;
+    /** @var array<string, mixed> */
+    protected array $attributes = [];
 
-    /** @var Node\AttributeGroup[] */
-    protected $attributeGroups = [];
+    /** @var list<Node\AttributeGroup> */
+    protected array $attributeGroups = [];
 
     /**
      * Creates an enum case builder.
+	 * 创建枚举案例构建器
      *
-     * @param string|Identifier $name  Name
+     * @param string|Identifier $name Name
      */
     public function __construct($name) {
         $this->name = $name;
@@ -30,6 +35,7 @@ class EnumCase implements PhpParser\Builder
 
     /**
      * Sets the value.
+	 * 设置值
      *
      * @param Node\Expr|string|int $value
      *
@@ -43,6 +49,7 @@ class EnumCase implements PhpParser\Builder
 
     /**
      * Sets doc comment for the constant.
+	 * 为常量设置文档注释
      *
      * @param PhpParser\Comment\Doc|string $docComment Doc comment to set
      *
@@ -58,6 +65,7 @@ class EnumCase implements PhpParser\Builder
 
     /**
      * Adds an attribute group.
+	 * 添加属性组
      *
      * @param Node\Attribute|Node\AttributeGroup $attribute
      *
@@ -71,6 +79,7 @@ class EnumCase implements PhpParser\Builder
 
     /**
      * Returns the built enum case node.
+	 * 返回生成的enum case节点
      *
      * @return Stmt\EnumCase The built constant node
      */
@@ -78,8 +87,8 @@ class EnumCase implements PhpParser\Builder
         return new Stmt\EnumCase(
             $this->name,
             $this->value,
-            $this->attributes,
-            $this->attributeGroups
+            $this->attributeGroups,
+            $this->attributes
         );
     }
 }

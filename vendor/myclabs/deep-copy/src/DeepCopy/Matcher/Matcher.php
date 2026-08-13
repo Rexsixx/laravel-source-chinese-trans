@@ -1,6 +1,6 @@
 <?php
 /**
- * DeepCopy，匹配程序，Matcher
+ * DeepCopy，匹配程序，匹配器
  */
 
 namespace DeepCopy\Matcher;

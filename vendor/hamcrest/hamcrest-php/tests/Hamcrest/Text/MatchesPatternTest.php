@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，文本，配对模式测试
- */
-
 namespace Hamcrest\Text;
 
 class MatchesPatternTest extends \Hamcrest\AbstractMatcherTest

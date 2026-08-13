@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，转储，服务转储
+ * Symfony，Component，VarDumper，转储，服务转储
  */
 
 /*
@@ -20,6 +20,7 @@ use Symfony\Component\VarDumper\Server\Connection;
 
 /**
  * ServerDumper forwards serialized Data clones to a server.
+ * ServerDumper 转发将数据克隆交付给服务器。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
@@ -33,7 +34,7 @@ class ServerDumper implements DataDumperInterface
      * @param DataDumperInterface|null   $wrappedDumper    A wrapped instance used whenever we failed contacting the server
      * @param ContextProviderInterface[] $contextProviders Context providers indexed by context name
      */
-    public function __construct(string $host, DataDumperInterface $wrappedDumper = null, array $contextProviders = [])
+    public function __construct(string $host, ?DataDumperInterface $wrappedDumper = null, array $contextProviders = [])
     {
         $this->connection = new Connection($host, $contextProviders);
         $this->wrappedDumper = $wrappedDumper;

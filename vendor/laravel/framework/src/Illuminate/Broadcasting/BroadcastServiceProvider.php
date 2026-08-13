@@ -1,6 +1,6 @@
 <?php
 /**
- * 广播，广播服务提供者
+ * Illuminate，广播，广播服务提供者
  */
 
 namespace Illuminate\Broadcasting;
@@ -35,7 +35,7 @@ class BroadcastServiceProvider extends ServiceProvider implements DeferrableProv
 
     /**
      * Get the services provided by the provider.
-	 * 得到服务提供者
+	 * 得到提供者提供的服务
      *
      * @return array
      */

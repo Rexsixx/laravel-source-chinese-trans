@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，路由清除命令
+ * Illuminate，基础，控制台，route:clear 路由清除命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -12,7 +12,7 @@ class RouteClearCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */

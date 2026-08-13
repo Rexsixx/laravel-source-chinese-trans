@@ -2,7 +2,7 @@
 
 /**
  * Monolog，测试，测试用例
- */
+ *
 
 /*
  * This file is part of the Monolog package.
@@ -21,11 +21,14 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Lets you easily generate log records and a dummy formatter for testing purposes
+ * 让您轻松地生成日志记录和一个用于测试目的的虚拟格式化程序。
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  *
  * @phpstan-import-type Record from \Monolog\Logger
  * @phpstan-import-type Level from \Monolog\Logger
+ *
+ * @internal feel free to reuse this to test your own handlers, this is marked internal to avoid issues with PHPStorm https://github.com/Seldaek/monolog/issues/1677
  */
 class TestCase extends \PHPUnit\Framework\TestCase
 {

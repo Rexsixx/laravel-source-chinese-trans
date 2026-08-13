@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，Redis 处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -17,6 +21,7 @@ use Monolog\Logger;
 
 /**
  * Logs to a Redis key using rpush
+ * 使用rpush的Redis键
  *
  * usage example:
  *
@@ -30,7 +35,7 @@ use Monolog\Logger;
  */
 class RedisHandler extends AbstractProcessingHandler
 {
-    /** @var \Predis\Client|\Redis */
+    /** @var \Predis\Client<\Predis\Client>|\Redis */
     private $redisClient;
     /** @var string */
     private $redisKey;
@@ -38,7 +43,7 @@ class RedisHandler extends AbstractProcessingHandler
     protected $capSize;
 
     /**
-     * @param \Predis\Client|\Redis $redis   The redis instance
+     * @param \Predis\Client<\Predis\Client>|\Redis $redis   The redis instance
      * @param string                $key     The key name to push records to
      * @param int                   $capSize Number of entries to limit list size to, 0 = unlimited
      */
@@ -70,6 +75,8 @@ class RedisHandler extends AbstractProcessingHandler
     /**
      * Write and cap the collection
      * Writes the record to the redis list and caps its
+	 * 编写和封盖集合
+	 * 将记录写入redis列表并将其大写
      *
      * @phpstan-param FormattedRecord $record
      */

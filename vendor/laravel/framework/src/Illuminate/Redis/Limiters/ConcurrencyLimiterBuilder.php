@@ -1,6 +1,6 @@
 <?php
 /**
- * Redis，并发限制生成器
+ * Illuminate，Redis，限值器，并发限制生成器
  */
 
 namespace Illuminate\Redis\Limiters;
@@ -22,7 +22,7 @@ class ConcurrencyLimiterBuilder
 
     /**
      * The name of the lock.
-	 * 锁名称
+	 * 锁的名称
      *
      * @var string
      */
@@ -54,7 +54,7 @@ class ConcurrencyLimiterBuilder
 
     /**
      * Create a new builder instance.
-	 * 创建新的构建器实例
+	 * 创建一个新的构建器实例
      *
      * @param  \Illuminate\Redis\Connections\Connection  $connection
      * @param  string  $name
@@ -67,7 +67,7 @@ class ConcurrencyLimiterBuilder
     }
 
     /**
-     * Set the maximum number of locks that can obtained per time window.
+     * Set the maximum number of locks that can be obtained per time window.
 	 * 设置每个时间窗口可以获得的最大锁数
      *
      * @param  int  $maxLocks
@@ -110,7 +110,7 @@ class ConcurrencyLimiterBuilder
 
     /**
      * Execute the given callback if a lock is obtained, otherwise call the failure callback.
-	 * 执行给定的回调，如果获得了锁，否则调用失败回调。
+	 * 如果获得了锁，则执行给定的回调，否则调用失败回调。
      *
      * @param  callable  $callback
      * @param  callable|null  $failure

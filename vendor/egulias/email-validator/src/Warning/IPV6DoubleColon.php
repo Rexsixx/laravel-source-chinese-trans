@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，电子邮件验证器，警告，IPV6双冒号
+ * Egulias，EmailValidator，警告，IPV6 双号
  */
 
 namespace Egulias\EmailValidator\Warning;

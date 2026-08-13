@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，总线调度接口
+ * Illuminate，契约，总线，调度程序
  */
 
 namespace Illuminate\Contracts\Bus;
@@ -20,6 +20,18 @@ interface Dispatcher
      * Dispatch a command to its appropriate handler in the current process.
 	 * 分派命令给当前进程中相应的处理程序
      *
+     * Queueable jobs will be dispatched to the "sync" queue.
+     *
+     * @param  mixed  $command
+     * @param  mixed  $handler
+     * @return mixed
+     */
+    public function dispatchSync($command, $handler = null);
+
+    /**
+     * Dispatch a command to its appropriate handler in the current process.
+	 * 分派命令给当前进程中相应的处理程序
+     *
      * @param  mixed  $command
      * @param  mixed  $handler
      * @return mixed
@@ -28,7 +40,7 @@ interface Dispatcher
 
     /**
      * Determine if the given command has a handler.
-	 * 确定命令是否有处理程序
+	 * 确定给定命令是否有处理程序
      *
      * @param  mixed  $command
      * @return bool
@@ -46,7 +58,7 @@ interface Dispatcher
 
     /**
      * Set the pipes commands should be piped through before dispatching.
-	 * 设置通过管道的命令在调度前
+	 * 设置调度前需要通过管道的命令
      *
      * @param  array  $pipes
      * @return $this
@@ -55,7 +67,7 @@ interface Dispatcher
 
     /**
      * Map a command to a handler.
-	 * 命令处理程序映射
+	 * 映射命令到处理程序
      *
      * @param  array  $map
      * @return $this

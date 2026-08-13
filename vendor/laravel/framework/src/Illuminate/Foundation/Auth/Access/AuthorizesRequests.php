@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，授权请求
+ * Illuminate，基础，认证，进入，授权请求特征
  */
 
 namespace Illuminate\Foundation\Auth\Access;
@@ -47,7 +47,7 @@ trait AuthorizesRequests
 
     /**
      * Guesses the ability's name if it wasn't provided.
-	 * 猜测该能力的名称，如果没有提供。
+	 * 如果没有提供，则猜测该能力的名称。
      *
      * @param  mixed  $ability
      * @param  mixed|array  $arguments
@@ -82,14 +82,18 @@ trait AuthorizesRequests
      * Authorize a resource action based on the incoming request.
 	 * 根据传入请求授权资源操作
      *
-     * @param  string  $model
-     * @param  string|null  $parameter
+     * @param  string|array  $model
+     * @param  string|array|null  $parameter
      * @param  array  $options
      * @param  \Illuminate\Http\Request|null  $request
      * @return void
      */
     public function authorizeResource($model, $parameter = null, array $options = [], $request = null)
     {
+        $model = is_array($model) ? implode(',', $model) : $model;
+
+        $parameter = is_array($parameter) ? implode(',', $parameter) : $parameter;
+
         $parameter = $parameter ?: Str::snake(class_basename($model));
 
         $middleware = [];
@@ -107,7 +111,7 @@ trait AuthorizesRequests
 
     /**
      * Get the map of resource methods to ability names.
-	 * 得到资源方法到能力名称的映射
+	 * 获取资源方法到能力名称的映射
      *
      * @return array
      */
@@ -126,7 +130,7 @@ trait AuthorizesRequests
 
     /**
      * Get the list of resource methods which do not have model parameters.
-	 * 得到没有模型参数的资源方法列表
+	 * 获取没有模型参数的资源方法列表
      *
      * @return array
      */

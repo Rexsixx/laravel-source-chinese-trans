@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，异常，不良流利构造异常
+ * Carbon，异常，糟糕流畅构造器异常
  */
 
 /**
@@ -29,20 +29,22 @@ class BadFluentConstructorException extends BaseBadMethodCallException implement
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param string         $method
      * @param int            $code
      * @param Throwable|null $previous
      */
-    public function __construct($method, $code = 0, Throwable $previous = null)
+    public function __construct($method, $code = 0, ?Throwable $previous = null)
     {
         $this->method = $method;
 
-        parent::__construct(sprintf("Unknown fluent constructor '%s'.", $method), $code, $previous);
+        parent::__construct(\sprintf("Unknown fluent constructor '%s'.", $method), $code, $previous);
     }
 
     /**
      * Get the method.
+	 * 得到方法
      *
      * @return string
      */

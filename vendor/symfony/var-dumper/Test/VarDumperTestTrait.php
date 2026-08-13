@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，测试，Var Dumper 测试特性
+ * Symfony，Component，VarDumper，测试，Var Dumper测试特征
  */
 
 /*
@@ -30,7 +30,7 @@ trait VarDumperTestTrait
         'flags' => null,
     ];
 
-    protected function setUpVarDumper(array $casters, int $flags = null): void
+    protected function setUpVarDumper(array $casters, ?int $flags = null): void
     {
         $this->varDumperConfig['casters'] = $casters;
         $this->varDumperConfig['flags'] = $flags;
@@ -45,20 +45,17 @@ trait VarDumperTestTrait
         $this->varDumperConfig['flags'] = null;
     }
 
-    public function assertDumpEquals($expected, $data, $filter = 0, $message = '')
+    public function assertDumpEquals($expected, $data, int $filter = 0, string $message = '')
     {
         $this->assertSame($this->prepareExpectation($expected, $filter), $this->getDump($data, null, $filter), $message);
     }
 
-    public function assertDumpMatchesFormat($expected, $data, $filter = 0, $message = '')
+    public function assertDumpMatchesFormat($expected, $data, int $filter = 0, string $message = '')
     {
         $this->assertStringMatchesFormat($this->prepareExpectation($expected, $filter), $this->getDump($data, null, $filter), $message);
     }
 
-    /**
-     * @return string|null
-     */
-    protected function getDump($data, $key = null, $filter = 0)
+    protected function getDump($data, $key = null, int $filter = 0): ?string
     {
         if (null === $flags = $this->varDumperConfig['flags']) {
             $flags = getenv('DUMP_LIGHT_ARRAY') ? CliDumper::DUMP_LIGHT_ARRAY : 0;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，偏转器，Inflector
+ * Doctrine，Inflector，偏转器
  */
 
 declare(strict_types=1);
@@ -249,7 +249,6 @@ class Inflector
 
     /**
      * Converts a word into the format for a Doctrine class name. Converts 'table_name' to 'TableName'.
-	 * 将单词转换为Doctrine类名的格式。将‘table_name’转换为‘table_name’。
      */
     public function classify(string $word): string
     {
@@ -266,7 +265,7 @@ class Inflector
 
     /**
      * Uppercases words with configurable delimiters between words.
-	 * 大写单词，单词之间有可配置的分隔符。
+	 * 大写字母与可配置分隔符之间的单词。
      *
      * Takes a string and capitalizes all of the words, like PHP's built-in
      * ucwords function. This extends that behavior, however, by allowing the
@@ -297,6 +296,7 @@ class Inflector
 
     /**
      * Checks if the given string seems like it has utf8 characters in it.
+	 * 检查给定的字符串是否有utf8字符。
      *
      * @param string $string The string to check for utf8 characters in.
      */
@@ -333,6 +333,7 @@ class Inflector
 
     /**
      * Remove any illegal characters, accents, etc.
+	 * 删除任何非法字符、重音等等。
      *
      * @param  string $string String to unaccent
      *
@@ -489,6 +490,7 @@ class Inflector
 
     /**
      * Returns a word in singular form.
+	 * 以单数形式返回一个单词
      *
      * @param string $word The word in plural form.
      *
@@ -501,6 +503,7 @@ class Inflector
 
     /**
      * Returns a word in plural form.
+	 * 以复数形式返回一个单词
      *
      * @param string $word The word in singular form.
      *

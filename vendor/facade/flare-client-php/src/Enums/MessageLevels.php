@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，Flare Client，枚举，消息级别
+ * Facade，FlareClient，枚举，信息的水平
  */
 
 namespace Facade\FlareClient\Enums;

@@ -1,18 +1,20 @@
 <?php
 /**
- * 邮件，传输，Amazon SES传输
+ * Illuminate，邮件，传输，Ses 传输
  */
 
 namespace Illuminate\Mail\Transport;
 
+use Aws\Exception\AwsException;
 use Aws\Ses\SesClient;
 use Swift_Mime_SimpleMessage;
+use Swift_TransportException;
 
 class SesTransport extends Transport
 {
     /**
      * The Amazon SES instance.
-	 * Amazon SES 实例
+	 * Amazon SES实例
      *
      * @var \Aws\Ses\SesClient
      */
@@ -20,7 +22,7 @@ class SesTransport extends Transport
 
     /**
      * The Amazon SES transmission options.
-	 * SES传输选项
+	 * 亚马逊SES传输选项
      *
      * @var array
      */
@@ -42,23 +44,32 @@ class SesTransport extends Transport
 
     /**
      * {@inheritdoc}
+     *
+     * @return int
      */
     public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
     {
         $this->beforeSendPerformed($message);
 
-        $result = $this->ses->sendRawEmail(
-            array_merge(
-                $this->options, [
-                    'Source' => key($message->getSender() ?: $message->getFrom()),
-                    'RawMessage' => [
-                        'Data' => $message->toString(),
-                    ],
-                ]
-            )
-        );
+        try {
+            $result = $this->ses->sendRawEmail(
+                array_merge(
+                    $this->options, [
+                        'Source' => key($message->getSender() ?: $message->getFrom()),
+                        'RawMessage' => [
+                            'Data' => $message->toString(),
+                        ],
+                    ]
+                )
+            );
+        } catch (AwsException $e) {
+            throw new Swift_TransportException('Request to AWS SES API failed.', $e->getCode(), $e);
+        }
 
-        $message->getHeaders()->addTextHeader('X-SES-Message-ID', $result->get('MessageId'));
+        $messageId = $result->get('MessageId');
+
+        $message->getHeaders()->addTextHeader('X-Message-ID', $messageId);
+        $message->getHeaders()->addTextHeader('X-SES-Message-ID', $messageId);
 
         $this->sendPerformed($message);
 
@@ -67,7 +78,7 @@ class SesTransport extends Transport
 
     /**
      * Get the Amazon SES client for the SesTransport instance.
-	 * 得到SesTransport实例
+	 * 获取SesTransport实例的Amazon SES客户端
      *
      * @return \Aws\Ses\SesClient
      */
@@ -78,7 +89,7 @@ class SesTransport extends Transport
 
     /**
      * Get the transmission options being used by the transport.
-	 * 得到传输所使用的传输选项
+	 * 获取传输所使用的传输选项
      *
      * @return array
      */

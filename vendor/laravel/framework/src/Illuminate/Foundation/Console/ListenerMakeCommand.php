@@ -1,19 +1,22 @@
 <?php
 /**
- * 基础，监听者生成命令
+ * Illuminate，基础，控制台，make:listener 监听器生成命令
  */
 
 namespace Illuminate\Foundation\Console;
 
+use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 class ListenerMakeCommand extends GeneratorCommand
 {
+    use CreatesMatchingTest;
+
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -37,7 +40,7 @@ class ListenerMakeCommand extends GeneratorCommand
 
     /**
      * Build the class with the given name.
-	 * 构建类用给定的名称
+	 * 用给定的名称构建类
      *
      * @param  string  $name
      * @return string
@@ -51,21 +54,21 @@ class ListenerMakeCommand extends GeneratorCommand
             'Illuminate',
             '\\',
         ])) {
-            $event = $this->laravel->getNamespace().'Events\\'.$event;
+            $event = $this->laravel->getNamespace().'Events\\'.str_replace('/', '\\', $event);
         }
 
         $stub = str_replace(
-            'DummyEvent', class_basename($event), parent::buildClass($name)
+            ['DummyEvent', '{{ event }}'], class_basename($event), parent::buildClass($name)
         );
 
         return str_replace(
-            'DummyFullEvent', trim($event, '\\'), $stub
+            ['DummyFullEvent', '{{ eventNamespace }}'], trim($event, '\\'), $stub
         );
     }
 
     /**
      * Get the stub file for the generator.
-	 * 得到生成器的存根文件
+	 * 获取生成器的存根文件
      *
      * @return string
      */
@@ -96,7 +99,7 @@ class ListenerMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 得到类的默认名称空间
+	 * 获取类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string

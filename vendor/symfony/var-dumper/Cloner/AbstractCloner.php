@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，克隆，抽象克隆
+ * Symfony，Component，VarDumper，克隆，抽象克隆
  */
 
 /*
@@ -33,11 +33,15 @@ abstract class AbstractCloner implements ClonerInterface
         'Symfony\Component\VarDumper\Caster\ConstStub' => ['Symfony\Component\VarDumper\Caster\StubCaster', 'castStub'],
         'Symfony\Component\VarDumper\Caster\EnumStub' => ['Symfony\Component\VarDumper\Caster\StubCaster', 'castEnum'],
 
+        'Fiber' => ['Symfony\Component\VarDumper\Caster\FiberCaster', 'castFiber'],
+
         'Closure' => ['Symfony\Component\VarDumper\Caster\ReflectionCaster', 'castClosure'],
         'Generator' => ['Symfony\Component\VarDumper\Caster\ReflectionCaster', 'castGenerator'],
         'ReflectionType' => ['Symfony\Component\VarDumper\Caster\ReflectionCaster', 'castType'],
+        'ReflectionAttribute' => ['Symfony\Component\VarDumper\Caster\ReflectionCaster', 'castAttribute'],
         'ReflectionGenerator' => ['Symfony\Component\VarDumper\Caster\ReflectionCaster', 'castReflectionGenerator'],
         'ReflectionClass' => ['Symfony\Component\VarDumper\Caster\ReflectionCaster', 'castClass'],
+        'ReflectionClassConstant' => ['Symfony\Component\VarDumper\Caster\ReflectionCaster', 'castClassConstant'],
         'ReflectionFunctionAbstract' => ['Symfony\Component\VarDumper\Caster\ReflectionCaster', 'castFunctionAbstract'],
         'ReflectionMethod' => ['Symfony\Component\VarDumper\Caster\ReflectionCaster', 'castMethod'],
         'ReflectionParameter' => ['Symfony\Component\VarDumper\Caster\ReflectionCaster', 'castParameter'],
@@ -80,13 +84,18 @@ abstract class AbstractCloner implements ClonerInterface
         'ErrorException' => ['Symfony\Component\VarDumper\Caster\ExceptionCaster', 'castErrorException'],
         'Exception' => ['Symfony\Component\VarDumper\Caster\ExceptionCaster', 'castException'],
         'Error' => ['Symfony\Component\VarDumper\Caster\ExceptionCaster', 'castError'],
+        'Symfony\Bridge\Monolog\Logger' => ['Symfony\Component\VarDumper\Caster\StubCaster', 'cutInternals'],
         'Symfony\Component\DependencyInjection\ContainerInterface' => ['Symfony\Component\VarDumper\Caster\StubCaster', 'cutInternals'],
         'Symfony\Component\EventDispatcher\EventDispatcherInterface' => ['Symfony\Component\VarDumper\Caster\StubCaster', 'cutInternals'],
+        'Symfony\Component\HttpClient\AmpHttpClient' => ['Symfony\Component\VarDumper\Caster\SymfonyCaster', 'castHttpClient'],
         'Symfony\Component\HttpClient\CurlHttpClient' => ['Symfony\Component\VarDumper\Caster\SymfonyCaster', 'castHttpClient'],
         'Symfony\Component\HttpClient\NativeHttpClient' => ['Symfony\Component\VarDumper\Caster\SymfonyCaster', 'castHttpClient'],
+        'Symfony\Component\HttpClient\Response\AmpResponse' => ['Symfony\Component\VarDumper\Caster\SymfonyCaster', 'castHttpClientResponse'],
         'Symfony\Component\HttpClient\Response\CurlResponse' => ['Symfony\Component\VarDumper\Caster\SymfonyCaster', 'castHttpClientResponse'],
         'Symfony\Component\HttpClient\Response\NativeResponse' => ['Symfony\Component\VarDumper\Caster\SymfonyCaster', 'castHttpClientResponse'],
         'Symfony\Component\HttpFoundation\Request' => ['Symfony\Component\VarDumper\Caster\SymfonyCaster', 'castRequest'],
+        'Symfony\Component\Uid\Ulid' => ['Symfony\Component\VarDumper\Caster\SymfonyCaster', 'castUlid'],
+        'Symfony\Component\Uid\Uuid' => ['Symfony\Component\VarDumper\Caster\SymfonyCaster', 'castUuid'],
         'Symfony\Component\VarDumper\Exception\ThrowingCasterException' => ['Symfony\Component\VarDumper\Caster\ExceptionCaster', 'castThrowingCasterException'],
         'Symfony\Component\VarDumper\Caster\TraceStub' => ['Symfony\Component\VarDumper\Caster\ExceptionCaster', 'castTraceStub'],
         'Symfony\Component\VarDumper\Caster\FrameStub' => ['Symfony\Component\VarDumper\Caster\ExceptionCaster', 'castFrameStub'],
@@ -175,14 +184,34 @@ abstract class AbstractCloner implements ClonerInterface
 
         'XmlParser' => ['Symfony\Component\VarDumper\Caster\XmlResourceCaster', 'castXml'],
         ':xml' => ['Symfony\Component\VarDumper\Caster\XmlResourceCaster', 'castXml'],
+
+        'RdKafka' => ['Symfony\Component\VarDumper\Caster\RdKafkaCaster', 'castRdKafka'],
+        'RdKafka\Conf' => ['Symfony\Component\VarDumper\Caster\RdKafkaCaster', 'castConf'],
+        'RdKafka\KafkaConsumer' => ['Symfony\Component\VarDumper\Caster\RdKafkaCaster', 'castKafkaConsumer'],
+        'RdKafka\Metadata\Broker' => ['Symfony\Component\VarDumper\Caster\RdKafkaCaster', 'castBrokerMetadata'],
+        'RdKafka\Metadata\Collection' => ['Symfony\Component\VarDumper\Caster\RdKafkaCaster', 'castCollectionMetadata'],
+        'RdKafka\Metadata\Partition' => ['Symfony\Component\VarDumper\Caster\RdKafkaCaster', 'castPartitionMetadata'],
+        'RdKafka\Metadata\Topic' => ['Symfony\Component\VarDumper\Caster\RdKafkaCaster', 'castTopicMetadata'],
+        'RdKafka\Message' => ['Symfony\Component\VarDumper\Caster\RdKafkaCaster', 'castMessage'],
+        'RdKafka\Topic' => ['Symfony\Component\VarDumper\Caster\RdKafkaCaster', 'castTopic'],
+        'RdKafka\TopicPartition' => ['Symfony\Component\VarDumper\Caster\RdKafkaCaster', 'castTopicPartition'],
+        'RdKafka\TopicConf' => ['Symfony\Component\VarDumper\Caster\RdKafkaCaster', 'castTopicConf'],
     ];
 
     protected $maxItems = 2500;
     protected $maxString = -1;
     protected $minDepth = 1;
 
+    /**
+     * @var array<string, list<callable>>
+     */
     private $casters = [];
+
+    /**
+     * @var callable|null
+     */
     private $prevErrorHandler;
+
     private $classInfo = [];
     private $filter = 0;
 
@@ -191,7 +220,7 @@ abstract class AbstractCloner implements ClonerInterface
      *
      * @see addCasters
      */
-    public function __construct(array $casters = null)
+    public function __construct(?array $casters = null)
     {
         if (null === $casters) {
             $casters = static::$defaultCasters;
@@ -201,6 +230,7 @@ abstract class AbstractCloner implements ClonerInterface
 
     /**
      * Adds casters for resources and objects.
+	 * 为资源和对象添加casters。
      *
      * Maps resources or objects types to a callback.
      * Types are in the key, with a callable caster for value.
@@ -218,44 +248,41 @@ abstract class AbstractCloner implements ClonerInterface
 
     /**
      * Sets the maximum number of items to clone past the minimum depth in nested structures.
-     *
-     * @param int $maxItems
+	 * 将最大数量的项目设置为通过嵌套结构的最小深度。
      */
-    public function setMaxItems($maxItems)
+    public function setMaxItems(int $maxItems)
     {
-        $this->maxItems = (int) $maxItems;
+        $this->maxItems = $maxItems;
     }
 
     /**
      * Sets the maximum cloned length for strings.
-     *
-     * @param int $maxString
+	 * 设置字符串的最大克隆长度
      */
-    public function setMaxString($maxString)
+    public function setMaxString(int $maxString)
     {
-        $this->maxString = (int) $maxString;
+        $this->maxString = $maxString;
     }
 
     /**
      * Sets the minimum tree depth where we are guaranteed to clone all the items.  After this
      * depth is reached, only setMaxItems items will be cloned.
-     *
-     * @param int $minDepth
      */
-    public function setMinDepth($minDepth)
+    public function setMinDepth(int $minDepth)
     {
-        $this->minDepth = (int) $minDepth;
+        $this->minDepth = $minDepth;
     }
 
     /**
      * Clones a PHP variable.
+	 * 克隆一个PHP变量
      *
      * @param mixed $var    Any PHP variable
      * @param int   $filter A bit field of Caster::EXCLUDE_* constants
      *
-     * @return Data The cloned variable represented by a Data object
+     * @return Data
      */
-    public function cloneVar($var, $filter = 0)
+    public function cloneVar($var, int $filter = 0)
     {
         $this->prevErrorHandler = set_error_handler(function ($type, $msg, $file, $line, $context = []) {
             if (\E_RECOVERABLE_ERROR === $type || \E_USER_ERROR === $type) {
@@ -287,21 +314,23 @@ abstract class AbstractCloner implements ClonerInterface
 
     /**
      * Effectively clones the PHP variable.
+	 * 有效地克隆PHP变量
      *
      * @param mixed $var Any PHP variable
      *
-     * @return array The cloned variable represented in an array
+     * @return array
      */
     abstract protected function doClone($var);
 
     /**
      * Casts an object to an array representation.
+	 * 将对象强制转换为数组表示形式
      *
      * @param bool $isNested True if the object is nested in the dumped structure
      *
-     * @return array The object casted as array
+     * @return array
      */
-    protected function castObject(Stub $stub, $isNested)
+    protected function castObject(Stub $stub, bool $isNested)
     {
         $obj = $stub->value;
         $class = $stub->class;
@@ -355,12 +384,13 @@ abstract class AbstractCloner implements ClonerInterface
 
     /**
      * Casts a resource to an array representation.
+	 * 将资源输出到数组表示。
      *
      * @param bool $isNested True if the object is nested in the dumped structure
      *
-     * @return array The resource casted as array
+     * @return array
      */
-    protected function castResource(Stub $stub, $isNested)
+    protected function castResource(Stub $stub, bool $isNested)
     {
         $a = [];
         $res = $stub->value;

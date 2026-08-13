@@ -1,37 +1,39 @@
 <?php
 /**
- * 数据库，SqlServer连接
+ * Illuminate，数据库，Sql Server 连接
  */
 
 namespace Illuminate\Database;
 
 use Closure;
 use Doctrine\DBAL\Driver\PDOSqlsrv\Driver as DoctrineDriver;
-use Exception;
+use Doctrine\DBAL\Version;
+use Illuminate\Database\PDO\SqlServerDriver;
 use Illuminate\Database\Query\Grammars\SqlServerGrammar as QueryGrammar;
 use Illuminate\Database\Query\Processors\SqlServerProcessor;
 use Illuminate\Database\Schema\Grammars\SqlServerGrammar as SchemaGrammar;
 use Illuminate\Database\Schema\SqlServerBuilder;
-use LogicException;
+use Illuminate\Filesystem\Filesystem;
+use RuntimeException;
 use Throwable;
 
 class SqlServerConnection extends Connection
 {
     /**
      * Execute a Closure within a transaction.
-	 * 执行闭包使用事务
+	 * 在事务中执行闭包
      *
      * @param  \Closure  $callback
      * @param  int  $attempts
      * @return mixed
      *
-     * @throws \Exception|\Throwable
+     * @throws \Throwable
      */
     public function transaction(Closure $callback, $attempts = 1)
     {
         for ($a = 1; $a <= $attempts; $a++) {
             if ($this->getDriverName() === 'sqlsrv') {
-                return parent::transaction($callback);
+                return parent::transaction($callback, $attempts);
             }
 
             $this->getPdo()->exec('BEGIN TRAN');
@@ -39,24 +41,18 @@ class SqlServerConnection extends Connection
             // We'll simply execute the given callback within a try / catch block
             // and if we catch any exception we can rollback the transaction
             // so that none of the changes are persisted to the database.
-			// 我们只需在try/catch中执行给定的回调。
-			// 如果我们发现任何异常，我们可以回滚事务，以致没有任何更改被持久化到数据库中。
+			// 我们将简单地在try / catch块中执行给定的回调如果我们捕捉到任何异常，我们可以回滚事务这样就不会将任何更改持久化到数据库中。
             try {
                 $result = $callback($this);
 
                 $this->getPdo()->exec('COMMIT TRAN');
             }
 
-            // If we catch an exception, we will roll back so nothing gets messed
+            // If we catch an exception, we will rollback so nothing gets messed
             // up in the database. Then we'll re-throw the exception so it can
             // be handled how the developer sees fit for their applications.
-			// 如果我们发现异常，我们将回滚这样就不会有任何混乱在数据库中。
-			// 然后我们将重新抛出异常，以便它可以按照开发人员认为适合其应用程序的方式进行处理。
-            catch (Exception $e) {
-                $this->getPdo()->exec('ROLLBACK TRAN');
-
-                throw $e;
-            } catch (Throwable $e) {
+			// 如果我们捕捉到一个异常，我们将回滚，这样就不会搞砸数据库了。
+            catch (Throwable $e) {
                 $this->getPdo()->exec('ROLLBACK TRAN');
 
                 throw $e;
@@ -68,7 +64,7 @@ class SqlServerConnection extends Connection
 
     /**
      * Get the default query grammar instance.
-	 * 得到默认查询语法实例
+	 * 获取默认查询语法实例
      *
      * @return \Illuminate\Database\Query\Grammars\SqlServerGrammar
      */
@@ -79,7 +75,7 @@ class SqlServerConnection extends Connection
 
     /**
      * Get a schema builder instance for the connection.
-	 * 得到连接的架构构建器实例
+	 * 获取连接的架构构建器实例
      *
      * @return \Illuminate\Database\Schema\SqlServerBuilder
      */
@@ -94,7 +90,7 @@ class SqlServerConnection extends Connection
 
     /**
      * Get the default schema grammar instance.
-	 * 得到默认模式语法实例
+	 * 获取默认模式语法实例
      *
      * @return \Illuminate\Database\Schema\Grammars\SqlServerGrammar
      */
@@ -104,8 +100,22 @@ class SqlServerConnection extends Connection
     }
 
     /**
+     * Get the schema state for the connection.
+	 * 获取连接的模式状态
+     *
+     * @param  \Illuminate\Filesystem\Filesystem|null  $files
+     * @param  callable|null  $processFactory
+     *
+     * @throws \RuntimeException
+     */
+    public function getSchemaState(Filesystem $files = null, callable $processFactory = null)
+    {
+        throw new RuntimeException('Schema dumping is not supported when using SQL Server.');
+    }
+
+    /**
      * Get the default post processor instance.
-	 * 得到默认请求进行实例
+	 * 获取默认的后处理器实例
      *
      * @return \Illuminate\Database\Query\Processors\SqlServerProcessor
      */
@@ -116,19 +126,12 @@ class SqlServerConnection extends Connection
 
     /**
      * Get the Doctrine DBAL driver.
-	 * 得到DBAL驱动
+	 * 获取Doctrine DBAL驱动程序
      *
-     * @return \Doctrine\DBAL\Driver\PDOSqlsrv\Driver
+     * @return \Doctrine\DBAL\Driver\PDOSqlsrv\Driver|\Illuminate\Database\PDO\SqlServerDriver
      */
     protected function getDoctrineDriver()
     {
-        if (! class_exists(DoctrineDriver::class)) {
-            throw new LogicException(
-                'Laravel v6 is only compatible with doctrine/dbal 2, in order to use this feature you must require the package "doctrine/dbal:^2.6".'
-            );
-			//Laravel v6仅与doctrin/dbal 2兼容，要使用此功能，您必须需要包"doctrin/dbal:^2.6".
-        }
-
-        return new DoctrineDriver;
+        return class_exists(Version::class) ? new DoctrineDriver : new SqlServerDriver;
     }
 }

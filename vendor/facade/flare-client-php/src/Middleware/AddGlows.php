@@ -1,6 +1,6 @@
 <?php
 /**
- * Facade，Flare Client，中间件，添加 Glow
+ * Facade，FlareClient，中间件，添加发光
  */
 
 namespace Facade\FlareClient\Middleware;

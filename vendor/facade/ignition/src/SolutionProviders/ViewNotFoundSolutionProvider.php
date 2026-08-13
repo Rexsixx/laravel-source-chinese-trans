@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，解决方案，查看未找到解决方案提供者
+ * Facade，Ignition，解决方案提供程序，查看未找到解决方案提供者
  */
 
 namespace Facade\Ignition\SolutionProviders;
@@ -26,7 +26,7 @@ class ViewNotFoundSolutionProvider implements HasSolutionsForThrowable
             return false;
         }
 
-        return preg_match(self::REGEX, $throwable->getMessage(), $matches);
+        return (bool)preg_match(self::REGEX, $throwable->getMessage(), $matches);
     }
 
     public function getSolutions(Throwable $throwable): array
@@ -36,6 +36,13 @@ class ViewNotFoundSolutionProvider implements HasSolutionsForThrowable
         $missingView = $matches[1] ?? null;
 
         $suggestedView = $this->findRelatedView($missingView);
+
+        if ($suggestedView == $missingView) {
+            return [
+                BaseSolution::create("{$missingView} was not found.")
+                    ->setSolutionDescription('View names should not contain the . character!'),
+            ];
+        }
 
         if ($suggestedView) {
             return [

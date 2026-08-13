@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，将要广播接口，待完善
+ * Illuminate，契约，广播，应该现在广播
  */
 
 namespace Illuminate\Contracts\Broadcasting;

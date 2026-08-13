@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，处理程序，Json 响应处理程序
+ * Whoops，处理器，Json 响应处理程序
  */
 
 /**
@@ -16,7 +16,7 @@ use Whoops\Exception\Formatter;
  * Catches an exception and converts it to a JSON
  * response. Additionally can also return exception
  * frames for consumption by an API.
- * 捕获异常并将其转换为JSON响应。此外，还可以返回异常堆栈帧，供API消费。
+ * 捕获一个异常并将其转换为JSON响应。
  */
 class JsonResponseHandler extends Handler
 {
@@ -65,7 +65,8 @@ class JsonResponseHandler extends Handler
                 'errors' => [
                     Formatter::formatExceptionAsDataArray(
                         $this->getInspector(),
-                        $this->addTraceToOutput()
+                        $this->addTraceToOutput(),
+                        $this->getRun()->getFrameFilters()
                     ),
                 ]
             ];
@@ -73,7 +74,8 @@ class JsonResponseHandler extends Handler
             $response = [
                 'error' => Formatter::formatExceptionAsDataArray(
                     $this->getInspector(),
-                    $this->addTraceToOutput()
+                    $this->addTraceToOutput(),
+                    $this->getRun()->getFrameFilters()
                 ),
             ];
         }

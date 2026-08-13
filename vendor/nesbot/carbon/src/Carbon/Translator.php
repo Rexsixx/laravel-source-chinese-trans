@@ -32,4 +32,5 @@ require $transMethod->hasReturnType()
 class Translator extends LazyTranslator
 {
     // Proxy dynamically loaded LazyTranslator in a static way
+	// 代理以静态方式动态加载LazyTranslator
 }

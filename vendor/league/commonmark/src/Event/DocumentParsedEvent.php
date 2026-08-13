@@ -1,7 +1,9 @@
 <?php
 /**
- * League，普通标记，事件，文档解析事件
+ * League，CommonMark，事件，文档解析事件
  */
+
+declare(strict_types=1);
 
 /*
  * This file is part of the league/commonmark package.
@@ -14,15 +16,16 @@
 
 namespace League\CommonMark\Event;
 
-use League\CommonMark\Block\Element\Document;
+use League\CommonMark\Node\Block\Document;
 
 /**
  * Event dispatched when the document has been fully parsed
+ * 文档完全解析后分派的事件
  */
 final class DocumentParsedEvent extends AbstractEvent
 {
-    /** @var Document */
-    private $document;
+    /** @psalm-readonly */
+    private Document $document;
 
     public function __construct(Document $document)
     {

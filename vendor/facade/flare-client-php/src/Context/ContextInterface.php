@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，Flare Client，上下文，上下文接口
+ * Facade，FlareClient，上下文，上下文接口
  */
 
 namespace Facade\FlareClient\Context;

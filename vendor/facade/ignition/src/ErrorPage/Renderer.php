@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，错误页面，Renderer
+ * Facade，Ignition，错误页面，渲染器
  */
 
 namespace Facade\Ignition\ErrorPage;
@@ -25,7 +25,7 @@ class Renderer
         $viewFile = "{$this->viewPath}/{$viewName}.php";
 
         try {
-            extract((array) $_data, EXTR_OVERWRITE);
+            extract($_data, EXTR_OVERWRITE);
 
             include $viewFile;
         } catch (Exception $exception) {

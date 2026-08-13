@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，可以重置密码接口
+ * Illuminate，契约，认证，可以重置密码
  */
 
 namespace Illuminate\Contracts\Auth;
@@ -9,7 +9,7 @@ interface CanResetPassword
 {
     /**
      * Get the e-mail address where password reset links are sent.
-	 * 得到邮件地址
+	 * 获取发送密码重置链接的电子邮件地址
      *
      * @return string
      */

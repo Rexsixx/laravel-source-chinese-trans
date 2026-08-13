@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，目录，合并操作
+ * Symfony，Component，Translation，目录，合并操作
  */
 
 /*
@@ -30,7 +30,7 @@ class MergeOperation extends AbstractOperation
     /**
      * {@inheritdoc}
      */
-    protected function processDomain($domain)
+    protected function processDomain(string $domain)
     {
         $this->messages[$domain] = [
             'all' => [],

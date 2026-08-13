@@ -9,6 +9,7 @@ interface PluginInterface
 {
     /**
      * Get the method name.
+	 * 得到方法名称
      *
      * @return string
      */
@@ -16,6 +17,7 @@ interface PluginInterface
 
     /**
      * Set the Filesystem object.
+	 * 设置文件系统对象
      *
      * @param FilesystemInterface $filesystem
      */

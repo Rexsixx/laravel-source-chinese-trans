@@ -1,6 +1,6 @@
 <?php
 /**
- * App，控制台，Kernel内核
+ * app，控制台，内核
  */
 
 namespace App\Console;
@@ -11,16 +11,6 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     /**
-     * The Artisan commands provided by your application.
-	 * 应用提供的工具命令
-     *
-     * @var array
-     */
-    protected $commands = [
-        //
-    ];
-
-    /**
      * Define the application's command schedule.
 	 * 定义应用的命令调度
      *
@@ -29,13 +19,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        // $schedule->command('inspire')->hourly();
     }
 
     /**
      * Register the commands for the application.
-	 * 为应用程序注册命令
+	 * 注册应用命令
      *
      * @return void
      */

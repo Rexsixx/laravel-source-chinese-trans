@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，解决方案提供者，解决方案提供者存储库
+ * Facade，Ignition，解决方案提供程序，解决方案提供者存储库
  */
 
 namespace Facade\Ignition\SolutionProviders;

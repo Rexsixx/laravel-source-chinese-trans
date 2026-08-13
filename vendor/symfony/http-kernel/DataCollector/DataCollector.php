@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，数据控制器，数据采集器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 
 /**
  * DataCollector.
+ * 数据采集器
  *
  * Children of this class must store the collected data in the data property.
  *
@@ -39,30 +43,8 @@ abstract class DataCollector implements DataCollectorInterface
     private $cloner;
 
     /**
-     * @deprecated since Symfony 4.3, store all the serialized state in the data property instead
-     */
-    public function serialize()
-    {
-        @trigger_error(sprintf('The "%s" method is deprecated since Symfony 4.3, store all the serialized state in the data property instead.', __METHOD__), \E_USER_DEPRECATED);
-
-        $trace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
-        $isCalledFromOverridingMethod = isset($trace[1]['function'], $trace[1]['object']) && 'serialize' === $trace[1]['function'] && $this === $trace[1]['object'];
-
-        return $isCalledFromOverridingMethod ? $this->data : serialize($this->data);
-    }
-
-    /**
-     * @deprecated since Symfony 4.3, store all the serialized state in the data property instead
-     */
-    public function unserialize($data)
-    {
-        @trigger_error(sprintf('The "%s" method is deprecated since Symfony 4.3, store all the serialized state in the data property instead.', __METHOD__), \E_USER_DEPRECATED);
-
-        $this->data = \is_array($data) ? $data : unserialize($data);
-    }
-
-    /**
      * Converts the variable into a serializable Data instance.
+	 * 将变量转换为可序列化的Data实例。
      *
      * This array can be displayed in the template using
      * the VarDumper component.
@@ -93,9 +75,21 @@ abstract class DataCollector implements DataCollectorInterface
         $casters = [
             '*' => function ($v, array $a, Stub $s, $isNested) {
                 if (!$v instanceof Stub) {
+                    $b = $a;
                     foreach ($a as $k => $v) {
-                        if (\is_object($v) && !$v instanceof \DateTimeInterface && !$v instanceof Stub) {
-                            $a[$k] = new CutStub($v);
+                        if (!\is_object($v) || $v instanceof \DateTimeInterface || $v instanceof Stub) {
+                            continue;
+                        }
+
+                        try {
+                            $a[$k] = $s = new CutStub($v);
+
+                            if ($b[$k] === $s) {
+                                // we've hit a non-typed reference
+                                $a[$k] = $v;
+                            }
+                        } catch (\TypeError $e) {
+                            // we've hit a typed reference
                         }
                     }
                 }
@@ -112,23 +106,24 @@ abstract class DataCollector implements DataCollectorInterface
      */
     public function __sleep()
     {
-        if (__CLASS__ !== $c = (new \ReflectionMethod($this, 'serialize'))->getDeclaringClass()->name) {
-            @trigger_error(sprintf('Implementing the "%s::serialize()" method is deprecated since Symfony 4.3, store all the serialized state in the "data" property instead.', $c), \E_USER_DEPRECATED);
-            $this->data = $this->serialize();
-        }
-
         return ['data'];
     }
 
     public function __wakeup()
     {
-        if (__CLASS__ !== $c = (new \ReflectionMethod($this, 'unserialize'))->getDeclaringClass()->name) {
-            if (\is_object($this->data)) {
-                throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
-            }
+    }
 
-            @trigger_error(sprintf('Implementing the "%s::unserialize()" method is deprecated since Symfony 4.3, store all the serialized state in the "data" property instead.', $c), \E_USER_DEPRECATED);
-            $this->unserialize($this->data);
-        }
+    /**
+     * @internal to prevent implementing \Serializable
+     */
+    final protected function serialize()
+    {
+    }
+
+    /**
+     * @internal to prevent implementing \Serializable
+     */
+    final protected function unserialize($data)
+    {
     }
 }

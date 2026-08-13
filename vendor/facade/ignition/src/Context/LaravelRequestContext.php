@@ -1,12 +1,14 @@
 <?php
 /**
- * 门面，Ignition，上下文，Laravel 请求上下文
+ * Facade，Ignition，上下文，Laravel 请求求上下文
  */
 
 namespace Facade\Ignition\Context;
 
 use Facade\FlareClient\Context\RequestContext;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Throwable;
 
 class LaravelRequestContext extends RequestContext
 {
@@ -20,9 +22,13 @@ class LaravelRequestContext extends RequestContext
 
     public function getUser(): array
     {
-        $user = $this->request->user();
+        try {
+            $user = $this->request->user();
 
-        if (! $user) {
+            if (! $user) {
+                return [];
+            }
+        } catch (Throwable $e) {
             return [];
         }
 
@@ -34,7 +40,7 @@ class LaravelRequestContext extends RequestContext
             if (method_exists($user, 'toArray')) {
                 return $user->toArray();
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return [];
         }
 
@@ -56,8 +62,15 @@ class LaravelRequestContext extends RequestContext
     protected function getRouteParameters(): array
     {
         try {
-            return collect(optional($this->request->route())->parameters ?? [])->toArray();
-        } catch (\Throwable $e) {
+            return collect(optional($this->request->route())->parameters ?? [])
+                ->map(function ($parameter) {
+                    return $parameter instanceof Model ? $parameter->withoutRelations() : $parameter;
+                })
+                ->map(function ($parameter) {
+                    return method_exists($parameter, 'toFlare') ? $parameter->toFlare() : $parameter;
+                })
+                ->toArray();
+        } catch (Throwable $e) {
             return [];
         }
     }

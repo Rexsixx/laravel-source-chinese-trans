@@ -12,6 +12,7 @@ class Directory extends Handler
 {
     /**
      * Delete the directory.
+	 * 删除目录
      *
      * @return bool
      */
@@ -22,6 +23,7 @@ class Directory extends Handler
 
     /**
      * List the directory contents.
+	 * 列出目录内容
      *
      * @param bool $recursive
      *

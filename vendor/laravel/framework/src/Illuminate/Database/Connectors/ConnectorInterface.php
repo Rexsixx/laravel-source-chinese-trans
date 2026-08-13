@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，连接器接口
+ * Illuminate，数据库，连接器，连接器接口
  */
 
 namespace Illuminate\Database\Connectors;

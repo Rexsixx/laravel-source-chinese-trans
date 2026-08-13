@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，描述符号，应用描述符号
+ * Symfony，Component，Console，描述符号，应用描述
  */
 
 /*
@@ -37,16 +37,16 @@ class ApplicationDescription
     private $namespaces;
 
     /**
-     * @var Command[]
+     * @var array<string, Command>
      */
     private $commands;
 
     /**
-     * @var Command[]
+     * @var array<string, Command>
      */
     private $aliases;
 
-    public function __construct(Application $application, string $namespace = null, bool $showHidden = false)
+    public function __construct(Application $application, ?string $namespace = null, bool $showHidden = false)
     {
         $this->application = $application;
         $this->namespace = $namespace;
@@ -134,7 +134,7 @@ class ApplicationDescription
         }
 
         if ($namespacedCommands) {
-            ksort($namespacedCommands);
+            ksort($namespacedCommands, \SORT_STRING);
             foreach ($namespacedCommands as $key => $commandsSet) {
                 ksort($commandsSet);
                 $sortedCommands[$key] = $commandsSet;

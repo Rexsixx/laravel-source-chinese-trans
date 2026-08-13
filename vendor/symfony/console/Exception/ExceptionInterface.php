@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，异常，异常接口
+ * Symfony，Component，Console，异常，异常接口
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\Console\Exception;
 
 /**
  * ExceptionInterface.
+ * 异常接口
  *
  * @author Jérôme Tamarelle <jerome@tamarelle.net>
  */

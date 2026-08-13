@@ -1,6 +1,6 @@
 <?php
 /**
- * 路由，路由响应工厂
+ * Illuminate，路由，响应工厂
  */
 
 namespace Illuminate\Routing;
@@ -52,7 +52,7 @@ class ResponseFactory implements FactoryContract
      * Create a new response instance.
 	 * 创建新的响应实例
      *
-     * @param  string  $content
+     * @param  mixed  $content
      * @param  int  $status
      * @param  array  $headers
      * @return \Illuminate\Http\Response
@@ -64,7 +64,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new "no content" response.
-	 * 创建新的无内容响应
+	 * 创建一个新的"无内容"响应
      *
      * @param  int  $status
      * @param  array  $headers
@@ -77,7 +77,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new response for a given view.
-	 * 创建新的视图响应
+	 * 为给定视图创建一个新的响应
      *
      * @param  string|array  $view
      * @param  array  $data
@@ -96,7 +96,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new JSON response instance.
-	 * 创建新的JSON响应实例
+	 * 创建一个新的JSON响应实例
      *
      * @param  mixed  $data
      * @param  int  $status
@@ -111,7 +111,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new JSONP response instance.
-	 * 创建新的JSONP响应实例
+	 * 创建一个新的JSONP响应实例
      *
      * @param  string  $callback
      * @param  mixed  $data
@@ -127,7 +127,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new streamed response instance.
-	 * 创建新的流响应实例
+	 * 创建一个新的流响应实例
      *
      * @param  \Closure  $callback
      * @param  int  $status
@@ -141,7 +141,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new streamed response instance as a file download.
-	 * 创建新的流文件下载实例
+	 * 创建一个新的流响应实例作为文件下载
      *
      * @param  \Closure  $callback
      * @param  string|null  $name
@@ -166,7 +166,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new file download response.
-	 * 创建新的文件下载响应
+	 * 创建一个新的文件下载响应
      *
      * @param  \SplFileInfo|string  $file
      * @param  string|null  $name
@@ -227,10 +227,10 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new redirect response to a named route.
-	 * 创建新的重定向响应为命名路由
+	 * 为命名路由创建一个新的重定向响应
      *
      * @param  string  $route
-     * @param  array  $parameters
+     * @param  mixed  $parameters
      * @param  int  $status
      * @param  array  $headers
      * @return \Illuminate\Http\RedirectResponse
@@ -245,7 +245,7 @@ class ResponseFactory implements FactoryContract
 	 * 为控制器动作创建一个新的重定向响应
      *
      * @param  string  $action
-     * @param  array  $parameters
+     * @param  mixed  $parameters
      * @param  int  $status
      * @param  array  $headers
      * @return \Illuminate\Http\RedirectResponse
@@ -257,7 +257,7 @@ class ResponseFactory implements FactoryContract
 
     /**
      * Create a new redirect response, while putting the current URL in the session.
-	 * 创建新的重定向响应，同时将当前URL放在会话中。
+	 * 创建一个新的重定向响应，同时将当前URL放在会话中。
      *
      * @param  string  $path
      * @param  int  $status

@@ -1,6 +1,6 @@
 <?php
 /**
- * 缓存，控制台，缓存表命令
+ * Illuminate，缓存，控制台，cache:table 缓存表命令
  */
 
 namespace Illuminate\Cache\Console;
@@ -13,7 +13,7 @@ class CacheTableCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -75,7 +75,7 @@ class CacheTableCommand extends Command
 
     /**
      * Create a base migration file for the table.
-	 * 创建一个基本迁移文件为表
+	 * 为表创建一个基本迁移文件
      *
      * @return string
      */

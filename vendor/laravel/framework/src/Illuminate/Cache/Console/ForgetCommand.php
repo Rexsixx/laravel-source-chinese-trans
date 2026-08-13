@@ -1,6 +1,6 @@
 <?php
 /**
- * 缓存，控制台，忘记命令
+ * Illuminate，缓存，控制台，忘记命令
  */
 
 namespace Illuminate\Cache\Console;
@@ -12,7 +12,7 @@ class ForgetCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -28,7 +28,7 @@ class ForgetCommand extends Command
 
     /**
      * The cache manager instance.
-	 * 缓存管理实例
+	 * 缓存管理器实例
      *
      * @var \Illuminate\Cache\CacheManager
      */
@@ -36,7 +36,7 @@ class ForgetCommand extends Command
 
     /**
      * Create a new cache clear command instance.
-	 * 创建新的缓存清除命令实例
+	 * 创建一个新的缓存清除命令实例
      *
      * @param  \Illuminate\Cache\CacheManager  $cache
      * @return void

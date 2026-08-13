@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，Xml，是否数组测试
+ * Hamcrest，Xml，有X路径测试
  */
 
 namespace Hamcrest\Xml;

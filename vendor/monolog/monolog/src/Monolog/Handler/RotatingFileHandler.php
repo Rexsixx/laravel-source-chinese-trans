@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，Rotating 文件处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -17,6 +21,7 @@ use Monolog\Utils;
 
 /**
  * Stores logs to files that are rotated every day and a limited number of files are kept.
+ * 存储日志到每天旋转的文件,保存数量有限的文件。
  *
  * This rotation is only intended to be used as a workaround. Using logrotate to
  * handle the rotation is strongly encouraged when you can use it.
@@ -112,27 +117,36 @@ class RotatingFileHandler extends StreamHandler
      */
     protected function write(array $record): void
     {
-        // on the first record written, if the log is new, we should rotate (once per day)
+        // on the first record written, if the log is new, we rotate (once per day) after the log has been written so that the new file exists
+		// 对于写入的第一条记录，如果日志是新的，则在日志写入后进行轮换（每天一次），以便新文件存在。
         if (null === $this->mustRotate) {
             $this->mustRotate = null === $this->url || !file_exists($this->url);
         }
 
+        // if the next rotation is expired, then we rotate immediately
         if ($this->nextRotation <= $record['datetime']) {
             $this->mustRotate = true;
-            $this->close();
+            $this->close(); // triggers rotation
         }
 
         parent::write($record);
+
+        if ($this->mustRotate) {
+            $this->close(); // triggers rotation
+        }
     }
 
     /**
      * Rotates the files.
+	 * 旋转文件
      */
     protected function rotate(): void
     {
         // update filename
         $this->url = $this->getTimedFilename();
         $this->nextRotation = new \DateTimeImmutable('tomorrow');
+
+        $this->mustRotate = false;
 
         // skip GC of old logs if files are unlimited
         if (0 === $this->maxFiles) {
@@ -166,8 +180,6 @@ class RotatingFileHandler extends StreamHandler
                 restore_error_handler();
             }
         }
-
-        $this->mustRotate = false;
     }
 
     protected function getTimedFilename(): string
@@ -191,7 +203,11 @@ class RotatingFileHandler extends StreamHandler
         $fileInfo = pathinfo($this->filename);
         $glob = str_replace(
             ['{filename}', '{date}'],
-            [$fileInfo['filename'], '[0-9][0-9][0-9][0-9]*'],
+            [$fileInfo['filename'], str_replace(
+                ['Y', 'y', 'm', 'd'],
+                ['[0-9][0-9][0-9][0-9]', '[0-9][0-9]', '[0-9][0-9]', '[0-9][0-9]'],
+                $this->dateFormat)
+            ],
             $fileInfo['dirname'] . '/' . $this->filenameFormat
         );
         if (isset($fileInfo['extension'])) {

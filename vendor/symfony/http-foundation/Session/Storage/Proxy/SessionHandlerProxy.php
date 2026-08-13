@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，Session，储存，代理，会话处理程序代理
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -11,6 +14,8 @@
 
 namespace Symfony\Component\HttpFoundation\Session\Storage\Proxy;
 
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\StrictSessionHandler;
+
 /**
  * @author Drak <drak@zikula.org>
  */
@@ -22,7 +27,7 @@ class SessionHandlerProxy extends AbstractProxy implements \SessionHandlerInterf
     {
         $this->handler = $handler;
         $this->wrapper = $handler instanceof \SessionHandler;
-        $this->saveHandlerName = $this->wrapper ? ini_get('session.save_handler') : 'user';
+        $this->saveHandlerName = $this->wrapper || ($handler instanceof StrictSessionHandler && $handler->isWrapper()) ? \ini_get('session.save_handler') : 'user';
     }
 
     /**

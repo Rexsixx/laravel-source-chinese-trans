@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，服务，转储服务
+ * Symfony，Component，VarDumper，服务器，转储服务器
  */
 
 /*
@@ -20,7 +20,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * A server collecting Data clones sent by a ServerDumper.
- * 一个服务器收集由一个ServerDumper发送的数据克隆。
+ * 收集ServerDumper发送的数据克隆的服务器。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  *
@@ -29,10 +29,14 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 class DumpServer
 {
     private $host;
-    private $socket;
     private $logger;
 
-    public function __construct(string $host, LoggerInterface $logger = null)
+    /**
+     * @var resource|null
+     */
+    private $socket;
+
+    public function __construct(string $host, ?LoggerInterface $logger = null)
     {
         if (!str_contains($host, '://')) {
             $host = 'tcp://'.$host;
@@ -56,6 +60,10 @@ class DumpServer
         }
 
         foreach ($this->getMessages() as $clientId => $message) {
+            if ($this->logger) {
+                $this->logger->info('Received a payload from client {clientId}', ['clientId' => $clientId]);
+            }
+
             $payload = @unserialize(base64_decode($message), ['allowed_classes' => [Data::class, Stub::class]]);
 
             // Impossible to decode the message, give up.

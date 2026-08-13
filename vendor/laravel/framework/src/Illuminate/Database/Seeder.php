@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，播种抽象类
+ * Illuminate，数据库，播种
  */
 
 namespace Illuminate\Database;
@@ -29,14 +29,15 @@ abstract class Seeder
     protected $command;
 
     /**
-     * Seed the given connection from the given path.
-	 * 从给定路径为给定连接播种
+     * Run the given seeder class.
+	 * 运行给定的播种器类
      *
      * @param  array|string  $class
      * @param  bool  $silent
+     * @param  array  $parameters
      * @return $this
      */
-    public function call($class, $silent = false)
+    public function call($class, $silent = false, array $parameters = [])
     {
         $classes = Arr::wrap($class);
 
@@ -51,12 +52,12 @@ abstract class Seeder
 
             $startTime = microtime(true);
 
-            $seeder->__invoke();
+            $seeder->__invoke($parameters);
 
-            $runTime = round(microtime(true) - $startTime, 2);
+            $runTime = number_format((microtime(true) - $startTime) * 1000, 2);
 
             if ($silent === false && isset($this->command)) {
-                $this->command->getOutput()->writeln("<info>Seeded:</info>  {$name} ({$runTime} seconds)");
+                $this->command->getOutput()->writeln("<info>Seeded:</info>  {$name} ({$runTime}ms)");
             }
         }
 
@@ -64,15 +65,29 @@ abstract class Seeder
     }
 
     /**
-     * Silently seed the given connection from the given path.
-	 * 从给定路径静默地播种给定连接
+     * Run the given seeder class.
+	 * 运行给定的播种器类
      *
      * @param  array|string  $class
+     * @param  array  $parameters
      * @return void
      */
-    public function callSilent($class)
+    public function callWith($class, array $parameters = [])
     {
-        $this->call($class, true);
+        $this->call($class, false, $parameters);
+    }
+
+    /**
+     * Silently run the given seeder class.
+	 * 静默地运行给定的播种器类
+     *
+     * @param  array|string  $class
+     * @param  array  $parameters
+     * @return void
+     */
+    public function callSilent($class, array $parameters = [])
+    {
+        $this->call($class, true, $parameters);
     }
 
     /**
@@ -115,7 +130,7 @@ abstract class Seeder
 
     /**
      * Set the console command instance.
-	 * 设置控制台
+	 * 设置控制台命令实例
      *
      * @param  \Illuminate\Console\Command  $command
      * @return $this
@@ -131,18 +146,19 @@ abstract class Seeder
      * Run the database seeds.
 	 * 运行数据库种子
      *
+     * @param  array  $parameters
      * @return mixed
      *
      * @throws \InvalidArgumentException
      */
-    public function __invoke()
+    public function __invoke(array $parameters = [])
     {
         if (! method_exists($this, 'run')) {
             throw new InvalidArgumentException('Method [run] missing from '.get_class($this));
         }
 
         return isset($this->container)
-                    ? $this->container->call([$this, 'run'])
-                    : $this->run();
+                    ? $this->container->call([$this, 'run'], $parameters)
+                    : $this->run(...$parameters);
     }
 }

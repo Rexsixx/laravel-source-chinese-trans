@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，进程，进程工具包
+ * Symfony，Component，Process，过程工具包
  */
 
 /*
@@ -18,6 +18,7 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
 
 /**
  * ProcessUtils is a bunch of utility methods.
+ * ProcessUtils是一堆实用程序方法。
  *
  * This class contains static methods only and is not meant to be instantiated.
  *
@@ -27,6 +28,7 @@ class ProcessUtils
 {
     /**
      * This class should not be instantiated.
+	 * 不应该实例化这个类。
      */
     private function __construct()
     {
@@ -34,15 +36,16 @@ class ProcessUtils
 
     /**
      * Validates and normalizes a Process input.
+	 * 验证并规范化流程输入
      *
      * @param string $caller The name of method call that validates the input
      * @param mixed  $input  The input to validate
      *
-     * @return mixed The validated input
+     * @return mixed
      *
      * @throws InvalidArgumentException In case the input is not valid
      */
-    public static function validateInput($caller, $input)
+    public static function validateInput(string $caller, $input)
     {
         if (null !== $input) {
             if (\is_resource($input)) {
@@ -51,7 +54,7 @@ class ProcessUtils
             if (\is_string($input)) {
                 return $input;
             }
-            if (is_scalar($input)) {
+            if (\is_scalar($input)) {
                 return (string) $input;
             }
             if ($input instanceof Process) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Http，真实主机
+ * Illuminate，Http，中间件，信任主机
  */
 
 namespace Illuminate\Http\Middleware;
@@ -32,7 +32,7 @@ abstract class TrustHosts
 
     /**
      * Get the host patterns that should be trusted.
-	 * 得到应该被信任的主机模式
+	 * 获取应该被信任的主机模式
      *
      * @return array
      */
@@ -69,7 +69,7 @@ abstract class TrustHosts
 
     /**
      * Get a regular expression matching the application URL and all of its subdomains.
-	 * 得到匹配应用程序URL及其所有子域的正则表达式
+	 * 获取匹配应用程序URL及其所有子域的正则表达式
      *
      * @return string|null
      */

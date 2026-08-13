@@ -1,7 +1,4 @@
 <?php
-/**
- * Egulias，电子邮件验证器，警告，IPV6最大组数
- */
 
 namespace Egulias\EmailValidator\Warning;
 

@@ -1,46 +1,49 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，建立者，特征使用适应
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser\Builder;
 use PhpParser\BuilderHelpers;
+use PhpParser\Modifiers;
 use PhpParser\Node;
 use PhpParser\Node\Stmt;
 
-class TraitUseAdaptation implements Builder
-{
-    const TYPE_UNDEFINED  = 0;
-    const TYPE_ALIAS      = 1;
-    const TYPE_PRECEDENCE = 2;
+class TraitUseAdaptation implements Builder {
+    private const TYPE_UNDEFINED  = 0;
+    private const TYPE_ALIAS      = 1;
+    private const TYPE_PRECEDENCE = 2;
 
-    /** @var int Type of building adaptation */
-    protected $type;
-
-    protected $trait;
-    protected $method;
-
-    protected $modifier = null;
-    protected $alias = null;
-
-    protected $insteadof = [];
+    protected int $type;
+    protected ?Node\Name $trait;
+    protected Node\Identifier $method;
+    protected ?int $modifier = null;
+    protected ?Node\Identifier $alias = null;
+    /** @var Node\Name[] */
+    protected array $insteadof = [];
 
     /**
      * Creates a trait use adaptation builder.
+	 * 创建一个特性使用适应性构建器
      *
-     * @param Node\Name|string|null  $trait  Name of adaptated trait
-     * @param Node\Identifier|string $method Name of adaptated method
+     * @param Node\Name|string|null $trait Name of adapted trait
+     * @param Node\Identifier|string $method Name of adapted method
      */
     public function __construct($trait, $method) {
         $this->type = self::TYPE_UNDEFINED;
 
-        $this->trait = is_null($trait)? null: BuilderHelpers::normalizeName($trait);
+        $this->trait = is_null($trait) ? null : BuilderHelpers::normalizeName($trait);
         $this->method = BuilderHelpers::normalizeIdentifier($method);
     }
 
     /**
      * Sets alias of method.
+	 * 设置方法的别名
      *
-     * @param Node\Identifier|string $alias Alias for adaptated method
+     * @param Node\Identifier|string $alias Alias for adapted method
      *
      * @return $this The builder instance (for fluid interface)
      */
@@ -53,42 +56,46 @@ class TraitUseAdaptation implements Builder
             throw new \LogicException('Cannot set alias for not alias adaptation buider');
         }
 
-        $this->alias = $alias;
+        $this->alias = BuilderHelpers::normalizeIdentifier($alias);
         return $this;
     }
 
     /**
-     * Sets adaptated method public.
+     * Sets adapted method public.
+	 * 设置适应的方法公开
      *
      * @return $this The builder instance (for fluid interface)
      */
     public function makePublic() {
-        $this->setModifier(Stmt\Class_::MODIFIER_PUBLIC);
+        $this->setModifier(Modifiers::PUBLIC);
         return $this;
     }
 
     /**
-     * Sets adaptated method protected.
+     * Sets adapted method protected.
+	 * 设置适应方法保护
      *
      * @return $this The builder instance (for fluid interface)
      */
     public function makeProtected() {
-        $this->setModifier(Stmt\Class_::MODIFIER_PROTECTED);
+        $this->setModifier(Modifiers::PROTECTED);
         return $this;
     }
 
     /**
-     * Sets adaptated method private.
+     * Sets adapted method private.
+	 * 将适应方法设置为private
      *
      * @return $this The builder instance (for fluid interface)
      */
     public function makePrivate() {
-        $this->setModifier(Stmt\Class_::MODIFIER_PRIVATE);
+        $this->setModifier(Modifiers::PRIVATE);
         return $this;
     }
 
     /**
      * Adds overwritten traits.
+	 * 添加覆盖的特征
      *
      * @param Node\Name|string ...$traits Traits for overwrite
      *
@@ -114,7 +121,7 @@ class TraitUseAdaptation implements Builder
         return $this;
     }
 
-    protected function setModifier(int $modifier) {
+    protected function setModifier(int $modifier): void {
         if ($this->type === self::TYPE_UNDEFINED) {
             $this->type = self::TYPE_ALIAS;
         }
@@ -132,10 +139,11 @@ class TraitUseAdaptation implements Builder
 
     /**
      * Returns the built node.
+	 * 返回构建的节点
      *
      * @return Node The built node
      */
-    public function getNode() : Node {
+    public function getNode(): Node {
         switch ($this->type) {
             case self::TYPE_ALIAS:
                 return new Stmt\TraitUseAdaptation\Alias($this->trait, $this->method, $this->modifier, $this->alias);

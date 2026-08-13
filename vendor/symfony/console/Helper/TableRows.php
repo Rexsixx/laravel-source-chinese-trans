@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，助手，表格行
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,15 +21,13 @@ class TableRows implements \IteratorAggregate
 {
     private $generator;
 
-    public function __construct(callable $generator)
+    public function __construct(\Closure $generator)
     {
         $this->generator = $generator;
     }
 
     public function getIterator(): \Traversable
     {
-        $g = $this->generator;
-
-        return $g();
+        return ($this->generator)();
     }
 }

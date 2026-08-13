@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，本地更新
+ * Illuminate，基础，事件，语言环境更新
  */
 
 namespace Illuminate\Foundation\Events;
@@ -9,7 +9,7 @@ class LocaleUpdated
 {
     /**
      * The new locale.
-	 * 新的本地
+	 * 新的语言设置
      *
      * @var string
      */

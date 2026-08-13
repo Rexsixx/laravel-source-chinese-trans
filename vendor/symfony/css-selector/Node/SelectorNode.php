@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，CssSelector，节点，选择节点
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\CssSelector\Node;
 
 /**
  * Represents a "<selector>(::|:)<pseudoElement>" node.
+ * 表示一个“<selector>(::|:)<pseudoElement>”节点。
  *
  * This component is a port of the Python cssselect library,
  * which is copyright Ian Bicking, @see https://github.com/SimonSapin/cssselect.
@@ -26,7 +30,7 @@ class SelectorNode extends AbstractNode
     private $tree;
     private $pseudoElement;
 
-    public function __construct(NodeInterface $tree, string $pseudoElement = null)
+    public function __construct(NodeInterface $tree, ?string $pseudoElement = null)
     {
         $this->tree = $tree;
         $this->pseudoElement = $pseudoElement ? strtolower($pseudoElement) : null;

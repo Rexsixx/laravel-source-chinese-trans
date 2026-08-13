@@ -1,6 +1,6 @@
 <?php
 /**
- * 视图，管理事件
+ * Illuminate，视图，问题，管理事件
  */
 
 namespace Illuminate\View\Concerns;
@@ -32,7 +32,7 @@ trait ManagesEvents
 
     /**
      * Register multiple view composers via an array.
-	 * 注册多个视图composers通过数组
+	 * 通过一个数组注册多个视图作曲家
      *
      * @param  array  $composers
      * @return array
@@ -69,7 +69,7 @@ trait ManagesEvents
 
     /**
      * Add an event for a given view.
-	 * 添加事件为给定视图
+	 * 为给定视图添加事件
      *
      * @param  string  $view
      * @param  \Closure|string  $callback
@@ -105,8 +105,7 @@ trait ManagesEvents
         // When registering a class based view "composer", we will simply resolve the
         // classes from the application IoC container then call the compose method
         // on the instance. This allows for convenient, testable view composers.
-		// 在注册基于类的视图"composer"时，我们只需从应用程序IoC容器中解析类，然后调用实例上的compose方法。
-		// 这允许方便、可测试的视图编辑器。
+		// 当注册一个基于类的视图"composer"时，我们将简单地解析类从应用程序IoC容器中获取。
         $callback = $this->buildClassEventCallback(
             $class, $prefix
         );
@@ -131,8 +130,7 @@ trait ManagesEvents
         // Once we have the class and method name, we can build the Closure to resolve
         // the instance out of the IoC container and call the method on it with the
         // given arguments that are passed to the Closure as the composer's data.
-		// 一旦我们有了类名和方法名，我们就可以构建闭包来从IoC容器中解析实例，
-		// 并使用传递给闭包的给定参数作为编写器的数据来调用它的方法。
+		// 一旦有了类和方法名，就可以构建要解析的闭包。
         return function () use ($class, $method) {
             return $this->container->make($class)->{$method}(...func_get_args());
         };
@@ -153,7 +151,7 @@ trait ManagesEvents
 
     /**
      * Determine the class event method based on the given prefix.
-	 * 确定类事件方法根据给定的前缀
+	 * 根据给定的前缀确定类事件方法
      *
      * @param  string  $prefix
      * @return string
@@ -165,7 +163,7 @@ trait ManagesEvents
 
     /**
      * Add a listener to the event dispatcher.
-	 * 添加侦听器向事件调度程序
+	 * 向事件调度程序添加监听器
      *
      * @param  string  $name
      * @param  \Closure  $callback
@@ -184,7 +182,7 @@ trait ManagesEvents
 
     /**
      * Call the composer for a given view.
-	 * 调用给定视图的composer
+	 * 调用给定视图的编写器
      *
      * @param  \Illuminate\Contracts\View\View  $view
      * @return void

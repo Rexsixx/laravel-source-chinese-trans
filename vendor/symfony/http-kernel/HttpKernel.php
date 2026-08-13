@@ -1,10 +1,11 @@
 <?php
 /**
- * Symfony，组件，Http内核，Http Kernel
+ * Symfony，Component，HttpKernel，Http 内核
  */
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -14,7 +15,6 @@
 
 namespace Symfony\Component\HttpKernel;
 
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -37,7 +37,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 // Help opcache.preload discover always-needed symbols
-class_exists(LegacyEventDispatcherProxy::class);
 class_exists(ControllerArgumentsEvent::class);
 class_exists(ControllerEvent::class);
 class_exists(ExceptionEvent::class);
@@ -50,6 +49,7 @@ class_exists(KernelEvents::class);
 
 /**
  * HttpKernel notifies events to convert a Request object to a Response one.
+ * HttpKernel通知事件将Request对象转换为Response对象
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -60,25 +60,22 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
     protected $requestStack;
     private $argumentResolver;
 
-    public function __construct(EventDispatcherInterface $dispatcher, ControllerResolverInterface $resolver, RequestStack $requestStack = null, ArgumentResolverInterface $argumentResolver = null)
+    public function __construct(EventDispatcherInterface $dispatcher, ControllerResolverInterface $resolver, ?RequestStack $requestStack = null, ?ArgumentResolverInterface $argumentResolver = null)
     {
-        $this->dispatcher = LegacyEventDispatcherProxy::decorate($dispatcher);
+        $this->dispatcher = $dispatcher;
         $this->resolver = $resolver;
         $this->requestStack = $requestStack ?? new RequestStack();
-        $this->argumentResolver = $argumentResolver;
-
-        if (null === $this->argumentResolver) {
-            $this->argumentResolver = new ArgumentResolver();
-        }
+        $this->argumentResolver = $argumentResolver ?? new ArgumentResolver();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
+    public function handle(Request $request, int $type = HttpKernelInterface::MAIN_REQUEST, bool $catch = true)
     {
         $request->headers->set('X-Php-Ob-Level', (string) ob_get_level());
 
+        $this->requestStack->push($request);
         try {
             return $this->handleRaw($request, $type);
         } catch (\Exception $e) {
@@ -92,6 +89,8 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
             }
 
             return $this->handleThrowable($e, $request, $type);
+        } finally {
+            $this->requestStack->pop();
         }
     }
 
@@ -106,13 +105,23 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
     /**
      * @internal
      */
-    public function terminateWithException(\Throwable $exception, Request $request = null)
+    public function terminateWithException(\Throwable $exception, ?Request $request = null)
     {
-        if (!$request = $request ?: $this->requestStack->getMasterRequest()) {
+        if (!$request = $request ?: $this->requestStack->getMainRequest()) {
             throw $exception;
         }
 
-        $response = $this->handleThrowable($exception, $request, self::MASTER_REQUEST);
+        if ($pop = $request !== $this->requestStack->getMainRequest()) {
+            $this->requestStack->push($request);
+        }
+
+        try {
+            $response = $this->handleThrowable($exception, $request, self::MAIN_REQUEST);
+        } finally {
+            if ($pop) {
+                $this->requestStack->pop();
+            }
+        }
 
         $response->sendHeaders();
         $response->sendContent();
@@ -122,16 +131,16 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
 
     /**
      * Handles a request to convert it to a response.
+	 * 处理请求以将其转换为响应
      *
      * Exceptions are not caught.
+	 * 异常不会被捕获
      *
      * @throws \LogicException       If one of the listener does not behave as expected
      * @throws NotFoundHttpException When controller cannot be found
      */
-    private function handleRaw(Request $request, int $type = self::MASTER_REQUEST): Response
+    private function handleRaw(Request $request, int $type = self::MAIN_REQUEST): Response
     {
-        $this->requestStack->push($request);
-
         // request
         $event = new RequestEvent($this, $request, $type);
         $this->dispatcher->dispatch($event, KernelEvents::REQUEST);
@@ -171,6 +180,7 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
                 $msg = sprintf('The controller must return a "Symfony\Component\HttpFoundation\Response" object but it returned %s.', $this->varToString($response));
 
                 // the user may have forgotten to return something
+				// 用户可能忘记返回某些东西
                 if (null === $response) {
                     $msg .= ' Did you forget to add a return statement somewhere in your controller?';
                 }
@@ -184,6 +194,7 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
 
     /**
      * Filters a response object.
+	 * 过滤响应对象
      *
      * @throws \RuntimeException if the passed object is not a Response instance
      */
@@ -200,6 +211,7 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
 
     /**
      * Publishes the finish request event, then pop the request from the stack.
+	 * 发布完成请求事件，然后从堆栈弹出请求。
      *
      * Note that the order of the operations is important here, otherwise
      * operations such as {@link RequestStack::getParentRequest()} can lead to
@@ -208,11 +220,11 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
     private function finishRequest(Request $request, int $type)
     {
         $this->dispatcher->dispatch(new FinishRequestEvent($this, $request, $type), KernelEvents::FINISH_REQUEST);
-        $this->requestStack->pop();
     }
 
     /**
      * Handles a throwable by trying to convert it to a Response.
+	 * 通过将可抛出对象转换为响应来处理该可抛出对象
      *
      * @throws \Exception
      */
@@ -253,6 +265,7 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
 
     /**
      * Returns a human-readable string for the specified variable.
+	 * 返回指定变量的可读字符串
      */
     private function varToString($var): string
     {

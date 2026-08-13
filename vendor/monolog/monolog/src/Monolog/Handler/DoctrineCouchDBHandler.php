@@ -22,6 +22,7 @@ use Doctrine\CouchDB\CouchDBClient;
 
 /**
  * CouchDB handler for Doctrine CouchDB ODM
+ * CouchDB处理器的CouchDB处理程序
  *
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
  */

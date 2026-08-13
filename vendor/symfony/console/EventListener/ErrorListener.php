@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，事件监听器，错误监听器
+ * Symfony，Component，Console，事件监听器，错误监听器
  */
 
 /*
@@ -29,7 +29,7 @@ class ErrorListener implements EventSubscriberInterface
 {
     private $logger;
 
-    public function __construct(LoggerInterface $logger = null)
+    public function __construct(?LoggerInterface $logger = null)
     {
         $this->logger = $logger;
     }

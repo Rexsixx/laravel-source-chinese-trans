@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，目录，目标操作
+ * Symfony，Component，Translation，目录，目标操作
  */
 
 /*
@@ -31,7 +31,7 @@ class TargetOperation extends AbstractOperation
     /**
      * {@inheritdoc}
      */
-    protected function processDomain($domain)
+    protected function processDomain(string $domain)
     {
         $this->messages[$domain] = [
             'all' => [],

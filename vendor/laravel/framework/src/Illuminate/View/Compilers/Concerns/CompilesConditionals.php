@@ -1,14 +1,16 @@
 <?php
 /**
- * 视图，编译条件
+ * Illuminate，视图，编译，问题，编译条件式
  */
 
 namespace Illuminate\View\Compilers\Concerns;
 
+use Illuminate\Support\Str;
+
 trait CompilesConditionals
 {
     /**
-     * Identifier for the first case in switch statement.
+     * Identifier for the first case in the switch statement.
 	 * switch语句中第一个case的标识符
      *
      * @var bool
@@ -17,7 +19,7 @@ trait CompilesConditionals
 
     /**
      * Compile the if-auth statements into valid PHP.
-	 * 编译if-auth语句成有效的PHP
+	 * 将if-auth语句编译成有效的PHP
      *
      * @param  string|null  $guard
      * @return string
@@ -31,7 +33,7 @@ trait CompilesConditionals
 
     /**
      * Compile the else-auth statements into valid PHP.
-	 * 编译else-auth语句成有效的PHP
+	 * 将else-auth语句编译成有效的PHP
      *
      * @param  string|null  $guard
      * @return string
@@ -45,7 +47,7 @@ trait CompilesConditionals
 
     /**
      * Compile the end-auth statements into valid PHP.
-	 * 编译end-auth语句成有效的PHP
+	 * 将end-auth语句编译成有效的PHP
      *
      * @return string
      */
@@ -55,8 +57,53 @@ trait CompilesConditionals
     }
 
     /**
+     * Compile the env statements into valid PHP.
+	 * 将env语句编译成有效的PHP
+     *
+     * @param  string  $environments
+     * @return string
+     */
+    protected function compileEnv($environments)
+    {
+        return "<?php if(app()->environment{$environments}): ?>";
+    }
+
+    /**
+     * Compile the end-env statements into valid PHP.
+	 * 将end-env语句编译成有效的PHP
+     *
+     * @return string
+     */
+    protected function compileEndEnv()
+    {
+        return '<?php endif; ?>';
+    }
+
+    /**
+     * Compile the production statements into valid PHP.
+	 * 将生成语句编译成有效的PHP
+     *
+     * @return string
+     */
+    protected function compileProduction()
+    {
+        return "<?php if(app()->environment('production')): ?>";
+    }
+
+    /**
+     * Compile the end-production statements into valid PHP.
+	 * 将最终生成的语句编译成有效的PHP
+     *
+     * @return string
+     */
+    protected function compileEndProduction()
+    {
+        return '<?php endif; ?>';
+    }
+
+    /**
      * Compile the if-guest statements into valid PHP.
-	 * 编译if-guest语句成有效的PHP
+	 * 将if-guest语句编译成有效的PHP
      *
      * @param  string|null  $guard
      * @return string
@@ -70,7 +117,7 @@ trait CompilesConditionals
 
     /**
      * Compile the else-guest statements into valid PHP.
-	 * 编译end-guest语句成有效的PHP
+	 * 将else-guest语句编译成有效的PHP
      *
      * @param  string|null  $guard
      * @return string
@@ -84,7 +131,7 @@ trait CompilesConditionals
 
     /**
      * Compile the end-guest statements into valid PHP.
-	 * 编译end-guest语句成有效的PHP
+	 * 将end-guest语句编译成有效的PHP
      *
      * @return string
      */
@@ -95,7 +142,7 @@ trait CompilesConditionals
 
     /**
      * Compile the has-section statements into valid PHP.
-	 * 编译has-section语句成有效的PHP
+	 * 将has-section语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -106,8 +153,20 @@ trait CompilesConditionals
     }
 
     /**
+     * Compile the section-missing statements into valid PHP.
+	 * 将缺少节的语句编译成有效的PHP
+     *
+     * @param  string  $expression
+     * @return string
+     */
+    protected function compileSectionMissing($expression)
+    {
+        return "<?php if (empty(trim(\$__env->yieldContent{$expression}))): ?>";
+    }
+
+    /**
      * Compile the if statements into valid PHP.
-	 * 编译if语句成有效的PHP
+	 * 将if语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -119,7 +178,7 @@ trait CompilesConditionals
 
     /**
      * Compile the unless statements into valid PHP.
-	 * 编译unless语句成有效的PHP
+	 * 将unless语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -131,7 +190,7 @@ trait CompilesConditionals
 
     /**
      * Compile the else-if statements into valid PHP.
-	 * 编译else-if语句成有效的PHP
+	 * 将else-if语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -143,7 +202,7 @@ trait CompilesConditionals
 
     /**
      * Compile the else statements into valid PHP.
-	 * 编译else语句成有效的PHP
+	 * 将else语句编译成有效的PHP
      *
      * @return string
      */
@@ -154,7 +213,7 @@ trait CompilesConditionals
 
     /**
      * Compile the end-if statements into valid PHP.
-	 * 编译end-if语句成有效的PHP
+	 * 将end-if语句编译成有效的PHP
      *
      * @return string
      */
@@ -165,7 +224,7 @@ trait CompilesConditionals
 
     /**
      * Compile the end-unless statements into valid PHP.
-	 * 编译end-unless语句成有效的PHP
+	 * 将end-unless语句编译成有效的PHP
      *
      * @return string
      */
@@ -176,7 +235,7 @@ trait CompilesConditionals
 
     /**
      * Compile the if-isset statements into valid PHP.
-	 * 编译if-isset语句成有效的PHP
+	 * 将if-isset语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -188,7 +247,7 @@ trait CompilesConditionals
 
     /**
      * Compile the end-isset statements into valid PHP.
-	 * 编译end-isset语句成有效的PHP
+	 * 将end-isset语句编译成有效的PHP
      *
      * @return string
      */
@@ -199,7 +258,7 @@ trait CompilesConditionals
 
     /**
      * Compile the switch statements into valid PHP.
-	 * 编译switch语句成有效的PHP
+	 * 将switch语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -213,7 +272,7 @@ trait CompilesConditionals
 
     /**
      * Compile the case statements into valid PHP.
-	 * 编译case语句成有效的PHP
+	 * 将case语句编译成有效的PHP
      *
      * @param  string  $expression
      * @return string
@@ -231,7 +290,7 @@ trait CompilesConditionals
 
     /**
      * Compile the default statements in switch case into valid PHP.
-	 * 编译switch case中的默认语句成有效的PHP
+	 * 将switch情况下的默认语句编译成有效的PHP
      *
      * @return string
      */
@@ -242,12 +301,37 @@ trait CompilesConditionals
 
     /**
      * Compile the end switch statements into valid PHP.
-	 * 编译end switch语句成有效的PH
+	 * 将结束开关语句编译成有效的PHP
      *
      * @return string
      */
     protected function compileEndSwitch()
     {
         return '<?php endswitch; ?>';
+    }
+
+    /**
+     * Compile a once block into valid PHP.
+	 * 将once块编译成有效的PHP
+     *
+     * @param  string|null  $id
+     * @return string
+     */
+    protected function compileOnce($id = null)
+    {
+        $id = $id ? $this->stripParentheses($id) : "'".(string) Str::uuid()."'";
+
+        return '<?php if (! $__env->hasRenderedOnce('.$id.')): $__env->markAsRenderedOnce('.$id.'); ?>';
+    }
+
+    /**
+     * Compile an end-once block into valid PHP.
+	 * 将一个end-once块编译成有效的PHP
+     *
+     * @return string
+     */
+    public function compileEndOnce()
+    {
+        return '<?php endif; ?>';
     }
 }

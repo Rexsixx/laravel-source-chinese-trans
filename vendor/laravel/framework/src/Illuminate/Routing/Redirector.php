@@ -1,6 +1,6 @@
 <?php
 /**
- * 路由，路由重定向
+ * Illuminate，路由，重定向器
  */
 
 namespace Illuminate\Routing;
@@ -23,7 +23,7 @@ class Redirector
 
     /**
      * The session store instance.
-	 * session存储实例
+	 * 会话存储实例
      *
      * @var \Illuminate\Session\Store
      */
@@ -31,7 +31,7 @@ class Redirector
 
     /**
      * Create a new Redirector instance.
-	 * 创建新的重定向实例
+	 * 创建一个新的Redirector实例
      *
      * @param  \Illuminate\Routing\UrlGenerator  $generator
      * @return void
@@ -43,7 +43,7 @@ class Redirector
 
     /**
      * Create a new redirect response to the "home" route.
-	 * 创建一个指向home路由的新重定向响应
+	 * 创建一个指向"home"路由的新重定向响应
      *
      * @param  int  $status
      * @return \Illuminate\Http\RedirectResponse
@@ -55,7 +55,7 @@ class Redirector
 
     /**
      * Create a new redirect response to the previous location.
-	 * 创建新的跳转响应至前一个位置
+	 * 创建到前一个位置的新重定向响应
      *
      * @param  int  $status
      * @param  array  $headers
@@ -69,7 +69,7 @@ class Redirector
 
     /**
      * Create a new redirect response to the current URI.
-	 * 创建新的跳转响应至当前URI
+	 * 创建对当前URI的新重定向响应
      *
      * @param  int  $status
      * @param  array  $headers
@@ -82,7 +82,7 @@ class Redirector
 
     /**
      * Create a new redirect response, while putting the current URL in the session.
-	 * 创建新的重定向响应，同时将当前URL放在会话中
+	 * 创建一个新的重定向响应，同时将当前URL放在会话中。
      *
      * @param  string  $path
      * @param  int  $status
@@ -151,7 +151,7 @@ class Redirector
 
     /**
      * Create a new redirect response to an external URL (no validation).
-	 * 创建一个指向外部URL的新重定向响应(不需要验证)
+	 * 创建一个指向外部URL的新重定向响应（不需要验证）
      *
      * @param  string  $path
      * @param  int  $status
@@ -165,7 +165,7 @@ class Redirector
 
     /**
      * Create a new redirect response to the given HTTPS path.
-	 * 创建新的重定向响应为给定的HTTPS路径
+	 * 为给定的HTTPS路径创建一个新的重定向响应
      *
      * @param  string  $path
      * @param  int  $status
@@ -179,7 +179,7 @@ class Redirector
 
     /**
      * Create a new redirect response to a named route.
-	 * 创建新的重定向响应为路由
+	 * 为命名路由创建一个新的重定向响应
      *
      * @param  string  $route
      * @param  mixed  $parameters
@@ -193,8 +193,40 @@ class Redirector
     }
 
     /**
+     * Create a new redirect response to a signed named route.
+	 * 为已签名的命名路由创建新的重定向响应
+     *
+     * @param  string  $route
+     * @param  mixed  $parameters
+     * @param  \DateTimeInterface|\DateInterval|int|null  $expiration
+     * @param  int  $status
+     * @param  array  $headers
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function signedRoute($route, $parameters = [], $expiration = null, $status = 302, $headers = [])
+    {
+        return $this->to($this->generator->signedRoute($route, $parameters, $expiration), $status, $headers);
+    }
+
+    /**
+     * Create a new redirect response to a signed named route.
+	 * 为已签名的命名路由创建新的重定向响应
+     *
+     * @param  string  $route
+     * @param  \DateTimeInterface|\DateInterval|int|null  $expiration
+     * @param  mixed  $parameters
+     * @param  int  $status
+     * @param  array  $headers
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function temporarySignedRoute($route, $expiration, $parameters = [], $status = 302, $headers = [])
+    {
+        return $this->to($this->generator->temporarySignedRoute($route, $expiration, $parameters), $status, $headers);
+    }
+
+    /**
      * Create a new redirect response to a controller action.
-	 * 创建新的重定向响应为控制器动作
+	 * 为控制器动作创建一个新的重定向响应
      *
      * @param  string|array  $action
      * @param  mixed  $parameters
@@ -209,7 +241,7 @@ class Redirector
 
     /**
      * Create a new redirect response.
-	 * 创建新的跳转响应
+	 * 创建一个新的重定向响应
      *
      * @param  string  $path
      * @param  int  $status
@@ -229,7 +261,7 @@ class Redirector
 
     /**
      * Get the URL generator instance.
-	 * 得到URL生成器实例
+	 * 获取URL生成器实例
      *
      * @return \Illuminate\Routing\UrlGenerator
      */
@@ -240,7 +272,7 @@ class Redirector
 
     /**
      * Set the active session store.
-	 * 设置活动会话
+	 * 设置活动会话存储
      *
      * @param  \Illuminate\Session\Store  $session
      * @return void

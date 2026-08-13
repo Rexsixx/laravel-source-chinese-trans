@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，任务，Beanstalkd任务
+ * Illuminate，队列，作业，Beanstalkd 作业
  */
 
 namespace Illuminate\Queue\Jobs;
@@ -22,7 +22,7 @@ class BeanstalkdJob extends Job implements JobContract
 
     /**
      * The Pheanstalk job instance.
-	 * Pheanstalk任务实例
+	 * Pheanstalk作业实例
      *
      * @var \Pheanstalk\Job
      */
@@ -30,7 +30,7 @@ class BeanstalkdJob extends Job implements JobContract
 
     /**
      * Create a new job instance.
-	 * 创建新的任务实例
+	 * 创建新的作业实例
      *
      * @param  \Illuminate\Container\Container  $container
      * @param  \Pheanstalk\Pheanstalk  $pheanstalk
@@ -50,7 +50,7 @@ class BeanstalkdJob extends Job implements JobContract
 
     /**
      * Release the job back into the queue.
-	 * 释放作业回队列
+	 * 将作业释放回队列
      *
      * @param  int  $delay
      * @return void
@@ -66,7 +66,7 @@ class BeanstalkdJob extends Job implements JobContract
 
     /**
      * Bury the job in the queue.
-	 * 插入作业埋至队列中
+	 * 将作业埋在队列中
      *
      * @return void
      */
@@ -79,7 +79,7 @@ class BeanstalkdJob extends Job implements JobContract
 
     /**
      * Delete the job from the queue.
-	 * 删除作业从队列
+	 * 从队列中删除作业
      *
      * @return void
      */
@@ -92,7 +92,7 @@ class BeanstalkdJob extends Job implements JobContract
 
     /**
      * Get the number of times the job has been attempted.
-	 * 得到该作业被尝试的次数
+	 * 得到该任务被尝试的次数
      *
      * @return int
      */
@@ -138,7 +138,7 @@ class BeanstalkdJob extends Job implements JobContract
 
     /**
      * Get the underlying Pheanstalk job.
-	 * 得到底层Pheanstalk作业
+	 * 得到底层的Pheanstalk作业
      *
      * @return \Pheanstalk\Job
      */

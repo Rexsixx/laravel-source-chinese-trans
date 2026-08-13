@@ -1,6 +1,6 @@
 <?php
 /**
- * 广播，广播员
+ * Illuminate，广播，广播员，广播 caster
  */
 
 namespace Illuminate\Broadcasting\Broadcasters;
@@ -8,6 +8,7 @@ namespace Illuminate\Broadcasting\Broadcasters;
 use Exception;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Broadcasting\Broadcaster as BroadcasterContract;
+use Illuminate\Contracts\Broadcasting\HasBroadcastChannel;
 use Illuminate\Contracts\Routing\BindingRegistrar;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Support\Arr;
@@ -21,7 +22,7 @@ abstract class Broadcaster implements BroadcasterContract
 {
     /**
      * The registered channel authenticators.
-	 * 已注册的频道身份验证器
+	 * 已注册的通道身份验证器
      *
      * @var array
      */
@@ -29,7 +30,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * The registered channel options.
-	 * 注册的频道选项
+	 * 注册的通道选项
      *
      * @var array
      */
@@ -37,7 +38,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * The binding registrar instance.
-	 * 绑定注册者实例
+	 * 绑定注册商实例
      *
      * @var \Illuminate\Contracts\Routing\BindingRegistrar
      */
@@ -47,13 +48,19 @@ abstract class Broadcaster implements BroadcasterContract
      * Register a channel authenticator.
 	 * 注册一个通道验证器
      *
-     * @param  string  $channel
+     * @param  \Illuminate\Contracts\Broadcasting\HasBroadcastChannel|string  $channel
      * @param  callable|string  $callback
      * @param  array  $options
      * @return $this
      */
     public function channel($channel, $callback, $options = [])
     {
+        if ($channel instanceof HasBroadcastChannel) {
+            $channel = $channel->broadcastChannelRoute();
+        } elseif (is_string($channel) && class_exists($channel) && is_a($channel, HasBroadcastChannel::class, true)) {
+            $channel = (new $channel)->broadcastChannelRoute();
+        }
+
         $this->channels[$channel] = $callback;
 
         $this->channelOptions[$channel] = $options;
@@ -63,7 +70,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Authenticate the incoming request for a given channel.
-	 * 验证传入请求
+	 * 验证给定通道的传入请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $channel
@@ -92,7 +99,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Extract the parameters from the given pattern and channel.
-	 * 提取参数从给定的模式和通道中
+	 * 从给定的模式和通道中提取参数
      *
      * @param  string  $pattern
      * @param  string  $channel
@@ -132,7 +139,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Extracts the parameters out of a class channel's "join" method.
-	 * 提取参数从类通道的"join"方法
+	 * 从类通道的"join"方法中提取参数
      *
      * @param  string  $callback
      * @return \ReflectionParameter[]
@@ -152,7 +159,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Extract the channel keys from the incoming channel name.
-	 * 提取通道密钥从传入通道名
+	 * 从传入通道名中提取通道密钥
      *
      * @param  string  $pattern
      * @param  string  $channel
@@ -185,7 +192,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Resolve an explicit parameter binding if applicable.
-	 * 解析显式参数绑定(如果适用)
+	 * 解析显式参数绑定（如果适用）
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -204,7 +211,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Resolve an implicit parameter binding if applicable.
-	 * 解析隐式参数绑定(如果适用)
+	 * 解析隐式参数绑定（如果适用）
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -248,7 +255,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Format the channel array into an array of strings.
-	 * 格式化通道数组格为字符串数组
+	 * 将通道数组格式化为字符串数组
      *
      * @param  array  $channels
      * @return array
@@ -262,7 +269,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Get the model binding registrar instance.
-	 * 得到模型绑定注册实例
+	 * 获取模型绑定注册器实例
      *
      * @return \Illuminate\Contracts\Routing\BindingRegistrar
      */
@@ -281,7 +288,7 @@ abstract class Broadcaster implements BroadcasterContract
 	 * 规范化给定的回调函数为可调用对象
      *
      * @param  mixed  $callback
-     * @return \Closure|callable
+     * @return callable
      */
     protected function normalizeChannelHandlerToCallable($callback)
     {
@@ -294,7 +301,7 @@ abstract class Broadcaster implements BroadcasterContract
 
     /**
      * Retrieve the authenticated user using the configured guard (if any).
-	 * 使用配置的保护(如果有的话)检索经过身份验证的用户
+	 * 使用配置的保护（如果有的话）检索经过身份验证的用户
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $channel
@@ -338,8 +345,8 @@ abstract class Broadcaster implements BroadcasterContract
     }
 
     /**
-     * Check if channel name from request match a pattern from registered channels.
-	 * 检查请求中的通道名是否与已注册通道中的模式匹配
+     * Check if the channel name from the request matches a pattern from registered channels.
+	 * 检查来自请求的频道名称是否与来自已注册频道的模式匹配
      *
      * @param  string  $channel
      * @param  string  $pattern

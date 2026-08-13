@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，加载器，装包装入器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * ClosureLoader loads routes from a PHP closure.
+ * ClosureLoader从PHP闭包中加载路由。
  *
  * The Closure must return a RouteCollection instance.
  *
@@ -25,21 +29,22 @@ class ClosureLoader extends Loader
 {
     /**
      * Loads a Closure.
+	 * 导入闭包
      *
      * @param \Closure    $closure A Closure
      * @param string|null $type    The resource type
      *
-     * @return RouteCollection A RouteCollection instance
+     * @return RouteCollection
      */
-    public function load($closure, $type = null)
+    public function load($closure, ?string $type = null)
     {
-        return $closure();
+        return $closure($this->env);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supports($resource, $type = null)
+    public function supports($resource, ?string $type = null)
     {
         return $resource instanceof \Closure && (!$type || 'closure' === $type);
     }

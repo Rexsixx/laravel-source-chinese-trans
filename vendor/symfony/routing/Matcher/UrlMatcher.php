@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，匹配程序，Url匹配器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -23,6 +26,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * UrlMatcher matches URL based on a set of routes.
+ * UrlMatcher基于一组路由匹配URL。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -37,11 +41,13 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Collects HTTP methods that would be allowed for the request.
+	 * 收集请求允许使用的HTTP方法。
      */
     protected $allow = [];
 
     /**
      * Collects URI schemes that would be allowed for the request.
+	 * 收集请求所允许的URI模式
      *
      * @internal
      */
@@ -81,7 +87,7 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function match($pathinfo)
+    public function match(string $pathinfo)
     {
         $this->allow = $this->allowSchemes = [];
 
@@ -117,16 +123,17 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Tries to match a URL with a set of routes.
+	 * 尝试用一组路由匹配URL
      *
      * @param string $pathinfo The path info to be parsed
      *
-     * @return array An array of parameters
+     * @return array
      *
      * @throws NoConfigurationException  If no routing configuration could be found
      * @throws ResourceNotFoundException If the resource could not be found
      * @throws MethodNotAllowedException If the resource was found but the request method is not allowed
      */
-    protected function matchCollection($pathinfo, RouteCollection $routes)
+    protected function matchCollection(string $pathinfo, RouteCollection $routes)
     {
         // HEAD and GET are equivalent as per RFC
         if ('HEAD' === $method = $this->context->getMethod()) {
@@ -200,17 +207,15 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Returns an array of values to use as request attributes.
+	 * 返回要用作请求属性的值数组。
      *
      * As this method requires the Route object, it is not available
      * in matchers that do not have access to the matched Route instance
      * (like the PHP and Apache matcher dumpers).
      *
-     * @param string $name       The name of the route
-     * @param array  $attributes An array of attributes from the matcher
-     *
-     * @return array An array of parameters
+     * @return array
      */
-    protected function getAttributes(Route $route, $name, array $attributes)
+    protected function getAttributes(Route $route, string $name, array $attributes)
     {
         $defaults = $route->getDefaults();
         if (isset($defaults['_canonical_route'])) {
@@ -224,13 +229,11 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Handles specific route requirements.
-     *
-     * @param string $pathinfo The path
-     * @param string $name     The route name
+	 * 处理特定的路由需求
      *
      * @return array The first element represents the status, the second contains additional information
      */
-    protected function handleRouteRequirements($pathinfo, $name, Route $route)
+    protected function handleRouteRequirements(string $pathinfo, string $name, Route $route)
     {
         // expression condition
         if ($route->getCondition() && !$this->getExpressionLanguage()->evaluate($route->getCondition(), ['context' => $this->context, 'request' => $this->request ?: $this->createRequest($pathinfo)])) {
@@ -242,13 +245,11 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
     /**
      * Get merged default parameters.
+	 * 获取合并的默认参数
      *
-     * @param array $params   The parameters
-     * @param array $defaults The defaults
-     *
-     * @return array Merged default parameters
+     * @return array
      */
-    protected function mergeDefaults($params, $defaults)
+    protected function mergeDefaults(array $params, array $defaults)
     {
         foreach ($params as $key => $value) {
             if (!\is_int($key) && null !== $value) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，偏转器，Noop Word 偏转器
+ * Doctrine，Inflector，等待单词偏转器
  */
 
 declare(strict_types=1);

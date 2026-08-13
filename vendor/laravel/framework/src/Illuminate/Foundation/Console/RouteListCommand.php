@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，路由列表命令
+ * Illuminate，基础，控制台，route:list 路由列表命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -17,7 +17,7 @@ class RouteListCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -33,7 +33,7 @@ class RouteListCommand extends Command
 
     /**
      * The router instance.
-	 * 路由实例
+	 * 路由器实例
      *
      * @var \Illuminate\Routing\Router
      */
@@ -41,9 +41,9 @@ class RouteListCommand extends Command
 
     /**
      * The table headers for the command.
-	 * 命令表头
+	 * 命令的表头
      *
-     * @var array
+     * @var string[]
      */
     protected $headers = ['Domain', 'Method', 'URI', 'Name', 'Action', 'Middleware'];
 
@@ -51,7 +51,7 @@ class RouteListCommand extends Command
      * The columns to display when using the "compact" flag.
 	 * 使用"compact"标志时要显示的列
      *
-     * @var array
+     * @var string[]
      */
     protected $compactColumns = ['method', 'uri', 'action'];
 
@@ -77,6 +77,8 @@ class RouteListCommand extends Command
      */
     public function handle()
     {
+        $this->router->flushMiddlewareGroups();
+
         if (empty($this->router->getRoutes())) {
             return $this->error("Your application doesn't have any routes.");
         }
@@ -90,7 +92,7 @@ class RouteListCommand extends Command
 
     /**
      * Compile the routes into a displayable format.
-	 * 编译路由成可显示的格式
+	 * 将路由编译成可显示的格式
      *
      * @return array
      */
@@ -100,7 +102,7 @@ class RouteListCommand extends Command
             return $this->getRouteInformation($route);
         })->filter()->all();
 
-        if ($sort = $this->option('sort')) {
+        if (($sort = $this->option('sort')) !== 'precedence') {
             $routes = $this->sortRoutes($sort, $routes);
         }
 
@@ -113,7 +115,7 @@ class RouteListCommand extends Command
 
     /**
      * Get the route information for a given route.
-	 * 得到给定路由的路由信息
+	 * 获取给定路线的路线信息
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return array
@@ -123,8 +125,8 @@ class RouteListCommand extends Command
         return $this->filterRoute([
             'domain' => $route->domain(),
             'method' => implode('|', $route->methods()),
-            'uri'    => $route->uri(),
-            'name'   => $route->getName(),
+            'uri' => $route->uri(),
+            'name' => $route->getName(),
             'action' => ltrim($route->getActionName(), '\\'),
             'middleware' => $this->getMiddleware($route),
         ]);
@@ -132,7 +134,7 @@ class RouteListCommand extends Command
 
     /**
      * Sort the routes by a given element.
-	 * 排序路由按给定元素
+	 * 按给定元素对路由进行排序
      *
      * @param  string  $sort
      * @param  array  $routes
@@ -147,7 +149,7 @@ class RouteListCommand extends Command
 
     /**
      * Remove unnecessary columns from the routes.
-	 * 删除不必要的列从路由中
+	 * 从路由中删除不必要的列
      *
      * @param  array  $routes
      * @return array
@@ -161,7 +163,7 @@ class RouteListCommand extends Command
 
     /**
      * Display the route information on the console.
-	 * 显示路由信息在控制台中
+	 * 在控制台中显示路由信息
      *
      * @param  array  $routes
      * @return void
@@ -169,7 +171,7 @@ class RouteListCommand extends Command
     protected function displayRoutes(array $routes)
     {
         if ($this->option('json')) {
-            $this->line(json_encode(array_values($routes)));
+            $this->line($this->asJson($routes));
 
             return;
         }
@@ -178,17 +180,17 @@ class RouteListCommand extends Command
     }
 
     /**
-     * Get before filters.
-	 * 得到过滤器前
+     * Get the middleware for the route.
+	 * 得到路由中间件
      *
      * @param  \Illuminate\Routing\Route  $route
      * @return string
      */
     protected function getMiddleware($route)
     {
-        return collect($route->gatherMiddleware())->map(function ($middleware) {
+        return collect($this->router->gatherRouteMiddleware($route))->map(function ($middleware) {
             return $middleware instanceof Closure ? 'Closure' : $middleware;
-        })->implode(',');
+        })->implode("\n");
     }
 
     /**
@@ -206,12 +208,20 @@ class RouteListCommand extends Command
             return;
         }
 
+        if ($this->option('except-path')) {
+            foreach (explode(',', $this->option('except-path')) as $path) {
+                if (Str::contains($route['uri'], $path)) {
+                    return;
+                }
+            }
+        }
+
         return $route;
     }
 
     /**
      * Get the table headers for the visible columns.
-	 * 得到可见列的表头
+	 * 获取可见列的表头
      *
      * @return array
      */
@@ -222,7 +232,7 @@ class RouteListCommand extends Command
 
     /**
      * Get the column names to show (lowercase table headers).
-	 * 得到要显示的列名(小写表头)
+	 * 获取要显示的列名（小写表头）
      *
      * @return array
      */
@@ -260,7 +270,26 @@ class RouteListCommand extends Command
             }
         }
 
-        return $results;
+        return array_map('strtolower', $results);
+    }
+
+    /**
+     * Convert the given routes to JSON.
+	 * 转换给定的路由为JSON
+     *
+     * @param  array  $routes
+     * @return string
+     */
+    protected function asJson(array $routes)
+    {
+        return collect($routes)
+            ->map(function ($route) {
+                $route['middleware'] = empty($route['middleware']) ? [] : explode("\n", $route['middleware']);
+
+                return $route;
+            })
+            ->values()
+            ->toJson();
     }
 
     /**
@@ -277,9 +306,10 @@ class RouteListCommand extends Command
             ['json', null, InputOption::VALUE_NONE, 'Output the route list as JSON'],
             ['method', null, InputOption::VALUE_OPTIONAL, 'Filter the routes by method'],
             ['name', null, InputOption::VALUE_OPTIONAL, 'Filter the routes by name'],
-            ['path', null, InputOption::VALUE_OPTIONAL, 'Filter the routes by path'],
+            ['path', null, InputOption::VALUE_OPTIONAL, 'Only show routes matching the given path pattern'],
+            ['except-path', null, InputOption::VALUE_OPTIONAL, 'Do not display the routes matching the given path pattern'],
             ['reverse', 'r', InputOption::VALUE_NONE, 'Reverse the ordering of the routes'],
-            ['sort', null, InputOption::VALUE_OPTIONAL, 'The column (domain, method, uri, name, action, middleware) to sort by', 'uri'],
+            ['sort', null, InputOption::VALUE_OPTIONAL, 'The column (precedence, domain, method, uri, name, action, middleware) to sort by', 'uri'],
         ];
     }
 }

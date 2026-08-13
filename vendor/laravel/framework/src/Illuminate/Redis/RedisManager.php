@@ -1,6 +1,6 @@
 <?php
 /**
- * Redis，Redis管理，核心类
+ * Illuminate，Redis，Redis 管理器
  */
 
 namespace Illuminate\Redis;
@@ -10,6 +10,7 @@ use Illuminate\Contracts\Redis\Factory;
 use Illuminate\Redis\Connections\Connection;
 use Illuminate\Redis\Connectors\PhpRedisConnector;
 use Illuminate\Redis\Connectors\PredisConnector;
+use Illuminate\Support\Arr;
 use Illuminate\Support\ConfigurationUrlParser;
 use InvalidArgumentException;
 
@@ -36,7 +37,7 @@ class RedisManager implements Factory
 
     /**
      * The registered custom driver creators.
-	 * 自定义驱动创建者
+	 * 注册的自定义驱动程序创建者
      *
      * @var array
      */
@@ -44,7 +45,7 @@ class RedisManager implements Factory
 
     /**
      * The Redis server configurations.
-	 * Redis服务配置
+	 * Redis服务器配置
      *
      * @var array
      */
@@ -60,7 +61,7 @@ class RedisManager implements Factory
 
     /**
      * Indicates whether event dispatcher is set on connections.
-	 * 指明是否在连接上设置事件调度程序
+	 * 指示是否在连接上设置事件调度程序
      *
      * @var bool
      */
@@ -68,7 +69,7 @@ class RedisManager implements Factory
 
     /**
      * Create a new Redis manager instance.
-	 * 创建新的Redis管理实例
+	 * 创建新的Redis管理器实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  string  $driver
@@ -84,7 +85,7 @@ class RedisManager implements Factory
 
     /**
      * Get a Redis connection by name.
-	 * 得到Redis连接通过名称
+	 * 通过名称获取Redis连接
      *
      * @param  string|null  $name
      * @return \Illuminate\Redis\Connections\Connection
@@ -104,7 +105,7 @@ class RedisManager implements Factory
 
     /**
      * Resolve the given connection by name.
-	 * 解析给定的连接按名称
+	 * 按名称解析给定的连接
      *
      * @param  string|null  $name
      * @return \Illuminate\Redis\Connections\Connection
@@ -120,7 +121,7 @@ class RedisManager implements Factory
         if (isset($this->config[$name])) {
             return $this->connector()->connect(
                 $this->parseConnectionConfiguration($this->config[$name]),
-                $options
+                array_merge(Arr::except($options, 'parameters'), ['parameters' => Arr::get($options, 'parameters.'.$name, Arr::get($options, 'parameters', []))])
             );
         }
 
@@ -133,7 +134,7 @@ class RedisManager implements Factory
 
     /**
      * Resolve the given cluster connection by name.
-	 * 解析给定的集群连接按名称
+	 * 按名称解析给定的集群连接
      *
      * @param  string  $name
      * @return \Illuminate\Redis\Connections\Connection
@@ -151,7 +152,7 @@ class RedisManager implements Factory
 
     /**
      * Configure the given connection to prepare it for commands.
-	 * 配置给定的连接以便为命令做好准备
+	 * 配置给定的连接，以便为命令做好准备。
      *
      * @param  \Illuminate\Redis\Connections\Connection  $connection
      * @param  string  $name
@@ -170,7 +171,7 @@ class RedisManager implements Factory
 
     /**
      * Get the connector instance for the current driver.
-	 * 得到当前驱动程序的连接器实例
+	 * 获取当前驱动程序的连接器实例
      *
      * @return \Illuminate\Contracts\Redis\Connector
      */
@@ -214,7 +215,7 @@ class RedisManager implements Factory
 
     /**
      * Return all of the created connections.
-	 * 返回所有已创建连接
+	 * 返回所有创建的连接
      *
      * @return array
      */
@@ -247,7 +248,7 @@ class RedisManager implements Factory
 
     /**
      * Set the default driver.
-	 * 设置默认驱动
+	 * 设置默认驱动程序
      *
      * @param  string  $driver
      * @return void
@@ -258,8 +259,22 @@ class RedisManager implements Factory
     }
 
     /**
+     * Disconnect the given connection and remove from local cache.
+	 * 断开给定的连接并从本地缓存中删除
+     *
+     * @param  string|null  $name
+     * @return void
+     */
+    public function purge($name = null)
+    {
+        $name = $name ?: 'default';
+
+        unset($this->connections[$name]);
+    }
+
+    /**
      * Register a custom driver creator Closure.
-	 * 注册自定义驱动程序创建器Closure
+	 * 注册自定义驱动程序创建器闭包 
      *
      * @param  string  $driver
      * @param  \Closure  $callback
@@ -274,7 +289,7 @@ class RedisManager implements Factory
 
     /**
      * Pass methods onto the default Redis connection.
-	 * 传递方法到默认的Redis连接
+	 * 将方法传递到默认的Redis连接
      *
      * @param  string  $method
      * @param  array  $parameters

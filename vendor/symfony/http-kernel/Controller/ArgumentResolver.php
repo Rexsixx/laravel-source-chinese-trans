@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，控制器，参数解析器
+ * Symfony，Component，HttpKernel，控制器，参数解析器
  */
 
 /*
@@ -25,19 +25,19 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactoryInter
 
 /**
  * Responsible for resolving the arguments passed to an action.
+ * 负责解析传递给动作的参数
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
 final class ArgumentResolver implements ArgumentResolverInterface
 {
     private $argumentMetadataFactory;
-
-    /**
-     * @var iterable|ArgumentValueResolverInterface[]
-     */
     private $argumentValueResolvers;
 
-    public function __construct(ArgumentMetadataFactoryInterface $argumentMetadataFactory = null, iterable $argumentValueResolvers = [])
+    /**
+     * @param iterable<mixed, ArgumentValueResolverInterface> $argumentValueResolvers
+     */
+    public function __construct(?ArgumentMetadataFactoryInterface $argumentMetadataFactory = null, iterable $argumentValueResolvers = [])
     {
         $this->argumentMetadataFactory = $argumentMetadataFactory ?? new ArgumentMetadataFactory();
         $this->argumentValueResolvers = $argumentValueResolvers ?: self::getDefaultArgumentValueResolvers();
@@ -46,7 +46,7 @@ final class ArgumentResolver implements ArgumentResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function getArguments(Request $request, $controller): array
+    public function getArguments(Request $request, callable $controller): array
     {
         $arguments = [];
 
@@ -65,7 +65,7 @@ final class ArgumentResolver implements ArgumentResolverInterface
                 }
 
                 if (!$atLeastOne) {
-                    throw new \InvalidArgumentException(sprintf('"%s::resolve()" must yield at least one value.', \get_class($resolver)));
+                    throw new \InvalidArgumentException(sprintf('"%s::resolve()" must yield at least one value.', get_debug_type($resolver)));
                 }
 
                 // continue to the next controller argument
@@ -86,6 +86,9 @@ final class ArgumentResolver implements ArgumentResolverInterface
         return $arguments;
     }
 
+    /**
+     * @return iterable<int, ArgumentValueResolverInterface>
+     */
     public static function getDefaultArgumentValueResolvers(): iterable
     {
         return [

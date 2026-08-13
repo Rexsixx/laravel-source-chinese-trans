@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理器，ProcessId 处理器
- */
+ * Monolog，处理器，ProcessId 处理程序
+ *
 
 /*
  * This file is part of the Monolog package.
@@ -17,6 +17,7 @@ namespace Monolog\Processor;
 
 /**
  * Adds value of getmypid into records
+ * 将getmypid值添加到记录中
  *
  * @author Andreas Hörnicke
  */

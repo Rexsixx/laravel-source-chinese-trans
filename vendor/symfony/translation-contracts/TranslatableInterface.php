@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，翻译，可翻译接口
+ * Symfony，Component，Translation，可翻译接口
  */
 
 /*
@@ -19,5 +19,5 @@ namespace Symfony\Contracts\Translation;
  */
 interface TranslatableInterface
 {
-    public function trans(TranslatorInterface $translator, string $locale = null): string;
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string;
 }

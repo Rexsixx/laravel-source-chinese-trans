@@ -1,6 +1,6 @@
 <?php
 /**
- * 授权，Auth服务提供者
+ * Illuminate，认证，授权服务提供者
  */
 
 namespace Illuminate\Auth;
@@ -17,7 +17,7 @@ class AuthServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
-	 * 已注册服务提供者
+	 * 注册服务提供者
      *
      * @return void
      */
@@ -40,13 +40,6 @@ class AuthServiceProvider extends ServiceProvider
     protected function registerAuthenticator()
     {
         $this->app->singleton('auth', function ($app) {
-            // Once the authentication service has actually been requested by the developer
-            // we will set a variable in the application indicating such. This helps us
-            // know that we need to set any queued cookies in the after event later.
-			// 一旦开发人员实际请求了身份验证服务，我们将在应用程序中设置一个变量来指示这一点。
-			// 这有助于我们知道稍后需要在事后事件中设置任何排队的Cookie。
-            $app['auth.loaded'] = true;
-
             return new AuthManager($app);
         });
 
@@ -57,17 +50,15 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Register a resolver for the authenticated user.
-	 * 注册一个解析器为经过身份验证的用户
+	 * 为经过身份验证的用户注册一个解析器
      *
      * @return void
      */
     protected function registerUserResolver()
     {
-        $this->app->bind(
-            AuthenticatableContract::class, function ($app) {
-                return call_user_func($app['auth']->userResolver());
-            }
-        );
+        $this->app->bind(AuthenticatableContract::class, function ($app) {
+            return call_user_func($app['auth']->userResolver());
+        });
     }
 
     /**
@@ -87,21 +78,19 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Register a resolver for the authenticated user.
-	 * 注册一个解析器为经过身份验证的用户
+	 * 为经过身份验证的用户注册一个解析器
      *
      * @return void
      */
     protected function registerRequirePassword()
     {
-        $this->app->bind(
-            RequirePassword::class, function ($app) {
-                return new RequirePassword(
-                    $app[ResponseFactory::class],
-                    $app[UrlGenerator::class],
-                    $app['config']->get('auth.password_timeout')
-                );
-            }
-        );
+        $this->app->bind(RequirePassword::class, function ($app) {
+            return new RequirePassword(
+                $app[ResponseFactory::class],
+                $app[UrlGenerator::class],
+                $app['config']->get('auth.password_timeout')
+            );
+        });
     }
 
     /**
@@ -128,11 +117,8 @@ class AuthServiceProvider extends ServiceProvider
     protected function registerEventRebindHandler()
     {
         $this->app->rebinding('events', function ($app, $dispatcher) {
-            if (! $app->resolved('auth')) {
-                return;
-            }
-
-            if ($app['auth']->hasResolvedGuards() === false) {
+            if (! $app->resolved('auth') ||
+                $app['auth']->hasResolvedGuards() === false) {
                 return;
             }
 

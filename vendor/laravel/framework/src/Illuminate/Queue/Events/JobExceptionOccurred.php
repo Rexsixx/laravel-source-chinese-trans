@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，事件，作业异常出现
+ * Illuminate，队列，事件，作业异常发生
  */
 
 namespace Illuminate\Queue\Events;
@@ -9,7 +9,7 @@ class JobExceptionOccurred
 {
     /**
      * The connection name.
-	 * 连接名
+	 * 连接名称
      *
      * @var string
      */
@@ -27,7 +27,7 @@ class JobExceptionOccurred
      * The exception instance.
 	 * 异常实例
      *
-     * @var \Exception
+     * @var \Throwable
      */
     public $exception;
 
@@ -37,7 +37,7 @@ class JobExceptionOccurred
      *
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job
-     * @param  \Exception  $exception
+     * @param  \Throwable  $exception
      * @return void
      */
     public function __construct($connectionName, $job, $exception)

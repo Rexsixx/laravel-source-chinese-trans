@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，任务，数据库作业
+ * Illuminate，队列，作业，数据库作业
  */
 
 namespace Illuminate\Queue\Jobs;
@@ -49,23 +49,21 @@ class DatabaseJob extends Job implements JobContract
 
     /**
      * Release the job back into the queue.
-	 * 释放作业返回队列
+	 * 将作业释放回队列
      *
      * @param  int  $delay
-     * @return mixed
+     * @return void
      */
     public function release($delay = 0)
     {
         parent::release($delay);
 
-        $this->delete();
-
-        return $this->database->release($this->queue, $this->job, $delay);
+        $this->database->deleteAndRelease($this->queue, $this, $delay);
     }
 
     /**
      * Delete the job from the queue.
-	 * 删除作业从队列
+	 * 从队列中删除作业
      *
      * @return void
      */
@@ -107,5 +105,16 @@ class DatabaseJob extends Job implements JobContract
     public function getRawBody()
     {
         return $this->job->payload;
+    }
+
+    /**
+     * Get the database job record.
+	 * 得到数据库作业记录
+     *
+     * @return \Illuminate\Queue\Jobs\DatabaseJobRecord
+     */
+    public function getJobRecord()
+    {
+        return $this->job;
     }
 }

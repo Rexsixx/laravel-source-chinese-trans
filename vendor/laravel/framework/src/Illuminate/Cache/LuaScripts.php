@@ -1,6 +1,6 @@
 <?php
 /**
- * 缓存，缓存Lua脚本
+ * Illuminate，缓存，Lua 脚本
  */
 
 namespace Illuminate\Cache;

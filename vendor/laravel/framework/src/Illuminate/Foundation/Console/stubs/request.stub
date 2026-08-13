@@ -1,16 +1,17 @@
 <?php
 /**
- * 基础，虚拟类根文件
+ * Illuminate，基础，控制台，存根，请求
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DummyClass extends FormRequest
+class {{ class }} extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+	 * 确定用户是否被授权发出此请求
      *
      * @return bool
      */
@@ -21,6 +22,7 @@ class DummyClass extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
+	 * 获取应用于请求的验证规则
      *
      * @return array
      */

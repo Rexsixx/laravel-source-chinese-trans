@@ -1,6 +1,6 @@
 <?php
 /**
- * 授权，控制台，清除复位命令
+ * Illuminate，认证，控制台，auth:clear-resets 清除复位命令
  */
 
 namespace Illuminate\Auth\Console;
@@ -19,11 +19,11 @@ class ClearResetsCommand extends Command
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * 控制台命令说明
      *
      * @var string
      */
-    protected $description = 'Flush expired password reset tokens';
+    protected $description = 'Flush expired password reset tokens';		#清除过期的密码重置令牌
 
     /**
      * Execute the console command.
@@ -35,6 +35,6 @@ class ClearResetsCommand extends Command
     {
         $this->laravel['auth.password']->broker($this->argument('name'))->getRepository()->deleteExpired();
 
-        $this->info('Expired reset tokens cleared!');
+        $this->info('Expired reset tokens cleared!');		#过期的重置令牌已清除！
     }
 }

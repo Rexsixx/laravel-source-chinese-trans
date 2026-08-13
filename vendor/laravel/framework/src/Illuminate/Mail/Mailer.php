@@ -1,6 +1,6 @@
 <?php
 /**
- * 邮件，邮件收发机
+ * Illuminate，邮件，邮件程序
  */
 
 namespace Illuminate\Mail;
@@ -25,8 +25,16 @@ class Mailer implements MailerContract, MailQueueContract
     use Macroable;
 
     /**
+     * The name that is configured for the mailer.
+	 * 为邮件配置的名称
+     *
+     * @var string
+     */
+    protected $name;
+
+    /**
      * The view factory instance.
-	 * 预览工厂实例
+	 * 视图工厂实例
      *
      * @var \Illuminate\Contracts\View\Factory
      */
@@ -42,7 +50,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * The event dispatcher instance.
-	 * 事件调度实例
+	 * 事件调度程序实例
      *
      * @var \Illuminate\Contracts\Events\Dispatcher|null
      */
@@ -63,6 +71,14 @@ class Mailer implements MailerContract, MailQueueContract
      * @var array
      */
     protected $replyTo;
+
+    /**
+     * The global return path address.
+	 * 全局返回路径地址
+     *
+     * @var array
+     */
+    protected $returnPath;
 
     /**
      * The global to address and name.
@@ -92,13 +108,15 @@ class Mailer implements MailerContract, MailQueueContract
      * Create a new Mailer instance.
 	 * 创建新的Mailer实例
      *
+     * @param  string  $name
      * @param  \Illuminate\Contracts\View\Factory  $views
      * @param  \Swift_Mailer  $swift
      * @param  \Illuminate\Contracts\Events\Dispatcher|null  $events
      * @return void
      */
-    public function __construct(Factory $views, Swift_Mailer $swift, Dispatcher $events = null)
+    public function __construct(string $name, Factory $views, Swift_Mailer $swift, Dispatcher $events = null)
     {
+        $this->name = $name;
         $this->views = $views;
         $this->swift = $swift;
         $this->events = $events;
@@ -131,8 +149,20 @@ class Mailer implements MailerContract, MailQueueContract
     }
 
     /**
+     * Set the global return path address.
+	 * 设置全局返回路径地址
+     *
+     * @param  string  $address
+     * @return void
+     */
+    public function alwaysReturnPath($address)
+    {
+        $this->returnPath = compact('address');
+    }
+
+    /**
      * Set the global to address and name.
-	 * 设置全局变量为地址和名称
+	 * 将全局变量设置为地址和名称
      *
      * @param  string  $address
      * @param  string|null  $name
@@ -189,7 +219,7 @@ class Mailer implements MailerContract, MailQueueContract
      */
     public function html($html, $callback)
     {
-        return $this->send(['html' => new HtmlString($html)], [], $callback);
+        $this->send(['html' => new HtmlString($html)], [], $callback);
     }
 
     /**
@@ -202,7 +232,7 @@ class Mailer implements MailerContract, MailQueueContract
      */
     public function raw($text, $callback)
     {
-        return $this->send(['raw' => $text], [], $callback);
+        $this->send(['raw' => $text], [], $callback);
     }
 
     /**
@@ -216,12 +246,12 @@ class Mailer implements MailerContract, MailQueueContract
      */
     public function plain($view, array $data, $callback)
     {
-        return $this->send(['text' => $view], $data, $callback);
+        $this->send(['text' => $view], $data, $callback);
     }
 
     /**
      * Render the given message as a view.
-	 * 呈现给定的消息为视图
+	 * 将给定的消息呈现为视图
      *
      * @param  string|array  $view
      * @param  array  $data
@@ -232,8 +262,7 @@ class Mailer implements MailerContract, MailQueueContract
         // First we need to parse the view, which could either be a string or an array
         // containing both an HTML and plain text versions of the view which should
         // be used when sending an e-mail. We will extract both of them out here.
-		// 首先，我们需要解析视图，它可以是字符串或数组，其中包含发送电子邮件时应使用的视图的HTML和纯文本版本。
-		// 我们将在这里把它们都提取出来。
+		// 首先，我们需要解析视图，它可以是字符串也可以是数组。
         [$view, $plain, $raw] = $this->parseView($view);
 
         $data['message'] = $this->createMessage();
@@ -243,7 +272,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Send a new message using a view.
-	 * 发送新消息使用视图
+	 * 使用视图发送新消息
      *
      * @param  \Illuminate\Contracts\Mail\Mailable|string|array  $view
      * @param  array  $data
@@ -259,8 +288,7 @@ class Mailer implements MailerContract, MailQueueContract
         // First we need to parse the view, which could either be a string or an array
         // containing both an HTML and plain text versions of the view which should
         // be used when sending an e-mail. We will extract both of them out here.
-		// 首先，我们需要解析视图，它可以是字符串或数组，其中包含发送电子邮件时应使用的视图的HTML和纯文本版本。
-		// 我们将在这里把它们都提取出来。
+		// 首先，我们需要解析视图，它可以是字符串也可以是数组。
         [$view, $plain, $raw] = $this->parseView($view);
 
         $data['message'] = $message = $this->createMessage();
@@ -268,8 +296,7 @@ class Mailer implements MailerContract, MailQueueContract
         // Once we have retrieved the view content for the e-mail we will set the body
         // of this message using the HTML type, which will provide a simple wrapper
         // to creating view based emails that are able to receive arrays of data.
-		// 检索到电子邮件的视图内容后，我们将使用HTML类型设置此消息的正文，
-		// 这将为创建能够接收数据数组的基于视图的电子邮件提供一个简单的包装器。
+		// 一旦我们检索了电子邮件的视图内容，我们将设置使用HTML类型保存消息的主体。
         $callback($message);
 
         $this->addContent($message, $view, $plain, $raw, $data);
@@ -277,8 +304,7 @@ class Mailer implements MailerContract, MailQueueContract
         // If a global "to" address has been set, we will set that address on the mail
         // message. This is primarily useful during local development in which each
         // message should be delivered into a single mail address for inspection.
-		// 如果已设置全局“收件人”地址，我们将在邮件中设置该地址。这在本地开发过程中非常有用，
-		// 在本地开发中，每条消息都应该被传递到一个邮件地址以供检查。
+		// 如果设置了全局"to"地址，我们将在邮件中设置该地址。
         if (isset($this->to['address'])) {
             $this->setGlobalToAndRemoveCcAndBcc($message);
         }
@@ -286,8 +312,7 @@ class Mailer implements MailerContract, MailQueueContract
         // Next we will determine if the message should be sent. We give the developer
         // one final chance to stop this message and then we will send it to all of
         // its recipients. We will then fire the sent event for the sent message.
-		// 接下来，我们将确定是否应该发送消息。我们给开发人员最后一次机会停止此消息，然后将其发送给所有收件人。
-		// 然后，我们将为已发送的消息触发已发送事件。
+		// 接下来，我们将确定是否应该发送消息。我们给开发者最后一次阻止这条消息的机会。
         $swiftMessage = $message->getSwiftMessage();
 
         if ($this->shouldSendMessage($swiftMessage, $data)) {
@@ -307,8 +332,8 @@ class Mailer implements MailerContract, MailQueueContract
     protected function sendMailable(MailableContract $mailable)
     {
         return $mailable instanceof ShouldQueue
-                        ? $mailable->queue($this->queue)
-                        : $mailable->send($this);
+                        ? $mailable->mailer($this->name)->queue($this->queue)
+                        : $mailable->mailer($this->name)->send($this);
     }
 
     /**
@@ -329,8 +354,7 @@ class Mailer implements MailerContract, MailQueueContract
         // If the given view is an array with numeric keys, we will just assume that
         // both a "pretty" and "plain" view were provided, so we will return this
         // array as is, since it should contain both views with numerical keys.
-		// 如果给定的视图是一个带有数字键的数组，我们只会假设同时提供了"漂亮"和"普通"视图，
-		// 因此我们将按原样返回此数组，因为它应该包含两个带数字键的视图。
+		// 如果给定的视图是一个带有数字键的数组，我们只会假设提供了"漂亮"和"普通"的视图。
         if (is_array($view) && isset($view[0])) {
             return [$view[0], $view[1], null];
         }
@@ -338,8 +362,7 @@ class Mailer implements MailerContract, MailQueueContract
         // If this view is an array but doesn't contain numeric keys, we will assume
         // the views are being explicitly specified and will extract them via the
         // named keys instead, allowing the developers to use one or the other.
-		// 如果此视图是一个数组，但不包含数字键，我们将假设这些视图是显式指定的，
-		// 并将通过命名键提取它们，允许开发人员使用其中一个。
+		// 如果这个视图是一个数组，但不包含数字键，我们将假设视图被显式指定。
         if (is_array($view)) {
             return [
                 $view['html'] ?? null,
@@ -353,7 +376,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Add the content to a given message.
-	 * 添加内容到给定消息中
+	 * 将内容添加到给定消息中
      *
      * @param  \Illuminate\Mail\Message  $message
      * @param  string  $view
@@ -398,7 +421,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Set the global "to" address on the given message.
-	 * 设置全局"to"地址在给定消息上
+	 * 在给定消息上设置全局"to"地址
      *
      * @param  \Illuminate\Mail\Message  $message
      * @return void
@@ -430,7 +453,7 @@ class Mailer implements MailerContract, MailQueueContract
             $view->onQueue($queue);
         }
 
-        return $view->queue($this->queue);
+        return $view->mailer($this->name)->queue($this->queue);
     }
 
     /**
@@ -451,6 +474,7 @@ class Mailer implements MailerContract, MailQueueContract
 	 * 将要在给定队列上发送的新电子邮件放入队列
      *
      * This method didn't match rest of framework's "onQueue" phrasing. Added "onQueue".
+	 * 这个方法与框架的"onQueue"措辞不匹配。添加"onQueue"。
      *
      * @param  string  $queue
      * @param  \Illuminate\Contracts\Mail\Mailable  $view
@@ -478,7 +502,9 @@ class Mailer implements MailerContract, MailQueueContract
             throw new InvalidArgumentException('Only mailables may be queued.');
         }
 
-        return $view->later($delay, is_null($queue) ? $this->queue : $queue);
+        return $view->mailer($this->name)->later(
+            $delay, is_null($queue) ? $this->queue : $queue
+        );
     }
 
     /**
@@ -508,8 +534,7 @@ class Mailer implements MailerContract, MailQueueContract
         // If a global from address has been specified we will set it on every message
         // instance so the developer does not have to repeat themselves every time
         // they create a new message. We'll just go ahead and push this address.
-		// 如果指定了全局发件人地址，我们将在每个消息实例上设置它，这样开发人员就不必每次创建新消息时都重复自己。
-		// 我们只需继续推进这个地址。
+		// 如果指定了全局from地址，我们将把它设置在每条信息上。
         if (! empty($this->from['address'])) {
             $message->from($this->from['address'], $this->from['name']);
         }
@@ -517,10 +542,13 @@ class Mailer implements MailerContract, MailQueueContract
         // When a global reply address was specified we will set this on every message
         // instance so the developer does not have to repeat themselves every time
         // they create a new message. We will just go ahead and push this address.
-		// 当指定全局回复地址时，我们将在每个消息实例上设置此地址，这样开发人员就不必每次创建新消息时都重复自己。
-		// 我们将继续推进这个地址。
+		// 当指定了全局回复地址时，我们将在每条消息上设置此地址。
         if (! empty($this->replyTo['address'])) {
             $message->replyTo($this->replyTo['address'], $this->replyTo['name']);
+        }
+
+        if (! empty($this->returnPath['address'])) {
+            $message->returnPath($this->returnPath['address']);
         }
 
         return $message;
@@ -606,7 +634,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Get the Swift Mailer instance.
-	 * 得到Swift Mailer实例
+	 * 获取Swift Mailer实例
      *
      * @return \Swift_Mailer
      */
@@ -628,7 +656,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Set the Swift Mailer instance.
-	 * 设置Swift Mailer实例
+	 * 设置Swift邮件实例
      *
      * @param  \Swift_Mailer  $swift
      * @return void
@@ -640,7 +668,7 @@ class Mailer implements MailerContract, MailQueueContract
 
     /**
      * Set the queue manager instance.
-	 * 设置队列管理实例
+	 * 设置队列管理器实例
      *
      * @param  \Illuminate\Contracts\Queue\Factory  $queue
      * @return $this

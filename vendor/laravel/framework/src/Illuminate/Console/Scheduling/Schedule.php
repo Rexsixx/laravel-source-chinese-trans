@@ -1,16 +1,19 @@
 <?php
 /**
- * 控制台，计划表
+ * Illuminate，控制台，调度，调度核心类
  */
 
 namespace Illuminate\Console\Scheduling;
 
 use Closure;
 use DateTimeInterface;
+use Illuminate\Bus\UniqueLock;
 use Illuminate\Console\Application;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\CallQueuedClosure;
 use Illuminate\Support\ProcessUtils;
@@ -22,9 +25,17 @@ class Schedule
 {
     use Macroable;
 
+    const SUNDAY = 0;
+    const MONDAY = 1;
+    const TUESDAY = 2;
+    const WEDNESDAY = 3;
+    const THURSDAY = 4;
+    const FRIDAY = 5;
+    const SATURDAY = 6;
+
     /**
      * All of the events on the schedule.
-	 * 所有事件在计划表
+	 * 日程表上的所有活动
      *
      * @var \Illuminate\Console\Scheduling\Event[]
      */
@@ -48,7 +59,7 @@ class Schedule
 
     /**
      * The timezone the date should be evaluated on.
-	 * 时区应该对日期进行评估
+	 * 应该对日期进行评估的时区
      *
      * @var \DateTimeZone|string
      */
@@ -64,10 +75,12 @@ class Schedule
 
     /**
      * Create a new schedule instance.
-	 * 创建新的计划实例
+	 * 创建一个新的调度实例
      *
      * @param  \DateTimeZone|string|null  $timezone
      * @return void
+     *
+     * @throws \RuntimeException
      */
     public function __construct($timezone = null)
     {
@@ -92,7 +105,7 @@ class Schedule
 
     /**
      * Add a new callback event to the schedule.
-	 * 添加新的回调事件到计划
+	 * 向计划添加一个新的回调事件
      *
      * @param  string|callable  $callback
      * @param  array  $parameters
@@ -109,7 +122,7 @@ class Schedule
 
     /**
      * Add a new Artisan command event to the schedule.
-	 * 添加一个新的Artisan命令事件到计划
+	 * 向计划中添加一个新的Artisan命令事件
      *
      * @param  string  $command
      * @param  array  $parameters
@@ -118,7 +131,11 @@ class Schedule
     public function command($command, array $parameters = [])
     {
         if (class_exists($command)) {
-            $command = Container::getInstance()->make($command)->getName();
+            $command = Container::getInstance()->make($command);
+
+            return $this->exec(
+                Application::formatCommandString($command->getName()), $parameters,
+            )->description($command->getDescription());
         }
 
         return $this->exec(
@@ -128,7 +145,7 @@ class Schedule
 
     /**
      * Add a new job callback event to the schedule.
-	 * 添加一个新的作业回调事件到计划
+	 * 向计划添加一个新的作业回调事件
      *
      * @param  object|string  $job
      * @param  string|null  $queue
@@ -150,12 +167,14 @@ class Schedule
 
     /**
      * Dispatch the given job to the queue.
-	 * 分派给定的作业到队列
+	 * 将给定的作业分派到队列
      *
      * @param  object  $job
      * @param  string|null  $queue
      * @param  string|null  $connection
      * @return void
+     *
+     * @throws \RuntimeException
      */
     protected function dispatchToQueue($job, $queue, $connection)
     {
@@ -169,6 +188,36 @@ class Schedule
             $job = CallQueuedClosure::create($job);
         }
 
+        if ($job instanceof ShouldBeUnique) {
+            return $this->dispatchUniqueJobToQueue($job, $queue, $connection);
+        }
+
+        $this->getDispatcher()->dispatch(
+            $job->onConnection($connection)->onQueue($queue)
+        );
+    }
+
+    /**
+     * Dispatch the given unique job to the queue.
+	 * 将给定的唯一作业分派到队列
+     *
+     * @param  object  $job
+     * @param  string|null  $queue
+     * @param  string|null  $connection
+     * @return void
+     *
+     * @throws \RuntimeException
+     */
+    protected function dispatchUniqueJobToQueue($job, $queue, $connection)
+    {
+        if (! Container::getInstance()->bound(Cache::class)) {
+            throw new RuntimeException('Cache driver not available. Scheduling unique jobs not supported.');
+        }
+
+        if (! (new UniqueLock(Container::getInstance()->make(Cache::class)))->acquire($job)) {
+            return;
+        }
+
         $this->getDispatcher()->dispatch(
             $job->onConnection($connection)->onQueue($queue)
         );
@@ -176,7 +225,7 @@ class Schedule
 
     /**
      * Dispatch the given job right now.
-	 * 调度给定的任务立即
+	 * 立即调度给定的任务
      *
      * @param  object  $job
      * @return void
@@ -188,7 +237,7 @@ class Schedule
 
     /**
      * Add a new command event to the schedule.
-	 * 添加一个新的命令事件到计划
+	 * 向计划添加一个新的命令事件
      *
      * @param  string  $command
      * @param  array  $parameters
@@ -281,7 +330,7 @@ class Schedule
 
     /**
      * Get all of the events on the schedule.
-	 * 得到所有事件在计划
+	 * 把所有的活动都列在日程表上
      *
      * @return \Illuminate\Console\Scheduling\Event[]
      */
@@ -299,11 +348,11 @@ class Schedule
      */
     public function useCache($store)
     {
-        if ($this->eventMutex instanceof CacheEventMutex) {
+        if ($this->eventMutex instanceof CacheAware) {
             $this->eventMutex->useStore($store);
         }
 
-        if ($this->schedulingMutex instanceof CacheSchedulingMutex) {
+        if ($this->schedulingMutex instanceof CacheAware) {
             $this->schedulingMutex->useStore($store);
         }
 
@@ -312,9 +361,11 @@ class Schedule
 
     /**
      * Get the job dispatcher, if available.
-	 * 获取作业调度器，如果可用
+	 * 获取作业调度器（如果可用）
      *
      * @return \Illuminate\Contracts\Bus\Dispatcher
+     *
+     * @throws \RuntimeException
      */
     protected function getDispatcher()
     {

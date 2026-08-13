@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，助手，表格
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Provides helpers to display a table.
+ * 提供显示表的助手。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Саша Стаменковић <umpirsky@gmail.com>
@@ -41,22 +45,26 @@ class Table
 
     /**
      * Table headers.
+	 * 表头
      */
     private $headers = [];
 
     /**
      * Table rows.
+	 * 表行
      */
     private $rows = [];
     private $horizontal = false;
 
     /**
      * Column widths cache.
+	 * 列widths缓存
      */
     private $effectiveColumnWidths = [];
 
     /**
      * Number of columns cache.
+	 * 列缓存数
      *
      * @var int
      */
@@ -79,12 +87,16 @@ class Table
 
     /**
      * User set column widths.
+	 * 用户设置栏宽度
      *
      * @var array
      */
     private $columnWidths = [];
     private $columnMaxWidths = [];
 
+    /**
+     * @var array<string, TableStyle>|null
+     */
     private static $styles;
 
     private $rendered = false;
@@ -102,10 +114,9 @@ class Table
 
     /**
      * Sets a style definition.
-     *
-     * @param string $name The style name
+	 * 设置样式定义
      */
-    public static function setStyleDefinition($name, TableStyle $style)
+    public static function setStyleDefinition(string $name, TableStyle $style)
     {
         if (!self::$styles) {
             self::$styles = self::initStyles();
@@ -116,12 +127,11 @@ class Table
 
     /**
      * Gets a style definition by name.
-     *
-     * @param string $name The style name
+	 * 通过名称获取样式定义
      *
      * @return TableStyle
      */
-    public static function getStyleDefinition($name)
+    public static function getStyleDefinition(string $name)
     {
         if (!self::$styles) {
             self::$styles = self::initStyles();
@@ -136,6 +146,7 @@ class Table
 
     /**
      * Sets table style.
+	 * 设置表样式
      *
      * @param TableStyle|string $name The style name or a TableStyle instance
      *
@@ -150,6 +161,7 @@ class Table
 
     /**
      * Gets the current table style.
+	 * 获取当前表样式
      *
      * @return TableStyle
      */
@@ -160,16 +172,14 @@ class Table
 
     /**
      * Sets table column style.
+	 * 设置表列样式
      *
-     * @param int               $columnIndex Column index
-     * @param TableStyle|string $name        The style name or a TableStyle instance
+     * @param TableStyle|string $name The style name or a TableStyle instance
      *
      * @return $this
      */
-    public function setColumnStyle($columnIndex, $name)
+    public function setColumnStyle(int $columnIndex, $name)
     {
-        $columnIndex = (int) $columnIndex;
-
         $this->columnStyles[$columnIndex] = $this->resolveStyle($name);
 
         return $this;
@@ -177,35 +187,33 @@ class Table
 
     /**
      * Gets the current style for a column.
+	 * 获取列的当前样式
      *
      * If style was not set, it returns the global table style.
      *
-     * @param int $columnIndex Column index
-     *
      * @return TableStyle
      */
-    public function getColumnStyle($columnIndex)
+    public function getColumnStyle(int $columnIndex)
     {
         return $this->columnStyles[$columnIndex] ?? $this->getStyle();
     }
 
     /**
      * Sets the minimum width of a column.
-     *
-     * @param int $columnIndex Column index
-     * @param int $width       Minimum column width in characters
+	 * 设置列的最小宽度
      *
      * @return $this
      */
-    public function setColumnWidth($columnIndex, $width)
+    public function setColumnWidth(int $columnIndex, int $width)
     {
-        $this->columnWidths[(int) $columnIndex] = (int) $width;
+        $this->columnWidths[$columnIndex] = $width;
 
         return $this;
     }
 
     /**
      * Sets the minimum width of all columns.
+	 * 设置所有列的最小宽度
      *
      * @return $this
      */
@@ -221,6 +229,7 @@ class Table
 
     /**
      * Sets the maximum width of a column.
+	 * 设置列的最大宽度。
      *
      * Any cell within this column which contents exceeds the specified width will be wrapped into multiple lines, while
      * formatted strings are preserved.
@@ -230,7 +239,7 @@ class Table
     public function setColumnMaxWidth(int $columnIndex, int $width): self
     {
         if (!$this->output->getFormatter() instanceof WrappableOutputFormatterInterface) {
-            throw new \LogicException(sprintf('Setting a maximum column width is only supported when using a "%s" formatter, got "%s".', WrappableOutputFormatterInterface::class, \get_class($this->output->getFormatter())));
+            throw new \LogicException(sprintf('Setting a maximum column width is only supported when using a "%s" formatter, got "%s".', WrappableOutputFormatterInterface::class, get_debug_type($this->output->getFormatter())));
         }
 
         $this->columnMaxWidths[$columnIndex] = $width;
@@ -238,6 +247,9 @@ class Table
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function setHeaders(array $headers)
     {
         $headers = array_values($headers);
@@ -257,6 +269,9 @@ class Table
         return $this->addRows($rows);
     }
 
+    /**
+     * @return $this
+     */
     public function addRows(array $rows)
     {
         foreach ($rows as $row) {
@@ -266,6 +281,9 @@ class Table
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function addRow($row)
     {
         if ($row instanceof TableSeparator) {
@@ -285,6 +303,9 @@ class Table
 
     /**
      * Adds a row to the table, and re-renders the table.
+	 * 向表中添加一行，并重新呈现表。
+     *
+     * @return $this
      */
     public function appendRow($row): self
     {
@@ -302,6 +323,9 @@ class Table
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function setRow($column, array $row)
     {
         $this->rows[$column] = $row;
@@ -309,6 +333,9 @@ class Table
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function setHeaderTitle(?string $title): self
     {
         $this->headerTitle = $title;
@@ -316,6 +343,9 @@ class Table
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function setFooterTitle(?string $title): self
     {
         $this->footerTitle = $title;
@@ -323,6 +353,9 @@ class Table
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function setHorizontal(bool $horizontal = true): self
     {
         $this->horizontal = $horizontal;
@@ -332,6 +365,7 @@ class Table
 
     /**
      * Renders table to output.
+	 * 将表呈现为输出。
      *
      * Example:
      *
@@ -432,12 +466,13 @@ class Table
 
     /**
      * Renders horizontal header separator.
+	 * 呈现水平标题分隔符
      *
      * Example:
      *
      *     +-----+-----------+-------+
      */
-    private function renderRowSeparator(int $type = self::SEPARATOR_MID, string $title = null, string $titleFormat = null)
+    private function renderRowSeparator(int $type = self::SEPARATOR_MID, ?string $title = null, ?string $titleFormat = null)
     {
         if (0 === $count = $this->numberOfColumns) {
             return;
@@ -466,11 +501,11 @@ class Table
         }
 
         if (null !== $title) {
-            $titleLength = Helper::strlenWithoutDecoration($formatter = $this->output->getFormatter(), $formattedTitle = sprintf($titleFormat, $title));
-            $markupLength = Helper::strlen($markup);
+            $titleLength = Helper::width(Helper::removeDecoration($formatter = $this->output->getFormatter(), $formattedTitle = sprintf($titleFormat, $title)));
+            $markupLength = Helper::width($markup);
             if ($titleLength > $limit = $markupLength - 4) {
                 $titleLength = $limit;
-                $formatLength = Helper::strlenWithoutDecoration($formatter, sprintf($titleFormat, ''));
+                $formatLength = Helper::width(Helper::removeDecoration($formatter, sprintf($titleFormat, '')));
                 $formattedTitle = sprintf($titleFormat, Helper::substr($title, 0, $limit - $formatLength - 3).'...');
             }
 
@@ -487,6 +522,7 @@ class Table
 
     /**
      * Renders vertical column separator.
+	 * 呈现垂直列分隔符
      */
     private function renderColumnSeparator(int $type = self::BORDER_OUTSIDE): string
     {
@@ -497,12 +533,13 @@ class Table
 
     /**
      * Renders table row.
+	 * 呈现表行
      *
      * Example:
      *
      *     | 9971-5-0210-0 | A Tale of Two Cities  | Charles Dickens  |
      */
-    private function renderRow(array $row, string $cellFormat, string $firstCellFormat = null)
+    private function renderRow(array $row, string $cellFormat, ?string $firstCellFormat = null)
     {
         $rowContent = $this->renderColumnSeparator(self::BORDER_OUTSIDE);
         $columns = $this->getRowColumns($row);
@@ -520,6 +557,7 @@ class Table
 
     /**
      * Renders table cell with padding.
+	 * 渲染带有填充的表格单元格
      */
     private function renderCell(array $row, int $column, string $cellFormat): string
     {
@@ -543,14 +581,38 @@ class Table
             return sprintf($style->getBorderFormat(), str_repeat($style->getBorderChars()[2], $width));
         }
 
-        $width += Helper::strlen($cell) - Helper::strlenWithoutDecoration($this->output->getFormatter(), $cell);
+        $width += Helper::length($cell) - Helper::length(Helper::removeDecoration($this->output->getFormatter(), $cell));
         $content = sprintf($style->getCellRowContentFormat(), $cell);
 
-        return sprintf($cellFormat, str_pad($content, $width, $style->getPaddingChar(), $style->getPadType()));
+        $padType = $style->getPadType();
+        if ($cell instanceof TableCell && $cell->getStyle() instanceof TableCellStyle) {
+            $isNotStyledByTag = !preg_match('/^<(\w+|(\w+=[\w,]+;?)*)>.+<\/(\w+|(\w+=\w+;?)*)?>$/', $cell);
+            if ($isNotStyledByTag) {
+                $cellFormat = $cell->getStyle()->getCellFormat();
+                if (!\is_string($cellFormat)) {
+                    $tag = http_build_query($cell->getStyle()->getTagOptions(), '', ';');
+                    $cellFormat = '<'.$tag.'>%s</>';
+                }
+
+                if (strstr($content, '</>')) {
+                    $content = str_replace('</>', '', $content);
+                    $width -= 3;
+                }
+                if (strstr($content, '<fg=default;bg=default>')) {
+                    $content = str_replace('<fg=default;bg=default>', '', $content);
+                    $width -= \strlen('<fg=default;bg=default>');
+                }
+            }
+
+            $padType = $cell->getStyle()->getPadByAlign();
+        }
+
+        return sprintf($cellFormat, str_pad($content, $width, $style->getPaddingChar(), $padType));
     }
 
     /**
      * Calculate number of columns for this table.
+	 * 计算此表的列数
      */
     private function calculateNumberOfColumns(array $rows)
     {
@@ -578,15 +640,16 @@ class Table
             foreach ($rows[$rowKey] as $column => $cell) {
                 $colspan = $cell instanceof TableCell ? $cell->getColspan() : 1;
 
-                if (isset($this->columnMaxWidths[$column]) && Helper::strlenWithoutDecoration($formatter, $cell) > $this->columnMaxWidths[$column]) {
+                if (isset($this->columnMaxWidths[$column]) && Helper::width(Helper::removeDecoration($formatter, $cell)) > $this->columnMaxWidths[$column]) {
                     $cell = $formatter->formatAndWrap($cell, $this->columnMaxWidths[$column] * $colspan);
                 }
                 if (!strstr($cell ?? '', "\n")) {
                     continue;
                 }
-                $escaped = implode("\n", array_map([OutputFormatter::class, 'escapeTrailingBackslash'], explode("\n", $cell)));
+                $eol = str_contains($cell ?? '', "\r\n") ? "\r\n" : "\n";
+                $escaped = implode($eol, array_map([OutputFormatter::class, 'escapeTrailingBackslash'], explode($eol, $cell)));
                 $cell = $cell instanceof TableCell ? new TableCell($escaped, ['colspan' => $cell->getColspan()]) : $escaped;
-                $lines = explode("\n", str_replace("\n", "<fg=default;bg=default>\n</>", $cell));
+                $lines = explode($eol, str_replace($eol, '<fg=default;bg=default></>'.$eol, $cell));
                 foreach ($lines as $lineKey => $line) {
                     if ($colspan > 1) {
                         $line = new TableCell($line, ['colspan' => $colspan]);
@@ -634,6 +697,7 @@ class Table
 
     /**
      * fill rows that contains rowspan > 1.
+	 * 填充包含rowspan > 1的行
      *
      * @throws InvalidArgumentException
      */
@@ -641,17 +705,18 @@ class Table
     {
         $unmergedRows = [];
         foreach ($rows[$line] as $column => $cell) {
-            if (null !== $cell && !$cell instanceof TableCell && !is_scalar($cell) && !(\is_object($cell) && method_exists($cell, '__toString'))) {
-                throw new InvalidArgumentException(sprintf('A cell must be a TableCell, a scalar or an object implementing "__toString()", "%s" given.', \gettype($cell)));
+            if (null !== $cell && !$cell instanceof TableCell && !\is_scalar($cell) && !(\is_object($cell) && method_exists($cell, '__toString'))) {
+                throw new InvalidArgumentException(sprintf('A cell must be a TableCell, a scalar or an object implementing "__toString()", "%s" given.', get_debug_type($cell)));
             }
             if ($cell instanceof TableCell && $cell->getRowspan() > 1) {
                 $nbLines = $cell->getRowspan() - 1;
                 $lines = [$cell];
                 if (strstr($cell, "\n")) {
-                    $lines = explode("\n", str_replace("\n", "<fg=default;bg=default>\n</>", $cell));
-                    $nbLines = \count($lines) > $nbLines ? substr_count($cell, "\n") : $nbLines;
+                    $eol = str_contains($cell, "\r\n") ? "\r\n" : "\n";
+                    $lines = explode($eol, str_replace($eol, '<fg=default;bg=default>'.$eol.'</>', $cell));
+                    $nbLines = \count($lines) > $nbLines ? substr_count($cell, $eol) : $nbLines;
 
-                    $rows[$line][$column] = new TableCell($lines[0], ['colspan' => $cell->getColspan()]);
+                    $rows[$line][$column] = new TableCell($lines[0], ['colspan' => $cell->getColspan(), 'style' => $cell->getStyle()]);
                     unset($lines[0]);
                 }
 
@@ -659,7 +724,7 @@ class Table
                 $unmergedRows = array_replace_recursive(array_fill($line + 1, $nbLines, []), $unmergedRows);
                 foreach ($unmergedRows as $unmergedRowKey => $unmergedRow) {
                     $value = $lines[$unmergedRowKey - $line] ?? '';
-                    $unmergedRows[$unmergedRowKey][$column] = new TableCell($value, ['colspan' => $cell->getColspan()]);
+                    $unmergedRows[$unmergedRowKey][$column] = new TableCell($value, ['colspan' => $cell->getColspan(), 'style' => $cell->getStyle()]);
                     if ($nbLines === $unmergedRowKey - $line) {
                         break;
                     }
@@ -723,6 +788,7 @@ class Table
 
     /**
      * Gets number of columns by row.
+	 * 按行获取列数
      */
     private function getNumberOfColumns(array $row): int
     {
@@ -736,6 +802,7 @@ class Table
 
     /**
      * Gets list of columns for the given row.
+	 * 获取给定行的列列表
      */
     private function getRowColumns(array $row): array
     {
@@ -752,6 +819,7 @@ class Table
 
     /**
      * Calculates columns widths.
+	 * 计算列宽度
      */
     private function calculateColumnsWidth(iterable $groups)
     {
@@ -763,30 +831,30 @@ class Table
                         continue;
                     }
 
-                foreach ($row as $i => $cell) {
-                    if ($cell instanceof TableCell) {
-                        $textContent = Helper::removeDecoration($this->output->getFormatter(), $cell);
-                        $textLength = Helper::strlen($textContent);
-                        if ($textLength > 0) {
-                            $contentColumns = str_split($textContent, ceil($textLength / $cell->getColspan()));
-                            foreach ($contentColumns as $position => $content) {
-                                $row[$i + $position] = $content;
+                    foreach ($row as $i => $cell) {
+                        if ($cell instanceof TableCell) {
+                            $textContent = Helper::removeDecoration($this->output->getFormatter(), $cell);
+                            $textLength = Helper::width($textContent);
+                            if ($textLength > 0) {
+                                $contentColumns = mb_str_split($textContent, ceil($textLength / $cell->getColspan()));
+                                foreach ($contentColumns as $position => $content) {
+                                    $row[$i + $position] = $content;
+                                }
                             }
                         }
                     }
-                }
 
                     $lengths[] = $this->getCellWidth($row, $column);
                 }
             }
 
-            $this->effectiveColumnWidths[$column] = max($lengths) + Helper::strlen($this->style->getCellRowContentFormat()) - 2;
+            $this->effectiveColumnWidths[$column] = max($lengths) + Helper::width($this->style->getCellRowContentFormat()) - 2;
         }
     }
 
     private function getColumnSeparatorWidth(): int
     {
-        return Helper::strlen(sprintf($this->style->getBorderFormat(), $this->style->getBorderChars()[3]));
+        return Helper::width(sprintf($this->style->getBorderFormat(), $this->style->getBorderChars()[3]));
     }
 
     private function getCellWidth(array $row, int $column): int
@@ -795,7 +863,7 @@ class Table
 
         if (isset($row[$column])) {
             $cell = $row[$column];
-            $cellWidth = Helper::strlenWithoutDecoration($this->output->getFormatter(), $cell);
+            $cellWidth = Helper::width(Helper::removeDecoration($this->output->getFormatter(), $cell));
         }
 
         $columnWidth = $this->columnWidths[$column] ?? 0;
@@ -806,6 +874,7 @@ class Table
 
     /**
      * Called after rendering to cleanup cache data.
+	 * 在呈现后调用以清除缓存数据
      */
     private function cleanup()
     {
@@ -813,6 +882,9 @@ class Table
         $this->numberOfColumns = null;
     }
 
+    /**
+     * @return array<string, TableStyle>
+     */
     private static function initStyles(): array
     {
         $borderless = new TableStyle();

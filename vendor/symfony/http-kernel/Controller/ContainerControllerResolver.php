@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，控制器，可跟踪控制器解析器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,7 +19,8 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
- * A controller resolver searching for a controller in a psr-11 container when using the "service:method" notation.
+ * A controller resolver searching for a controller in a psr-11 container when using the "service::method" notation.
+ * 当使用"service::method"表示法时，在psr-11容器中搜索控制器的控制器解析器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
@@ -25,18 +29,18 @@ class ContainerControllerResolver extends ControllerResolver
 {
     protected $container;
 
-    public function __construct(ContainerInterface $container, LoggerInterface $logger = null)
+    public function __construct(ContainerInterface $container, ?LoggerInterface $logger = null)
     {
         $this->container = $container;
 
         parent::__construct($logger);
     }
 
-    protected function createController($controller)
+    protected function createController(string $controller)
     {
         if (1 === substr_count($controller, ':')) {
             $controller = str_replace(':', '::', $controller);
-            // TODO deprecate this in 5.1
+            trigger_deprecation('symfony/http-kernel', '5.1', 'Referencing controllers with a single colon is deprecated. Use "%s" instead.', $controller);
         }
 
         return parent::createController($controller);
@@ -45,7 +49,7 @@ class ContainerControllerResolver extends ControllerResolver
     /**
      * {@inheritdoc}
      */
-    protected function instantiateController($class)
+    protected function instantiateController(string $class)
     {
         $class = ltrim($class, '\\');
 

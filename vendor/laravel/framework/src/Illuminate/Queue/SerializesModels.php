@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，序列化模型
+ * Illuminate，队列，序列化模型
  */
 
 namespace Illuminate\Queue;
@@ -14,7 +14,7 @@ trait SerializesModels
 
     /**
      * Prepare the instance for serialization.
-	 * 准备实例为序列化
+	 * 为序列化准备实例
      *
      * @return array
      */
@@ -35,7 +35,7 @@ trait SerializesModels
 
     /**
      * Restore the model after serialization.
-	 * 恢复模型序列化后
+	 * 序列化后恢复模型
      *
      * @return void
      */
@@ -54,7 +54,7 @@ trait SerializesModels
 
     /**
      * Prepare the instance values for serialization.
-	 * 准备实例值为序列化
+	 * 为序列化准备实例值
      *
      * @return array
      */
@@ -95,10 +95,10 @@ trait SerializesModels
 
     /**
      * Restore the model after serialization.
-	 * 恢复模型在序列化后
+	 * 序列化后恢复模型
      *
      * @param  array  $values
-     * @return array
+     * @return void
      */
     public function __unserialize(array $values)
     {
@@ -129,8 +129,6 @@ trait SerializesModels
                 $this, $this->getRestoredPropertyValue($values[$name])
             );
         }
-
-        return $values;
     }
 
     /**

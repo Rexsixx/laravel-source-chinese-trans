@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，Views，引擎，编译引擎
+ * Facade，Ignition，视图，引擎，编译引擎
  */
 
 namespace Facade\Ignition\Views\Engines;
@@ -15,6 +15,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use ReflectionProperty;
+use Throwable;
 
 class CompilerEngine extends \Illuminate\View\Engines\CompilerEngine
 {
@@ -24,10 +25,10 @@ class CompilerEngine extends \Illuminate\View\Engines\CompilerEngine
 
     /**
      * Get the evaluated contents of the view.
-	 * 获取视图的求值内容
+	 * 获取视图的评估内容
      *
-     * @param  string $path
-     * @param  array $data
+     * @param string $path
+     * @param array $data
      *
      * @return string
      */
@@ -44,14 +45,14 @@ class CompilerEngine extends \Illuminate\View\Engines\CompilerEngine
      * Handle a view exception.
 	 * 处理视图异常
      *
-     * @param  \Exception $baseException
-     * @param  int $obLevel
+     * @param \Throwable $baseException
+     * @param int $obLevel
      *
      * @return void
      *
-     * @throws \Exception
+     * @throws \Throwable
      */
-    protected function handleViewException(Exception $baseException, $obLevel)
+    protected function handleViewException(Throwable $baseException, $obLevel)
     {
         while (ob_get_level() > $obLevel) {
             ob_end_clean();
@@ -63,7 +64,7 @@ class CompilerEngine extends \Illuminate\View\Engines\CompilerEngine
 
         $viewExceptionClass = ViewException::class;
 
-        if (in_array(ProvidesSolution::class, class_implements($baseException))) {
+        if ($baseException instanceof ProvidesSolution) {
             $viewExceptionClass = ViewExceptionWithSolution::class;
         }
 
@@ -76,9 +77,10 @@ class CompilerEngine extends \Illuminate\View\Engines\CompilerEngine
             $baseException
         );
 
-        if ($viewExceptionClass === ViewExceptionWithSolution::class) {
+        if ($baseException instanceof ProvidesSolution) {
             $exception->setSolution($baseException->getSolution());
         }
+
 
         $this->modifyViewsInTrace($exception);
 

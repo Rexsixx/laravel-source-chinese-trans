@@ -1,6 +1,6 @@
 <?php
 /**
- * Facade，Flare Client，Flare
+ * Facade，FlareClient，加剧
  */
 
 namespace Facade\FlareClient;
@@ -62,6 +62,9 @@ class Flare
     /** @var callable|null */
     protected $filterExceptionsCallable;
 
+    /** @var callable|null */
+    protected $filterReportsCallable;
+
     public static function register(string $apiKey, string $apiSecret = null, ContextDetectorInterface $contextDetector = null, Container $container = null)
     {
         $client = new Client($apiKey, $apiSecret);
@@ -82,6 +85,11 @@ class Flare
     public function filterExceptionsUsing(callable $filterExceptionsCallable)
     {
         $this->filterExceptionsCallable = $filterExceptionsCallable;
+    }
+
+    public function filterReportsUsing(callable $filterReportsCallable)
+    {
+        $this->filterReportsCallable = $filterReportsCallable;
     }
 
     /**
@@ -245,6 +253,12 @@ class Flare
 
     private function sendReportToApi(Report $report)
     {
+        if ($this->filterReportsCallable) {
+            if (! call_user_func($this->filterReportsCallable, $report)) {
+                return;
+            }
+        }
+
         try {
             $this->api->report($report);
         } catch (Exception $exception) {

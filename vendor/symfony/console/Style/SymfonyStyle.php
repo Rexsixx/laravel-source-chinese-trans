@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，样式，Symfony 样式
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -21,6 +24,7 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\TrimmedBufferOutput;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -30,6 +34,7 @@ use Symfony\Component\Console\Terminal;
 
 /**
  * Output decorator helpers for the Symfony Style Guide.
+ * 对Symfony风格指南的输出装饰器助手。
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
@@ -38,6 +43,7 @@ class SymfonyStyle extends OutputStyle
     public const MAX_LINE_LENGTH = 120;
 
     private $input;
+    private $output;
     private $questionHelper;
     private $progressBar;
     private $lineLength;
@@ -51,20 +57,16 @@ class SymfonyStyle extends OutputStyle
         $width = (new Terminal())->getWidth() ?: self::MAX_LINE_LENGTH;
         $this->lineLength = min($width - (int) (\DIRECTORY_SEPARATOR === '\\'), self::MAX_LINE_LENGTH);
 
-        parent::__construct($output);
+        parent::__construct($this->output = $output);
     }
 
     /**
      * Formats a message as a block of text.
+	 * 将消息格式化为文本块
      *
      * @param string|array $messages The message to write in the block
-     * @param string|null  $type     The block type (added in [] on first line)
-     * @param string|null  $style    The style to apply to the whole block
-     * @param string       $prefix   The prefix for the block
-     * @param bool         $padding  Whether to add vertical padding
-     * @param bool         $escape   Whether to escape the message
      */
-    public function block($messages, $type = null, $style = null, $prefix = ' ', $padding = false, $escape = true)
+    public function block($messages, ?string $type = null, ?string $style = null, string $prefix = ' ', bool $padding = false, bool $escape = true)
     {
         $messages = \is_array($messages) ? array_values($messages) : [$messages];
 
@@ -76,12 +78,12 @@ class SymfonyStyle extends OutputStyle
     /**
      * {@inheritdoc}
      */
-    public function title($message)
+    public function title(string $message)
     {
         $this->autoPrependBlock();
         $this->writeln([
             sprintf('<comment>%s</>', OutputFormatter::escapeTrailingBackslash($message)),
-            sprintf('<comment>%s</>', str_repeat('=', Helper::strlenWithoutDecoration($this->getFormatter(), $message))),
+            sprintf('<comment>%s</>', str_repeat('=', Helper::width(Helper::removeDecoration($this->getFormatter(), $message)))),
         ]);
         $this->newLine();
     }
@@ -89,12 +91,12 @@ class SymfonyStyle extends OutputStyle
     /**
      * {@inheritdoc}
      */
-    public function section($message)
+    public function section(string $message)
     {
         $this->autoPrependBlock();
         $this->writeln([
             sprintf('<comment>%s</>', OutputFormatter::escapeTrailingBackslash($message)),
-            sprintf('<comment>%s</>', str_repeat('-', Helper::strlenWithoutDecoration($this->getFormatter(), $message))),
+            sprintf('<comment>%s</>', str_repeat('-', Helper::width(Helper::removeDecoration($this->getFormatter(), $message)))),
         ]);
         $this->newLine();
     }
@@ -128,6 +130,7 @@ class SymfonyStyle extends OutputStyle
 
     /**
      * Formats a command comment.
+	 * 格式化命令注释
      *
      * @param string|array $message
      */
@@ -169,6 +172,17 @@ class SymfonyStyle extends OutputStyle
     }
 
     /**
+     * Formats an info message.
+	 * 格式化信息信息
+     *
+     * @param string|array $message
+     */
+    public function info($message)
+    {
+        $this->block($message, 'INFO', 'fg=green', ' ', true);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function caution($message)
@@ -181,38 +195,34 @@ class SymfonyStyle extends OutputStyle
      */
     public function table(array $headers, array $rows)
     {
-        $style = clone Table::getStyleDefinition('symfony-style-guide');
-        $style->setCellHeaderFormat('<info>%s</info>');
+        $this->createTable()
+            ->setHeaders($headers)
+            ->setRows($rows)
+            ->render()
+        ;
 
-        $table = new Table($this);
-        $table->setHeaders($headers);
-        $table->setRows($rows);
-        $table->setStyle($style);
-
-        $table->render();
         $this->newLine();
     }
 
     /**
      * Formats a horizontal table.
+	 * 设置水平表的格式
      */
     public function horizontalTable(array $headers, array $rows)
     {
-        $style = clone Table::getStyleDefinition('symfony-style-guide');
-        $style->setCellHeaderFormat('<info>%s</info>');
+        $this->createTable()
+            ->setHorizontal(true)
+            ->setHeaders($headers)
+            ->setRows($rows)
+            ->render()
+        ;
 
-        $table = new Table($this);
-        $table->setHeaders($headers);
-        $table->setRows($rows);
-        $table->setStyle($style);
-        $table->setHorizontal(true);
-
-        $table->render();
         $this->newLine();
     }
 
     /**
      * Formats a list of key/value horizontally.
+	 * 水平格式化键/值列表。
      *
      * Each row can be one of:
      * * 'A title'
@@ -223,10 +233,6 @@ class SymfonyStyle extends OutputStyle
      */
     public function definitionList(...$list)
     {
-        $style = clone Table::getStyleDefinition('symfony-style-guide');
-        $style->setCellHeaderFormat('<info>%s</info>');
-
-        $table = new Table($this);
         $headers = [];
         $row = [];
         foreach ($list as $value) {
@@ -247,19 +253,13 @@ class SymfonyStyle extends OutputStyle
             $row[] = current($value);
         }
 
-        $table->setHeaders($headers);
-        $table->setRows([$row]);
-        $table->setHorizontal();
-        $table->setStyle($style);
-
-        $table->render();
-        $this->newLine();
+        $this->horizontalTable($headers, [$row]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function ask($question, $default = null, $validator = null)
+    public function ask(string $question, ?string $default = null, ?callable $validator = null)
     {
         $question = new Question($question, $default);
         $question->setValidator($validator);
@@ -270,7 +270,7 @@ class SymfonyStyle extends OutputStyle
     /**
      * {@inheritdoc}
      */
-    public function askHidden($question, $validator = null)
+    public function askHidden(string $question, ?callable $validator = null)
     {
         $question = new Question($question);
 
@@ -283,7 +283,7 @@ class SymfonyStyle extends OutputStyle
     /**
      * {@inheritdoc}
      */
-    public function confirm($question, $default = true)
+    public function confirm(string $question, bool $default = true)
     {
         return $this->askQuestion(new ConfirmationQuestion($question, $default));
     }
@@ -291,7 +291,7 @@ class SymfonyStyle extends OutputStyle
     /**
      * {@inheritdoc}
      */
-    public function choice($question, array $choices, $default = null)
+    public function choice(string $question, array $choices, $default = null)
     {
         if (null !== $default) {
             $values = array_flip($choices);
@@ -304,7 +304,7 @@ class SymfonyStyle extends OutputStyle
     /**
      * {@inheritdoc}
      */
-    public function progressStart($max = 0)
+    public function progressStart(int $max = 0)
     {
         $this->progressBar = $this->createProgressBar($max);
         $this->progressBar->start();
@@ -313,7 +313,7 @@ class SymfonyStyle extends OutputStyle
     /**
      * {@inheritdoc}
      */
-    public function progressAdvance($step = 1)
+    public function progressAdvance(int $step = 1)
     {
         $this->getProgressBar()->advance($step);
     }
@@ -331,7 +331,7 @@ class SymfonyStyle extends OutputStyle
     /**
      * {@inheritdoc}
      */
-    public function createProgressBar($max = 0)
+    public function createProgressBar(int $max = 0)
     {
         $progressBar = parent::createProgressBar($max);
 
@@ -342,6 +342,16 @@ class SymfonyStyle extends OutputStyle
         }
 
         return $progressBar;
+    }
+
+    /**
+     * @see ProgressBar::iterate()
+     */
+    public function progressIterate(iterable $iterable, ?int $max = null): iterable
+    {
+        yield from $this->createProgressBar()->iterate($iterable, $max);
+
+        $this->newLine(2);
     }
 
     /**
@@ -370,7 +380,7 @@ class SymfonyStyle extends OutputStyle
     /**
      * {@inheritdoc}
      */
-    public function writeln($messages, $type = self::OUTPUT_NORMAL)
+    public function writeln($messages, int $type = self::OUTPUT_NORMAL)
     {
         if (!is_iterable($messages)) {
             $messages = [$messages];
@@ -385,7 +395,7 @@ class SymfonyStyle extends OutputStyle
     /**
      * {@inheritdoc}
      */
-    public function write($messages, $newline = false, $type = self::OUTPUT_NORMAL)
+    public function write($messages, bool $newline = false, int $type = self::OUTPUT_NORMAL)
     {
         if (!is_iterable($messages)) {
             $messages = [$messages];
@@ -400,7 +410,7 @@ class SymfonyStyle extends OutputStyle
     /**
      * {@inheritdoc}
      */
-    public function newLine($count = 1)
+    public function newLine(int $count = 1)
     {
         parent::newLine($count);
         $this->bufferedOutput->write(str_repeat("\n", $count));
@@ -408,12 +418,22 @@ class SymfonyStyle extends OutputStyle
 
     /**
      * Returns a new instance which makes use of stderr if available.
+	 * 返回一个新的实例,如果可用,它使用stderr。
      *
      * @return self
      */
     public function getErrorStyle()
     {
         return new self($this->input, $this->getErrorOutput());
+    }
+
+    public function createTable(): Table
+    {
+        $output = $this->output instanceof ConsoleOutputInterface ? $this->output->section() : $this->output;
+        $style = clone Table::getStyleDefinition('symfony-style-guide');
+        $style->setCellHeaderFormat('<info>%s</info>');
+
+        return (new Table($output))->setStyle($style);
     }
 
     private function getProgressBar(): ProgressBar
@@ -430,18 +450,18 @@ class SymfonyStyle extends OutputStyle
         $chars = substr(str_replace(\PHP_EOL, "\n", $this->bufferedOutput->fetch()), -2);
 
         if (!isset($chars[0])) {
-            $this->newLine(); //empty history, so we should start with a new line.
+            $this->newLine(); // empty history, so we should start with a new line.
 
             return;
         }
-        //Prepend new line for each non LF chars (This means no blank line was output before)
+        // Prepend new line for each non LF chars (This means no blank line was output before)
         $this->newLine(2 - substr_count($chars, "\n"));
     }
 
     private function autoPrependText(): void
     {
         $fetched = $this->bufferedOutput->fetch();
-        //Prepend new line if last char isn't EOL:
+        // Prepend new line if last char isn't EOL:
         if (!str_ends_with($fetched, "\n")) {
             $this->newLine();
         }
@@ -453,10 +473,10 @@ class SymfonyStyle extends OutputStyle
         $this->bufferedOutput->write($message, $newLine, $type);
     }
 
-    private function createBlock(iterable $messages, string $type = null, string $style = null, string $prefix = ' ', bool $padding = false, bool $escape = false): array
+    private function createBlock(iterable $messages, ?string $type = null, ?string $style = null, string $prefix = ' ', bool $padding = false, bool $escape = false): array
     {
         $indentLength = 0;
-        $prefixLength = Helper::strlenWithoutDecoration($this->getFormatter(), $prefix);
+        $prefixLength = Helper::width(Helper::removeDecoration($this->getFormatter(), $prefix));
         $lines = [];
 
         if (null !== $type) {
@@ -471,7 +491,7 @@ class SymfonyStyle extends OutputStyle
                 $message = OutputFormatter::escape($message);
             }
 
-            $decorationLength = Helper::strlen($message) - Helper::strlenWithoutDecoration($this->getFormatter(), $message);
+            $decorationLength = Helper::width($message) - Helper::width(Helper::removeDecoration($this->getFormatter(), $message));
             $messageLineLength = min($this->lineLength - $prefixLength - $indentLength + $decorationLength, $this->lineLength);
             $messageLines = explode(\PHP_EOL, wordwrap($message, $messageLineLength, \PHP_EOL, true));
             foreach ($messageLines as $messageLine) {
@@ -496,7 +516,7 @@ class SymfonyStyle extends OutputStyle
             }
 
             $line = $prefix.$line;
-            $line .= str_repeat(' ', max($this->lineLength - Helper::strlenWithoutDecoration($this->getFormatter(), $line), 0));
+            $line .= str_repeat(' ', max($this->lineLength - Helper::width(Helper::removeDecoration($this->getFormatter(), $line)), 0));
 
             if ($style) {
                 $line = sprintf('<%s>%s</>', $style, $line);

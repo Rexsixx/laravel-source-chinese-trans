@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，格式化程序，输出格式化器样式接口
+ * Symfony，Component，Console，格式化程序，输出格式化程序风格接口
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\Console\Formatter;
 
 /**
  * Formatter style interface for defining styles.
+ * 定义样式的格式化程序样式接口。
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
@@ -23,43 +24,39 @@ interface OutputFormatterStyleInterface
 {
     /**
      * Sets style foreground color.
-     *
-     * @param string|null $color The color name
+	 * 设置样式前的颜色
      */
-    public function setForeground($color = null);
+    public function setForeground(?string $color = null);
 
     /**
      * Sets style background color.
-     *
-     * @param string $color The color name
+	 * 设置风格背景颜色
      */
-    public function setBackground($color = null);
+    public function setBackground(?string $color = null);
 
     /**
      * Sets some specific style option.
-     *
-     * @param string $option The option name
+	 * 设置一些特定的样式选项
      */
-    public function setOption($option);
+    public function setOption(string $option);
 
     /**
      * Unsets some specific style option.
-     *
-     * @param string $option The option name
+	 * 打开一些特定的样式选项
      */
-    public function unsetOption($option);
+    public function unsetOption(string $option);
 
     /**
      * Sets multiple style options at once.
+	 * 同时设置多个样式选项
      */
     public function setOptions(array $options);
 
     /**
      * Applies the style to a given text.
-     *
-     * @param string $text The text to style
+	 * 将样式应用于给定的文本
      *
      * @return string
      */
-    public function apply($text);
+    public function apply(string $text);
 }

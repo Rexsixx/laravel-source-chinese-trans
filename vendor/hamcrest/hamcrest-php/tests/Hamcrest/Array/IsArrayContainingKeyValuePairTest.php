@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，数组，是否数组包含键值对测试
+ * Hamcrest，数组，是否数组包含主键值测试
  */
 
 namespace Hamcrest\Arrays;

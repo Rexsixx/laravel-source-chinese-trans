@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，提取器，抽象文件提取器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
 
 /**
  * Base class used by classes that extract translation messages from files.
+ * 由从文件中提取翻译消息的类使用的基类。
  *
  * @author Marcos D. Sánchez <marcosdsanchez@gmail.com>
  */
@@ -49,13 +53,11 @@ abstract class AbstractFileExtractor
     }
 
     /**
-     * @param string $file
-     *
      * @return bool
      *
      * @throws InvalidArgumentException
      */
-    protected function isFile($file)
+    protected function isFile(string $file)
     {
         if (!is_file($file)) {
             throw new InvalidArgumentException(sprintf('The "%s" file does not exist.', $file));
@@ -65,16 +67,14 @@ abstract class AbstractFileExtractor
     }
 
     /**
-     * @param string $file
-     *
      * @return bool
      */
-    abstract protected function canBeExtracted($file);
+    abstract protected function canBeExtracted(string $file);
 
     /**
      * @param string|array $resource Files, a file or a directory
      *
-     * @return iterable files to be extracted
+     * @return iterable
      */
     abstract protected function extractFromDirectory($resource);
 }

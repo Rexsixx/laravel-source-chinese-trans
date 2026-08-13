@@ -1,6 +1,6 @@
 <?php
 /**
- * 通知发送人
+ * Illuminate，通知，通知发送方
  */
 
 namespace Illuminate\Notifications;
@@ -37,7 +37,7 @@ class NotificationSender
 
     /**
      * The event dispatcher.
-	 * 事件调度器
+	 * 事件调度程序
      *
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
@@ -53,7 +53,7 @@ class NotificationSender
 
     /**
      * Create a new notification sender instance.
-	 * 创建新的通知发送方实例
+	 * 创建一个新的通知发送方实例
      *
      * @param  \Illuminate\Notifications\ChannelManager  $manager
      * @param  \Illuminate\Contracts\Bus\Dispatcher  $bus
@@ -71,7 +71,7 @@ class NotificationSender
 
     /**
      * Send the given notification to the given notifiable entities.
-	 * 发送给定的通知到给定的可通知实体
+	 * 将给定的通知发送到给定的可通知实体
      *
      * @param  \Illuminate\Support\Collection|array|mixed  $notifiables
      * @param  mixed  $notification
@@ -85,7 +85,7 @@ class NotificationSender
             return $this->queueNotification($notifiables, $notification);
         }
 
-        return $this->sendNow($notifiables, $notification);
+        $this->sendNow($notifiables, $notification);
     }
 
     /**
@@ -122,7 +122,7 @@ class NotificationSender
 
     /**
      * Get the notifiable's preferred locale for the notification.
-	 * 得到通知的被通知对象的首选语言环境
+	 * 获取通知的被通知对象的首选语言环境
      *
      * @param  mixed  $notifiable
      * @param  mixed  $notification
@@ -139,7 +139,7 @@ class NotificationSender
 
     /**
      * Send the given notification to the given notifiable via a channel.
-	 * 发送给定的通知给给定的通知对象通过通道。
+	 * 通过通道将给定的通知发送给给定的通知对象
      *
      * @param  mixed  $notifiable
      * @param  string  $id
@@ -175,6 +175,11 @@ class NotificationSender
      */
     protected function shouldSendNotification($notifiable, $notification, $channel)
     {
+        if (method_exists($notification, 'shouldSend') &&
+            $notification->shouldSend($notifiable, $channel) === false) {
+            return false;
+        }
+
         return $this->events->until(
             new NotificationSending($notifiable, $notification, $channel)
         ) !== false;
@@ -182,7 +187,7 @@ class NotificationSender
 
     /**
      * Queue the given notification instances.
-	 * 排队给定的通知实例
+	 * 将给定的通知实例排队
      *
      * @param  mixed  $notifiables
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -206,11 +211,20 @@ class NotificationSender
                     $notification->locale = $this->locale;
                 }
 
+                $queue = $notification->queue;
+
+                if (method_exists($notification, 'viaQueues')) {
+                    $queue = $notification->viaQueues()[$channel] ?? null;
+                }
+
                 $this->bus->dispatch(
                     (new SendQueuedNotifications($notifiable, $notification, [$channel]))
                             ->onConnection($notification->connection)
-                            ->onQueue($notification->queue)
-                            ->delay($notification->delay)
+                            ->onQueue($queue)
+                            ->delay(is_array($notification->delay) ?
+                                    ($notification->delay[$channel] ?? null)
+                                    : $notification->delay
+                            )
                             ->through(
                                 array_merge(
                                     method_exists($notification, 'middleware') ? $notification->middleware() : [],
@@ -224,7 +238,7 @@ class NotificationSender
 
     /**
      * Format the notifiables into a Collection / array if necessary.
-	 * 格式化可通知对象为集合/数组如有必要
+	 * 如有必要，将可通知对象格式化为集合/数组。
      *
      * @param  mixed  $notifiables
      * @return \Illuminate\Database\Eloquent\Collection|array

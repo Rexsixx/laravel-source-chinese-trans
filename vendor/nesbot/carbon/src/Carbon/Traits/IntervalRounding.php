@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，修约间隔
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -17,6 +20,7 @@ use DateInterval;
 
 /**
  * Trait to call rounding methods to interval or the interval of a period.
+ * 属性将舍入方法调用到interval或一个周期的间隔。
  */
 trait IntervalRounding
 {
@@ -40,7 +44,7 @@ trait IntervalRounding
         $unit = 'second';
 
         if ($precision instanceof DateInterval) {
-            $precision = (string) CarbonInterval::instance($precision);
+            $precision = (string) CarbonInterval::instance($precision, [], true);
         }
 
         if (\is_string($precision) && preg_match('/^\s*(?<precision>\d+)?\s*(?<unit>\w+)(?<other>\W.*)?$/', $precision, $match)) {

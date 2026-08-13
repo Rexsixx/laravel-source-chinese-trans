@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，将要广播接口
+ * Illuminate，契约，广播，应该广播
  */
 
 namespace Illuminate\Contracts\Broadcasting;
@@ -9,9 +9,9 @@ interface ShouldBroadcast
 {
     /**
      * Get the channels the event should broadcast on.
-	 * 得到渠道事件将要广播
+	 * 获取该事件应该播放的频道
      *
-     * @return \Illuminate\Broadcasting\Channel|\Illuminate\Broadcasting\Channel[]
+     * @return \Illuminate\Broadcasting\Channel|\Illuminate\Broadcasting\Channel[]|string[]|string
      */
     public function broadcastOn();
 }

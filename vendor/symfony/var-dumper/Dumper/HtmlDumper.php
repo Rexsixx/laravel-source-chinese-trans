@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，转储，Html转储
+ * Symfony，Component，VarDumper，转储，Html 转储
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\VarDumper\Cloner\Data;
 
 /**
  * HtmlDumper dumps variables as HTML.
+ * HtmlDumper 转储变量作为HTML。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -80,11 +81,11 @@ class HtmlDumper extends CliDumper
     /**
      * {@inheritdoc}
      */
-    public function __construct($output = null, string $charset = null, int $flags = 0)
+    public function __construct($output = null, ?string $charset = null, int $flags = 0)
     {
         AbstractDumper::__construct($output, $charset, $flags);
         $this->dumpId = 'sf-dump-'.mt_rand();
-        $this->displayOptions['fileLinkFormat'] = ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format');
+        $this->displayOptions['fileLinkFormat'] = \ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format');
         $this->styles = static::$themes['dark'] ?? self::$themes['dark'];
     }
 
@@ -108,6 +109,7 @@ class HtmlDumper extends CliDumper
 
     /**
      * Configures display options.
+	 * 配置显示选项。
      *
      * @param array $displayOptions A map of display options to customize the behavior
      */
@@ -119,21 +121,18 @@ class HtmlDumper extends CliDumper
 
     /**
      * Sets an HTML header that will be dumped once in the output stream.
-     *
-     * @param string $header An HTML string
+	 * 设置将在输出流中转储一次的HTML头
      */
-    public function setDumpHeader($header)
+    public function setDumpHeader(?string $header)
     {
         $this->dumpHeader = $header;
     }
 
     /**
      * Sets an HTML prefix and suffix that will encapse every single dump.
-     *
-     * @param string $prefix The prepended HTML string
-     * @param string $suffix The appended HTML string
+	 * 设置一个HTML前缀和后缀,它将在每个单个转储中进行。
      */
-    public function setDumpBoundaries($prefix, $suffix)
+    public function setDumpBoundaries(string $prefix, string $suffix)
     {
         $this->dumpPrefix = $prefix;
         $this->dumpSuffix = $suffix;
@@ -174,7 +173,10 @@ var refStyle = doc.createElement('style'),
         e.addEventListener(n, cb, false);
     };
 
-(doc.documentElement.firstElementChild || doc.documentElement.children[0]).appendChild(refStyle);
+refStyle.innerHTML = 'pre.sf-dump .sf-dump-compact, .sf-dump-str-collapse .sf-dump-str-collapse, .sf-dump-str-expand .sf-dump-str-expand { display: none; }';
+doc.head.appendChild(refStyle);
+refStyle = doc.createElement('style');
+doc.head.appendChild(refStyle);
 
 if (!doc.addEventListener) {
     addEventListener = function (element, eventName, callback) {
@@ -427,18 +429,12 @@ return function (root, x) {
                 a.innerHTML += ' ';
             }
             a.title = (a.title ? a.title+'\n[' : '[')+keyHint+'+click] Expand all children';
-            a.innerHTML += '<span>▼</span>';
+            a.innerHTML += elt.className == 'sf-dump-compact' ? '<span>▶</span>' : '<span>▼</span>';
             a.className += ' sf-dump-toggle';
 
             x = 1;
             if ('sf-dump' != elt.parentNode.className) {
                 x += elt.parentNode.getAttribute('data-depth')/1;
-            }
-            elt.setAttribute('data-depth', x);
-            var className = elt.className;
-            elt.className = 'sf-dump-expanded';
-            if (className ? 'sf-dump-expanded' !== className : (x > options.maxDepth)) {
-                toggle(a);
             }
         } else if (/\bsf-dump-ref\b/.test(elt.className) && (a = elt.getAttribute('href'))) {
             a = a.slice(1);
@@ -674,9 +670,6 @@ pre.sf-dump:after {
 pre.sf-dump span {
     display: inline;
 }
-pre.sf-dump .sf-dump-compact {
-    display: none;
-}
 pre.sf-dump a {
     text-decoration: none;
     cursor: pointer;
@@ -707,12 +700,6 @@ pre.sf-dump code {
     display:inline;
     padding:0;
     background:none;
-}
-.sf-dump-str-collapse .sf-dump-str-collapse {
-    display: none;
-}
-.sf-dump-str-expand .sf-dump-str-expand {
-    display: none;
 }
 .sf-dump-public.sf-dump-highlight,
 .sf-dump-protected.sf-dump-highlight,
@@ -805,11 +792,12 @@ EOHTML
     /**
      * {@inheritdoc}
      */
-    public function dumpString(Cursor $cursor, $str, $bin, $cut)
+    public function dumpString(Cursor $cursor, string $str, bool $bin, int $cut)
     {
         if ('' === $str && isset($cursor->attr['img-data'], $cursor->attr['content-type'])) {
             $this->dumpKey($cursor);
-            $this->line .= $this->style('default', $cursor->attr['img-size'] ?? '', []).' <samp>';
+            $this->line .= $this->style('default', $cursor->attr['img-size'] ?? '', []);
+            $this->line .= $cursor->depth >= $this->displayOptions['maxDepth'] ? ' <samp class=sf-dump-compact>' : ' <samp class=sf-dump-expanded>';
             $this->endValue($cursor);
             $this->line .= $this->indentPad;
             $this->line .= sprintf('<img src="data:%s;base64,%s" /></samp>', $cursor->attr['content-type'], base64_encode($cursor->attr['img-data']));
@@ -822,25 +810,23 @@ EOHTML
     /**
      * {@inheritdoc}
      */
-    public function enterHash(Cursor $cursor, $type, $class, $hasChild)
+    public function enterHash(Cursor $cursor, int $type, $class, bool $hasChild)
     {
         if (Cursor::HASH_OBJECT === $type) {
             $cursor->attr['depth'] = $cursor->depth;
         }
         parent::enterHash($cursor, $type, $class, false);
 
-        if ($cursor->skipChildren) {
+        if ($cursor->skipChildren || $cursor->depth >= $this->displayOptions['maxDepth']) {
             $cursor->skipChildren = false;
             $eol = ' class=sf-dump-compact>';
-        } elseif ($this->expandNextHash) {
+        } else {
             $this->expandNextHash = false;
             $eol = ' class=sf-dump-expanded>';
-        } else {
-            $eol = '>';
         }
 
         if ($hasChild) {
-            $this->line .= '<samp';
+            $this->line .= '<samp data-depth='.($cursor->depth + 1);
             if ($cursor->refIndex) {
                 $r = Cursor::HASH_OBJECT !== $type ? 1 - (Cursor::HASH_RESOURCE !== $type) : 2;
                 $r .= $r && 0 < $cursor->softRefHandle ? $cursor->softRefHandle : $cursor->refIndex;
@@ -855,7 +841,7 @@ EOHTML
     /**
      * {@inheritdoc}
      */
-    public function leaveHash(Cursor $cursor, $type, $class, $hasChild, $cut)
+    public function leaveHash(Cursor $cursor, int $type, $class, bool $hasChild, int $cut)
     {
         $this->dumpEllipsis($cursor, $hasChild, $cut);
         if ($hasChild) {
@@ -867,7 +853,7 @@ EOHTML
     /**
      * {@inheritdoc}
      */
-    protected function style($style, $value, $attr = [])
+    protected function style(string $style, string $value, array $attr = [])
     {
         if ('' === $value) {
             return '';
@@ -885,7 +871,7 @@ EOHTML
         }
 
         if ('const' === $style && isset($attr['value'])) {
-            $style .= sprintf(' title="%s"', esc(is_scalar($attr['value']) ? $attr['value'] : json_encode($attr['value'])));
+            $style .= sprintf(' title="%s"', esc(\is_scalar($attr['value']) ? $attr['value'] : json_encode($attr['value'])));
         } elseif ('public' === $style) {
             $style .= sprintf(' title="%s"', empty($attr['dynamic']) ? 'Public property' : 'Runtime added dynamic property');
         } elseif ('str' === $style && 1 < $attr['length']) {
@@ -962,7 +948,7 @@ EOHTML
     /**
      * {@inheritdoc}
      */
-    protected function dumpLine($depth, $endOfValue = false)
+    protected function dumpLine(int $depth, bool $endOfValue = false)
     {
         if (-1 === $this->lastDepth) {
             $this->line = sprintf($this->dumpPrefix, $this->dumpId, $this->indentPad).$this->line;
@@ -981,7 +967,7 @@ EOHTML
         }
         $this->lastDepth = $depth;
 
-        $this->line = mb_encode_numericentity($this->line, [0x80, 0xFFFF, 0, 0xFFFF], 'UTF-8');
+        $this->line = mb_encode_numericentity($this->line, [0x80, 0x10FFFF, 0, 0x1FFFFF], 'UTF-8');
 
         if (-1 === $depth) {
             AbstractDumper::dumpLine(0);

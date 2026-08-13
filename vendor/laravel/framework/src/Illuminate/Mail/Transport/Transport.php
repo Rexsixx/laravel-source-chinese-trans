@@ -1,6 +1,6 @@
 <?php
 /**
- * 邮件，传输，传输抽象类
+ * Illuminate，邮件，传输，传输抽象类
  */
 
 namespace Illuminate\Mail\Transport;
@@ -22,6 +22,8 @@ abstract class Transport implements Swift_Transport
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
     public function isStarted()
     {
@@ -46,6 +48,8 @@ abstract class Transport implements Swift_Transport
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
     public function ping()
     {
@@ -102,7 +106,7 @@ abstract class Transport implements Swift_Transport
 
     /**
      * Get the number of recipients.
-	 * 得到收件人的数量
+	 * 获取收件人的数量
      *
      * @param  \Swift_Mime_SimpleMessage  $message
      * @return int

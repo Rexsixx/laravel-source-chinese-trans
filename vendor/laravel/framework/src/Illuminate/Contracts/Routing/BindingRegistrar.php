@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，路由绑定注册接口
+ * Illuminate，契约，路由，绑定注册
  */
 
 namespace Illuminate\Contracts\Routing;
@@ -9,7 +9,7 @@ interface BindingRegistrar
 {
     /**
      * Add a new route parameter binder.
-	 * 添加新的路由参加绑定
+	 * 添加一个新的路由参数绑定器
      *
      * @param  string  $key
      * @param  string|callable  $binder
@@ -19,7 +19,7 @@ interface BindingRegistrar
 
     /**
      * Get the binding callback for a given binding.
-	 * 得到给定绑定的绑定回调
+	 * 获取给定绑定的绑定回调
      *
      * @param  string  $key
      * @return \Closure

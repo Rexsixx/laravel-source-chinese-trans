@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，支持，Packagist，Package
+ * Facade，Ignition，支持，包装机构，包
  */
 
 namespace Facade\Ignition\Support\Packagist;

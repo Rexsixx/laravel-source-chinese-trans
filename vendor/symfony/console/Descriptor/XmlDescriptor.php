@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，描述符号，Xml 描述符号
+ * Symfony，Component，Console，描述符号，Xml 描述符
  */
 
 /*
@@ -22,6 +22,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * XML descriptor.
+ * Xml 描述符
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  *
@@ -47,13 +48,10 @@ class XmlDescriptor extends Descriptor
         return $dom;
     }
 
-    public function getCommandDocument(Command $command): \DOMDocument
+    public function getCommandDocument(Command $command, bool $short = false): \DOMDocument
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->appendChild($commandXML = $dom->createElement('command'));
-
-        $command->getSynopsis();
-        $command->mergeApplicationDefinition(false);
 
         $commandXML->setAttribute('id', $command->getName());
         $commandXML->setAttribute('name', $command->getName());
@@ -61,23 +59,31 @@ class XmlDescriptor extends Descriptor
 
         $commandXML->appendChild($usagesXML = $dom->createElement('usages'));
 
-        foreach (array_merge([$command->getSynopsis()], $command->getAliases(), $command->getUsages()) as $usage) {
-            $usagesXML->appendChild($dom->createElement('usage', $usage));
-        }
-
         $commandXML->appendChild($descriptionXML = $dom->createElement('description'));
         $descriptionXML->appendChild($dom->createTextNode(str_replace("\n", "\n ", $command->getDescription())));
 
-        $commandXML->appendChild($helpXML = $dom->createElement('help'));
-        $helpXML->appendChild($dom->createTextNode(str_replace("\n", "\n ", $command->getProcessedHelp())));
+        if ($short) {
+            foreach ($command->getAliases() as $usage) {
+                $usagesXML->appendChild($dom->createElement('usage', $usage));
+            }
+        } else {
+            $command->mergeApplicationDefinition(false);
 
-        $definitionXML = $this->getInputDefinitionDocument($command->getNativeDefinition());
-        $this->appendDocument($commandXML, $definitionXML->getElementsByTagName('definition')->item(0));
+            foreach (array_merge([$command->getSynopsis()], $command->getAliases(), $command->getUsages()) as $usage) {
+                $usagesXML->appendChild($dom->createElement('usage', $usage));
+            }
+
+            $commandXML->appendChild($helpXML = $dom->createElement('help'));
+            $helpXML->appendChild($dom->createTextNode(str_replace("\n", "\n ", $command->getProcessedHelp())));
+
+            $definitionXML = $this->getInputDefinitionDocument($command->getDefinition());
+            $this->appendDocument($commandXML, $definitionXML->getElementsByTagName('definition')->item(0));
+        }
 
         return $dom;
     }
 
-    public function getApplicationDocument(Application $application, string $namespace = null): \DOMDocument
+    public function getApplicationDocument(Application $application, ?string $namespace = null, bool $short = false): \DOMDocument
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->appendChild($rootXml = $dom->createElement('symfony'));
@@ -98,7 +104,7 @@ class XmlDescriptor extends Descriptor
         }
 
         foreach ($description->getCommands() as $command) {
-            $this->appendDocument($commandsXML, $this->getCommandDocument($command));
+            $this->appendDocument($commandsXML, $this->getCommandDocument($command, $short));
         }
 
         if (!$namespace) {
@@ -147,7 +153,7 @@ class XmlDescriptor extends Descriptor
      */
     protected function describeCommand(Command $command, array $options = [])
     {
-        $this->writeDocument($this->getCommandDocument($command));
+        $this->writeDocument($this->getCommandDocument($command, $options['short'] ?? false));
     }
 
     /**
@@ -155,11 +161,12 @@ class XmlDescriptor extends Descriptor
      */
     protected function describeApplication(Application $application, array $options = [])
     {
-        $this->writeDocument($this->getApplicationDocument($application, $options['namespace'] ?? null));
+        $this->writeDocument($this->getApplicationDocument($application, $options['namespace'] ?? null, $options['short'] ?? false));
     }
 
     /**
      * Appends document children to parent node.
+	 * 将文件添加到父节点
      */
     private function appendDocument(\DOMNode $parentNode, \DOMNode $importedParent)
     {
@@ -170,6 +177,7 @@ class XmlDescriptor extends Descriptor
 
     /**
      * Writes DOM document.
+	 * 写入DOM文档
      */
     private function writeDocument(\DOMDocument $dom)
     {
@@ -227,6 +235,17 @@ class XmlDescriptor extends Descriptor
                     $defaultXML->appendChild($dom->createTextNode($default));
                 }
             }
+        }
+
+        if ($option->isNegatable()) {
+            $dom->appendChild($objectXML = $dom->createElement('option'));
+            $objectXML->setAttribute('name', '--no-'.$option->getName());
+            $objectXML->setAttribute('shortcut', '');
+            $objectXML->setAttribute('accept_value', 0);
+            $objectXML->setAttribute('is_value_required', 0);
+            $objectXML->setAttribute('is_multiple', 0);
+            $objectXML->appendChild($descriptionXML = $dom->createElement('description'));
+            $descriptionXML->appendChild($dom->createTextNode('Negate the "--'.$option->getName().'" option'));
         }
 
         return $dom;

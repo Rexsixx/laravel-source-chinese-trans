@@ -1,6 +1,6 @@
 <?php
 /**
- * 哈希，哈希加密
+ * Illuminate，哈希，Bcrypt 哈希
  */
 
 namespace Illuminate\Hashing;
@@ -12,7 +12,7 @@ class BcryptHasher extends AbstractHasher implements HasherContract
 {
     /**
      * The default cost factor.
-	 * 默认成本因素
+	 * 默认的成本因子
      *
      * @var int
      */
@@ -41,7 +41,7 @@ class BcryptHasher extends AbstractHasher implements HasherContract
 
     /**
      * Hash the given value.
-	 * 哈希值
+	 * 哈希给定值 
      *
      * @param  string  $value
      * @param  array  $options
@@ -64,7 +64,7 @@ class BcryptHasher extends AbstractHasher implements HasherContract
 
     /**
      * Check the given plain value against a hash.
-	 * 检查给定的普通值根据散列
+	 * 根据散列检查给定的普通值
      *
      * @param  string  $value
      * @param  string  $hashedValue
@@ -113,7 +113,7 @@ class BcryptHasher extends AbstractHasher implements HasherContract
 
     /**
      * Extract the cost value from the options array.
-	 * 提取成本值从选项数组中
+	 * 从选项数组中提取成本值
      *
      * @param  array  $options
      * @return int

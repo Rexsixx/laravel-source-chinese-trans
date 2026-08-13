@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，处理程序，取样处理程序
+ *
+
 /*
  * This file is part of the Monolog package.
  *
@@ -15,6 +19,7 @@ use Monolog\Formatter\FormatterInterface;
 
 /**
  * Sampling handler
+ * 采样处理程序
  *
  * A sampled event stream can be useful for logging high frequency events in
  * a production environment where you only need an idea of what is happening
@@ -83,6 +88,7 @@ class SamplingHandler extends AbstractHandler implements ProcessableHandlerInter
 
     /**
      * Return the nested handler
+	 * 返回嵌套处理程序
      *
      * If the handler was provided as a factory callable, this will trigger the handler's instantiation.
      *
@@ -90,7 +96,7 @@ class SamplingHandler extends AbstractHandler implements ProcessableHandlerInter
      *
      * @return HandlerInterface
      */
-    public function getHandler(array $record = null)
+    public function getHandler(?array $record = null)
     {
         if (!$this->handler instanceof HandlerInterface) {
             $this->handler = ($this->handler)($record, $this);

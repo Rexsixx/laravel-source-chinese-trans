@@ -1,6 +1,6 @@
 <?php
 /**
- * 邮件，Narkdiwb编辑器
+ * Illuminate，邮件，编辑器
  */
 
 namespace Illuminate\Mail;
@@ -9,7 +9,6 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\Environment;
 use League\CommonMark\Extension\Table\TableExtension;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
@@ -41,7 +40,7 @@ class Markdown
 
     /**
      * Create a new Markdown renderer instance.
-	 * 创建新的Markdown渲染器实例
+	 * 创建一个新的Markdown渲染器实例
      *
      * @param  \Illuminate\Contracts\View\Factory  $view
      * @param  array  $options
@@ -56,7 +55,7 @@ class Markdown
 
     /**
      * Render the Markdown template into HTML.
-	 * 呈现Markdown模板为HTML
+	 * 将Markdown模板呈现为HTML
      *
      * @param  string  $view
      * @param  array  $data
@@ -71,9 +70,13 @@ class Markdown
             'mail', $this->htmlComponentPaths()
         )->make($view, $data)->render();
 
-        $theme = Str::contains($this->theme, '::')
-            ? $this->theme
-            : 'mail::themes.'.$this->theme;
+        if ($this->view->exists($customTheme = Str::start($this->theme, 'mail.'))) {
+            $theme = $customTheme;
+        } else {
+            $theme = Str::contains($this->theme, '::')
+                ? $this->theme
+                : 'mail::themes.'.$this->theme;
+        }
 
         return new HtmlString(($inliner ?: new CssToInlineStyles)->convert(
             $contents, $this->view->make($theme, $data)->render()
@@ -82,7 +85,7 @@ class Markdown
 
     /**
      * Render the Markdown template into text.
-	 * 呈现Markdown模板为文本
+	 * 将Markdown模板呈现为文本
      *
      * @param  string  $view
      * @param  array  $data
@@ -110,20 +113,18 @@ class Markdown
      */
     public static function parse($text)
     {
-        $environment = Environment::createCommonMarkEnvironment();
-
-        $environment->addExtension(new TableExtension);
-
         $converter = new CommonMarkConverter([
             'allow_unsafe_links' => false,
-        ], $environment);
+        ]);
 
-        return new HtmlString($converter->convertToHtml($text));
+        $converter->getEnvironment()->addExtension(new TableExtension());
+
+        return new HtmlString((string) $converter->convertToHtml($text));
     }
 
     /**
      * Get the HTML component paths.
-	 * 得到HTML组件路径
+	 * 获取HTML组件路径
      *
      * @return array
      */
@@ -136,7 +137,7 @@ class Markdown
 
     /**
      * Get the text component paths.
-	 * 得到文本组件路径
+	 * 获取文本组件路径
      *
      * @return array
      */
@@ -149,7 +150,7 @@ class Markdown
 
     /**
      * Get the component paths.
-	 * 得到组件路径
+	 * 获取组件路径
      *
      * @return array
      */
@@ -162,7 +163,7 @@ class Markdown
 
     /**
      * Register new mail component paths.
-	 * 注册新邮件组件路径
+	 * 注册新的邮件组件路径
      *
      * @param  array  $paths
      * @return void
@@ -184,5 +185,16 @@ class Markdown
         $this->theme = $theme;
 
         return $this;
+    }
+
+    /**
+     * Get the theme currently being used by the renderer.
+	 * 获取渲染器当前使用的主题
+     *
+     * @return string
+     */
+    public function getTheme()
+    {
+        return $this->theme;
     }
 }

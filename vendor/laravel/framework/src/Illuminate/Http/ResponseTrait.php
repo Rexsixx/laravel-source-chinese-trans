@@ -1,19 +1,19 @@
 <?php
 /**
- * Http，响应特征
+ * Illuminate，Http，响应特性
  */
 
 namespace Illuminate\Http;
 
-use Exception;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpFoundation\HeaderBag;
+use Throwable;
 
 trait ResponseTrait
 {
     /**
      * The original content of the response.
-	 * 响应原始内容
+	 * 响应的原始内容
      *
      * @var mixed
      */
@@ -21,15 +21,15 @@ trait ResponseTrait
 
     /**
      * The exception that triggered the error response (if applicable).
-	 * 触发错误响应的异常(如果适用)
+	 * 触发错误响应的异常（如果适用）
      *
-     * @var \Exception|null
+     * @var \Throwable|null
      */
     public $exception;
 
     /**
      * Get the status code for the response.
-	 * 得到响应状态代码
+	 * 获取响应的状态码
      *
      * @return int
      */
@@ -39,8 +39,19 @@ trait ResponseTrait
     }
 
     /**
+     * Get the status text for the response.
+	 * 获取响应的状态文本
+     *
+     * @return string
+     */
+    public function statusText()
+    {
+        return $this->statusText;
+    }
+
+    /**
      * Get the content of the response.
-	 * 得到响应内容
+	 * 获取响应的内容
      *
      * @return string
      */
@@ -51,7 +62,7 @@ trait ResponseTrait
 
     /**
      * Get the original response content.
-	 * 得到原始响应内容
+	 * 获取原始响应内容
      *
      * @return mixed
      */
@@ -80,7 +91,7 @@ trait ResponseTrait
 
     /**
      * Add an array of headers to the response.
-	 * 添加一个标题数组至响应
+	 * 向响应添加一个标题数组
      *
      * @param  \Symfony\Component\HttpFoundation\HeaderBag|array  $headers
      * @return $this
@@ -100,7 +111,7 @@ trait ResponseTrait
 
     /**
      * Add a cookie to the response.
-	 * 添加cookie至响应
+	 * 向响应添加一个cookie
      *
      * @param  \Symfony\Component\HttpFoundation\Cookie|mixed  $cookie
      * @return $this
@@ -112,7 +123,7 @@ trait ResponseTrait
 
     /**
      * Add a cookie to the response.
-	 * 添加cookie至响应
+	 * 向响应添加一个cookie
      *
      * @param  \Symfony\Component\HttpFoundation\Cookie|mixed  $cookie
      * @return $this
@@ -129,8 +140,28 @@ trait ResponseTrait
     }
 
     /**
+     * Expire a cookie when sending the response.
+	 * 在发送响应时使cookie过期
+     *
+     * @param  \Symfony\Component\HttpFoundation\Cookie|mixed  $cookie
+     * @param  string|null  $path
+     * @param  string|null  $domain
+     * @return $this
+     */
+    public function withoutCookie($cookie, $path = null, $domain = null)
+    {
+        if (is_string($cookie) && function_exists('cookie')) {
+            $cookie = cookie($cookie, null, -2628000, $path, $domain);
+        }
+
+        $this->headers->setCookie($cookie);
+
+        return $this;
+    }
+
+    /**
      * Get the callback of the response.
-	 * 得到响应回调
+	 * 获取响应的回调
      *
      * @return string|null
      */
@@ -141,12 +172,12 @@ trait ResponseTrait
 
     /**
      * Set the exception to attach to the response.
-	 * 设置响应异常
+	 * 将异常设置为附加到响应
      *
-     * @param  \Exception  $e
+     * @param  \Throwable  $e
      * @return $this
      */
-    public function withException(Exception $e)
+    public function withException(Throwable $e)
     {
         $this->exception = $e;
 
@@ -155,7 +186,7 @@ trait ResponseTrait
 
     /**
      * Throws the response in a HttpResponseException instance.
-	 * 抛出响应
+	 * 在HttpResponseException实例中抛出响应
      *
      * @return void
      *

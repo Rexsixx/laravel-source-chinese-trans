@@ -1,6 +1,6 @@
 <?php
 /**
- * 路由，路由重定向控制器
+ * Illuminate，路由，重定向控制器
  */
 
 namespace Illuminate\Routing;
@@ -31,7 +31,7 @@ class RedirectController extends Controller
 
         $route = (new Route('GET', $destination, [
             'as' => 'laravel_route_redirect_destination',
-        ]))->bind($request);			#调取Route里绑定方法
+        ]))->bind($request);
 
         $parameters = $parameters->only(
             $route->getCompiled()->getPathVariables()

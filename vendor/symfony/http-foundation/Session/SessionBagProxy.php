@@ -1,7 +1,11 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，Session，会话包代理
+ */
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -21,17 +25,22 @@ final class SessionBagProxy implements SessionBagInterface
     private $bag;
     private $data;
     private $usageIndex;
+    private $usageReporter;
 
-    public function __construct(SessionBagInterface $bag, array &$data, ?int &$usageIndex)
+    public function __construct(SessionBagInterface $bag, array &$data, ?int &$usageIndex, ?callable $usageReporter)
     {
         $this->bag = $bag;
         $this->data = &$data;
         $this->usageIndex = &$usageIndex;
+        $this->usageReporter = $usageReporter;
     }
 
     public function getBag(): SessionBagInterface
     {
         ++$this->usageIndex;
+        if ($this->usageReporter && 0 <= $this->usageIndex) {
+            ($this->usageReporter)();
+        }
 
         return $this->bag;
     }
@@ -42,6 +51,9 @@ final class SessionBagProxy implements SessionBagInterface
             return true;
         }
         ++$this->usageIndex;
+        if ($this->usageReporter && 0 <= $this->usageIndex) {
+            ($this->usageReporter)();
+        }
 
         return empty($this->data[$this->bag->getStorageKey()]);
     }
@@ -60,6 +72,10 @@ final class SessionBagProxy implements SessionBagInterface
     public function initialize(array &$array): void
     {
         ++$this->usageIndex;
+        if ($this->usageReporter && 0 <= $this->usageIndex) {
+            ($this->usageReporter)();
+        }
+
         $this->data[$this->bag->getStorageKey()] = &$array;
 
         $this->bag->initialize($array);

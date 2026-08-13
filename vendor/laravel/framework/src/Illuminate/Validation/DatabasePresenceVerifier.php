@@ -1,6 +1,6 @@
 <?php
 /**
- * 验证，数据库状态验证
+ * Illuminate，验证，数据库状态验证器
  */
 
 namespace Illuminate\Validation;
@@ -9,7 +9,7 @@ use Closure;
 use Illuminate\Database\ConnectionResolverInterface;
 use Illuminate\Support\Str;
 
-class DatabasePresenceVerifier implements PresenceVerifierInterface
+class DatabasePresenceVerifier implements DatabasePresenceVerifierInterface
 {
     /**
      * The database connection instance.
@@ -21,7 +21,7 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
 
     /**
      * The database connection to use.
-	 * 数据库连接
+	 * 要使用的数据库连接
      *
      * @var string
      */
@@ -29,7 +29,7 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
 
     /**
      * Create a new database presence verifier.
-	 * 创建新的数据库状态验证
+	 * 创建一个新的数据库状态验证器
      *
      * @param  \Illuminate\Database\ConnectionResolverInterface  $db
      * @return void
@@ -81,7 +81,7 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
 
     /**
      * Add the given conditions to the query.
-	 * 添加给定的条件查询
+	 * 将给定条件添加到查询中
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  array  $conditions
@@ -104,7 +104,7 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
 
     /**
      * Add a "where" clause to the given query.
-	 * 添加where至查询
+	 * 向给定查询添加"where"子句
      *
      * @param  \Illuminate\Database\Query\Builder  $query
      * @param  string  $key
@@ -126,19 +126,19 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface
 
     /**
      * Get a query builder for the given table.
-	 * 得到给定表的查询生成器
+	 * 获取给定表的查询生成器
      *
      * @param  string  $table
      * @return \Illuminate\Database\Query\Builder
      */
-    public function table($table)
+    protected function table($table)
     {
         return $this->db->connection($this->connection)->table($table)->useWritePdo();
     }
 
     /**
      * Set the connection to be used.
-	 * 设置连接
+	 * 设置要使用的连接
      *
      * @param  string  $connection
      * @return void

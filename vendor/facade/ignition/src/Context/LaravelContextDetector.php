@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，上下文，Laravel 上下文探测器
+ * Facade，Ignition，上下文，Laravel 上下文探测器
  */
 
 namespace Facade\Ignition\Context;
@@ -8,6 +8,7 @@ namespace Facade\Ignition\Context;
 use Facade\FlareClient\Context\ContextDetectorInterface;
 use Facade\FlareClient\Context\ContextInterface;
 use Illuminate\Http\Request;
+use Livewire\LivewireManager;
 
 class LaravelContextDetector implements ContextDetectorInterface
 {
@@ -17,6 +18,17 @@ class LaravelContextDetector implements ContextDetectorInterface
             return new LaravelConsoleContext($_SERVER['argv'] ?? []);
         }
 
-        return new LaravelRequestContext(app(Request::class));
+        $request = app(Request::class);
+
+        if ($this->isRunningLiveWire($request)) {
+            return new LivewireRequestContext($request, app(LivewireManager::class));
+        }
+
+        return new LaravelRequestContext($request);
+    }
+
+    protected function isRunningLiveWire(Request $request)
+    {
+        return $request->hasHeader('x-livewire') && $request->hasHeader('referer');
     }
 }

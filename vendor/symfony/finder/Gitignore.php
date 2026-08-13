@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，探测器，Gitignore
+ * Symfony，Component，Finder，配置
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\Finder;
 
 /**
  * Gitignore matches against text.
+ * Gitignore匹配文本。
  *
  * @author Michael Voříšek <vorismi3@fel.cvut.cz>
  * @author Ahmed Abdou <mail@ahmd.io>
@@ -24,16 +25,27 @@ class Gitignore
 {
     /**
      * Returns a regexp which is the equivalent of the gitignore pattern.
+	 * 返回一个相当于gitignore模式的regexp
      *
      * Format specification: https://git-scm.com/docs/gitignore#_pattern_format
      */
     public static function toRegex(string $gitignoreFileContent): string
     {
+        return self::buildRegex($gitignoreFileContent, false);
+    }
+
+    public static function toRegexMatchingNegatedPatterns(string $gitignoreFileContent): string
+    {
+        return self::buildRegex($gitignoreFileContent, true);
+    }
+
+    private static function buildRegex(string $gitignoreFileContent, bool $inverted): string
+    {
         $gitignoreFileContent = preg_replace('~(?<!\\\\)#[^\n\r]*~', '', $gitignoreFileContent);
         $gitignoreLines = preg_split('~\r\n?|\n~', $gitignoreFileContent);
 
         $res = self::lineToRegex('');
-        foreach ($gitignoreLines as $i => $line) {
+        foreach ($gitignoreLines as $line) {
             $line = preg_replace('~(?<!\\\\)[ \t]+$~', '', $line);
 
             if ('!' === substr($line, 0, 1)) {
@@ -44,7 +56,7 @@ class Gitignore
             }
 
             if ('' !== $line) {
-                if ($isNegative) {
+                if ($isNegative xor $inverted) {
                     $res = '(?!'.self::lineToRegex($line).'$)'.$res;
                 } else {
                     $res = '(?:'.$res.'|'.self::lineToRegex($line).')';

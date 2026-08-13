@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，翻译，环境识别接口
+ * Symfony，Component，Translation，环境识别接口
  */
 
 /*

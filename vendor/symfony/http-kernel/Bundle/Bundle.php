@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，Bundle，Bundle
+ * Symfony，Component，HttpKernel，捆绑，捆绑抽象类
  */
 
 /*
@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
 /**
  * An implementation of BundleInterface that adds a few conventions for DependencyInjection extensions.
+ * BundleInterface的实现，它为DependencyInjection扩展添加了一些约定。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -60,8 +61,9 @@ abstract class Bundle implements BundleInterface
 
     /**
      * Returns the bundle's container extension.
+	 * 返回bundle的容器扩展名
      *
-     * @return ExtensionInterface|null The container extension
+     * @return ExtensionInterface|null
      *
      * @throws \LogicException
      */
@@ -72,7 +74,7 @@ abstract class Bundle implements BundleInterface
 
             if (null !== $extension) {
                 if (!$extension instanceof ExtensionInterface) {
-                    throw new \LogicException(sprintf('Extension "%s" must implement Symfony\Component\DependencyInjection\Extension\ExtensionInterface.', \get_class($extension)));
+                    throw new \LogicException(sprintf('Extension "%s" must implement Symfony\Component\DependencyInjection\Extension\ExtensionInterface.', get_debug_type($extension)));
                 }
 
                 // check naming convention
@@ -119,6 +121,7 @@ abstract class Bundle implements BundleInterface
 
     /**
      * Returns the bundle name (the class short name).
+	 * 返回包名（类的短名称）
      */
     final public function getName(): string
     {
@@ -135,6 +138,7 @@ abstract class Bundle implements BundleInterface
 
     /**
      * Returns the bundle's container extension class.
+	 * 返回bundle的容器扩展类
      *
      * @return string
      */
@@ -147,6 +151,7 @@ abstract class Bundle implements BundleInterface
 
     /**
      * Creates the bundle's container extension.
+	 * 创建包的容器扩展名
      *
      * @return ExtensionInterface|null
      */

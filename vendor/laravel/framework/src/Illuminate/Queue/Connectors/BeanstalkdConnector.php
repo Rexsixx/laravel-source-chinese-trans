@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，连接器，Beanstalkd连接器类
+ * Illuminate，队列，连接器，Beanstalkd 连接器
  */
 
 namespace Illuminate\Queue\Connectors;
@@ -24,13 +24,14 @@ class BeanstalkdConnector implements ConnectorInterface
             $this->pheanstalk($config),
             $config['queue'],
             $config['retry_after'] ?? Pheanstalk::DEFAULT_TTR,
-            $config['block_for'] ?? 0
+            $config['block_for'] ?? 0,
+            $config['after_commit'] ?? null
         );
     }
 
     /**
      * Create a Pheanstalk instance.
-	 * 创建一个Pheanstalk实例
+	 * 创建Pheanstalk实例
      *
      * @param  array  $config
      * @return \Pheanstalk\Pheanstalk

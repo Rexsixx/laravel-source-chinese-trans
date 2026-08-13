@@ -1,12 +1,13 @@
 <?php
 /**
- * 缓存，Redis存储
+ * Illuminate，缓存，Redis 存储
  */
 
 namespace Illuminate\Cache;
 
 use Illuminate\Contracts\Cache\LockProvider;
 use Illuminate\Contracts\Redis\Factory as Redis;
+use Illuminate\Redis\Connections\PhpRedisConnection;
 
 class RedisStore extends TaggableStore implements LockProvider
 {
@@ -20,23 +21,31 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * A string that should be prepended to keys.
-	 * 前缀，应该加在键前的字符串
+	 * 应该加在键前的字符串
      *
      * @var string
      */
     protected $prefix;
 
     /**
-     * The Redis connection that should be used.
-	 * 应该使用的Redis连接
+     * The Redis connection instance that should be used to manage locks.
+	 * 应该用来管理锁的Redis连接实例
      *
      * @var string
      */
     protected $connection;
 
     /**
+     * The name of the connection that should be used for locks.
+	 * 应该用于锁的连接的名称
+     *
+     * @var string
+     */
+    protected $lockConnection;
+
+    /**
      * Create a new Redis store.
-	 * 创建新的Redis存储
+	 * 创建一个新的Redis存储
      *
      * @param  \Illuminate\Contracts\Redis\Factory  $redis
      * @param  string  $prefix
@@ -52,7 +61,7 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * Retrieve an item from the cache by key.
-	 * 检索项目从缓存中
+	 * 按键从缓存中检索项
      *
      * @param  string|array  $key
      * @return mixed
@@ -66,9 +75,10 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * Retrieve multiple items from the cache by key.
-	 * 检索多个项目从缓存中
+	 * 按键从缓存中检索多个项
      *
      * Items not found in the cache will have a null value.
+	 * 在缓存中找不到的项将具有空值
      *
      * @param  array  $keys
      * @return array
@@ -90,7 +100,7 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * Store an item in the cache for a given number of seconds.
-	 * 存储一个项目在缓存中使用给定的秒数
+	 * 将项存储在缓存中给定的秒数
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -106,7 +116,7 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * Store multiple items in the cache for a given number of seconds.
-	 * 存储多个项目在缓存中使用给定的秒数
+	 * 在给定的秒数内将多个项存储在缓存中
      *
      * @param  array  $values
      * @param  int  $seconds
@@ -131,7 +141,7 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * Store an item in the cache if the key doesn't exist.
-	 * 存储项目在缓存中，如果键不存在
+	 * 如果键不存在，则将项存储在缓存中。
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -175,7 +185,7 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * Store an item in the cache indefinitely.
-	 * 存储项目在缓存中无限期
+	 * 将项无限期地存储在缓存中
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -188,7 +198,7 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * Get a lock instance.
-	 * 得到锁实例
+	 * 获取一个锁实例
      *
      * @param  string  $name
      * @param  int  $seconds
@@ -197,12 +207,20 @@ class RedisStore extends TaggableStore implements LockProvider
      */
     public function lock($name, $seconds = 0, $owner = null)
     {
-        return new RedisLock($this->connection(), $this->prefix.$name, $seconds, $owner);
+        $lockName = $this->prefix.$name;
+
+        $lockConnection = $this->lockConnection();
+
+        if ($lockConnection instanceof PhpRedisConnection) {
+            return new PhpRedisLock($lockConnection, $lockName, $seconds, $owner);
+        }
+
+        return new RedisLock($lockConnection, $lockName, $seconds, $owner);
     }
 
     /**
      * Restore a lock instance using the owner identifier.
-	 * 恢复锁实例使用所有者标识符
+	 * 使用所有者标识符恢复锁实例
      *
      * @param  string  $name
      * @param  string  $owner
@@ -215,7 +233,7 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * Remove an item from the cache.
-	 * 移除一项从缓存中
+	 * 从缓存中删除项
      *
      * @param  string  $key
      * @return bool
@@ -227,7 +245,7 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * Remove all items from the cache.
-	 * 清空所有项从缓存
+	 * 从缓存中删除所有项
      *
      * @return bool
      */
@@ -254,7 +272,7 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * Get the Redis connection instance.
-	 * 得到Redis连接实例
+	 * 获取Redis连接实例
      *
      * @return \Illuminate\Redis\Connections\Connection
      */
@@ -264,8 +282,19 @@ class RedisStore extends TaggableStore implements LockProvider
     }
 
     /**
-     * Set the connection name to be used.
-	 * 设置要使用的连接名称
+     * Get the Redis connection instance that should be used to manage locks.
+	 * 获取应该用于管理锁的Redis连接实例
+     *
+     * @return \Illuminate\Redis\Connections\Connection
+     */
+    public function lockConnection()
+    {
+        return $this->redis->connection($this->lockConnection ?? $this->connection);
+    }
+
+    /**
+     * Specify the name of the connection that should be used to store data.
+	 * 指定应用于存储数据的连接的名称
      *
      * @param  string  $connection
      * @return void
@@ -273,6 +302,20 @@ class RedisStore extends TaggableStore implements LockProvider
     public function setConnection($connection)
     {
         $this->connection = $connection;
+    }
+
+    /**
+     * Specify the name of the connection that should be used to manage locks.
+	 * 指定应用于管理锁的连接的名称
+     *
+     * @param  string  $connection
+     * @return $this
+     */
+    public function setLockConnection($connection)
+    {
+        $this->lockConnection = $connection;
+
+        return $this;
     }
 
     /**
@@ -288,7 +331,7 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * Get the cache key prefix.
-	 * 得到缓存键前缀
+	 * 获取缓存键前缀
      *
      * @return string
      */
@@ -311,7 +354,7 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * Serialize the value.
-	 * 序列化值
+	 * 序列化该值
      *
      * @param  mixed  $value
      * @return mixed
@@ -323,7 +366,7 @@ class RedisStore extends TaggableStore implements LockProvider
 
     /**
      * Unserialize the value.
-	 * 反序列化值
+	 * 反序列化该值
      *
      * @param  mixed  $value
      * @return mixed

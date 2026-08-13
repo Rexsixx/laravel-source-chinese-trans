@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，电子邮件验证器，确认，RFC 验证
+ * Egulias，EmailValidator，验证，RFC 的验证
  */
 
 namespace Egulias\EmailValidator\Validation;

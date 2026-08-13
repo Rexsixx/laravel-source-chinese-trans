@@ -1,6 +1,6 @@
 <?php
 /**
- * Webmozart，断言，无效参数异常
+ * Webmozart，Assert，无效参数异常
  */
 
 /*

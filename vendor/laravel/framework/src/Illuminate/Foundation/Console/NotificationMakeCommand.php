@@ -1,18 +1,21 @@
 <?php
 /**
- * 基础，通知生成命令
+ * Illuminate，基础，控制台，make:notification 通知制作命令
  */
 
 namespace Illuminate\Foundation\Console;
 
+use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
 class NotificationMakeCommand extends GeneratorCommand
 {
+    use CreatesMatchingTest;
+
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -28,7 +31,7 @@ class NotificationMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成类的类型
+	 * 生成的类的类型
      *
      * @var string
      */
@@ -53,13 +56,15 @@ class NotificationMakeCommand extends GeneratorCommand
 
     /**
      * Write the Markdown template for the mailable.
-	 * 编写Markdown模板为邮件
+	 * 为邮件编写Markdown模板
      *
      * @return void
      */
     protected function writeMarkdownTemplate()
     {
-        $path = resource_path('views/'.str_replace('.', '/', $this->option('markdown'))).'.blade.php';
+        $path = $this->viewPath(
+            str_replace('.', '/', $this->option('markdown')).'.blade.php'
+        );
 
         if (! $this->files->isDirectory(dirname($path))) {
             $this->files->makeDirectory(dirname($path), 0755, true);
@@ -70,7 +75,7 @@ class NotificationMakeCommand extends GeneratorCommand
 
     /**
      * Build the class with the given name.
-	 * 构建类使用给定名称
+	 * 用给定的名称构建类
      *
      * @param  string  $name
      * @return string
@@ -80,7 +85,7 @@ class NotificationMakeCommand extends GeneratorCommand
         $class = parent::buildClass($name);
 
         if ($this->option('markdown')) {
-            $class = str_replace('DummyView', $this->option('markdown'), $class);
+            $class = str_replace(['DummyView', '{{ view }}'], $this->option('markdown'), $class);
         }
 
         return $class;
@@ -88,20 +93,34 @@ class NotificationMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 得到生成器的存根文件
+	 * 获取生成器的存根文件
      *
      * @return string
      */
     protected function getStub()
     {
         return $this->option('markdown')
-                        ? __DIR__.'/stubs/markdown-notification.stub'
-                        : __DIR__.'/stubs/notification.stub';
+            ? $this->resolveStubPath('/stubs/markdown-notification.stub')
+            : $this->resolveStubPath('/stubs/notification.stub');
+    }
+
+    /**
+     * Resolve the fully-qualified path to the stub.
+	 * 解析到存根的全限定路径
+     *
+     * @param  string  $stub
+     * @return string
+     */
+    protected function resolveStubPath($stub)
+    {
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+            ? $customPath
+            : __DIR__.$stub;
     }
 
     /**
      * Get the default namespace for the class.
-	 * 得到类的默认命名空间
+	 * 获取类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string

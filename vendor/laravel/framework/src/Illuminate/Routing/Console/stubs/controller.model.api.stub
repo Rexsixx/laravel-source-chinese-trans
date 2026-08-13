@@ -1,19 +1,19 @@
 <?php
 /**
- * 路由，自己改注释
+ * Illuminate，路由，存根，控制器模型，需要根据实际修改
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
-use DummyFullModelClass;
-use DummyRootNamespaceHttp\Controllers\Controller;
-use Illuminate\Http\Request;
+use {{ namespacedModel }};
+use {{ rootNamespace }}Http\Controllers\Controller;
+use {{ namespacedRequests }}
 
-class DummyClass extends Controller
+class {{ class }} extends Controller
 {
     /**
      * Display a listing of the resource.
-	 * 显示资源列表
+	 * 显示资源的列表
      *
      * @return \Illuminate\Http\Response
      */
@@ -24,12 +24,12 @@ class DummyClass extends Controller
 
     /**
      * Store a newly created resource in storage.
-	 * 存储最近创建资源至存储中
+	 * 将新创建的资源存储在存储器中
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \{{ namespacedStoreRequest }}  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store({{ storeRequest }} $request)
     {
         //
     }
@@ -38,35 +38,35 @@ class DummyClass extends Controller
      * Display the specified resource.
 	 * 显示指定资源
      *
-     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return \Illuminate\Http\Response
      */
-    public function show(DummyModelClass $DummyModelVariable)
+    public function show({{ model }} ${{ modelVariable }})
     {
         //
     }
 
     /**
      * Update the specified resource in storage.
-	 * 更新指定资源至存储中
+	 * 更新存储中的指定资源
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @param  \{{ namespacedUpdateRequest }}  $request
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, DummyModelClass $DummyModelVariable)
+    public function update({{ updateRequest }} $request, {{ model }} ${{ modelVariable }})
     {
         //
     }
 
     /**
      * Remove the specified resource from storage.
-	 * 移除指定资源从存储中
+	 * 从存储中移除指定的资源
      *
-     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DummyModelClass $DummyModelVariable)
+    public function destroy({{ model }} ${{ modelVariable }})
     {
         //
     }

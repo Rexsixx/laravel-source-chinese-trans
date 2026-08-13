@@ -1,6 +1,6 @@
 <?php
 /**
- * 翻译，翻译类
+ * Illuminate，翻译，翻译程序
  */
 
 namespace Illuminate\Translation;
@@ -9,7 +9,6 @@ use Countable;
 use Illuminate\Contracts\Translation\Loader;
 use Illuminate\Contracts\Translation\Translator as TranslatorContract;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\NamespacedItemResolver;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
@@ -21,7 +20,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * The loader implementation.
-	 * 加载实现
+	 * 加载器实现
      *
      * @var \Illuminate\Contracts\Translation\Loader
      */
@@ -29,7 +28,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * The default locale being used by the translator.
-	 * 注册翻译行加载程序
+	 * 翻译程序使用的默认语言环境
      *
      * @var string
      */
@@ -61,7 +60,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Create a new translator instance.
-	 * 创建新的翻译器实例
+	 * 创建一个新的翻译器实例
      *
      * @param  \Illuminate\Contracts\Translation\Loader  $loader
      * @param  string  $locale
@@ -103,7 +102,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the translation for the given key.
-	 * 得到给定键的翻译
+	 * 获取给定键的翻译
      *
      * @param  string  $key
      * @param  array  $replace
@@ -118,8 +117,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // For JSON translations, there is only one file per locale, so we will simply load
         // that file and then we will be ready to check the array for the key. These are
         // only one level deep so we do not need to do any fancy searching through it.
-		// 对于JSON翻译，每个语言环境只有一个文件，因此我们只需加载该文件，然后就可以检查数组中的键了。
-		// 这些只是一个层次的深度，所以我们不需要做任何花哨的搜索。
+		// 对于JSON翻译，每个语言环境只有一个文件，所以我们将加载文件，然后我们就可以检查数组中的键了。
         $this->load('*', '*', $locale);
 
         $line = $this->loaded['*']['*'][$locale][$key] ?? null;
@@ -127,23 +125,21 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // If we can't find a translation for the JSON key, we will attempt to translate it
         // using the typical translation file. This way developers can always just use a
         // helper such as __ instead of having to pick between trans or __ with views.
-		// 如果我们找不到JSON密钥的翻译，我们将尝试使用典型的翻译文件进行翻译。
-		// 这样，开发人员就可以始终使用__等辅助工具，而不必在trans或__与视图之间进行选择。
+		// 如果我们找不到JSON键的翻译，我们将尝试翻译它。
         if (! isset($line)) {
             [$namespace, $group, $item] = $this->parseKey($key);
 
             // Here we will get the locale that should be used for the language line. If one
             // was not passed, we will use the default locales which was given to us when
             // the translator was instantiated. Then, we can load the lines and return.
-			// 在这里，我们将获得应该用于语言行的区域设置。
-			// 如果没有通过，我们将使用翻译器实例化时提供的默认语言环境。然后，我们可以加载行并返回。
+			// 在这里，我们将获得语言行应该使用的区域设置。
             $locales = $fallback ? $this->localeArray($locale) : [$locale];
 
             foreach ($locales as $locale) {
                 if (! is_null($line = $this->getLine(
                     $namespace, $group, $locale, $item, $replace
                 ))) {
-                    return $line ?? $key;
+                    return $line;
                 }
             }
         }
@@ -151,8 +147,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // If the line doesn't exist, we will return back the key which was requested as
         // that will be quick to spot in the UI if language keys are wrong or missing
         // from the application's language files. Otherwise we can return the line.
-		// 如果该行不存在，我们将返回所请求的键，因为如果应用程序的语言文件中的语言键错误或缺失，
-		// UI中会很快发现。否则，我们可以返回线路。
+		// 如果行不存在，我们将返回所请求的键。
         return $this->makeReplacements($line ?: $key, $replace);
     }
 
@@ -175,8 +170,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // If the given "number" is actually an array or countable we will simply count the
         // number of elements in an instance. This allows developers to pass an array of
         // items without having to count it on their end first which gives bad syntax.
-		// 如果给定的"数字"实际上是一个数组或可数数组，我们只需计算实例中的元素数量。
-		// 这允许开发人员传递一个项目数组，而不必先在末尾计数，这会导致语法错误。
+		// 如果给定的"数字"实际上是一个数组或可数的，我们将简单地计算实例中的元素数量。
         if (is_array($number) || $number instanceof Countable) {
             $number = count($number);
         }
@@ -190,7 +184,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the proper locale for a choice operation.
-	 * 得到适当的区域设置为选择操作
+	 * 为选择操作获取适当的区域设置
      *
      * @param  string|null  $locale
      * @return string
@@ -202,7 +196,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Retrieve a language line out the loaded array.
-	 * 检索语言行从加载的数组中
+	 * 从加载的数组中检索语言行
      *
      * @param  string  $namespace
      * @param  string  $group
@@ -230,7 +224,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Make the place-holder replacements on a line.
-	 * 替换占位符在一行上
+	 * 在一行上替换占位符
      *
      * @param  string  $line
      * @param  array  $replace
@@ -242,36 +236,20 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
             return $line;
         }
 
-        $replace = $this->sortReplacements($replace);
+        $shouldReplace = [];
 
         foreach ($replace as $key => $value) {
-            $line = str_replace(
-                [':'.$key, ':'.Str::upper($key), ':'.Str::ucfirst($key)],
-                [$value, Str::upper($value), Str::ucfirst($value)],
-                $line
-            );
+            $shouldReplace[':'.Str::ucfirst($key ?? '')] = Str::ucfirst($value ?? '');
+            $shouldReplace[':'.Str::upper($key ?? '')] = Str::upper($value ?? '');
+            $shouldReplace[':'.$key] = $value;
         }
 
-        return $line;
-    }
-
-    /**
-     * Sort the replacements array.
-	 * 对替换数组进行排序
-     *
-     * @param  array  $replace
-     * @return array
-     */
-    protected function sortReplacements(array $replace)
-    {
-        return (new Collection($replace))->sortBy(function ($value, $key) {
-            return mb_strlen($key) * -1;
-        })->all();
+        return strtr($line, $shouldReplace);
     }
 
     /**
      * Add translation lines to the given locale.
-	 * 添加翻译行向给定的语言环境
+	 * 向给定的语言环境添加翻译行
      *
      * @param  array  $lines
      * @param  string  $locale
@@ -305,8 +283,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         // The loader is responsible for returning the array of language lines for the
         // given namespace, group, and locale. We'll set the lines in this array of
         // lines that have already been loaded so that we can easily access them.
-		// 加载器负责返回给定名称空间、组和区域设置的语言行数组。
-		// 我们将在这个已经加载的行数组中设置行，以便我们可以轻松访问它们。
+		// 加载器负责返回语言行数组。
         $lines = $this->loader->load($locale, $group, $namespace);
 
         $this->loaded[$namespace][$group][$locale] = $lines;
@@ -328,7 +305,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Add a new namespace to the loader.
-	 * 添加一个新的命名空间至加载器
+	 * 向加载器添加一个新的命名空间
      *
      * @param  string  $namespace
      * @param  string  $hint
@@ -353,7 +330,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Parse a key into namespace, group, and item.
-	 * 将键解析为名称空间、组和项
+	 * 将键解析为名称空间、组和项。
      *
      * @param  string  $key
      * @return array
@@ -371,7 +348,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the array of locales to be checked.
-	 * 得到要检查的区域设置数组
+	 * 获取要检查的区域设置数组
      *
      * @param  string|null  $locale
      * @return array
@@ -383,7 +360,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the message selector instance.
-	 * 得到消息选择器实例
+	 * 获取消息选择器实例
      *
      * @return \Illuminate\Translation\MessageSelector
      */
@@ -410,7 +387,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the language line loader implementation.
-	 * 得到语言行加载器实现
+	 * 获取语言行加载器实现
      *
      * @return \Illuminate\Contracts\Translation\Loader
      */
@@ -421,7 +398,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the default locale being used.
-	 * 得到正在使用的默认区域设置
+	 * 获取正在使用的默认区域设置
      *
      * @return string
      */
@@ -432,7 +409,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the default locale being used.
-	 * 得到正在使用的默认区域设置
+	 * 获取正在使用的默认区域设置
      *
      * @return string
      */
@@ -447,6 +424,8 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      *
      * @param  string  $locale
      * @return void
+     *
+     * @throws \InvalidArgumentException
      */
     public function setLocale($locale)
     {
@@ -459,7 +438,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
 
     /**
      * Get the fallback locale being used.
-	 * 得到正在使用的回退区域设置
+	 * 获取正在使用的回退区域设置
      *
      * @return string
      */

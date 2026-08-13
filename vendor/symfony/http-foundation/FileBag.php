@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，文件包
+ * Symfony，Component，HttpFoundation，测试，文件包
  */
 
 /*
@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * FileBag is a container for uploaded files.
+ * FileBag是上传文件的容器
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Bulat Shakirzyanov <mallluhuct@gmail.com>
@@ -46,7 +47,7 @@ class FileBag extends ParameterBag
     /**
      * {@inheritdoc}
      */
-    public function set($key, $value)
+    public function set(string $key, $value)
     {
         if (!\is_array($value) && !$value instanceof UploadedFile) {
             throw new \InvalidArgumentException('An uploaded file must be an array or an instance of UploadedFile.');
@@ -67,10 +68,11 @@ class FileBag extends ParameterBag
 
     /**
      * Converts uploaded files to UploadedFile instances.
+	 * 将上传的文件转换为UploadedFile实例
      *
      * @param array|UploadedFile $file A (multi-dimensional) array of uploaded file information
      *
-     * @return UploadedFile[]|UploadedFile|null A (multi-dimensional) array of UploadedFile instances
+     * @return UploadedFile[]|UploadedFile|null
      */
     protected function convertFileInformation($file)
     {
@@ -100,6 +102,7 @@ class FileBag extends ParameterBag
 
     /**
      * Fixes a malformed PHP $_FILES array.
+	 * 修复了一个错误的PHP $_FILES数组
      *
      * PHP has a bug that the format of the $_FILES array differs, depending on
      * whether the uploaded file fields had normal field names or array-like
@@ -110,11 +113,9 @@ class FileBag extends ParameterBag
      * It's safe to pass an already converted array, in which case this method
      * just returns the original array unmodified.
      *
-     * @param array $data
-     *
      * @return array
      */
-    protected function fixPhpFilesArray($data)
+    protected function fixPhpFilesArray(array $data)
     {
         // Remove extra key added by PHP 8.1.
         unset($data['full_path']);

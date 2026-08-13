@@ -1,16 +1,19 @@
 <?php
 /**
- * 数据库，SQLite连接
+ * Illuminate，数据库，SQLite 连接
  */
 
 namespace Illuminate\Database;
 
 use Doctrine\DBAL\Driver\PDOSqlite\Driver as DoctrineDriver;
+use Doctrine\DBAL\Version;
+use Illuminate\Database\PDO\SQLiteDriver;
 use Illuminate\Database\Query\Grammars\SQLiteGrammar as QueryGrammar;
 use Illuminate\Database\Query\Processors\SQLiteProcessor;
 use Illuminate\Database\Schema\Grammars\SQLiteGrammar as SchemaGrammar;
 use Illuminate\Database\Schema\SQLiteBuilder;
-use LogicException;
+use Illuminate\Database\Schema\SqliteSchemaState;
+use Illuminate\Filesystem\Filesystem;
 
 class SQLiteConnection extends Connection
 {
@@ -41,7 +44,7 @@ class SQLiteConnection extends Connection
 
     /**
      * Get the default query grammar instance.
-	 * 得到默认查询语法实例
+	 * 获取默认查询语法实例
      *
      * @return \Illuminate\Database\Query\Grammars\SQLiteGrammar
      */
@@ -52,7 +55,7 @@ class SQLiteConnection extends Connection
 
     /**
      * Get a schema builder instance for the connection.
-	 * 得到连接的架构构建器实例
+	 * 获取连接的架构构建器实例
      *
      * @return \Illuminate\Database\Schema\SQLiteBuilder
      */
@@ -67,7 +70,7 @@ class SQLiteConnection extends Connection
 
     /**
      * Get the default schema grammar instance.
-	 * 得到默认语法实例
+	 * 获取默认模式语法实例
      *
      * @return \Illuminate\Database\Schema\Grammars\SQLiteGrammar
      */
@@ -77,8 +80,22 @@ class SQLiteConnection extends Connection
     }
 
     /**
+     * Get the schema state for the connection.
+	 * 获取连接的模式状态
+     *
+     * @param  \Illuminate\Filesystem\Filesystem|null  $files
+     * @param  callable|null  $processFactory
+     *
+     * @throws \RuntimeException
+     */
+    public function getSchemaState(Filesystem $files = null, callable $processFactory = null)
+    {
+        return new SqliteSchemaState($this, $files, $processFactory);
+    }
+
+    /**
      * Get the default post processor instance.
-	 * 得到默认的post处理实例
+	 * 获取默认的后处理器实例
      *
      * @return \Illuminate\Database\Query\Processors\SQLiteProcessor
      */
@@ -89,25 +106,18 @@ class SQLiteConnection extends Connection
 
     /**
      * Get the Doctrine DBAL driver.
-	 * 得到Doctrine DBAL驱动程序
+	 * 获取Doctrine DBAL驱动程序
      *
-     * @return \Doctrine\DBAL\Driver\PDOSqlite\Driver
+     * @return \Doctrine\DBAL\Driver\PDOSqlite\Driver|\Illuminate\Database\PDO\SQLiteDriver
      */
     protected function getDoctrineDriver()
     {
-        if (! class_exists(DoctrineDriver::class)) {
-            throw new LogicException(
-                'Laravel v6 is only compatible with doctrine/dbal 2, in order to use this feature you must require the package "doctrine/dbal:^2.6".'
-            );
-			//Laravel v6仅与doctrin/dbal 2兼容，要使用此功能，您必须需要包"doctrin/dbal:^2.6".
-        }
-
-        return new DoctrineDriver;
+        return class_exists(Version::class) ? new DoctrineDriver : new SQLiteDriver;
     }
 
     /**
      * Get the database connection foreign key constraints configuration option.
-	 * 得到数据库连接外键约束配置选项
+	 * 获取数据库连接外键约束配置选项
      *
      * @return bool|null
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Carbon，特性，选项
+ */
 
 /**
  * This file is part of the Carbon package.
@@ -17,12 +20,13 @@ use Throwable;
 
 /**
  * Trait Options.
+ * 特征选项
  *
  * Embed base methods to change settings of Carbon classes.
  *
  * Depends on the following methods:
  *
- * @method \Carbon\Carbon|\Carbon\CarbonImmutable shiftTimezone($timezone) Set the timezone
+ * @method static shiftTimezone($timezone) Set the timezone
  */
 trait Options
 {
@@ -30,6 +34,7 @@ trait Options
 
     /**
      * Customizable PHP_INT_SIZE override.
+	 * 可定制的PHP_INT_SIZE覆盖
      *
      * @var int
      */
@@ -37,6 +42,7 @@ trait Options
 
     /**
      * First day of week.
+	 * 一周第一天
      *
      * @var int|string
      */
@@ -44,6 +50,7 @@ trait Options
 
     /**
      * Last day of week.
+	 * 一周的最后一天
      *
      * @var int|string
      */
@@ -51,6 +58,7 @@ trait Options
 
     /**
      * Days of weekend.
+	 * 周末的日子
      *
      * @var array
      */
@@ -61,6 +69,7 @@ trait Options
 
     /**
      * Format regex patterns.
+	 * 格式化正则表达式模式
      *
      * @var array<string, string>
      */
@@ -96,9 +105,9 @@ trait Options
         'v' => '([0-9]{1,3})',
         'e' => '([a-zA-Z]{1,5})|([a-zA-Z]*\\/[a-zA-Z]*)',
         'I' => '(0|1)',
-        'O' => '([+-](1[012]|0[0-9])[0134][05])',
-        'P' => '([+-](1[012]|0[0-9]):[0134][05])',
-        'p' => '(Z|[+-](1[012]|0[0-9]):[0134][05])',
+        'O' => '([+-](1[0123]|0[0-9])[0134][05])',
+        'P' => '([+-](1[0123]|0[0-9]):[0134][05])',
+        'p' => '(Z|[+-](1[0123]|0[0-9]):[0134][05])',
         'T' => '([a-zA-Z]{1,5})',
         'Z' => '(-?[1-5]?[0-9]{1,4})',
         'U' => '([0-9]*)',
@@ -110,6 +119,7 @@ trait Options
 
     /**
      * Format modifiers (such as available in createFromFormat) regex patterns.
+	 * 格式修饰符（例如在createFromFormat中可用）正则表达式模式
      *
      * @var array
      */
@@ -149,6 +159,7 @@ trait Options
 
     /**
      * Function to call instead of format.
+	 * 要调用的函数而不是format
      *
      * @var string|callable|null
      */
@@ -156,6 +167,7 @@ trait Options
 
     /**
      * Function to call instead of createFromFormat.
+	 * 要调用的函数而不是createFromFormat
      *
      * @var string|callable|null
      */
@@ -163,6 +175,7 @@ trait Options
 
     /**
      * Function to call instead of parse.
+	 * 要调用而不是解析的函数
      *
      * @var string|callable|null
      */
@@ -194,6 +207,7 @@ trait Options
 
     /**
      * Options for diffForHumans and forHumans methods.
+	 * diffForHumans和forHumans方法的选项
      *
      * @var bool|null
      */
@@ -201,6 +215,7 @@ trait Options
 
     /**
      * Format to use on string cast.
+	 * 用于字符串强制转换的格式
      *
      * @var string|null
      */
@@ -208,6 +223,7 @@ trait Options
 
     /**
      * Format to use on JSON serialization.
+	 * 在JSON序列化中使用的格式
      *
      * @var string|null
      */
@@ -215,6 +231,7 @@ trait Options
 
     /**
      * Instance-specific macros.
+	 * 特定于宏
      *
      * @var array|null
      */
@@ -222,6 +239,7 @@ trait Options
 
     /**
      * Instance-specific generic macros.
+	 * 特定于实例的通用宏
      *
      * @var array|null
      */
@@ -229,6 +247,7 @@ trait Options
 
     /**
      * Function to call instead of format.
+	 * 要调用的函数而不是format
      *
      * @var string|callable|null
      */
@@ -251,6 +270,7 @@ trait Options
     /**
      * Returns true if the strict mode is globally in use, false else.
      * (It can be overridden in specific instances.)
+	 * 如果全局使用严格模式则返回true，否则返回false。
      *
      * @return bool
      */
@@ -295,6 +315,7 @@ trait Options
 
     /**
      * Get the month overflow global behavior (can be overridden in specific instances).
+	 * 获取月份溢出全局行为（可在特定实例中重写）
      *
      * @return bool
      */
@@ -339,6 +360,7 @@ trait Options
 
     /**
      * Get the month overflow global behavior (can be overridden in specific instances).
+	 * 获取月溢出全局行为(在特定情况下可以重写)
      *
      * @return bool
      */
@@ -359,6 +381,7 @@ trait Options
      *  - timezone: \DateTimeZone|string|int|null
      *  - macros: array|null
      *  - genericMacros: array|null
+	 * 设置特定的选项
      *
      * @param array $settings
      *
@@ -399,6 +422,7 @@ trait Options
 
     /**
      * Returns current local settings.
+	 * 返回当前本地设置
      *
      * @return array
      */
@@ -422,7 +446,7 @@ trait Options
         foreach ($map as $property => $key) {
             $value = $this->$property ?? null;
 
-            if ($value !== null) {
+            if ($value !== null && ($key !== 'locale' || $value !== 'en' || $this->localTranslator)) {
                 $settings[$key] = $value;
             }
         }
@@ -432,16 +456,17 @@ trait Options
 
     /**
      * Show truthy properties on var_dump().
+	 * 在var_dump()中显示truthy属性
      *
      * @return array
      */
     public function __debugInfo()
     {
-        $infos = array_filter(get_object_vars($this), function ($var) {
+        $infos = array_filter(get_object_vars($this), static function ($var) {
             return $var;
         });
 
-        foreach (['dumpProperties', 'constructedObjectId'] as $property) {
+        foreach (['dumpProperties', 'constructedObjectId', 'constructed'] as $property) {
             if (isset($infos[$property])) {
                 unset($infos[$property]);
             }

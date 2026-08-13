@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，上下文，Laravel 控制台上下文
+ * Facade，Ignition，上下文，Laravel 控制台上下文
  */
 
 namespace Facade\Ignition\Context;

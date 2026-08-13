@@ -1,6 +1,6 @@
 <?php
 /**
- * 控制台，缓存调度互斥锁
+ * Illuminate，控制台，调度，缓存调度互斥锁
  */
 
 namespace Illuminate\Console\Scheduling;
@@ -8,7 +8,7 @@ namespace Illuminate\Console\Scheduling;
 use DateTimeInterface;
 use Illuminate\Contracts\Cache\Factory as Cache;
 
-class CacheSchedulingMutex implements SchedulingMutex
+class CacheSchedulingMutex implements SchedulingMutex, CacheAware
 {
     /**
      * The cache factory implementation.
@@ -20,7 +20,7 @@ class CacheSchedulingMutex implements SchedulingMutex
 
     /**
      * The cache store that should be used.
-	 * 缓存存储应该被使用的
+	 * 应该使用的缓存存储
      *
      * @var string|null
      */
@@ -40,7 +40,7 @@ class CacheSchedulingMutex implements SchedulingMutex
 
     /**
      * Attempt to obtain a scheduling mutex for the given event.
-	 * 清除给定事件的调度互斥锁
+	 * 尝试获取给定事件的调度互斥锁
      *
      * @param  \Illuminate\Console\Scheduling\Event  $event
      * @param  \DateTimeInterface  $time

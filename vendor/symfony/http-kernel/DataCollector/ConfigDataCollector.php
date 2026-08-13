@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，数据采集器，配置数据采集器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,7 +23,7 @@ use Symfony\Component\VarDumper\Caster\ClassStub;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  *
- * @final since Symfony 4.4
+ * @final
  */
 class ConfigDataCollector extends DataCollector implements LateDataCollectorInterface
 {
@@ -28,43 +31,25 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
      * @var KernelInterface
      */
     private $kernel;
-    private $name;
-    private $version;
-
-    public function __construct(string $name = null, string $version = null)
-    {
-        if (1 <= \func_num_args()) {
-            @trigger_error(sprintf('The "$name" argument in method "%s()" is deprecated since Symfony 4.2.', __METHOD__), \E_USER_DEPRECATED);
-        }
-        if (2 <= \func_num_args()) {
-            @trigger_error(sprintf('The "$version" argument in method "%s()" is deprecated since Symfony 4.2.', __METHOD__), \E_USER_DEPRECATED);
-        }
-
-        $this->name = $name;
-        $this->version = $version;
-    }
 
     /**
      * Sets the Kernel associated with this Request.
+	 * 设置与此请求关联的内核
      */
-    public function setKernel(KernelInterface $kernel = null)
+    public function setKernel(?KernelInterface $kernel = null)
     {
         $this->kernel = $kernel;
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @param \Throwable|null $exception
      */
-    public function collect(Request $request, Response $response/*, \Throwable $exception = null*/)
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null)
     {
         $eom = \DateTime::createFromFormat('d/m/Y', '01/'.Kernel::END_OF_MAINTENANCE);
         $eol = \DateTime::createFromFormat('d/m/Y', '01/'.Kernel::END_OF_LIFE);
 
         $this->data = [
-            'app_name' => $this->name,
-            'app_version' => $this->version,
             'token' => $response->headers->get('X-Debug-Token'),
             'symfony_version' => Kernel::VERSION,
             'symfony_minor_version' => sprintf('%s.%s', Kernel::MAJOR_VERSION, Kernel::MINOR_VERSION),
@@ -79,8 +64,8 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
             'php_intl_locale' => class_exists(\Locale::class, false) && \Locale::getDefault() ? \Locale::getDefault() : 'n/a',
             'php_timezone' => date_default_timezone_get(),
             'xdebug_enabled' => \extension_loaded('xdebug'),
-            'apcu_enabled' => \extension_loaded('apcu') && filter_var(ini_get('apc.enabled'), \FILTER_VALIDATE_BOOLEAN),
-            'zend_opcache_enabled' => \extension_loaded('Zend OPcache') && filter_var(ini_get('opcache.enable'), \FILTER_VALIDATE_BOOLEAN),
+            'apcu_enabled' => \extension_loaded('apcu') && filter_var(\ini_get('apc.enabled'), \FILTER_VALIDATE_BOOLEAN),
+            'zend_opcache_enabled' => \extension_loaded('Zend OPcache') && filter_var(\ini_get('opcache.enable'), \FILTER_VALIDATE_BOOLEAN),
             'bundles' => [],
             'sapi_name' => \PHP_SAPI,
         ];
@@ -111,51 +96,30 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
     }
 
     /**
-     * @deprecated since Symfony 4.2
-     */
-    public function getApplicationName()
-    {
-        @trigger_error(sprintf('The method "%s()" is deprecated since Symfony 4.2.', __METHOD__), \E_USER_DEPRECATED);
-
-        return $this->data['app_name'];
-    }
-
-    /**
-     * @deprecated since Symfony 4.2
-     */
-    public function getApplicationVersion()
-    {
-        @trigger_error(sprintf('The method "%s()" is deprecated since Symfony 4.2.', __METHOD__), \E_USER_DEPRECATED);
-
-        return $this->data['app_version'];
-    }
-
-    /**
      * Gets the token.
-     *
-     * @return string|null The token
+	 * 得到令牌
      */
-    public function getToken()
+    public function getToken(): ?string
     {
         return $this->data['token'];
     }
 
     /**
      * Gets the Symfony version.
-     *
-     * @return string The Symfony version
+	 * 获取Symfony版本
      */
-    public function getSymfonyVersion()
+    public function getSymfonyVersion(): string
     {
         return $this->data['symfony_version'];
     }
 
     /**
      * Returns the state of the current Symfony release.
+	 * 返回当前Symfony版本的状态
      *
      * @return string One of: unknown, dev, stable, eom, eol
      */
-    public function getSymfonyState()
+    public function getSymfonyState(): string
     {
         return $this->data['symfony_state'];
     }
@@ -163,16 +127,15 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
     /**
      * Returns the minor Symfony version used (without patch numbers of extra
      * suffix like "RC", "beta", etc.).
-     *
-     * @return string
      */
-    public function getSymfonyMinorVersion()
+    public function getSymfonyMinorVersion(): string
     {
         return $this->data['symfony_minor_version'];
     }
 
     /**
      * Returns if the current Symfony version is a Long-Term Support one.
+	 * 如果当前Symfony版本是长期支持版本，则返回。
      */
     public function isSymfonyLts(): bool
     {
@@ -182,10 +145,8 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
     /**
      * Returns the human readable date when this Symfony version ends its
      * maintenance period.
-     *
-     * @return string
      */
-    public function getSymfonyEom()
+    public function getSymfonyEom(): string
     {
         return $this->data['symfony_eom'];
     }
@@ -193,30 +154,26 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
     /**
      * Returns the human readable date when this Symfony version reaches its
      * "end of life" and won't receive bugs or security fixes.
-     *
-     * @return string
      */
-    public function getSymfonyEol()
+    public function getSymfonyEol(): string
     {
         return $this->data['symfony_eol'];
     }
 
     /**
      * Gets the PHP version.
-     *
-     * @return string The PHP version
+	 * 获取PHP版本
      */
-    public function getPhpVersion()
+    public function getPhpVersion(): string
     {
         return $this->data['php_version'];
     }
 
     /**
      * Gets the PHP version extra part.
-     *
-     * @return string|null The extra part
+	 * 获取PHP版本额外部分
      */
-    public function getPhpVersionExtra()
+    public function getPhpVersionExtra(): ?string
     {
         return $this->data['php_version_extra'] ?? null;
     }
@@ -224,55 +181,35 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
     /**
      * @return int The PHP architecture as number of bits (e.g. 32 or 64)
      */
-    public function getPhpArchitecture()
+    public function getPhpArchitecture(): int
     {
         return $this->data['php_architecture'];
     }
 
-    /**
-     * @return string
-     */
-    public function getPhpIntlLocale()
+    public function getPhpIntlLocale(): string
     {
         return $this->data['php_intl_locale'];
     }
 
-    /**
-     * @return string
-     */
-    public function getPhpTimezone()
+    public function getPhpTimezone(): string
     {
         return $this->data['php_timezone'];
     }
 
     /**
-     * Gets the application name.
-     *
-     * @return string The application name
-     *
-     * @deprecated since Symfony 4.2
-     */
-    public function getAppName()
-    {
-        @trigger_error(sprintf('The "%s()" method is deprecated since Symfony 4.2.', __METHOD__), \E_USER_DEPRECATED);
-
-        return 'n/a';
-    }
-
-    /**
      * Gets the environment.
-     *
-     * @return string The environment
+	 * 得到环境
      */
-    public function getEnv()
+    public function getEnv(): string
     {
         return $this->data['env'];
     }
 
     /**
      * Returns true if the debug is enabled.
+	 * 如果启用了调试，则返回true。
      *
-     * @return bool true if debug is enabled, false otherwise
+     * @return bool|string true if debug is enabled, false otherwise or a string if no kernel was set
      */
     public function isDebug()
     {
@@ -281,30 +218,27 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
 
     /**
      * Returns true if the XDebug is enabled.
-     *
-     * @return bool true if XDebug is enabled, false otherwise
+	 * 如果启用了XDebug，则返回true。
      */
-    public function hasXDebug()
+    public function hasXDebug(): bool
     {
         return $this->data['xdebug_enabled'];
     }
 
     /**
      * Returns true if APCu is enabled.
-     *
-     * @return bool true if APCu is enabled, false otherwise
+	 * 如果APCu已启用，则返回true。
      */
-    public function hasApcu()
+    public function hasApcu(): bool
     {
         return $this->data['apcu_enabled'];
     }
 
     /**
      * Returns true if Zend OPcache is enabled.
-     *
-     * @return bool true if Zend OPcache is enabled, false otherwise
+	 * 如果启用Zend OPcache则返回true
      */
-    public function hasZendOpcache()
+    public function hasZendOpcache(): bool
     {
         return $this->data['zend_opcache_enabled'];
     }
@@ -316,10 +250,9 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
 
     /**
      * Gets the PHP SAPI name.
-     *
-     * @return string The environment
+	 * 获取PHP SAPI名称
      */
-    public function getSapiName()
+    public function getSapiName(): string
     {
         return $this->data['sapi_name'];
     }
@@ -327,13 +260,14 @@ class ConfigDataCollector extends DataCollector implements LateDataCollectorInte
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'config';
     }
 
     /**
      * Tries to retrieve information about the current Symfony version.
+	 * 尝试检索有关当前Symfony版本的信息
      *
      * @return string One of: dev, stable, eom, eol
      */

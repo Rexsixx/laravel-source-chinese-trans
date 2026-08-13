@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，数组，是否数组按顺序包含
+ * Hamcrest，数组，是否数组包含排序
  */
 
 namespace Hamcrest\Arrays;
@@ -50,7 +50,7 @@ class IsArrayContainingInOrder extends TypeSafeDiagnosingMatcher
 
     /**
      * An array with elements that match the given matchers in the same order.
-	 * 一个数组，其元素以相同的顺序与给定的匹配器匹配。
+	 * 用同一顺序匹配给定的matchers的元素的数组
      *
      * @factory contains ...
      */

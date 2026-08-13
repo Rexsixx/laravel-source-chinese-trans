@@ -1,6 +1,6 @@
 <?php
 /**
- * Http，Json响应
+ * Illuminate，Http，Json 响应
  */
 
 namespace Illuminate\Http;
@@ -20,24 +20,35 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Constructor.
-	 * 初始化
+	 * 构造函数
      *
      * @param  mixed  $data
      * @param  int  $status
      * @param  array  $headers
      * @param  int  $options
+     * @param  bool  $json
      * @return void
      */
-    public function __construct($data = null, $status = 200, $headers = [], $options = 0)
+    public function __construct($data = null, $status = 200, $headers = [], $options = 0, $json = false)
     {
         $this->encodingOptions = $options;
 
-        parent::__construct($data, $status, $headers);
+        parent::__construct($data, $status, $headers, $json);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return static
+     */
+    public static function fromJsonString(?string $data = null, int $status = 200, array $headers = [])
+    {
+        return new static($data, $status, $headers, 0, true);
     }
 
     /**
      * Sets the JSONP callback.
-	 * 设置JSON回调
+	 * 设置JSONP回调
      *
      * @param  string|null  $callback
      * @return $this
@@ -49,7 +60,7 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Get the json_decoded data from the response.
-	 * 得到json编码数据
+	 * 从响应中获取json_decoded数据
      *
      * @param  bool  $assoc
      * @param  int  $depth
@@ -62,10 +73,15 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * {@inheritdoc}
+     *
+     * @return static
      */
     public function setData($data = [])
     {
         $this->original = $data;
+
+        // Ensure json_last_error() is cleared...
+        json_decode('[]');
 
         if ($data instanceof Jsonable) {
             $this->data = $data->toJson($this->encodingOptions);
@@ -86,7 +102,7 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * Determine if an error occurred during JSON encoding.
-	 * 确定是否错误JSON编码
+	 * 确定JSON编码期间是否发生错误
      *
      * @param  int  $jsonError
      * @return bool
@@ -107,6 +123,8 @@ class JsonResponse extends BaseJsonResponse
 
     /**
      * {@inheritdoc}
+     *
+     * @return static
      */
     public function setEncodingOptions($options)
     {

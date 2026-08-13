@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，Session，储存，代理，抽象代理
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ abstract class AbstractProxy
 {
     /**
      * Flag if handler wraps an internal PHP session handler (using \SessionHandler).
+	 * 标志如果处理程序包装内部PHP会话处理程序（使用\SessionHandler）
      *
      * @var bool
      */
@@ -30,6 +34,7 @@ abstract class AbstractProxy
 
     /**
      * Gets the session.save_handler name.
+	 * 获取会话。save_handler名字。
      *
      * @return string|null
      */
@@ -40,6 +45,7 @@ abstract class AbstractProxy
 
     /**
      * Is this proxy handler and instance of \SessionHandlerInterface.
+	 * 是这个代理处理程序和\SessionHandlerInterface的实例
      *
      * @return bool
      */
@@ -50,6 +56,7 @@ abstract class AbstractProxy
 
     /**
      * Returns true if this handler wraps an internal PHP session save handler using \SessionHandler.
+	 * 如果此处理程序使用\SessionHandler包装内部PHP会话保存处理程序，则返回true。
      *
      * @return bool
      */
@@ -60,6 +67,7 @@ abstract class AbstractProxy
 
     /**
      * Has a session started?
+	 * 会话开始了吗
      *
      * @return bool
      */
@@ -70,6 +78,7 @@ abstract class AbstractProxy
 
     /**
      * Gets the session ID.
+	 * 获取会话ID
      *
      * @return string
      */
@@ -80,12 +89,11 @@ abstract class AbstractProxy
 
     /**
      * Sets the session ID.
-     *
-     * @param string $id
+	 * 设置会话ID
      *
      * @throws \LogicException
      */
-    public function setId($id)
+    public function setId(string $id)
     {
         if ($this->isActive()) {
             throw new \LogicException('Cannot change the ID of an active session.');
@@ -96,6 +104,7 @@ abstract class AbstractProxy
 
     /**
      * Gets the session name.
+	 * 获取会话名称
      *
      * @return string
      */
@@ -106,12 +115,11 @@ abstract class AbstractProxy
 
     /**
      * Sets the session name.
-     *
-     * @param string $name
+	 * 设置会话名称
      *
      * @throws \LogicException
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         if ($this->isActive()) {
             throw new \LogicException('Cannot change the name of an active session.');

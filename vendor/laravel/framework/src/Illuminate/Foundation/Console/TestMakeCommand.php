@@ -1,22 +1,23 @@
 <?php
 /**
- * 基础，测试生成命令
+ * Illuminate，基础，控制台，make:test 测试生成命令
  */
 
 namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
+use Symfony\Component\Console\Input\InputOption;
 
 class TestMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
-    protected $signature = 'make:test {name : The name of the class} {--unit : Create a unit test}';
+    protected $name = 'make:test';
 
     /**
      * The console command description.
@@ -28,7 +29,7 @@ class TestMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成器类的类型
+	 * 生成的类的类型
      *
      * @var string
      */
@@ -42,11 +43,25 @@ class TestMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        if ($this->option('unit')) {
-            return __DIR__.'/stubs/unit-test.stub';
-        }
+        $suffix = $this->option('unit') ? '.unit.stub' : '.stub';
 
-        return __DIR__.'/stubs/test.stub';
+        return $this->option('pest')
+            ? $this->resolveStubPath('/stubs/pest'.$suffix)
+            : $this->resolveStubPath('/stubs/test'.$suffix);
+    }
+
+    /**
+     * Resolve the fully-qualified path to the stub.
+	 * 解析到存根的全限定路径
+     *
+     * @param  string  $stub
+     * @return string
+     */
+    protected function resolveStubPath($stub)
+    {
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+                        ? $customPath
+                        : __DIR__.$stub;
     }
 
     /**
@@ -88,5 +103,19 @@ class TestMakeCommand extends GeneratorCommand
     protected function rootNamespace()
     {
         return 'Tests';
+    }
+
+    /**
+     * Get the console command options.
+	 * 得到控制台命令选项
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['unit', 'u', InputOption::VALUE_NONE, 'Create a unit test.'],
+            ['pest', 'p', InputOption::VALUE_NONE, 'Create a Pest test.'],
+        ];
     }
 }

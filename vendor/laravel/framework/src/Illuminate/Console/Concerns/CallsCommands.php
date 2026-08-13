@@ -1,6 +1,6 @@
 <?php
 /**
- * 控制台，调用命令
+ * Illuminate，控制台，问题，调用命令
  */
 
 namespace Illuminate\Console\Concerns;
@@ -13,7 +13,7 @@ trait CallsCommands
 {
     /**
      * Resolve the console command instance for the given command.
-	 * 解析控制台命令实例为给定命令
+	 * 解析给定命令的控制台命令实例
      *
      * @param  \Symfony\Component\Console\Command\Command|string  $command
      * @return \Symfony\Component\Console\Command\Command
@@ -34,8 +34,8 @@ trait CallsCommands
     }
 
     /**
-     * Call another console command silently.
-	 * 调用另一个控制台命令以静默方式
+     * Call another console command without output.
+	 * 调用另一个没有输出的控制台命令
      *
      * @param  \Symfony\Component\Console\Command\Command|string  $command
      * @param  array  $arguments
@@ -44,6 +44,19 @@ trait CallsCommands
     public function callSilent($command, array $arguments = [])
     {
         return $this->runCommand($command, $arguments, new NullOutput);
+    }
+
+    /**
+     * Call another console command without output.
+	 * 调用另一个没有输出的控制台命令
+     *
+     * @param  \Symfony\Component\Console\Command\Command|string  $command
+     * @param  array  $arguments
+     * @return int
+     */
+    public function callSilently($command, array $arguments = [])
+    {
+        return $this->callSilent($command, $arguments);
     }
 
     /**
@@ -66,7 +79,7 @@ trait CallsCommands
 
     /**
      * Create an input instance from the given arguments.
-	 * 创建输入实例根据给定的参数
+	 * 根据给定的参数创建输入实例
      *
      * @param  array  $arguments
      * @return \Symfony\Component\Console\Input\ArrayInput
@@ -82,7 +95,7 @@ trait CallsCommands
 
     /**
      * Get all of the context passed to the command.
-	 * 得到传递给命令的所有上下文
+	 * 获取传递给命令的所有上下文
      *
      * @return array
      */

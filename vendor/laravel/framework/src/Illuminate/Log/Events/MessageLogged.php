@@ -1,6 +1,6 @@
 <?php
 /**
- * 日志，信息记录
+ * Illuminate，日志，事件，日志信息
  */
 
 namespace Illuminate\Log\Events;
@@ -25,7 +25,7 @@ class MessageLogged
 
     /**
      * The log context.
-	 * 日志内容
+	 * 日志上下文
      *
      * @var array
      */

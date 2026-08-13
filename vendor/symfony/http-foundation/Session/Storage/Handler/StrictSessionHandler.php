@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，Session，储存，处理器，严密的会话处理程序
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 
 /**
  * Adds basic `SessionUpdateTimestampHandlerInterface` behaviors to another `SessionHandlerInterface`.
+ * SessionUpdateTimestampHandlerInterface ’行为添加到另一个‘ SessionHandlerInterface ’。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -24,10 +28,21 @@ class StrictSessionHandler extends AbstractSessionHandler
     public function __construct(\SessionHandlerInterface $handler)
     {
         if ($handler instanceof \SessionUpdateTimestampHandlerInterface) {
-            throw new \LogicException(sprintf('"%s" is already an instance of "SessionUpdateTimestampHandlerInterface", you cannot wrap it with "%s".', \get_class($handler), self::class));
+            throw new \LogicException(sprintf('"%s" is already an instance of "SessionUpdateTimestampHandlerInterface", you cannot wrap it with "%s".', get_debug_type($handler), self::class));
         }
 
         $this->handler = $handler;
+    }
+
+    /**
+     * Returns true if this handler wraps an internal PHP session save handler using \SessionHandler.
+	 * 如果此处理程序使用\SessionHandler包装内部PHP会话保存处理程序，则返回true。
+     *
+     * @internal
+     */
+    public function isWrapper(): bool
+    {
+        return $this->handler instanceof \SessionHandler;
     }
 
     /**
@@ -44,7 +59,7 @@ class StrictSessionHandler extends AbstractSessionHandler
     /**
      * {@inheritdoc}
      */
-    protected function doRead($sessionId)
+    protected function doRead(string $sessionId)
     {
         return $this->handler->read($sessionId);
     }
@@ -61,7 +76,7 @@ class StrictSessionHandler extends AbstractSessionHandler
     /**
      * {@inheritdoc}
      */
-    protected function doWrite($sessionId, $data)
+    protected function doWrite(string $sessionId, string $data)
     {
         return $this->handler->write($sessionId, $data);
     }
@@ -81,7 +96,7 @@ class StrictSessionHandler extends AbstractSessionHandler
     /**
      * {@inheritdoc}
      */
-    protected function doDestroy($sessionId)
+    protected function doDestroy(string $sessionId)
     {
         $this->doDestroy = false;
 

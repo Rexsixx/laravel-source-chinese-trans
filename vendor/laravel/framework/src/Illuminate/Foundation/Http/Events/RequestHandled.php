@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，请求处理
+ * Illuminate，基础，Http，事件，请求处理
  */
 
 namespace Illuminate\Foundation\Http\Events;

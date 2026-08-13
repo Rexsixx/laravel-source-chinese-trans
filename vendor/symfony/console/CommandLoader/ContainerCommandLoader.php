@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，命令加载器，容器命令加载器
+ * Symfony，Component，Console，命令加载，容器命令加载器
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\Console\Exception\CommandNotFoundException;
 
 /**
  * Loads commands from a PSR-11 container.
+ * 从PSR-11容器中加载命令。
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
@@ -39,7 +40,7 @@ class ContainerCommandLoader implements CommandLoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function get($name)
+    public function get(string $name)
     {
         if (!$this->has($name)) {
             throw new CommandNotFoundException(sprintf('Command "%s" does not exist.', $name));
@@ -51,7 +52,7 @@ class ContainerCommandLoader implements CommandLoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function has($name)
+    public function has(string $name)
     {
         return isset($this->commandMap[$name]) && $this->container->has($this->commandMap[$name]);
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，Ignition 配置
+ * Facade，Ignition，Ignition 配置
  */
 
 namespace Facade\Ignition;

@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，事件，作业处理
+ * Illuminate，队列，事件，作业已处理
  */
 
 namespace Illuminate\Queue\Events;
@@ -9,7 +9,7 @@ class JobProcessed
 {
     /**
      * The connection name.
-	 * 连接名
+	 * 连接名称
      *
      * @var string
      */

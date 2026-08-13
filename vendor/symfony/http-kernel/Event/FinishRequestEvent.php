@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，事件，完成请求事件
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,11 +16,10 @@ namespace Symfony\Component\HttpKernel\Event;
 
 /**
  * Triggered whenever a request is fully processed.
+ * 当请求被完全处理时触发。
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
- *
- * @final since Symfony 4.4
  */
-class FinishRequestEvent extends KernelEvent
+final class FinishRequestEvent extends KernelEvent
 {
 }

@@ -13,6 +13,7 @@
 
 /**
  * An IDN email address encoder.
+ * Swift_AddressEncoder
  *
  * Encodes the domain part of an address using IDN. This is compatible will all
  * SMTP servers.

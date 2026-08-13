@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，命令，服务转储命令
+ * Symfony，Component，VarDumper，命令，服务器转储命令
  */
 
 /*
@@ -15,6 +15,8 @@
 namespace Symfony\Component\VarDumper\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Completion\CompletionInput;
+use Symfony\Component\Console\Completion\CompletionSuggestions;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -30,6 +32,7 @@ use Symfony\Component\VarDumper\Server\DumpServer;
 
 /**
  * Starts a dump server to collect and output dumps on a single place with multiple formats support.
+ * 在一个具有多个格式支持的单一位置上,启动一个转储服务器来收集和输出转储。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  *
@@ -38,6 +41,7 @@ use Symfony\Component\VarDumper\Server\DumpServer;
 class ServerDumpCommand extends Command
 {
     protected static $defaultName = 'server:dump';
+    protected static $defaultDescription = 'Start a dump server that collects and displays dumps in a single place';
 
     private $server;
 
@@ -57,11 +61,9 @@ class ServerDumpCommand extends Command
 
     protected function configure()
     {
-        $availableFormats = implode(', ', array_keys($this->descriptors));
-
         $this
-            ->addOption('format', null, InputOption::VALUE_REQUIRED, sprintf('The output format (%s)', $availableFormats), 'cli')
-            ->setDescription('Start a dump server that collects and displays dumps in a single place')
+            ->addOption('format', null, InputOption::VALUE_REQUIRED, sprintf('The output format (%s)', implode(', ', $this->getAvailableFormats())), 'cli')
+            ->setDescription(self::$defaultDescription)
             ->setHelp(<<<'EOF'
 <info>%command.name%</info> starts a dump server that collects and displays
 dumps in a single place for debugging you application:
@@ -100,5 +102,17 @@ EOF
         });
 
         return 0;
+    }
+
+    public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
+    {
+        if ($input->mustSuggestOptionValuesFor('format')) {
+            $suggestions->suggestValues($this->getAvailableFormats());
+        }
+    }
+
+    private function getAvailableFormats(): array
+    {
+        return array_keys($this->descriptors);
     }
 }

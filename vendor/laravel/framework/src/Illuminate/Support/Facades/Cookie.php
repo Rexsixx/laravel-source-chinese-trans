@@ -1,14 +1,14 @@
 <?php
 /**
- * 支持，门面Cookie
+ * Illuminate，支持，门面，Cookie
  */
 
 namespace Illuminate\Support\Facades;
 
 /**
- * @method static void queue(...$parameters)
- * @method static unqueue($name)
  * @method static array getQueuedCookies()
+ * @method static unqueue($name)
+ * @method static void queue(...$parameters)
  *
  * @see \Illuminate\Cookie\CookieJar
  */
@@ -41,7 +41,7 @@ class Cookie extends Facade
 
     /**
      * Get the registered name of the component.
-	 * 得到组件注册名
+	 * 获取组件的注册名称
      *
      * @return string
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，Terminal
+ * Symfony，Component，Console，终端
  */
 
 /*
@@ -22,7 +22,7 @@ class Terminal
 
     /**
      * Gets the terminal width.
-	 * 得到终端宽度
+	 * 获取终端宽度
      *
      * @return int
      */
@@ -42,6 +42,7 @@ class Terminal
 
     /**
      * Gets the terminal height.
+	 * 获取终端高度
      *
      * @return int
      */
@@ -61,29 +62,27 @@ class Terminal
 
     /**
      * @internal
-     *
-     * @return bool
      */
-    public static function hasSttyAvailable()
+    public static function hasSttyAvailable(): bool
     {
         if (null !== self::$stty) {
             return self::$stty;
         }
 
-        // skip check if exec function is disabled
-        if (!\function_exists('exec')) {
+        // skip check if shell_exec function is disabled
+		// 跳过检查shell_exec函数是否禁用
+        if (!\function_exists('shell_exec')) {
             return false;
         }
 
-        exec('stty 2>&1', $output, $exitcode);
-
-        return self::$stty = 0 === $exitcode;
+        return self::$stty = (bool) shell_exec('stty 2> '.('\\' === \DIRECTORY_SEPARATOR ? 'NUL' : '/dev/null'));
     }
 
     private static function initDimensions()
     {
         if ('\\' === \DIRECTORY_SEPARATOR) {
-            if (preg_match('/^(\d+)x(\d+)(?: \((\d+)x(\d+)\))?$/', trim(getenv('ANSICON')), $matches)) {
+            $ansicon = getenv('ANSICON');
+            if (false !== $ansicon && preg_match('/^(\d+)x(\d+)(?: \((\d+)x(\d+)\))?$/', trim($ansicon), $matches)) {
                 // extract [w, H] from "wxh (WxH)"
                 // or [w, h] from "wxh"
                 self::$width = (int) $matches[1];
@@ -104,6 +103,7 @@ class Terminal
 
     /**
      * Returns whether STDOUT has vt100 support (some Windows 10+ configurations).
+	 * 返回STDOUT是否支持vt100（一些Windows 10+配置）
      */
     private static function hasVt100Support(): bool
     {
@@ -112,6 +112,7 @@ class Terminal
 
     /**
      * Initializes dimensions using the output of an stty columns line.
+	 * 使用stty列行的输出初始化维度
      */
     private static function initDimensionsUsingStty()
     {
@@ -130,6 +131,7 @@ class Terminal
 
     /**
      * Runs and parses mode CON if it's available, suppressing any error output.
+	 * 运行和解析模式CON,如果它可用,抑制任何错误输出。
      *
      * @return int[]|null An array composed of the width and the height or null if it could not be parsed
      */
@@ -146,6 +148,7 @@ class Terminal
 
     /**
      * Runs and parses stty -a if it's available, suppressing any error output.
+	 * 运行和解析stty a -如果它可用,抑制任何错误输出。
      */
     private static function getSttyColumns(): ?string
     {
@@ -163,8 +166,9 @@ class Terminal
             2 => ['pipe', 'w'],
         ];
 
-        $process = proc_open($command, $descriptorspec, $pipes, null, null, ['suppress_errors' => true]);
-        if (!\is_resource($process)) {
+        $cp = \function_exists('sapi_windows_cp_set') ? sapi_windows_cp_get() : 0;
+
+        if (!$process = @proc_open($command, $descriptorspec, $pipes, null, null, ['suppress_errors' => true])) {
             return null;
         }
 
@@ -172,6 +176,10 @@ class Terminal
         fclose($pipes[1]);
         fclose($pipes[2]);
         proc_close($process);
+
+        if ($cp) {
+            sapi_windows_cp_set($cp);
+        }
 
         return $info;
     }

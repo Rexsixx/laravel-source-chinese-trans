@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http内核，缓存预热器，Cache Warmer
+ * Symfony，Component，HttpKernel，缓存回暖，缓存回暖抽象类
  */
 
 /*
@@ -16,12 +16,13 @@ namespace Symfony\Component\HttpKernel\CacheWarmer;
 
 /**
  * Abstract cache warmer that knows how to write a file to the cache.
+ * 抽象缓存加热器，它知道如何将文件写入缓存。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 abstract class CacheWarmer implements CacheWarmerInterface
 {
-    protected function writeCacheFile($file, $content)
+    protected function writeCacheFile(string $file, $content)
     {
         $tmpFile = @tempnam(\dirname($file), basename($file));
         if (false !== @file_put_contents($tmpFile, $content) && @rename($tmpFile, $file)) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，查询记录器，Query
+ * Facade，Ignition，查询记录器，查询
  */
 
 namespace Facade\Ignition\QueryRecorder;

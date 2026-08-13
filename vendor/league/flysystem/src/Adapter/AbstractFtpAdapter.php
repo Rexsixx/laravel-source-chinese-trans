@@ -1,6 +1,6 @@
 <?php
 /**
- * League，Flysystem，适配器，抽象Ftp适配器
+ * League，Flysystem，Adapter，抽象 Ftp适配器
  */
 
 namespace League\Flysystem\Adapter;
@@ -75,17 +75,21 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     protected $systemType;
 
     /**
-     * @var bool
-     */
-    protected $alternativeRecursion = false;
-
-    /**
      * @var SafeStorage
      */
     protected $safeStorage;
 
     /**
+     * True to enable timestamps for FTP servers that return unix-style listings.
+	 * 为启用返回unix风格列表的FTP服务器的时间戳
+     *
+     * @var bool
+     */
+    protected $enableTimestampsOnUnixListings = false;
+
+    /**
      * Constructor.
+	 * 构造方法
      *
      * @param array $config
      */
@@ -97,6 +101,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the config.
+	 * 设置配置
      *
      * @param array $config
      *
@@ -121,6 +126,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the host.
+	 * 返回主机
      *
      * @return string
      */
@@ -131,6 +137,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the host.
+	 * 设置主机
      *
      * @param string $host
      *
@@ -145,6 +152,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the public permission value.
+	 * 设置公共权限值
      *
      * @param int $permPublic
      *
@@ -159,6 +167,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the private permission value.
+	 * 设置私有权限值
      *
      * @param int $permPrivate
      *
@@ -173,6 +182,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the ftp port.
+	 * 返回ftp端口
      *
      * @return int
      */
@@ -183,6 +193,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the root folder to work from.
+	 * 返回要从中工作的根文件夹
      *
      * @return string
      */
@@ -193,6 +204,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the ftp port.
+	 * 设置ftp端口
      *
      * @param int|string $port
      *
@@ -207,6 +219,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the root folder to work from.
+	 * 设置根文件夹
      *
      * @param string $root
      *
@@ -221,6 +234,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the ftp username.
+	 * 返回ftp用户名
      *
      * @return string username
      */
@@ -233,6 +247,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set ftp username.
+	 * 设置ftp用户名
      *
      * @param string $username
      *
@@ -247,6 +262,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the password.
+	 * 返回密码
      *
      * @return string password
      */
@@ -257,6 +273,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the ftp password.
+	 * 设置ftp密码
      *
      * @param string $password
      *
@@ -271,6 +288,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Returns the amount of seconds before the connection will timeout.
+	 * 返回连接超时前的秒数
      *
      * @return int
      */
@@ -281,6 +299,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the amount of seconds before the connection should timeout.
+	 * 设置连接超时前的秒数
      *
      * @param int $timeout
      *
@@ -295,6 +314,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Return the FTP system type.
+	 * 返回FTP系统类型
      *
      * @return string
      */
@@ -305,6 +325,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Set the FTP system type (windows or unix).
+	 * 设置FTP系统类型(windows或unix)
      *
      * @param string $systemType
      *
@@ -313,6 +334,21 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     public function setSystemType($systemType)
     {
         $this->systemType = strtolower($systemType);
+
+        return $this;
+    }
+
+    /**
+     * True to enable timestamps for FTP servers that return unix-style listings.
+	 * 为启用返回unix风格列表的FTP服务器的时间戳
+     *
+     * @param bool $bool
+     *
+     * @return $this
+     */
+    public function setEnableTimestampsOnUnixListings($bool = false)
+    {
+        $this->enableTimestampsOnUnixListings = $bool;
 
         return $this;
     }
@@ -329,6 +365,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Normalize a directory listing.
+	 * 规范化目录列表
      *
      * @param array  $listing
      * @param string $prefix
@@ -355,6 +392,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Sort a directory listing.
+	 * 对目录列表进行排序
      *
      * @param array $result
      *
@@ -373,6 +411,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Normalize a file entry.
+	 * 将文件条目规范化
      *
      * @param string $item
      * @param string $base
@@ -396,6 +435,19 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Normalize a Unix file entry.
+	 * 将Unix文件条目规范化
+     *
+     * Given $item contains:
+     *    '-rw-r--r--   1 ftp      ftp           409 Aug 19 09:01 file1.txt'
+     *
+     * This function will return:
+     * [
+     *   'type' => 'file',
+     *   'path' => 'file1.txt',
+     *   'visibility' => 'public',
+     *   'size' => 409,
+     *   'timestamp' => 1566205260
+     * ]
      *
      * @param string $item
      * @param string $base
@@ -410,23 +462,68 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
             throw new RuntimeException("Metadata can't be parsed from item '$item' , not enough parts.");
         }
 
-        list($permissions, /* $number */, /* $owner */, /* $group */, $size, /* $month */, /* $day */, /* $time*/, $name) = explode(' ', $item, 9);
+        list($permissions, /* $number */, /* $owner */, /* $group */, $size, $month, $day, $timeOrYear, $name) = explode(' ', $item, 9);
         $type = $this->detectType($permissions);
         $path = $base === '' ? $name : $base . $this->separator . $name;
 
         if ($type === 'dir') {
-            return compact('type', 'path');
+            $result = compact('type', 'path');
+            if ($this->enableTimestampsOnUnixListings) {
+                $timestamp = $this->normalizeUnixTimestamp($month, $day, $timeOrYear);
+                $result += compact('timestamp');
+            }
+
+            return $result;
         }
 
         $permissions = $this->normalizePermissions($permissions);
         $visibility = $permissions & 0044 ? AdapterInterface::VISIBILITY_PUBLIC : AdapterInterface::VISIBILITY_PRIVATE;
         $size = (int) $size;
 
-        return compact('type', 'path', 'visibility', 'size');
+        $result = compact('type', 'path', 'visibility', 'size');
+        if ($this->enableTimestampsOnUnixListings) {
+            $timestamp = $this->normalizeUnixTimestamp($month, $day, $timeOrYear);
+            $result += compact('timestamp');
+        }
+
+        return $result;
+    }
+
+    /**
+     * Only accurate to the minute (current year), or to the day.
+	 * 只准确到一分钟(一分钟),或到当天。
+     *
+     * Inadequacies in timestamp accuracy are due to limitations of the FTP 'LIST' command
+     *
+     * Note: The 'MLSD' command is a machine-readable replacement for 'LIST'
+     * but many FTP servers do not support it :(
+     *
+     * @param string $month      e.g. 'Aug'
+     * @param string $day        e.g. '19'
+     * @param string $timeOrYear e.g. '09:01' OR '2015'
+     *
+     * @return int
+     */
+    protected function normalizeUnixTimestamp($month, $day, $timeOrYear)
+    {
+        if (is_numeric($timeOrYear)) {
+            $year = $timeOrYear;
+            $hour = '00';
+            $minute = '00';
+            $seconds = '00';
+        } else {
+            $year = date('Y');
+            list($hour, $minute) = explode(':', $timeOrYear);
+            $seconds = '00';
+        }
+        $dateTime = DateTime::createFromFormat('Y-M-j-G:i:s', "{$year}-{$month}-{$day}-{$hour}:{$minute}:{$seconds}");
+
+        return $dateTime->getTimestamp();
     }
 
     /**
      * Normalize a Windows/DOS file entry.
+	 * 将Windows / DOS文件条目规范化
      *
      * @param string $item
      * @param string $base
@@ -464,6 +561,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Get the system type from a listing item.
+	 * 从列表项获取系统类型
      *
      * @param string $item
      *
@@ -471,11 +569,12 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
      */
     protected function detectSystemType($item)
     {
-        return preg_match('/^[0-9]{2,4}-[0-9]{2}-[0-9]{2}/', $item) ? 'windows' : 'unix';
+        return preg_match('/^[0-9]{2,4}-[0-9]{2}-[0-9]{2}/', trim($item)) ? 'windows' : 'unix';
     }
 
     /**
      * Get the file type from the permissions.
+	 * 从权限中获取文件类型
      *
      * @param string $permissions
      *
@@ -488,6 +587,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Normalize a permissions string.
+	 * 将权限字符串规范化
      *
      * @param string $permissions
      *
@@ -495,6 +595,10 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
      */
     protected function normalizePermissions($permissions)
     {
+        if (is_numeric($permissions)) {
+            return ((int) $permissions) & 0777;
+        }
+
         // remove the type identifier
         $permissions = substr($permissions, 1);
 
@@ -516,6 +620,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Filter out dot-directories.
+	 * 过滤掉。directory。
      *
      * @param array $list
      *
@@ -556,6 +661,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Ensure a directory exists.
+	 * 确保存在一个目录
      *
      * @param string $dirname
      */
@@ -573,10 +679,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
      */
     public function getConnection()
     {
-        $tries = 0;
-
-        while ( ! $this->isConnected() && $tries < 3) {
-            $tries++;
+        if ( ! $this->isConnected()) {
             $this->disconnect();
             $this->connect();
         }
@@ -586,6 +689,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Get the public permission value.
+	 * 获得公共权限值
      *
      * @return int
      */
@@ -596,6 +700,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Get the private permission value.
+	 * 获得私有权限值
      *
      * @return int
      */
@@ -606,6 +711,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Disconnect on destruction.
+	 * 断开破坏
      */
     public function __destruct()
     {
@@ -614,18 +720,26 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
     /**
      * Establish a connection.
+	 * 建立连接
      */
     abstract public function connect();
 
     /**
      * Close the connection.
+	 * 关闭连接
      */
     abstract public function disconnect();
 
     /**
      * Check if a connection is active.
+	 * 检查连接是否活动
      *
      * @return bool
      */
     abstract public function isConnected();
+
+    protected function escapePath($path)
+    {
+        return str_replace(['*', '[', ']'], ['\\*', '\\[', '\\]'], $path);
+    }
 }

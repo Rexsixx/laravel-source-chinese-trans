@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，分析器，分析器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollectorInterface;
 
 /**
  * Profile.
+ * 分析器
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -48,20 +52,16 @@ class Profile
         $this->token = $token;
     }
 
-    /**
-     * Sets the token.
-     *
-     * @param string $token The token
-     */
-    public function setToken($token)
+    public function setToken(string $token)
     {
         $this->token = $token;
     }
 
     /**
      * Gets the token.
+	 * 获取令牌
      *
-     * @return string The token
+     * @return string
      */
     public function getToken()
     {
@@ -70,6 +70,7 @@ class Profile
 
     /**
      * Sets the parent token.
+	 * 设置父令牌
      */
     public function setParent(self $parent)
     {
@@ -78,8 +79,9 @@ class Profile
 
     /**
      * Returns the parent profile.
+	 * 返回父文件
      *
-     * @return self
+     * @return self|null
      */
     public function getParent()
     {
@@ -88,8 +90,9 @@ class Profile
 
     /**
      * Returns the parent token.
+	 * 返回父令牌
      *
-     * @return string|null The parent token
+     * @return string|null
      */
     public function getParentToken()
     {
@@ -98,79 +101,66 @@ class Profile
 
     /**
      * Returns the IP.
+	 * 返回IP
      *
-     * @return string|null The IP
+     * @return string|null
      */
     public function getIp()
     {
         return $this->ip;
     }
 
-    /**
-     * Sets the IP.
-     *
-     * @param string $ip
-     */
-    public function setIp($ip)
+    public function setIp(?string $ip)
     {
         $this->ip = $ip;
     }
 
     /**
      * Returns the request method.
+	 * 返回请求方法
      *
-     * @return string|null The request method
+     * @return string|null
      */
     public function getMethod()
     {
         return $this->method;
     }
 
-    public function setMethod($method)
+    public function setMethod(string $method)
     {
         $this->method = $method;
     }
 
     /**
      * Returns the URL.
+	 * 返回URL
      *
-     * @return string|null The URL
+     * @return string|null
      */
     public function getUrl()
     {
         return $this->url;
     }
 
-    /**
-     * @param string $url
-     */
-    public function setUrl($url)
+    public function setUrl(?string $url)
     {
         $this->url = $url;
     }
 
     /**
-     * Returns the time.
-     *
-     * @return int The time
+     * @return int
      */
     public function getTime()
     {
         return $this->time ?? 0;
     }
 
-    /**
-     * @param int $time The time
-     */
-    public function setTime($time)
+    public function setTime(int $time)
     {
         $this->time = $time;
     }
 
-    /**
-     * @param int $statusCode
-     */
-    public function setStatusCode($statusCode)
+    public function setStatusCode(int $statusCode)
     {
         $this->statusCode = $statusCode;
     }
@@ -185,6 +175,7 @@ class Profile
 
     /**
      * Finds children profilers.
+	 * 查找子分析器
      *
      * @return self[]
      */
@@ -195,6 +186,7 @@ class Profile
 
     /**
      * Sets children profiler.
+	 * 设置子分析器
      *
      * @param Profile[] $children
      */
@@ -208,6 +200,7 @@ class Profile
 
     /**
      * Adds the child token.
+	 * 添加子标记
      */
     public function addChild(self $child)
     {
@@ -228,14 +221,13 @@ class Profile
 
     /**
      * Gets a Collector by name.
+	 * 以名字获取集热器
      *
-     * @param string $name A collector name
-     *
-     * @return DataCollectorInterface A DataCollectorInterface instance
+     * @return DataCollectorInterface
      *
      * @throws \InvalidArgumentException if the collector does not exist
      */
-    public function getCollector($name)
+    public function getCollector(string $name)
     {
         if (!isset($this->collectors[$name])) {
             throw new \InvalidArgumentException(sprintf('Collector "%s" does not exist.', $name));
@@ -246,6 +238,7 @@ class Profile
 
     /**
      * Gets the Collectors associated with this profile.
+	 * 获取与此概要相关的收集器
      *
      * @return DataCollectorInterface[]
      */
@@ -256,6 +249,7 @@ class Profile
 
     /**
      * Sets the Collectors associated with this profile.
+	 * 设置与此概要文件相关的收集器
      *
      * @param DataCollectorInterface[] $collectors
      */
@@ -269,6 +263,7 @@ class Profile
 
     /**
      * Adds a Collector.
+	 * 添加一个收集器
      */
     public function addCollector(DataCollectorInterface $collector)
     {
@@ -276,13 +271,9 @@ class Profile
     }
 
     /**
-     * Returns true if a Collector for the given name exists.
-     *
-     * @param string $name A collector name
-     *
      * @return bool
      */
-    public function hasCollector($name)
+    public function hasCollector(string $name)
     {
         return isset($this->collectors[$name]);
     }

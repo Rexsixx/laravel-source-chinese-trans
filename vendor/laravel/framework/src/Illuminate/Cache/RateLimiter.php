@@ -1,10 +1,11 @@
 <?php
 /**
- * 缓存，缓存速率限制类
+ * Illuminate，缓存，速率限制器
  */
 
 namespace Illuminate\Cache;
 
+use Closure;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Support\InteractsWithTime;
 
@@ -21,8 +22,16 @@ class RateLimiter
     protected $cache;
 
     /**
+     * The configured limit object resolvers.
+	 * 配置的限制对象解析器
+     *
+     * @var array
+     */
+    protected $limiters = [];
+
+    /**
      * Create a new rate limiter instance.
-	 * 创建新的速率限制实例
+	 * 创建一个新的速率限制器实例
      *
      * @param  \Illuminate\Contracts\Cache\Repository  $cache
      * @return void
@@ -30,6 +39,54 @@ class RateLimiter
     public function __construct(Cache $cache)
     {
         $this->cache = $cache;
+    }
+
+    /**
+     * Register a named limiter configuration.
+	 * 注册一个命名的限制器配置
+     *
+     * @param  string  $name
+     * @param  \Closure  $callback
+     * @return $this
+     */
+    public function for(string $name, Closure $callback)
+    {
+        $this->limiters[$name] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Get the given named rate limiter.
+	 * 获取给定的命名速率限制器
+     *
+     * @param  string  $name
+     * @return \Closure
+     */
+    public function limiter(string $name)
+    {
+        return $this->limiters[$name] ?? null;
+    }
+
+    /**
+     * Attempts to execute a callback if it's not limited.
+	 * 如果没有限制，尝试执行回调。
+     *
+     * @param  string  $key
+     * @param  int  $maxAttempts
+     * @param  \Closure  $callback
+     * @param  int  $decaySeconds
+     * @return mixed
+     */
+    public function attempt($key, $maxAttempts, Closure $callback, $decaySeconds = 60)
+    {
+        if ($this->tooManyAttempts($key, $maxAttempts)) {
+            return false;
+        }
+
+        return tap($callback() ?: true, function () use ($key, $decaySeconds) {
+            $this->hit($key, $decaySeconds);
+        });
     }
 
     /**
@@ -84,7 +141,7 @@ class RateLimiter
 
     /**
      * Get the number of attempts for the given key.
-	 * 得到给定键的尝试次数
+	 * 获取给定键的尝试次数
      *
      * @param  string  $key
      * @return mixed
@@ -98,7 +155,7 @@ class RateLimiter
 
     /**
      * Reset the number of attempts for the given key.
-	 * 重置尝试次数
+	 * 重置给定键的尝试次数
      *
      * @param  string  $key
      * @return mixed
@@ -112,7 +169,24 @@ class RateLimiter
 
     /**
      * Get the number of retries left for the given key.
-	 * 得到给定键剩下的重试次数
+	 * 获取给定键剩下的重试次数
+     *
+     * @param  string  $key
+     * @param  int  $maxAttempts
+     * @return int
+     */
+    public function remaining($key, $maxAttempts)
+    {
+        $key = $this->cleanRateLimiterKey($key);
+
+        $attempts = $this->attempts($key);
+
+        return $maxAttempts - $attempts;
+    }
+
+    /**
+     * Get the number of retries left for the given key.
+	 * 获取给定键剩下的重试次数
      *
      * @param  string  $key
      * @param  int  $maxAttempts
@@ -120,11 +194,7 @@ class RateLimiter
      */
     public function retriesLeft($key, $maxAttempts)
     {
-        $key = $this->cleanRateLimiterKey($key);
-
-        $attempts = $this->attempts($key);
-
-        return $maxAttempts - $attempts;
+        return $this->remaining($key, $maxAttempts);
     }
 
     /**
@@ -145,7 +215,7 @@ class RateLimiter
 
     /**
      * Get the number of seconds until the "key" is accessible again.
-	 * 得到"密钥"再次可访问之前的秒数
+	 * 获取"密钥"再次可访问之前的秒数
      *
      * @param  string  $key
      * @return int
@@ -154,7 +224,7 @@ class RateLimiter
     {
         $key = $this->cleanRateLimiterKey($key);
 
-        return $this->cache->get($key.':timer') - $this->currentTime();
+        return max(0, $this->cache->get($key.':timer') - $this->currentTime());
     }
 
     /**

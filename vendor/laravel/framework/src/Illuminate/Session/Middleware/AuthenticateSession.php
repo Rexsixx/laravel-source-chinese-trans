@@ -1,6 +1,6 @@
 <?php
 /**
- * 会话，身份验证会话
+ * Illuminate，Session，中间件，身份验证会话
  */
 
 namespace Illuminate\Session\Middleware;
@@ -45,7 +45,7 @@ class AuthenticateSession
             return $next($request);
         }
 
-        if ($this->auth->viaRemember()) {
+        if ($this->guard()->viaRemember()) {
             $passwordHash = explode('|', $request->cookies->get($this->auth->getRecallerName()))[2] ?? null;
 
             if (! $passwordHash || $passwordHash != $request->user()->getAuthPassword()) {
@@ -53,22 +53,24 @@ class AuthenticateSession
             }
         }
 
-        if (! $request->session()->has('password_hash')) {
+        if (! $request->session()->has('password_hash_'.$this->auth->getDefaultDriver())) {
             $this->storePasswordHashInSession($request);
         }
 
-        if ($request->session()->get('password_hash') !== $request->user()->getAuthPassword()) {
+        if ($request->session()->get('password_hash_'.$this->auth->getDefaultDriver()) !== $request->user()->getAuthPassword()) {
             $this->logout($request);
         }
 
         return tap($next($request), function () use ($request) {
-            $this->storePasswordHashInSession($request);
+            if (! is_null($this->guard()->user())) {
+                $this->storePasswordHashInSession($request);
+            }
         });
     }
 
     /**
      * Store the user's current password hash in the session.
-	 * 散列用户的当前密码存储在会话中
+	 * 将用户的当前密码散列存储在会话中
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void
@@ -80,13 +82,13 @@ class AuthenticateSession
         }
 
         $request->session()->put([
-            'password_hash' => $request->user()->getAuthPassword(),
+            'password_hash_'.$this->auth->getDefaultDriver() => $request->user()->getAuthPassword(),
         ]);
     }
 
     /**
      * Log the user out of the application.
-	 * 注销用户从应用程序中
+	 * 将用户从应用程序中注销
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void
@@ -95,10 +97,21 @@ class AuthenticateSession
      */
     protected function logout($request)
     {
-        $this->auth->logoutCurrentDevice();
+        $this->guard()->logoutCurrentDevice();
 
         $request->session()->flush();
 
-        throw new AuthenticationException;
+        throw new AuthenticationException('Unauthenticated.', [$this->auth->getDefaultDriver()]);
+    }
+
+    /**
+     * Get the guard instance that should be used by the middleware.
+	 * 获取中间件应该使用的保护实例
+     *
+     * @return \Illuminate\Contracts\Auth\Factory|\Illuminate\Contracts\Auth\Guard
+     */
+    protected function guard()
+    {
+        return $this->auth;
     }
 }

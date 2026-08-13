@@ -1,6 +1,6 @@
 <?php
 /**
- * 授权，需要密码
+ * Illuminate，认证，中间件，需要密码
  */
 
 namespace Illuminate\Auth\Middleware;
@@ -21,7 +21,7 @@ class RequirePassword
 
     /**
      * The URL generator instance.
-	 * 生成器实例URL
+	 * URL生成器实例
      *
      * @var \Illuminate\Contracts\Routing\UrlGenerator
      */

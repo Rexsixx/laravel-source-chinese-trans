@@ -1,7 +1,11 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，响应
+ */
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -16,6 +20,7 @@ class_exists(ResponseHeaderBag::class);
 
 /**
  * Response represents an HTTP response.
+ * Response表示HTTP响应
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -67,17 +72,12 @@ class Response
     public const HTTP_UNPROCESSABLE_ENTITY = 422;                                        // RFC4918
     public const HTTP_LOCKED = 423;                                                      // RFC4918
     public const HTTP_FAILED_DEPENDENCY = 424;                                           // RFC4918
-
-    /**
-     * @deprecated
-     */
-    public const HTTP_RESERVED_FOR_WEBDAV_ADVANCED_COLLECTIONS_EXPIRED_PROPOSAL = 425;   // RFC2817
     public const HTTP_TOO_EARLY = 425;                                                   // RFC-ietf-httpbis-replay-04
     public const HTTP_UPGRADE_REQUIRED = 426;                                            // RFC2817
     public const HTTP_PRECONDITION_REQUIRED = 428;                                       // RFC6585
     public const HTTP_TOO_MANY_REQUESTS = 429;                                           // RFC6585
     public const HTTP_REQUEST_HEADER_FIELDS_TOO_LARGE = 431;                             // RFC6585
-    public const HTTP_UNAVAILABLE_FOR_LEGAL_REASONS = 451;
+    public const HTTP_UNAVAILABLE_FOR_LEGAL_REASONS = 451;                               // RFC7725
     public const HTTP_INTERNAL_SERVER_ERROR = 500;
     public const HTTP_NOT_IMPLEMENTED = 501;
     public const HTTP_BAD_GATEWAY = 502;
@@ -89,6 +89,24 @@ class Response
     public const HTTP_LOOP_DETECTED = 508;                                               // RFC5842
     public const HTTP_NOT_EXTENDED = 510;                                                // RFC2774
     public const HTTP_NETWORK_AUTHENTICATION_REQUIRED = 511;                             // RFC6585
+
+    /**
+     * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+     */
+    private const HTTP_RESPONSE_CACHE_CONTROL_DIRECTIVES = [
+        'must_revalidate' => false,
+        'no_cache' => false,
+        'no_store' => false,
+        'no_transform' => false,
+        'public' => false,
+        'private' => false,
+        'proxy_revalidate' => false,
+        'max_age' => true,
+        's_maxage' => true,
+        'immutable' => false,
+        'last_modified' => true,
+        'etag' => true,
+    ];
 
     /**
      * @var ResponseHeaderBag
@@ -122,10 +140,11 @@ class Response
 
     /**
      * Status codes translation table.
+	 * 状态码转换表
      *
      * The list of codes is complete according to the
      * {@link https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml Hypertext Transfer Protocol (HTTP) Status Code Registry}
-     * (last updated 2018-09-21).
+     * (last updated 2021-10-01).
      *
      * Unless otherwise noted, the status code is defined in RFC2616.
      *
@@ -167,14 +186,14 @@ class Response
         410 => 'Gone',
         411 => 'Length Required',
         412 => 'Precondition Failed',
-        413 => 'Payload Too Large',
+        413 => 'Content Too Large',                                           // RFC-ietf-httpbis-semantics
         414 => 'URI Too Long',
         415 => 'Unsupported Media Type',
         416 => 'Range Not Satisfiable',
         417 => 'Expectation Failed',
         418 => 'I\'m a teapot',                                               // RFC2324
         421 => 'Misdirected Request',                                         // RFC7540
-        422 => 'Unprocessable Entity',                                        // RFC4918
+        422 => 'Unprocessable Content',                                       // RFC-ietf-httpbis-semantics
         423 => 'Locked',                                                      // RFC4918
         424 => 'Failed Dependency',                                           // RFC4918
         425 => 'Too Early',                                                   // RFC-ietf-httpbis-replay-04
@@ -199,7 +218,7 @@ class Response
     /**
      * @throws \InvalidArgumentException When the HTTP status code is not valid
      */
-    public function __construct($content = '', int $status = 200, array $headers = [])
+    public function __construct(?string $content = '', int $status = 200, array $headers = [])
     {
         $this->headers = new ResponseHeaderBag($headers);
         $this->setContent($content);
@@ -209,31 +228,33 @@ class Response
 
     /**
      * Factory method for chainability.
+	 * 可链性的工厂方法
      *
      * Example:
      *
      *     return Response::create($body, 200)
      *         ->setSharedMaxAge(300);
      *
-     * @param mixed $content The response content, see setContent()
-     * @param int   $status  The response status code
-     * @param array $headers An array of response headers
-     *
      * @return static
+     *
+     * @deprecated since Symfony 5.1, use __construct() instead.
      */
-    public static function create($content = '', $status = 200, $headers = [])
+    public static function create(?string $content = '', int $status = 200, array $headers = [])
     {
+        trigger_deprecation('symfony/http-foundation', '5.1', 'The "%s()" method is deprecated, use "new %s()" instead.', __METHOD__, static::class);
+
         return new static($content, $status, $headers);
     }
 
     /**
      * Returns the Response as an HTTP string.
+	 * 以HTTP字符串的形式返回响应
      *
      * The string representation of the Response is the same as the
      * one that will be sent to the client only if the prepare() method
      * has been called before.
      *
-     * @return string The Response as an HTTP string
+     * @return string
      *
      * @see prepare()
      */
@@ -247,6 +268,7 @@ class Response
 
     /**
      * Clones the current Response instance.
+	 * 克隆当前的Response实例
      */
     public function __clone()
     {
@@ -255,6 +277,7 @@ class Response
 
     /**
      * Prepares the Response before it is sent to the client.
+	 * 在发送到客户端之前准备响应
      *
      * This method tweaks the Response to ensure that it is
      * compliant with RFC 2616. Most of the changes are based on
@@ -285,7 +308,7 @@ class Response
             $charset = $this->charset ?: 'UTF-8';
             if (!$headers->has('Content-Type')) {
                 $headers->set('Content-Type', 'text/html; charset='.$charset);
-            } elseif (0 === stripos($headers->get('Content-Type'), 'text/') && false === stripos($headers->get('Content-Type'), 'charset')) {
+            } elseif (0 === stripos($headers->get('Content-Type') ?? '', 'text/') && false === stripos($headers->get('Content-Type') ?? '', 'charset')) {
                 // add the charset
                 $headers->set('Content-Type', $headers->get('Content-Type').'; charset='.$charset);
             }
@@ -329,6 +352,7 @@ class Response
 
     /**
      * Sends HTTP headers.
+	 * 发送HTTP报头
      *
      * @return $this
      */
@@ -360,6 +384,7 @@ class Response
 
     /**
      * Sends content for the current web response.
+	 * 为当前web响应发送内容
      *
      * @return $this
      */
@@ -372,6 +397,7 @@ class Response
 
     /**
      * Sends HTTP headers and content.
+	 * 发送HTTP头和内容
      *
      * @return $this
      */
@@ -382,8 +408,11 @@ class Response
 
         if (\function_exists('fastcgi_finish_request')) {
             fastcgi_finish_request();
+        } elseif (\function_exists('litespeed_finish_request')) {
+            litespeed_finish_request();
         } elseif (!\in_array(\PHP_SAPI, ['cli', 'phpdbg'], true)) {
             static::closeOutputBuffers(0, true);
+            flush();
         }
 
         return $this;
@@ -391,28 +420,20 @@ class Response
 
     /**
      * Sets the response content.
-     *
-     * Valid types are strings, numbers, null, and objects that implement a __toString() method.
-     *
-     * @param mixed $content Content that can be cast to string
+	 * 设置响应内容
      *
      * @return $this
-     *
-     * @throws \UnexpectedValueException
      */
-    public function setContent($content)
+    public function setContent(?string $content)
     {
-        if (null !== $content && !\is_string($content) && !is_numeric($content) && !\is_callable([$content, '__toString'])) {
-            throw new \UnexpectedValueException(sprintf('The Response content must be a string or object implementing __toString(), "%s" given.', \gettype($content)));
-        }
-
-        $this->content = (string) $content;
+        $this->content = $content ?? '';
 
         return $this;
     }
 
     /**
      * Gets the current response content.
+	 * 获取当前响应内容
      *
      * @return string|false
      */
@@ -423,12 +444,13 @@ class Response
 
     /**
      * Sets the HTTP protocol version (1.0 or 1.1).
+	 * 设置HTTP协议版本（1.0或1.1）
      *
      * @return $this
      *
      * @final
      */
-    public function setProtocolVersion(string $version)
+    public function setProtocolVersion(string $version): object
     {
         $this->version = $version;
 
@@ -437,6 +459,7 @@ class Response
 
     /**
      * Gets the HTTP protocol version.
+	 * 获取HTTP协议版本
      *
      * @final
      */
@@ -447,6 +470,7 @@ class Response
 
     /**
      * Sets the response status code.
+	 * 设置响应状态码
      *
      * If the status text is null it will be automatically populated for the known
      * status codes and left empty otherwise.
@@ -457,7 +481,7 @@ class Response
      *
      * @final
      */
-    public function setStatusCode(int $code, $text = null)
+    public function setStatusCode(int $code, ?string $text = null): object
     {
         $this->statusCode = $code;
         if ($this->isInvalid()) {
@@ -483,6 +507,7 @@ class Response
 
     /**
      * Retrieves the status code for the current web response.
+	 * 检索当前web响应的状态码
      *
      * @final
      */
@@ -493,12 +518,13 @@ class Response
 
     /**
      * Sets the response charset.
+	 * 设置响应字符集
      *
      * @return $this
      *
      * @final
      */
-    public function setCharset(string $charset)
+    public function setCharset(string $charset): object
     {
         $this->charset = $charset;
 
@@ -507,6 +533,7 @@ class Response
 
     /**
      * Retrieves the response charset.
+	 * 检索响应字符集
      *
      * @final
      */
@@ -517,6 +544,7 @@ class Response
 
     /**
      * Returns true if the response may safely be kept in a shared (surrogate) cache.
+	 * 如果响应可以安全地保存在共享（代理）缓存中，则返回true。
      *
      * Responses marked "private" with an explicit Cache-Control directive are
      * considered uncacheable.
@@ -547,6 +575,7 @@ class Response
 
     /**
      * Returns true if the response is "fresh".
+	 * 如果响应为"fresh"则返回true
      *
      * Fresh responses may be served from cache without any interaction with the
      * origin. A response is considered fresh when it includes a Cache-Control/max-age
@@ -562,6 +591,7 @@ class Response
     /**
      * Returns true if the response includes headers that can be used to validate
      * the response with the origin server using a conditional GET request.
+	 * 如果响应包含可用于验证的标头，则返回true。
      *
      * @final
      */
@@ -572,6 +602,7 @@ class Response
 
     /**
      * Marks the response as "private".
+	 * 将响应标记为"私有"
      *
      * It makes the response ineligible for serving other clients.
      *
@@ -579,7 +610,7 @@ class Response
      *
      * @final
      */
-    public function setPrivate()
+    public function setPrivate(): object
     {
         $this->headers->removeCacheControlDirective('public');
         $this->headers->addCacheControlDirective('private');
@@ -589,6 +620,7 @@ class Response
 
     /**
      * Marks the response as "public".
+	 * 将回复标记为"公开"
      *
      * It makes the response eligible for serving other clients.
      *
@@ -596,7 +628,7 @@ class Response
      *
      * @final
      */
-    public function setPublic()
+    public function setPublic(): object
     {
         $this->headers->addCacheControlDirective('public');
         $this->headers->removeCacheControlDirective('private');
@@ -606,12 +638,13 @@ class Response
 
     /**
      * Marks the response as "immutable".
+	 * 将响应标记为"不可变"
      *
      * @return $this
      *
      * @final
      */
-    public function setImmutable(bool $immutable = true)
+    public function setImmutable(bool $immutable = true): object
     {
         if ($immutable) {
             $this->headers->addCacheControlDirective('immutable');
@@ -624,6 +657,7 @@ class Response
 
     /**
      * Returns true if the response is marked as "immutable".
+	 * 如果响应被标记为"不可变"则返回true
      *
      * @final
      */
@@ -634,6 +668,7 @@ class Response
 
     /**
      * Returns true if the response must be revalidated by shared caches once it has become stale.
+	 * 如果响应过时后必须由共享缓存重新验证，则返回true。
      *
      * This method indicates that the response must not be served stale by a
      * cache in any circumstance without first revalidating with the origin.
@@ -649,6 +684,7 @@ class Response
 
     /**
      * Returns the Date header as a DateTime instance.
+	 * 返回Date头作为DateTime实例
      *
      * @throws \RuntimeException When the header is not parseable
      *
@@ -661,12 +697,13 @@ class Response
 
     /**
      * Sets the Date header.
+	 * 设置日期头
      *
      * @return $this
      *
      * @final
      */
-    public function setDate(\DateTimeInterface $date)
+    public function setDate(\DateTimeInterface $date): object
     {
         if ($date instanceof \DateTime) {
             $date = \DateTimeImmutable::createFromMutable($date);
@@ -680,6 +717,7 @@ class Response
 
     /**
      * Returns the age of the response in seconds.
+	 * 以秒为单位返回响应的年纪
      *
      * @final
      */
@@ -694,6 +732,7 @@ class Response
 
     /**
      * Marks the response stale by setting the Age header to be equal to the maximum age of the response.
+	 * 通过将Age头设置为等于响应的最大年龄来标记响应过期。
      *
      * @return $this
      */
@@ -709,6 +748,7 @@ class Response
 
     /**
      * Returns the value of the Expires header as a DateTime instance.
+	 * 返回Expires报头的值作为DateTime实例
      *
      * @final
      */
@@ -724,6 +764,7 @@ class Response
 
     /**
      * Sets the Expires HTTP header with a DateTime instance.
+	 * 使用DateTime实例设置Expires HTTP报头
      *
      * Passing null as value will remove the header.
      *
@@ -731,7 +772,7 @@ class Response
      *
      * @final
      */
-    public function setExpires(\DateTimeInterface $date = null)
+    public function setExpires(?\DateTimeInterface $date = null): object
     {
         if (null === $date) {
             $this->headers->remove('Expires');
@@ -752,6 +793,7 @@ class Response
     /**
      * Returns the number of seconds after the time specified in the response's Date
      * header when the response should no longer be considered fresh.
+	 * 返回响应的Date中指定的时间之后的秒数，响应不再被认为是新鲜的。
      *
      * First, it checks for a s-maxage directive, then a max-age directive, and then it falls
      * back on an expires header. It returns null when no maximum age can be established.
@@ -768,8 +810,10 @@ class Response
             return (int) $this->headers->getCacheControlDirective('max-age');
         }
 
-        if (null !== $this->getExpires()) {
-            return (int) $this->getExpires()->format('U') - (int) $this->getDate()->format('U');
+        if (null !== $expires = $this->getExpires()) {
+            $maxAge = (int) $expires->format('U') - (int) $this->getDate()->format('U');
+
+            return max($maxAge, 0);
         }
 
         return null;
@@ -777,6 +821,7 @@ class Response
 
     /**
      * Sets the number of seconds after which the response should no longer be considered fresh.
+	 * 设置响应不再被视为新鲜的秒数
      *
      * This methods sets the Cache-Control max-age directive.
      *
@@ -784,7 +829,7 @@ class Response
      *
      * @final
      */
-    public function setMaxAge(int $value)
+    public function setMaxAge(int $value): object
     {
         $this->headers->addCacheControlDirective('max-age', $value);
 
@@ -793,6 +838,7 @@ class Response
 
     /**
      * Sets the number of seconds after which the response should no longer be considered fresh by shared caches.
+	 * 设置共享缓存不再将响应视为新鲜的秒数。
      *
      * This methods sets the Cache-Control s-maxage directive.
      *
@@ -800,7 +846,7 @@ class Response
      *
      * @final
      */
-    public function setSharedMaxAge(int $value)
+    public function setSharedMaxAge(int $value): object
     {
         $this->setPublic();
         $this->headers->addCacheControlDirective('s-maxage', $value);
@@ -810,10 +856,11 @@ class Response
 
     /**
      * Returns the response's time-to-live in seconds.
+	 * 返回响应的生存时间，以秒为单位。
      *
      * It returns null when no freshness information is present in the response.
      *
-     * When the responses TTL is <= 0, the response may not be served from cache without first
+     * When the response's TTL is 0, the response may not be served from cache without first
      * revalidating with the origin.
      *
      * @final
@@ -822,11 +869,12 @@ class Response
     {
         $maxAge = $this->getMaxAge();
 
-        return null !== $maxAge ? $maxAge - $this->getAge() : null;
+        return null !== $maxAge ? max($maxAge - $this->getAge(), 0) : null;
     }
 
     /**
      * Sets the response's time-to-live for shared caches in seconds.
+	 * 为共享缓存设置响应的生存时间（以秒为单位）
      *
      * This method adjusts the Cache-Control/s-maxage directive.
      *
@@ -834,7 +882,7 @@ class Response
      *
      * @final
      */
-    public function setTtl(int $seconds)
+    public function setTtl(int $seconds): object
     {
         $this->setSharedMaxAge($this->getAge() + $seconds);
 
@@ -843,6 +891,7 @@ class Response
 
     /**
      * Sets the response's time-to-live for private/client caches in seconds.
+	 * 为私有/客户端缓存设置响应的生存时间（以秒为单位）
      *
      * This method adjusts the Cache-Control/max-age directive.
      *
@@ -850,7 +899,7 @@ class Response
      *
      * @final
      */
-    public function setClientTtl(int $seconds)
+    public function setClientTtl(int $seconds): object
     {
         $this->setMaxAge($this->getAge() + $seconds);
 
@@ -859,6 +908,7 @@ class Response
 
     /**
      * Returns the Last-Modified HTTP header as a DateTime instance.
+	 * 返回最后修改的HTTP报头作为DateTime实例
      *
      * @throws \RuntimeException When the HTTP header is not parseable
      *
@@ -871,6 +921,7 @@ class Response
 
     /**
      * Sets the Last-Modified HTTP header with a DateTime instance.
+	 * 用DateTime实例设置最后修改的HTTP报头
      *
      * Passing null as value will remove the header.
      *
@@ -878,7 +929,7 @@ class Response
      *
      * @final
      */
-    public function setLastModified(\DateTimeInterface $date = null)
+    public function setLastModified(?\DateTimeInterface $date = null): object
     {
         if (null === $date) {
             $this->headers->remove('Last-Modified');
@@ -898,6 +949,7 @@ class Response
 
     /**
      * Returns the literal value of the ETag HTTP header.
+	 * 返回ETag HTTP报头的文字值
      *
      * @final
      */
@@ -908,6 +960,7 @@ class Response
 
     /**
      * Sets the ETag value.
+	 * 设置ETag值
      *
      * @param string|null $etag The ETag unique identifier or null to remove the header
      * @param bool        $weak Whether you want a weak ETag or not
@@ -916,7 +969,7 @@ class Response
      *
      * @final
      */
-    public function setEtag(string $etag = null, bool $weak = false)
+    public function setEtag(?string $etag = null, bool $weak = false): object
     {
         if (null === $etag) {
             $this->headers->remove('Etag');
@@ -933,8 +986,9 @@ class Response
 
     /**
      * Sets the response's cache headers (validation and/or expiration).
+	 * 设置响应的缓存头（验证和/或过期）
      *
-     * Available options are: etag, last_modified, max_age, s_maxage, private, public and immutable.
+     * Available options are: must_revalidate, no_cache, no_store, no_transform, public, private, proxy_revalidate, max_age, s_maxage, immutable, last_modified and etag.
      *
      * @return $this
      *
@@ -942,9 +996,9 @@ class Response
      *
      * @final
      */
-    public function setCache(array $options)
+    public function setCache(array $options): object
     {
-        if ($diff = array_diff(array_keys($options), ['etag', 'last_modified', 'max_age', 's_maxage', 'private', 'public', 'immutable'])) {
+        if ($diff = array_diff(array_keys($options), array_keys(self::HTTP_RESPONSE_CACHE_CONTROL_DIRECTIVES))) {
             throw new \InvalidArgumentException(sprintf('Response does not support the following options: "%s".', implode('", "', $diff)));
         }
 
@@ -964,6 +1018,16 @@ class Response
             $this->setSharedMaxAge($options['s_maxage']);
         }
 
+        foreach (self::HTTP_RESPONSE_CACHE_CONTROL_DIRECTIVES as $directive => $hasValue) {
+            if (!$hasValue && isset($options[$directive])) {
+                if ($options[$directive]) {
+                    $this->headers->addCacheControlDirective(str_replace('_', '-', $directive));
+                } else {
+                    $this->headers->removeCacheControlDirective(str_replace('_', '-', $directive));
+                }
+            }
+        }
+
         if (isset($options['public'])) {
             if ($options['public']) {
                 $this->setPublic();
@@ -980,15 +1044,12 @@ class Response
             }
         }
 
-        if (isset($options['immutable'])) {
-            $this->setImmutable((bool) $options['immutable']);
-        }
-
         return $this;
     }
 
     /**
      * Modifies the response so that it conforms to the rules defined for a 304 status code.
+	 * 修改响应，使其符合为304状态码定义的规则。
      *
      * This sets the status, removes the body, and discards any headers
      * that MUST NOT be included in 304 responses.
@@ -999,7 +1060,7 @@ class Response
      *
      * @final
      */
-    public function setNotModified()
+    public function setNotModified(): object
     {
         $this->setStatusCode(304);
         $this->setContent(null);
@@ -1014,6 +1075,7 @@ class Response
 
     /**
      * Returns true if the response includes a Vary header.
+	 * 如果响应包含Vary报头，则返回true。
      *
      * @final
      */
@@ -1024,6 +1086,7 @@ class Response
 
     /**
      * Returns an array of header names given in the Vary header.
+	 * 返回Vary头文件中给定的头文件名称数组
      *
      * @final
      */
@@ -1035,14 +1098,15 @@ class Response
 
         $ret = [];
         foreach ($vary as $item) {
-            $ret = array_merge($ret, preg_split('/[\s,]+/', $item));
+            $ret[] = preg_split('/[\s,]+/', $item);
         }
 
-        return $ret;
+        return array_merge([], ...$ret);
     }
 
     /**
      * Sets the Vary header.
+	 * 设置Vary标头
      *
      * @param string|array $headers
      * @param bool         $replace Whether to replace the actual value or not (true by default)
@@ -1051,7 +1115,7 @@ class Response
      *
      * @final
      */
-    public function setVary($headers, bool $replace = true)
+    public function setVary($headers, bool $replace = true): object
     {
         $this->headers->set('Vary', $headers, $replace);
 
@@ -1064,8 +1128,6 @@ class Response
      *
      * If the Response is not modified, it sets the status code to 304 and
      * removes the actual content by calling the setNotModified() method.
-     *
-     * @return bool true if the Response validators match the Request, false otherwise
      *
      * @final
      */
@@ -1110,6 +1172,7 @@ class Response
 
     /**
      * Is response invalid?
+	 * 响应无效吗？
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
      *
@@ -1122,6 +1185,7 @@ class Response
 
     /**
      * Is response informative?
+	 * 响应是否有信息？
      *
      * @final
      */
@@ -1132,6 +1196,7 @@ class Response
 
     /**
      * Is response successful?
+	 * 响应成功吗？
      *
      * @final
      */
@@ -1142,6 +1207,7 @@ class Response
 
     /**
      * Is the response a redirect?
+	 * 响应是重定向吗？
      *
      * @final
      */
@@ -1152,6 +1218,7 @@ class Response
 
     /**
      * Is there a client error?
+	 * 是否有客户端错误？
      *
      * @final
      */
@@ -1162,6 +1229,7 @@ class Response
 
     /**
      * Was there a server side error?
+	 * 是否有服务器端错误？
      *
      * @final
      */
@@ -1172,6 +1240,7 @@ class Response
 
     /**
      * Is the response OK?
+	 * 反应还好吗？
      *
      * @final
      */
@@ -1182,6 +1251,7 @@ class Response
 
     /**
      * Is the response forbidden?
+	 * 响应是被禁止的吗？
      *
      * @final
      */
@@ -1192,6 +1262,7 @@ class Response
 
     /**
      * Is the response a not found error?
+	 * 响应是未发现错误吗？
      *
      * @final
      */
@@ -1202,16 +1273,19 @@ class Response
 
     /**
      * Is the response a redirect of some form?
+	 * 响应是某种形式的重定向吗？
+	 * 
      *
      * @final
      */
-    public function isRedirect(string $location = null): bool
+    public function isRedirect(?string $location = null): bool
     {
         return \in_array($this->statusCode, [201, 301, 302, 303, 307, 308]) && (null === $location ?: $location == $this->headers->get('Location'));
     }
 
     /**
      * Is the response empty?
+	 * 回复是空的吗？
      *
      * @final
      */
@@ -1222,6 +1296,7 @@ class Response
 
     /**
      * Cleans or flushes output buffers up to target level.
+	 * 将输出缓冲区清除或刷新到目标级别
      *
      * Resulting level can be greater than target level if a non-removable buffer has been encountered.
      *
@@ -1243,7 +1318,25 @@ class Response
     }
 
     /**
+     * Marks a response as safe according to RFC8674.
+	 * 根据RFC8674将响应标记为安全
+     *
+     * @see https://tools.ietf.org/html/rfc8674
+     */
+    public function setContentSafe(bool $safe = true): void
+    {
+        if ($safe) {
+            $this->headers->set('Preference-Applied', 'safe');
+        } elseif ('safe' === $this->headers->get('Preference-Applied')) {
+            $this->headers->remove('Preference-Applied');
+        }
+
+        $this->setVary('Prefer', false);
+    }
+
+    /**
      * Checks if we need to remove Cache-Control for SSL encrypted downloads when using IE < 9.
+	 * 检查是否需要在使用IE < 9时删除SSL加密下载的缓存控制。
      *
      * @see http://support.microsoft.com/kb/323308
      *

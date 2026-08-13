@@ -1,6 +1,6 @@
 <?php
 /**
- * 缓存，缓存检索多密钥
+ * Illuminate，缓存，检索多个键
  */
 
 namespace Illuminate\Cache;
@@ -9,9 +9,10 @@ trait RetrievesMultipleKeys
 {
     /**
      * Retrieve multiple items from the cache by key.
-	 * 检索多个项目从缓存中
+	 * 按键从缓存中检索多个项
      *
      * Items not found in the cache will have a null value.
+	 * 在缓存中找不到的项将具有空值
      *
      * @param  array  $keys
      * @return array
@@ -20,8 +21,12 @@ trait RetrievesMultipleKeys
     {
         $return = [];
 
-        foreach ($keys as $key) {
-            $return[$key] = $this->get($key);
+        $keys = collect($keys)->mapWithKeys(function ($value, $key) {
+            return [is_string($key) ? $key : $value => is_string($key) ? $value : null];
+        })->all();
+
+        foreach ($keys as $key => $default) {
+            $return[$key] = $this->get($key, $default);
         }
 
         return $return;
@@ -29,7 +34,7 @@ trait RetrievesMultipleKeys
 
     /**
      * Store multiple items in the cache for a given number of seconds.
-	 * 写入多个项目至缓存中使用给定的秒数
+	 * 在给定的秒数内将多个项存储在缓存中
      *
      * @param  array  $values
      * @param  int  $seconds

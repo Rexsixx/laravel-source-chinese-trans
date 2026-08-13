@@ -1,9 +1,11 @@
 <?php
 /**
- * 数据库，Eloquent隐藏属性
+ * Illuminate，数据库，Eloquent，问题，隐藏属性
  */
 
 namespace Illuminate\Database\Eloquent\Concerns;
+
+use Closure;
 
 trait HidesAttributes
 {
@@ -25,7 +27,7 @@ trait HidesAttributes
 
     /**
      * Get the hidden attributes for the model.
-	 * 得到模型的隐藏属性
+	 * 获取模型的隐藏属性
      *
      * @return array
      */
@@ -36,7 +38,7 @@ trait HidesAttributes
 
     /**
      * Set the hidden attributes for the model.
-	 * 设置模型的隐藏属性
+	 * 为模型设置隐藏属性
      *
      * @param  array  $hidden
      * @return $this
@@ -49,22 +51,8 @@ trait HidesAttributes
     }
 
     /**
-     * Add hidden attributes for the model.
-	 * 添加模型隐藏属性
-     *
-     * @param  array|string|null  $attributes
-     * @return void
-     */
-    public function addHidden($attributes = null)
-    {
-        $this->hidden = array_merge(
-            $this->hidden, is_array($attributes) ? $attributes : func_get_args()
-        );
-    }
-
-    /**
      * Get the visible attributes for the model.
-	 * 得到模型的可见属性
+	 * 获取模型的可见属性
      *
      * @return array
      */
@@ -75,7 +63,7 @@ trait HidesAttributes
 
     /**
      * Set the visible attributes for the model.
-	 * 设置模型的可见属性
+	 * 为模型设置可见属性
      *
      * @param  array  $visible
      * @return $this
@@ -88,52 +76,64 @@ trait HidesAttributes
     }
 
     /**
-     * Add visible attributes for the model.
-	 * 添加模型的可见属性
+     * Make the given, typically hidden, attributes visible.
+	 * 使给定的（通常是隐藏的）属性可见
      *
      * @param  array|string|null  $attributes
-     * @return void
-     */
-    public function addVisible($attributes = null)
-    {
-        $this->visible = array_merge(
-            $this->visible, is_array($attributes) ? $attributes : func_get_args()
-        );
-    }
-
-    /**
-     * Make the given, typically hidden, attributes visible.
-	 * 使给定的(通常是隐藏的)属性可见
-     *
-     * @param  array|string  $attributes
      * @return $this
      */
     public function makeVisible($attributes)
     {
-        $this->hidden = array_diff($this->hidden, (array) $attributes);
+        $attributes = is_array($attributes) ? $attributes : func_get_args();
+
+        $this->hidden = array_diff($this->hidden, $attributes);
 
         if (! empty($this->visible)) {
-            $this->addVisible($attributes);
+            $this->visible = array_merge($this->visible, $attributes);
         }
 
         return $this;
     }
 
     /**
-     * Make the given, typically visible, attributes hidden.
-	 * 使给定的(通常是隐藏的)属性隐藏
+     * Make the given, typically hidden, attributes visible if the given truth test passes.
+	 * 如果给定的真值测试通过，则使给定的（通常是隐藏的）属性可见。
      *
-     * @param  array|string  $attributes
+     * @param  bool|Closure  $condition
+     * @param  array|string|null  $attributes
+     * @return $this
+     */
+    public function makeVisibleIf($condition, $attributes)
+    {
+        return value($condition, $this) ? $this->makeVisible($attributes) : $this;
+    }
+
+    /**
+     * Make the given, typically visible, attributes hidden.
+	 * 将给定的（通常是可见的）属性隐藏起来
+     *
+     * @param  array|string|null  $attributes
      * @return $this
      */
     public function makeHidden($attributes)
     {
-        $attributes = (array) $attributes;
-
-        $this->visible = array_diff($this->visible, $attributes);
-
-        $this->hidden = array_unique(array_merge($this->hidden, $attributes));
+        $this->hidden = array_merge(
+            $this->hidden, is_array($attributes) ? $attributes : func_get_args()
+        );
 
         return $this;
+    }
+
+    /**
+     * Make the given, typically visible, attributes hidden if the given truth test passes.
+	 * 如果给定的真值测试通过，则将给定的（通常是可见的）属性隐藏起来。
+     *
+     * @param  bool|Closure  $condition
+     * @param  array|string|null  $attributes
+     * @return $this
+     */
+    public function makeHiddenIf($condition, $attributes)
+    {
+        return value($condition, $this) ? $this->makeHidden($attributes) : $this;
     }
 }

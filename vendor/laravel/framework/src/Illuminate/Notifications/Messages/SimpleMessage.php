@@ -1,6 +1,6 @@
 <?php
 /**
- * 通知，简单通知
+ * Illuminate，通知，消息，简单消息
  */
 
 namespace Illuminate\Notifications\Messages;
@@ -12,7 +12,7 @@ class SimpleMessage
 {
     /**
      * The "level" of the notification (info, success, error).
-	 * 通知的"级别"(info, success, error)
+	 * 通知的"级别"（info, success, error）
      *
      * @var string
      */
@@ -68,15 +68,23 @@ class SimpleMessage
 
     /**
      * The action URL.
-	 * 动作的URL
+	 * 动作URL
      *
      * @var string
      */
     public $actionUrl;
 
     /**
+     * The name of the mailer that should send the notification.
+	 * 应发送通知的邮件发件人的名称
+     *
+     * @var string
+     */
+    public $mailer;
+
+    /**
      * Indicate that the notification gives information about a successful operation.
-	 * 指明通知提供有关成功操作的信息
+	 * 指示通知提供有关成功操作的信息
      *
      * @return $this
      */
@@ -89,7 +97,7 @@ class SimpleMessage
 
     /**
      * Indicate that the notification gives information about an error.
-	 * 指明通知提供有关错误的信息
+	 * 指示通知提供有关错误的信息
      *
      * @return $this
      */
@@ -102,7 +110,7 @@ class SimpleMessage
 
     /**
      * Set the "level" of the notification (success, error, etc.).
-	 * 设置通知的"级别"(成功、错误等)
+	 * 设置通知的"级别"（成功、错误等）
      *
      * @param  string  $level
      * @return $this
@@ -158,7 +166,7 @@ class SimpleMessage
 
     /**
      * Add a line of text to the notification.
-	 * 添加一行文本向通知
+	 * 向通知添加一行文本
      *
      * @param  mixed  $line
      * @return $this
@@ -169,8 +177,24 @@ class SimpleMessage
     }
 
     /**
+     * Add lines of text to the notification.
+	 * 向通知添加文本行
+     *
+     * @param  iterable  $lines
+     * @return $this
+     */
+    public function lines($lines)
+    {
+        foreach ($lines as $line) {
+            $this->line($line);
+        }
+
+        return $this;
+    }
+
+    /**
      * Add a line of text to the notification.
-	 * 添加一行文本向通知
+	 * 向通知添加一行文本
      *
      * @param  mixed  $line
      * @return $this
@@ -205,7 +229,7 @@ class SimpleMessage
             return implode(' ', array_map('trim', $line));
         }
 
-        return trim(implode(' ', array_map('trim', preg_split('/\\r\\n|\\r|\\n/', $line))));
+        return trim(implode(' ', array_map('trim', preg_split('/\\r\\n|\\r|\\n/', $line ?? ''))));
     }
 
     /**
@@ -225,8 +249,22 @@ class SimpleMessage
     }
 
     /**
+     * Set the name of the mailer that should send the notification.
+	 * 设置应发送通知的邮件的名称
+     *
+     * @param  string  $mailer
+     * @return $this
+     */
+    public function mailer($mailer)
+    {
+        $this->mailer = $mailer;
+
+        return $this;
+    }
+
+    /**
      * Get an array representation of the message.
-	 * 得到消息的数组表示形式
+	 * 获取消息的数组表示形式
      *
      * @return array
      */
@@ -241,7 +279,7 @@ class SimpleMessage
             'outroLines' => $this->outroLines,
             'actionText' => $this->actionText,
             'actionUrl' => $this->actionUrl,
-            'displayableActionUrl' => str_replace(['mailto:', 'tel:'], '', $this->actionUrl),
+            'displayableActionUrl' => str_replace(['mailto:', 'tel:'], '', $this->actionUrl ?? ''),
         ];
     }
 }

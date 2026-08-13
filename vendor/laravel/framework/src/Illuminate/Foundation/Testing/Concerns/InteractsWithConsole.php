@@ -1,20 +1,19 @@
 <?php
 /**
- * 基础，与控制台交互
+ * Illuminate，基础，测试，问题，与控制台交互
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;
 
 use Illuminate\Console\OutputStyle;
 use Illuminate\Contracts\Console\Kernel;
-use Illuminate\Foundation\Testing\PendingCommand;
-use Illuminate\Support\Arr;
+use Illuminate\Testing\PendingCommand;
 
 trait InteractsWithConsole
 {
     /**
      * Indicates if the console output should be mocked.
-	 * 确定是否应该模拟控制台输出
+	 * 指明是否应该模拟控制台输出
      *
      * @var bool
      */
@@ -29,6 +28,22 @@ trait InteractsWithConsole
     public $expectedOutput = [];
 
     /**
+     * All of the output lines that aren't expected to be displayed.
+	 * 所有不希望显示的输出行
+     *
+     * @var array
+     */
+    public $unexpectedOutput = [];
+
+    /**
+     * All of the expected output tables.
+	 * 所有预期的输出表
+     *
+     * @var array
+     */
+    public $expectedTables = [];
+
+    /**
      * All of the expected questions.
 	 * 所有预期的问题
      *
@@ -37,28 +52,26 @@ trait InteractsWithConsole
     public $expectedQuestions = [];
 
     /**
+     * All of the expected choice questions.
+	 * 所有的选择题
+     *
+     * @var array
+     */
+    public $expectedChoices = [];
+
+    /**
      * Call artisan command and return code.
 	 * 调用artisan命令并返回代码
      *
      * @param  string  $command
      * @param  array  $parameters
-     * @return \Illuminate\Foundation\Testing\PendingCommand|int
+     * @return \Illuminate\Testing\PendingCommand|int
      */
     public function artisan($command, $parameters = [])
     {
         if (! $this->mockConsoleOutput) {
             return $this->app[Kernel::class]->call($command, $parameters);
         }
-
-        $this->beforeApplicationDestroyed(function () {
-            if (count($this->expectedQuestions)) {
-                $this->fail('Question "'.Arr::first($this->expectedQuestions)[0].'" was not asked.');
-            }
-
-            if (count($this->expectedOutput)) {
-                $this->fail('Output "'.Arr::first($this->expectedOutput).'" was not printed.');
-            }
-        });
 
         return new PendingCommand($this, $this->app, $command, $parameters);
     }

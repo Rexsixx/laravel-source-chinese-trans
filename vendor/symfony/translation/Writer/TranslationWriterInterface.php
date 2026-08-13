@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，翻译，作者，翻译作者接口
- */
 
 /*
  * This file is part of the Symfony package.
@@ -32,5 +29,5 @@ interface TranslationWriterInterface
      *
      * @throws InvalidArgumentException
      */
-    public function write(MessageCatalogue $catalogue, $format, $options = []);
+    public function write(MessageCatalogue $catalogue, string $format, array $options = []);
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * 支持，调用转发
+ * Illuminate，支持，特性，转发呼叫
  */
 
 namespace Illuminate\Support\Traits;
@@ -12,7 +12,7 @@ trait ForwardsCalls
 {
     /**
      * Forward a method call to the given object.
-	 * 转发一个方法调用给给定对象
+	 * 将方法调用转发给给定对象
      *
      * @param  mixed  $object
      * @param  string  $method
@@ -42,8 +42,30 @@ trait ForwardsCalls
     }
 
     /**
+     * Forward a method call to the given object, returning $this if the forwarded call returned itself.
+	 * 将方法调用转发给给定对象，如果转发的调用返回自己，则返回$this。
+     *
+     * @param  mixed  $object
+     * @param  string  $method
+     * @param  array  $parameters
+     * @return mixed
+     *
+     * @throws \BadMethodCallException
+     */
+    protected function forwardDecoratedCallTo($object, $method, $parameters)
+    {
+        $result = $this->forwardCallTo($object, $method, $parameters);
+
+        if ($result === $object) {
+            return $this;
+        }
+
+        return $result;
+    }
+
+    /**
      * Throw a bad method call exception for the given method.
-	 * 抛出一个坏的方法调用异常对给定的方法
+	 * 为给定的方法抛出错误的方法调用异常
      *
      * @param  string  $method
      * @return void

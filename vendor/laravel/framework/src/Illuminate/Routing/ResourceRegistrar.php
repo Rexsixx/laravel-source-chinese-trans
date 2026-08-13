@@ -1,6 +1,6 @@
 <?php
 /**
- * 路由，路由资源注册
+ * Illuminate，路由，资源注册
  */
 
 namespace Illuminate\Routing;
@@ -11,7 +11,7 @@ class ResourceRegistrar
 {
     /**
      * The router instance.
-	 * 路由实例
+	 * 路由器实例
      *
      * @var \Illuminate\Routing\Router
      */
@@ -19,15 +19,15 @@ class ResourceRegistrar
 
     /**
      * The default actions for a resourceful controller.
-	 * 默认动作资源控制器
+	 * 资源控制器的默认动作
      *
-     * @var array
+     * @var string[]
      */
     protected $resourceDefaults = ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'];
 
     /**
      * The parameters set for this resource instance.
-	 * 设置参数为此资源实例
+	 * 为此资源实例设置的参数
      *
      * @var array|string
      */
@@ -43,7 +43,7 @@ class ResourceRegistrar
 
     /**
      * Singular global parameters.
-	 * 单独全局参数
+	 * 奇异全局参数
      *
      * @var bool
      */
@@ -51,7 +51,7 @@ class ResourceRegistrar
 
     /**
      * The verbs used in the resource URIs.
-	 * 动作在资源URI里使用
+	 * 资源uri中使用的动词
      *
      * @var array
      */
@@ -62,7 +62,7 @@ class ResourceRegistrar
 
     /**
      * Create a new resource registrar instance.
-	 * 创建新的资源注册实例
+	 * 创建一个新的资源注册器实例
      *
      * @param  \Illuminate\Routing\Router  $router
      * @return void
@@ -74,7 +74,7 @@ class ResourceRegistrar
 
     /**
      * Route a resource to a controller.
-	 * 路由资源至控制器
+	 * 将资源路由到控制器
      *
      * @param  string  $name
      * @param  string  $controller
@@ -90,8 +90,7 @@ class ResourceRegistrar
         // If the resource name contains a slash, we will assume the developer wishes to
         // register these resource routes with a prefix so we will set that up out of
         // the box so they don't have to mess with it. Otherwise, we will continue.
-		// 如果资源名称包含斜线，我们将假设开发人员希望用前缀注册这些资源路由，
-		// 这样我们就可以开箱即用地设置，这样他们就不必弄乱它。否则，我们将继续。
+		// 如果资源名包含斜杠，我们假定开发人员希望用前缀注册这些资源路由。
         if (Str::contains($name, '/')) {
             $this->prefixedResource($name, $controller, $options);
 
@@ -101,8 +100,7 @@ class ResourceRegistrar
         // We need to extract the base resource from the resource name. Nested resources
         // are supported in the framework, but we need to know what name to use for a
         // place-holder on the route parameters, which should be the base resources.
-		// 我们需要从资源名称中提取基础资源。
-		// 框架中支持嵌套资源，但我们需要知道在路由参数上为占位符使用什么名称，这应该是基础资源。
+		// 我们需要从资源名中提取基本资源。
         $base = $this->getResourceWildcard(last(explode('.', $name)));
 
         $defaults = $this->resourceDefaults;
@@ -110,9 +108,15 @@ class ResourceRegistrar
         $collection = new RouteCollection;
 
         foreach ($this->getResourceMethods($defaults, $options) as $m) {
-            $collection->add($this->{'addResource'.ucfirst($m)}(
+            $route = $this->{'addResource'.ucfirst($m)}(
                 $name, $base, $controller, $options
-            ));
+            );
+
+            if (isset($options['bindingFields'])) {
+                $this->setResourceBindingFields($route, $options['bindingFields']);
+            }
+
+            $collection->add($route);
         }
 
         return $collection;
@@ -120,7 +124,7 @@ class ResourceRegistrar
 
     /**
      * Build a set of prefixed resource routes.
-	 * 创建一组前缀资源路由
+	 * 建立一组前缀资源路由
      *
      * @param  string  $name
      * @param  string  $controller
@@ -134,8 +138,7 @@ class ResourceRegistrar
         // We need to extract the base resource from the resource name. Nested resources
         // are supported in the framework, but we need to know what name to use for a
         // place-holder on the route parameters, which should be the base resources.
-		// 我们需要从资源名称中提取基础资源。
-		// 框架中支持嵌套资源，但我们需要知道在路由参数上为占位符使用什么名称，这应该是基础资源。
+		// 我们需要从资源名中提取基本资源。
         $callback = function ($me) use ($name, $controller, $options) {
             $me->resource($name, $controller, $options);
         };
@@ -145,7 +148,7 @@ class ResourceRegistrar
 
     /**
      * Extract the resource and prefix from a resource name.
-	 * 提取资源和前缀从资源名称中
+	 * 从资源名称中提取资源和前缀
      *
      * @param  string  $name
      * @return array
@@ -157,8 +160,7 @@ class ResourceRegistrar
         // To get the prefix, we will take all of the name segments and implode them on
         // a slash. This will generate a proper URI prefix for us. Then we take this
         // last segment, which will be considered the final resources name we use.
-		// 为了获得前缀，我们将获取所有名称段，并在斜线上内爆它们。
-		// 这将为我们生成一个正确的URI前缀。然后我们取最后一段，这将被视为我们使用的最终资源名称。
+		// 为了获得前缀，我们将获取所有的名称段。
         $prefix = implode('/', array_slice($segments, 0, -1));
 
         return [end($segments), $prefix];
@@ -166,7 +168,7 @@ class ResourceRegistrar
 
     /**
      * Get the applicable resource methods.
-	 * 得到应用资源方法
+	 * 得到适用的资源方法
      *
      * @param  array  $defaults
      * @param  array  $options
@@ -201,6 +203,8 @@ class ResourceRegistrar
     {
         $uri = $this->getResourceUri($name);
 
+        unset($options['missing']);
+
         $action = $this->getResourceAction($name, $controller, 'index', $options);
 
         return $this->router->get($uri, $action);
@@ -208,7 +212,7 @@ class ResourceRegistrar
 
     /**
      * Add the create method for a resourceful route.
-	 * 添加资源create方法
+	 * 为资源路由添加create方法
      *
      * @param  string  $name
      * @param  string  $base
@@ -219,6 +223,8 @@ class ResourceRegistrar
     protected function addResourceCreate($name, $base, $controller, $options)
     {
         $uri = $this->getResourceUri($name).'/'.static::$verbs['create'];
+
+        unset($options['missing']);
 
         $action = $this->getResourceAction($name, $controller, 'create', $options);
 
@@ -238,6 +244,8 @@ class ResourceRegistrar
     protected function addResourceStore($name, $base, $controller, $options)
     {
         $uri = $this->getResourceUri($name);
+
+        unset($options['missing']);
 
         $action = $this->getResourceAction($name, $controller, 'store', $options);
 
@@ -267,7 +275,7 @@ class ResourceRegistrar
 
     /**
      * Add the edit method for a resourceful route.
-	 * 为资源路由增加edit方法
+	 * 添加资源路由的编辑方法
      *
      * @param  string  $name
      * @param  string  $base
@@ -288,7 +296,7 @@ class ResourceRegistrar
 
     /**
      * Add the update method for a resourceful route.
-	 * 为资源路由增加update方法
+	 * 添加资源路由的更新方式
      *
      * @param  string  $name
      * @param  string  $base
@@ -330,7 +338,7 @@ class ResourceRegistrar
 
     /**
      * Get the name for a given resource with shallowness applied when applicable.
-	 * 得到给定资源的名称，并在适用时应用浅度。
+	 * 获取给定资源的名称，并在适用时应用浅度
      *
      * @param  string  $name
      * @param  array  $options
@@ -344,8 +352,27 @@ class ResourceRegistrar
     }
 
     /**
+     * Set the route's binding fields if the resource is scoped.
+	 * 如果资源有作用域，则设置路由的绑定字段。
+     *
+     * @param  \Illuminate\Routing\Route  $route
+     * @param  array  $bindingFields
+     * @return void
+     */
+    protected function setResourceBindingFields($route, $bindingFields)
+    {
+        preg_match_all('/(?<={).*?(?=})/', $route->uri, $matches);
+
+        $fields = array_fill_keys($matches[0], null);
+
+        $route->setBindingFields(array_replace(
+            $fields, array_intersect_key($bindingFields, $fields)
+        ));
+    }
+
+    /**
      * Get the base resource URI for a given resource.
-	 * 得到基本资源URI
+	 * 获取给定资源的基本资源URI
      *
      * @param  string  $resource
      * @return string
@@ -359,8 +386,7 @@ class ResourceRegistrar
         // Once we have built the base URI, we'll remove the parameter holder for this
         // base resource name so that the individual route adders can suffix these
         // paths however they need to, as some do not have any parameters at all.
-		// 一旦我们构建了基本URI，我们将删除此基本资源名称的参数持有者，
-		// 以便各个路由加法器可以根据需要为这些路径添加后缀，因为有些路径根本没有任何参数。
+		// 一旦我们构建了基本URI，我们将删除它的参数持有者。
         $segments = explode('.', $resource);
 
         $uri = $this->getNestedResourceUri($segments);
@@ -380,8 +406,7 @@ class ResourceRegistrar
         // We will spin through the segments and create a place-holder for each of the
         // resource segments, as well as the resource itself. Then we should get an
         // entire string for the resource URI that contains all nested resources.
-		// 我们将遍历这些片段，并为每个资源片段以及资源本身创建一个占位符。
-		// 然后，我们应该得到一个包含所有嵌套资源的资源URI的完整字符串。
+		// 我们将旋转这些片段。
         return implode('/', array_map(function ($s) {
             return $s.'/{'.$this->getResourceWildcard($s).'}';
         }, $segments));
@@ -409,7 +434,7 @@ class ResourceRegistrar
 
     /**
      * Get the action array for a resource route.
-	 * 得到操作数组为资源路由
+	 * 得到资源路由的操作数组
      *
      * @param  string  $resource
      * @param  string  $controller
@@ -427,12 +452,24 @@ class ResourceRegistrar
             $action['middleware'] = $options['middleware'];
         }
 
+        if (isset($options['excluded_middleware'])) {
+            $action['excluded_middleware'] = $options['excluded_middleware'];
+        }
+
+        if (isset($options['wheres'])) {
+            $action['where'] = $options['wheres'];
+        }
+
+        if (isset($options['missing'])) {
+            $action['missing'] = $options['missing'];
+        }
+
         return $action;
     }
 
     /**
      * Get the name for a given resource.
-	 * 得到资源名称
+	 * 得到给定资源的名称
      *
      * @param  string  $resource
      * @param  string  $method
@@ -446,8 +483,7 @@ class ResourceRegistrar
         // If the names array has been provided to us we will check for an entry in the
         // array first. We will also check for the specific method within this array
         // so the names may be specified on a more "granular" level using methods.
-		// 如果名称数组已提供给我们，我们将首先检查数组中的条目。
-		// 我们还将检查此数组中的特定方法，以便可以使用方法在更"精细"的级别上指定名称。
+		// 如果names数组已经提供给我们，我们将首先检查数组中的条目。
         if (isset($options['names'])) {
             if (is_string($options['names'])) {
                 $name = $options['names'];
@@ -459,8 +495,7 @@ class ResourceRegistrar
         // If a global prefix has been assigned to all names for this resource, we will
         // grab that so we can prepend it onto the name when we create this name for
         // the resource action. Otherwise we'll just use an empty string for here.
-		// 如果已为此资源的所有名称分配了全局前缀，我们将获取该前缀，
-		// 以便在为资源操作创建此名称时将其添加到名称前。否则，我们将在此处使用空字符串。
+		// 如果为该资源的所有名称分配了全局前缀，我们将抓住它，这样我们就可以在创建这个名字的时候把它加到名字上。
         $prefix = isset($options['as']) ? $options['as'].'.' : '';
 
         return trim(sprintf('%s%s.%s', $prefix, $name, $method), '.');
@@ -468,7 +503,7 @@ class ResourceRegistrar
 
     /**
      * Set or unset the unmapped global parameters to singular.
-	 * 设置或取消设置未映射的全局参数为单数
+	 * 将未映射的全局参数设置或取消设置为单数
      *
      * @param  bool  $singular
      * @return void
@@ -503,7 +538,7 @@ class ResourceRegistrar
 
     /**
      * Get or set the action verbs used in the resource URIs.
-	 * 得到或设置资源URI中使用的动作动词
+	 * 获取或设置资源URI中使用的动作动词
      *
      * @param  array  $verbs
      * @return array

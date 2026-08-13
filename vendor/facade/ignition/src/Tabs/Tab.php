@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，制表符，Tab
+ * Facade，Ignition，制表符，标签
  */
 
 namespace Facade\Ignition\Tabs;
@@ -16,7 +16,7 @@ abstract class Tab implements JsonSerializable
 
     public $styles = [];
 
-    /** @var \Facade\Ignition\Facades\Flare */
+    /** @var \Facade\FlareClient\Flare */
     protected $flare;
 
     /** @var Throwable */

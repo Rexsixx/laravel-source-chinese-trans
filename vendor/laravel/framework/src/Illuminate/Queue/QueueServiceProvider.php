@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，队列服务提供者
+ * Illuminate，队列，队列服务提供者
  */
 
 namespace Illuminate\Queue;
@@ -15,15 +15,18 @@ use Illuminate\Queue\Connectors\RedisConnector;
 use Illuminate\Queue\Connectors\SqsConnector;
 use Illuminate\Queue\Connectors\SyncConnector;
 use Illuminate\Queue\Failed\DatabaseFailedJobProvider;
+use Illuminate\Queue\Failed\DatabaseUuidFailedJobProvider;
 use Illuminate\Queue\Failed\DynamoDbFailedJobProvider;
 use Illuminate\Queue\Failed\NullFailedJobProvider;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
-use Opis\Closure\SerializableClosure;
+use Laravel\SerializableClosure\SerializableClosure;
 
 class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
 {
+    use SerializesAndRestoresModelIdentifiers;
+
     /**
      * Register the service provider.
 	 * 注册服务提供者
@@ -32,17 +35,43 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
      */
     public function register()
     {
+        $this->configureSerializableClosureUses();
+
         $this->registerManager();
         $this->registerConnection();
         $this->registerWorker();
         $this->registerListener();
         $this->registerFailedJobServices();
-        $this->registerOpisSecurityKey();
+    }
+
+    /**
+     * Configure serializable closures uses.
+	 * 配置可序列化的闭包使用
+     *
+     * @return void
+     */
+    protected function configureSerializableClosureUses()
+    {
+        SerializableClosure::transformUseVariablesUsing(function ($data) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->getSerializedPropertyValue($value);
+            }
+
+            return $data;
+        });
+
+        SerializableClosure::resolveUseVariablesUsing(function ($data) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->getRestoredPropertyValue($value);
+            }
+
+            return $data;
+        });
     }
 
     /**
      * Register the queue manager.
-	 * 注册队列管理
+	 * 注册队列管理器
      *
      * @return void
      */
@@ -52,8 +81,7 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
             // Once we have an instance of the queue manager, we will register the various
             // resolvers for the queue connectors. These connectors are responsible for
             // creating the classes that accept queue configs and instantiate queues.
-			// 一旦我们有了队列管理器的实例，我们将为队列连接器注册各种解析器。
-			// 这些连接器负责创建接受队列配置和实例化队列的类。
+			// 一旦我们有了队列管理器的实例，我们将登记各种队列连接器的解析器。
             return tap(new QueueManager($app), function ($manager) {
                 $this->registerConnectors($manager);
             });
@@ -75,7 +103,7 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Register the connectors on the queue manager.
-	 * 注册连接器在队列管理器上
+	 * 在队列管理器上注册连接器
      *
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
@@ -173,22 +201,33 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Register the queue worker.
-	 * 注册队列执行者
+	 * 注册队列工作者
      *
      * @return void
      */
     protected function registerWorker()
     {
-        $this->app->singleton('queue.worker', function () {
+        $this->app->singleton('queue.worker', function ($app) {
             $isDownForMaintenance = function () {
                 return $this->app->isDownForMaintenance();
             };
 
+            $resetScope = function () use ($app) {
+                if (method_exists($app['log']->driver(), 'withoutContext')) {
+                    $app['log']->withoutContext();
+                }
+
+                $app->forgetScopedInstances();
+
+                return Facade::clearResolvedInstances();
+            };
+
             return new Worker(
-                $this->app['queue'],
-                $this->app['events'],
-                $this->app[ExceptionHandler::class],
-                $isDownForMaintenance
+                $app['queue'],
+                $app['events'],
+                $app[ExceptionHandler::class],
+                $isDownForMaintenance,
+                $resetScope
             );
         });
     }
@@ -201,24 +240,31 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
      */
     protected function registerListener()
     {
-        $this->app->singleton('queue.listener', function () {
-            return new Listener($this->app->basePath());
+        $this->app->singleton('queue.listener', function ($app) {
+            return new Listener($app->basePath());
         });
     }
 
     /**
      * Register the failed job services.
-	 * 注册失败作业服务
+	 * 注册失败的作业服务
      *
      * @return void
      */
     protected function registerFailedJobServices()
     {
-        $this->app->singleton('queue.failer', function () {
-            $config = $this->app['config']['queue.failed'];
+        $this->app->singleton('queue.failer', function ($app) {
+            $config = $app['config']['queue.failed'];
+
+            if (array_key_exists('driver', $config) &&
+                (is_null($config['driver']) || $config['driver'] === 'null')) {
+                return new NullFailedJobProvider;
+            }
 
             if (isset($config['driver']) && $config['driver'] === 'dynamodb') {
                 return $this->dynamoFailedJobProvider($config);
+            } elseif (isset($config['driver']) && $config['driver'] === 'database-uuids') {
+                return $this->databaseUuidFailedJobProvider($config);
             } elseif (isset($config['table'])) {
                 return $this->databaseFailedJobProvider($config);
             } else {
@@ -242,8 +288,22 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
     }
 
     /**
+     * Create a new database failed job provider that uses UUIDs as IDs.
+	 * 创建一个使用uuid作为id的新的数据库失败作业提供程序
+     *
+     * @param  array  $config
+     * @return \Illuminate\Queue\Failed\DatabaseUuidFailedJobProvider
+     */
+    protected function databaseUuidFailedJobProvider($config)
+    {
+        return new DatabaseUuidFailedJobProvider(
+            $this->app['db'], $config['database'], $config['table']
+        );
+    }
+
+    /**
      * Create a new DynamoDb failed job provider.
-	 * 创建新的DynamoDb失败作业提供程序
+	 * 创建一个新的DynamoDb失败作业提供程序
      *
      * @param  array  $config
      * @return \Illuminate\Queue\Failed\DynamoDbFailedJobProvider
@@ -270,21 +330,6 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
     }
 
     /**
-     * Configure Opis Closure signing for security.
-	 * 配置Opis闭包签名为安全性
-     *
-     * @return void
-     */
-    protected function registerOpisSecurityKey()
-    {
-        if (Str::startsWith($key = $this->app['config']->get('app.key'), 'base64:')) {
-            $key = base64_decode(substr($key, 7));
-        }
-
-        SerializableClosure::setSecretKey($key);
-    }
-
-    /**
      * Get the services provided by the provider.
 	 * 得到提供者提供的服务
      *
@@ -293,8 +338,11 @@ class QueueServiceProvider extends ServiceProvider implements DeferrableProvider
     public function provides()
     {
         return [
-            'queue', 'queue.worker', 'queue.listener',
-            'queue.failer', 'queue.connection',
+            'queue',
+            'queue.connection',
+            'queue.failer',
+            'queue.listener',
+            'queue.worker',
         ];
     }
 }

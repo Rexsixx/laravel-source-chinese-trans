@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，解决方案提供者，表未找到解决方案提供者
+ * Facade，Ignition，解决方案提供程序，表未找到解决方案提供者
  */
 
 namespace Facade\Ignition\SolutionProviders;
@@ -15,7 +15,7 @@ class TableNotFoundSolutionProvider implements HasSolutionsForThrowable
     /**
      * See https://dev.mysql.com/doc/refman/8.0/en/server-error-reference.html#error_er_bad_table_error.
      */
-    const MYSQL_BAD_TABLE_CODE = '42S02';
+    public const MYSQL_BAD_TABLE_CODE = '42S02';
 
     public function canSolve(Throwable $throwable): bool
     {

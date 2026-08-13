@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，支持，Fake Composer
+ * Facade，Ignition，支持，Fake Composer
  */
 
 namespace Facade\Ignition\Support;

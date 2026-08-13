@@ -1,12 +1,12 @@
 <?php
 /**
- * Psy，代码清理器
+ * Psy，代码清洁
  */
 
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2023 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,13 +21,13 @@ use Psy\CodeCleaner\AbstractClassPass;
 use Psy\CodeCleaner\AssignThisVariablePass;
 use Psy\CodeCleaner\CalledClassPass;
 use Psy\CodeCleaner\CallTimePassByReferencePass;
+use Psy\CodeCleaner\CodeCleanerPass;
 use Psy\CodeCleaner\EmptyArrayDimFetchPass;
 use Psy\CodeCleaner\ExitPass;
 use Psy\CodeCleaner\FinalClassPass;
 use Psy\CodeCleaner\FunctionContextPass;
 use Psy\CodeCleaner\FunctionReturnInWriteContextPass;
 use Psy\CodeCleaner\ImplicitReturnPass;
-use Psy\CodeCleaner\InstanceOfPass;
 use Psy\CodeCleaner\IssetPass;
 use Psy\CodeCleaner\LabelContextPass;
 use Psy\CodeCleaner\LeavePsyshAlonePass;
@@ -48,34 +48,34 @@ use Psy\Exception\ParseErrorException;
 /**
  * A service to clean up user input, detect parse errors before they happen,
  * and generally work around issues with the PHP code evaluation experience.
- * 一种清理用户输入的服务,在它们发生之前检测解析错误,而且通常在PHP代码评估经验的问题上工作。
+ * 清理用户输入的服务，在解析错误发生之前检测到它们，并通常解决PHP代码评估经验的问题。
  */
 class CodeCleaner
 {
-    private $yolo = false;
-    private $parser;
-    private $printer;
-    private $traverser;
-    private $namespace;
+    private bool $yolo = false;
+    private bool $strictTypes = false;
+
+    private Parser $parser;
+    private Printer $printer;
+    private NodeTraverser $traverser;
+    private ?array $namespace = null;
 
     /**
      * CodeCleaner constructor.
+	 * CodeCleaner构造函数
      *
-     * @param Parser|null        $parser    A PhpParser Parser instance. One will be created if not explicitly supplied
-     * @param Printer|null       $printer   A PhpParser Printer instance. One will be created if not explicitly supplied
-     * @param NodeTraverser|null $traverser A PhpParser NodeTraverser instance. One will be created if not explicitly supplied
-     * @param bool               $yolo      run without input validation
+     * @param Parser|null        $parser      A PhpParser Parser instance. One will be created if not explicitly supplied
+     * @param Printer|null       $printer     A PhpParser Printer instance. One will be created if not explicitly supplied
+     * @param NodeTraverser|null $traverser   A PhpParser NodeTraverser instance. One will be created if not explicitly supplied
+     * @param bool               $yolo        run without input validation
+     * @param bool               $strictTypes enforce strict types by default
      */
-    public function __construct(Parser $parser = null, Printer $printer = null, NodeTraverser $traverser = null, bool $yolo = false)
+    public function __construct(?Parser $parser = null, ?Printer $printer = null, ?NodeTraverser $traverser = null, bool $yolo = false, bool $strictTypes = false)
     {
         $this->yolo = $yolo;
+        $this->strictTypes = $strictTypes;
 
-        if ($parser === null) {
-            $parserFactory = new ParserFactory();
-            $parser = $parserFactory->createParser();
-        }
-
-        $this->parser = $parser;
+        $this->parser = $parser ?? (new ParserFactory())->createParser();
         $this->printer = $printer ?: new Printer();
         $this->traverser = $traverser ?: new NodeTraverser();
 
@@ -86,8 +86,7 @@ class CodeCleaner
 
     /**
      * Check whether this CodeCleaner is in YOLO mode.
-     *
-     * @return bool
+	 * 检查此cocleaner是否处于YOLO模式
      */
     public function yolo(): bool
     {
@@ -96,21 +95,37 @@ class CodeCleaner
 
     /**
      * Get default CodeCleaner passes.
+	 * 获取默认的CodeCleaner通行证
      *
-     * @return array
+     * @return CodeCleanerPass[]
      */
     private function getDefaultPasses(): array
     {
-        if ($this->yolo) {
-            return $this->getYoloPasses();
-        }
-
         $useStatementPass = new UseStatementPass();
         $namespacePass = new NamespacePass($this);
 
         // Try to add implicit `use` statements and an implicit namespace,
         // based on the file in which the `debug` call was made.
         $this->addImplicitDebugContext([$useStatementPass, $namespacePass]);
+
+        // A set of code cleaner passes that don't try to do any validation, and
+        // only do minimal rewriting to make things work inside the REPL.
+        //
+        // When in --yolo mode, these are the only code cleaner passes used.
+        $rewritePasses = [
+            new LeavePsyshAlonePass(),
+            $useStatementPass,        // must run before the namespace pass
+            new ExitPass(),
+            new ImplicitReturnPass(),
+            new MagicConstantsPass(),
+            $namespacePass,           // must run after the implicit return pass
+            new RequirePass(),
+            new StrictTypesPass($this->strictTypes),
+        ];
+
+        if ($this->yolo) {
+            return $rewritePasses;
+        }
 
         return [
             // Validation passes
@@ -121,10 +136,8 @@ class CodeCleaner
             new FinalClassPass(),
             new FunctionContextPass(),
             new FunctionReturnInWriteContextPass(),
-            new InstanceOfPass(),
             new IssetPass(),
             new LabelContextPass(),
-            new LeavePsyshAlonePass(),
             new ListPass(),
             new LoopContextPass(),
             new PassableByReferencePass(),
@@ -133,13 +146,7 @@ class CodeCleaner
             new ValidConstructorPass(),
 
             // Rewriting shenanigans
-            $useStatementPass,        // must run before the namespace pass
-            new ExitPass(),
-            new ImplicitReturnPass(),
-            new MagicConstantsPass(),
-            $namespacePass,           // must run after the implicit return pass
-            new RequirePass(),
-            new StrictTypesPass(),
+            ...$rewritePasses,
 
             // Namespace-aware validation (which depends on aforementioned shenanigans)
             new ValidClassNamePass(),
@@ -148,37 +155,8 @@ class CodeCleaner
     }
 
     /**
-     * A set of code cleaner passes that don't try to do any validation, and
-     * only do minimal rewriting to make things work inside the REPL.
-     *
-     * This list should stay in sync with the "rewriting shenanigans" in
-     * getDefaultPasses above.
-     *
-     * @return array
-     */
-    private function getYoloPasses(): array
-    {
-        $useStatementPass = new UseStatementPass();
-        $namespacePass = new NamespacePass($this);
-
-        // Try to add implicit `use` statements and an implicit namespace,
-        // based on the file in which the `debug` call was made.
-        $this->addImplicitDebugContext([$useStatementPass, $namespacePass]);
-
-        return [
-            new LeavePsyshAlonePass(),
-            $useStatementPass,        // must run before the namespace pass
-            new ExitPass(),
-            new ImplicitReturnPass(),
-            new MagicConstantsPass(),
-            $namespacePass,           // must run after the implicit return pass
-            new RequirePass(),
-            new StrictTypesPass(),
-        ];
-    }
-
-    /**
      * "Warm up" code cleaner passes when we're coming from a debug call.
+	 * 当我们来自调试调用时,“预热”代码清理传递。
      *
      * This is useful, for example, for `UseStatementPass` and `NamespacePass`
      * which keep track of state between calls, to maintain the current
@@ -205,6 +183,7 @@ class CodeCleaner
             }
 
             // Set up a clean traverser for just these code cleaner passes
+            // @todo Pass visitors directly to once we drop support for PHP-Parser 4.x
             $traverser = new NodeTraverser();
             foreach ($passes as $pass) {
                 $traverser->addVisitor($pass);
@@ -218,6 +197,7 @@ class CodeCleaner
 
     /**
      * Search the stack trace for a file in which the user called Psy\debug.
+	 * 在堆栈跟踪中搜索用户名为Psy\debug的文件
      *
      * @return string|null
      */
@@ -242,10 +222,9 @@ class CodeCleaner
 
     /**
      * Check whether a given backtrace frame is a call to Psy\debug.
+	 * 检查给定的回溯帧是否为对Psy\debug的调用
      *
      * @param array $stackFrame
-     *
-     * @return bool
      */
     private static function isDebugCall(array $stackFrame): bool
     {
@@ -258,6 +237,7 @@ class CodeCleaner
 
     /**
      * Clean the given array of code.
+	 * 清理给定的代码数组。
      *
      * @throws ParseErrorException if the code is invalid PHP, and cannot be coerced into valid PHP
      *
@@ -290,18 +270,16 @@ class CodeCleaner
 
     /**
      * Set the current local namespace.
-     *
-     * @param array|null $namespace (default: null)
-     *
-     * @return array|null
+	 * 设置当前本地命名空间
      */
-    public function setNamespace(array $namespace = null)
+    public function setNamespace(?array $namespace = null)
     {
         $this->namespace = $namespace;
     }
 
     /**
      * Get the current local namespace.
+	 * 获取当前本地命名空间
      *
      * @return array|null
      */
@@ -317,9 +295,6 @@ class CodeCleaner
      *
      * @throws ParseErrorException for parse errors that can't be resolved by
      *                             waiting a line to see what comes next
-     *
-     * @param string $code
-     * @param bool   $requireSemicolons
      *
      * @return array|false A set of statements, or false if incomplete
      */
@@ -366,15 +341,11 @@ class CodeCleaner
 
     /**
      * A special test for unclosed single-quoted strings.
+	 * 对未闭合单引号字符串的特殊测试
      *
      * Unlike (all?) other unclosed statements, single quoted strings have
      * their own special beautiful snowflake syntax error just for
      * themselves.
-     *
-     * @param \PhpParser\Error $e
-     * @param string           $code
-     *
-     * @return bool
      */
     private function parseErrorIsUnclosedString(\PhpParser\Error $e, string $code): bool
     {
@@ -391,12 +362,12 @@ class CodeCleaner
         return true;
     }
 
-    private function parseErrorIsUnterminatedComment(\PhpParser\Error $e, $code): bool
+    private function parseErrorIsUnterminatedComment(\PhpParser\Error $e, string $code): bool
     {
         return $e->getRawMessage() === 'Unterminated comment';
     }
 
-    private function parseErrorIsTrailingComma(\PhpParser\Error $e, $code): bool
+    private function parseErrorIsTrailingComma(\PhpParser\Error $e, string $code): bool
     {
         return ($e->getRawMessage() === 'A trailing comma is not allowed here') && (\substr(\rtrim($code), -1) === ',');
     }

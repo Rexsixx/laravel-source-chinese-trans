@@ -1,6 +1,6 @@
 <?php
 /**
- * 翻译，信息选择类
+ * Illuminate，翻译，消息选择器
  */
 
 namespace Illuminate\Translation;
@@ -39,7 +39,7 @@ class MessageSelector
 
     /**
      * Extract a translation string using inline conditions.
-	 * 提取翻译字符串使用内联条件
+	 * 使用内联条件提取翻译字符串
      *
      * @param  array  $segments
      * @param  int  $number
@@ -67,7 +67,7 @@ class MessageSelector
         preg_match('/^[\{\[]([^\[\]\{\}]*)[\}\]](.*)/s', $part, $matches);
 
         if (count($matches) !== 3) {
-            return;
+            return null;
         }
 
         $condition = $matches[1];
@@ -105,7 +105,7 @@ class MessageSelector
 
     /**
      * Get the index to use for pluralization.
-	 * 得到用于复数形式的索引
+	 * 获取用于复数形式的索引
      *
      * The plural rules are derived from code of the Zend Framework (2010-09-25), which
      * is subject to the new BSD license (https://framework.zend.com/license)

@@ -1,18 +1,19 @@
 <?php
 /**
- * 队列，失败，数据库失败作业提供者
+ * Illuminate，队列，失败，数据库失败的作业提供者
  */
 
 namespace Illuminate\Queue\Failed;
 
+use DateTimeInterface;
 use Illuminate\Database\ConnectionResolverInterface;
 use Illuminate\Support\Facades\Date;
 
-class DatabaseFailedJobProvider implements FailedJobProviderInterface
+class DatabaseFailedJobProvider implements FailedJobProviderInterface, PrunableFailedJobProvider
 {
     /**
      * The connection resolver implementation.
-	 * 连接解析实现
+	 * 连接解析器实现
      *
      * @var \Illuminate\Database\ConnectionResolverInterface
      */
@@ -20,7 +21,7 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * The database connection name.
-	 * 数据库连接名
+	 * 数据库连接名称
      *
      * @var string
      */
@@ -57,7 +58,7 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface
      * @param  string  $connection
      * @param  string  $queue
      * @param  string  $payload
-     * @param  \Exception  $exception
+     * @param  \Throwable  $exception
      * @return int|null
      */
     public function log($connection, $queue, $payload, $exception)
@@ -84,7 +85,7 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * Get a single failed job.
-	 * 得到单个失败的作业
+	 * 找一份失败的工作
      *
      * @param  mixed  $id
      * @return object|null
@@ -118,8 +119,30 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface
     }
 
     /**
+     * Prune all of the entries older than the given date.
+	 * 删除所有比给定日期早的条目
+     *
+     * @param  \DateTimeInterface  $before
+     * @return int
+     */
+    public function prune(DateTimeInterface $before)
+    {
+        $query = $this->getTable()->where('failed_at', '<', $before);
+
+        $totalDeleted = 0;
+
+        do {
+            $deleted = $query->take(1000)->delete();
+
+            $totalDeleted += $deleted;
+        } while ($deleted !== 0);
+
+        return $totalDeleted;
+    }
+
+    /**
      * Get a new query builder instance for the table.
-	 * 得到表的新查询生成器实例
+	 * 获取表的新查询生成器实例
      *
      * @return \Illuminate\Database\Query\Builder
      */

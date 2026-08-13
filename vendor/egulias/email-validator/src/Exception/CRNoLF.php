@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，电子邮件验证器，异常，CR No LF
+ * Egulias，EmailValidator，异常，CRNoLF
  */
 
 namespace Egulias\EmailValidator\Exception;

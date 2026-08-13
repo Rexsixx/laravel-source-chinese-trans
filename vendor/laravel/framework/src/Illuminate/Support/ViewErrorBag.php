@@ -1,6 +1,6 @@
 <?php
 /**
- * 支持，查看错误包
+ * Illuminate，支持，视图错误包
  */
 
 namespace Illuminate\Support;
@@ -35,7 +35,7 @@ class ViewErrorBag implements Countable
 
     /**
      * Get a MessageBag instance from the bags.
-	 * 得到MessageBag实例从包中
+	 * 从包中获取MessageBag实例
      *
      * @param  string  $key
      * @return \Illuminate\Contracts\Support\MessageBag
@@ -58,7 +58,7 @@ class ViewErrorBag implements Countable
 
     /**
      * Add a new MessageBag instance to the bags.
-	 * 添加一个新的MessageBag实例向包中
+	 * 向包中添加一个新的MessageBag实例
      *
      * @param  string  $key
      * @param  \Illuminate\Contracts\Support\MessageBag  $bag
@@ -84,10 +84,11 @@ class ViewErrorBag implements Countable
 
     /**
      * Get the number of messages in the default bag.
-	 * 得到默认包中的消息数
+	 * 获取默认包中的消息数
      *
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return $this->getBag('default')->count();
@@ -133,7 +134,7 @@ class ViewErrorBag implements Countable
 
     /**
      * Convert the default bag to its string representation.
-	 * 转换默认包为其字符串表示形式
+	 * 将默认包转换为其字符串表示形式
      *
      * @return string
      */

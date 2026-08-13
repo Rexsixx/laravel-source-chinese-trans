@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，输出，缓冲输出区
+ * Symfony，Component，Console，输出，缓冲输出区
  */
 
 /*
@@ -23,6 +23,7 @@ class BufferedOutput extends Output
 
     /**
      * Empties buffer and returns its content.
+	 * 清空缓冲区并返回其内容
      *
      * @return string
      */
@@ -37,7 +38,7 @@ class BufferedOutput extends Output
     /**
      * {@inheritdoc}
      */
-    protected function doWrite($message, $newline)
+    protected function doWrite(string $message, bool $newline)
     {
         $this->buffer .= $message;
 

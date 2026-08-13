@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，助手，Symfony 问题助手
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -20,6 +23,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Symfony Style Guide compliant question helper.
+ * Symfony风格指南兼容问题助手。
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
@@ -32,6 +36,10 @@ class SymfonyQuestionHelper extends QuestionHelper
     {
         $text = OutputFormatter::escapeTrailingBackslash($question->getQuestion());
         $default = $question->getDefault();
+
+        if ($question->isMultiline()) {
+            $text .= sprintf(' (press %s to continue)', $this->getEofShortcut());
+        }
 
         switch (true) {
             case null === $default:
@@ -92,5 +100,14 @@ class SymfonyQuestionHelper extends QuestionHelper
         }
 
         parent::writeError($output, $error);
+    }
+
+    private function getEofShortcut(): string
+    {
+        if ('Windows' === \PHP_OS_FAMILY) {
+            return '<comment>Ctrl+Z</comment> then <comment>Enter</comment>';
+        }
+
+        return '<comment>Ctrl+D</comment>';
     }
 }

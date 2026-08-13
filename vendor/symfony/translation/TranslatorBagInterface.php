@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，翻译，目录，翻译包接口
+ * Symfony，Component，Translation，翻译包接口
  */
 
 /*
@@ -20,12 +20,15 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
  * TranslatorBagInterface.
  * 翻译包接口
  *
+ * @method MessageCatalogueInterface[] getCatalogues() Returns all catalogues of the instance
+ *
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
  */
 interface TranslatorBagInterface
 {
     /**
      * Gets the catalogue by locale.
+	 * 通过现场获取目录
      *
      * @param string|null $locale The locale or null to use the default
      *
@@ -33,5 +36,5 @@ interface TranslatorBagInterface
      *
      * @throws InvalidArgumentException If the locale contains invalid characters
      */
-    public function getCatalogue($locale = null);
+    public function getCatalogue(?string $locale = null);
 }

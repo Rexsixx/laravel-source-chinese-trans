@@ -1,18 +1,21 @@
 <?php
 /**
- * 基础，作业生成命令
+ * Illuminate，基础，控制台，make:job 任务生成命令
  */
 
 namespace Illuminate\Foundation\Console;
 
+use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
 class JobMakeCommand extends GeneratorCommand
 {
+    use CreatesMatchingTest;
+
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -28,7 +31,7 @@ class JobMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 被生成类的类型
+	 * 生成的类的类型
      *
      * @var string
      */
@@ -36,20 +39,34 @@ class JobMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 得到存根文件为生成器
+	 * 获取生成器的存根文件
      *
      * @return string
      */
     protected function getStub()
     {
         return $this->option('sync')
-                        ? __DIR__.'/stubs/job.stub'
-                        : __DIR__.'/stubs/job-queued.stub';
+                        ? $this->resolveStubPath('/stubs/job.stub')
+                        : $this->resolveStubPath('/stubs/job.queued.stub');
+    }
+
+    /**
+     * Resolve the fully-qualified path to the stub.
+	 * 解析到存根的全限定路径
+     *
+     * @param  string  $stub
+     * @return string
+     */
+    protected function resolveStubPath($stub)
+    {
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+                        ? $customPath
+                        : __DIR__.$stub;
     }
 
     /**
      * Get the default namespace for the class.
-	 * 得到类的默认命名空间
+	 * 获取类的默认命名空间
      *
      * @param  string  $rootNamespace
      * @return string

@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，Beanstalkd 队列
+ * Illuminate，队列，Beanstalkd 队列
  */
 
 namespace Illuminate\Queue;
@@ -14,7 +14,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 {
     /**
      * The Pheanstalk instance.
-	 * Pheanstalk实例
+	 * Pheanstalk实列
      *
      * @var \Pheanstalk\Pheanstalk
      */
@@ -22,7 +22,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * The name of the default tube.
-	 * 默认管理名
+	 * 默认管道的名称
      *
      * @var string
      */
@@ -46,25 +46,31 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Create a new Beanstalkd queue instance.
-	 * 创建新的Beanstalkd队列实例
+	 * 创建一个新的beanstald队列实例
      *
      * @param  \Pheanstalk\Pheanstalk  $pheanstalk
      * @param  string  $default
      * @param  int  $timeToRun
      * @param  int  $blockFor
+     * @param  bool  $dispatchAfterCommit
      * @return void
      */
-    public function __construct(Pheanstalk $pheanstalk, $default, $timeToRun, $blockFor = 0)
+    public function __construct(Pheanstalk $pheanstalk,
+                                $default,
+                                $timeToRun,
+                                $blockFor = 0,
+                                $dispatchAfterCommit = false)
     {
         $this->default = $default;
         $this->blockFor = $blockFor;
         $this->timeToRun = $timeToRun;
         $this->pheanstalk = $pheanstalk;
+        $this->dispatchAfterCommit = $dispatchAfterCommit;
     }
 
     /**
      * Get the size of the queue.
-	 * 得到队列大小
+	 * 得到队列的大小
      *
      * @param  string|null  $queue
      * @return int
@@ -78,7 +84,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Push a new job onto the queue.
-	 * 推送新作业到队列中
+	 * 将新作业推送到队列中
      *
      * @param  string  $job
      * @param  mixed  $data
@@ -87,12 +93,20 @@ class BeanstalkdQueue extends Queue implements QueueContract
      */
     public function push($job, $data = '', $queue = null)
     {
-        return $this->pushRaw($this->createPayload($job, $this->getQueue($queue), $data), $queue);
+        return $this->enqueueUsing(
+            $job,
+            $this->createPayload($job, $this->getQueue($queue), $data),
+            $queue,
+            null,
+            function ($payload, $queue) {
+                return $this->pushRaw($payload, $queue);
+            }
+        );
     }
 
     /**
      * Push a raw payload onto the queue.
-	 * 推入原始有效负载至队列
+	 * 将原始有效负载推入队列
      *
      * @param  string  $payload
      * @param  string|null  $queue
@@ -108,7 +122,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Push a new job onto the queue after a delay.
-	 * 推入延迟后将新作业至队列
+	 * 在延迟后将新作业推入队列
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
      * @param  string  $job
@@ -118,13 +132,19 @@ class BeanstalkdQueue extends Queue implements QueueContract
      */
     public function later($delay, $job, $data = '', $queue = null)
     {
-        $pheanstalk = $this->pheanstalk->useTube($this->getQueue($queue));
-
-        return $pheanstalk->put(
+        return $this->enqueueUsing(
+            $job,
             $this->createPayload($job, $this->getQueue($queue), $data),
-            Pheanstalk::DEFAULT_PRIORITY,
-            $this->secondsUntil($delay),
-            $this->timeToRun
+            $queue,
+            $delay,
+            function ($payload, $queue, $delay) {
+                return $this->pheanstalk->useTube($this->getQueue($queue))->put(
+                    $payload,
+                    Pheanstalk::DEFAULT_PRIORITY,
+                    $this->secondsUntil($delay),
+                    $this->timeToRun
+                );
+            }
         );
     }
 
@@ -150,7 +170,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Delete a message from the Beanstalk queue.
-	 * 删除消息从Beanstalk队列
+	 * 从Beanstalk队列中删除消息
      *
      * @param  string  $queue
      * @param  string|int  $id
@@ -177,7 +197,7 @@ class BeanstalkdQueue extends Queue implements QueueContract
 
     /**
      * Get the underlying Pheanstalk instance.
-	 * 得到底层Beanstalk实例
+	 * 得到底层Pheanstalk实例
      *
      * @return \Pheanstalk\Pheanstalk
      */

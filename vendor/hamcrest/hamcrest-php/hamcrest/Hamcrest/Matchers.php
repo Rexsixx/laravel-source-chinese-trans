@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，匹配器
+ * Hamcrest，匹配程序
  */
 
 /*

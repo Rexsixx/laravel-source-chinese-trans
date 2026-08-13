@@ -1,16 +1,14 @@
 <?php
 /**
- * 管道，核心类
+ * Illuminate，管道，管道核心类
  */
 
 namespace Illuminate\Pipeline;
 
 use Closure;
-use Exception;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Pipeline\Pipeline as PipelineContract;
 use RuntimeException;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Throwable;
 
 class Pipeline implements PipelineContract
@@ -25,7 +23,7 @@ class Pipeline implements PipelineContract
 
     /**
      * The object being passed through the pipeline.
-	 * 通过管道的对象
+	 * 正在通过管道传递的对象。
      *
      * @var mixed
      */
@@ -33,7 +31,7 @@ class Pipeline implements PipelineContract
 
     /**
      * The array of class pipes.
-	 * 管道类
+	 * 类管道数组
      *
      * @var array
      */
@@ -41,7 +39,7 @@ class Pipeline implements PipelineContract
 
     /**
      * The method to call on each pipe.
-	 * 方法调取管道的
+	 * 要在每个管道上调用的方法
      *
      * @var string
      */
@@ -75,7 +73,7 @@ class Pipeline implements PipelineContract
 
     /**
      * Set the array of pipes.
-	 * 设置管道
+	 * 设置管道数组
      *
      * @param  array|mixed  $pipes
      * @return $this
@@ -119,7 +117,7 @@ class Pipeline implements PipelineContract
 
     /**
      * Run the pipeline and return the result.
-	 * 运行管道且返回结果
+	 * 运行管道并返回结果
      *
      * @return mixed
      */
@@ -132,7 +130,7 @@ class Pipeline implements PipelineContract
 
     /**
      * Get the final piece of the Closure onion.
-	 * 得到最终闭包
+	 * 获取闭包的最后碎片
      *
      * @param  \Closure  $destination
      * @return \Closure
@@ -142,17 +140,15 @@ class Pipeline implements PipelineContract
         return function ($passable) use ($destination) {
             try {
                 return $destination($passable);
-            } catch (Exception $e) {
-                return $this->handleException($passable, $e);
             } catch (Throwable $e) {
-                return $this->handleException($passable, new FatalThrowableError($e));
+                return $this->handleException($passable, $e);
             }
         };
     }
 
     /**
      * Get a Closure that represents a slice of the application onion.
-	 * 得到闭包
+	 * 得到一个表示应用程序洋葱部分的Closure
      *
      * @return \Closure
      */
@@ -165,8 +161,7 @@ class Pipeline implements PipelineContract
                         // If the pipe is a callable, then we will call it directly, but otherwise we
                         // will resolve the pipes out of the dependency container and call it with
                         // the appropriate method and arguments, returning the results back out.
-						// 如果管道是可调用的，那么我们将直接调用它，否则我们将从依赖容器中解析管道，
-						// 并使用适当的方法和参数调用它，返回结果。
+						// 如果管道是可调用的，那么我们将直接调用它，否则我们将从依赖容器中解析管道。
                         return $pipe($passable, $stack);
                     } elseif (! is_object($pipe)) {
                         [$name, $parameters] = $this->parsePipeString($pipe);
@@ -174,8 +169,7 @@ class Pipeline implements PipelineContract
                         // If the pipe is a string we will parse the string and resolve the class out
                         // of the dependency injection container. We can then build a callable and
                         // execute the pipe function giving in the parameters that are required.
-						// 如果管道是字符串，我们将解析字符串并将类从依赖注入容器中解析出来。
-						// 然后，我们可以构建一个可调用函数，并执行管道函数，给出所需的参数。
+						// 如果管道是字符串，我们将解析字符串并解析出依赖注入容器的类。
                         $pipe = $this->getContainer()->make($name);
 
                         $parameters = array_merge([$passable, $stack], $parameters);
@@ -183,8 +177,7 @@ class Pipeline implements PipelineContract
                         // If the pipe is already an object we'll just make a callable and pass it to
                         // the pipe as-is. There is no need to do any extra parsing and formatting
                         // since the object we're given was already a fully instantiated object.
-						// 如果管道已经是一个对象，我们只需创建一个可调用对象并按原样将其传递给管道。
-						// 不需要进行任何额外的解析和格式化，因为我们给出的对象已经是一种完全实例化的对象。
+						// 如果管道已经是一个对象，我们将创建一个可调用对象并将其传递给管道原样。
                         $parameters = [$passable, $stack];
                     }
 
@@ -193,10 +186,8 @@ class Pipeline implements PipelineContract
                                     : $pipe(...$parameters);
 
                     return $this->handleCarry($carry);
-                } catch (Exception $e) {
-                    return $this->handleException($passable, $e);
                 } catch (Throwable $e) {
-                    return $this->handleException($passable, new FatalThrowableError($e));
+                    return $this->handleException($passable, $e);
                 }
             };
         };
@@ -222,7 +213,7 @@ class Pipeline implements PipelineContract
 
     /**
      * Get the array of configured pipes.
-	 * 得到已配置管道的数组
+	 * 获取已配置管道的数组
      *
      * @return array
      */
@@ -249,6 +240,20 @@ class Pipeline implements PipelineContract
     }
 
     /**
+     * Set the container instance.
+	 * 设置容器实例
+     *
+     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @return $this
+     */
+    public function setContainer(Container $container)
+    {
+        $this->container = $container;
+
+        return $this;
+    }
+
+    /**
      * Handle the value returned from each pipe before passing it to the next.
 	 * 在将每个管道返回的值传递给下一个管道之前处理它
      *
@@ -265,12 +270,12 @@ class Pipeline implements PipelineContract
 	 * 处理给定异常
      *
      * @param  mixed  $passable
-     * @param  \Exception  $e
+     * @param  \Throwable  $e
      * @return mixed
      *
-     * @throws \Exception
+     * @throws \Throwable
      */
-    protected function handleException($passable, Exception $e)
+    protected function handleException($passable, Throwable $e)
     {
         throw $e;
     }

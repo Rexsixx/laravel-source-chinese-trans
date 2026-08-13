@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Process，管道，Windows 管道
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Process\Process;
 
 /**
  * WindowsPipes implementation uses temporary files as handles.
+ * windowsppipes实现使用临时文件作为句柄。
  *
  * @see https://bugs.php.net/51800
  * @see https://bugs.php.net/65650
@@ -88,10 +92,7 @@ class WindowsPipes extends AbstractPipes
         parent::__construct($input);
     }
 
-    /**
-     * @return array
-     */
-    public function __sleep()
+    public function __sleep(): array
     {
         throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
     }
@@ -152,7 +153,7 @@ class WindowsPipes extends AbstractPipes
             if ($w) {
                 @stream_select($r, $w, $e, 0, Process::TIMEOUT_PRECISION * 1E6);
             } elseif ($this->fileHandles) {
-                usleep(Process::TIMEOUT_PRECISION * 1E6);
+                usleep((int) (Process::TIMEOUT_PRECISION * 1E6));
             }
         }
         foreach ($this->fileHandles as $type => $fileHandle) {

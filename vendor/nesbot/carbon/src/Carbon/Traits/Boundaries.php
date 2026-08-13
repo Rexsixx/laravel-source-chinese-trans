@@ -18,6 +18,7 @@ use Carbon\Exceptions\UnknownUnitException;
 
 /**
  * Trait Boundaries.
+ * 特征边界
  *
  * startOf, endOf and derived method for each unit.
  *
@@ -38,6 +39,7 @@ trait Boundaries
 {
     /**
      * Resets the time to 00:00:00 start of day
+	 * 将时间重置为每天开始的00:00:00
      *
      * @example
      * ```
@@ -53,6 +55,7 @@ trait Boundaries
 
     /**
      * Resets the time to 23:59:59.999999 end of day
+	 * 将时间重置为一天结束的23:59:59.999999
      *
      * @example
      * ```

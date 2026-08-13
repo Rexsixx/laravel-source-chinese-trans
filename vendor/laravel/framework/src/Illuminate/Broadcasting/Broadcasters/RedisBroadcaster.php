@@ -1,6 +1,6 @@
 <?php
 /**
- * 广播，Redis广播
+ * Illuminate，广播，广播员，Redis 广播
  */
 
 namespace Illuminate\Broadcasting\Broadcasters;
@@ -23,23 +23,23 @@ class RedisBroadcaster extends Broadcaster
 
     /**
      * The Redis connection to use for broadcasting.
-	 * Redis连接用于广播
+	 * 用于广播的Redis连接
      *
-     * @var string
+     * @var ?string
      */
-    protected $connection;
+    protected $connection = null;
 
     /**
      * The Redis key prefix.
-	 * Redis前缀
+	 * Redis键前缀
      *
      * @var string
      */
-    protected $prefix;
+    protected $prefix = '';
 
     /**
      * Create a new broadcaster instance.
-	 * 创建新的广播实例
+	 * 创建新的广播员实例
      *
      * @param  \Illuminate\Contracts\Redis\Factory  $redis
      * @param  string|null  $connection
@@ -68,8 +68,9 @@ class RedisBroadcaster extends Broadcaster
             str_replace($this->prefix, '', $request->channel_name)
         );
 
-        if ($this->isGuardedChannel($request->channel_name) &&
-            ! $this->retrieveUser($request, $channelName)) {
+        if (empty($request->channel_name) ||
+            ($this->isGuardedChannel($request->channel_name) &&
+            ! $this->retrieveUser($request, $channelName))) {
             throw new AccessDeniedHttpException;
         }
 
@@ -94,14 +95,20 @@ class RedisBroadcaster extends Broadcaster
 
         $channelName = $this->normalizeChannelName($request->channel_name);
 
+        $user = $this->retrieveUser($request, $channelName);
+
+        $broadcastIdentifier = method_exists($user, 'getAuthIdentifierForBroadcasting')
+                        ? $user->getAuthIdentifierForBroadcasting()
+                        : $user->getAuthIdentifier();
+
         return json_encode(['channel_data' => [
-            'user_id' => $this->retrieveUser($request, $channelName)->getAuthIdentifier(),
+            'user_id' => $broadcastIdentifier,
             'user_info' => $result,
         ]]);
     }
 
     /**
-     * Broadcast the given event.、
+     * Broadcast the given event.
 	 * 广播给定事件
      *
      * @param  array  $channels
@@ -131,7 +138,7 @@ class RedisBroadcaster extends Broadcaster
 
     /**
      * Get the Lua script for broadcasting to multiple channels.
-	 * 得到用于向多个通道广播的Lua脚本
+	 * 获取用于向多个通道广播的Lua脚本
      *
      * ARGV[1] - The payload
      * ARGV[2...] - The channels
@@ -149,7 +156,7 @@ LUA;
 
     /**
      * Format the channel array into an array of strings.
-	 * 格式化通道数组为字符串数组
+	 * 将通道数组格式化为字符串数组
      *
      * @param  array  $channels
      * @return array

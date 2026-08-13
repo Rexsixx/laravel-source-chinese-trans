@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，EventDispatcher，依赖注入，添加事件别名
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * This pass allows bundles to extend the list of event aliases.
+ * 这个传递允许包扩展事件别名的列表。
  *
  * @author Alexander M. Turek <me@derrabus.de>
  */
@@ -26,6 +30,10 @@ class AddEventAliasesPass implements CompilerPassInterface
 
     public function __construct(array $eventAliases, string $eventAliasesParameter = 'event_dispatcher.event_aliases')
     {
+        if (1 < \func_num_args()) {
+            trigger_deprecation('symfony/event-dispatcher', '5.3', 'Configuring "%s" is deprecated.', __CLASS__);
+        }
+
         $this->eventAliases = $eventAliases;
         $this->eventAliasesParameter = $eventAliasesParameter;
     }

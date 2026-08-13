@@ -1,6 +1,6 @@
 <?php
 /**
- * 授权，必须验证电子邮件
+ * Illuminate，认证，必须验证电子邮件
  */
 
 namespace Illuminate\Auth;
@@ -22,7 +22,7 @@ trait MustVerifyEmail
 
     /**
      * Mark the given user's email as verified.
-	 * 标记给定用户的电子邮件为已验证
+	 * 标记定用户的电子邮件为已验证
      *
      * @return bool
      */
@@ -46,7 +46,7 @@ trait MustVerifyEmail
 
     /**
      * Get the email address that should be used for verification.
-	 * 得到应该用于验证的电子邮件地址
+	 * 获取应该用于验证的电子邮件地址
      *
      * @return string
      */

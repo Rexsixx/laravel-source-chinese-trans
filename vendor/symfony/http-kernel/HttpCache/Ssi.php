@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，HTTP缓存，Ssi
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Ssi implements the SSI capabilities to Request and Response instances.
+ * Ssi实现了Ssi的请求和响应实例。
  *
  * @author Sebastian Krebs <krebs.seb@gmail.com>
  */
@@ -42,7 +46,7 @@ class Ssi extends AbstractSurrogate
     /**
      * {@inheritdoc}
      */
-    public function renderIncludeTag($uri, $alt = null, $ignoreErrors = true, $comment = '')
+    public function renderIncludeTag(string $uri, ?string $alt = null, bool $ignoreErrors = true, string $comment = '')
     {
         return sprintf('<!--#include virtual="%s" -->', $uri);
     }
@@ -64,9 +68,8 @@ class Ssi extends AbstractSurrogate
 
         // we don't use a proper XML parser here as we can have SSI tags in a plain text response
         $content = $response->getContent();
-
+        $boundary = self::generateBodyEvalBoundary();
         $chunks = preg_split('#<!--\#include\s+(.*?)\s*-->#', $content, -1, \PREG_SPLIT_DELIM_CAPTURE);
-        $chunks[0] = str_replace($this->phpEscapeMap[0], $this->phpEscapeMap[1], $chunks[0]);
 
         $i = 1;
         while (isset($chunks[$i])) {
@@ -80,14 +83,10 @@ class Ssi extends AbstractSurrogate
                 throw new \RuntimeException('Unable to process an SSI tag without a "virtual" attribute.');
             }
 
-            $chunks[$i] = sprintf('<?php echo $this->surrogate->handle($this, %s, \'\', false) ?>'."\n",
-                var_export($options['virtual'], true)
-            );
-            ++$i;
-            $chunks[$i] = str_replace($this->phpEscapeMap[0], $this->phpEscapeMap[1], $chunks[$i]);
-            ++$i;
+            $chunks[$i] = $boundary.$options['virtual']."\n\n\n";
+            $i += 2;
         }
-        $content = implode('', $chunks);
+        $content = $boundary.implode('', $chunks).$boundary;
 
         $response->setContent($content);
         $response->headers->set('X-Body-Eval', 'SSI');

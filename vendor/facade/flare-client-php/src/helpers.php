@@ -1,6 +1,6 @@
 <?php
 /**
- * Facade，Flare Client，助手
+ * Facade，FlareClient，帮助
  */
 
 if (! function_exists('array_merge_recursive_distinct')) {

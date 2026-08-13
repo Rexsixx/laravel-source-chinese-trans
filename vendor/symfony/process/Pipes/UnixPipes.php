@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Process，管道，Unix 管道
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Process\Process;
 
 /**
  * UnixPipes implementation uses unix pipes as handles.
+ * UnixPipes实现使用unix管道作为句柄。
  *
  * @author Romain Neutron <imprec@gmail.com>
  *
@@ -35,10 +39,7 @@ class UnixPipes extends AbstractPipes
         parent::__construct($input);
     }
 
-    /**
-     * @return array
-     */
-    public function __sleep()
+    public function __sleep(): array
     {
         throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
     }

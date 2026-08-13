@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，克隆，转储接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,6 +16,7 @@ namespace Symfony\Component\VarDumper\Cloner;
 
 /**
  * DumperInterface used by Data objects.
+ * 数据对象使用的DumperInterface。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -20,11 +24,12 @@ interface DumperInterface
 {
     /**
      * Dumps a scalar value.
+	 * 转储一个标量值
      *
      * @param string                $type  The PHP type of the value being dumped
      * @param string|int|float|bool $value The scalar value being dumped
      */
-    public function dumpScalar(Cursor $cursor, $type, $value);
+    public function dumpScalar(Cursor $cursor, string $type, $value);
 
     /**
      * Dumps a string.
@@ -33,7 +38,7 @@ interface DumperInterface
      * @param bool   $bin Whether $str is UTF-8 or binary encoded
      * @param int    $cut The number of characters $str has been cut by
      */
-    public function dumpString(Cursor $cursor, $str, $bin, $cut);
+    public function dumpString(Cursor $cursor, string $str, bool $bin, int $cut);
 
     /**
      * Dumps while entering an hash.
@@ -42,7 +47,7 @@ interface DumperInterface
      * @param string|int $class    The object class, resource type or array count
      * @param bool       $hasChild When the dump of the hash has child item
      */
-    public function enterHash(Cursor $cursor, $type, $class, $hasChild);
+    public function enterHash(Cursor $cursor, int $type, $class, bool $hasChild);
 
     /**
      * Dumps while leaving an hash.
@@ -52,5 +57,5 @@ interface DumperInterface
      * @param bool       $hasChild When the dump of the hash has child item
      * @param int        $cut      The number of items the hash has been cut by
      */
-    public function leaveHash(Cursor $cursor, $type, $class, $hasChild, $cut);
+    public function leaveHash(Cursor $cursor, int $type, $class, bool $hasChild, int $cut);
 }

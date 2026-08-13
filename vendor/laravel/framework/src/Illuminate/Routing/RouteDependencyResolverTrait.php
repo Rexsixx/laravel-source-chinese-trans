@@ -1,6 +1,6 @@
 <?php
 /**
- * 路由，路由依赖解析特性
+ * Illuminate，路由，路由依赖解析器特性
  */
 
 namespace Illuminate\Routing;
@@ -47,12 +47,12 @@ trait RouteDependencyResolverTrait
 
         $values = array_values($parameters);
 
-        foreach ($reflector->getParameters() as $key => $parameter) {
-            $instance = $this->transformDependency(
-                $parameter, $parameters
-            );
+        $skippableValue = new \stdClass;
 
-            if (! is_null($instance)) {
+        foreach ($reflector->getParameters() as $key => $parameter) {
+            $instance = $this->transformDependency($parameter, $parameters, $skippableValue);
+
+            if ($instance !== $skippableValue) {
                 $instanceCount++;
 
                 $this->spliceIntoParameters($parameters, $key, $instance);
@@ -71,22 +71,22 @@ trait RouteDependencyResolverTrait
      *
      * @param  \ReflectionParameter  $parameter
      * @param  array  $parameters
+     * @param  object  $skippableValue
      * @return mixed
      */
-    protected function transformDependency(ReflectionParameter $parameter, $parameters)
+    protected function transformDependency(ReflectionParameter $parameter, $parameters, $skippableValue)
     {
         $className = Reflector::getParameterClassName($parameter);
 
         // If the parameter has a type-hinted class, we will check to see if it is already in
         // the list of parameters. If it is we will just skip it as it is probably a model
         // binding and we do not want to mess with those; otherwise, we resolve it here.
-		// 如果参数有一个类型提示类，我们将检查它是否已经在参数列表中。
-		// 如果是这样，我们就跳过它，因为它可能是一个模型绑定，我们不想弄乱这些；否则，我们在这里解决。
+		// 如果形参有一个类型暗示类，我们将检查它是否在参数列表中已经存在。
         if ($className && ! $this->alreadyInParameters($className, $parameters)) {
-            return $parameter->isDefaultValueAvailable()
-                ? $parameter->getDefaultValue()
-                : $this->container->make($className);
+            return $parameter->isDefaultValueAvailable() ? null : $this->container->make($className);
         }
+
+        return $skippableValue;
     }
 
     /**
@@ -106,7 +106,7 @@ trait RouteDependencyResolverTrait
 
     /**
      * Splice the given value into the parameter list.
-	 * 拼接给定的值到参数列表中
+	 * 将给定的值拼接到参数列表中
      *
      * @param  array  $parameters
      * @param  string  $offset

@@ -1,6 +1,6 @@
 <?php
 /**
- * SSession，数据库会话处理
+ * Illuminate，Session，数据库会话处理程序
  */
 
 namespace Illuminate\Session;
@@ -28,7 +28,7 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * The name of the session table.
-	 * 会话表名
+	 * 会话表的名称
      *
      * @var string
      */
@@ -44,7 +44,7 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * The container instance.
-	 * 连接实例
+	 * 容器实例
      *
      * @var \Illuminate\Contracts\Container\Container
      */
@@ -60,7 +60,7 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * Create a new database session handler instance.
-	 * 创建新的数据库会话处理实例
+	 * 创建一个新的数据库会话处理程序实例
      *
      * @param  \Illuminate\Database\ConnectionInterface  $connection
      * @param  string  $table
@@ -78,7 +78,10 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function open($savePath, $sessionName)
     {
         return true;
@@ -86,7 +89,10 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function close()
     {
         return true;
@@ -94,7 +100,10 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * {@inheritdoc}
+     *
+     * @return string|false
      */
+    #[\ReturnTypeWillChange]
     public function read($sessionId)
     {
         $session = (object) $this->getQuery()->find($sessionId);
@@ -129,7 +138,10 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function write($sessionId, $data)
     {
         $payload = $this->getDefaultPayload($data);
@@ -149,10 +161,10 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * Perform an insert operation on the session ID.
-	 * 执行插入操作对会话ID
+	 * 对会话ID执行插入操作
      *
      * @param  string  $sessionId
-     * @param  string  $payload
+     * @param  array<string, mixed>  $payload
      * @return bool|null
      */
     protected function performInsert($sessionId, $payload)
@@ -166,10 +178,10 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * Perform an update operation on the session ID.
-	 * 进行更新操作对会话ID
+	 * 对会话ID进行更新操作
      *
      * @param  string  $sessionId
-     * @param  string  $payload
+     * @param  array<string, mixed>  $payload
      * @return int
      */
     protected function performUpdate($sessionId, $payload)
@@ -219,7 +231,7 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * Get the currently authenticated user's ID.
-	 * 得到当前用户ID
+	 * 得到当前经过身份验证的用户的ID
      *
      * @return mixed
      */
@@ -230,7 +242,7 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * Add the request information to the session payload.
-	 * 添加请求信息到会话有效负载
+	 * 将请求信息添加到会话有效负载
      *
      * @param  array  $payload
      * @return $this
@@ -271,7 +283,10 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function destroy($sessionId)
     {
         $this->getQuery()->where('id', $sessionId)->delete();
@@ -281,7 +296,10 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
 
     /**
      * {@inheritdoc}
+     *
+     * @return int|false
      */
+    #[\ReturnTypeWillChange]
     public function gc($lifetime)
     {
         $this->getQuery()->where('last_activity', '<=', $this->currentTime() - $lifetime)->delete();
@@ -296,6 +314,20 @@ class DatabaseSessionHandler implements ExistenceAwareInterface, SessionHandlerI
     protected function getQuery()
     {
         return $this->connection->table($this->table);
+    }
+
+    /**
+     * Set the application instance used by the handler.
+	 * 设置处理程序使用的应用程序实例
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $container
+     * @return $this
+     */
+    public function setContainer($container)
+    {
+        $this->container = $container;
+
+        return $this;
     }
 
     /**

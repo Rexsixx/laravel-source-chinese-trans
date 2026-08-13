@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，Eloquent转变
+ * Illuminate，数据库，Eloquent，关系，转变为
  */
 
 namespace Illuminate\Database\Eloquent\Relations;
@@ -9,9 +9,12 @@ use BadMethodCallException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Concerns\InteractsWithDictionary;
 
 class MorphTo extends BelongsTo
 {
+    use InteractsWithDictionary;
+
     /**
      * The type of the polymorphic relation.
 	 * 多态关系的类型
@@ -22,7 +25,7 @@ class MorphTo extends BelongsTo
 
     /**
      * The models whose relations are being eager loaded.
-	 * 被加载模型
+	 * 其关系被热切加载的模型
      *
      * @var \Illuminate\Database\Eloquent\Collection
      */
@@ -30,7 +33,7 @@ class MorphTo extends BelongsTo
 
     /**
      * All of the models keyed by ID.
-	 * 模型词典
+	 * 所有以ID为键的模型
      *
      * @var array
      */
@@ -53,6 +56,22 @@ class MorphTo extends BelongsTo
     protected $morphableEagerLoads = [];
 
     /**
+     * A map of relationship counts to load for each individual morph type.
+	 * 关系映射计数为每个单独的变形类型加载
+     *
+     * @var array
+     */
+    protected $morphableEagerLoadCounts = [];
+
+    /**
+     * A map of constraints to apply for each individual morph type.
+	 * 应用于每个单独变形类型的约束映射
+     *
+     * @var array
+     */
+    protected $morphableConstraints = [];
+
+    /**
      * Create a new morph to relationship instance.
 	 * 创建关系实例的新变形
      *
@@ -73,7 +92,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Set the constraints for an eager load of the relation.
-	 * 设置约束为关系的即时加载
+	 * 为关系的即时加载设置约束
      *
      * @param  array  $models
      * @return void
@@ -85,7 +104,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Build a dictionary with the models.
-	 * 构建字典用这些模型
+	 * 用这些模型构建一个字典
      *
      * @param  \Illuminate\Database\Eloquent\Collection  $models
      * @return void
@@ -94,7 +113,10 @@ class MorphTo extends BelongsTo
     {
         foreach ($models as $model) {
             if ($model->{$this->morphType}) {
-                $this->dictionary[$model->{$this->morphType}][$model->{$this->foreignKey}][] = $model;
+                $morphTypeKey = $this->getDictionaryKey($model->{$this->morphType});
+                $foreignKeyKey = $this->getDictionaryKey($model->{$this->foreignKey});
+
+                $this->dictionary[$morphTypeKey][$foreignKeyKey][] = $model;
             }
         }
     }
@@ -104,6 +126,7 @@ class MorphTo extends BelongsTo
 	 * 得到关系的结果
      *
      * Called via eager load method of Eloquent query builder.
+	 * 通过Eloquent查询生成器的急切加载方法调用
      *
      * @return mixed
      */
@@ -118,7 +141,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Get all of the relation results for a type.
-	 * 得到一个类型的所有关系结果
+	 * 获取一个类型的所有关系结果
      *
      * @param  string  $type
      * @return \Illuminate\Database\Eloquent\Collection
@@ -134,12 +157,19 @@ class MorphTo extends BelongsTo
                             ->with(array_merge(
                                 $this->getQuery()->getEagerLoads(),
                                 (array) ($this->morphableEagerLoads[get_class($instance)] ?? [])
-                            ));
+                            ))
+                            ->withCount(
+                                (array) ($this->morphableEagerLoadCounts[get_class($instance)] ?? [])
+                            );
+
+        if ($callback = ($this->morphableConstraints[get_class($instance)] ?? null)) {
+            $callback($query);
+        }
 
         $whereIn = $this->whereInMethod($instance, $ownerKey);
 
         return $query->{$whereIn}(
-            $instance->getTable().'.'.$ownerKey, $this->gatherKeysByType($type)
+            $instance->getTable().'.'.$ownerKey, $this->gatherKeysByType($type, $instance->getKeyType())
         )->get();
     }
 
@@ -148,16 +178,21 @@ class MorphTo extends BelongsTo
 	 * 收集给定类型的所有外键
      *
      * @param  string  $type
+     * @param  string  $keyType
      * @return array
      */
-    protected function gatherKeysByType($type)
+    protected function gatherKeysByType($type, $keyType)
     {
-        return array_keys($this->dictionary[$type]);
+        return $keyType !== 'string'
+                    ? array_keys($this->dictionary[$type])
+                    : array_map(function ($modelId) {
+                        return (string) $modelId;
+                    }, array_filter(array_keys($this->dictionary[$type])));
     }
 
     /**
      * Create a new model instance by type.
-	 * 创建一个新的模型实例按类型
+	 * 按类型创建一个新的模型实例
      *
      * @param  string  $type
      * @return \Illuminate\Database\Eloquent\Model
@@ -198,7 +233,7 @@ class MorphTo extends BelongsTo
     protected function matchToMorphParents($type, Collection $results)
     {
         foreach ($results as $result) {
-            $ownerKey = ! is_null($this->ownerKey) ? $result->{$this->ownerKey} : $result->getKey();
+            $ownerKey = ! is_null($this->ownerKey) ? $this->getDictionaryKey($result->{$this->ownerKey}) : $result->getKey();
 
             if (isset($this->dictionary[$type][$ownerKey])) {
                 foreach ($this->dictionary[$type][$ownerKey] as $model) {
@@ -210,15 +245,21 @@ class MorphTo extends BelongsTo
 
     /**
      * Associate the model instance to the given parent.
-	 * 关联模型实例到给定的父实例
+	 * 将模型实例关联到给定的父实例
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function associate($model)
     {
+        if ($model instanceof Model) {
+            $foreignKey = $this->ownerKey && $model->{$this->ownerKey}
+                            ? $this->ownerKey
+                            : $model->getKeyName();
+        }
+
         $this->parent->setAttribute(
-            $this->foreignKey, $model instanceof Model ? $model->getKey() : null
+            $this->foreignKey, $model instanceof Model ? $model->{$foreignKey} : null
         );
 
         $this->parent->setAttribute(
@@ -258,7 +299,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Make a new related instance for the given model.
-	 * 创建一个新的相关实例为给定模型
+	 * 为给定模型创建一个新的相关实例
      *
      * @param  \Illuminate\Database\Eloquent\Model  $parent
      * @return \Illuminate\Database\Eloquent\Model
@@ -270,7 +311,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Get the foreign key "type" name.
-	 * 得到外键"类型"名称
+	 * 获取外键"类型"名称
      *
      * @return string
      */
@@ -281,7 +322,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Get the dictionary used by the relationship.
-	 * 得到关系使用的字典
+	 * 获取关系使用的字典
      *
      * @return array
      */
@@ -307,8 +348,40 @@ class MorphTo extends BelongsTo
     }
 
     /**
+     * Specify which relationship counts to load for a given morph type.
+	 * 指定要为给定的变形类型加载哪个关系计数
+     *
+     * @param  array  $withCount
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function morphWithCount(array $withCount)
+    {
+        $this->morphableEagerLoadCounts = array_merge(
+            $this->morphableEagerLoadCounts, $withCount
+        );
+
+        return $this;
+    }
+
+    /**
+     * Specify constraints on the query for a given morph type.
+	 * 为给定的变形类型指定查询约束
+     *
+     * @param  array  $callbacks
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function constrain(array $callbacks)
+    {
+        $this->morphableConstraints = array_merge(
+            $this->morphableConstraints, $callbacks
+        );
+
+        return $this;
+    }
+
+    /**
      * Replay stored macro calls on the actual related instance.
-	 * 重播存储的宏调用在实际相关实例
+	 * 在实际相关实例上重播存储的宏调用
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
@@ -324,7 +397,7 @@ class MorphTo extends BelongsTo
 
     /**
      * Handle dynamic method calls to the relationship.
-	 * 处理动态方法关系调用
+	 * 处理对关系的动态方法调用
      *
      * @param  string  $method
      * @param  array  $parameters
@@ -345,8 +418,7 @@ class MorphTo extends BelongsTo
         // If we tried to call a method that does not exist on the parent Builder instance,
         // we'll assume that we want to call a query macro (e.g. withTrashed) that only
         // exists on related models. We will just store the call and replay it later.
-		// 如果我们试图调用父Builder实例上不存在的方法，
-		// 我们将假设我们想调用仅存在于相关模型上的查询宏（例如withTrashed）。我们将只存储通话并稍后重播。
+		// 如果我们试图调用父Builder实例上不存在的方法。
         catch (BadMethodCallException $e) {
             $this->macroBuffer[] = compact('method', 'parameters');
 

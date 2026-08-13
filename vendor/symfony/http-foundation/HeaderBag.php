@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，头包
+ * Symfony，Component，HttpFoundation，测试，头包
  */
 
 /*
@@ -16,14 +16,20 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * HeaderBag is a container for HTTP headers.
+ * HeaderBag是一个HTTP头文件的容器
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @implements \IteratorAggregate<string, list<string|null>>
  */
 class HeaderBag implements \IteratorAggregate, \Countable
 {
     protected const UPPER = '_ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     protected const LOWER = '-abcdefghijklmnopqrstuvwxyz';
 
+    /**
+     * @var array<string, list<string|null>>
+     */
     protected $headers = [];
     protected $cacheControl = [];
 
@@ -36,8 +42,9 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the headers as a string.
+	 * 返回标头为字符串
      *
-     * @return string The headers
+     * @return string
      */
     public function __toString()
     {
@@ -60,14 +67,15 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the headers.
+	 * 返回头
      *
      * @param string|null $key The name of the headers to return or null to get them all
      *
-     * @return array An array of headers
+     * @return array<string, array<int, string|null>>|array<int, string|null>
      */
-    public function all(/*string $key = null*/)
+    public function all(?string $key = null)
     {
-        if (1 <= \func_num_args() && null !== $key = func_get_arg(0)) {
+        if (null !== $key) {
             return $this->headers[strtr($key, self::UPPER, self::LOWER)] ?? [];
         }
 
@@ -76,8 +84,9 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the parameter keys.
+	 * 返回参数键
      *
-     * @return array An array of parameter keys
+     * @return string[]
      */
     public function keys()
     {
@@ -86,6 +95,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Replaces the current HTTP headers by a new set.
+	 * 用一组新的头替换当前的HTTP头
      */
     public function replace(array $headers = [])
     {
@@ -95,6 +105,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Adds new headers the current HTTP headers set.
+	 * 在当前HTTP标头集中添加新标头
      */
     public function add(array $headers)
     {
@@ -104,23 +115,14 @@ class HeaderBag implements \IteratorAggregate, \Countable
     }
 
     /**
-     * Returns a header value by name.
+     * Returns the first header by name or the default one.
+	 * 按名称或默认名称返回第一个标头
      *
-     * @param string      $key     The header name
-     * @param string|null $default The default value
-     *
-     * @return string|null The first header value or default value
+     * @return string|null
      */
-    public function get($key, $default = null)
+    public function get(string $key, ?string $default = null)
     {
-        $headers = $this->all((string) $key);
-        if (2 < \func_num_args()) {
-            @trigger_error(sprintf('Passing a third argument to "%s()" is deprecated since Symfony 4.4, use method "all()" instead', __METHOD__), \E_USER_DEPRECATED);
-
-            if (!func_get_arg(2)) {
-                return $headers;
-            }
-        }
+        $headers = $this->all($key);
 
         if (!$headers) {
             return $default;
@@ -135,12 +137,12 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Sets a header by name.
+	 * 按名称设置标题
      *
-     * @param string               $key     The key
      * @param string|string[]|null $values  The value or an array of values
      * @param bool                 $replace Whether to replace the actual value or not (true by default)
      */
-    public function set($key, $values, $replace = true)
+    public function set(string $key, $values, bool $replace = true)
     {
         $key = strtr($key, self::UPPER, self::LOWER);
 
@@ -167,35 +169,31 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns true if the HTTP header is defined.
+	 * 如果定义了HTTP报头，则返回true。
      *
-     * @param string $key The HTTP header
-     *
-     * @return bool true if the parameter exists, false otherwise
+     * @return bool
      */
-    public function has($key)
+    public function has(string $key)
     {
         return \array_key_exists(strtr($key, self::UPPER, self::LOWER), $this->all());
     }
 
     /**
      * Returns true if the given HTTP header contains the given value.
+	 * 如果给定的HTTP头包含给定的值，则返回true。
      *
-     * @param string $key   The HTTP header name
-     * @param string $value The HTTP value
-     *
-     * @return bool true if the value is contained in the header, false otherwise
+     * @return bool
      */
-    public function contains($key, $value)
+    public function contains(string $key, string $value)
     {
-        return \in_array($value, $this->all((string) $key));
+        return \in_array($value, $this->all($key));
     }
 
     /**
      * Removes a header.
-     *
-     * @param string $key The HTTP header name
+	 * 移除标头
      */
-    public function remove($key)
+    public function remove(string $key)
     {
         $key = strtr($key, self::UPPER, self::LOWER);
 
@@ -208,14 +206,13 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the HTTP header value converted to a date.
+	 * 返回转换为日期的HTTP报头值
      *
-     * @param string $key The parameter key
-     *
-     * @return \DateTimeInterface|null The parsed DateTime or the default value if the header does not exist
+     * @return \DateTimeInterface|null
      *
      * @throws \RuntimeException When the HTTP header is not parseable
      */
-    public function getDate($key, \DateTime $default = null)
+    public function getDate(string $key, ?\DateTime $default = null)
     {
         if (null === $value = $this->get($key)) {
             return $default;
@@ -230,11 +227,11 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Adds a custom Cache-Control directive.
+	 * 添加自定义缓存控制指令
      *
-     * @param string      $key   The Cache-Control directive name
      * @param bool|string $value The Cache-Control directive value
      */
-    public function addCacheControlDirective($key, $value = true)
+    public function addCacheControlDirective(string $key, $value = true)
     {
         $this->cacheControl[$key] = $value;
 
@@ -243,34 +240,30 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns true if the Cache-Control directive is defined.
+	 * 如果定义了Cache-Control指令，则返回true。
      *
-     * @param string $key The Cache-Control directive
-     *
-     * @return bool true if the directive exists, false otherwise
+     * @return bool
      */
-    public function hasCacheControlDirective($key)
+    public function hasCacheControlDirective(string $key)
     {
         return \array_key_exists($key, $this->cacheControl);
     }
 
     /**
      * Returns a Cache-Control directive value by name.
+	 * 按名称返回缓存控制指令值
      *
-     * @param string $key The directive name
-     *
-     * @return bool|string|null The directive value if defined, null otherwise
+     * @return bool|string|null
      */
-    public function getCacheControlDirective($key)
+    public function getCacheControlDirective(string $key)
     {
         return $this->cacheControl[$key] ?? null;
     }
 
     /**
      * Removes a Cache-Control directive.
-     *
-     * @param string $key The Cache-Control directive
      */
-    public function removeCacheControlDirective($key)
+    public function removeCacheControlDirective(string $key)
     {
         unset($this->cacheControl[$key]);
 
@@ -279,8 +272,9 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns an iterator for headers.
+	 * 返回头文件的迭代器
      *
-     * @return \ArrayIterator An \ArrayIterator instance
+     * @return \ArrayIterator<string, list<string|null>>
      */
     #[\ReturnTypeWillChange]
     public function getIterator()
@@ -290,8 +284,9 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns the number of headers.
+	 * 返回报头的数目
      *
-     * @return int The number of headers
+     * @return int
      */
     #[\ReturnTypeWillChange]
     public function count()
@@ -308,12 +303,11 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
     /**
      * Parses a Cache-Control HTTP header.
+	 * 解析Cache-Control HTTP报头
      *
-     * @param string $header The value of the Cache-Control HTTP header
-     *
-     * @return array An array representing the attribute values
+     * @return array
      */
-    protected function parseCacheControl($header)
+    protected function parseCacheControl(string $header)
     {
         $parts = HeaderUtils::split($header, ',=');
 

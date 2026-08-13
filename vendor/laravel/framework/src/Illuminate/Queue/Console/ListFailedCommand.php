@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，控制台，失败命令列表
+ * Illuminate，队列，控制台，queue:failed 列表失败命令
  */
 
 namespace Illuminate\Queue\Console;
@@ -12,7 +12,7 @@ class ListFailedCommand extends Command
 {
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -28,9 +28,9 @@ class ListFailedCommand extends Command
 
     /**
      * The table headers for the command.
-	 * 命令表头
+	 * 命令的表头
      *
-     * @var array
+     * @var string[]
      */
     protected $headers = ['ID', 'Connection', 'Queue', 'Class', 'Failed At'];
 
@@ -51,7 +51,7 @@ class ListFailedCommand extends Command
 
     /**
      * Compile the failed jobs into a displayable format.
-	 * 编译失败的作业为可显示的格式
+	 * 将失败的作业编译为可显示的格式
      *
      * @return array
      */
@@ -66,7 +66,7 @@ class ListFailedCommand extends Command
 
     /**
      * Parse the failed job row.
-	 * 解析失败作业行
+	 * 解析失败的作业行
      *
      * @param  array  $failed
      * @return array
@@ -75,14 +75,14 @@ class ListFailedCommand extends Command
     {
         $row = array_values(Arr::except($failed, ['payload', 'exception']));
 
-        array_splice($row, 3, 0, $this->extractJobName($failed['payload']));
+        array_splice($row, 3, 0, $this->extractJobName($failed['payload']) ?: '');
 
         return $row;
     }
 
     /**
      * Extract the failed job name from payload.
-	 * 提取失败的作业名称从有效负载中
+	 * 从有效负载中提取失败的作业名称
      *
      * @param  string  $payload
      * @return string|null
@@ -100,10 +100,10 @@ class ListFailedCommand extends Command
 
     /**
      * Match the job name from the payload.
-	 * 匹配作业名称从有效负载
+	 * 从有效负载匹配作业名称
      *
      * @param  array  $payload
-     * @return string
+     * @return string|null
      */
     protected function matchJobName($payload)
     {

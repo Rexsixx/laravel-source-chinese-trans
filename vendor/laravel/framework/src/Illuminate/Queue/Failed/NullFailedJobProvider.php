@@ -1,6 +1,6 @@
 <?php
 /**
- * 队列，失败，空失败作业提供者
+ * Illuminate，队列，失败，无效的失败的作业提供者
  */
 
 namespace Illuminate\Queue\Failed;
@@ -9,12 +9,12 @@ class NullFailedJobProvider implements FailedJobProviderInterface
 {
     /**
      * Log a failed job into storage.
-	 * 记录一个失败作业至存储
+	 * 记录失败的作业到存储中
      *
      * @param  string  $connection
      * @param  string  $queue
      * @param  string  $payload
-     * @param  \Exception  $exception
+     * @param  \Throwable  $exception
      * @return int|null
      */
     public function log($connection, $queue, $payload, $exception)
@@ -24,7 +24,7 @@ class NullFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * Get a list of all of the failed jobs.
-	 * 得到一个所有失败作业列表 
+	 * 得到所有失败任务的列表
      *
      * @return array
      */
@@ -35,7 +35,7 @@ class NullFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * Get a single failed job.
-	 * 得到单个失败作业
+	 * 得到单个失败的作业
      *
      * @param  mixed  $id
      * @return object|null
@@ -47,7 +47,7 @@ class NullFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * Delete a single failed job from storage.
-	 * 删除单个失败作业从存储
+	 * 从存储中删除单个失败的作业
      *
      * @param  mixed  $id
      * @return bool
@@ -59,7 +59,7 @@ class NullFailedJobProvider implements FailedJobProviderInterface
 
     /**
      * Flush all of the failed jobs from storage.
-	 * 清除所有失败作业从存储
+	 * 从存储中清除所有失败的作业
      *
      * @return void
      */

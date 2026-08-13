@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，路由选择，路由器接口
+ * Symfony，Component，Routing，路由接口
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
 /**
  * RouterInterface is the interface that all Router classes must implement.
- * RouterInterface是所有路由器类都必须实现的接口。
+ * RouterInterface是所有Router类都必须实现的接口。
  *
  * This interface is the concatenation of UrlMatcherInterface and UrlGeneratorInterface.
  *
@@ -29,11 +29,12 @@ interface RouterInterface extends UrlMatcherInterface, UrlGeneratorInterface
 {
     /**
      * Gets the RouteCollection instance associated with this Router.
+	 * 获取与此路由器关联的RouteCollection实例。
      *
      * WARNING: This method should never be used at runtime as it is SLOW.
      *          You might use it in a cache warmer though.
      *
-     * @return RouteCollection A RouteCollection instance
+     * @return RouteCollection
      */
     public function getRouteCollection();
 }

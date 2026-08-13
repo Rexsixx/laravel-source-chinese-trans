@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，命令，解决方案编译命令
+ * Facade，Ignition，命令，解决方案生成指令
  */
 
 namespace Facade\Ignition\Commands;
@@ -12,7 +12,7 @@ class SolutionMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
-	 * 控制台命令名称
+	 * 控制台命令名
      *
      * @var string
      */
@@ -28,7 +28,7 @@ class SolutionMakeCommand extends GeneratorCommand
 
     /**
      * The type of class being generated.
-	 * 生成的类的类型
+	 * 生成的类类型
      *
      * @var string
      */
@@ -49,7 +49,7 @@ class SolutionMakeCommand extends GeneratorCommand
 
     /**
      * Get the default namespace for the class.
-	 * 获取类的默认命名空间
+	 * 获取类的默认名称空间
      *
      * @param  string  $rootNamespace
      * @return string

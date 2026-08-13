@@ -1,6 +1,6 @@
 <?php
 /**
- * 视图，管理布局
+ * Illuminate，视图，问题，管理布局
  */
 
 namespace Illuminate\View\Concerns;
@@ -77,7 +77,7 @@ trait ManagesLayouts
 
     /**
      * Stop injecting content into a section and return its contents.
-	 * 停止向节中注入内容并返回其内容
+	 * 停止向节中注入内容，并返回其内容。
      *
      * @return string
      */
@@ -118,7 +118,7 @@ trait ManagesLayouts
 
     /**
      * Stop injecting content into a section and append it.
-	 * 停止向节中注入内容并将其追加
+	 * 停止向节中注入内容，并将其追加。
      *
      * @return string
      *
@@ -143,7 +143,7 @@ trait ManagesLayouts
 
     /**
      * Append content to a given section.
-	 * 追加内容向给定的部分
+	 * 向给定的部分追加内容
      *
      * @param  string  $section
      * @param  string  $content
@@ -160,7 +160,7 @@ trait ManagesLayouts
 
     /**
      * Get the string contents of a section.
-	 * 得到节的字符串内容
+	 * 获取节的字符串内容
      *
      * @param  string  $section
      * @param  string  $default
@@ -183,7 +183,7 @@ trait ManagesLayouts
 
     /**
      * Get the parent placeholder for the current request.
-	 * 得到当前请求的父占位符
+	 * 获取当前请求的父占位符
      *
      * @param  string  $section
      * @return string
@@ -201,7 +201,7 @@ trait ManagesLayouts
 
     /**
      * Get the parent placeholder salt.
-	 * 得到父占位符salt
+	 * 获取父占位符salt
      *
      * @return string
      */
@@ -227,8 +227,20 @@ trait ManagesLayouts
     }
 
     /**
+     * Check if section does not exist.
+	 * 检查section是否不存在
+     *
+     * @param  string  $name
+     * @return bool
+     */
+    public function sectionMissing($name)
+    {
+        return ! $this->hasSection($name);
+    }
+
+    /**
      * Get the contents of a section.
-	 * 得到一个节的内容
+	 * 获取一个节的内容
      *
      * @param  string  $name
      * @param  string|null  $default
@@ -241,7 +253,7 @@ trait ManagesLayouts
 
     /**
      * Get the entire array of sections.
-	 * 得到整个section数组
+	 * 获取整个section数组
      *
      * @return array
      */
@@ -252,7 +264,7 @@ trait ManagesLayouts
 
     /**
      * Flush all of the sections.
-	 * 刷新所有的部分
+	 * 冲洗所有的部分
      *
      * @return void
      */

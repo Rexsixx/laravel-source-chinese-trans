@@ -1,10 +1,11 @@
 <?php
 /**
- * Symfony，组件，Http基础，请求
+ * Symfony，Component，HttpFoundation，请求
  */
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -14,7 +15,10 @@
 
 namespace Symfony\Component\HttpFoundation;
 
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Exception\ConflictingHeadersException;
+use Symfony\Component\HttpFoundation\Exception\JsonException;
+use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -23,11 +27,13 @@ class_exists(AcceptHeader::class);
 class_exists(FileBag::class);
 class_exists(HeaderBag::class);
 class_exists(HeaderUtils::class);
+class_exists(InputBag::class);
 class_exists(ParameterBag::class);
 class_exists(ServerBag::class);
 
 /**
  * Request represents an HTTP request.
+ * Request表示HTTP请求
  *
  * The methods dealing with URL accept / return a raw path (% encoded):
  *   * getBasePath
@@ -41,13 +47,17 @@ class_exists(ServerBag::class);
  */
 class Request
 {
-    public const HEADER_FORWARDED = 0b00001; // When using RFC 7239
-    public const HEADER_X_FORWARDED_FOR = 0b00010;
-    public const HEADER_X_FORWARDED_HOST = 0b00100;
-    public const HEADER_X_FORWARDED_PROTO = 0b01000;
-    public const HEADER_X_FORWARDED_PORT = 0b10000;
-    public const HEADER_X_FORWARDED_ALL = 0b11110; // All "X-Forwarded-*" headers
-    public const HEADER_X_FORWARDED_AWS_ELB = 0b11010; // AWS ELB doesn't send X-Forwarded-Host
+    public const HEADER_FORWARDED = 0b000001; // When using RFC 7239
+    public const HEADER_X_FORWARDED_FOR = 0b000010;
+    public const HEADER_X_FORWARDED_HOST = 0b000100;
+    public const HEADER_X_FORWARDED_PROTO = 0b001000;
+    public const HEADER_X_FORWARDED_PORT = 0b010000;
+    public const HEADER_X_FORWARDED_PREFIX = 0b100000;
+
+    /** @deprecated since Symfony 5.2, use either "HEADER_X_FORWARDED_FOR | HEADER_X_FORWARDED_HOST | HEADER_X_FORWARDED_PORT | HEADER_X_FORWARDED_PROTO" or "HEADER_X_FORWARDED_AWS_ELB" or "HEADER_X_FORWARDED_TRAEFIK" constants instead. */
+    public const HEADER_X_FORWARDED_ALL = 0b1011110; // All "X-Forwarded-*" headers sent by "usual" reverse proxy
+    public const HEADER_X_FORWARDED_AWS_ELB = 0b0011010; // AWS ELB doesn't send X-Forwarded-Host
+    public const HEADER_X_FORWARDED_TRAEFIK = 0b0111110; // All "X-Forwarded-*" headers sent by Traefik reverse proxy
 
     public const METHOD_HEAD = 'HEAD';
     public const METHOD_GET = 'GET';
@@ -79,6 +89,7 @@ class Request
 
     /**
      * Custom parameters.
+	 * 自定义参数
      *
      * @var ParameterBag
      */
@@ -86,20 +97,23 @@ class Request
 
     /**
      * Request body parameters ($_POST).
+	 * 请求主体参数($_POST)
      *
-     * @var ParameterBag
+     * @var InputBag
      */
     public $request;
 
     /**
      * Query string parameters ($_GET).
+	 * 查询字符串参数($_GET)
      *
-     * @var ParameterBag
+     * @var InputBag
      */
     public $query;
 
     /**
      * Server and execution environment parameters ($_SERVER).
+	 * 服务器和执行环境参数($_SERVER)
      *
      * @var ServerBag
      */
@@ -107,6 +121,7 @@ class Request
 
     /**
      * Uploaded files ($_FILES).
+	 * 上传文件
      *
      * @var FileBag
      */
@@ -114,13 +129,15 @@ class Request
 
     /**
      * Cookies ($_COOKIE).
+	 * Cookie
      *
-     * @var ParameterBag
+     * @var InputBag
      */
     public $cookies;
 
     /**
      * Headers (taken from the $_SERVER).
+	 * 头
      *
      * @var HeaderBag
      */
@@ -182,12 +199,12 @@ class Request
     protected $format;
 
     /**
-     * @var SessionInterface|callable
+     * @var SessionInterface|callable(): SessionInterface
      */
     protected $session;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $locale;
 
@@ -210,6 +227,11 @@ class Request
     private $isHostValid = true;
     private $isForwardedValid = true;
 
+    /**
+     * @var bool|null
+     */
+    private $isSafeContentPreferred;
+
     private static $trustedHeaderSet = -1;
 
     private const FORWARDED_PARAMS = [
@@ -222,6 +244,7 @@ class Request
     /**
      * Names for headers that can be trusted when
      * using trusted proxies.
+	 * 可信任的标头名称当使用可信代理
      *
      * The FORWARDED header is the standard as of rfc7239.
      *
@@ -234,7 +257,11 @@ class Request
         self::HEADER_X_FORWARDED_HOST => 'X_FORWARDED_HOST',
         self::HEADER_X_FORWARDED_PROTO => 'X_FORWARDED_PROTO',
         self::HEADER_X_FORWARDED_PORT => 'X_FORWARDED_PORT',
+        self::HEADER_X_FORWARDED_PREFIX => 'X_FORWARDED_PREFIX',
     ];
+
+    /** @var bool */
+    private $isIisRewrite = false;
 
     /**
      * @param array                $query      The GET parameters
@@ -252,8 +279,10 @@ class Request
 
     /**
      * Sets the parameters for this request.
+	 * 设置此请求的参数
      *
      * This method also re-initializes all properties.
+	 * 此方法还会重新初始化所有属性
      *
      * @param array                $query      The GET parameters
      * @param array                $request    The POST parameters
@@ -265,10 +294,10 @@ class Request
      */
     public function initialize(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
-        $this->request = new ParameterBag($request);
-        $this->query = new ParameterBag($query);
+        $this->request = new InputBag($request);
+        $this->query = new InputBag($query);
         $this->attributes = new ParameterBag($attributes);
-        $this->cookies = new ParameterBag($cookies);
+        $this->cookies = new InputBag($cookies);
         $this->files = new FileBag($files);
         $this->server = new ServerBag($server);
         $this->headers = new HeaderBag($this->server->getHeaders());
@@ -288,6 +317,7 @@ class Request
 
     /**
      * Creates a new request with values from PHP's super globals.
+	 * 用超全局变量创建一个新请求
      *
      * @return static
      */
@@ -299,7 +329,7 @@ class Request
             && \in_array(strtoupper($request->server->get('REQUEST_METHOD', 'GET')), ['PUT', 'DELETE', 'PATCH'])
         ) {
             parse_str($request->getContent(), $data);
-            $request->request = new ParameterBag($data);
+            $request->request = new InputBag($data);
         }
 
         return $request;
@@ -307,6 +337,7 @@ class Request
 
     /**
      * Creates a Request based on a given URI and configuration.
+	 * 基于给定的URI和配置创建请求
      *
      * The information contained in the URI always take precedence
      * over the other information (server and parameters).
@@ -320,8 +351,10 @@ class Request
      * @param string|resource|null $content    The raw body data
      *
      * @return static
+     *
+     * @throws BadRequestException When the URI is invalid
      */
-    public static function create($uri, $method = 'GET', $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
+    public static function create(string $uri, string $method = 'GET', array $parameters = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
         $server = array_replace([
             'SERVER_NAME' => 'localhost',
@@ -342,7 +375,20 @@ class Request
         $server['PATH_INFO'] = '';
         $server['REQUEST_METHOD'] = strtoupper($method);
 
-        $components = parse_url($uri);
+        if (false === $components = parse_url(\strlen($uri) !== strcspn($uri, '?#') ? $uri : $uri.'#')) {
+            throw new BadRequestException('Invalid URI.');
+        }
+
+        if (false !== ($i = strpos($uri, '\\')) && $i < strcspn($uri, '?#')) {
+            throw new BadRequestException('Invalid URI: A URI cannot contain a backslash.');
+        }
+        if (\strlen($uri) !== strcspn($uri, "\r\n\t")) {
+            throw new BadRequestException('Invalid URI: A URI cannot contain CR/LF/TAB characters.');
+        }
+        if ('' !== $uri && (\ord($uri[0]) <= 32 || \ord($uri[-1]) <= 32)) {
+            throw new BadRequestException('Invalid URI: A URI must not start nor end with ASCII control characters or spaces.');
+        }
+
         if (isset($components['host'])) {
             $server['SERVER_NAME'] = $components['host'];
             $server['HTTP_HOST'] = $components['host'];
@@ -416,44 +462,44 @@ class Request
 
     /**
      * Sets a callable able to create a Request instance.
+	 * 设置一个可调用对象来创建一个Request实例
      *
      * This is mainly useful when you need to override the Request class
      * to keep BC with an existing system. It should not be used for any
      * other purpose.
-     *
-     * @param callable|null $callable A PHP callable
      */
-    public static function setFactory($callable)
+    public static function setFactory(?callable $callable)
     {
         self::$requestFactory = $callable;
     }
 
     /**
      * Clones a request and overrides some of its parameters.
+	 * 克隆请求并覆盖它的一些参数
      *
-     * @param array $query      The GET parameters
-     * @param array $request    The POST parameters
-     * @param array $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
-     * @param array $cookies    The COOKIE parameters
-     * @param array $files      The FILES parameters
-     * @param array $server     The SERVER parameters
+     * @param array|null $query      The GET parameters
+     * @param array|null $request    The POST parameters
+     * @param array|null $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
+     * @param array|null $cookies    The COOKIE parameters
+     * @param array|null $files      The FILES parameters
+     * @param array|null $server     The SERVER parameters
      *
      * @return static
      */
-    public function duplicate(array $query = null, array $request = null, array $attributes = null, array $cookies = null, array $files = null, array $server = null)
+    public function duplicate(?array $query = null, ?array $request = null, ?array $attributes = null, ?array $cookies = null, ?array $files = null, ?array $server = null)
     {
         $dup = clone $this;
         if (null !== $query) {
-            $dup->query = new ParameterBag($query);
+            $dup->query = new InputBag($query);
         }
         if (null !== $request) {
-            $dup->request = new ParameterBag($request);
+            $dup->request = new InputBag($request);
         }
         if (null !== $attributes) {
             $dup->attributes = new ParameterBag($attributes);
         }
         if (null !== $cookies) {
-            $dup->cookies = new ParameterBag($cookies);
+            $dup->cookies = new InputBag($cookies);
         }
         if (null !== $files) {
             $dup->files = new FileBag($files);
@@ -486,6 +532,7 @@ class Request
 
     /**
      * Clones the current request.
+	 * 克隆当前请求
      *
      * Note that the session is not cloned as duplicated requests
      * are most of the time sub-requests of the main one.
@@ -503,8 +550,9 @@ class Request
 
     /**
      * Returns the request as a string.
+	 * 以字符串形式返回请求
      *
-     * @return string The request
+     * @return string
      */
     public function __toString()
     {
@@ -514,10 +562,10 @@ class Request
         $cookies = [];
 
         foreach ($this->cookies as $k => $v) {
-            $cookies[] = $k.'='.$v;
+            $cookies[] = \is_array($v) ? http_build_query([$k => $v], '', '; ', \PHP_QUERY_RFC3986) : "$k=$v";
         }
 
-        if (!empty($cookies)) {
+        if ($cookies) {
             $cookieHeader = 'Cookie: '.implode('; ', $cookies)."\r\n";
         }
 
@@ -530,6 +578,7 @@ class Request
 
     /**
      * Overrides the PHP global variables according to this request instance.
+	 * 根据该请求实例重写PHP全局变量
      *
      * It overrides $_GET, $_POST, $_REQUEST, $_SERVER, $_COOKIE.
      * $_FILES is never overridden, see rfc1867
@@ -554,7 +603,7 @@ class Request
 
         $request = ['g' => $_GET, 'p' => $_POST, 'c' => $_COOKIE];
 
-        $requestOrder = ini_get('request_order') ?: ini_get('variables_order');
+        $requestOrder = \ini_get('request_order') ?: \ini_get('variables_order');
         $requestOrder = preg_replace('#[^cgp]#', '', strtolower($requestOrder)) ?: 'gp';
 
         $_REQUEST = [[]];
@@ -568,6 +617,7 @@ class Request
 
     /**
      * Sets a list of trusted proxies.
+	 * 设置受信任代理的列表
      *
      * You should only list the reverse proxies that you manage directly.
      *
@@ -576,6 +626,9 @@ class Request
      */
     public static function setTrustedProxies(array $proxies, int $trustedHeaderSet)
     {
+        if (self::HEADER_X_FORWARDED_ALL === $trustedHeaderSet) {
+            trigger_deprecation('symfony/http-foundation', '5.2', 'The "HEADER_X_FORWARDED_ALL" constant is deprecated, use either "HEADER_X_FORWARDED_FOR | HEADER_X_FORWARDED_HOST | HEADER_X_FORWARDED_PORT | HEADER_X_FORWARDED_PROTO" or "HEADER_X_FORWARDED_AWS_ELB" or "HEADER_X_FORWARDED_TRAEFIK" constants instead.');
+        }
         self::$trustedProxies = array_reduce($proxies, function ($proxies, $proxy) {
             if ('REMOTE_ADDR' !== $proxy) {
                 $proxies[] = $proxy;
@@ -590,8 +643,9 @@ class Request
 
     /**
      * Gets the list of trusted proxies.
+	 * 获取受信任代理的列表
      *
-     * @return array An array of trusted proxies
+     * @return array
      */
     public static function getTrustedProxies()
     {
@@ -600,6 +654,7 @@ class Request
 
     /**
      * Gets the set of trusted headers from trusted proxies.
+	 * 从可信代理获取一组可信标头
      *
      * @return int A bit field of Request::HEADER_* that defines which headers are trusted from your proxies
      */
@@ -610,6 +665,7 @@ class Request
 
     /**
      * Sets a list of trusted host patterns.
+	 * 设置受信任主机模式的列表
      *
      * You should only list the hosts you manage using regexs.
      *
@@ -626,8 +682,9 @@ class Request
 
     /**
      * Gets the list of trusted host patterns.
+	 * 获取受信任主机模式的列表
      *
-     * @return array An array of trusted host patterns
+     * @return array
      */
     public static function getTrustedHosts()
     {
@@ -636,21 +693,20 @@ class Request
 
     /**
      * Normalizes a query string.
+	 * 规范化查询字符串
      *
      * It builds a normalized query string, where keys/value pairs are alphabetized,
      * have consistent escaping and unneeded delimiters are removed.
      *
-     * @param string $qs Query string
-     *
-     * @return string A normalized query string for the Request
+     * @return string
      */
-    public static function normalizeQueryString($qs)
+    public static function normalizeQueryString(?string $qs)
     {
         if ('' === ($qs ?? '')) {
             return '';
         }
 
-        parse_str($qs, $qs);
+        $qs = HeaderUtils::parseQuery($qs);
         ksort($qs);
 
         return http_build_query($qs, '', '&', \PHP_QUERY_RFC3986);
@@ -658,6 +714,7 @@ class Request
 
     /**
      * Enables support for the _method request parameter to determine the intended HTTP method.
+	 * 启用对_method请求参数的支持，以确定预期的HTTP方法。
      *
      * Be warned that enabling this feature might lead to CSRF issues in your code.
      * Check that you are using CSRF tokens when required.
@@ -674,8 +731,9 @@ class Request
 
     /**
      * Checks whether support for the _method request parameter is enabled.
+	 * 检查是否支持_method请求参数
      *
-     * @return bool True when the _method request parameter is enabled, false otherwise
+     * @return bool
      */
     public static function getHttpMethodParameterOverride()
     {
@@ -684,6 +742,7 @@ class Request
 
     /**
      * Gets a "parameter" value from any bag.
+	 * 从任何包获取“参数”值。
      *
      * This method is mainly useful for libraries that want to provide some flexibility. If you don't need the
      * flexibility in controllers, it is better to explicitly get request parameters from the appropriate
@@ -691,23 +750,24 @@ class Request
      *
      * Order of precedence: PATH (routing placeholders or custom attributes), GET, POST
      *
-     * @param string $key     The key
-     * @param mixed  $default The default value if the parameter key does not exist
+     * @param mixed $default The default value if the parameter key does not exist
      *
      * @return mixed
+     *
+     * @internal since Symfony 5.4, use explicit input sources instead
      */
-    public function get($key, $default = null)
+    public function get(string $key, $default = null)
     {
         if ($this !== $result = $this->attributes->get($key, $this)) {
             return $result;
         }
 
-        if ($this !== $result = $this->query->get($key, $this)) {
-            return $result;
+        if ($this->query->has($key)) {
+            return $this->query->all()[$key];
         }
 
-        if ($this !== $result = $this->request->get($key, $this)) {
-            return $result;
+        if ($this->request->has($key)) {
+            return $this->request->all()[$key];
         }
 
         return $default;
@@ -715,8 +775,9 @@ class Request
 
     /**
      * Gets the Session.
+	 * 获取会话
      *
-     * @return SessionInterface The session
+     * @return SessionInterface
      */
     public function getSession()
     {
@@ -726,8 +787,7 @@ class Request
         }
 
         if (null === $session) {
-            @trigger_error(sprintf('Calling "%s()" when no session has been set is deprecated since Symfony 4.1 and will throw an exception in 5.0. Use "hasSession()" instead.', __METHOD__), \E_USER_DEPRECATED);
-            // throw new \BadMethodCallException('Session has not been set.');
+            throw new SessionNotFoundException('Session has not been set.');
         }
 
         return $session;
@@ -736,6 +796,7 @@ class Request
     /**
      * Whether the request contains a Session which was started in one of the
      * previous requests.
+	 * 请求是否包含在其中一个先前的请求中启动的会话
      *
      * @return bool
      */
@@ -747,16 +808,21 @@ class Request
 
     /**
      * Whether the request contains a Session object.
+	 * 请求是否包含Session对象
      *
      * This method does not give any information about the state of the session object,
      * like whether the session is started or not. It is just a way to check if this Request
      * is associated with a Session instance.
      *
-     * @return bool true when the Request contains a Session object, false otherwise
+     * @param bool $skipIfUninitialized When true, ignores factories injected by `setSessionFactory`
+     *
+     * @return bool
      */
-    public function hasSession()
+    public function hasSession(/* bool $skipIfUninitialized = false */)
     {
-        return null !== $this->session;
+        $skipIfUninitialized = \func_num_args() > 0 ? func_get_arg(0) : false;
+
+        return null !== $this->session && (!$skipIfUninitialized || $this->session instanceof SessionInterface);
     }
 
     public function setSession(SessionInterface $session)
@@ -766,6 +832,8 @@ class Request
 
     /**
      * @internal
+     *
+     * @param callable(): SessionInterface $factory
      */
     public function setSessionFactory(callable $factory)
     {
@@ -774,6 +842,7 @@ class Request
 
     /**
      * Returns the client IP addresses.
+	 * 返回客户端IP地址
      *
      * In the returned array the most trusted IP address is first, and the
      * least trusted one last. The "real" client IP address is the last one,
@@ -781,7 +850,7 @@ class Request
      *
      * Use this method carefully; you should use getClientIp() instead.
      *
-     * @return array The client IP addresses
+     * @return array
      *
      * @see getClientIp()
      */
@@ -798,6 +867,7 @@ class Request
 
     /**
      * Returns the client IP address.
+	 * 返回客户端IP地址
      *
      * This method can read the client IP address from the "X-Forwarded-For" header
      * when trusted proxies were set via "setTrustedProxies()". The "X-Forwarded-For"
@@ -809,7 +879,7 @@ class Request
      * ("Client-Ip" for instance), configure it via the $trustedHeaderSet
      * argument of the Request::setTrustedProxies() method instead.
      *
-     * @return string|null The client IP address
+     * @return string|null
      *
      * @see getClientIps()
      * @see https://wikipedia.org/wiki/X-Forwarded-For
@@ -823,6 +893,7 @@ class Request
 
     /**
      * Returns current script name.
+	 * 返回当前脚本名称
      *
      * @return string
      */
@@ -833,6 +904,7 @@ class Request
 
     /**
      * Returns the path being requested relative to the executed script.
+	 * 返回被请求的相对于已执行脚本的路径
      *
      * The path info always starts with a /.
      *
@@ -856,6 +928,7 @@ class Request
 
     /**
      * Returns the root path from which this request is executed.
+	 * 返回执行此请求的根路径
      *
      * Suppose that an index.php file instantiates this request object:
      *
@@ -877,6 +950,7 @@ class Request
 
     /**
      * Returns the root URL from which this request is executed.
+	 * 返回执行此请求的根URL
      *
      * The base URL never ends with a /.
      *
@@ -887,6 +961,25 @@ class Request
      */
     public function getBaseUrl()
     {
+        $trustedPrefix = '';
+
+        // the proxy prefix must be prepended to any prefix being needed at the webserver level
+        if ($this->isFromTrustedProxy() && $trustedPrefixValues = $this->getTrustedValues(self::HEADER_X_FORWARDED_PREFIX)) {
+            $trustedPrefix = rtrim($trustedPrefixValues[0], '/');
+        }
+
+        return $trustedPrefix.$this->getBaseUrlReal();
+    }
+
+    /**
+     * Returns the real base URL received by the webserver from which this request is executed.
+     * The URL does not include trusted reverse proxy prefix.
+	 * 返回执行此请求的web服务器接收到的真实基本URL。
+     *
+     * @return string The raw URL (i.e. not urldecoded)
+     */
+    private function getBaseUrlReal(): string
+    {
         if (null === $this->baseUrl) {
             $this->baseUrl = $this->prepareBaseUrl();
         }
@@ -896,6 +989,7 @@ class Request
 
     /**
      * Gets the request's scheme.
+	 * 获取请求的模式
      *
      * @return string
      */
@@ -906,13 +1000,14 @@ class Request
 
     /**
      * Returns the port on which the request is made.
+	 * 返回发出请求的端口
      *
      * This method can read the client port from the "X-Forwarded-Port" header
      * when trusted proxies were set via "setTrustedProxies()".
      *
      * The "X-Forwarded-Port" header must contain the client port.
      *
-     * @return int|string can be a string if fetched from the server bag
+     * @return int|string|null Can be a string if fetched from the server bag
      */
     public function getPort()
     {
@@ -939,6 +1034,7 @@ class Request
 
     /**
      * Returns the user.
+	 * 返回用户
      *
      * @return string|null
      */
@@ -949,6 +1045,7 @@ class Request
 
     /**
      * Returns the password.
+	 * 返回密码
      *
      * @return string|null
      */
@@ -959,6 +1056,7 @@ class Request
 
     /**
      * Gets the user info.
+	 * 获取用户信息
      *
      * @return string|null A user name if any and, optionally, scheme-specific information about how to gain authorization to access the server
      */
@@ -976,6 +1074,7 @@ class Request
 
     /**
      * Returns the HTTP host being requested.
+	 * 返回被请求的HTTP主机
      *
      * The port name will be appended to the host if it's non-standard.
      *
@@ -995,6 +1094,7 @@ class Request
 
     /**
      * Returns the requested URI (path and query string).
+	 * 返回请求的URI(路径和查询字符串)
      *
      * @return string The raw URI (i.e. not URI decoded)
      */
@@ -1009,11 +1109,12 @@ class Request
 
     /**
      * Gets the scheme and HTTP host.
+	 * 获取模式和HTTP主机
      *
      * If the URL was called with basic authentication, the user
      * and the password are not added to the generated string.
      *
-     * @return string The scheme and HTTP host
+     * @return string
      */
     public function getSchemeAndHttpHost()
     {
@@ -1022,8 +1123,9 @@ class Request
 
     /**
      * Generates a normalized URI (URL) for the Request.
+	 * 为请求生成一个规范化的URI （URL）
      *
-     * @return string A normalized URI (URL) for the Request
+     * @return string
      *
      * @see getQueryString()
      */
@@ -1038,18 +1140,20 @@ class Request
 
     /**
      * Generates a normalized URI for the given path.
+	 * 为给定路径生成规范化的URI
      *
      * @param string $path A path to use instead of the current one
      *
-     * @return string The normalized URI for the path
+     * @return string
      */
-    public function getUriForPath($path)
+    public function getUriForPath(string $path)
     {
         return $this->getSchemeAndHttpHost().$this->getBaseUrl().$path;
     }
 
     /**
      * Returns the path as relative reference from the current Request path.
+	 * 从当前请求路径返回路径作为相对引用。
      *
      * Only the URIs path component (no schema, host etc.) is relevant and must be given.
      * Both paths must be absolute and not contain relative parts.
@@ -1063,11 +1167,9 @@ class Request
      * - "/a/b/c/other" -> "other"
      * - "/a/x/y"       -> "../../x/y"
      *
-     * @param string $path The target path
-     *
-     * @return string The relative target path
+     * @return string
      */
-    public function getRelativeUriForPath($path)
+    public function getRelativeUriForPath(string $path)
     {
         // be sure that we are dealing with an absolute path
         if (!isset($path[0]) || '/' !== $path[0]) {
@@ -1105,11 +1207,12 @@ class Request
 
     /**
      * Generates the normalized query string for the Request.
+	 * 为请求生成规范化查询字符串
      *
      * It builds a normalized query string, where keys/value pairs are alphabetized
      * and have consistent escaping.
      *
-     * @return string|null A normalized query string for the Request
+     * @return string|null
      */
     public function getQueryString()
     {
@@ -1120,6 +1223,7 @@ class Request
 
     /**
      * Checks whether the request is secure or not.
+	 * 检查请求是否安全
      *
      * This method can read the client protocol from the "X-Forwarded-Proto" header
      * when trusted proxies were set via "setTrustedProxies()".
@@ -1141,6 +1245,7 @@ class Request
 
     /**
      * Returns the host name.
+	 * 返回主机名
      *
      * This method can read the client host name from the "X-Forwarded-Host" header
      * when trusted proxies were set via "setTrustedProxies()".
@@ -1205,10 +1310,9 @@ class Request
 
     /**
      * Sets the request method.
-     *
-     * @param string $method
+	 * 设置请求方法
      */
-    public function setMethod($method)
+    public function setMethod(string $method)
     {
         $this->method = null;
         $this->server->set('REQUEST_METHOD', $method);
@@ -1216,6 +1320,7 @@ class Request
 
     /**
      * Gets the request "intended" method.
+	 * 获取请求"预期"方法
      *
      * If the X-HTTP-Method-Override header is set, and if the method is a POST,
      * then it is used to determine the "real" intended HTTP method.
@@ -1225,7 +1330,7 @@ class Request
      *
      * The method is always an uppercased string.
      *
-     * @return string The request method
+     * @return string
      *
      * @see getRealMethod()
      */
@@ -1258,7 +1363,7 @@ class Request
         }
 
         if (!preg_match('/^[A-Z]++$/D', $method)) {
-            throw new SuspiciousOperationException(sprintf('Invalid method override "%s".', $method));
+            throw new SuspiciousOperationException('Invalid HTTP method override.');
         }
 
         return $this->method = $method;
@@ -1266,8 +1371,9 @@ class Request
 
     /**
      * Gets the "real" request method.
+	 * 获取"真正的"请求方法
      *
-     * @return string The request method
+     * @return string
      *
      * @see getMethod()
      */
@@ -1278,12 +1384,11 @@ class Request
 
     /**
      * Gets the mime type associated with the format.
+	 * 获取与该格式关联的mime类型
      *
-     * @param string $format The format
-     *
-     * @return string|null The associated mime type (null if not found)
+     * @return string|null
      */
-    public function getMimeType($format)
+    public function getMimeType(string $format)
     {
         if (null === static::$formats) {
             static::initializeFormats();
@@ -1294,12 +1399,11 @@ class Request
 
     /**
      * Gets the mime types associated with the format.
+	 * 获取与该格式关联的mime类型
      *
-     * @param string $format The format
-     *
-     * @return array The associated mime types
+     * @return array
      */
-    public static function getMimeTypes($format)
+    public static function getMimeTypes(string $format)
     {
         if (null === static::$formats) {
             static::initializeFormats();
@@ -1310,15 +1414,14 @@ class Request
 
     /**
      * Gets the format associated with the mime type.
+	 * 获取与mime类型关联的格式
      *
-     * @param string $mimeType The associated mime type
-     *
-     * @return string|null The format (null if not found)
+     * @return string|null
      */
-    public function getFormat($mimeType)
+    public function getFormat(?string $mimeType)
     {
         $canonicalMimeType = null;
-        if (false !== $pos = strpos($mimeType, ';')) {
+        if ($mimeType && false !== $pos = strpos($mimeType, ';')) {
             $canonicalMimeType = trim(substr($mimeType, 0, $pos));
         }
 
@@ -1340,11 +1443,11 @@ class Request
 
     /**
      * Associates a format with mime types.
+	 * 将格式与mime类型关联
      *
-     * @param string       $format    The format
      * @param string|array $mimeTypes The associated mime types (the preferred one must be the first as it will be used as the content type)
      */
-    public function setFormat($format, $mimeTypes)
+    public function setFormat(?string $format, $mimeTypes)
     {
         if (null === static::$formats) {
             static::initializeFormats();
@@ -1355,6 +1458,7 @@ class Request
 
     /**
      * Gets the request format.
+	 * 得到请求格式
      *
      * Here is the process to determine the format:
      *
@@ -1364,11 +1468,9 @@ class Request
      *
      * @see getPreferredFormat
      *
-     * @param string|null $default The default format
-     *
-     * @return string|null The request format
+     * @return string|null
      */
-    public function getRequestFormat($default = 'html')
+    public function getRequestFormat(?string $default = 'html')
     {
         if (null === $this->format) {
             $this->format = $this->attributes->get('_format');
@@ -1379,18 +1481,18 @@ class Request
 
     /**
      * Sets the request format.
-     *
-     * @param string $format The request format
+	 * 设置请求格式
      */
-    public function setRequestFormat($format)
+    public function setRequestFormat(?string $format)
     {
         $this->format = $format;
     }
 
     /**
      * Gets the format associated with the request.
+	 * 获取与请求关联的格式
      *
-     * @return string|null The format (null if no content type is present)
+     * @return string|null
      */
     public function getContentType()
     {
@@ -1399,10 +1501,9 @@ class Request
 
     /**
      * Sets the default locale.
-     *
-     * @param string $locale
+	 * 设置默认区域设置
      */
-    public function setDefaultLocale($locale)
+    public function setDefaultLocale(string $locale)
     {
         $this->defaultLocale = $locale;
 
@@ -1413,6 +1514,7 @@ class Request
 
     /**
      * Get the default locale.
+	 * 得到默认区域
      *
      * @return string
      */
@@ -1423,38 +1525,40 @@ class Request
 
     /**
      * Sets the locale.
-     *
-     * @param string $locale
+	 * 设置区域
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale)
     {
         $this->setPhpDefaultLocale($this->locale = $locale);
     }
 
     /**
      * Get the locale.
+	 * 获取区域设置
      *
      * @return string
      */
     public function getLocale()
     {
-        return null === $this->locale ? $this->defaultLocale : $this->locale;
+        return $this->locale ?? $this->defaultLocale;
     }
 
     /**
      * Checks if the request method is of specified type.
+	 * 检查请求方法是否为指定类型
      *
      * @param string $method Uppercase request method (GET, POST etc)
      *
      * @return bool
      */
-    public function isMethod($method)
+    public function isMethod(string $method)
     {
         return $this->getMethod() === strtoupper($method);
     }
 
     /**
      * Checks whether or not the method is safe.
+	 * 检查方法是否安全
      *
      * @see https://tools.ietf.org/html/rfc7231#section-4.2.1
      *
@@ -1462,15 +1566,12 @@ class Request
      */
     public function isMethodSafe()
     {
-        if (\func_num_args() > 0) {
-            @trigger_error(sprintf('Passing arguments to "%s()" has been deprecated since Symfony 4.4; use "%s::isMethodCacheable()" to check if the method is cacheable instead.', __METHOD__, __CLASS__), \E_USER_DEPRECATED);
-        }
-
         return \in_array($this->getMethod(), ['GET', 'HEAD', 'OPTIONS', 'TRACE']);
     }
 
     /**
      * Checks whether or not the method is idempotent.
+	 * 检查方法是否幂等
      *
      * @return bool
      */
@@ -1481,10 +1582,11 @@ class Request
 
     /**
      * Checks whether the method is cacheable or not.
+	 * 检查方法是否可缓存
      *
      * @see https://tools.ietf.org/html/rfc7231#section-4.2.3
      *
-     * @return bool True for GET and HEAD, false otherwise
+     * @return bool
      */
     public function isMethodCacheable()
     {
@@ -1493,6 +1595,7 @@ class Request
 
     /**
      * Returns the protocol version.
+	 * 返回协议版本
      *
      * If the application is behind a proxy, the protocol version used in the
      * requests between the client and the proxy and between the proxy and the
@@ -1517,12 +1620,13 @@ class Request
 
     /**
      * Returns the request body content.
+	 * 返回请求正文内容
      *
      * @param bool $asResource If true, a resource will be returned
      *
-     * @return string|resource The request body content or a resource to read the body stream
+     * @return string|resource
      */
-    public function getContent($asResource = false)
+    public function getContent(bool $asResource = false)
     {
         $currentContentIsResource = \is_resource($this->content);
 
@@ -1561,9 +1665,41 @@ class Request
     }
 
     /**
-     * Gets the Etags.
+     * Gets the request body decoded as array, typically from a JSON payload.
+	 * 获取解码为数组的请求体，通常来自JSON有效负载。
      *
-     * @return array The entity tags
+     * @return array
+     *
+     * @throws JsonException When the body cannot be decoded to an array
+     */
+    public function toArray()
+    {
+        if ('' === $content = $this->getContent()) {
+            throw new JsonException('Request body is empty.');
+        }
+
+        try {
+            $content = json_decode($content, true, 512, \JSON_BIGINT_AS_STRING | (\PHP_VERSION_ID >= 70300 ? \JSON_THROW_ON_ERROR : 0));
+        } catch (\JsonException $e) {
+            throw new JsonException('Could not decode request body.', $e->getCode(), $e);
+        }
+
+        if (\PHP_VERSION_ID < 70300 && \JSON_ERROR_NONE !== json_last_error()) {
+            throw new JsonException('Could not decode request body: '.json_last_error_msg(), json_last_error());
+        }
+
+        if (!\is_array($content)) {
+            throw new JsonException(sprintf('JSON content was expected to decode to an array, "%s" returned.', get_debug_type($content)));
+        }
+
+        return $content;
+    }
+
+    /**
+     * Gets the Etags.
+	 * 得到Etags
+     *
+     * @return array
      */
     public function getETags()
     {
@@ -1580,8 +1716,9 @@ class Request
 
     /**
      * Gets the preferred format for the response by inspecting, in the following order:
-     *   * the request format set using setRequestFormat
+     *   * the request format set using setRequestFormat;
      *   * the values of the Accept HTTP header.
+	 * 通过检查，按以下顺序获取响应的首选格式：
      *
      * Note that if you use this method, you should send the "Vary: Accept" header
      * in the response to prevent any issues with intermediary HTTP caches.
@@ -1603,12 +1740,13 @@ class Request
 
     /**
      * Returns the preferred language.
+	 * 返回首选语言
      *
      * @param string[] $locales An array of ordered available locales
      *
-     * @return string|null The preferred locale
+     * @return string|null
      */
-    public function getPreferredLanguage(array $locales = null)
+    public function getPreferredLanguage(?array $locales = null)
     {
         $preferredLanguages = $this->getLanguages();
 
@@ -1637,9 +1775,10 @@ class Request
     }
 
     /**
-     * Gets a list of languages acceptable by the client browser.
+     * Gets a list of languages acceptable by the client browser ordered in the user browser preferences.
+	 * 获取按用户浏览器首选项排序的客户端浏览器可接受的语言列表
      *
-     * @return array Languages ordered in the user browser preferences
+     * @return array
      */
     public function getLanguages()
     {
@@ -1649,7 +1788,8 @@ class Request
 
         $languages = AcceptHeader::fromString($this->headers->get('Accept-Language'))->all();
         $this->languages = [];
-        foreach ($languages as $lang => $acceptHeaderItem) {
+        foreach ($languages as $acceptHeaderItem) {
+            $lang = $acceptHeaderItem->getValue();
             if (str_contains($lang, '-')) {
                 $codes = explode('-', $lang);
                 if ('i' === $codes[0]) {
@@ -1677,9 +1817,10 @@ class Request
     }
 
     /**
-     * Gets a list of charsets acceptable by the client browser.
+     * Gets a list of charsets acceptable by the client browser in preferable order.
+	 * 按优先顺序获取客户端浏览器可接受的字符集列表
      *
-     * @return array List of charsets in preferable order
+     * @return array
      */
     public function getCharsets()
     {
@@ -1687,13 +1828,14 @@ class Request
             return $this->charsets;
         }
 
-        return $this->charsets = array_keys(AcceptHeader::fromString($this->headers->get('Accept-Charset'))->all());
+        return $this->charsets = array_map('strval', array_keys(AcceptHeader::fromString($this->headers->get('Accept-Charset'))->all()));
     }
 
     /**
-     * Gets a list of encodings acceptable by the client browser.
+     * Gets a list of encodings acceptable by the client browser in preferable order.
+	 * 按优先顺序获取客户端浏览器可接受的编码列表
      *
-     * @return array List of encodings in preferable order
+     * @return array
      */
     public function getEncodings()
     {
@@ -1701,13 +1843,14 @@ class Request
             return $this->encodings;
         }
 
-        return $this->encodings = array_keys(AcceptHeader::fromString($this->headers->get('Accept-Encoding'))->all());
+        return $this->encodings = array_map('strval', array_keys(AcceptHeader::fromString($this->headers->get('Accept-Encoding'))->all()));
     }
 
     /**
-     * Gets a list of content types acceptable by the client browser.
+     * Gets a list of content types acceptable by the client browser in preferable order.
+	 * 按优先顺序获取客户端浏览器可接受的内容类型列表
      *
-     * @return array List of content types in preferable order
+     * @return array
      */
     public function getAcceptableContentTypes()
     {
@@ -1715,26 +1858,48 @@ class Request
             return $this->acceptableContentTypes;
         }
 
-        return $this->acceptableContentTypes = array_keys(AcceptHeader::fromString($this->headers->get('Accept'))->all());
+        return $this->acceptableContentTypes = array_map('strval', array_keys(AcceptHeader::fromString($this->headers->get('Accept'))->all()));
     }
 
     /**
      * Returns true if the request is an XMLHttpRequest.
+	 * 如果请求是XMLHttpRequest则返回true
      *
      * It works if your JavaScript library sets an X-Requested-With HTTP header.
      * It is known to work with common JavaScript frameworks:
      *
      * @see https://wikipedia.org/wiki/List_of_Ajax_frameworks#JavaScript
      *
-     * @return bool true if the request is an XMLHttpRequest, false otherwise
+     * @return bool
      */
     public function isXmlHttpRequest()
     {
         return 'XMLHttpRequest' == $this->headers->get('X-Requested-With');
     }
 
+    /**
+     * Checks whether the client browser prefers safe content or not according to RFC8674.
+	 * 根据RFC8674检查客户端浏览器是否偏好安全内容
+     *
+     * @see https://tools.ietf.org/html/rfc8674
+     */
+    public function preferSafeContent(): bool
+    {
+        if (null !== $this->isSafeContentPreferred) {
+            return $this->isSafeContentPreferred;
+        }
+
+        if (!$this->isSecure()) {
+            // see https://tools.ietf.org/html/rfc8674#section-3
+            return $this->isSafeContentPreferred = false;
+        }
+
+        return $this->isSafeContentPreferred = AcceptHeader::fromString($this->headers->get('Prefer'))->has('safe');
+    }
+
     /*
      * The following methods are derived from code of the Zend Framework (1.10dev - 2010-01-24)
+	 * 下面的方法来自于Zend框架的代码
      *
      * Code subject to the new BSD license (https://framework.zend.com/license).
      *
@@ -1745,11 +1910,10 @@ class Request
     {
         $requestUri = '';
 
-        if ('1' == $this->server->get('IIS_WasUrlRewritten') && '' != $this->server->get('UNENCODED_URL')) {
+        if ($this->isIisRewrite() && '' != $this->server->get('UNENCODED_URL')) {
             // IIS7 with URL Rewrite: make sure we get the unencoded URL (double slash problem)
             $requestUri = $this->server->get('UNENCODED_URL');
             $this->server->remove('UNENCODED_URL');
-            $this->server->remove('IIS_WasUrlRewritten');
         } elseif ($this->server->has('REQUEST_URI')) {
             $requestUri = $this->server->get('REQUEST_URI');
 
@@ -1788,6 +1952,7 @@ class Request
 
     /**
      * Prepares the base URL.
+	 * 准备基础URL
      *
      * @return string
      */
@@ -1857,8 +2022,9 @@ class Request
 
     /**
      * Prepares the base path.
+	 * 准备基本路径
      *
-     * @return string base path
+     * @return string
      */
     protected function prepareBasePath()
     {
@@ -1883,8 +2049,9 @@ class Request
 
     /**
      * Prepares the path info.
+	 * 准备路径信息
      *
-     * @return string path info
+     * @return string
      */
     protected function preparePathInfo()
     {
@@ -1900,7 +2067,7 @@ class Request
             $requestUri = '/'.$requestUri;
         }
 
-        if (null === ($baseUrl = $this->getBaseUrl())) {
+        if (null === ($baseUrl = $this->getBaseUrlReal())) {
             return $requestUri;
         }
 
@@ -1915,6 +2082,7 @@ class Request
 
     /**
      * Initializes HTTP request formats.
+	 * 初始化HTTP请求格式
      */
     protected static function initializeFormats()
     {
@@ -1929,7 +2097,7 @@ class Request
             'rdf' => ['application/rdf+xml'],
             'atom' => ['application/atom+xml'],
             'rss' => ['application/rss+xml'],
-            'form' => ['application/x-www-form-urlencoded'],
+            'form' => ['application/x-www-form-urlencoded', 'multipart/form-data'],
         ];
     }
 
@@ -1949,10 +2117,17 @@ class Request
     /**
      * Returns the prefix as encoded in the string when the string starts with
      * the given prefix, null otherwise.
+	 * 返回字符串开头时在字符串中编码的给定的前缀，否则为空。
      */
     private function getUrlencodedPrefix(string $string, string $prefix): ?string
     {
-        if (!str_starts_with(rawurldecode($string), $prefix)) {
+        if ($this->isIisRewrite()) {
+            // ISS with UrlRewriteModule might report SCRIPT_NAME/PHP_SELF with wrong case
+            // see https://github.com/php/php-src/issues/11981
+            if (0 !== stripos(rawurldecode($string), $prefix)) {
+                return null;
+            }
+        } elseif (!str_starts_with(rawurldecode($string), $prefix)) {
             return null;
         }
 
@@ -1982,18 +2157,19 @@ class Request
 
     /**
      * Indicates whether this request originated from a trusted proxy.
+	 * 指明此请求是否来自受信任的代理
      *
      * This can be useful to determine whether or not to trust the
      * contents of a proxy-specific header.
      *
-     * @return bool true if the request came from a trusted proxy, false otherwise
+     * @return bool
      */
     public function isFromTrustedProxy()
     {
         return self::$trustedProxies && IpUtils::checkIp($this->server->get('REMOTE_ADDR', ''), self::$trustedProxies);
     }
 
-    private function getTrustedValues(int $type, string $ip = null): array
+    private function getTrustedValues(int $type, ?string $ip = null): array
     {
         $clientValues = [];
         $forwardedValues = [];
@@ -2004,7 +2180,7 @@ class Request
             }
         }
 
-        if ((self::$trustedHeaderSet & self::HEADER_FORWARDED) && $this->headers->has(self::TRUSTED_HEADERS[self::HEADER_FORWARDED])) {
+        if ((self::$trustedHeaderSet & self::HEADER_FORWARDED) && (isset(self::FORWARDED_PARAMS[$type])) && $this->headers->has(self::TRUSTED_HEADERS[self::HEADER_FORWARDED])) {
             $forwarded = $this->headers->get(self::TRUSTED_HEADERS[self::HEADER_FORWARDED]);
             $parts = HeaderUtils::split($forwarded, ',;=');
             $forwardedValues = [];
@@ -2084,5 +2260,22 @@ class Request
 
         // Now the IP chain contains only untrusted proxies and the client IP
         return $clientIps ? array_reverse($clientIps) : [$firstTrustedIp];
+    }
+
+    /**
+     * Is this IIS with UrlRewriteModule?
+	 * 这是IIS与UrlRewriteModule吗
+     *
+     * This method consumes, caches and removed the IIS_WasUrlRewritten env var,
+     * so we don't inherit it to sub-requests.
+     */
+    private function isIisRewrite(): bool
+    {
+        if (1 === $this->server->getInt('IIS_WasUrlRewritten')) {
+            $this->isIisRewrite = true;
+            $this->server->remove('IIS_WasUrlRewritten');
+        }
+
+        return $this->isIisRewrite;
     }
 }

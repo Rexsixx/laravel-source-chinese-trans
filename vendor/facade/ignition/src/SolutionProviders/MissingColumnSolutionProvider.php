@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，解决方案提供者，合并冲突解决方案提供商
+ * Facade，Ignition，解决方案提供者，缺失列解决方案提供者
  */
 
 namespace Facade\Ignition\SolutionProviders;
@@ -15,7 +15,7 @@ class MissingColumnSolutionProvider implements HasSolutionsForThrowable
     /**
      * See https://dev.mysql.com/doc/refman/8.0/en/server-error-reference.html#error_er_bad_field_error.
      */
-    const MYSQL_BAD_FIELD_CODE = '42S22';
+    public const MYSQL_BAD_FIELD_CODE = '42S22';
 
     public function canSolve(Throwable $throwable): bool
     {

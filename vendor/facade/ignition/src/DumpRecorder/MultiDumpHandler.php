@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，Dump 记录器，多转储处理程序
+ * Facade，Ignition，转储记录器，多转储处理程序
  */
 
 namespace Facade\Ignition\DumpRecorder;

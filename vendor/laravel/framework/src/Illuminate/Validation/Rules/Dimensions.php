@@ -1,12 +1,16 @@
 <?php
 /**
- * 验证，维度
+ * Illuminate，验证，规则，维度
  */
 
 namespace Illuminate\Validation\Rules;
 
+use Illuminate\Support\Traits\Conditionable;
+
 class Dimensions
 {
+    use Conditionable;
+
     /**
      * The constraints for the dimensions rule.
 	 * 维度的约束规则
@@ -17,7 +21,7 @@ class Dimensions
 
     /**
      * Create a new dimensions rule instance.
-	 * 创建新的维度规则实例
+	 * 创建一个新的维度规则实例
      *
      * @param  array  $constraints
      * @return void
@@ -127,7 +131,7 @@ class Dimensions
 
     /**
      * Convert the rule to a validation string.
-	 * 转换规则为验证字符串
+	 * 将规则转换为验证字符串
      *
      * @return string
      */

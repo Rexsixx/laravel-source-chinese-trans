@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，建立者，Trait_
+ */
+
 namespace PhpParser\Builder;
 
 use PhpParser;
@@ -7,18 +11,22 @@ use PhpParser\BuilderHelpers;
 use PhpParser\Node;
 use PhpParser\Node\Stmt;
 
-class Trait_ extends Declaration
-{
-    protected $name;
-    protected $uses = [];
-    protected $properties = [];
-    protected $methods = [];
-
-    /** @var Node\AttributeGroup[] */
-    protected $attributeGroups = [];
+class Trait_ extends Declaration {
+    protected string $name;
+    /** @var list<Stmt\TraitUse> */
+    protected array $uses = [];
+    /** @var list<Stmt\ClassConst> */
+    protected array $constants = [];
+    /** @var list<Stmt\Property> */
+    protected array $properties = [];
+    /** @var list<Stmt\ClassMethod> */
+    protected array $methods = [];
+    /** @var list<Node\AttributeGroup> */
+    protected array $attributeGroups = [];
 
     /**
      * Creates an interface builder.
+	 * 创建一个接口构建器
      *
      * @param string $name Name of the interface
      */
@@ -28,6 +36,7 @@ class Trait_ extends Declaration
 
     /**
      * Adds a statement.
+	 * 添加语句
      *
      * @param Stmt|PhpParser\Builder $stmt The statement to add
      *
@@ -42,6 +51,8 @@ class Trait_ extends Declaration
             $this->methods[] = $stmt;
         } elseif ($stmt instanceof Stmt\TraitUse) {
             $this->uses[] = $stmt;
+        } elseif ($stmt instanceof Stmt\ClassConst) {
+            $this->constants[] = $stmt;
         } else {
             throw new \LogicException(sprintf('Unexpected node of type "%s"', $stmt->getType()));
         }
@@ -51,6 +62,7 @@ class Trait_ extends Declaration
 
     /**
      * Adds an attribute group.
+	 * 添加一个属性组
      *
      * @param Node\Attribute|Node\AttributeGroup $attribute
      *
@@ -64,13 +76,14 @@ class Trait_ extends Declaration
 
     /**
      * Returns the built trait node.
+	 * 返回构建的特性节点
      *
      * @return Stmt\Trait_ The built interface node
      */
-    public function getNode() : PhpParser\Node {
+    public function getNode(): PhpParser\Node {
         return new Stmt\Trait_(
             $this->name, [
-                'stmts' => array_merge($this->uses, $this->properties, $this->methods),
+                'stmts' => array_merge($this->uses, $this->constants, $this->properties, $this->methods),
                 'attrGroups' => $this->attributeGroups,
             ], $this->attributes
         );

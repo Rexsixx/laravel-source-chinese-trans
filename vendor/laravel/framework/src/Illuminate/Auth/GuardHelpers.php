@@ -1,6 +1,6 @@
 <?php
 /**
- * 授权，守卫助手
+ * Illuminate，认证，守卫助手
  */
 
 namespace Illuminate\Auth;
@@ -24,14 +24,14 @@ trait GuardHelpers
 
     /**
      * The user provider implementation.
-	 * 用户提供程序实现
+	 * 用户提供者实现
      *
      * @var \Illuminate\Contracts\Auth\UserProvider
      */
     protected $provider;
 
     /**
-     * Determine if current user is authenticated. If not, throw an exception.
+     * Determine if the current user is authenticated. If not, throw an exception.
 	 * 确定当前用户是否经过身份验证。如果不是，则抛出异常。
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable
@@ -71,7 +71,7 @@ trait GuardHelpers
 
     /**
      * Determine if the current user is a guest.
-	 * 确定当前用户是否是访客
+	 * 确定当前用户是否是来宾
      *
      * @return bool
      */
@@ -82,9 +82,9 @@ trait GuardHelpers
 
     /**
      * Get the ID for the currently authenticated user.
-	 * 得到当前经过身份验证的用户的ID
+	 * 获取当前经过身份验证的用户的ID
      *
-     * @return int|null
+     * @return int|string|null
      */
     public function id()
     {
@@ -95,7 +95,7 @@ trait GuardHelpers
 
     /**
      * Set the current user.
-	 * 设置当前用户 
+	 * 设置当前用户
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @return $this
@@ -109,7 +109,7 @@ trait GuardHelpers
 
     /**
      * Get the user provider used by the guard.
-	 * 得到守卫使用的用户提供者
+	 * 获取守卫使用的用户提供者
      *
      * @return \Illuminate\Contracts\Auth\UserProvider
      */

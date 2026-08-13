@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，Util 测试
+ * Hamcrest, Util 测试
  */
 
 namespace Hamcrest;

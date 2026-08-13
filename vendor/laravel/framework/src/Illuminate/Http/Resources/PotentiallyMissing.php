@@ -1,6 +1,6 @@
 <?php
 /**
- * Http，可能丢失
+ * Illuminate，Http，资源，可能会丢失
  */
 
 namespace Illuminate\Http\Resources;

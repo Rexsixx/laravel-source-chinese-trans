@@ -1,15 +1,16 @@
 <?php
 /**
- * 基础，发出Http请求
+ * Illuminate，基础，测试，问题，发出 Http请求
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;
 
 use Illuminate\Contracts\Http\Kernel as HttpKernel;
 use Illuminate\Cookie\CookieValuePrefix;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Testing\LoggedExceptionCollection;
+use Illuminate\Testing\TestResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
@@ -49,7 +50,7 @@ trait MakesHttpRequests
 
     /**
      * Indicates whether redirects should be followed.
-	 * 指明是否应该遵循重定向
+	 * 指示是否应该遵循重定向
      *
      * @var bool
      */
@@ -57,11 +58,21 @@ trait MakesHttpRequests
 
     /**
      * Indicates whether cookies should be encrypted.
-	 * 指明是否会话将被加密
+	 * 指示是否对cookie进行加密
      *
      * @var bool
      */
     protected $encryptCookies = true;
+
+    /**
+     * Indicated whether JSON requests should be performed "with credentials" (cookies).
+	 * 指示JSON请求是否应该"使用凭据"（cookie）执行
+     *
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials
+     *
+     * @var bool
+     */
+    protected $withCredentials = false;
 
     /**
      * Define additional headers to be sent with the request.
@@ -90,6 +101,19 @@ trait MakesHttpRequests
         $this->defaultHeaders[$name] = $value;
 
         return $this;
+    }
+
+    /**
+     * Add an authorization token for the request.
+	 * 为请求添加授权令牌
+     *
+     * @param  string  $token
+     * @param  string  $type
+     * @return $this
+     */
+    public function withToken(string $token, string $type = 'Bearer')
+    {
+        return $this->withHeader('Authorization', $type.' '.$token);
     }
 
     /**
@@ -241,6 +265,19 @@ trait MakesHttpRequests
     }
 
     /**
+     * Include cookies and authorization headers for JSON requests.
+	 * 包括JSON请求的cookie和授权头
+     *
+     * @return $this
+     */
+    public function withCredentials()
+    {
+        $this->withCredentials = true;
+
+        return $this;
+    }
+
+    /**
      * Disable automatic encryption of cookie values.
 	 * 禁用cookie值的自动加密功能
      *
@@ -269,11 +306,11 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a GET request.
-	 * 访问给定的URI使用GET请求
+	 * 使用GET请求访问给定的URI
      *
      * @param  string  $uri
      * @param  array  $headers
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return \Illuminate\Testing\TestResponse
      */
     public function get($uri, array $headers = [])
     {
@@ -285,11 +322,11 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a GET request, expecting a JSON response.
-	 * 访问给定的URI使用GET请求，期望得到JSON响应。
+	 * 使用GET请求访问给定的URI，期望得到JSON响应。
      *
      * @param  string  $uri
      * @param  array  $headers
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return \Illuminate\Testing\TestResponse
      */
     public function getJson($uri, array $headers = [])
     {
@@ -298,12 +335,12 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a POST request.
-	 * 访问给定的URI使用POST请求
+	 * 使用POST请求访问给定的URI
      *
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return \Illuminate\Testing\TestResponse
      */
     public function post($uri, array $data = [], array $headers = [])
     {
@@ -315,12 +352,12 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a POST request, expecting a JSON response.
-	 * 访问给定的URI使用POST请求，期望得到JSON响应。
+	 * 使用POST请求访问给定的URI，期望得到JSON响应。
      *
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return \Illuminate\Testing\TestResponse
      */
     public function postJson($uri, array $data = [], array $headers = [])
     {
@@ -329,12 +366,12 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a PUT request.
-	 * 访问给定的URI使用PUT请求
+	 * 使用PUT请求访问给定的URI
      *
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return \Illuminate\Testing\TestResponse
      */
     public function put($uri, array $data = [], array $headers = [])
     {
@@ -346,12 +383,12 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a PUT request, expecting a JSON response.
-	 * 访问给定的URI使用PUT请求，期望得到JSON响应。
+	 * 使用一个PUT请求访问给定的URI，期望得到一个JSON响应。
      *
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return \Illuminate\Testing\TestResponse
      */
     public function putJson($uri, array $data = [], array $headers = [])
     {
@@ -360,12 +397,12 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a PATCH request.
-	 * 访问给定的URI使用PATCH请求
+	 * 使用PATCH请求访问给定的URI
      *
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return \Illuminate\Testing\TestResponse
      */
     public function patch($uri, array $data = [], array $headers = [])
     {
@@ -377,12 +414,12 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a PATCH request, expecting a JSON response.
-	 * 访问给定的URI使用PATCH请求，期望得到JSON响应。
+	 * 使用PATCH请求访问给定的URI，期望得到JSON响应。
      *
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return \Illuminate\Testing\TestResponse
      */
     public function patchJson($uri, array $data = [], array $headers = [])
     {
@@ -391,12 +428,12 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a DELETE request.
-	 * 访问给定的URI使用DELETE请求
+	 * 使用DELETE请求访问给定的URI
      *
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return \Illuminate\Testing\TestResponse
      */
     public function delete($uri, array $data = [], array $headers = [])
     {
@@ -408,12 +445,12 @@ trait MakesHttpRequests
 
     /**
      * Visit the given URI with a DELETE request, expecting a JSON response.
-	 * 访问给定的URI使用DELETE请求，期望得到JSON响应。
+	 * 使用DELETE请求访问给定的URI，期望得到JSON响应。
      *
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return \Illuminate\Testing\TestResponse
      */
     public function deleteJson($uri, array $data = [], array $headers = [])
     {
@@ -421,13 +458,13 @@ trait MakesHttpRequests
     }
 
     /**
-     * Visit the given URI with a OPTIONS request.
-	 * 访问给定的URI使用OPTIONS请求
+     * Visit the given URI with an OPTIONS request.
+	 * 使用OPTIONS请求访问给定的URI
      *
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return \Illuminate\Testing\TestResponse
      */
     public function options($uri, array $data = [], array $headers = [])
     {
@@ -438,13 +475,13 @@ trait MakesHttpRequests
     }
 
     /**
-     * Visit the given URI with a OPTIONS request, expecting a JSON response.
-	 * 访问给定的URI使用OPTIONS请求，期望得到JSON响应。
+     * Visit the given URI with an OPTIONS request, expecting a JSON response.
+	 * 使用OPTIONS请求访问给定的URI，期望得到JSON响应。
      *
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return \Illuminate\Testing\TestResponse
      */
     public function optionsJson($uri, array $data = [], array $headers = [])
     {
@@ -453,13 +490,13 @@ trait MakesHttpRequests
 
     /**
      * Call the given URI with a JSON request.
-	 * 调用给定的URI用JSON请求
+	 * 用JSON请求调用给定的URI
      *
      * @param  string  $method
      * @param  string  $uri
      * @param  array  $data
      * @param  array  $headers
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return \Illuminate\Testing\TestResponse
      */
     public function json($method, $uri, array $data = [], array $headers = [])
     {
@@ -474,13 +511,19 @@ trait MakesHttpRequests
         ], $headers);
 
         return $this->call(
-            $method, $uri, [], [], $files, $this->transformHeadersToServerVars($headers), $content
+            $method,
+            $uri,
+            [],
+            $this->prepareCookiesForJsonRequest(),
+            $files,
+            $this->transformHeadersToServerVars($headers),
+            $content
         );
     }
 
     /**
      * Call the given URI and return the Response.
-	 * 调用给定的URI并返回响应
+	 * 调用给定的URI并返回Response
      *
      * @param  string  $method
      * @param  string  $uri
@@ -489,7 +532,7 @@ trait MakesHttpRequests
      * @param  array  $files
      * @param  array  $server
      * @param  string|null  $content
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return \Illuminate\Testing\TestResponse
      */
     public function call($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
     {
@@ -506,18 +549,18 @@ trait MakesHttpRequests
             $request = Request::createFromBase($symfonyRequest)
         );
 
+        $kernel->terminate($request, $response);
+
         if ($this->followRedirects) {
             $response = $this->followRedirects($response);
         }
-
-        $kernel->terminate($request, $response);
 
         return $this->createTestResponse($response);
     }
 
     /**
      * Turn the given URI into a fully qualified URL.
-	 * 转换给定的URI为完全限定的URL
+	 * 将给定的URI转换为完全限定的URL
      *
      * @param  string  $uri
      * @return string
@@ -533,7 +576,7 @@ trait MakesHttpRequests
 
     /**
      * Transform headers array to array of $_SERVER vars with HTTP_* format.
-	 * 转换headers数组为HTTP_*格式的$_SERVER变量数组
+	 * 将headers数组转换为HTTP_*格式的$_SERVER变量数组
      *
      * @param  array  $headers
      * @return array
@@ -565,7 +608,7 @@ trait MakesHttpRequests
 
     /**
      * Extract the file uploads from the given data array.
-	 * 提取文件上传从给定的数据数组中
+	 * 从给定的数据数组中提取文件上传
      *
      * @param  array  $data
      * @return array
@@ -609,32 +652,49 @@ trait MakesHttpRequests
     }
 
     /**
+     * If enabled, add cookies for JSON requests.
+	 * 如果启用，为JSON请求添加cookie。
+     *
+     * @return array
+     */
+    protected function prepareCookiesForJsonRequest()
+    {
+        return $this->withCredentials ? $this->prepareCookiesForRequest() : [];
+    }
+
+    /**
      * Follow a redirect chain until a non-redirect is received.
 	 * 遵循重定向链，直到接收到非重定向。
      *
      * @param  \Illuminate\Http\Response  $response
-     * @return \Illuminate\Http\Response|\Illuminate\Foundation\Testing\TestResponse
+     * @return \Illuminate\Http\Response|\Illuminate\Testing\TestResponse
      */
     protected function followRedirects($response)
     {
+        $this->followRedirects = false;
+
         while ($response->isRedirect()) {
             $response = $this->get($response->headers->get('Location'));
         }
-
-        $this->followRedirects = false;
 
         return $response;
     }
 
     /**
      * Create the test response instance from the given response.
-	 * 创建测试响应实例根据给定的响应
+	 * 根据给定的响应创建测试响应实例
      *
      * @param  \Illuminate\Http\Response  $response
-     * @return \Illuminate\Foundation\Testing\TestResponse
+     * @return \Illuminate\Testing\TestResponse
      */
     protected function createTestResponse($response)
     {
-        return TestResponse::fromBaseResponse($response);
+        return tap(TestResponse::fromBaseResponse($response), function ($response) {
+            $response->withExceptions(
+                $this->app->bound(LoggedExceptionCollection::class)
+                    ? $this->app->make(LoggedExceptionCollection::class)
+                    : new LoggedExceptionCollection
+            );
+        });
     }
 }

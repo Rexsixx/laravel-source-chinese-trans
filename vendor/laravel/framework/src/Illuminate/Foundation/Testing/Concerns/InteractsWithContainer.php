@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，与容器交互
+ * Illuminate，基础，测试，问题，与容器交互
  */
 
 namespace Illuminate\Foundation\Testing\Concerns;
@@ -13,7 +13,7 @@ trait InteractsWithContainer
 {
     /**
      * The original Laravel Mix handler.
-	 * 原始的Laravel Mix处理程序
+	 * 原始的Mix处理程序
      *
      * @var \Illuminate\Foundation\Mix|null
      */
@@ -21,7 +21,7 @@ trait InteractsWithContainer
 
     /**
      * Register an instance of an object in the container.
-	 * 注册对象的实例在容器中
+	 * 在容器中注册对象的实例
      *
      * @param  string  $abstract
      * @param  object  $instance
@@ -34,7 +34,7 @@ trait InteractsWithContainer
 
     /**
      * Register an instance of an object in the container.
-	 * 注册对象的实例在容器中
+	 * 在容器中注册对象的实例。
      *
      * @param  string  $abstract
      * @param  object  $instance
@@ -87,8 +87,22 @@ trait InteractsWithContainer
     }
 
     /**
+     * Instruct the container to forget a previously mocked / spied instance of an object.
+	 * 指示容器忘记先前模拟/监视的对象实例
+     *
+     * @param  string  $abstract
+     * @return $this
+     */
+    protected function forgetMock($abstract)
+    {
+        $this->app->forgetInstance($abstract);
+
+        return $this;
+    }
+
+    /**
      * Register an empty handler for Laravel Mix in the container.
-	 * 注册一个空处理程序为Laravel Mix在容器中
+	 * 在容器中为Laravel Mix注册一个空处理程序
      *
      * @return $this
      */
@@ -107,7 +121,7 @@ trait InteractsWithContainer
 
     /**
      * Register an empty handler for Laravel Mix in the container.
-	 * 注册一个空处理程序为Laravel Mix在容器中
+	 * 在容器中为Mix注册一个空处理程序
      *
      * @return $this
      */

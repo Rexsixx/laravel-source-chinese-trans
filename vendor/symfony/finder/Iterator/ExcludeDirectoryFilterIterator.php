@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Finder，迭代器，排除目录过滤迭代器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -13,8 +16,13 @@ namespace Symfony\Component\Finder\Iterator;
 
 /**
  * ExcludeDirectoryFilterIterator filters out directories.
+ * ExcludeDirectoryFilterIterator过滤掉目录。
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @extends \FilterIterator<string, \SplFileInfo>
+ *
+ * @implements \RecursiveIterator<string, \SplFileInfo>
  */
 class ExcludeDirectoryFilterIterator extends \FilterIterator implements \RecursiveIterator
 {
@@ -49,8 +57,9 @@ class ExcludeDirectoryFilterIterator extends \FilterIterator implements \Recursi
 
     /**
      * Filters the iterator values.
+	 * 过滤迭代器值
      *
-     * @return bool True if the value should be kept, false otherwise
+     * @return bool
      */
     #[\ReturnTypeWillChange]
     public function accept()

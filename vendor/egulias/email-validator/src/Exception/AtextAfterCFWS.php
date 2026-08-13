@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，电子邮件验证器，异常，Atext After CFWS
+ * Egulias，EmailValidator，异常，Atext After CFWS
  */
 
 namespace Egulias\EmailValidator\Exception;

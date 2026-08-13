@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，解决方案提供者，合并冲突解决方案提供商
+ * Facade，Ignition，解决方案提供者，丢失的 App密钥解决方案提供商
  */
 
 namespace Facade\Ignition\SolutionProviders;

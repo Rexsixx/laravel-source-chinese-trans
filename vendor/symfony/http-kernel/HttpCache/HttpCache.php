@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，HTTP缓存，HTTP缓存
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -17,6 +20,7 @@
 
 namespace Symfony\Component\HttpKernel\HttpCache;
 
+use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -24,11 +28,14 @@ use Symfony\Component\HttpKernel\TerminableInterface;
 
 /**
  * Cache provides HTTP caching.
+ * 缓存提供HTTP缓存。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class HttpCache implements HttpKernelInterface, TerminableInterface
 {
+    public const BODY_EVAL_BOUNDARY_LENGTH = 24;
+
     private $kernel;
     private $store;
     private $request;
@@ -39,6 +46,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Constructor.
+	 * 构造函数
      *
      * The available options are:
      *
@@ -46,7 +54,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
      *                            will try to carry on and deliver a meaningful response.
      *
      *   * trace_level            May be one of 'none', 'short' and 'full'. For 'short', a concise trace of the
-     *                            master request will be added as an HTTP header. 'full' will add traces for all
+     *                            main request will be added as an HTTP header. 'full' will add traces for all
      *                            requests (including ESI subrequests). (default: 'full' if in debug; 'none' otherwise)
      *
      *   * trace_header           Header name to use for traces. (default: X-Symfony-Cache)
@@ -79,7 +87,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
      *                            This setting is overridden by the stale-if-error HTTP Cache-Control extension
      *                            (see RFC 5861).
      */
-    public function __construct(HttpKernelInterface $kernel, StoreInterface $store, SurrogateInterface $surrogate = null, array $options = [])
+    public function __construct(HttpKernelInterface $kernel, StoreInterface $store, ?SurrogateInterface $surrogate = null, array $options = [])
     {
         $this->store = $store;
         $this->kernel = $kernel;
@@ -107,8 +115,9 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Gets the current store.
+	 * 获取当前存储
      *
-     * @return StoreInterface A StoreInterface instance
+     * @return StoreInterface
      */
     public function getStore()
     {
@@ -117,8 +126,9 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Returns an array of events that took place during processing of the last request.
+	 * 返回在处理最后请求时发生的一系列事件
      *
-     * @return array An array of events
+     * @return array
      */
     public function getTraces()
     {
@@ -144,8 +154,9 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Returns a log message for the events of the last request processing.
+	 * 返回最后请求处理事件的日志消息
      *
-     * @return string A log message
+     * @return string
      */
     public function getLog()
     {
@@ -158,9 +169,10 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
     }
 
     /**
-     * Gets the Request instance associated with the master request.
+     * Gets the Request instance associated with the main request.
+	 * 获取与主请求关联的请求实例
      *
-     * @return Request A Request instance
+     * @return Request
      */
     public function getRequest()
     {
@@ -169,8 +181,9 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Gets the Kernel instance.
+	 * 获取内核实例
      *
-     * @return HttpKernelInterface An HttpKernelInterface instance
+     * @return HttpKernelInterface
      */
     public function getKernel()
     {
@@ -179,8 +192,9 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Gets the Surrogate instance.
+	 * 获取代理实例
      *
-     * @return SurrogateInterface A Surrogate instance
+     * @return SurrogateInterface
      *
      * @throws \LogicException
      */
@@ -192,10 +206,10 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
     /**
      * {@inheritdoc}
      */
-    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
+    public function handle(Request $request, int $type = HttpKernelInterface::MAIN_REQUEST, bool $catch = true)
     {
         // FIXME: catch exceptions and implement a 500 error page here? -> in Varnish, there is a built-in error page mechanism
-        if (HttpKernelInterface::MASTER_REQUEST === $type) {
+        if (HttpKernelInterface::MAIN_REQUEST === $type) {
             $this->traces = [];
             // Keep a clone of the original request for surrogates so they can access it.
             // We must clone here to get a separate instance because the application will modify the request during
@@ -226,12 +240,12 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
         $this->restoreResponseBody($request, $response);
 
-        if (HttpKernelInterface::MASTER_REQUEST === $type) {
+        if (HttpKernelInterface::MAIN_REQUEST === $type) {
             $this->addTraces($response);
         }
 
         if (null !== $this->surrogate) {
-            if (HttpKernelInterface::MASTER_REQUEST === $type) {
+            if (HttpKernelInterface::MAIN_REQUEST === $type) {
                 $this->surrogateCacheStrategy->update($response);
             } else {
                 $this->surrogateCacheStrategy->add($response);
@@ -257,12 +271,13 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Forwards the Request to the backend without storing the Response in the cache.
+	 * 将请求转发到后端,而不将响应存储在缓存中
      *
      * @param bool $catch Whether to process exceptions
      *
-     * @return Response A Response instance
+     * @return Response
      */
-    protected function pass(Request $request, $catch = false)
+    protected function pass(Request $request, bool $catch = false)
     {
         $this->record($request, 'pass');
 
@@ -271,16 +286,17 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Invalidates non-safe methods (like POST, PUT, and DELETE).
+	 * 使非安全方法（如POST、PUT和DELETE）无效。
      *
      * @param bool $catch Whether to process exceptions
      *
-     * @return Response A Response instance
+     * @return Response
      *
      * @throws \Exception
      *
      * @see RFC2616 13.10
      */
-    protected function invalidate(Request $request, $catch = false)
+    protected function invalidate(Request $request, bool $catch = false)
     {
         $response = $this->pass($request, $catch);
 
@@ -313,6 +329,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Lookups a Response from the cache for the given Request.
+	 * 从缓存中查找响应请求的响应。
      *
      * When a matching cache entry is found and is fresh, it uses it as the
      * response without forwarding any request to the backend. When a matching
@@ -322,11 +339,11 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
      *
      * @param bool $catch Whether to process exceptions
      *
-     * @return Response A Response instance
+     * @return Response
      *
      * @throws \Exception
      */
-    protected function lookup(Request $request, $catch = false)
+    protected function lookup(Request $request, bool $catch = false)
     {
         try {
             $entry = $this->store->lookup($request);
@@ -365,15 +382,16 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Validates that a cache entry is fresh.
+	 * 验证缓存条目是新鲜的。
      *
      * The original request is used as a template for a conditional
      * GET request with the backend.
      *
      * @param bool $catch Whether to process exceptions
      *
-     * @return Response A Response instance
+     * @return Response
      */
-    protected function validate(Request $request, Response $entry, $catch = false)
+    protected function validate(Request $request, Response $entry, bool $catch = false)
     {
         $subRequest = clone $request;
 
@@ -434,9 +452,9 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
      *
      * @param bool $catch Whether to process exceptions
      *
-     * @return Response A Response instance
+     * @return Response
      */
-    protected function fetch(Request $request, $catch = false)
+    protected function fetch(Request $request, bool $catch = false)
     {
         $subRequest = clone $request;
 
@@ -460,6 +478,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Forwards the Request to the backend and returns the Response.
+	 * 将请求转发到后端并返回响应。
      *
      * All backend requests (cache passes, fetches, cache validations)
      * run through this method.
@@ -467,16 +486,16 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
      * @param bool          $catch Whether to catch exceptions or not
      * @param Response|null $entry A Response instance (the stale entry if present, null otherwise)
      *
-     * @return Response A Response instance
+     * @return Response
      */
-    protected function forward(Request $request, $catch = false, Response $entry = null)
+    protected function forward(Request $request, bool $catch = false, ?Response $entry = null)
     {
         if ($this->surrogate) {
             $this->surrogate->addSurrogateCapability($request);
         }
 
         // always a "master" request (as the real master request can be in cache)
-        $response = SubRequestHandler::handle($this->kernel, $request, HttpKernelInterface::MASTER_REQUEST, $catch);
+        $response = SubRequestHandler::handle($this->kernel, $request, HttpKernelInterface::MAIN_REQUEST, $catch);
 
         /*
          * Support stale-if-error given on Responses or as a config option.
@@ -539,8 +558,9 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Checks whether the cache entry is "fresh enough" to satisfy the Request.
+	 * 检查缓存条目是否“足够新鲜”以满足请求
      *
-     * @return bool true if the cache entry if fresh enough, false otherwise
+     * @return bool
      */
     protected function isFreshEnough(Request $request, Response $entry)
     {
@@ -557,6 +577,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Locks a Request during the call to the backend.
+	 * 在调用后锁定请求
      *
      * @return bool true if the cache entry can be returned even if it is staled, false otherwise
      */
@@ -602,6 +623,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Writes the Response to the cache.
+	 * 对缓存执行响应
      *
      * @throws \Exception
      */
@@ -627,16 +649,27 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Restores the Response body.
+	 * 重新储存反应体
      */
     private function restoreResponseBody(Request $request, Response $response)
     {
         if ($response->headers->has('X-Body-Eval')) {
+            \assert(self::BODY_EVAL_BOUNDARY_LENGTH === 24);
+
             ob_start();
 
-            if ($response->headers->has('X-Body-File')) {
-                include $response->headers->get('X-Body-File');
-            } else {
-                eval('; ?>'.$response->getContent().'<?php ;');
+            $content = $response->getContent();
+            $boundary = substr($content, 0, 24);
+            $j = strpos($content, $boundary, 24);
+            echo substr($content, 24, $j - 24);
+            $i = $j + 24;
+
+            while (false !== $j = strpos($content, $boundary, $i)) {
+                [$uri, $alt, $ignoreErrors, $part] = explode("\n", substr($content, $i, $j - $i), 4);
+                $i = $j + 24;
+
+                echo $this->surrogate->handle($this, $uri, $alt, $ignoreErrors);
+                echo $part;
             }
 
             $response->setContent(ob_get_clean());
@@ -687,6 +720,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Records that an event took place.
+	 * 事件发生的记录
      */
     private function record(Request $request, string $event)
     {
@@ -695,6 +729,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Calculates the key we use in the "trace" array for a given request.
+	 * 计算我们在给定请求的“trace”数组中使用的键
      */
     private function getTraceKey(Request $request): string
     {
@@ -703,7 +738,11 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
             $path .= '?'.$qs;
         }
 
-        return $request->getMethod().' '.$path;
+        try {
+            return $request->getMethod().' '.$path;
+        } catch (SuspiciousOperationException $e) {
+            return '_BAD_METHOD_ '.$path;
+        }
     }
 
     /**
@@ -718,11 +757,16 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
             $timeout = $this->options['stale_while_revalidate'];
         }
 
-        return abs($entry->getTtl()) < $timeout;
+        $age = $entry->getAge();
+        $maxAge = $entry->getMaxAge() ?? 0;
+        $ttl = $maxAge - $age;
+
+        return abs($ttl) < $timeout;
     }
 
     /**
      * Waits for the store to release a locked entry.
+	 * 等待商店释放一个锁定的条目
      */
     private function waitForLock(Request $request): bool
     {

@@ -1,16 +1,17 @@
 <?php
 /**
- * 基础，虚拟类根文件
+ * Illuminate，基础，控制台，存根，提供者
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
 use Illuminate\Support\ServiceProvider;
 
-class DummyClass extends ServiceProvider
+class {{ class }} extends ServiceProvider
 {
     /**
      * Register services.
+	 * 注册服务
      *
      * @return void
      */
@@ -21,6 +22,7 @@ class DummyClass extends ServiceProvider
 
     /**
      * Bootstrap services.
+	 * 引导服务
      *
      * @return void
      */

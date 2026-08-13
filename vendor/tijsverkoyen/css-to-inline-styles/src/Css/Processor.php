@@ -1,6 +1,6 @@
 <?php
 /**
- * TijsVerkoyen，Css内联样式，Css，处理器
+ * TijsVerkoyen，CssToInlineStyles，Css，处理器
  */
 
 namespace TijsVerkoyen\CssToInlineStyles\Css;
@@ -30,6 +30,7 @@ class Processor
 
     /**
      * Get the CSS from the style-tags in the given HTML-string
+	 * 在给定的htm - string中从样式标签中获取CSS
      *
      * @param string $html
      *
@@ -39,7 +40,7 @@ class Processor
     {
         $css = '';
         $matches = array();
-        $htmlNoComments = preg_replace('|<!--.*?-->|s', '', $html);
+        $htmlNoComments = preg_replace('|<!--.*?-->|s', '', $html) ?? $html;
         preg_match_all('|<style(?:\s.*)?>(.*)</style>|isU', $htmlNoComments, $matches);
 
         if (!empty($matches[1])) {
@@ -59,15 +60,15 @@ class Processor
     private function doCleanup($css)
     {
         // remove charset
-        $css = preg_replace('/@charset "[^"]++";/', '', $css);
+        $css = preg_replace('/@charset "[^"]++";/', '', $css) ?? $css;
         // remove media queries
-        $css = preg_replace('/@media [^{]*+{([^{}]++|{[^{}]*+})*+}/', '', $css);
+        $css = preg_replace('/@media [^{]*+{([^{}]++|{[^{}]*+})*+}/', '', $css) ?? $css;
 
         $css = str_replace(array("\r", "\n"), '', $css);
         $css = str_replace(array("\t"), ' ', $css);
         $css = str_replace('"', '\'', $css);
-        $css = preg_replace('|/\*.*?\*/|', '', $css);
-        $css = preg_replace('/\s\s++/', ' ', $css);
+        $css = preg_replace('|/\*.*?\*/|', '', $css) ?? $css;
+        $css = preg_replace('/\s\s++/', ' ', $css) ?? $css;
         $css = trim($css);
 
         return $css;

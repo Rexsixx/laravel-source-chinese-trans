@@ -1,6 +1,6 @@
 <?php
 /**
- * 授权，事件，尝试
+ * Illuminate，认证，事件，尝试
  */
 
 namespace Illuminate\Auth\Events;
@@ -25,7 +25,8 @@ class Attempting
 
     /**
      * Indicates if the user should be "remembered".
-	 * 指明是否需要"记住我*
+	 * 指明是否需要"记住"用户
+     *
      * @var bool
      */
     public $remember;

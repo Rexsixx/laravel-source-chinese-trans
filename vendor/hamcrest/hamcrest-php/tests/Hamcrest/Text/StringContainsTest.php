@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，文本，字符串包含测试
- */
-
 namespace Hamcrest\Text;
 
 class StringContainsTest extends \Hamcrest\AbstractMatcherTest

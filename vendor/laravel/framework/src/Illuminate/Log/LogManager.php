@@ -1,6 +1,6 @@
 <?php
 /**
- * 日志，日志管理
+ * Illuminate，日志，日志管理器
  */
 
 namespace Illuminate\Log;
@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\ErrorLogHandler;
+use Monolog\Handler\FingersCrossedHandler;
 use Monolog\Handler\FormattableHandlerInterface;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\RotatingFileHandler;
@@ -35,7 +36,7 @@ class LogManager implements LoggerInterface
 
     /**
      * The array of resolved channels.
-	 * 已解析的通道
+	 * 已解析通道的数组
      *
      * @var array
      */
@@ -43,7 +44,7 @@ class LogManager implements LoggerInterface
 
     /**
      * The registered custom driver creators.
-	 * 已注册自定义创建者驱动
+	 * 注册的自定义驱动程序创建者
      *
      * @var array
      */
@@ -51,7 +52,7 @@ class LogManager implements LoggerInterface
 
     /**
      * The standard date format to use when writing logs.
-	 * 标准化数据格式
+	 * 编写日志时使用的标准日期格式
      *
      * @var string
      */
@@ -59,7 +60,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Create a new Log manager instance.
-	 * 创建一个新的日志管理实例
+	 * 创建一个新的日志管理器实例
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
@@ -70,8 +71,22 @@ class LogManager implements LoggerInterface
     }
 
     /**
+     * Build an on-demand log channel.
+	 * 构建按需日志通道
+     *
+     * @param  array  $config
+     * @return \Psr\Log\LoggerInterface
+     */
+    public function build(array $config)
+    {
+        unset($this->channels['ondemand']);
+
+        return $this->get('ondemand', $config);
+    }
+
+    /**
      * Create a new, on-demand aggregate logger instance.
-	 * 创建新的按需聚合日志记录器实例
+	 * 创建一个新的按需聚合日志记录器实例
      *
      * @param  array  $channels
      * @param  string|null  $channel
@@ -87,7 +102,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Get a log channel instance.
-	 * 得到一个日志通道实例
+	 * 获取日志通道实例
      *
      * @param  string|null  $channel
      * @return \Psr\Log\LoggerInterface
@@ -99,23 +114,14 @@ class LogManager implements LoggerInterface
 
     /**
      * Get a log driver instance.
-	 * 得到一个日志驱动实例
+	 * 获取日志驱动程序实例
      *
      * @param  string|null  $driver
      * @return \Psr\Log\LoggerInterface
      */
     public function driver($driver = null)
     {
-        return $this->get($driver ?? $this->getDefaultDriver());
-    }
-
-    /**
-	 * 得到通道
-     * @return array
-     */
-    public function getChannels()
-    {
-        return $this->channels;
+        return $this->get($this->parseDriver($driver));
     }
 
     /**
@@ -123,12 +129,13 @@ class LogManager implements LoggerInterface
 	 * 尝试从本地缓存中获取日志
      *
      * @param  string  $name
+     * @param  array|null  $config
      * @return \Psr\Log\LoggerInterface
      */
-    protected function get($name)
+    protected function get($name, ?array $config = null)
     {
         try {
-            return $this->channels[$name] ?? with($this->resolve($name), function ($logger) use ($name) {
+            return $this->channels[$name] ?? with($this->resolve($name, $config), function ($logger) use ($name) {
                 return $this->channels[$name] = $this->tap($name, new Logger($logger, $this->app['events']));
             });
         } catch (Throwable $e) {
@@ -161,7 +168,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Parse the given tap class string into a class name and arguments string.
-	 * 解析给字的类字符串至类名
+	 * 将给定的tap类字符串解析为类名和参数字符串
      *
      * @param  string  $tap
      * @return array
@@ -194,16 +201,17 @@ class LogManager implements LoggerInterface
 
     /**
      * Resolve the given log instance by name.
-	 * 解析给定的日志实例按名称
+	 * 按名称解析给定的日志实例
      *
      * @param  string  $name
+     * @param  array|null  $config
      * @return \Psr\Log\LoggerInterface
      *
      * @throws \InvalidArgumentException
      */
-    protected function resolve($name)
+    protected function resolve($name, ?array $config = null)
     {
-        $config = $this->configurationFor($name);
+        $config = $config ?? $this->configurationFor($name);
 
         if (is_null($config)) {
             throw new InvalidArgumentException("Log [{$name}] is not defined.");
@@ -224,7 +232,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Call a custom driver creator.
-	 * 调取自定义驱动创建者
+	 * 调用自定义驱动程序创建者
      *
      * @param  array  $config
      * @return mixed
@@ -236,7 +244,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Create a custom log driver instance.
-	 * 创建自定义日志驱动实例
+	 * 创建自定义日志驱动程序实例
      *
      * @param  array  $config
      * @return \Psr\Log\LoggerInterface
@@ -250,27 +258,39 @@ class LogManager implements LoggerInterface
 
     /**
      * Create an aggregate log driver instance.
-	 * 创建一个日志驱动实例
+	 * 创建聚合日志驱动程序实例
      *
      * @param  array  $config
      * @return \Psr\Log\LoggerInterface
      */
     protected function createStackDriver(array $config)
     {
+        if (is_string($config['channels'])) {
+            $config['channels'] = explode(',', $config['channels']);
+        }
+
         $handlers = collect($config['channels'])->flatMap(function ($channel) {
-            return $this->channel($channel)->getHandlers();
+            return $channel instanceof LoggerInterface
+                ? $channel->getHandlers()
+                : $this->channel($channel)->getHandlers();
+        })->all();
+
+        $processors = collect($config['channels'])->flatMap(function ($channel) {
+            return $channel instanceof LoggerInterface
+                ? $channel->getProcessors()
+                : $this->channel($channel)->getProcessors();
         })->all();
 
         if ($config['ignore_exceptions'] ?? false) {
             $handlers = [new WhatFailureGroupHandler($handlers)];
         }
 
-        return new Monolog($this->parseChannel($config), $handlers);
+        return new Monolog($this->parseChannel($config), $handlers, $processors);
     }
 
     /**
      * Create an instance of the single file log driver.
-	 * 创建单文件日志驱动实例
+	 * 创建单个文件日志驱动程序的实例
      *
      * @param  array  $config
      * @return \Psr\Log\LoggerInterface
@@ -289,7 +309,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Create an instance of the daily file log driver.
-	 * 创建日文件日志驱动实例
+	 * 创建每日文件日志驱动程序的实例
      *
      * @param  array  $config
      * @return \Psr\Log\LoggerInterface
@@ -306,7 +326,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Create an instance of the Slack log driver.
-	 * 创建一个日志驱动实例
+	 * 创建Slack日志驱动程序的实例
      *
      * @param  array  $config
      * @return \Psr\Log\LoggerInterface
@@ -331,7 +351,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Create an instance of the syslog log driver.
-	 * 创建一个系统记录驱动的实例
+	 * 创建syslog日志驱动程序的实例
      *
      * @param  array  $config
      * @return \Psr\Log\LoggerInterface
@@ -348,7 +368,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Create an instance of the "error log" log driver.
-	 * 创建一个错误日志的驱动实例
+	 * 创建“错误日志”日志驱动程序的实例
      *
      * @param  array  $config
      * @return \Psr\Log\LoggerInterface
@@ -364,7 +384,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Create an instance of any handler available in Monolog.
-	 * 创建一个可用的任何处理程序的实例
+	 * 创建一个在独白中可用的任何处理程序的实例
      *
      * @param  array  $config
      * @return \Psr\Log\LoggerInterface
@@ -393,7 +413,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Prepare the handlers for usage by Monolog.
-	 * 准备处理程序供Monolog使用
+	 * 准备处理程序供独白使用
      *
      * @param  array  $handlers
      * @return array
@@ -409,7 +429,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Prepare the handler for usage by Monolog.
-	 *  准备处理程序供Monolog使用
+	 * 准备处理程序供独白使用
      *
      * @param  \Monolog\Handler\HandlerInterface  $handler
      * @param  array  $config
@@ -417,17 +437,17 @@ class LogManager implements LoggerInterface
      */
     protected function prepareHandler(HandlerInterface $handler, array $config = [])
     {
-        $isHandlerFormattable = false;
-
-        if (Monolog::API === 1) {
-            $isHandlerFormattable = true;
-        } elseif (Monolog::API === 2 && $handler instanceof FormattableHandlerInterface) {
-            $isHandlerFormattable = true;
+        if (isset($config['action_level'])) {
+            $handler = new FingersCrossedHandler($handler, $this->actionLevel($config));
         }
 
-        if ($isHandlerFormattable && ! isset($config['formatter'])) {
+        if (Monolog::API !== 1 && (Monolog::API !== 2 || ! $handler instanceof FormattableHandlerInterface)) {
+            return $handler;
+        }
+
+        if (! isset($config['formatter'])) {
             $handler->setFormatter($this->formatter());
-        } elseif ($isHandlerFormattable && $config['formatter'] !== 'default') {
+        } elseif ($config['formatter'] !== 'default') {
             $handler->setFormatter($this->app->make($config['formatter'], $config['formatter_with'] ?? []));
         }
 
@@ -436,7 +456,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Get a Monolog formatter instance.
-	 * 得到日志格式化实例
+	 * 获取一个独白格式化程序实例
      *
      * @return \Monolog\Formatter\FormatterInterface
      */
@@ -449,7 +469,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Get fallback log channel name.
-	 * 得到后退日志通道名
+	 * 获取回退日志通道名称
      *
      * @return string
      */
@@ -460,7 +480,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Get the log connection configuration.
-	 * 得到日志连接配置
+	 * 获取日志连接配置
      *
      * @param  string  $name
      * @return array
@@ -472,9 +492,9 @@ class LogManager implements LoggerInterface
 
     /**
      * Get the default log driver name.
-	 * 得到默认日志驱动名称
+	 * 获取默认的日志驱动程序名称
      *
-     * @return string
+     * @return string|null
      */
     public function getDefaultDriver()
     {
@@ -483,7 +503,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Set the default log driver name.
-	 * 设置默认的日志驱动名称
+	 * 设置默认的日志驱动程序名称
      *
      * @param  string  $name
      * @return void
@@ -495,7 +515,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Register a custom driver creator Closure.
-	 * 注册自定义驱动程序创建器
+	 * 注册自定义驱动程序创建器Closure
      *
      * @param  string  $driver
      * @param  \Closure  $callback
@@ -510,18 +530,47 @@ class LogManager implements LoggerInterface
 
     /**
      * Unset the given channel instance.
-	 * 注册给定通道的实例
+	 * 取消给定通道实例的设置
      *
      * @param  string|null  $driver
      * @return $this
      */
     public function forgetChannel($driver = null)
     {
-        $driver = $driver ?? $this->getDefaultDriver();
+        $driver = $this->parseDriver($driver);
 
         if (isset($this->channels[$driver])) {
             unset($this->channels[$driver]);
         }
+    }
+
+    /**
+     * Parse the driver name.
+	 * 解析驱动程序名称
+     *
+     * @param  string|null  $driver
+     * @return string|null
+     */
+    protected function parseDriver($driver)
+    {
+        $driver = $driver ?? $this->getDefaultDriver();
+
+        if ($this->app->runningUnitTests()) {
+            $driver = $driver ?? 'null';
+        }
+
+        return $driver;
+    }
+
+    /**
+     * Get all of the resolved log channels.
+	 * 获取所有已解析的日志通道
+     *
+     * @return array
+     */
+    public function getChannels()
+    {
+        return $this->channels;
     }
 
     /**
@@ -539,7 +588,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Action must be taken immediately.
-	 * 必须采取动作
+	 * 必须立即采取行动
      *
      * Example: Entire website down, database unavailable, etc. This should
      * trigger the SMS alerts and wake you up.
@@ -555,7 +604,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Critical conditions.
-	 * 临界情况
+	 * 临界状态
      *
      * Example: Application component unavailable, unexpected exception.
      *
@@ -571,7 +620,7 @@ class LogManager implements LoggerInterface
     /**
      * Runtime errors that do not require immediate action but should typically
      * be logged and monitored.
-	 * 错误信息
+	 * 运行时错误，不需要立即采取行动，但通常应该记录和监控。
      *
      * @param  string  $message
      * @param  array  $context
@@ -584,7 +633,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Exceptional occurrences that are not errors.
-	 * 异常情况
+	 * 不属于错误的异常情况
      *
      * Example: Use of deprecated APIs, poor use of an API, undesirable things
      * that are not necessarily wrong.
@@ -600,7 +649,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Normal but significant events.
-	 * 普通但重要的事件
+	 * 正常但重要的事件
      *
      * @param  string  $message
      * @param  array  $context
@@ -641,7 +690,7 @@ class LogManager implements LoggerInterface
 
     /**
      * Logs with an arbitrary level.
-	 * 记录使用专用级别
+	 * 具有任意级别的日志
      *
      * @param  mixed  $level
      * @param  string  $message

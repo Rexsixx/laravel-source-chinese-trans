@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，错误处理器，缓冲日志记录器
+ * Symfony，Component，ErrorHandler，缓冲记录器
  */
 
 /*
@@ -18,6 +18,7 @@ use Psr\Log\AbstractLogger;
 
 /**
  * A buffering logger that stacks logs for later.
+ * 一个缓冲日志记录器,它可以在稍后堆栈日志。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
@@ -56,7 +57,7 @@ class BufferingLogger extends AbstractLogger
         foreach ($this->logs as [$level, $message, $context]) {
             if (false !== strpos($message, '{')) {
                 foreach ($context as $key => $val) {
-                    if (null === $val || is_scalar($val) || (\is_object($val) && \is_callable([$val, '__toString']))) {
+                    if (null === $val || \is_scalar($val) || (\is_object($val) && \is_callable([$val, '__toString']))) {
                         $message = str_replace("{{$key}}", $val, $message);
                     } elseif ($val instanceof \DateTimeInterface) {
                         $message = str_replace("{{$key}}", $val->format(\DateTime::RFC3339), $message);

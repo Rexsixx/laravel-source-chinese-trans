@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，Session，储存，模拟阵列会话存储
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
 
 /**
  * MockArraySessionStorage mocks the session for unit tests.
+ * MockArraySessionStorage为单元测试模拟会话。
  *
  * No PHP session is actually started since a session can be initialized
  * and shutdown only once per PHP execution cycle.
@@ -62,7 +66,7 @@ class MockArraySessionStorage implements SessionStorageInterface
      */
     protected $bags = [];
 
-    public function __construct(string $name = 'MOCKSESSID', MetadataBag $metaBag = null)
+    public function __construct(string $name = 'MOCKSESSID', ?MetadataBag $metaBag = null)
     {
         $this->name = $name;
         $this->setMetadataBag($metaBag);
@@ -94,7 +98,7 @@ class MockArraySessionStorage implements SessionStorageInterface
     /**
      * {@inheritdoc}
      */
-    public function regenerate($destroy = false, $lifetime = null)
+    public function regenerate(bool $destroy = false, ?int $lifetime = null)
     {
         if (!$this->started) {
             $this->start();
@@ -117,7 +121,7 @@ class MockArraySessionStorage implements SessionStorageInterface
     /**
      * {@inheritdoc}
      */
-    public function setId($id)
+    public function setId(string $id)
     {
         if ($this->started) {
             throw new \LogicException('Cannot set session ID after the session has started.');
@@ -137,7 +141,7 @@ class MockArraySessionStorage implements SessionStorageInterface
     /**
      * {@inheritdoc}
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
     }
@@ -183,7 +187,7 @@ class MockArraySessionStorage implements SessionStorageInterface
     /**
      * {@inheritdoc}
      */
-    public function getBag($name)
+    public function getBag(string $name)
     {
         if (!isset($this->bags[$name])) {
             throw new \InvalidArgumentException(sprintf('The SessionBagInterface "%s" is not registered.', $name));
@@ -204,7 +208,7 @@ class MockArraySessionStorage implements SessionStorageInterface
         return $this->started;
     }
 
-    public function setMetadataBag(MetadataBag $bag = null)
+    public function setMetadataBag(?MetadataBag $bag = null)
     {
         if (null === $bag) {
             $bag = new MetadataBag();
@@ -215,6 +219,7 @@ class MockArraySessionStorage implements SessionStorageInterface
 
     /**
      * Gets the MetadataBag.
+	 * 获取元数据包
      *
      * @return MetadataBag
      */
@@ -225,15 +230,13 @@ class MockArraySessionStorage implements SessionStorageInterface
 
     /**
      * Generates a session ID.
-     *
-     * This doesn't need to be particularly cryptographically secure since this is just
-     * a mock.
+	 * 生成会话ID
      *
      * @return string
      */
     protected function generateId()
     {
-        return hash('sha256', uniqid('ss_mock_', true));
+        return bin2hex(random_bytes(16));
     }
 
     protected function loadSession()

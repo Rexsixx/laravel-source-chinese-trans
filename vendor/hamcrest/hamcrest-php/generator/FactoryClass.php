@@ -1,6 +1,6 @@
 <?php
 /**
- * Factory 类
+ * Factory Class
  */
 
 /*

@@ -1,6 +1,6 @@
 <?php
 /**
- * Session，Cookie会话处理程序
+ * Illuminate，Session，Cookie会话处理程序
  */
 
 namespace Illuminate\Session;
@@ -16,7 +16,7 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * The cookie jar instance.
-	 * 会话压缩实例
+	 * cookie压缩实例
      *
      * @var \Illuminate\Contracts\Cookie\Factory
      */
@@ -40,7 +40,7 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * Create a new cookie driven handler instance.
-	 * 创建新的会话驱动处理实例
+	 * 创建一个新的cookie驱动处理程序实例
      *
      * @param  \Illuminate\Contracts\Cookie\QueueingFactory  $cookie
      * @param  int  $minutes
@@ -54,7 +54,10 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function open($savePath, $sessionName)
     {
         return true;
@@ -62,7 +65,10 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function close()
     {
         return true;
@@ -70,7 +76,10 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return string|false
      */
+    #[\ReturnTypeWillChange]
     public function read($sessionId)
     {
         $value = $this->request->cookies->get($sessionId) ?: '';
@@ -86,7 +95,10 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function write($sessionId, $data)
     {
         $this->cookie->queue($sessionId, json_encode([
@@ -99,7 +111,10 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function destroy($sessionId)
     {
         $this->cookie->queue($this->cookie->forget($sessionId));
@@ -109,7 +124,10 @@ class CookieSessionHandler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return int|false
      */
+    #[\ReturnTypeWillChange]
     public function gc($lifetime)
     {
         return true;

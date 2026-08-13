@@ -1,7 +1,11 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，内核事件
+ */
 
 /*
  * This file is part of the Symfony package.
+ * 该文件是Symfony包的一部分
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
@@ -11,8 +15,18 @@
 
 namespace Symfony\Component\HttpKernel;
 
+use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\Event\TerminateEvent;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
+
 /**
  * Contains all events thrown in the HttpKernel component.
+ * 包含HttpKernel组件中抛出的所有事件
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
@@ -21,6 +35,7 @@ final class KernelEvents
     /**
      * The REQUEST event occurs at the very beginning of request
      * dispatching.
+	 * REQUEST事件发生在请求调度的最开始
      *
      * This event allows you to create a response for a request before any
      * other code in the framework is executed.
@@ -31,6 +46,7 @@ final class KernelEvents
 
     /**
      * The EXCEPTION event occurs when an uncaught exception appears.
+	 * 当出现未捕获的异常时，将发生EXCEPTION事件。
      *
      * This event allows you to create a response for a thrown exception or
      * to modify the thrown exception.
@@ -38,17 +54,6 @@ final class KernelEvents
      * @Event("Symfony\Component\HttpKernel\Event\ExceptionEvent")
      */
     public const EXCEPTION = 'kernel.exception';
-
-    /**
-     * The VIEW event occurs when the return value of a controller
-     * is not a Response instance.
-     *
-     * This event allows you to create a response for the return value of the
-     * controller.
-     *
-     * @Event("Symfony\Component\HttpKernel\Event\ViewEvent")
-     */
-    public const VIEW = 'kernel.view';
 
     /**
      * The CONTROLLER event occurs once a controller was found for
@@ -63,6 +68,7 @@ final class KernelEvents
 
     /**
      * The CONTROLLER_ARGUMENTS event occurs once controller arguments have been resolved.
+	 * CONTROLLER_ARGUMENTS事件在控制器参数被解析后发生。
      *
      * This event allows you to change the arguments that will be passed to
      * the controller.
@@ -70,6 +76,17 @@ final class KernelEvents
      * @Event("Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent")
      */
     public const CONTROLLER_ARGUMENTS = 'kernel.controller_arguments';
+
+    /**
+     * The VIEW event occurs when the return value of a controller
+     * is not a Response instance.
+     *
+     * This event allows you to create a response for the return value of the
+     * controller.
+     *
+     * @Event("Symfony\Component\HttpKernel\Event\ViewEvent")
+     */
+    public const VIEW = 'kernel.view';
 
     /**
      * The RESPONSE event occurs once a response was created for
@@ -83,7 +100,19 @@ final class KernelEvents
     public const RESPONSE = 'kernel.response';
 
     /**
+     * The FINISH_REQUEST event occurs when a response was generated for a request.
+	 * 当为请求生成响应时，将发生FINISH_REQUEST事件。
+     *
+     * This event allows you to reset the global and environmental state of
+     * the application, when it was changed during the request.
+     *
+     * @Event("Symfony\Component\HttpKernel\Event\FinishRequestEvent")
+     */
+    public const FINISH_REQUEST = 'kernel.finish_request';
+
+    /**
      * The TERMINATE event occurs once a response was sent.
+	 * 一旦发送了响应，就会发生TERMINATE事件。
      *
      * This event allows you to run expensive post-response jobs.
      *
@@ -92,12 +121,19 @@ final class KernelEvents
     public const TERMINATE = 'kernel.terminate';
 
     /**
-     * The FINISH_REQUEST event occurs when a response was generated for a request.
+     * Event aliases.
+	 * 事件别名
      *
-     * This event allows you to reset the global and environmental state of
-     * the application, when it was changed during the request.
-     *
-     * @Event("Symfony\Component\HttpKernel\Event\FinishRequestEvent")
+     * These aliases can be consumed by RegisterListenersPass.
      */
-    public const FINISH_REQUEST = 'kernel.finish_request';
+    public const ALIASES = [
+        ControllerArgumentsEvent::class => self::CONTROLLER_ARGUMENTS,
+        ControllerEvent::class => self::CONTROLLER,
+        ResponseEvent::class => self::RESPONSE,
+        FinishRequestEvent::class => self::FINISH_REQUEST,
+        RequestEvent::class => self::REQUEST,
+        ViewEvent::class => self::VIEW,
+        ExceptionEvent::class => self::EXCEPTION,
+        TerminateEvent::class => self::TERMINATE,
+    ];
 }

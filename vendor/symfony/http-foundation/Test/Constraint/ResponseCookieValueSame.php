@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpFoundation，测试，约束，响应Cookie值相同
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -22,7 +25,7 @@ final class ResponseCookieValueSame extends Constraint
     private $path;
     private $domain;
 
-    public function __construct(string $name, string $value, string $path = '/', string $domain = null)
+    public function __construct(string $name, string $value, string $path = '/', ?string $domain = null)
     {
         $this->name = $name;
         $this->value = $value;
@@ -59,7 +62,7 @@ final class ResponseCookieValueSame extends Constraint
             return false;
         }
 
-        return $this->value === $cookie->getValue();
+        return $this->value === (string) $cookie->getValue();
     }
 
     /**

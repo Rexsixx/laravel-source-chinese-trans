@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，输出，Trimmed缓冲器输出
+ * Symfony，Component，Console，输出，修整的缓冲输出
  */
 
 /*
@@ -19,6 +19,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
  * A BufferedOutput that keeps only the last N chars.
+ * 一个缓冲输出,只保留最后一个N个chars。
  *
  * @author Jérémy Derussé <jeremy@derusse.com>
  */
@@ -27,7 +28,7 @@ class TrimmedBufferOutput extends Output
     private $maxLength;
     private $buffer = '';
 
-    public function __construct(int $maxLength, ?int $verbosity = self::VERBOSITY_NORMAL, bool $decorated = false, OutputFormatterInterface $formatter = null)
+    public function __construct(int $maxLength, ?int $verbosity = self::VERBOSITY_NORMAL, bool $decorated = false, ?OutputFormatterInterface $formatter = null)
     {
         if ($maxLength <= 0) {
             throw new InvalidArgumentException(sprintf('"%s()" expects a strictly positive maxLength. Got %d.', __METHOD__, $maxLength));
@@ -39,6 +40,7 @@ class TrimmedBufferOutput extends Output
 
     /**
      * Empties buffer and returns its content.
+	 * 清空缓冲区并返回其内容
      *
      * @return string
      */
@@ -53,7 +55,7 @@ class TrimmedBufferOutput extends Output
     /**
      * {@inheritdoc}
      */
-    protected function doWrite($message, $newline)
+    protected function doWrite(string $message, bool $newline)
     {
         $this->buffer .= $message;
 

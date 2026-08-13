@@ -16,6 +16,7 @@ class FileNotFoundException extends Exception
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param string     $path
      * @param int        $code
@@ -30,6 +31,7 @@ class FileNotFoundException extends Exception
 
     /**
      * Get the path which was not found.
+	 * 找到没有找到的路
      *
      * @return string
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，密码破解接口
+ * Illuminate，契约，认证，密码代理
  */
 
 namespace Illuminate\Contracts\Auth;
@@ -11,7 +11,7 @@ interface PasswordBroker
 {
     /**
      * Constant representing a successfully sent reminder.
-	 * 表示已成功发送提醒的常量
+	 * 表示成功发送提醒的常量
      *
      * @var string
      */
@@ -54,9 +54,10 @@ interface PasswordBroker
 	 * 向用户发送密码重置链接
      *
      * @param  array  $credentials
+     * @param  \Closure|null  $callback
      * @return string
      */
-    public function sendResetLink(array $credentials);
+    public function sendResetLink(array $credentials, Closure $callback = null);
 
     /**
      * Reset the password for the given token.

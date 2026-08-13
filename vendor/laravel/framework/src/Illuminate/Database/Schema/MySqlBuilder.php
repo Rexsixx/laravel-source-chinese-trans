@@ -1,12 +1,40 @@
 <?php
 /**
- * 数据库，结构，MySql构建者
+ * Illuminate，数据库，架构，MySql 构建者
  */
 
 namespace Illuminate\Database\Schema;
 
 class MySqlBuilder extends Builder
 {
+    /**
+     * Create a database in the schema.
+	 * 在模式中创建数据库
+     *
+     * @param  string  $name
+     * @return bool
+     */
+    public function createDatabase($name)
+    {
+        return $this->connection->statement(
+            $this->grammar->compileCreateDatabase($name, $this->connection)
+        );
+    }
+
+    /**
+     * Drop a database from the schema if the database exists.
+	 * 如果数据库存在，则从模式中删除该数据库。
+     *
+     * @param  string  $name
+     * @return bool
+     */
+    public function dropDatabaseIfExists($name)
+    {
+        return $this->connection->statement(
+            $this->grammar->compileDropDatabaseIfExists($name)
+        );
+    }
+
     /**
      * Determine if the given table exists.
 	 * 确定给定的表是否存在
@@ -25,7 +53,7 @@ class MySqlBuilder extends Builder
 
     /**
      * Get the column listing for a given table.
-	 * 得到给定表的列清单
+	 * 获取给定表的列清单
      *
      * @param  string  $table
      * @return array
@@ -43,7 +71,7 @@ class MySqlBuilder extends Builder
 
     /**
      * Drop all tables from the database.
-	 * 从数据库删除所有表
+	 * 从数据库中删除所有表
      *
      * @return void
      */
@@ -72,7 +100,7 @@ class MySqlBuilder extends Builder
 
     /**
      * Drop all views from the database.
-	 * 从数据库删除所有视图
+	 * 从数据库中删除所有视图
      *
      * @return void
      */
@@ -97,7 +125,7 @@ class MySqlBuilder extends Builder
 
     /**
      * Get all of the table names for the database.
-	 * 得到数据库中所有表名
+	 * 获取数据库的所有表名
      *
      * @return array
      */
@@ -110,7 +138,7 @@ class MySqlBuilder extends Builder
 
     /**
      * Get all of the view names for the database.
-	 * 得到数据库中所有视图名
+	 * 获取数据库的所有视图名称
      *
      * @return array
      */

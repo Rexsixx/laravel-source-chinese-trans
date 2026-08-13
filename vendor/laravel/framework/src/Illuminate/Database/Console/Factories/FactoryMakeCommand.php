@@ -1,11 +1,12 @@
 <?php
 /**
- * 数据库，控制台, 工厂制造指令
+ * Illuminate，数据库，控制台，工厂，make:factory 工厂制造指令
  */
 
 namespace Illuminate\Database\Console\Factories;
 
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 class FactoryMakeCommand extends GeneratorCommand
@@ -20,11 +21,12 @@ class FactoryMakeCommand extends GeneratorCommand
 
     /**
      * The console command description.
-	 * 控制台命令描述
+	 * console命令说明
+	 * 
      *
      * @var string
      */
-    protected $description = 'Create a new model factory';
+    protected $description = 'Create a new model factory';			#创建一个新的模型工厂
 
     /**
      * The type of class being generated.
@@ -36,62 +38,112 @@ class FactoryMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-	 * 得到生成器的存根文件
+	 * 获取生成器的存根文件
      *
      * @return string
      */
     protected function getStub()
     {
-        return __DIR__.'/stubs/factory.stub';
+        return $this->resolveStubPath('/stubs/factory.stub');
+    }
+
+    /**
+     * Resolve the fully-qualified path to the stub.
+	 * 解析到存根的全限定路径
+     *
+     * @param  string  $stub
+     * @return string
+     */
+    protected function resolveStubPath($stub)
+    {
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+            ? $customPath
+            : __DIR__.$stub;
     }
 
     /**
      * Build the class with the given name.
-	 * 构建类使用给定的名称
+	 * 用给定的名称构建类
      *
      * @param  string  $name
      * @return string
      */
     protected function buildClass($name)
     {
+        $factory = class_basename(Str::ucfirst(str_replace('Factory', '', $name)));
+
         $namespaceModel = $this->option('model')
-                        ? $this->qualifyClass($this->option('model'))
-                        : trim($this->rootNamespace(), '\\').'\\Model';
+                        ? $this->qualifyModel($this->option('model'))
+                        : $this->qualifyModel($this->guessModelName($name));
 
         $model = class_basename($namespaceModel);
 
+        if (Str::startsWith($namespaceModel, $this->rootNamespace().'Models')) {
+            $namespace = Str::beforeLast('Database\\Factories\\'.Str::after($namespaceModel, $this->rootNamespace().'Models\\'), '\\');
+        } else {
+            $namespace = 'Database\\Factories';
+        }
+
+        $replace = [
+            '{{ factoryNamespace }}' => $namespace,
+            'NamespacedDummyModel' => $namespaceModel,
+            '{{ namespacedModel }}' => $namespaceModel,
+            '{{namespacedModel}}' => $namespaceModel,
+            'DummyModel' => $model,
+            '{{ model }}' => $model,
+            '{{model}}' => $model,
+            '{{ factory }}' => $factory,
+            '{{factory}}' => $factory,
+        ];
+
         return str_replace(
-            [
-                'NamespacedDummyModel',
-                'DummyModel',
-            ],
-            [
-                $namespaceModel,
-                $model,
-            ],
-            parent::buildClass($name)
+            array_keys($replace), array_values($replace), parent::buildClass($name)
         );
     }
 
     /**
      * Get the destination class path.
-	 * 得到目标类路径
+	 * 获取目标类路径
      *
      * @param  string  $name
      * @return string
      */
     protected function getPath($name)
     {
-        $name = str_replace(
-            ['\\', '/'], '', $this->argument('name')
-        );
+        $name = (string) Str::of($name)->replaceFirst($this->rootNamespace(), '')->finish('Factory');
 
-        return $this->laravel->databasePath()."/factories/{$name}.php";
+        return $this->laravel->databasePath().'/factories/'.str_replace('\\', '/', $name).'.php';
+    }
+
+    /**
+     * Guess the model name from the Factory name or return a default model name.
+	 * 从Factory名称猜测模型名称，或者返回默认模型名称。
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function guessModelName($name)
+    {
+        if (Str::endsWith($name, 'Factory')) {
+            $name = substr($name, 0, -7);
+        }
+
+        $modelName = $this->qualifyModel(Str::after($name, $this->rootNamespace()));
+
+        if (class_exists($modelName)) {
+            return $modelName;
+        }
+
+        if (is_dir(app_path('Models/'))) {
+            return $this->rootNamespace().'Models\Model';
+        }
+
+        return $this->rootNamespace().'Model';
     }
 
     /**
      * Get the console command options.
-	 * 得到控制台命令选项
+	 * 获取控制台命令选项
      *
      * @return array
      */

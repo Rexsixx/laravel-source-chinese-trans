@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，依赖注入，服务恢复
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * Resets provided services.
+ * 重置提供的服务。
  *
  * @author Alexander M. Turek <me@derrabus.de>
  * @author Nicolas Grekas <p@tchwork.com>
@@ -26,6 +30,10 @@ class ServicesResetter implements ResetInterface
     private $resettableServices;
     private $resetMethods;
 
+    /**
+     * @param \Traversable<string, object>   $resettableServices
+     * @param array<string, string|string[]> $resetMethods
+     */
     public function __construct(\Traversable $resettableServices, array $resetMethods)
     {
         $this->resettableServices = $resettableServices;
@@ -36,6 +44,10 @@ class ServicesResetter implements ResetInterface
     {
         foreach ($this->resettableServices as $id => $service) {
             foreach ((array) $this->resetMethods[$id] as $resetMethod) {
+                if ('?' === $resetMethod[0] && !method_exists($service, $resetMethod = substr($resetMethod, 1))) {
+                    continue;
+                }
+
                 $service->$resetMethod();
             }
         }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，转储，数据转储接口
+ * Symfony，Component，VarDumper，转储，数据转储接口
  */
 
 /*
@@ -18,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Data;
 
 /**
  * DataDumperInterface for dumping Data objects.
+ * 转储数据对象的DataDumperInterface。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */

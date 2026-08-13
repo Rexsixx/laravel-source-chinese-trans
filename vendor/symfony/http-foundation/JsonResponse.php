@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Http基础，Json 响应
+ * Symfony，Component，HttpFoundation，Json 响应
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\HttpFoundation;
 
 /**
  * Response represents an HTTP response in JSON format.
+ * Response表示JSON格式的HTTP响应
  *
  * Note that this class does not force the returned JSON content to be an
  * object. It is however recommended that you do return an object as it
@@ -59,6 +60,7 @@ class JsonResponse extends Response
 
     /**
      * Factory method for chainability.
+	 * 可链性的工厂方法。
      *
      * Example:
      *
@@ -70,14 +72,19 @@ class JsonResponse extends Response
      * @param array $headers An array of response headers
      *
      * @return static
+     *
+     * @deprecated since Symfony 5.1, use __construct() instead.
      */
-    public static function create($data = null, $status = 200, $headers = [])
+    public static function create($data = null, int $status = 200, array $headers = [])
     {
+        trigger_deprecation('symfony/http-foundation', '5.1', 'The "%s()" method is deprecated, use "new %s()" instead.', __METHOD__, static::class);
+
         return new static($data, $status, $headers);
     }
 
     /**
      * Factory method for chainability.
+	 * 可链性的工厂方法。
      *
      * Example:
      *
@@ -90,13 +97,14 @@ class JsonResponse extends Response
      *
      * @return static
      */
-    public static function fromJsonString($data, $status = 200, $headers = [])
+    public static function fromJsonString(string $data, int $status = 200, array $headers = [])
     {
         return new static($data, $status, $headers, true);
     }
 
     /**
      * Sets the JSONP callback.
+	 * 设置JSONP回调
      *
      * @param string|null $callback The JSONP callback or null to use none
      *
@@ -104,7 +112,7 @@ class JsonResponse extends Response
      *
      * @throws \InvalidArgumentException When the callback name is not valid
      */
-    public function setCallback($callback = null)
+    public function setCallback(?string $callback = null)
     {
         if (null !== $callback) {
             // partially taken from https://geekality.net/2011/08/03/valid-javascript-identifier/
@@ -132,12 +140,11 @@ class JsonResponse extends Response
 
     /**
      * Sets a raw string containing a JSON document to be sent.
-     *
-     * @param string $json
+	 * 设置包含要发送的JSON文档的原始字符串
      *
      * @return $this
      */
-    public function setJson($json)
+    public function setJson(string $json)
     {
         $this->data = $json;
 
@@ -146,6 +153,7 @@ class JsonResponse extends Response
 
     /**
      * Sets the data to be sent as JSON.
+	 * 设置要作为JSON发送的数据
      *
      * @param mixed $data
      *
@@ -177,6 +185,7 @@ class JsonResponse extends Response
 
     /**
      * Returns options used while encoding data to JSON.
+	 * 返回将数据编码为JSON时使用的选项
      *
      * @return int
      */
@@ -187,20 +196,20 @@ class JsonResponse extends Response
 
     /**
      * Sets options used while encoding data to JSON.
-     *
-     * @param int $encodingOptions
+	 * 设置将数据编码为JSON时使用的选项
      *
      * @return $this
      */
-    public function setEncodingOptions($encodingOptions)
+    public function setEncodingOptions(int $encodingOptions)
     {
-        $this->encodingOptions = (int) $encodingOptions;
+        $this->encodingOptions = $encodingOptions;
 
         return $this->setData(json_decode($this->data));
     }
 
     /**
      * Updates the content and headers according to the JSON data and callback.
+	 * 根据JSON数据和回调更新内容和标头
      *
      * @return $this
      */

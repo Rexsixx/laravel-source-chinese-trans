@@ -1,6 +1,6 @@
 <?php
 /**
- * 邮件，邮件消息
+ * Illuminate，邮件，消息
  */
 
 namespace Illuminate\Mail;
@@ -26,7 +26,7 @@ class Message
 
     /**
      * CIDs of files embedded in the message.
-	 * 消息中嵌入文件的CID
+	 * 消息中嵌入文件的cid
      *
      * @var array
      */
@@ -34,7 +34,7 @@ class Message
 
     /**
      * Create a new message instance.
-	 * 创建新的消息实例
+	 * 创建一个新的消息实例
      *
      * @param  \Swift_Message  $swift
      * @return void
@@ -46,7 +46,7 @@ class Message
 
     /**
      * Add a "from" address to the message.
-	 * 添加"发件人"地址至消息中
+	 * 在消息中添加"发件人"地址
      *
      * @param  string|array  $address
      * @param  string|null  $name
@@ -110,7 +110,7 @@ class Message
 
     /**
      * Add a carbon copy to the message.
-	 * 添加一份复写件在邮件中
+	 * 在邮件中添加一份复写件
      *
      * @param  string|array  $address
      * @param  string|null  $name
@@ -149,8 +149,8 @@ class Message
     }
 
     /**
-     * Add a reply to address to the message.
-	 * 在邮件中添加回复地址
+     * Add a "reply to" address to the message.
+	 * 在邮件中添加"回复"地址
      *
      * @param  string|array  $address
      * @param  string|null  $name
@@ -211,7 +211,7 @@ class Message
 
     /**
      * Attach a file to the message.
-	 * 附加文件到消息中
+	 * 将文件附加到消息中
      *
      * @param  string  $file
      * @param  array  $options
@@ -238,7 +238,7 @@ class Message
 
     /**
      * Attach in-memory data as an attachment.
-	 * 附加内存中的数据作为附件
+	 * 将内存中的数据作为附件附加
      *
      * @param  string  $data
      * @param  string  $name
@@ -254,7 +254,7 @@ class Message
 
     /**
      * Create a Swift Attachment instance from data.
-	 * 创建一个Swift Attachment实例从data
+	 * 从data创建一个Swift Attachment实例
      *
      * @param  string  $data
      * @param  string  $name
@@ -312,8 +312,7 @@ class Message
         // First we will check for a MIME type on the message, which instructs the
         // mail client on what type of attachment the file is so that it may be
         // downloaded correctly by the user. The MIME option is not required.
-		// 首先，我们将检查消息上的MIME类型，它指示邮件客户端文件是什么类型的附件，
-		// 以便用户可以正确下载。MIME选项不是必需的。
+		// 首先，我们将检查消息上的MIME类型，它指示邮件客户端上什么类型的附件文件。
         if (isset($options['mime'])) {
             $attachment->setContentType($options['mime']);
         }
@@ -321,8 +320,7 @@ class Message
         // If an alternative name was given as an option, we will set that on this
         // attachment so that it will be downloaded with the desired names from
         // the developer, otherwise the default file names will get assigned.
-		// 如果提供了一个替代名称作为选项，我们将在此附件上设置该名称，
-		// 以便从开发人员那里以所需的名称下载，否则将分配默认文件名。
+		// 如果提供了替代名称作为选项，我们将在此附件上设置它。
         if (isset($options['as'])) {
             $attachment->setFilename($options['as']);
         }
@@ -334,7 +332,7 @@ class Message
 
     /**
      * Get the underlying Swift Message instance.
-	 * 得到底层Swift Message实例
+	 * 获取底层Swift Message实例
      *
      * @return \Swift_Message
      */

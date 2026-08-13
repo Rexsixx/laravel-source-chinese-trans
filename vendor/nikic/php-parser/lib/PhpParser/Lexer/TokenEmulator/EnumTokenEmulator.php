@@ -1,31 +1,30 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，词法分析程序，令牌模拟器，Enum令牌仿真器
+ */
+
 namespace PhpParser\Lexer\TokenEmulator;
 
-use PhpParser\Lexer\Emulative;
+use PhpParser\PhpVersion;
 
-final class EnumTokenEmulator extends KeywordEmulator
-{
-    public function getPhpVersion(): string
-    {
-        return Emulative::PHP_8_1;
+final class EnumTokenEmulator extends KeywordEmulator {
+    public function getPhpVersion(): PhpVersion {
+        return PhpVersion::fromComponents(8, 1);
     }
 
-    public function getKeywordString(): string
-    {
+    public function getKeywordString(): string {
         return 'enum';
     }
 
-    public function getKeywordToken(): int
-    {
+    public function getKeywordToken(): int {
         return \T_ENUM;
     }
 
-    protected function isKeywordContext(array $tokens, int $pos): bool
-    {
+    protected function isKeywordContext(array $tokens, int $pos): bool {
         return parent::isKeywordContext($tokens, $pos)
             && isset($tokens[$pos + 2])
-            && $tokens[$pos + 1][0] === \T_WHITESPACE
-            && $tokens[$pos + 2][0] === \T_STRING;
+            && $tokens[$pos + 1]->id === \T_WHITESPACE
+            && $tokens[$pos + 2]->id === \T_STRING;
     }
 }

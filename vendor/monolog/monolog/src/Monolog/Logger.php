@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，记录器
+ * Monolog，日志记录器
  */
 
 /*
@@ -25,6 +25,7 @@ use Stringable;
 
 /**
  * Monolog log channel
+ * Monolog日志通道
  *
  * It contains a stack of Handlers and a stack of Processors,
  * and uses them to store records that are added to it.
@@ -39,11 +40,14 @@ class Logger implements LoggerInterface, ResettableInterface
 {
     /**
      * Detailed debug information
+	 * 详细的调试信息
+	 *
      */
     public const DEBUG = 100;
 
     /**
      * Interesting events
+	 * 有趣的事件
      *
      * Examples: User logs in, SQL logs.
      */
@@ -56,6 +60,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Exceptional occurrences that are not errors
+	 * 异常的事件并不是错误
      *
      * Examples: Use of deprecated APIs, poor use of an API,
      * undesirable things that are not necessarily wrong.
@@ -64,11 +69,13 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Runtime errors
+	 * 运行时错误
      */
     public const ERROR = 400;
 
     /**
      * Critical conditions
+	 * 临界条件
      *
      * Example: Application component unavailable, unexpected exception.
      */
@@ -76,6 +83,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Action must be taken immediately
+	 * 必须立即采取行动
      *
      * Example: Entire website down, database unavailable, etc.
      * This should trigger the SMS alerts and wake you up.
@@ -84,11 +92,13 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Urgent alert.
+	 * 紧急通知
      */
     public const EMERGENCY = 600;
 
     /**
      * Monolog API version
+	 * Monolog API 版本
      *
      * This is only bumped when API breaks are done and should
      * follow the major version of the library
@@ -99,6 +109,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * This is a static variable and not a constant to serve as an extension point for custom levels
+	 * 这是一个静态变量,而不是一个常量,作为自定义级别的扩展点
      *
      * @var array<int, string> $levels Logging levels with the levels as key
      *
@@ -116,12 +127,30 @@ class Logger implements LoggerInterface, ResettableInterface
     ];
 
     /**
+     * Mapping between levels numbers defined in RFC 5424 and Monolog ones
+	 * 在RFC 5424和独白中定义的数字之间的映射
+     *
+     * @phpstan-var array<int, Level> $rfc_5424_levels
+     */
+    private const RFC_5424_LEVELS = [
+        7 => self::DEBUG,
+        6 => self::INFO,
+        5 => self::NOTICE,
+        4 => self::WARNING,
+        3 => self::ERROR,
+        2 => self::CRITICAL,
+        1 => self::ALERT,
+        0 => self::EMERGENCY,
+    ];
+
+    /**
      * @var string
      */
     protected $name;
 
     /**
      * The handler stack
+	 * 处理器堆栈
      *
      * @var HandlerInterface[]
      */
@@ -129,8 +158,10 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Processors that will process all log records
+	 * 处理所有日志记录的处理器
      *
      * To process records of a single handler instead, add the processor on that specific handler
+	 * 要处理单个处理程序的记录，请在该特定处理程序上添加处理程序。
      *
      * @var callable[]
      */
@@ -157,6 +188,18 @@ class Logger implements LoggerInterface, ResettableInterface
     private $logDepth = 0;
 
     /**
+     * @var \WeakMap<\Fiber<mixed, mixed, mixed, mixed>, int> Keeps track of depth inside fibers to prevent infinite logging loops
+     */
+    private $fiberLogDepth;
+
+    /**
+     * @var bool Whether to detect infinite logging loops
+     *
+     * This can be disabled via {@see useLoggingLoopDetection} if you have async handlers that do not play well with this
+     */
+    private $detectCycles = true;
+
+    /**
      * @psalm-param array<callable(array): array> $processors
      *
      * @param string             $name       The logging channel, a simple descriptive name that is attached to all log records
@@ -170,6 +213,13 @@ class Logger implements LoggerInterface, ResettableInterface
         $this->setHandlers($handlers);
         $this->processors = $processors;
         $this->timezone = $timezone ?: new DateTimeZone(date_default_timezone_get() ?: 'UTC');
+
+        if (\PHP_VERSION_ID >= 80100) {
+            // Local variable for phpstan, see https://github.com/phpstan/phpstan/issues/6732#issuecomment-1111118412
+            /** @var \WeakMap<\Fiber<mixed, mixed, mixed, mixed>, int> $fiberLogDepth */
+            $fiberLogDepth = new \WeakMap();
+            $this->fiberLogDepth = $fiberLogDepth;
+        }
     }
 
     public function getName(): string
@@ -179,6 +229,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Return a new cloned instance with the name changed
+	 * 返回一个新的克隆实例,名称更改
      */
     public function withName(string $name): self
     {
@@ -190,6 +241,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Pushes a handler on to the stack.
+	 * 将一个处理器推到堆栈上
      */
     public function pushHandler(HandlerInterface $handler): self
     {
@@ -200,6 +252,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Pops a handler from the stack
+	 * 从堆栈中弹出一个处理程序
      *
      * @throws \LogicException If empty handler stack
      */
@@ -214,8 +267,10 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Set handlers, replacing all existing ones.
+	 * 设置处理程序,替换所有现有的处理程序。
      *
      * If a map is passed, keys will be ignored.
+	 * 如果映射通过,键将被忽略。
      *
      * @param HandlerInterface[] $handlers
      */
@@ -239,6 +294,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Adds a processor on to the stack.
+	 * 将处理器添加到堆栈中
      */
     public function pushProcessor(callable $callback): self
     {
@@ -249,6 +305,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Removes the processor on top of the stack and returns it.
+	 * 在堆栈顶部删除处理器并返回它
      *
      * @throws \LogicException If empty processor stack
      * @return callable
@@ -288,23 +345,47 @@ class Logger implements LoggerInterface, ResettableInterface
         return $this;
     }
 
+    public function useLoggingLoopDetection(bool $detectCycles): self
+    {
+        $this->detectCycles = $detectCycles;
+
+        return $this;
+    }
+
     /**
      * Adds a log record.
+	 * 添加日志记录
      *
-     * @param  int     $level   The logging level
-     * @param  string  $message The log message
-     * @param  mixed[] $context The log context
-     * @return bool    Whether the record has been processed
+     * @param  int               $level    The logging level (a Monolog or RFC 5424 level)
+     * @param  string            $message  The log message
+     * @param  mixed[]           $context  The log context
+     * @param  DateTimeImmutable $datetime Optional log date to log into the past or future
+     * @return bool              Whether the record has been processed
      *
      * @phpstan-param Level $level
      */
-    public function addRecord(int $level, string $message, array $context = []): bool
+    public function addRecord(int $level, string $message, array $context = [], ?DateTimeImmutable $datetime = null): bool
     {
-        $this->logDepth += 1;
-        if ($this->logDepth === 3) {
+        if (isset(self::RFC_5424_LEVELS[$level])) {
+            $level = self::RFC_5424_LEVELS[$level];
+        }
+
+        if ($this->detectCycles) {
+            if (\PHP_VERSION_ID >= 80100 && $fiber = \Fiber::getCurrent()) {
+                // @phpstan-ignore offsetAssign.dimType
+                $this->fiberLogDepth[$fiber] = $this->fiberLogDepth[$fiber] ?? 0;
+                $logDepth = ++$this->fiberLogDepth[$fiber];
+            } else {
+                $logDepth = ++$this->logDepth;
+            }
+        } else {
+            $logDepth = 0;
+        }
+
+        if ($logDepth === 3) {
             $this->warning('A possible infinite logging loop was detected and aborted. It appears some of your handler code is triggering logging, see the previous log record for a hint as to what may be the cause.');
             return false;
-        } elseif ($this->logDepth >= 5) { // log depth 4 is let through so we can log the warning above
+        } elseif ($logDepth >= 5) { // log depth 4 is let through, so we can log the warning above
             return false;
         }
 
@@ -326,7 +407,7 @@ class Logger implements LoggerInterface, ResettableInterface
                         'level' => $level,
                         'level_name' => $levelName,
                         'channel' => $this->name,
-                        'datetime' => new DateTimeImmutable($this->microsecondTimestamps, $this->timezone),
+                        'datetime' => $datetime ?? new DateTimeImmutable($this->microsecondTimestamps, $this->timezone),
                         'extra' => [],
                     ];
 
@@ -353,7 +434,13 @@ class Logger implements LoggerInterface, ResettableInterface
                 }
             }
         } finally {
-            $this->logDepth--;
+            if ($this->detectCycles) {
+                if (isset($fiber)) {
+                    $this->fiberLogDepth[$fiber]--;
+                } else {
+                    $this->logDepth--;
+                }
+            }
         }
 
         return null !== $record;
@@ -361,6 +448,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Ends a log cycle and frees all resources used by handlers.
+	 * 结束一个日志周期,并释放处理程序使用的所有资源。
      *
      * Closing a Handler means flushing all buffers and freeing any open resources/handles.
      * Handlers that have been closed should be able to accept log records again and re-open
@@ -378,6 +466,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Ends a log cycle and resets all handlers and processors to their initial state.
+	 * 结束一个日志周期,并将所有处理程序和处理器重新设置为初始状态。
      *
      * Resetting a Handler or a Processor means flushing/cleaning all buffers, resetting internal
      * state, and getting it back to a state in which it can receive log records again.
@@ -403,6 +492,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Gets all supported logging levels.
+	 * 获取所有支持的日志级别。
      *
      * @return array<string, int> Assoc array with human-readable level names => level codes.
      * @phpstan-return array<LevelName, Level>
@@ -414,6 +504,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Gets the name of the logging level.
+	 * 获取日志级别的名称。
      *
      * @throws \Psr\Log\InvalidArgumentException If level is not defined
      *
@@ -431,6 +522,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Converts PSR-3 levels to Monolog ones if necessary
+	 * 必要时转换PSR-3电平为Monolog
      *
      * @param  string|int                        $level Level number (monolog) or name (PSR-3)
      * @throws \Psr\Log\InvalidArgumentException If level is not defined
@@ -465,6 +557,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Checks whether the Logger has a handler that listens on the given level
+	 * 检查Logger是否有一个侦听程序的程序
      *
      * @phpstan-param Level $level
      */
@@ -485,6 +578,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Set a custom exception handler that will be called if adding a new record fails
+	 * 设置一个自定义异常处理程序，如果添加新记录失败将调用该处理程序。
      *
      * The callable will receive an exception object and the record that failed to be logged
      */
@@ -502,10 +596,11 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Adds a log record at an arbitrary level.
+	 * 在任意级别添加日志记录。
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param mixed             $level   The log level
+     * @param mixed             $level   The log level (a Monolog, PSR-3 or RFC 5424 level)
      * @param string|Stringable $message The log message
      * @param mixed[]           $context The log context
      *
@@ -517,6 +612,10 @@ class Logger implements LoggerInterface, ResettableInterface
             throw new \InvalidArgumentException('$level is expected to be a string or int');
         }
 
+        if (isset(self::RFC_5424_LEVELS[$level])) {
+            $level = self::RFC_5424_LEVELS[$level];
+        }
+
         $level = static::toMonologLevel($level);
 
         $this->addRecord($level, (string) $message, $context);
@@ -524,6 +623,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Adds a log record at the DEBUG level.
+	 * 添加DEBUG级别的日志记录。
      *
      * This method allows for compatibility with common interfaces.
      *
@@ -537,6 +637,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Adds a log record at the INFO level.
+	 * 添加INFO级别的日志记录。
      *
      * This method allows for compatibility with common interfaces.
      *
@@ -550,6 +651,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Adds a log record at the NOTICE level.
+	 * 添加NOTICE级别的日志记录。
      *
      * This method allows for compatibility with common interfaces.
      *
@@ -563,6 +665,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Adds a log record at the WARNING level.
+	 * 添加WARNING级别的日志记录。
      *
      * This method allows for compatibility with common interfaces.
      *
@@ -576,6 +679,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Adds a log record at the ERROR level.
+	 * 添加ERROR级别的日志记录。
      *
      * This method allows for compatibility with common interfaces.
      *
@@ -589,6 +693,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Adds a log record at the CRITICAL level.
+	 * 添加一条CRITICAL级别的日志记录。
      *
      * This method allows for compatibility with common interfaces.
      *
@@ -602,6 +707,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Adds a log record at the ALERT level.
+	 * 添加ALERT级别的日志记录。
      *
      * This method allows for compatibility with common interfaces.
      *
@@ -615,6 +721,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Adds a log record at the EMERGENCY level.
+	 * 添加EMERGENCY级别的日志记录。
      *
      * This method allows for compatibility with common interfaces.
      *
@@ -628,6 +735,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Sets the timezone to be used for the timestamp of log records.
+	 * 设置要用于日志记录的时间戳的时区
      */
     public function setTimezone(DateTimeZone $tz): self
     {
@@ -638,6 +746,7 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Returns the timezone to be used for the timestamp of log records.
+	 * 返回要用于日志记录的时间戳的时区
      */
     public function getTimezone(): DateTimeZone
     {
@@ -647,6 +756,7 @@ class Logger implements LoggerInterface, ResettableInterface
     /**
      * Delegates exception management to the custom exception handler,
      * or throws the exception if no custom handler is set.
+	 * 将异常管理委托给自定义异常处理程序，或在未设置自定义处理程序时抛出异常。
      *
      * @param array $record
      * @phpstan-param Record $record
@@ -658,5 +768,41 @@ class Logger implements LoggerInterface, ResettableInterface
         }
 
         ($this->exceptionHandler)($e, $record);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function __serialize(): array
+    {
+        return [
+            'name' => $this->name,
+            'handlers' => $this->handlers,
+            'processors' => $this->processors,
+            'microsecondTimestamps' => $this->microsecondTimestamps,
+            'timezone' => $this->timezone,
+            'exceptionHandler' => $this->exceptionHandler,
+            'logDepth' => $this->logDepth,
+            'detectCycles' => $this->detectCycles,
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    public function __unserialize(array $data): void
+    {
+        foreach (['name', 'handlers', 'processors', 'microsecondTimestamps', 'timezone', 'exceptionHandler', 'logDepth', 'detectCycles'] as $property) {
+            if (isset($data[$property])) {
+                $this->$property = $data[$property];
+            }
+        }
+
+        if (\PHP_VERSION_ID >= 80100) {
+            // Local variable for phpstan, see https://github.com/phpstan/phpstan/issues/6732#issuecomment-1111118412
+            /** @var \WeakMap<\Fiber<mixed, mixed, mixed, mixed>, int> $fiberLogDepth */
+            $fiberLogDepth = new \WeakMap();
+            $this->fiberLogDepth = $fiberLogDepth;
+        }
     }
 }

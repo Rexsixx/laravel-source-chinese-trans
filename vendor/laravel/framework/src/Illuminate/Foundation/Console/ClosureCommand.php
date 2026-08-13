@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，闭合命令
+ * Illuminate，基础，控制台，闭包命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -43,7 +43,7 @@ class ClosureCommand extends Command
      *
      * @param  \Symfony\Component\Console\Input\InputInterface  $input
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
-     * @return mixed
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -57,14 +57,26 @@ class ClosureCommand extends Command
             }
         }
 
-        return $this->laravel->call(
+        return (int) $this->laravel->call(
             $this->callback->bindTo($this, $this), $parameters
         );
     }
 
     /**
      * Set the description for the command.
-	 * 设置命令描述
+	 * 设置命令的描述信息
+     *
+     * @param  string  $description
+     * @return $this
+     */
+    public function purpose($description)
+    {
+        return $this->describe($description);
+    }
+
+    /**
+     * Set the description for the command.
+	 * 设置命令的描述信息
      *
      * @param  string  $description
      * @return $this

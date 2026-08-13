@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，Flare Client，契约，提供者 Flare上下文
+ * Facade，FlareClient，契约，提供者闪耀上下文
  */
 
 namespace Facade\FlareClient\Contracts;

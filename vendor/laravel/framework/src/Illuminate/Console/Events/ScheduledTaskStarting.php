@@ -1,6 +1,6 @@
 <?php
 /**
- * 控制台，计划任务启动
+ * Illuminate，控制台，事件，启动计划任务
  */
 
 namespace Illuminate\Console\Events;

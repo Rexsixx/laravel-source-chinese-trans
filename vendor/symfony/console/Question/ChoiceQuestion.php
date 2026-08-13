@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，问题，选择问题
+ * Symfony，Component，Console，问题，选择问题
  */
 
 /*
@@ -18,7 +18,7 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 /**
  * Represents a choice question.
- * 代表一个选择问题
+ * 代表一个选择问题。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -49,6 +49,7 @@ class ChoiceQuestion extends Question
 
     /**
      * Returns available choices.
+	 * 返回可用选项
      *
      * @return array
      */
@@ -59,14 +60,13 @@ class ChoiceQuestion extends Question
 
     /**
      * Sets multiselect option.
+	 * 设置多选择选项。
      *
      * When multiselect is set to true, multiple choices can be answered.
      *
-     * @param bool $multiselect
-     *
      * @return $this
      */
-    public function setMultiselect($multiselect)
+    public function setMultiselect(bool $multiselect)
     {
         $this->multiselect = $multiselect;
         $this->setValidator($this->getDefaultValidator());
@@ -76,6 +76,7 @@ class ChoiceQuestion extends Question
 
     /**
      * Returns whether the choices are multiselect.
+	 * 返回选择是多选择
      *
      * @return bool
      */
@@ -86,6 +87,7 @@ class ChoiceQuestion extends Question
 
     /**
      * Gets the prompt for choices.
+	 * 获取选择的提示符
      *
      * @return string
      */
@@ -96,12 +98,11 @@ class ChoiceQuestion extends Question
 
     /**
      * Sets the prompt for choices.
-     *
-     * @param string $prompt
+	 * 为选择设置提示符
      *
      * @return $this
      */
-    public function setPrompt($prompt)
+    public function setPrompt(string $prompt)
     {
         $this->prompt = $prompt;
 
@@ -110,14 +111,13 @@ class ChoiceQuestion extends Question
 
     /**
      * Sets the error message for invalid values.
+	 * 设置无效值的错误消息
      *
      * The error message has a string placeholder (%s) for the invalid value.
      *
-     * @param string $errorMessage
-     *
      * @return $this
      */
-    public function setErrorMessage($errorMessage)
+    public function setErrorMessage(string $errorMessage)
     {
         $this->errorMessage = $errorMessage;
         $this->setValidator($this->getDefaultValidator());
@@ -179,7 +179,8 @@ class ChoiceQuestion extends Question
                     throw new InvalidArgumentException(sprintf($errorMessage, $value));
                 }
 
-                $multiselectChoices[] = (string) $result;
+                // For associative choices, consistently return the key as string:
+                $multiselectChoices[] = $isAssoc ? (string) $result : $result;
             }
 
             if ($multiselect) {

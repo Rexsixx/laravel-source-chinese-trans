@@ -1,6 +1,6 @@
 <?php
 /**
- * Session，加密存储
+ * Illuminate，Session，加密存储
  */
 
 namespace Illuminate\Session;
@@ -13,7 +13,7 @@ class EncryptedStore extends Store
 {
     /**
      * The encrypter instance.
-	 * 加密实例
+	 * 加密器实例
      *
      * @var \Illuminate\Contracts\Encryption\Encrypter
      */
@@ -21,7 +21,7 @@ class EncryptedStore extends Store
 
     /**
      * Create a new session instance.
-	 * 创建会话实例
+	 * 创建新的会话实例
      *
      * @param  string  $name
      * @param  \SessionHandlerInterface  $handler
@@ -66,7 +66,7 @@ class EncryptedStore extends Store
 
     /**
      * Get the encrypter instance.
-	 * 得到加密实例
+	 * 得到加密器实例
      *
      * @return \Illuminate\Contracts\Encryption\Encrypter
      */

@@ -1,7 +1,4 @@
 <?php
-/**
- * Symfony，组件，翻译，Util，数组变换器
- */
 
 /*
  * This file is part of the Symfony package.
@@ -34,14 +31,14 @@ class ArrayConverter
      *
      * @param array $messages Linear messages array
      *
-     * @return array Tree-like messages array
+     * @return array
      */
     public static function expandToTree(array $messages)
     {
         $tree = [];
 
         foreach ($messages as $id => $value) {
-            $referenceToElement = &self::getElementByPath($tree, explode('.', $id));
+            $referenceToElement = &self::getElementByPath($tree, self::getKeyParts($id));
 
             $referenceToElement = $value;
 
@@ -68,6 +65,7 @@ class ArrayConverter
                 $elem = &$elem[implode('.', \array_slice($parts, $i))];
                 break;
             }
+
             $parentOfElem = &$elem;
             $elem = &$elem[$part];
         }
@@ -87,7 +85,7 @@ class ArrayConverter
         return $elem;
     }
 
-    private static function cancelExpand(array &$tree, $prefix, array $node)
+    private static function cancelExpand(array &$tree, string $prefix, array $node)
     {
         $prefix .= '.';
 
@@ -98,5 +96,49 @@ class ArrayConverter
                 self::cancelExpand($tree, $prefix.$id, $value);
             }
         }
+    }
+
+    /**
+     * @return string[]
+     */
+    private static function getKeyParts(string $key): array
+    {
+        $parts = explode('.', $key);
+        $partsCount = \count($parts);
+
+        $result = [];
+        $buffer = '';
+
+        foreach ($parts as $index => $part) {
+            if (0 === $index && '' === $part) {
+                $buffer = '.';
+
+                continue;
+            }
+
+            if ($index === $partsCount - 1 && '' === $part) {
+                $buffer .= '.';
+                $result[] = $buffer;
+
+                continue;
+            }
+
+            if (isset($parts[$index + 1]) && '' === $parts[$index + 1]) {
+                $buffer .= $part;
+
+                continue;
+            }
+
+            if ($buffer) {
+                $result[] = $buffer.$part;
+                $buffer = '';
+
+                continue;
+            }
+
+            $result[] = $part;
+        }
+
+        return $result;
     }
 }

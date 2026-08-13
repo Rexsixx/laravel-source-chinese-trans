@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，碎片，内联片段渲染器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -11,7 +14,6 @@
 
 namespace Symfony\Component\HttpKernel\Fragment;
 
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
@@ -23,6 +25,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Implements the inline rendering strategy where the Request is rendered by the current HTTP kernel.
+ * 实现由当前HTTP内核呈现请求的内线呈现策略。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -31,16 +34,17 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
     private $kernel;
     private $dispatcher;
 
-    public function __construct(HttpKernelInterface $kernel, EventDispatcherInterface $dispatcher = null)
+    public function __construct(HttpKernelInterface $kernel, ?EventDispatcherInterface $dispatcher = null)
     {
         $this->kernel = $kernel;
-        $this->dispatcher = LegacyEventDispatcherProxy::decorate($dispatcher);
+        $this->dispatcher = $dispatcher;
     }
 
     /**
      * {@inheritdoc}
      *
      * Additional available options:
+	 * 其他可用选项：
      *
      *  * alt: an alternative URI to render in case of an error
      */
@@ -106,7 +110,7 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
         }
     }
 
-    protected function createSubRequest($uri, Request $request)
+    protected function createSubRequest(string $uri, Request $request)
     {
         $cookies = $request->cookies->all();
         $server = $request->server->all();

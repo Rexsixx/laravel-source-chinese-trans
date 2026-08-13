@@ -1,6 +1,6 @@
 <?php
 /**
- * 验证，工厂
+ * Illuminate，验证，工厂
  */
 
 namespace Illuminate\Validation;
@@ -15,7 +15,7 @@ class Factory implements FactoryContract
 {
     /**
      * The Translator implementation.
-	 * 翻译实现
+	 * Translator实现
      *
      * @var \Illuminate\Contracts\Translation\Translator
      */
@@ -23,7 +23,7 @@ class Factory implements FactoryContract
 
     /**
      * The Presence Verifier implementation.
-	 * 状态验证实现
+	 * 状态验证器实现
      *
      * @var \Illuminate\Validation\PresenceVerifierInterface
      */
@@ -31,7 +31,7 @@ class Factory implements FactoryContract
 
     /**
      * The IoC container instance.
-	 * 容器实例
+	 * IoC容器实例
      *
      * @var \Illuminate\Contracts\Container\Container
      */
@@ -39,7 +39,7 @@ class Factory implements FactoryContract
 
     /**
      * All of the custom validator extensions.
-	 * 所有自定义验证扩展
+	 * 所有自定义验证器扩展
      *
      * @var array
      */
@@ -63,7 +63,7 @@ class Factory implements FactoryContract
 
     /**
      * All of the custom validator message replacers.
-	 * 所有自定义消息转换
+	 * 所有自定义验证器消息替换程序
      *
      * @var array
      */
@@ -78,6 +78,14 @@ class Factory implements FactoryContract
     protected $fallbackMessages = [];
 
     /**
+     * Indicates that unvalidated array keys should be excluded, even if the parent array was validated.
+	 * 指示即使验证了父数组，也应排除未验证的数组键。
+     *
+     * @var bool
+     */
+    protected $excludeUnvalidatedArrayKeys;
+
+    /**
      * The Validator resolver instance.
 	 * 验证器解析器实例
      *
@@ -87,7 +95,7 @@ class Factory implements FactoryContract
 
     /**
      * Create a new Validator factory instance.
-	 * 创建新的验证工厂实例
+	 * 创建一个新的验证器工厂实例
      *
      * @param  \Illuminate\Contracts\Translation\Translator  $translator
      * @param  \Illuminate\Contracts\Container\Container|null  $container
@@ -101,7 +109,7 @@ class Factory implements FactoryContract
 
     /**
      * Create a new Validator instance.
-	 * 创建新的验证实例
+	 * 创建新的验证器实例
      *
      * @param  array  $data
      * @param  array  $rules
@@ -118,8 +126,7 @@ class Factory implements FactoryContract
         // The presence verifier is responsible for checking the unique and exists data
         // for the validator. It is behind an interface so that multiple versions of
         // it may be written besides database. We'll inject it into the validator.
-		// 存在验证器负责检查验证器的唯一和存在数据。
-		// 它位于接口后面，因此除了数据库外，还可以编写多个版本。我们将把它注入验证器。
+		// 状态验证器负责检查唯一的和存在的数据。
         if (! is_null($this->verifier)) {
             $validator->setPresenceVerifier($this->verifier);
         }
@@ -127,11 +134,12 @@ class Factory implements FactoryContract
         // Next we'll set the IoC container instance of the validator, which is used to
         // resolve out class based validator extensions. If it is not set then these
         // types of extensions will not be possible on these validation instances.
-		// 接下来，我们将设置验证器的IoC容器实例，该实例用于解析出基于类的验证器扩展。
-		// 如果未设置，则这些类型的扩展将无法在这些验证实例上使用。
+		// 接下来，我们将设置验证器的IoC容器实例，这用于解析出基于类的验证器扩展。
         if (! is_null($this->container)) {
             $validator->setContainer($this->container);
         }
+
+        $validator->excludeUnvalidatedArrayKeys = $this->excludeUnvalidatedArrayKeys;
 
         $this->addExtensions($validator);
 
@@ -140,7 +148,7 @@ class Factory implements FactoryContract
 
     /**
      * Validate the given data against the provided rules.
-	 * 验证给定的数据根据提供的规则
+	 * 根据提供的规则验证给定的数据
      *
      * @param  array  $data
      * @param  array  $rules
@@ -157,7 +165,7 @@ class Factory implements FactoryContract
 
     /**
      * Resolve a new Validator instance.
-	 * 解析新的验证器实例
+	 * 解析一个新的验证器实例
      *
      * @param  array  $data
      * @param  array  $rules
@@ -176,7 +184,7 @@ class Factory implements FactoryContract
 
     /**
      * Add the extensions to a validator instance.
-	 * 添加扩展到验证器实例
+	 * 将扩展添加到验证器实例
      *
      * @param  \Illuminate\Validation\Validator  $validator
      * @return void
@@ -188,8 +196,7 @@ class Factory implements FactoryContract
         // Next, we will add the implicit extensions, which are similar to the required
         // and accepted rule in that they are run even if the attributes is not in a
         // array of data that is given to a validator instances via instantiation.
-		// 接下来，我们将添加隐式扩展，这与所需和接受的规则类似，
-		// 因为即使属性不在通过实例化提供给验证器实例的数据数组中，它们也会运行。
+		// 接下来，我们将添加隐式扩展，这与必需的扩展类似。
         $validator->addImplicitExtensions($this->implicitExtensions);
 
         $validator->addDependentExtensions($this->dependentExtensions);
@@ -267,6 +274,17 @@ class Factory implements FactoryContract
     }
 
     /**
+     * Indicate that unvalidated array keys should be excluded, even if the parent array was validated.
+	 * 指示应排除未验证的数组键，即使父数组已经过验证。
+     *
+     * @return void
+     */
+    public function excludeUnvalidatedArrayKeys()
+    {
+        $this->excludeUnvalidatedArrayKeys = true;
+    }
+
+    /**
      * Set the Validator instance resolver.
 	 * 设置Validator实例解析器
      *
@@ -280,7 +298,7 @@ class Factory implements FactoryContract
 
     /**
      * Get the Translator implementation.
-	 * 得到Translator实现
+	 * 获取Translator实现
      *
      * @return \Illuminate\Contracts\Translation\Translator
      */
@@ -291,7 +309,7 @@ class Factory implements FactoryContract
 
     /**
      * Get the Presence Verifier implementation.
-	 * 得到Presence Verifier实现
+	 * 获取Presence Verifier实现
      *
      * @return \Illuminate\Validation\PresenceVerifierInterface
      */
@@ -310,5 +328,30 @@ class Factory implements FactoryContract
     public function setPresenceVerifier(PresenceVerifierInterface $presenceVerifier)
     {
         $this->verifier = $presenceVerifier;
+    }
+
+    /**
+     * Get the container instance used by the validation factory.
+	 * 获取验证工厂使用的容器实例
+     *
+     * @return \Illuminate\Contracts\Container\Container
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
+     * Set the container instance used by the validation factory.
+	 * 设置验证工厂使用的容器实例
+     *
+     * @param  \Illuminate\Contracts\Container\Container  $container
+     * @return $this
+     */
+    public function setContainer(Container $container)
+    {
+        $this->container = $container;
+
+        return $this;
     }
 }

@@ -1,15 +1,15 @@
 <?php
 /**
- * Redis，Redis连接
+ * Illuminate，Redis，连接，Php Redis 连接
  */
 
 namespace Illuminate\Redis\Connections;
 
 use Closure;
 use Illuminate\Contracts\Redis\Connection as ConnectionContract;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Redis;
-use RedisCluster;
 use RedisException;
 
 /**
@@ -17,6 +17,8 @@ use RedisException;
  */
 class PhpRedisConnection extends Connection implements ConnectionContract
 {
+    use PacksPhpRedisValues;
+
     /**
      * The connection creation callback.
 	 * 连接创建回调
@@ -78,8 +80,8 @@ class PhpRedisConnection extends Connection implements ConnectionContract
     }
 
     /**
-     * Set the string value in argument as value of the key.
-	 * 设置参数中的字符串值为键的值
+     * Set the string value in the argument as the value of the key.
+	 * 将参数中的字符串值设置为键的值
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -99,7 +101,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Set the given key if it doesn't exist.
-	 * 设置给定的键如果它不存在
+	 * 如果给定的键不存在，则设置它。
      *
      * @param  string  $key
      * @param  string  $value
@@ -129,7 +131,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Set the given hash fields to their respective values.
-	 * 设置给定的散列字段为各自的值
+	 * 将给定的散列字段设置为各自的值
      *
      * @param  string  $key
      * @param  mixed  $dictionary
@@ -150,7 +152,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Set the given hash field if it doesn't exist.
-	 * 设置给定的散列字段如果它不存在
+	 * 如果给定的散列字段不存在，则设置该字段。
      *
      * @param  string  $hash
      * @param  string  $key
@@ -164,7 +166,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Removes the first count occurrences of the value element from the list.
-	 * 移除value元素的第一个计数出现次数从列表中
+	 * 从列表中移除value元素的第一个计数出现次数
      *
      * @param  string  $key
      * @param  int  $count
@@ -178,7 +180,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Removes and returns the first element of the list stored at key.
-	 * 移除并返回存储在key中的列表的第一个元素
+	 * 移除并返回存储在key处的列表的第一个元素
      *
      * @param  mixed  $arguments
      * @return array|null
@@ -206,7 +208,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Removes and returns a random element from the set value at key.
-	 * 移除并返回一个随机元素从键处的设置值中
+	 * 从键处的设置值中移除并返回一个随机元素
      *
      * @param  string  $key
      * @param  int|null  $count
@@ -219,7 +221,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Add one or more members to a sorted set or update its score if it already exists.
-	 * 添加一个或多个成员至排序设置或更新其分数，如果它已经存在。
+	 * 向排序集添加一个或多个成员，如果排序集已经存在，则更新其分数。
      *
      * @param  string  $key
      * @param  mixed  $dictionary
@@ -237,7 +239,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
         $options = [];
 
         foreach (array_slice($dictionary, 0, 3) as $i => $value) {
-            if (in_array($value, ['nx', 'xx', 'ch', 'incr', 'NX', 'XX', 'CH', 'INCR'], true)) {
+            if (in_array($value, ['nx', 'xx', 'ch', 'incr', 'gt', 'lt', 'NX', 'XX', 'CH', 'INCR', 'GT', 'LT'], true)) {
                 $options[] = $value;
 
                 unset($dictionary[$i]);
@@ -259,7 +261,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
      */
     public function zrangebyscore($key, $min, $max, $options = [])
     {
-        if (isset($options['limit'])) {
+        if (isset($options['limit']) && Arr::isAssoc($options['limit'])) {
             $options['limit'] = [
                 $options['limit']['offset'],
                 $options['limit']['count'],
@@ -281,7 +283,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
      */
     public function zrevrangebyscore($key, $min, $max, $options = [])
     {
-        if (isset($options['limit'])) {
+        if (isset($options['limit']) && Arr::isAssoc($options['limit'])) {
             $options['limit'] = [
                 $options['limit']['offset'],
                 $options['limit']['count'],
@@ -326,8 +328,8 @@ class PhpRedisConnection extends Connection implements ConnectionContract
     }
 
     /**
-     * Scans the all keys based on options.
-	 * 扫描所有密钥根据选项
+     * Scans all keys based on options.
+	 * 根据选项扫描所有密钥
      *
      * @param  mixed  $cursor
      * @param  array  $options
@@ -340,12 +342,16 @@ class PhpRedisConnection extends Connection implements ConnectionContract
             $options['count'] ?? 10
         );
 
-        return empty($result) ? $result : [$cursor, $result];
+        if ($result === false) {
+            $result = [];
+        }
+
+        return $cursor === 0 && empty($result) ? false : [$cursor, $result];
     }
 
     /**
      * Scans the given set for all values based on options.
-	 * 扫描给定集合的所有值基于选项
+	 * 基于选项扫描给定集合的所有值
      *
      * @param  string  $key
      * @param  mixed  $cursor
@@ -359,12 +365,16 @@ class PhpRedisConnection extends Connection implements ConnectionContract
             $options['count'] ?? 10
         );
 
-        return $result === false ? [0, []] : [$cursor, $result];
+        if ($result === false) {
+            $result = [];
+        }
+
+        return $cursor === 0 && empty($result) ? false : [$cursor, $result];
     }
 
     /**
-     * Scans the given set for all values based on options.
-	 * 扫描给定集合的所有值基于选项
+     * Scans the given hash for all values based on options.
+	 * 根据选项扫描给定的散列查找所有值
      *
      * @param  string  $key
      * @param  mixed  $cursor
@@ -378,12 +388,16 @@ class PhpRedisConnection extends Connection implements ConnectionContract
             $options['count'] ?? 10
         );
 
-        return $result === false ? [0, []] : [$cursor, $result];
+        if ($result === false) {
+            $result = [];
+        }
+
+        return $cursor === 0 && empty($result) ? false : [$cursor, $result];
     }
 
     /**
      * Scans the given set for all values based on options.
-	 * 扫描给定集合的所有值基于选项
+	 * 基于选项扫描给定集合的所有值
      *
      * @param  string  $key
      * @param  mixed  $cursor
@@ -397,12 +411,16 @@ class PhpRedisConnection extends Connection implements ConnectionContract
             $options['count'] ?? 10
         );
 
-        return $result === false ? [0, []] : [$cursor, $result];
+        if ($result === false) {
+            $result = [];
+        }
+
+        return $cursor === 0 && empty($result) ? false : [$cursor, $result];
     }
 
     /**
      * Execute commands in a pipeline.
-	 * 执行命令在管道中
+	 * 在管道中执行命令
      *
      * @param  callable|null  $callback
      * @return \Redis|array
@@ -418,7 +436,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Execute commands in a transaction.
-	 * 执行命令在事务中
+	 * 在事务中执行命令
      *
      * @param  callable|null  $callback
      * @return \Redis|array
@@ -434,7 +452,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Evaluate a LUA script serverside, from the SHA1 hash of the script instead of the script itself.
-	 * 从脚本的SHA1哈希值(而不是脚本本身)计算LUA脚本服务器端
+	 * 从脚本的SHA1哈希值（而不是脚本本身）计算LUA脚本服务器端
      *
      * @param  string  $script
      * @param  int  $numkeys
@@ -464,7 +482,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Subscribe to a set of given channels for messages.
-	 * 订阅一组给定的通道为消息
+	 * 为消息订阅一组给定的通道
      *
      * @param  array|string  $channels
      * @param  \Closure  $callback
@@ -479,7 +497,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Subscribe to a set of given channels with wildcards.
-	 * 订阅一组给定的通道使用通配符
+	 * 使用通配符订阅一组给定的通道
      *
      * @param  array|string  $channels
      * @param  \Closure  $callback
@@ -494,7 +512,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Subscribe to a set of given channels for messages.
-	 * 订阅一组给定的通道为消息
+	 * 为消息订阅一组给定的通道
      *
      * @param  array|string  $channels
      * @param  \Closure  $callback
@@ -510,17 +528,17 @@ class PhpRedisConnection extends Connection implements ConnectionContract
      * Flush the selected Redis database.
 	 * 刷新所选Redis数据库
      *
-     * @return void
+     * @return mixed
      */
     public function flushdb()
     {
-        if (! $this->client instanceof RedisCluster) {
-            return $this->command('flushdb');
+        $arguments = func_get_args();
+
+        if (strtoupper((string) ($arguments[0] ?? null)) === 'ASYNC') {
+            return $this->command('flushdb', [true]);
         }
 
-        foreach ($this->client->_masters() as $master) {
-            $this->client->flushDb($master);
-        }
+        return $this->command('flushdb');
     }
 
     /**
@@ -537,11 +555,13 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Run a command against the Redis database.
-	 * 运行命令对Redis数据库
+	 * 对Redis数据库运行命令
      *
      * @param  string  $method
      * @param  array  $parameters
      * @return mixed
+     *
+     * @throws \RedisException
      */
     public function command($method, array $parameters = [])
     {
@@ -568,8 +588,8 @@ class PhpRedisConnection extends Connection implements ConnectionContract
     }
 
     /**
-     * Apply prefix to the given key if necessary.
-	 * 应用prefix对给定的键必要时
+     * Apply a prefix to the given key if necessary.
+	 * 必要时对给定的键应用前缀
      *
      * @param  string  $key
      * @return string
@@ -583,7 +603,7 @@ class PhpRedisConnection extends Connection implements ConnectionContract
 
     /**
      * Pass other method calls down to the underlying client.
-	 * 调用其他方法传递给底层客户端
+	 * 将其他方法调用传递给底层客户端
      *
      * @param  string  $method
      * @param  array  $parameters

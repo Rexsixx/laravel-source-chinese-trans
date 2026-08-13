@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，输出，控制台分段输出
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -40,10 +43,11 @@ class ConsoleSectionOutput extends StreamOutput
 
     /**
      * Clears previous output for this section.
+	 * 清除本节之前的输出
      *
      * @param int $lines Number of lines to clear. If null, then the entire output of this section is cleared
      */
-    public function clear(int $lines = null)
+    public function clear(?int $lines = null)
     {
         if (empty($this->content) || !$this->isDecorated()) {
             return;
@@ -63,6 +67,7 @@ class ConsoleSectionOutput extends StreamOutput
 
     /**
      * Overwrites the previous output with a new message.
+	 * 用新的消息覆盖前面的输出
      *
      * @param array|string $message
      */
@@ -92,7 +97,7 @@ class ConsoleSectionOutput extends StreamOutput
     /**
      * {@inheritdoc}
      */
-    protected function doWrite($message, $newline)
+    protected function doWrite(string $message, bool $newline)
     {
         if (!$this->isDecorated()) {
             parent::doWrite($message, $newline);
@@ -111,6 +116,7 @@ class ConsoleSectionOutput extends StreamOutput
     /**
      * At initial stage, cursor is at the end of stream output. This method makes cursor crawl upwards until it hits
      * current section. Then it erases content it crawled through. Optionally, it erases part of current section too.
+	 * 在初始阶段，游标位于流输出的末尾。
      */
     private function popStreamContentUntilCurrentSection(int $numberOfLinesToClearFromCurrentSection = 0): string
     {
@@ -136,8 +142,8 @@ class ConsoleSectionOutput extends StreamOutput
         return implode('', array_reverse($erasedContent));
     }
 
-    private function getDisplayLength(string $text): string
+    private function getDisplayLength(string $text): int
     {
-        return Helper::strlenWithoutDecoration($this->getFormatter(), str_replace("\t", '        ', $text));
+        return Helper::width(Helper::removeDecoration($this->getFormatter(), str_replace("\t", '        ', $text)));
     }
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Routing，匹配程序，可追踪的Url匹配器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * TraceableUrlMatcher helps debug path info matching by tracing the match.
+ * TraceableUrlMatcher通过跟踪匹配来帮助调试路径信息匹配。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -29,7 +33,7 @@ class TraceableUrlMatcher extends UrlMatcher
 
     protected $traces;
 
-    public function getTraces($pathinfo)
+    public function getTraces(string $pathinfo)
     {
         $this->traces = [];
 
@@ -50,7 +54,7 @@ class TraceableUrlMatcher extends UrlMatcher
         return $traces;
     }
 
-    protected function matchCollection($pathinfo, RouteCollection $routes)
+    protected function matchCollection(string $pathinfo, RouteCollection $routes)
     {
         // HEAD and GET are equivalent as per RFC
         if ('HEAD' === $method = $this->context->getMethod()) {
@@ -152,7 +156,7 @@ class TraceableUrlMatcher extends UrlMatcher
         return [];
     }
 
-    private function addTrace(string $log, int $level = self::ROUTE_DOES_NOT_MATCH, string $name = null, Route $route = null)
+    private function addTrace(string $log, int $level = self::ROUTE_DOES_NOT_MATCH, ?string $name = null, ?Route $route = null)
     {
         $this->traces[] = [
             'log' => $log,

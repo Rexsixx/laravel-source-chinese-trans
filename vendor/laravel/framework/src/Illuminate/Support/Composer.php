@@ -1,6 +1,6 @@
 <?php
 /**
- * 支持，Composer
+ * Illuminate，支持，作曲家
  */
 
 namespace Illuminate\Support;
@@ -29,7 +29,7 @@ class Composer
 
     /**
      * Create a new Composer manager instance.
-	 * 创建新的管理实例
+	 * 创建新的Composer管理器实例
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @param  string|null  $workingPath
@@ -46,7 +46,7 @@ class Composer
 	 * 重新生成Composer自动加载器文件
      *
      * @param  string|array  $extra
-     * @return void
+     * @return int
      */
     public function dumpAutoloads($extra = '')
     {
@@ -54,23 +54,23 @@ class Composer
 
         $command = array_merge($this->findComposer(), ['dump-autoload'], $extra);
 
-        $this->getProcess($command)->run();
+        return $this->getProcess($command)->run();
     }
 
     /**
      * Regenerate the optimized Composer autoloader files.
 	 * 重新生成优化的Composer自动加载器文件
      *
-     * @return void
+     * @return int
      */
     public function dumpOptimized()
     {
-        $this->dumpAutoloads('--optimize');
+        return $this->dumpAutoloads('--optimize');
     }
 
     /**
      * Get the composer command for the environment.
-	 * 得到环境的编写器命令
+	 * 获取环境的编写器命令
      *
      * @return array
      */
@@ -85,7 +85,7 @@ class Composer
 
     /**
      * Get the PHP binary.
-	 * 得到PHP二进制
+	 * 得到PHP类
      *
      * @return string
      */

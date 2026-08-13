@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，进程，输入流
+ * Symfony，Component，Process，输入流
  */
 
 /*
@@ -18,8 +18,11 @@ use Symfony\Component\Process\Exception\RuntimeException;
 
 /**
  * Provides a way to continuously write to the input of a Process until the InputStream is closed.
+ * 提供一种持续写入进程输入的方法，直到InputStream关闭。
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ *
+ * @implements \IteratorAggregate<int, string>
  */
 class InputStream implements \IteratorAggregate
 {
@@ -30,14 +33,16 @@ class InputStream implements \IteratorAggregate
 
     /**
      * Sets a callback that is called when the write buffer becomes empty.
+	 * 设置当写缓冲区变为空时调用的回调函数
      */
-    public function onEmpty(callable $onEmpty = null)
+    public function onEmpty(?callable $onEmpty = null)
     {
         $this->onEmpty = $onEmpty;
     }
 
     /**
      * Appends an input to the write buffer.
+	 * 将输入追加到写缓冲区
      *
      * @param resource|string|int|float|bool|\Traversable|null $input The input to append as scalar,
      *                                                                stream resource or \Traversable
@@ -55,6 +60,7 @@ class InputStream implements \IteratorAggregate
 
     /**
      * Closes the write buffer.
+	 * 关闭写缓冲区
      */
     public function close()
     {
@@ -63,6 +69,7 @@ class InputStream implements \IteratorAggregate
 
     /**
      * Tells whether the write buffer is closed or not.
+	 * 告诉写缓冲区是否关闭
      */
     public function isClosed()
     {
@@ -70,7 +77,7 @@ class InputStream implements \IteratorAggregate
     }
 
     /**
-     * @return \Traversable
+     * @return \Traversable<int, string>
      */
     #[\ReturnTypeWillChange]
     public function getIterator()

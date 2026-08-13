@@ -1,6 +1,6 @@
 <?php
 /**
- * Session，存储
+ * Illuminate，Session，存储
  */
 
 namespace Illuminate\Session;
@@ -16,7 +16,7 @@ class Store implements Session
 {
     /**
      * The session ID.
-	 * 会话ID 
+	 * Session ID
      *
      * @var string
      */
@@ -24,7 +24,7 @@ class Store implements Session
 
     /**
      * The session name.
-	 * 会话名
+	 * session名称
      *
      * @var string
      */
@@ -56,7 +56,7 @@ class Store implements Session
 
     /**
      * Create a new session instance.
-	 * 创建新的会话实例
+	 * 创建新的session实例
      *
      * @param  string  $name
      * @param  \SessionHandlerInterface  $handler
@@ -89,7 +89,7 @@ class Store implements Session
 
     /**
      * Load the session data from the handler.
-	 * 加载会话数据从处理程序
+	 * 从处理程序加载会话数据
      *
      * @return void
      */
@@ -100,7 +100,7 @@ class Store implements Session
 
     /**
      * Read the session data from the handler.
-	 * 读取会话数据从处理程序
+	 * 从处理程序读取会话数据
      *
      * @return array
      */
@@ -131,7 +131,7 @@ class Store implements Session
 
     /**
      * Save the session data to storage.
-	 * 保存会话数据至存储
+	 * 将会话数据保存到存储中
      *
      * @return void
      */
@@ -175,7 +175,7 @@ class Store implements Session
 
     /**
      * Get all of the session data.
-	 * 得到所有会话数据
+	 * 获取所有会话数据
      *
      * @return array
      */
@@ -186,7 +186,7 @@ class Store implements Session
 
     /**
      * Get a subset of the session data.
-	 * 得到会话数据的子集
+	 * 获取会话数据的子集
      *
      * @param  array  $keys
      * @return array
@@ -213,6 +213,18 @@ class Store implements Session
     }
 
     /**
+     * Determine if the given key is missing from the session data.
+	 * 确定会话数据中是否缺少给定的键
+     *
+     * @param  string|array  $key
+     * @return bool
+     */
+    public function missing($key)
+    {
+        return ! $this->exists($key);
+    }
+
+    /**
      * Checks if a key is present and not null.
 	 * 检查键是否存在且不为空
      *
@@ -228,7 +240,7 @@ class Store implements Session
 
     /**
      * Get an item from the session.
-	 * 得到一个项目从会话中
+	 * 从会话中获取一个项目
      *
      * @param  string  $key
      * @param  mixed  $default
@@ -241,10 +253,10 @@ class Store implements Session
 
     /**
      * Get the value of a given key and then forget it.
-	 * 得到给定键的值，然后忘记它。
+	 * 获取给定键的值，然后忘记它。
      *
      * @param  string  $key
-     * @param  string|null  $default
+     * @param  mixed  $default
      * @return mixed
      */
     public function pull($key, $default = null)
@@ -268,7 +280,7 @@ class Store implements Session
 
     /**
      * Get the requested item from the flashed input array.
-	 * 得到请求的项从闪过的输入数组中
+	 * 从闪过的输入数组中获取请求的项
      *
      * @param  string|null  $key
      * @param  mixed  $default
@@ -485,7 +497,7 @@ class Store implements Session
 
     /**
      * Remove one or many items from the session.
-	 * 从会话中删除一个或多个项目。
+	 * 从会话中删除一个或多个项目
      *
      * @param  string|array  $keys
      * @return void
@@ -521,7 +533,7 @@ class Store implements Session
 
     /**
      * Generate a new session identifier.
-	 * 生成新的会话标识符
+	 * 生成一个新的会话标识符
      *
      * @param  bool  $destroy
      * @return bool
@@ -535,7 +547,7 @@ class Store implements Session
 
     /**
      * Generate a new session ID for the session.
-	 * 生成一个新的会话ID为会话
+	 * 为会话生成一个新的会话ID
      *
      * @param  bool  $destroy
      * @return bool
@@ -566,7 +578,7 @@ class Store implements Session
 
     /**
      * Get the name of the session.
-	 * 得到会话的名称
+	 * 获取会话的名称
      *
      * @return string
      */
@@ -589,7 +601,7 @@ class Store implements Session
 
     /**
      * Get the current session ID.
-	 * 得到当前会话ID
+	 * 获取当前会话ID
      *
      * @return string
      */
@@ -624,7 +636,7 @@ class Store implements Session
 
     /**
      * Get a new, random session ID.
-	 * 得到一个新的随机的会话ID
+	 * 获取一个新的、随机的会话ID。
      *
      * @return string
      */
@@ -635,7 +647,7 @@ class Store implements Session
 
     /**
      * Set the existence of the session on the handler if applicable.
-	 * 如果适用，设置会话的存在性在处理程序上。
+	 * 如果适用，在处理程序上设置会话的存在性。
      *
      * @param  bool  $value
      * @return void
@@ -649,7 +661,7 @@ class Store implements Session
 
     /**
      * Get the CSRF token value.
-	 * 得到CSRF令牌值
+	 * 获取CSRF令牌值
      *
      * @return string
      */
@@ -671,7 +683,7 @@ class Store implements Session
 
     /**
      * Get the previous URL from the session.
-	 * 得到前一个URL从会话中
+	 * 从会话中获取前一个URL
      *
      * @return string|null
      */
@@ -693,8 +705,19 @@ class Store implements Session
     }
 
     /**
+     * Specify that the user has confirmed their password.
+	 * 指定用户已确认其密码
+     *
+     * @return void
+     */
+    public function passwordConfirmed()
+    {
+        $this->put('auth.password_confirmed_at', time());
+    }
+
+    /**
      * Get the underlying session handler implementation.
-	 * 得到底层会话处理程序实现
+	 * 获取底层会话处理程序实现
      *
      * @return \SessionHandlerInterface
      */
@@ -716,7 +739,7 @@ class Store implements Session
 
     /**
      * Set the request on the handler instance.
-	 * 设置请求在处理程序实例上
+	 * 在处理程序实例上设置请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void

@@ -1,6 +1,6 @@
 <?php
 /**
- * Doctrine，偏转器，规则，规则集
+ * Doctrine，Inflector，规则，规则集
  */
 
 declare(strict_types=1);

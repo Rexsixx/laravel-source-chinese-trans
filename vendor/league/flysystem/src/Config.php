@@ -13,12 +13,13 @@ class Config
     protected $settings = [];
 
     /**
-     * @var Config
+     * @var Config|null
      */
     protected $fallback;
 
     /**
      * Constructor.
+	 * 构造方法
      *
      * @param array $settings
      */
@@ -29,6 +30,7 @@ class Config
 
     /**
      * Get a setting.
+	 * 设置一个设置
      *
      * @param string $key
      * @param mixed  $default
@@ -46,6 +48,7 @@ class Config
 
     /**
      * Check if an item exists by key.
+	 * 检查一个项目是否有关键
      *
      * @param string $key
      *
@@ -64,6 +67,7 @@ class Config
 
     /**
      * Try to retrieve a default setting from a config fallback.
+	 * 试着从配置回退中检索默认设置
      *
      * @param string $key
      * @param mixed  $default
@@ -81,6 +85,7 @@ class Config
 
     /**
      * Set a setting.
+	 * 设置一个设置
      *
      * @param string $key
      * @param mixed  $value
@@ -96,6 +101,7 @@ class Config
 
     /**
      * Set the fallback.
+	 * 设置回退
      *
      * @param Config $fallback
      *

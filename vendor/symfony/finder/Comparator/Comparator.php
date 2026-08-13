@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，探测器，比较器，Comparator
+ * Symfony，Component，Finder，比较器
  */
 
 /*
@@ -15,8 +15,6 @@
 namespace Symfony\Component\Finder\Comparator;
 
 /**
- * Comparator.
- *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class Comparator
@@ -24,30 +22,46 @@ class Comparator
     private $target;
     private $operator = '==';
 
+    public function __construct(?string $target = null, string $operator = '==')
+    {
+        if (null === $target) {
+            trigger_deprecation('symfony/finder', '5.4', 'Constructing a "%s" without setting "$target" is deprecated.', __CLASS__);
+        }
+
+        $this->target = $target;
+        $this->doSetOperator($operator);
+    }
+
     /**
      * Gets the target value.
+	 * 获取目标值
      *
-     * @return string The target value
+     * @return string
      */
     public function getTarget()
     {
+        if (null === $this->target) {
+            trigger_deprecation('symfony/finder', '5.4', 'Calling "%s" without initializing the target is deprecated.', __METHOD__);
+        }
+
         return $this->target;
     }
 
     /**
-     * Sets the target value.
-     *
-     * @param string $target The target value
+     * @deprecated set the target via the constructor instead
      */
-    public function setTarget($target)
+    public function setTarget(string $target)
     {
+        trigger_deprecation('symfony/finder', '5.4', '"%s" is deprecated. Set the target via the constructor instead.', __METHOD__);
+
         $this->target = $target;
     }
 
     /**
      * Gets the comparison operator.
+	 * 获取比较运算符
      *
-     * @return string The operator
+     * @return string
      */
     public function getOperator()
     {
@@ -56,26 +70,22 @@ class Comparator
 
     /**
      * Sets the comparison operator.
-     *
-     * @param string $operator A valid operator
+	 * 设置比较运算符
      *
      * @throws \InvalidArgumentException
+     *
+     * @deprecated set the operator via the constructor instead
      */
-    public function setOperator($operator)
+    public function setOperator(string $operator)
     {
-        if (!$operator) {
-            $operator = '==';
-        }
+        trigger_deprecation('symfony/finder', '5.4', '"%s" is deprecated. Set the operator via the constructor instead.', __METHOD__);
 
-        if (!\in_array($operator, ['>', '<', '>=', '<=', '==', '!='])) {
-            throw new \InvalidArgumentException(sprintf('Invalid operator "%s".', $operator));
-        }
-
-        $this->operator = $operator;
+        $this->doSetOperator('' === $operator ? '==' : $operator);
     }
 
     /**
      * Tests against the target.
+	 * 针对目标进行测试
      *
      * @param mixed $test A test value
      *
@@ -83,6 +93,10 @@ class Comparator
      */
     public function test($test)
     {
+        if (null === $this->target) {
+            trigger_deprecation('symfony/finder', '5.4', 'Calling "%s" without initializing the target is deprecated.', __METHOD__);
+        }
+
         switch ($this->operator) {
             case '>':
                 return $test > $this->target;
@@ -97,5 +111,14 @@ class Comparator
         }
 
         return $test == $this->target;
+    }
+
+    private function doSetOperator(string $operator): void
+    {
+        if (!\in_array($operator, ['>', '<', '>=', '<=', '==', '!='])) {
+            throw new \InvalidArgumentException(sprintf('Invalid operator "%s".', $operator));
+        }
+
+        $this->operator = $operator;
     }
 }

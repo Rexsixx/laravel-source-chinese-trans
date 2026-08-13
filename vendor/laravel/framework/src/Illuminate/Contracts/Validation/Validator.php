@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，验证接口
+ * Illuminate，契约，验证，验证器
  */
 
 namespace Illuminate\Contracts\Validation;
@@ -11,23 +11,27 @@ interface Validator extends MessageProvider
 {
     /**
      * Run the validator's rules against its data.
-	 * 运行验证器规则
+	 * 针对其数据运行验证器的规则
      *
      * @return array
+     *
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function validate();
 
     /**
      * Get the attributes and values that were validated.
-	 * 得到被验证属性和值
+	 * 获取已验证的属性和值
      *
      * @return array
+     *
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function validated();
 
     /**
      * Determine if the data fails the validation rules.
-	 * 确定是否验证规则失败
+	 * 确定数据是否不符合验证规则
      *
      * @return bool
      */
@@ -54,7 +58,7 @@ interface Validator extends MessageProvider
 
     /**
      * Add an after validation callback.
-	 * 添加一个验证回调
+	 * 添加一个验证后回调
      *
      * @param  callable|string  $callback
      * @return $this
@@ -63,7 +67,7 @@ interface Validator extends MessageProvider
 
     /**
      * Get all of the validation error messages.
-	 * 得到所有验证错误消息
+	 * 获取所有验证错误消息
      *
      * @return \Illuminate\Support\MessageBag
      */

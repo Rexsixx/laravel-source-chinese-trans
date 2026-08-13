@@ -1,6 +1,6 @@
 <?php
 /**
- * 视图，视图异常
+ * Illuminate，视图，视图异常
  */
 
 namespace Illuminate\View;
@@ -30,7 +30,7 @@ class ViewException extends ErrorException
 
     /**
      * Render the exception into an HTTP response.
-	 * 呈现异常至HTTP响应
+	 * 将异常呈现为HTTP响应
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，Util，Misc
+ * Whoops，工具，混杂的
  */
 
 /**
@@ -14,7 +14,7 @@ class Misc
 {
     /**
      * Can we at this point in time send HTTP headers?
-	 * 我们现在可以发送HTTP报头吗？
+	 * 在这个时候,我们能发送HTTP头吗?
      *
      * Currently this checks if we are even serving an HTTP request,
      * as opposed to running from a command line.
@@ -37,6 +37,7 @@ class Misc
 
     /**
      * Check, if possible, that this execution was triggered by a command line.
+	 * 如果可能的话,检查这个执行是由命令行触发的。
      * @return bool
      */
     public static function isCommandLine()
@@ -46,6 +47,7 @@ class Misc
 
     /**
      * Translate ErrorException code into the represented constant.
+	 * 将ErrorException代码转换为表示的常量
      *
      * @param int $error_code
      * @return string
@@ -65,6 +67,7 @@ class Misc
     
     /**
      * Determine if an error level is fatal (halts execution)
+	 * 确定错误级别是否为致命(halts执行)
      *
      * @param int $level
      * @return bool

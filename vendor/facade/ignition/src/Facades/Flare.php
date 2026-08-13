@@ -1,15 +1,15 @@
 <?php
 /**
- * 门面，Ignition，门面，Flare
+ * Facade，Ignition，门面，Flare
  */
 
 namespace Facade\Ignition\Facades;
 
+use Facade\Ignition\Support\SentReports;
 use Illuminate\Support\Facades\Facade;
 
 /**
  * Class Flare.
- * 类 Flare
  *
  * @method static void glow(string $name, string $messageLevel = \Facade\FlareClient\Enums\MessageLevels::INFO, array $metaData = [])
  * @method static void context($key, $value)
@@ -21,6 +21,11 @@ class Flare extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'flare.client';
+        return \Facade\FlareClient\Flare::class;
+    }
+
+    public static function sentReports(): SentReports
+    {
+        return app(SentReports::class);
     }
 }

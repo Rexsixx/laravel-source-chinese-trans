@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，查询，连接条款
+ * Illuminate，数据库，查询，加入条款
  */
 
 namespace Illuminate\Database\Query;
@@ -59,7 +59,7 @@ class JoinClause extends Builder
 
     /**
      * Create a new join clause instance.
-	 * 创建新的连接子句实例
+	 * 创建一个新的连接子句实例
      *
      * @param  \Illuminate\Database\Query\Builder  $parentQuery
      * @param  string  $type
@@ -85,6 +85,7 @@ class JoinClause extends Builder
 	 * 向联接添加一个"on"子句
      *
      * On clauses can be chained, e.g.
+	 * On子句可以连接起来，例如：
      *
      *  $join->on('contacts.user_id', '=', 'users.id')
      *       ->on('contacts.info_id', '=', 'info.id')
@@ -116,7 +117,7 @@ class JoinClause extends Builder
      *
      * @param  \Closure|string  $first
      * @param  string|null  $operator
-     * @param  string|null  $second
+     * @param  \Illuminate\Database\Query\Expression|string|null  $second
      * @return \Illuminate\Database\Query\JoinClause
      */
     public function orOn($first, $operator = null, $second = null)
@@ -126,7 +127,7 @@ class JoinClause extends Builder
 
     /**
      * Get a new instance of the join clause builder.
-	 * 得到连接子句构建器的新实例
+	 * 获取连接子句构建器的新实例
      *
      * @return \Illuminate\Database\Query\JoinClause
      */
@@ -137,7 +138,7 @@ class JoinClause extends Builder
 
     /**
      * Create a new query instance for sub-query.
-	 * 创建新的查询实例为子查询
+	 * 为子查询创建一个新的查询实例
      *
      * @return \Illuminate\Database\Query\Builder
      */
@@ -148,7 +149,7 @@ class JoinClause extends Builder
 
     /**
      * Create a new parent query instance.
-	 * 创建新的父查询实例
+	 * 创建一个新的父查询实例
      *
      * @return \Illuminate\Database\Query\Builder
      */

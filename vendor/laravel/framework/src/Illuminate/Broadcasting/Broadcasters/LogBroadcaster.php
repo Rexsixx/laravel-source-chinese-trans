@@ -1,6 +1,6 @@
 <?php
 /**
- * 广播，Log广播
+ * Illuminate，广播，广播员，日志广播
  */
 
 namespace Illuminate\Broadcasting\Broadcasters;
@@ -11,7 +11,7 @@ class LogBroadcaster extends Broadcaster
 {
     /**
      * The logger implementation.
-	 * 日志实现
+	 * 日志记录器实现
      *
      * @var \Psr\Log\LoggerInterface
      */

@@ -1,44 +1,33 @@
 <?php
 /**
- * 门面，Ignition，Views，编译器，Blade 源映射编译器
+ * Facade，Ignition，视图，编译器，Blade 源地图编译器
  */
 
 namespace Facade\Ignition\Views\Compilers;
 
+use ErrorException;
 use Illuminate\View\Compilers\BladeCompiler;
 
 class BladeSourceMapCompiler extends BladeCompiler
 {
     public function detectLineNumber(string $filename, int $exceptionLineNumber): int
     {
-        $map = $this->compileString(file_get_contents($filename));
+        try {
+            $map = $this->compileString(file_get_contents($filename));
+        } catch (ErrorException $e) {
+            return 1;
+        }
+
         $map = explode("\n", $map);
 
-        $line = $map[$exceptionLineNumber - $this->getExceptionLineOffset()] ?? $exceptionLineNumber;
+        $line = $map[$exceptionLineNumber - 1] ?? $exceptionLineNumber;
         $pattern = '/\|---LINE:([0-9]+)---\|/m';
 
-        if (preg_match($pattern, $line, $matches)) {
-            return $matches[1];
+        if (preg_match($pattern, (string)$line, $matches)) {
+            return (int)$matches[1];
         }
 
         return $exceptionLineNumber;
-    }
-
-    protected function getExceptionLineOffset(): int
-    {
-        /*
-         * Laravel 5.8.0- 5.8.9 added the view name as a comment in the compiled view on a new line.
-         * That's why the offset to detect the correct line number must be 2 instead of 1.
-		 * Laravel 5.8.0- 5.8.9在编译视图的新行中添加了视图名作为注释。
-		 * 这就是为什么检测正确行号的偏移量必须是2而不是1的原因。
-         */
-        if (version_compare(app()->version(), '5.8.0', '>=') &&
-            version_compare(app()->version(), '5.8.9', '<=')
-        ) {
-            return 2;
-        }
-
-        return 1;
     }
 
     public function compileString($value)

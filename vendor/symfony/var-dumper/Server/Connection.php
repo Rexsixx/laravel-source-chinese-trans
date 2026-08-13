@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，服务，连接
+ * Symfony，Component，VarDumper，服务器，连接
  */
 
 /*
@@ -19,7 +19,7 @@ use Symfony\Component\VarDumper\Dumper\ContextProvider\ContextProviderInterface;
 
 /**
  * Forwards serialized Data clones to a server.
- * 将序列化的数据克隆转发给服务器。
+ * 将序列化的数据克隆转发到服务器。
  *
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
  */
@@ -27,6 +27,10 @@ class Connection
 {
     private $host;
     private $contextProviders;
+
+    /**
+     * @var resource|null
+     */
     private $socket;
 
     /**
@@ -91,7 +95,7 @@ class Connection
     {
         set_error_handler([self::class, 'nullErrorHandler']);
         try {
-            return stream_socket_client($this->host, $errno, $errstr, 3, \STREAM_CLIENT_CONNECT | \STREAM_CLIENT_ASYNC_CONNECT);
+            return stream_socket_client($this->host, $errno, $errstr, 3);
         } finally {
             restore_error_handler();
         }

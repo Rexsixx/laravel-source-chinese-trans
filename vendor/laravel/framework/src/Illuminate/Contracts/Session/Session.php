@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，SESSION接口
+ * Illuminate，契约，Session，会话
  */
 
 namespace Illuminate\Contracts\Session;
@@ -9,15 +9,24 @@ interface Session
 {
     /**
      * Get the name of the session.
-	 * 得到SESSION的名称
+	 * 获取会话的名称
      *
      * @return string
      */
     public function getName();
 
     /**
+     * Set the name of the session.
+	 * 设置会话名称
+     *
+     * @param  string  $name
+     * @return void
+     */
+    public function setName($name);
+
+    /**
      * Get the current session ID.
-	 * 得到SESSION的ID
+	 * 获取当前会话ID
      *
      * @return string
      */
@@ -25,7 +34,7 @@ interface Session
 
     /**
      * Set the session ID.
-	 * 设置SESSION的ID
+	 * 设置会话ID
      *
      * @param  string  $id
      * @return void
@@ -34,7 +43,7 @@ interface Session
 
     /**
      * Start the session, reading the data from a handler.
-	 * 开始一个SESSION，从处理程序读取数据。
+	 * 启动会话，从处理程序读取数据。
      *
      * @return bool
      */
@@ -42,7 +51,7 @@ interface Session
 
     /**
      * Save the session data to storage.
-	 * 保存SESSION至存储
+	 * 将会话数据保存到存储中。
      *
      * @return void
      */
@@ -50,7 +59,7 @@ interface Session
 
     /**
      * Get all of the session data.
-	 * 得到所有的SESSION数据
+	 * 获取所有会话数据
      *
      * @return array
      */
@@ -58,7 +67,7 @@ interface Session
 
     /**
      * Checks if a key exists.
-	 * 检查KEY是否存在
+	 * 检查是否存在密钥
      *
      * @param  string|array  $key
      * @return bool
@@ -67,7 +76,7 @@ interface Session
 
     /**
      * Checks if a key is present and not null.
-	 * 检查一个KEY是否存在且不为空
+	 * 检查键是否存在且不为空
      *
      * @param  string|array  $key
      * @return bool
@@ -76,7 +85,7 @@ interface Session
 
     /**
      * Get an item from the session.
-	 * 得到一个项目从SESSION
+	 * 从会话中获取一个项目
      *
      * @param  string  $key
      * @param  mixed  $default
@@ -85,8 +94,18 @@ interface Session
     public function get($key, $default = null);
 
     /**
+     * Get the value of a given key and then forget it.
+	 * 获取给定键的值，然后忘记它。
+     *
+     * @param  string  $key
+     * @param  mixed  $default
+     * @return mixed
+     */
+    public function pull($key, $default = null);
+
+    /**
      * Put a key / value pair or array of key / value pairs in the session.
-	 * 推入键值入SESSION按键值对
+	 * 在会话中放入一个键/值对或键/值对数组
      *
      * @param  string|array  $key
      * @param  mixed  $value
@@ -96,15 +115,23 @@ interface Session
 
     /**
      * Get the CSRF token value.
-	 * 得到CSRF token值
+	 * 获取CSRF令牌值
      *
      * @return string
      */
     public function token();
 
     /**
+     * Regenerate the CSRF token value.
+	 * 重新生成CSRF令牌值
+     *
+     * @return void
+     */
+    public function regenerateToken();
+
+    /**
      * Remove an item from the session, returning its value.
-	 * 移除项从SESSION中
+	 * 从会话中删除项，返回其值
      *
      * @param  string  $key
      * @return mixed
@@ -113,7 +140,7 @@ interface Session
 
     /**
      * Remove one or many items from the session.
-	 * 移除多个项从SESSION中
+	 * 从会话中删除一个或多个项目
      *
      * @param  string|array  $keys
      * @return void
@@ -122,15 +149,32 @@ interface Session
 
     /**
      * Remove all of the items from the session.
-	 * 清空SESSION，移除所有项从SESSION中
+	 * 从会话中删除所有项
      *
      * @return void
      */
     public function flush();
 
     /**
+     * Flush the session data and regenerate the ID.
+	 * 刷新会话数据并重新生成ID
+     *
+     * @return bool
+     */
+    public function invalidate();
+
+    /**
+     * Generate a new session identifier.
+	 * 生成一个新的会话标识符
+     *
+     * @param  bool  $destroy
+     * @return bool
+     */
+    public function regenerate($destroy = false);
+
+    /**
      * Generate a new session ID for the session.
-	 * 生成一个新的SESSIONID
+	 * 为会话生成一个新的会话ID
      *
      * @param  bool  $destroy
      * @return bool
@@ -139,7 +183,7 @@ interface Session
 
     /**
      * Determine if the session has been started.
-	 * 确定是否SESSION已经开始
+	 * 确定会话是否已启动
      *
      * @return bool
      */
@@ -147,7 +191,7 @@ interface Session
 
     /**
      * Get the previous URL from the session.
-	 * 从会话中获得前一个URL
+	 * 从会话中获取前一个URL
      *
      * @return string|null
      */
@@ -155,7 +199,7 @@ interface Session
 
     /**
      * Set the "previous" URL in the session.
-	 * 设置前一个URl在SESSION中
+	 * 设置会话中的"前一个"URL
      *
      * @param  string  $url
      * @return void
@@ -164,7 +208,7 @@ interface Session
 
     /**
      * Get the session handler instance.
-	 * 得到SESSION处理实例
+	 * 获取会话处理程序实例
      *
      * @return \SessionHandlerInterface
      */
@@ -172,7 +216,7 @@ interface Session
 
     /**
      * Determine if the session handler needs a request.
-	 * 确定是否SESSION处理需要请求
+	 * 确定会话处理程序是否需要请求
      *
      * @return bool
      */
@@ -180,7 +224,7 @@ interface Session
 
     /**
      * Set the request on the handler instance.
-	 * 设置请求处理实例
+	 * 在处理程序实例上设置请求
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void

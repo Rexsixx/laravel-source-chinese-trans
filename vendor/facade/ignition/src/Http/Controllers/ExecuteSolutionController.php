@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，Http，控制器，执行解决方案控制器
+ * Facade，Ignition，Http，控制器，执行控制器
  */
 
 namespace Facade\Ignition\Http\Controllers;

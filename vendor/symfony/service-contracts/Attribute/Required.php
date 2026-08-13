@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，服务，属性，必需的
+ * Symfony，Component，Service，属性，需要
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Contracts\Service\Attribute;
 
 /**
  * A required dependency.
+ * 必需的依赖项。
  *
  * This attribute indicates that a property holds a required dependency. The annotated property or method should be
  * considered during the instantiation process of the containing class.

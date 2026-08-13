@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Translation，转储，Json 文件转储器
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * JsonFileDumper generates an json formatted string representation of a message catalogue.
+ * JsonFileDumper生成一个消息目录的json格式的字符串表示。
  *
  * @author singles
  */
@@ -23,7 +27,7 @@ class JsonFileDumper extends FileDumper
     /**
      * {@inheritdoc}
      */
-    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = [])
+    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = [])
     {
         $flags = $options['json_encoding'] ?? \JSON_PRETTY_PRINT;
 

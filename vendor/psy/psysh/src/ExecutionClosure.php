@@ -1,12 +1,12 @@
 <?php
 /**
- * Psy，执行关闭
+ * Psy，执行闭包
  */
 
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2023 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,12 +16,13 @@ namespace Psy;
 
 /**
  * The Psy Shell's execution scope.
+ * Psy Shell的执行范围。
  */
 class ExecutionClosure
 {
     const NOOP_INPUT = 'return null;';
 
-    private $closure;
+    private \Closure $closure;
 
     /**
      * @param Shell $__psysh__
@@ -65,6 +66,7 @@ class ExecutionClosure
 
     /**
      * Set the closure instance.
+	 * 设置闭包实例
      *
      * @param Shell    $shell
      * @param \Closure $closure
@@ -82,6 +84,7 @@ class ExecutionClosure
 
     /**
      * Go go gadget closure.
+	 * Go Go gadget关闭
      *
      * @return mixed
      */

@@ -1,41 +1,31 @@
 <?php
 /**
- * 支持，环境配置
+ * Illuminate，支持，环境变量
  */
 
 namespace Illuminate\Support;
 
-use Dotenv\Environment\Adapter\EnvConstAdapter;
-use Dotenv\Environment\Adapter\PutenvAdapter;
-use Dotenv\Environment\Adapter\ServerConstAdapter;
-use Dotenv\Environment\DotenvFactory;
+use Dotenv\Repository\Adapter\PutenvAdapter;
+use Dotenv\Repository\RepositoryBuilder;
 use PhpOption\Option;
 
 class Env
 {
     /**
      * Indicates if the putenv adapter is enabled.
-	 * 确定是否写环境是否启用
+	 * 显示putenv适配器是否已启用
      *
      * @var bool
      */
     protected static $putenv = true;
 
     /**
-     * The environment factory instance.
-	 * 环境工厂实例
+     * The environment repository instance.
+	 * 环境存储库实例
      *
-     * @var \Dotenv\Environment\FactoryInterface|null
+     * @var \Dotenv\Repository\RepositoryInterface|null
      */
-    protected static $factory;
-
-    /**
-     * The environment variables instance.
-	 * 环境变更实例
-     *
-     * @var \Dotenv\Environment\VariablesInterface|null
-     */
-    protected static $variables;
+    protected static $repository;
 
     /**
      * Enable the putenv adapter.
@@ -46,8 +36,7 @@ class Env
     public static function enablePutenv()
     {
         static::$putenv = true;
-        static::$factory = null;
-        static::$variables = null;
+        static::$repository = null;
     }
 
     /**
@@ -59,48 +48,33 @@ class Env
     public static function disablePutenv()
     {
         static::$putenv = false;
-        static::$factory = null;
-        static::$variables = null;
+        static::$repository = null;
     }
 
     /**
-     * Get the environment factory instance.
-	 * 得到环境工厂实例
+     * Get the environment repository instance.
+	 * 获取环境存储库实例
      *
-     * @return \Dotenv\Environment\FactoryInterface
+     * @return \Dotenv\Repository\RepositoryInterface
      */
-    public static function getFactory()
+    public static function getRepository()
     {
-        if (static::$factory === null) {
-            $adapters = array_merge(
-                [new EnvConstAdapter, new ServerConstAdapter],
-                static::$putenv ? [new PutenvAdapter] : []
-            );
+        if (static::$repository === null) {
+            $builder = RepositoryBuilder::createWithDefaultAdapters();
 
-            static::$factory = new DotenvFactory($adapters);
+            if (static::$putenv) {
+                $builder = $builder->addAdapter(PutenvAdapter::class);
+            }
+
+            static::$repository = $builder->immutable()->make();
         }
 
-        return static::$factory;
-    }
-
-    /**
-     * Get the environment variables instance.
-	 * 得到环境变量实例
-     *
-     * @return \Dotenv\Environment\VariablesInterface
-     */
-    public static function getVariables()
-    {
-        if (static::$variables === null) {
-            static::$variables = static::getFactory()->createImmutable();
-        }
-
-        return static::$variables;
+        return static::$repository;
     }
 
     /**
      * Gets the value of an environment variable.
-	 * 得到环境变量值
+	 * 获取环境变量的值
      *
      * @param  string  $key
      * @param  mixed  $default
@@ -108,7 +82,7 @@ class Env
      */
     public static function get($key, $default = null)
     {
-        return Option::fromValue(static::getVariables()->get($key))
+        return Option::fromValue(static::getRepository()->get($key))
             ->map(function ($value) {
                 switch (strtolower($value)) {
                     case 'true':

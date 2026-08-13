@@ -1,8 +1,4 @@
 <?php
-/**
- * Hamcrest，文本，是字符串结束测试
- */
-
 namespace Hamcrest\Text;
 
 class StringEndsWithTest extends \Hamcrest\AbstractMatcherTest

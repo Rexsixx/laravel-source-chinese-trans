@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Mime，主体渲染器接口
+ * Symfony，Component，Mime，Body 渲染器接口
  */
 
 /*

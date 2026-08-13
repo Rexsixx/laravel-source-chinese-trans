@@ -1,13 +1,13 @@
 <?php
 /**
- * 基础，虚拟类根文件
+ * Illuminate，基础，控制台，存根，异常
  */
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
 use Exception;
 
-class DummyClass extends Exception
+class {{ class }} extends Exception
 {
     //
 }

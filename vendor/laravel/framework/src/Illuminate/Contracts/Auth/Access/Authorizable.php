@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，可授权的
+ * Illuminate，契约，认证，进入，可授权的
  */
 
 namespace Illuminate\Contracts\Auth\Access;
@@ -11,9 +11,9 @@ interface Authorizable
      * Determine if the entity has a given ability.
 	 * 确定实体是否具有给定的能力
      *
-     * @param  string  $ability
+     * @param  iterable|string  $abilities
      * @param  array|mixed  $arguments
      * @return bool
      */
-    public function can($ability, $arguments = []);
+    public function can($abilities, $arguments = []);
 }

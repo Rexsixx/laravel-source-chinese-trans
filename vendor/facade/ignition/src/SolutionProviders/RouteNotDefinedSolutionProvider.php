@@ -1,6 +1,6 @@
 <?php
 /**
- * 门面，Ignition，解决方案提供者，路由不定义解决方案提供者
+ * Facade，Ignition，解决方案提供程序，路由不定义解决方案提供者
  */
 
 namespace Facade\Ignition\SolutionProviders;
@@ -33,7 +33,7 @@ class RouteNotDefinedSolutionProvider implements HasSolutionsForThrowable
             }
         }
 
-        return preg_match(self::REGEX, $throwable->getMessage(), $matches);
+        return (bool)preg_match(self::REGEX, $throwable->getMessage(), $matches);
     }
 
     public function getSolutions(Throwable $throwable): array

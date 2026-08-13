@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Formatter，Mongo DB 格式化
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -17,6 +21,7 @@ use Monolog\Utils;
 
 /**
  * Formats a record for use with the MongoDBHandler.
+ * 格式化一条记录，以便与MongoDBHandler一起使用。
  *
  * @author Florian Plattner <me@florianplattner.de>
  */
@@ -143,6 +148,7 @@ class MongoDBFormatter implements FormatterInterface
 
     /**
      * This is needed to support MongoDB Driver v1.19 and below
+	 * 需要支持MongoDB驱动程序v1.19和以下
      *
      * See https://github.com/mongodb/mongo-php-driver/issues/426
      *

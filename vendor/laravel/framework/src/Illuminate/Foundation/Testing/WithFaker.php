@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，使用伪造者
+ * Illuminate，基础，测试，使用伪造者
  */
 
 namespace Illuminate\Foundation\Testing;
@@ -12,7 +12,7 @@ trait WithFaker
 {
     /**
      * The Faker instance.
-	 * 伪造实例
+	 * 伪造者实例
      *
      * @var \Faker\Generator
      */
@@ -20,7 +20,7 @@ trait WithFaker
 
     /**
      * Setup up the Faker instance.
-	 * 设置伪造实例
+	 * 设置Faker实例
      *
      * @return void
      */
@@ -31,7 +31,7 @@ trait WithFaker
 
     /**
      * Get the default Faker instance for a given locale.
-	 * 得到给定语言环境的默认Faker实例
+	 * 获取给定语言环境的默认Faker实例
      *
      * @param  string|null  $locale
      * @return \Faker\Generator
@@ -43,7 +43,7 @@ trait WithFaker
 
     /**
      * Create a Faker instance for the given locale.
-	 * 创建伪造实例
+	 * 为给定的语言环境创建一个Faker实例
      *
      * @param  string|null  $locale
      * @return \Faker\Generator

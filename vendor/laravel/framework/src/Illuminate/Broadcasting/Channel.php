@@ -1,15 +1,17 @@
 <?php
 /**
- * 广播，广播信道
+ * Illuminate，广播，通道
  */
 
 namespace Illuminate\Broadcasting;
+
+use Illuminate\Contracts\Broadcasting\HasBroadcastChannel;
 
 class Channel
 {
     /**
      * The channel's name.
-	 * 信道名
+	 * 通道名称
      *
      * @var string
      */
@@ -17,19 +19,19 @@ class Channel
 
     /**
      * Create a new channel instance.
-	 * 创建新的信道实例
+	 * 创建新的通道
      *
-     * @param  string  $name
+     * @param  \Illuminate\Contracts\Broadcasting\HasBroadcastChannel|string  $name
      * @return void
      */
     public function __construct($name)
     {
-        $this->name = $name;
+        $this->name = $name instanceof HasBroadcastChannel ? $name->broadcastChannel() : $name;
     }
 
     /**
      * Convert the channel instance to a string.
-	 * 转换信道实例为字符串
+	 * 转换通道实例为字符串
      *
      * @return string
      */

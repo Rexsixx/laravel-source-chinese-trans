@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，契约，服务，属性，已订阅服务
+ * Symfony，Component，Service，属性，已订阅服务
  */
 
 /*

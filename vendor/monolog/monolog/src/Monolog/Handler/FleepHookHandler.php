@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Monolog，处理程序，FleepHook 处理程序
+ * Monolog，Handler，Fleep Hook 处理程序
  */
 
 /*
@@ -21,6 +21,7 @@ use Monolog\Logger;
 
 /**
  * Sends logs to Fleep.io using Webhook integrations
+ * 向Fleep发送日志。使用Webhook集成。
  *
  * You'll need a Fleep.io account to use this handler.
  *
@@ -42,6 +43,7 @@ class FleepHookHandler extends SocketHandler
 
     /**
      * Construct a new Fleep.io Handler.
+	 * 构造一个新的Fleep。输入输出处理程序。
      *
      * For instructions on how to create a new web hook in your conversations
      * see https://fleep.io/integrations/webhooks/
@@ -80,6 +82,7 @@ class FleepHookHandler extends SocketHandler
 
     /**
      * Returns the default formatter to use with this handler
+	 * 返回与此处理程序一起使用的默认格式化程序
      *
      * Overloaded to remove empty context and extra arrays from the end of the log message.
      *
@@ -111,6 +114,7 @@ class FleepHookHandler extends SocketHandler
 
     /**
      * Builds the header of the API Call
+	 * 构建API调用的头文件
      */
     private function buildHeader(string $content): string
     {
@@ -125,6 +129,7 @@ class FleepHookHandler extends SocketHandler
 
     /**
      * Builds the body of API call
+	 * 构建API调用的主体
      *
      * @phpstan-param FormattedRecord $record
      */

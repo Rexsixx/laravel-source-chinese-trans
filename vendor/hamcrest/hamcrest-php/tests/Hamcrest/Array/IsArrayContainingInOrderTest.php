@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，数组，是否数组包含顺序测试
+ * Hamcrest，数组，数组是否包含任意顺序的测试
  */
 
 namespace Hamcrest\Arrays;

@@ -1,22 +1,25 @@
 <?php
 /**
- * 缓存，缓存文件存储
+ * Illuminate，缓存，文件存储
  */
 
 namespace Illuminate\Cache;
 
 use Exception;
+use Illuminate\Contracts\Cache\LockProvider;
 use Illuminate\Contracts\Cache\Store;
+use Illuminate\Contracts\Filesystem\LockTimeoutException;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Filesystem\LockableFile;
 use Illuminate\Support\InteractsWithTime;
 
-class FileStore implements Store
+class FileStore implements Store, LockProvider
 {
-    use InteractsWithTime, RetrievesMultipleKeys;
+    use InteractsWithTime, HasCacheLock, RetrievesMultipleKeys;
 
     /**
      * The Illuminate Filesystem instance.
-	 * 文件系统实例
+	 * Illuminate文件系统实例
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
@@ -32,7 +35,7 @@ class FileStore implements Store
 
     /**
      * Octal representation of the cache file permissions.
-	 * 缓存文件权限的八进制表示
+	 * 缓存文件权限的全局表示形式
      *
      * @var int|null
      */
@@ -56,7 +59,7 @@ class FileStore implements Store
 
     /**
      * Retrieve an item from the cache by key.
-	 * 检索项目从缓存中
+	 * 按键从缓存中检索项
      *
      * @param  string|array  $key
      * @return mixed
@@ -68,7 +71,7 @@ class FileStore implements Store
 
     /**
      * Store an item in the cache for a given number of seconds.
-	 * 将项目存入缓存中使用给定秒数
+	 * 将项存储在缓存中给定的秒数
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -84,7 +87,7 @@ class FileStore implements Store
         );
 
         if ($result !== false && $result > 0) {
-            $this->ensureFileHasCorrectPermissions($path);
+            $this->ensurePermissionsAreCorrect($path);
 
             return true;
         }
@@ -93,27 +96,73 @@ class FileStore implements Store
     }
 
     /**
+     * Store an item in the cache if the key doesn't exist.
+	 * 如果键不存在，则将项存储在缓存中。
+     *
+     * @param  string  $key
+     * @param  mixed  $value
+     * @param  int  $seconds
+     * @return bool
+     */
+    public function add($key, $value, $seconds)
+    {
+        $this->ensureCacheDirectoryExists($path = $this->path($key));
+
+        $file = new LockableFile($path, 'c+');
+
+        try {
+            $file->getExclusiveLock();
+        } catch (LockTimeoutException $e) {
+            $file->close();
+
+            return false;
+        }
+
+        $expire = $file->read(10);
+
+        if (empty($expire) || $this->currentTime() >= $expire) {
+            $file->truncate()
+                ->write($this->expiration($seconds).serialize($value))
+                ->close();
+
+            $this->ensurePermissionsAreCorrect($path);
+
+            return true;
+        }
+
+        $file->close();
+
+        return false;
+    }
+
+    /**
      * Create the file cache directory if necessary.
-	 * 创建文件缓存目录
+	 * 如果需要，创建文件缓存目录。
      *
      * @param  string  $path
      * @return void
      */
     protected function ensureCacheDirectoryExists($path)
     {
-        if (! $this->files->exists(dirname($path))) {
-            $this->files->makeDirectory(dirname($path), 0777, true, true);
+        $directory = dirname($path);
+
+        if (! $this->files->exists($directory)) {
+            $this->files->makeDirectory($directory, 0777, true, true);
+
+            // We're creating two levels of directories (e.g. 7e/24), so we check them both...
+            $this->ensurePermissionsAreCorrect($directory);
+            $this->ensurePermissionsAreCorrect(dirname($directory));
         }
     }
 
     /**
-     * Ensure the cache file has the correct permissions.
-	 * 确保缓存文件有正确的权限
+     * Ensure the created node has the correct permissions.
+	 * 确保创建的节点具有正确的权限
      *
      * @param  string  $path
      * @return void
      */
-    protected function ensureFileHasCorrectPermissions($path)
+    protected function ensurePermissionsAreCorrect($path)
     {
         if (is_null($this->filePermission) ||
             intval($this->files->chmod($path), 8) == $this->filePermission) {
@@ -155,7 +204,7 @@ class FileStore implements Store
 
     /**
      * Store an item in the cache indefinitely.
-	 * 存储项无限期地在缓存中
+	 * 将项无限期地存储在缓存中
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -168,7 +217,7 @@ class FileStore implements Store
 
     /**
      * Remove an item from the cache.
-	 * 移除单个缓存项目
+	 * 从缓存中删除项
      *
      * @param  string  $key
      * @return bool
@@ -184,7 +233,7 @@ class FileStore implements Store
 
     /**
      * Remove all items from the cache.
-	 * 移除所有缓存项目
+	 * 从缓存中删除所有项
      *
      * @return bool
      */
@@ -207,7 +256,7 @@ class FileStore implements Store
 
     /**
      * Retrieve an item and expiry time from the cache by key.
-	 * 检索项目和过期时间按键从缓存中
+	 * 按键从缓存中检索项和过期时间
      *
      * @param  string  $key
      * @return array
@@ -219,8 +268,8 @@ class FileStore implements Store
         // If the file doesn't exist, we obviously cannot return the cache so we will
         // just return null. Otherwise, we'll get the contents of the file and get
         // the expiration UNIX timestamps from the start of the file's contents.
-		// 如果文件不存在，我们显示不能返回缓存，因此我们只返回NULl。
-		// 否则，我们将获取文件的内容并获取从文件内容开始的到期UNIX时间戳。
+		// 如果文件不存在，我们显然不能返回缓存，所以我们会返回NULL。
+		// 否则，我们将获取文件的内容并获取从文件内容开始的过期UNIX时间戳。
         try {
             $expire = substr(
                 $contents = $this->files->get($path, true), 0, 10
@@ -232,8 +281,7 @@ class FileStore implements Store
         // If the current time is greater than expiration timestamps we will delete
         // the file and return null. This helps clean up the old files and keeps
         // this directory much cleaner for us as old files aren't hanging out.
-		// 如果当前时间大于过期时间戳，我们将删除文件并返回NULL。
-		// 这有助于清理旧文件并保持这个目录对我们来说要干净得多，因为旧文件不会挂在外面。
+		// 如果当前时间大于过期时间戳，我们将删除创建文件并返回null。
         if ($this->currentTime() >= $expire) {
             $this->forget($key);
 
@@ -251,9 +299,7 @@ class FileStore implements Store
         // Next, we'll extract the number of seconds that are remaining for a cache
         // so that we can properly retain the time for things like the increment
         // operation that may be performed on this cache on a later operation.
-		// 接下来，我们将提取缓存剩余秒数，
-		// 这样我们就可以正确地保留时间来处理增量等事情。
-		// 以致可以在以后的操作中对此缓存执行操作。
+		// 接下来，我们将提取缓存剩余的秒数，这样我们就可以适当地为增量之类的东西保留时间。
         $time = $expire - $this->currentTime();
 
         return compact('data', 'time');
@@ -261,7 +307,7 @@ class FileStore implements Store
 
     /**
      * Get a default empty payload for the cache.
-	 * 得到缓存的默认空有效负载
+	 * 获取缓存的默认空有效负载
      *
      * @return array
      */
@@ -272,7 +318,7 @@ class FileStore implements Store
 
     /**
      * Get the full path for the given cache key.
-	 * 得到给定缓存键的完整路径
+	 * 获取给定缓存键的完整路径
      *
      * @param  string  $key
      * @return string
@@ -311,7 +357,7 @@ class FileStore implements Store
 
     /**
      * Get the working directory of the cache.
-	 * 得到缓存的工作目录
+	 * 获取缓存的工作目录
      *
      * @return string
      */
@@ -322,7 +368,7 @@ class FileStore implements Store
 
     /**
      * Get the cache key prefix.
-	 * 得到缓存前缀
+	 * 获取缓存键前缀
      *
      * @return string
      */

@@ -1,10 +1,11 @@
 <?php
 /**
- * 数据库，迁移服务提供者
+ * Illuminate，数据库，迁移服务提供者
  */
 
 namespace Illuminate\Database;
 
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Database\Console\Migrations\FreshCommand;
 use Illuminate\Database\Console\Migrations\InstallCommand;
@@ -23,7 +24,7 @@ class MigrationServiceProvider extends ServiceProvider implements DeferrableProv
 {
     /**
      * The commands to be registered.
-	 * 命令被注册
+	 * 需要注册的命令
      *
      * @var array
      */
@@ -81,8 +82,7 @@ class MigrationServiceProvider extends ServiceProvider implements DeferrableProv
         // The migrator is responsible for actually running and rollback the migration
         // files in the application. We'll pass in our database connection resolver
         // so the migrator can resolve any of these connections when it needs to.
-		// 迁移器负责实际运行的回滚应用程序中的迁移文件。
-		// 我们将传入数据库连接分析器，因此，迁移器可以在需要时解析任何这样的连接。
+		// 迁移器负责实际运行和回滚迁移。
         $this->app->singleton('migrator', function ($app) {
             $repository = $app['migration.repository'];
 
@@ -99,13 +99,13 @@ class MigrationServiceProvider extends ServiceProvider implements DeferrableProv
     protected function registerCreator()
     {
         $this->app->singleton('migration.creator', function ($app) {
-            return new MigrationCreator($app['files']);
+            return new MigrationCreator($app['files'], $app->basePath('stubs'));
         });
     }
 
     /**
      * Register the given commands.
-	 * 注册给定命令
+	 * 注册给定的命令
      *
      * @param  array  $commands
      * @return void
@@ -121,20 +121,20 @@ class MigrationServiceProvider extends ServiceProvider implements DeferrableProv
 
     /**
      * Register the command.
-	 * 注册迁移命令
+	 * 注册命令
      *
      * @return void
      */
     protected function registerMigrateCommand()
     {
         $this->app->singleton('command.migrate', function ($app) {
-            return new MigrateCommand($app['migrator']);
+            return new MigrateCommand($app['migrator'], $app[Dispatcher::class]);
         });
     }
 
     /**
      * Register the command.
-	 * 注册迁移命令
+	 * 注册命令
      *
      * @return void
      */
@@ -147,7 +147,7 @@ class MigrationServiceProvider extends ServiceProvider implements DeferrableProv
 
     /**
      * Register the command.
-	 * 注册迁移安装命令
+	 * 注册命令
      *
      * @return void
      */
@@ -160,7 +160,7 @@ class MigrationServiceProvider extends ServiceProvider implements DeferrableProv
 
     /**
      * Register the command.
-	 * 注册迁移生成命令
+	 * 注册命令
      *
      * @return void
      */
@@ -170,8 +170,7 @@ class MigrationServiceProvider extends ServiceProvider implements DeferrableProv
             // Once we have the migration creator registered, we will create the command
             // and inject the creator. The creator is responsible for the actual file
             // creation of the migrations, and may be extended by these developers.
-			// 一旦我们注册了迁移创建者，我们将创建命令和注入创造者。
-			// 创建者负责迁移的实际文件创建，并且可以由这些开发人员进行扩展。
+			// 注册了迁移创建者之后，我们将创建命令并注入创造者。
             $creator = $app['migration.creator'];
 
             $composer = $app['composer'];
@@ -182,7 +181,7 @@ class MigrationServiceProvider extends ServiceProvider implements DeferrableProv
 
     /**
      * Register the command.
-	 * 注册迁移刷新命令
+	 * 注册命令
      *
      * @return void
      */
@@ -195,7 +194,7 @@ class MigrationServiceProvider extends ServiceProvider implements DeferrableProv
 
     /**
      * Register the command.
-	 * 注册迁移重置命令
+	 * 注册命令
      *
      * @return void
      */
@@ -208,7 +207,7 @@ class MigrationServiceProvider extends ServiceProvider implements DeferrableProv
 
     /**
      * Register the command.
-	 * 注册迁移回调命令
+	 * 注册命令
      *
      * @return void
      */
@@ -221,7 +220,7 @@ class MigrationServiceProvider extends ServiceProvider implements DeferrableProv
 
     /**
      * Register the command.
-	 * 注册迁移状态命令
+	 * 注册命令
      *
      * @return void
      */
@@ -234,7 +233,7 @@ class MigrationServiceProvider extends ServiceProvider implements DeferrableProv
 
     /**
      * Get the services provided by the provider.
-	 * 得到服务提供者
+	 * 获取提供者提供的服务
      *
      * @return array
      */

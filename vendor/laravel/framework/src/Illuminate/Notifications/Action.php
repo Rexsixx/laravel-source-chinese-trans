@@ -1,6 +1,6 @@
 <?php
 /**
- * 通知，动作
+ * Illuminate，通知，动作
  */
 
 namespace Illuminate\Notifications;

@@ -1,6 +1,6 @@
 <?php
 /**
- * 缓存，缓存Memcached锁
+ * Illuminate，缓存，Memcached 锁
  */
 
 namespace Illuminate\Cache;
@@ -62,7 +62,7 @@ class MemcachedLock extends Lock
 
     /**
      * Releases this lock in disregard of ownership.
-	 * 释放锁不考虑所有权
+	 * 释放此锁，而不考虑所有权。
      *
      * @return void
      */
@@ -73,7 +73,7 @@ class MemcachedLock extends Lock
 
     /**
      * Returns the owner value written into the driver for this lock.
-	 * 返回写入此锁的驱动程序的所有者
+	 * 返回写入此锁的驱动程序的所有者值
      *
      * @return mixed
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * 通知，数据库通道
+ * Illuminate，通知，通道，数据库通道
  */
 
 namespace Illuminate\Notifications\Channels;
@@ -26,8 +26,28 @@ class DatabaseChannel
     }
 
     /**
+     * Build an array payload for the DatabaseNotification Model.
+	 * 为DatabaseNotification Model构建一个数组有效负载
+     *
+     * @param  mixed  $notifiable
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return array
+     */
+    protected function buildPayload($notifiable, Notification $notification)
+    {
+        return [
+            'id' => $notification->id,
+            'type' => method_exists($notification, 'databaseType')
+                        ? $notification->databaseType($notifiable)
+                        : get_class($notification),
+            'data' => $this->getData($notifiable, $notification),
+            'read_at' => null,
+        ];
+    }
+
+    /**
      * Get the data for the notification.
-	 * 得到通知数据
+	 * 获取通知的数据
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
@@ -47,23 +67,5 @@ class DatabaseChannel
         }
 
         throw new RuntimeException('Notification is missing toDatabase / toArray method.');
-    }
-
-    /**
-     * Build an array payload for the DatabaseNotification Model.
-	 * 构建一个数组有效负载
-     *
-     * @param  mixed  $notifiable
-     * @param  \Illuminate\Notifications\Notification  $notification
-     * @return array
-     */
-    protected function buildPayload($notifiable, Notification $notification)
-    {
-        return [
-            'id' => $notification->id,
-            'type' => get_class($notification),
-            'data' => $this->getData($notifiable, $notification),
-            'read_at' => null,
-        ];
     }
 }

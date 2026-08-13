@@ -1,6 +1,6 @@
 <?php
 /**
- * 验证，验证规则解析
+ * Illuminate，验证，验证规则解析器
  */
 
 namespace Illuminate\Validation;
@@ -16,7 +16,7 @@ class ValidationRuleParser
 {
     /**
      * The data being validated.
-	 * 验证数据
+	 * 正在验证的数据
      *
      * @var array
      */
@@ -32,7 +32,7 @@ class ValidationRuleParser
 
     /**
      * Create a new validation rule parser.
-	 * 创建新的验证规则解析
+	 * 创建新的验证规则解析器
      *
      * @param  array  $data
      * @return void
@@ -85,7 +85,7 @@ class ValidationRuleParser
 
     /**
      * Explode the explicit rule into an array if necessary.
-	 * 分解显式规则为一个数组必要时
+	 * 必要时将显式规则分解为一个数组
      *
      * @param  mixed  $rule
      * @return array
@@ -103,7 +103,7 @@ class ValidationRuleParser
 
     /**
      * Prepare the given rule for the Validator.
-	 * 准备给定的规则为Validator
+	 * 为Validator准备给定的规则
      *
      * @param  mixed  $rule
      * @return mixed
@@ -142,7 +142,7 @@ class ValidationRuleParser
         foreach ($data as $key => $value) {
             if (Str::startsWith($key, $attribute) || (bool) preg_match('/^'.$pattern.'\z/', $key)) {
                 foreach ((array) $rules as $rule) {
-                    $this->implicitAttributes[$attribute][] = (string) $key;
+                    $this->implicitAttributes[$attribute][] = $key;
 
                     $results = $this->mergeRules($results, $key, $rule);
                 }
@@ -178,7 +178,7 @@ class ValidationRuleParser
 
     /**
      * Merge additional rules into a given attribute.
-	 * 合并其他规则到给定的属性
+	 * 将其他规则合并到给定的属性中
      *
      * @param  array  $results
      * @param  string  $attribute
@@ -198,63 +198,62 @@ class ValidationRuleParser
 
     /**
      * Extract the rule name and parameters from a rule.
-	 * 提取规则名称和参数从规则中
+	 * 从规则中提取规则名称和参数
      *
-     * @param  array|string  $rules
+     * @param  array|string  $rule
      * @return array
      */
-    public static function parse($rules)
+    public static function parse($rule)
     {
-        if ($rules instanceof RuleContract) {
-            return [$rules, []];
+        if ($rule instanceof RuleContract) {
+            return [$rule, []];
         }
 
-        if (is_array($rules)) {
-            $rules = static::parseArrayRule($rules);
+        if (is_array($rule)) {
+            $rule = static::parseArrayRule($rule);
         } else {
-            $rules = static::parseStringRule($rules);
+            $rule = static::parseStringRule($rule);
         }
 
-        $rules[0] = static::normalizeRule($rules[0]);
+        $rule[0] = static::normalizeRule($rule[0]);
 
-        return $rules;
+        return $rule;
     }
 
     /**
      * Parse an array based rule.
-	 * 解析基于数组的规则
+	 * 解析一个基于数组的规则
      *
-     * @param  array  $rules
+     * @param  array  $rule
      * @return array
      */
-    protected static function parseArrayRule(array $rules)
+    protected static function parseArrayRule(array $rule)
     {
-        return [Str::studly(trim(Arr::get($rules, 0))), array_slice($rules, 1)];
+        return [Str::studly(trim(Arr::get($rule, 0, ''))), array_slice($rule, 1)];
     }
 
     /**
      * Parse a string based rule.
 	 * 解析基于字符串的规则
      *
-     * @param  string  $rules
+     * @param  string  $rule
      * @return array
      */
-    protected static function parseStringRule($rules)
+    protected static function parseStringRule($rule)
     {
         $parameters = [];
 
         // The format for specifying validation rules and parameters follows an
         // easy {rule}:{parameters} formatting convention. For instance the
         // rule "Max:3" states that the value may only be three letters.
-		// 指定验证规则和参数的格式遵循一个简单的{rule}:{parameters}格式约定。
-		// 例如，规则“Max:3”规定该值只能是三个字母。
-        if (strpos($rules, ':') !== false) {
-            [$rules, $parameter] = explode(':', $rules, 2);
+		// 指定验证规则和参数的格式如下。
+        if (strpos($rule, ':') !== false) {
+            [$rule, $parameter] = explode(':', $rule, 2);
 
-            $parameters = static::parseParameters($rules, $parameter);
+            $parameters = static::parseParameters($rule, $parameter);
         }
 
-        return [Str::studly(trim($rules)), $parameters];
+        return [Str::studly(trim($rule)), $parameters];
     }
 
     /**
@@ -293,5 +292,37 @@ class ValidationRuleParser
             default:
                 return $rule;
         }
+    }
+
+    /**
+     * Expand and conditional rules in the given array of rules.
+	 * 在给定的规则数组中展开和条件规则
+     *
+     * @param  array  $rules
+     * @param  array  $data
+     * @return array
+     */
+    public static function filterConditionalRules($rules, array $data = [])
+    {
+        return collect($rules)->mapWithKeys(function ($attributeRules, $attribute) use ($data) {
+            if (! is_array($attributeRules) &&
+                ! $attributeRules instanceof ConditionalRules) {
+                return [$attribute => $attributeRules];
+            }
+
+            if ($attributeRules instanceof ConditionalRules) {
+                return [$attribute => $attributeRules->passes($data)
+                                ? array_filter($attributeRules->rules())
+                                : array_filter($attributeRules->defaultRules()), ];
+            }
+
+            return [$attribute => collect($attributeRules)->map(function ($rule) use ($data) {
+                if (! $rule instanceof ConditionalRules) {
+                    return [$rule];
+                }
+
+                return $rule->passes($data) ? $rule->rules() : $rule->defaultRules();
+            })->filter()->flatten(1)->values()->all()];
+        })->all();
     }
 }

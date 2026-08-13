@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，采集，是否空可遍历
+ * Hamcrest，集合，空可遍历吗？
  */
 
 namespace Hamcrest\Collection;
@@ -13,7 +13,7 @@ use Hamcrest\Description;
 
 /**
  * Matches if traversable is empty or non-empty.
- * 匹配是空的或非空的。
+ * 在可遍历为空或非空时匹配。
  */
 class IsEmptyTraversable extends BaseMatcher
 {

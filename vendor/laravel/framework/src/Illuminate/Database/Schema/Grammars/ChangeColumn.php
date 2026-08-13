@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，结构修改列
+ * Illuminate，数据库，架构，语法，更改列
  */
 
 namespace Illuminate\Database\Schema\Grammars;
@@ -37,12 +37,16 @@ class ChangeColumn
             ));
         }
 
+        $schema = $connection->getDoctrineSchemaManager();
+        $databasePlatform = $schema->getDatabasePlatform();
+        $databasePlatform->registerDoctrineTypeMapping('enum', 'string');
+
         $tableDiff = static::getChangedDiff(
-            $grammar, $blueprint, $schema = $connection->getDoctrineSchemaManager()
+            $grammar, $blueprint, $schema
         );
 
         if ($tableDiff !== false) {
-            return (array) $schema->getDatabasePlatform()->getAlterTableSQL($tableDiff);
+            return (array) $databasePlatform->getAlterTableSQL($tableDiff);
         }
 
         return [];
@@ -50,7 +54,7 @@ class ChangeColumn
 
     /**
      * Get the Doctrine table difference for the given changes.
-	 * 得到给定更改的Doctrine表差异
+	 * 获取给定更改的Doctrine表差异
      *
      * @param  \Illuminate\Database\Schema\Grammars\Grammar  $grammar
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
@@ -68,7 +72,7 @@ class ChangeColumn
 
     /**
      * Get a copy of the given Doctrine table after making the column changes.
-	 * 得到给定Doctrine表的副本在更改列后
+	 * 在更改列后获取给定Doctrine表的副本
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @param  \Doctrine\DBAL\Schema\Table  $table
@@ -84,8 +88,7 @@ class ChangeColumn
             // Here we will spin through each fluent column definition and map it to the proper
             // Doctrine column definitions - which is necessary because Laravel and Doctrine
             // use some different terminology for various column attributes on the tables.
-			// 在这里，我们将浏览每个流畅的列定义，并将其映射到正确的Doctrine列定义——这是必要的，
-			// 因为Laravel和Doctrine对表上的各种列属性使用了一些不同的术语
+			// 这里，我们将遍历每个流畅的列定义，并将其映射到适当的列定义。
             foreach ($fluent->getAttributes() as $key => $value) {
                 if (! is_null($option = static::mapFluentOptionToDoctrine($key))) {
                     if (method_exists($column, $method = 'set'.ucfirst($option))) {
@@ -103,7 +106,7 @@ class ChangeColumn
 
     /**
      * Get the Doctrine column instance for a column change.
-	 * 得到Doctrine列实例以进行列更改
+	 * 获取Doctrine列实例以进行列更改
      *
      * @param  \Doctrine\DBAL\Schema\Table  $table
      * @param  \Illuminate\Support\Fluent  $fluent
@@ -118,7 +121,7 @@ class ChangeColumn
 
     /**
      * Get the Doctrine column change options.
-	 * 得到Doctrine列更改选项
+	 * 获取Doctrine列更改选项
      *
      * @param  \Illuminate\Support\Fluent  $fluent
      * @return array
@@ -143,7 +146,7 @@ class ChangeColumn
 
     /**
      * Get the doctrine column type.
-	 * 得到条令列类型
+	 * 获取条令列类型
      *
      * @param  string  $type
      * @return \Doctrine\DBAL\Types\Type
@@ -165,6 +168,9 @@ class ChangeColumn
                 break;
             case 'binary':
                 $type = 'blob';
+                break;
+            case 'uuid':
+                $type = 'guid';
                 break;
         }
 
@@ -204,6 +210,7 @@ class ChangeColumn
             'binary',
             'boolean',
             'date',
+            'dateTime',
             'decimal',
             'double',
             'float',
@@ -218,7 +225,7 @@ class ChangeColumn
 
     /**
      * Get the matching Doctrine option for a given Fluent attribute name.
-	 * 得到给定Fluent属性名称的匹配Doctrine选项
+	 * 获取给定Fluent属性名称的匹配Doctrine选项
      *
      * @param  string  $attribute
      * @return string|null
@@ -242,7 +249,7 @@ class ChangeColumn
 
     /**
      * Get the matching Doctrine value for a given Fluent attribute.
-	 * 得到给定Fluent属性的匹配Doctrine值
+	 * 获取给定Fluent属性的匹配Doctrine值
      *
      * @param  string  $option
      * @param  mixed  $value

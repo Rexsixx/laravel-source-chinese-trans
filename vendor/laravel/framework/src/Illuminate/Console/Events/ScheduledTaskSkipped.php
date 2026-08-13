@@ -1,6 +1,6 @@
 <?php
 /**
- * 控制台，计划任务跳过
+ * Illuminate，控制台，事件，计划任务跳过
  */
 
 namespace Illuminate\Console\Events;

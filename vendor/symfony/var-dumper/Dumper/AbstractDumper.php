@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，Var Dumper，转储，抽象转储
+ * Symfony，Component，VarDumper，转储，抽象转储
  */
 
 /*
@@ -46,10 +46,10 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
      * @param string|null                   $charset The default character encoding to use for non-UTF8 strings
      * @param int                           $flags   A bit field of static::DUMP_* constants to fine tune dumps representation
      */
-    public function __construct($output = null, string $charset = null, int $flags = 0)
+    public function __construct($output = null, ?string $charset = null, int $flags = 0)
     {
         $this->flags = $flags;
-        $this->setCharset($charset ?: ini_get('php.output_encoding') ?: ini_get('default_charset') ?: 'UTF-8');
+        $this->setCharset($charset ?: \ini_get('php.output_encoding') ?: \ini_get('default_charset') ?: 'UTF-8');
         $this->decimalPoint = \PHP_VERSION_ID >= 80000 ? '.' : localeconv()['decimal_point'];
         $this->setOutput($output ?: static::$defaultOutput);
         if (!$output && \is_string(static::$defaultOutput)) {
@@ -59,6 +59,7 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
 
     /**
      * Sets the output destination of the dumps.
+	 * 设置转储的输出目的地
      *
      * @param callable|resource|string $output A line dumper callable, an opened stream or an output path
      *
@@ -84,12 +85,11 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
 
     /**
      * Sets the default character encoding to use for non-UTF8 strings.
-     *
-     * @param string $charset The default character encoding to use for non-UTF8 strings
+	 * 设置默认字符编码,用于非utf8字符串
      *
      * @return string The previous charset
      */
-    public function setCharset($charset)
+    public function setCharset(string $charset)
     {
         $prev = $this->charset;
 
@@ -108,7 +108,7 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
      *
      * @return string The previous indent pad
      */
-    public function setIndentPad($pad)
+    public function setIndentPad(string $pad)
     {
         $prev = $this->indentPad;
         $this->indentPad = $pad;
@@ -165,7 +165,7 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
      * @param int $depth The recursive depth in the dumped structure for the line being dumped,
      *                   or -1 to signal the end-of-dump to the line dumper callable
      */
-    protected function dumpLine($depth)
+    protected function dumpLine(int $depth)
     {
         ($this->lineDumper)($this->line, $depth, $this->indentPad);
         $this->line = '';
@@ -173,12 +173,8 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
 
     /**
      * Generic line dumper callback.
-     *
-     * @param string $line      The line to write
-     * @param int    $depth     The recursive depth in the dumped structure
-     * @param string $indentPad The line indent pad
      */
-    protected function echoLine($line, $depth, $indentPad)
+    protected function echoLine(string $line, int $depth, string $indentPad)
     {
         if (-1 !== $depth) {
             fwrite($this->outputStream, str_repeat($indentPad, $depth).$line."\n");
@@ -188,11 +184,9 @@ abstract class AbstractDumper implements DataDumperInterface, DumperInterface
     /**
      * Converts a non-UTF-8 string to UTF-8.
      *
-     * @param string|null $s The non-UTF-8 string to convert
-     *
-     * @return string|null The string converted to UTF-8
+     * @return string|null
      */
-    protected function utf8Encode($s)
+    protected function utf8Encode(?string $s)
     {
         if (null === $s || preg_match('//u', $s)) {
             return $s;

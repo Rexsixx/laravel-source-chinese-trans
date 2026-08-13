@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，Console，输入，输入选项
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -16,6 +19,7 @@ use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * Represents a command line option.
+ * 表示命令行选项。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -23,11 +27,13 @@ class InputOption
 {
     /**
      * Do not accept input for the option (e.g. --yell). This is the default behavior of options.
+	 * 不接受选项的输入（例如——yell）。这是选项的默认行为。
      */
     public const VALUE_NONE = 1;
 
     /**
      * A value must be passed when the option is used (e.g. --iterations=5 or -i5).
+	 * 当使用选项时，必须传递一个值（例如——iterations=5或-i5）。
      */
     public const VALUE_REQUIRED = 2;
 
@@ -41,6 +47,12 @@ class InputOption
      */
     public const VALUE_IS_ARRAY = 8;
 
+    /**
+     * The option may have either positive or negative value (e.g. --ansi or --no-ansi).
+	 * 该选项可以是正值或负值（例如——ansi或——no-ansi）
+     */
+    public const VALUE_NEGATABLE = 16;
+
     private $name;
     private $shortcut;
     private $mode;
@@ -48,15 +60,13 @@ class InputOption
     private $description;
 
     /**
-     * @param string                           $name        The option name
-     * @param string|array|null                $shortcut    The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
-     * @param int|null                         $mode        The option mode: One of the VALUE_* constants
-     * @param string                           $description A description text
-     * @param string|bool|int|float|array|null $default     The default value (must be null for self::VALUE_NONE)
+     * @param string|array|null                $shortcut The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
+     * @param int|null                         $mode     The option mode: One of the VALUE_* constants
+     * @param string|bool|int|float|array|null $default  The default value (must be null for self::VALUE_NONE)
      *
      * @throws InvalidArgumentException If option mode is invalid or incompatible
      */
-    public function __construct(string $name, $shortcut = null, int $mode = null, string $description = '', $default = null)
+    public function __construct(string $name, $shortcut = null, ?int $mode = null, string $description = '', $default = null)
     {
         if (str_starts_with($name, '--')) {
             $name = substr($name, 2);
@@ -66,7 +76,7 @@ class InputOption
             throw new InvalidArgumentException('An option name cannot be empty.');
         }
 
-        if (empty($shortcut)) {
+        if ('' === $shortcut || [] === $shortcut || false === $shortcut) {
             $shortcut = null;
         }
 
@@ -75,17 +85,17 @@ class InputOption
                 $shortcut = implode('|', $shortcut);
             }
             $shortcuts = preg_split('{(\|)-?}', ltrim($shortcut, '-'));
-            $shortcuts = array_filter($shortcuts);
+            $shortcuts = array_filter($shortcuts, 'strlen');
             $shortcut = implode('|', $shortcuts);
 
-            if (empty($shortcut)) {
+            if ('' === $shortcut) {
                 throw new InvalidArgumentException('An option shortcut cannot be empty.');
             }
         }
 
         if (null === $mode) {
             $mode = self::VALUE_NONE;
-        } elseif ($mode > 15 || $mode < 1) {
+        } elseif ($mode >= (self::VALUE_NEGATABLE << 1) || $mode < 1) {
             throw new InvalidArgumentException(sprintf('Option mode "%s" is not valid.', $mode));
         }
 
@@ -97,14 +107,18 @@ class InputOption
         if ($this->isArray() && !$this->acceptValue()) {
             throw new InvalidArgumentException('Impossible to have an option mode VALUE_IS_ARRAY if the option does not accept a value.');
         }
+        if ($this->isNegatable() && $this->acceptValue()) {
+            throw new InvalidArgumentException('Impossible to have an option mode VALUE_NEGATABLE if the option also accepts a value.');
+        }
 
         $this->setDefault($default);
     }
 
     /**
      * Returns the option shortcut.
+	 * 返回选项快捷键
      *
-     * @return string|null The shortcut
+     * @return string|null
      */
     public function getShortcut()
     {
@@ -113,8 +127,9 @@ class InputOption
 
     /**
      * Returns the option name.
+	 * 返回选项名
      *
-     * @return string The name
+     * @return string
      */
     public function getName()
     {
@@ -123,6 +138,7 @@ class InputOption
 
     /**
      * Returns true if the option accepts a value.
+	 * 如果选项接受值,返回true
      *
      * @return bool true if value mode is not self::VALUE_NONE, false otherwise
      */
@@ -133,6 +149,7 @@ class InputOption
 
     /**
      * Returns true if the option requires a value.
+	 * 如果该选项需要一个值,则返回true。
      *
      * @return bool true if value mode is self::VALUE_REQUIRED, false otherwise
      */
@@ -143,6 +160,7 @@ class InputOption
 
     /**
      * Returns true if the option takes an optional value.
+	 * 如果选项具有可选值,则返回true。
      *
      * @return bool true if value mode is self::VALUE_OPTIONAL, false otherwise
      */
@@ -153,12 +171,18 @@ class InputOption
 
     /**
      * Returns true if the option can take multiple values.
+	 * 如果选项可以采用多个值,返回true。
      *
      * @return bool true if mode is self::VALUE_IS_ARRAY, false otherwise
      */
     public function isArray()
     {
         return self::VALUE_IS_ARRAY === (self::VALUE_IS_ARRAY & $this->mode);
+    }
+
+    public function isNegatable(): bool
+    {
+        return self::VALUE_NEGATABLE === (self::VALUE_NEGATABLE & $this->mode);
     }
 
     /**
@@ -178,11 +202,12 @@ class InputOption
             }
         }
 
-        $this->default = $this->acceptValue() ? $default : false;
+        $this->default = $this->acceptValue() || $this->isNegatable() ? $default : false;
     }
 
     /**
      * Returns the default value.
+	 * 返回默认值
      *
      * @return string|bool|int|float|array|null
      */
@@ -193,8 +218,9 @@ class InputOption
 
     /**
      * Returns the description text.
+	 * 返回描述文本
      *
-     * @return string The description text
+     * @return string
      */
     public function getDescription()
     {
@@ -203,6 +229,7 @@ class InputOption
 
     /**
      * Checks whether the given option equals this one.
+	 * 检查给定的选项是否等于这个
      *
      * @return bool
      */
@@ -211,6 +238,7 @@ class InputOption
         return $option->getName() === $this->getName()
             && $option->getShortcut() === $this->getShortcut()
             && $option->getDefault() === $this->getDefault()
+            && $option->isNegatable() === $this->isNegatable()
             && $option->isArray() === $this->isArray()
             && $option->isValueRequired() === $this->isValueRequired()
             && $option->isValueOptional() === $this->isValueOptional()

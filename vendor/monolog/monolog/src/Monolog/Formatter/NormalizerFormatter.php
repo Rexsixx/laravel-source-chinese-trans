@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * Monolog，Formatter，Normalizer 格式化
+ */
+
 /*
  * This file is part of the Monolog package.
  *
@@ -17,6 +21,7 @@ use Throwable;
 
 /**
  * Normalizes incoming records to remove objects/resources so it's easier to dump to various targets
+ * 规范化传入记录以删除对象/资源，以便更容易转储到各种目标。
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
@@ -81,6 +86,7 @@ class NormalizerFormatter implements FormatterInterface
 
     /**
      * The maximum number of normalization levels to go through
+	 * 标准化水平的最大数量
      */
     public function getMaxNormalizeDepth(): int
     {
@@ -96,6 +102,7 @@ class NormalizerFormatter implements FormatterInterface
 
     /**
      * The maximum number of items to normalize per level
+	 * 每一层的最大数量
      */
     public function getMaxNormalizeItemCount(): int
     {
@@ -111,6 +118,7 @@ class NormalizerFormatter implements FormatterInterface
 
     /**
      * Enables `json_encode` pretty print.
+	 * 启用‘ json_encode ’漂亮打印
      */
     public function setJsonPrettyPrint(bool $enable): self
     {
@@ -174,6 +182,9 @@ class NormalizerFormatter implements FormatterInterface
             if ($data instanceof \JsonSerializable) {
                 /** @var null|scalar|array<array|scalar|null> $value */
                 $value = $data->jsonSerialize();
+            } elseif (\get_class($data) === '__PHP_Incomplete_Class') {
+                $accessor = new \ArrayObject($data);
+                $value = (string) $accessor['__PHP_Incomplete_Class_Name'];
             } elseif (method_exists($data, '__toString')) {
                 /** @var string $value */
                 $value = $data->__toString();
@@ -198,6 +209,10 @@ class NormalizerFormatter implements FormatterInterface
      */
     protected function normalizeException(Throwable $e, int $depth = 0)
     {
+        if ($depth > $this->maxNormalizeDepth) {
+            return ['Over ' . $this->maxNormalizeDepth . ' levels deep, aborting normalization'];
+        }
+
         if ($e instanceof \JsonSerializable) {
             return (array) $e->jsonSerialize();
         }
@@ -243,6 +258,7 @@ class NormalizerFormatter implements FormatterInterface
 
     /**
      * Return the JSON representation of a value
+	 * 返回一个值的JSON表示
      *
      * @param  mixed             $data
      * @throws \RuntimeException if encoding fails and errors are not ignored

@@ -1,6 +1,6 @@
 <?php
 /**
- * 授权，事件，登录
+ * Illuminate，认证，事件，登录
  */
 
 namespace Illuminate\Auth\Events;
@@ -29,7 +29,7 @@ class Login
 
     /**
      * Indicates if the user should be "remembered".
-	 * 指明是否需要"记住我"
+	 * 指明是否需要"记住"用户
      *
      * @var bool
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，进程，Php可执行的查找器
+ * Symfony，Component，Process，Php 可执行文件查找器
  */
 
 /*
@@ -16,6 +16,7 @@ namespace Symfony\Component\Process;
 
 /**
  * An executable finder specifically designed for the PHP executable.
+ * 一个专门为PHP可执行文件设计的可执行查找器。
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
@@ -31,23 +32,15 @@ class PhpExecutableFinder
 
     /**
      * Finds The PHP executable.
+	 * 查找PHP可执行文件
      *
-     * @param bool $includeArgs Whether or not include command arguments
-     *
-     * @return string|false The PHP executable path or false if it cannot be found
+     * @return string|false
      */
-    public function find($includeArgs = true)
+    public function find(bool $includeArgs = true)
     {
         if ($php = getenv('PHP_BINARY')) {
-            if (!is_executable($php)) {
-                $command = '\\' === \DIRECTORY_SEPARATOR ? 'where' : 'command -v';
-                if ($php = strtok(exec($command.' '.escapeshellarg($php)), \PHP_EOL)) {
-                    if (!is_executable($php)) {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
+            if (!is_executable($php) && !$php = $this->executableFinder->find($php)) {
+                return false;
             }
 
             if (@is_dir($php)) {
@@ -61,7 +54,7 @@ class PhpExecutableFinder
         $args = $includeArgs && $args ? ' '.implode(' ', $args) : '';
 
         // PHP_BINARY return the current sapi executable
-        if (\PHP_BINARY && \in_array(\PHP_SAPI, ['cgi-fcgi', 'cli', 'cli-server', 'phpdbg'], true)) {
+        if (\PHP_BINARY && \in_array(\PHP_SAPI, ['cli', 'cli-server', 'phpdbg'], true)) {
             return \PHP_BINARY.$args;
         }
 
@@ -93,8 +86,9 @@ class PhpExecutableFinder
 
     /**
      * Finds the PHP executable arguments.
+	 * 查找PHP可执行参数
      *
-     * @return array The PHP executable arguments
+     * @return array
      */
     public function findArguments()
     {

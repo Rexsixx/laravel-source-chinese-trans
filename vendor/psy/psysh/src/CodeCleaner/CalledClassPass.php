@@ -1,12 +1,12 @@
 <?php
 /**
- * Psy，代码清理器，调用类通行证
+ * Psy，代码清洁，调用类通行证
  */
 
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2023 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -26,13 +26,16 @@ use Psy\Exception\ErrorException;
 /**
  * The called class pass throws warnings for get_class() and get_called_class()
  * outside a class context.
+ * 被调用的类传递会抛出get_class（）和get_called_class（）在类上下文之外的警告。
  */
 class CalledClassPass extends CodeCleanerPass
 {
-    private $inClass;
+    private bool $inClass = false;
 
     /**
      * @param array $nodes
+     *
+     * @return Node[]|null Array of nodes
      */
     public function beforeTraverse(array $nodes)
     {
@@ -43,6 +46,8 @@ class CalledClassPass extends CodeCleanerPass
      * @throws ErrorException if get_class or get_called_class is called without an object from outside a class
      *
      * @param Node $node
+     *
+     * @return int|Node|null Replacement node (or special return value)
      */
     public function enterNode(Node $node)
     {
@@ -65,13 +70,15 @@ class CalledClassPass extends CodeCleanerPass
             $name = \strtolower($node->name);
             if (\in_array($name, ['get_class', 'get_called_class'])) {
                 $msg = \sprintf('%s() called without object from outside a class', $name);
-                throw new ErrorException($msg, 0, \E_USER_WARNING, null, $node->getLine());
+                throw new ErrorException($msg, 0, \E_USER_WARNING, null, $node->getStartLine());
             }
         }
     }
 
     /**
      * @param Node $node
+     *
+     * @return int|Node|Node[]|null Replacement node (or special return value)
      */
     public function leaveNode(Node $node)
     {

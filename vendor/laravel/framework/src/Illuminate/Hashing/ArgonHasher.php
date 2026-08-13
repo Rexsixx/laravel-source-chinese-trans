@@ -1,6 +1,6 @@
 <?php
 /**
- * 哈希，哈希散列
+ * Illuminate，哈希，Argo 哈希
  */
 
 namespace Illuminate\Hashing;
@@ -12,7 +12,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 {
     /**
      * The default memory cost factor.
-	 * 默认内存
+	 * 默认内存成本因子
      *
      * @var int
      */
@@ -53,13 +53,13 @@ class ArgonHasher extends AbstractHasher implements HasherContract
     {
         $this->time = $options['time'] ?? $this->time;
         $this->memory = $options['memory'] ?? $this->memory;
-        $this->threads = $options['threads'] ?? $this->threads;
+        $this->threads = $this->threads($options);
         $this->verifyAlgorithm = $options['verify'] ?? $this->verifyAlgorithm;
     }
 
     /**
      * Hash the given value.
-	 * 哈希值
+	 * 哈希给定值
      *
      * @param  string  $value
      * @param  array  $options
@@ -84,7 +84,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 
     /**
      * Get the algorithm that should be used for hashing.
-	 * 得到应该用于散列的算法
+	 * 获取应该用于散列的算法
      *
      * @return int
      */
@@ -95,7 +95,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 
     /**
      * Check the given plain value against a hash.
-	 * 检查给定的普通值
+	 * 根据散列检查给定的普通值
      *
      * @param  string  $value
      * @param  string  $hashedValue
@@ -132,7 +132,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 
     /**
      * Set the default password memory factor.
-	 * 设置默认密码内存
+	 * 设置默认密码内存系数
      *
      * @param  int  $memory
      * @return $this
@@ -174,7 +174,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 
     /**
      * Extract the memory cost value from the options array.
-	 * 提取内存成本值从选项数组中
+	 * 从选项数组中提取内存成本值
      *
      * @param  array  $options
      * @return int
@@ -186,7 +186,7 @@ class ArgonHasher extends AbstractHasher implements HasherContract
 
     /**
      * Extract the time cost value from the options array.
-	 * 提取内存成本值从选项数组中
+	 * 从选项数组中提取时间成本值
      *
      * @param  array  $options
      * @return int
@@ -197,14 +197,18 @@ class ArgonHasher extends AbstractHasher implements HasherContract
     }
 
     /**
-     * Extract the threads value from the options array.
-	 * 提取线程值从选项数组
+     * Extract the thread's value from the options array.
+	 * 从选项数组中提取线程的值
      *
      * @param  array  $options
      * @return int
      */
     protected function threads(array $options)
     {
+        if (defined('PASSWORD_ARGON2_PROVIDER') && PASSWORD_ARGON2_PROVIDER === 'sodium') {
+            return 1;
+        }
+
         return $options['threads'] ?? $this->threads;
     }
 }

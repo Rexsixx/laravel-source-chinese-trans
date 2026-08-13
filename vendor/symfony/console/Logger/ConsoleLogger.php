@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，组件，控制台，记录器，控制台记录器
+ * Symfony，Component，Console，记录器，控制台记录器
  */
 
 /*
@@ -22,6 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * PSR-3 compliant console logger.
+ * PSR-3兼容的控制台记录器。
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
  *
@@ -92,6 +93,7 @@ class ConsoleLogger extends AbstractLogger
 
     /**
      * Returns true when any messages have been logged at error levels.
+	 * 当任何消息被记录在错误级别时返回true
      *
      * @return bool
      */
@@ -102,6 +104,7 @@ class ConsoleLogger extends AbstractLogger
 
     /**
      * Interpolates context values into the message placeholders.
+	 * 将上下文值插入到消息占位符中
      *
      * @author PHP Framework Interoperability Group
      */
@@ -113,7 +116,7 @@ class ConsoleLogger extends AbstractLogger
 
         $replacements = [];
         foreach ($context as $key => $val) {
-            if (null === $val || is_scalar($val) || (\is_object($val) && method_exists($val, '__toString'))) {
+            if (null === $val || \is_scalar($val) || (\is_object($val) && method_exists($val, '__toString'))) {
                 $replacements["{{$key}}"] = $val;
             } elseif ($val instanceof \DateTimeInterface) {
                 $replacements["{{$key}}"] = $val->format(\DateTime::RFC3339);

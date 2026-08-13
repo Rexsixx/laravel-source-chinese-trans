@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，HttpKernel，HTTP缓存，代理接口
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -18,6 +21,7 @@ interface SurrogateInterface
 {
     /**
      * Returns surrogate name.
+	 * 返回代理名称
      *
      * @return string
      */
@@ -25,25 +29,29 @@ interface SurrogateInterface
 
     /**
      * Returns a new cache strategy instance.
+	 * 返回一个新的缓存策略实例
      *
-     * @return ResponseCacheStrategyInterface A ResponseCacheStrategyInterface instance
+     * @return ResponseCacheStrategyInterface
      */
     public function createCacheStrategy();
 
     /**
      * Checks that at least one surrogate has Surrogate capability.
+	 * 检查至少一个代理有代理能力
      *
-     * @return bool true if one surrogate has Surrogate capability, false otherwise
+     * @return bool
      */
     public function hasSurrogateCapability(Request $request);
 
     /**
      * Adds Surrogate-capability to the given Request.
+	 * 将超额能力加到给定的请求中
      */
     public function addSurrogateCapability(Request $request);
 
     /**
      * Adds HTTP headers to specify that the Response needs to be parsed for Surrogate.
+	 * 添加HTTP头以指定响应需要解析为代理。
      *
      * This method only adds an Surrogate HTTP header if the Response has some Surrogate tags.
      */
@@ -51,25 +59,26 @@ interface SurrogateInterface
 
     /**
      * Checks that the Response needs to be parsed for Surrogate tags.
+	 * 检查响应需要解析为代理标记
      *
-     * @return bool true if the Response needs to be parsed, false otherwise
+     * @return bool
      */
     public function needsParsing(Response $response);
 
     /**
      * Renders a Surrogate tag.
+	 * 呈现代理标签
      *
-     * @param string $uri          A URI
-     * @param string $alt          An alternate URI
-     * @param bool   $ignoreErrors Whether to ignore errors or not
-     * @param string $comment      A comment to add as an esi:include tag
+     * @param string|null $alt     An alternate URI
+     * @param string      $comment A comment to add as an esi:include tag
      *
      * @return string
      */
-    public function renderIncludeTag($uri, $alt = null, $ignoreErrors = true, $comment = '');
+    public function renderIncludeTag(string $uri, ?string $alt = null, bool $ignoreErrors = true, string $comment = '');
 
     /**
      * Replaces a Response Surrogate tags with the included resource content.
+	 * 用包含的资源内容替换一个响应代理标记
      *
      * @return Response
      */
@@ -77,15 +86,14 @@ interface SurrogateInterface
 
     /**
      * Handles a Surrogate from the cache.
+	 * 从缓存中处理代理
      *
-     * @param string $uri          The main URI
-     * @param string $alt          An alternative URI
-     * @param bool   $ignoreErrors Whether to ignore errors or not
+     * @param string $alt An alternative URI
      *
      * @return string
      *
      * @throws \RuntimeException
      * @throws \Exception
      */
-    public function handle(HttpCache $cache, $uri, $alt, $ignoreErrors);
+    public function handle(HttpCache $cache, string $uri, string $alt, bool $ignoreErrors);
 }

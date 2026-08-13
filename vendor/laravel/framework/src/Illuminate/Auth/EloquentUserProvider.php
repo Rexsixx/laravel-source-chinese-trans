@@ -1,10 +1,11 @@
 <?php
 /**
- * 授权，Eloquent用户提供者
+ * Illuminate，认证，Eloquent 用户提供者
  */
 
 namespace Illuminate\Auth;
 
+use Closure;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
@@ -23,7 +24,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * The Eloquent user model.
-	 * Eloquent用户模型
+	 * Eloquent 用户模型
      *
      * @var string
      */
@@ -45,7 +46,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Retrieve a user by their unique identifier.
-	 * 检索用户根据用户的唯一标识符
+	 * 根据用户的唯一标识符检索用户
      *
      * @param  mixed  $identifier
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
@@ -61,7 +62,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Retrieve a user by their unique identifier and "remember me" token.
-	 * 检索用户根据用户的唯一标识符和"记住我"令牌
+	 * 根据用户的唯一标识符和"记住我"令牌检索用户
      *
      * @param  mixed  $identifier
      * @param  string  $token
@@ -81,8 +82,7 @@ class EloquentUserProvider implements UserProvider
 
         $rememberToken = $retrievedModel->getRememberToken();
 
-        return $rememberToken && hash_equals($rememberToken, $token)
-                        ? $retrievedModel : null;
+        return $rememberToken && hash_equals($rememberToken, $token) ? $retrievedModel : null;
     }
 
     /**
@@ -108,7 +108,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Retrieve a user by the given credentials.
-	 * 检索用户根据给定的凭据
+	 * 根据给定的凭据检索用户
      *
      * @param  array  $credentials
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
@@ -124,8 +124,7 @@ class EloquentUserProvider implements UserProvider
         // First we will add each credential element to the query as a where clause.
         // Then we can execute the query and, if we found a user, return it in a
         // Eloquent User "model" that will be utilized by the Guard instances.
-		// 首先，我们将把每个凭证元素作为where子句添加到查询中。可以执行查询，
-		// 如果我们找到一个用户，则将其返回到一个Eloquen user"模型"中，该模型将由Guard实例使用。
+		// 首先，我们将每个凭据元素作为where子句添加到查询中。
         $query = $this->newModelQuery();
 
         foreach ($credentials as $key => $value) {
@@ -135,6 +134,8 @@ class EloquentUserProvider implements UserProvider
 
             if (is_array($value) || $value instanceof Arrayable) {
                 $query->whereIn($key, $value);
+            } elseif ($value instanceof Closure) {
+                $value($query);
             } else {
                 $query->where($key, $value);
             }
@@ -145,7 +146,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Get the first key from the credential array.
-	 * 得到第一个密钥从凭据数组中
+	 * 从凭据数组中获取第一个密钥
      *
      * @param  array  $credentials
      * @return string|null
@@ -159,7 +160,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Validate a user against the given credentials.
-	 * 根验证用户据给定的凭据
+	 * 根据给定的凭据验证用户
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  array  $credentials
@@ -174,7 +175,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Get a new query builder for the model instance.
-	 * 得到模型实例的新查询生成器
+	 * 获取模型实例的新查询生成器
      *
      * @param  \Illuminate\Database\Eloquent\Model|null  $model
      * @return \Illuminate\Database\Eloquent\Builder
@@ -201,7 +202,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Gets the hasher implementation.
-	 * 得到哈希的实现
+	 * 获取哈希实现
      *
      * @return \Illuminate\Contracts\Hashing\Hasher
      */
@@ -212,7 +213,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Sets the hasher implementation.
-	 * 设置哈希的实现
+	 * 设置哈希实现
      *
      * @param  \Illuminate\Contracts\Hashing\Hasher  $hasher
      * @return $this
@@ -226,7 +227,7 @@ class EloquentUserProvider implements UserProvider
 
     /**
      * Gets the name of the Eloquent user model.
-	 * 得到Eloquent用户模型的名称
+	 * 获取Eloquent用户模型的名称
      *
      * @return string
      */

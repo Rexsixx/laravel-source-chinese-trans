@@ -21,6 +21,7 @@ interface FilesystemInterface
 
     /**
      * Read a file.
+	 * 读取文件
      *
      * @param string $path The path to the file.
      *
@@ -32,6 +33,7 @@ interface FilesystemInterface
 
     /**
      * Retrieves a read-stream for a path.
+	 * 检索路径的读流
      *
      * @param string $path The path to the file.
      *
@@ -43,6 +45,7 @@ interface FilesystemInterface
 
     /**
      * List contents of a directory.
+	 * 列表目录的内容
      *
      * @param string $directory The directory to list.
      * @param bool   $recursive Whether to list recursively.
@@ -53,6 +56,7 @@ interface FilesystemInterface
 
     /**
      * Get a file's metadata.
+	 * 获取文件的元数据。
      *
      * @param string $path The path to the file.
      *
@@ -64,6 +68,7 @@ interface FilesystemInterface
 
     /**
      * Get a file's size.
+	 * 得到文件大小
      *
      * @param string $path The path to the file.
      *
@@ -75,6 +80,7 @@ interface FilesystemInterface
 
     /**
      * Get a file's mime-type.
+	 * 获取文件的mime-type
      *
      * @param string $path The path to the file.
      *
@@ -86,17 +92,19 @@ interface FilesystemInterface
 
     /**
      * Get a file's timestamp.
+	 * 获取文件的时间戳
      *
      * @param string $path The path to the file.
      *
      * @throws FileNotFoundException
      *
-     * @return string|false The timestamp or false on failure.
+     * @return int|false The timestamp or false on failure.
      */
     public function getTimestamp($path);
 
     /**
      * Get a file's visibility.
+	 * 获取文件的可见性
      *
      * @param string $path The path to the file.
      *
@@ -108,6 +116,7 @@ interface FilesystemInterface
 
     /**
      * Write a new file.
+	 * 编写一个新文件
      *
      * @param string $path     The path of the new file.
      * @param string $contents The file contents.
@@ -121,6 +130,7 @@ interface FilesystemInterface
 
     /**
      * Write a new file using a stream.
+	 * 使用流编写新文件
      *
      * @param string   $path     The path of the new file.
      * @param resource $resource The file handle.
@@ -135,6 +145,7 @@ interface FilesystemInterface
 
     /**
      * Update an existing file.
+	 * 更新现有文件
      *
      * @param string $path     The path of the existing file.
      * @param string $contents The file contents.
@@ -148,6 +159,7 @@ interface FilesystemInterface
 
     /**
      * Update an existing file using a stream.
+	 * 使用流更新现有文件
      *
      * @param string   $path     The path of the existing file.
      * @param resource $resource The file handle.
@@ -162,6 +174,7 @@ interface FilesystemInterface
 
     /**
      * Rename a file.
+	 * 重命名文件
      *
      * @param string $path    Path to the existing file.
      * @param string $newpath The new path of the file.
@@ -175,6 +188,7 @@ interface FilesystemInterface
 
     /**
      * Copy a file.
+	 * 复制文件
      *
      * @param string $path    Path to the existing file.
      * @param string $newpath The new path of the file.
@@ -188,6 +202,7 @@ interface FilesystemInterface
 
     /**
      * Delete a file.
+	 * 删除文件
      *
      * @param string $path
      *
@@ -199,6 +214,7 @@ interface FilesystemInterface
 
     /**
      * Delete a directory.
+	 * 删除目录
      *
      * @param string $dirname
      *
@@ -210,6 +226,7 @@ interface FilesystemInterface
 
     /**
      * Create a directory.
+	 * 创建目录
      *
      * @param string $dirname The name of the new directory.
      * @param array  $config  An optional configuration array.
@@ -220,6 +237,7 @@ interface FilesystemInterface
 
     /**
      * Set the visibility for a file.
+	 * 设置文件的可见性
      *
      * @param string $path       The path to the file.
      * @param string $visibility One of 'public' or 'private'.
@@ -232,6 +250,7 @@ interface FilesystemInterface
 
     /**
      * Create a file or update if exists.
+	 * 如果存在,创建一个文件或更新。
      *
      * @param string $path     The path to the file.
      * @param string $contents The file contents.
@@ -243,6 +262,7 @@ interface FilesystemInterface
 
     /**
      * Create a file or update if exists.
+	 * 如果存在,创建一个文件或更新
      *
      * @param string   $path     The path to the file.
      * @param resource $resource The file handle.
@@ -256,6 +276,7 @@ interface FilesystemInterface
 
     /**
      * Read and delete a file.
+	 * 读取和删除文件
      *
      * @param string $path The path to the file.
      *
@@ -267,6 +288,7 @@ interface FilesystemInterface
 
     /**
      * Get a file/directory handler.
+	 * 获取文件/目录处理程序
      *
      * @deprecated
      *
@@ -279,6 +301,7 @@ interface FilesystemInterface
 
     /**
      * Register a plugin.
+	 * 注册一个插件
      *
      * @param PluginInterface $plugin The plugin to register.
      *

@@ -1,22 +1,27 @@
 <?php
 /**
- * 支持，总线伪造
+ * Illuminate，支持，测试，假装，假总线
  */
 
 namespace Illuminate\Support\Testing\Fakes;
 
 use Closure;
-use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Bus\PendingBatch;
+use Illuminate\Contracts\Bus\QueueingDispatcher;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Traits\ReflectsClosures;
 use PHPUnit\Framework\Assert as PHPUnit;
 
-class BusFake implements Dispatcher
+class BusFake implements QueueingDispatcher
 {
+    use ReflectsClosures;
+
     /**
      * The original Bus dispatcher implementation.
 	 * 原始总线调度程序实现
      *
-     * @var \Illuminate\Contracts\Bus\Dispatcher
+     * @var \Illuminate\Contracts\Bus\QueueingDispatcher
      */
     protected $dispatcher;
 
@@ -37,6 +42,14 @@ class BusFake implements Dispatcher
     protected $commands = [];
 
     /**
+     * The commands that have been dispatched synchronously.
+	 * 已同步调度的命令
+     *
+     * @var array
+     */
+    protected $commandsSync = [];
+
+    /**
      * The commands that have been dispatched after the response has been sent.
 	 * 在响应发送后已分派的命令
      *
@@ -45,14 +58,22 @@ class BusFake implements Dispatcher
     protected $commandsAfterResponse = [];
 
     /**
-     * Create a new bus fake instance.
-	 * 创建新的总线伪实例
+     * The batches that have been dispatched.
+	 * 已发送的批次
      *
-     * @param  \Illuminate\Contracts\Bus\Dispatcher  $dispatcher
+     * @var array
+     */
+    protected $batches = [];
+
+    /**
+     * Create a new bus fake instance.
+	 * 创建一个新的总线伪实例
+     *
+     * @param  \Illuminate\Contracts\Bus\QueueingDispatcher  $dispatcher
      * @param  array|string  $jobsToFake
      * @return void
      */
-    public function __construct(Dispatcher $dispatcher, $jobsToFake = [])
+    public function __construct(QueueingDispatcher $dispatcher, $jobsToFake = [])
     {
         $this->dispatcher = $dispatcher;
 
@@ -63,19 +84,24 @@ class BusFake implements Dispatcher
      * Assert if a job was dispatched based on a truth-test callback.
 	 * 断言作业是否基于真值测试回调进行分派
      *
-     * @param  string  $command
+     * @param  string|\Closure  $command
      * @param  callable|int|null  $callback
      * @return void
      */
     public function assertDispatched($command, $callback = null)
     {
+        if ($command instanceof Closure) {
+            [$command, $callback] = [$this->firstClosureParameterType($command), $command];
+        }
+
         if (is_numeric($callback)) {
             return $this->assertDispatchedTimes($command, $callback);
         }
 
         PHPUnit::assertTrue(
             $this->dispatched($command, $callback)->count() > 0 ||
-            $this->dispatchedAfterResponse($command, $callback)->count() > 0,
+            $this->dispatchedAfterResponse($command, $callback)->count() > 0 ||
+            $this->dispatchedSync($command, $callback)->count() > 0,
             "The expected [{$command}] job was not dispatched."
         );
     }
@@ -91,10 +117,11 @@ class BusFake implements Dispatcher
     public function assertDispatchedTimes($command, $times = 1)
     {
         $count = $this->dispatched($command)->count() +
-                 $this->dispatchedAfterResponse($command)->count();
+                 $this->dispatchedAfterResponse($command)->count() +
+                 $this->dispatchedSync($command)->count();
 
-        PHPUnit::assertTrue(
-            $count === $times,
+        PHPUnit::assertSame(
+            $times, $count,
             "The expected [{$command}] job was pushed {$count} times instead of {$times} times."
         );
     }
@@ -103,36 +130,118 @@ class BusFake implements Dispatcher
      * Determine if a job was dispatched based on a truth-test callback.
 	 * 确定是否根据true-test回调分派了作业
      *
-     * @param  string  $command
+     * @param  string|\Closure  $command
      * @param  callable|null  $callback
      * @return void
      */
     public function assertNotDispatched($command, $callback = null)
     {
+        if ($command instanceof Closure) {
+            [$command, $callback] = [$this->firstClosureParameterType($command), $command];
+        }
+
         PHPUnit::assertTrue(
             $this->dispatched($command, $callback)->count() === 0 &&
-            $this->dispatchedAfterResponse($command, $callback)->count() === 0,
+            $this->dispatchedAfterResponse($command, $callback)->count() === 0 &&
+            $this->dispatchedSync($command, $callback)->count() === 0,
             "The unexpected [{$command}] job was dispatched."
         );
     }
 
     /**
-     * Assert if a job was dispatched after the response was sent based on a truth-test callback.
-	 * 根据true -test回调发送响应后，判断是否分派了作业。
+     * Assert that no jobs were dispatched.
+	 * 断言没有分派作业
+     *
+     * @return void
+     */
+    public function assertNothingDispatched()
+    {
+        PHPUnit::assertEmpty($this->commands, 'Jobs were dispatched unexpectedly.');
+    }
+
+    /**
+     * Assert if a job was explicitly dispatched synchronously based on a truth-test callback.
+	 * 断言作业是否基于真值测试回调显式地同步调度
+     *
+     * @param  string|\Closure  $command
+     * @param  callable|int|null  $callback
+     * @return void
+     */
+    public function assertDispatchedSync($command, $callback = null)
+    {
+        if ($command instanceof Closure) {
+            [$command, $callback] = [$this->firstClosureParameterType($command), $command];
+        }
+
+        if (is_numeric($callback)) {
+            return $this->assertDispatchedSyncTimes($command, $callback);
+        }
+
+        PHPUnit::assertTrue(
+            $this->dispatchedSync($command, $callback)->count() > 0,
+            "The expected [{$command}] job was not dispatched synchronously."
+        );
+    }
+
+    /**
+     * Assert if a job was pushed synchronously a number of times.
+	 * 判断一个作业是否被同步推送了多次
      *
      * @param  string  $command
+     * @param  int  $times
+     * @return void
+     */
+    public function assertDispatchedSyncTimes($command, $times = 1)
+    {
+        $count = $this->dispatchedSync($command)->count();
+
+        PHPUnit::assertSame(
+            $times, $count,
+            "The expected [{$command}] job was synchronously pushed {$count} times instead of {$times} times."
+        );
+    }
+
+    /**
+     * Determine if a job was dispatched based on a truth-test callback.
+	 * 确定是否根据true -test回调分派了作业
+     *
+     * @param  string|\Closure  $command
+     * @param  callable|null  $callback
+     * @return void
+     */
+    public function assertNotDispatchedSync($command, $callback = null)
+    {
+        if ($command instanceof Closure) {
+            [$command, $callback] = [$this->firstClosureParameterType($command), $command];
+        }
+
+        PHPUnit::assertCount(
+            0, $this->dispatchedSync($command, $callback),
+            "The unexpected [{$command}] job was dispatched synchronously."
+        );
+    }
+
+    /**
+     * Assert if a job was dispatched after the response was sent based on a truth-test callback.
+	 * 根据truth-test回调发送响应后，判断是否分派了作业
+     *
+     * @param  string|\Closure  $command
      * @param  callable|int|null  $callback
      * @return void
      */
     public function assertDispatchedAfterResponse($command, $callback = null)
     {
+        if ($command instanceof Closure) {
+            [$command, $callback] = [$this->firstClosureParameterType($command), $command];
+        }
+
         if (is_numeric($callback)) {
             return $this->assertDispatchedAfterResponseTimes($command, $callback);
         }
 
         PHPUnit::assertTrue(
             $this->dispatchedAfterResponse($command, $callback)->count() > 0,
-            "The expected [{$command}] job was not dispatched for after sending the response."
+            "The expected [{$command}] job was not dispatched after sending the response."
         );
     }
 
@@ -146,31 +255,208 @@ class BusFake implements Dispatcher
      */
     public function assertDispatchedAfterResponseTimes($command, $times = 1)
     {
-        PHPUnit::assertTrue(
-            ($count = $this->dispatchedAfterResponse($command)->count()) === $times,
+        $count = $this->dispatchedAfterResponse($command)->count();
+
+        PHPUnit::assertSame(
+            $times, $count,
             "The expected [{$command}] job was pushed {$count} times instead of {$times} times."
         );
     }
 
     /**
      * Determine if a job was dispatched based on a truth-test callback.
-	 * 确定是否根据true-test回调分派了作业
+	 * 确定是否根据true -test回调分派了作业
      *
-     * @param  string  $command
+     * @param  string|\Closure  $command
      * @param  callable|null  $callback
      * @return void
      */
     public function assertNotDispatchedAfterResponse($command, $callback = null)
     {
+        if ($command instanceof Closure) {
+            [$command, $callback] = [$this->firstClosureParameterType($command), $command];
+        }
+
+        PHPUnit::assertCount(
+            0, $this->dispatchedAfterResponse($command, $callback),
+            "The unexpected [{$command}] job was dispatched after sending the response."
+        );
+    }
+
+    /**
+     * Assert if a chain of jobs was dispatched.
+	 * 判断是否分派了作业链
+     *
+     * @param  array  $expectedChain
+     * @return void
+     */
+    public function assertChained(array $expectedChain)
+    {
+        $command = $expectedChain[0];
+
+        $expectedChain = array_slice($expectedChain, 1);
+
+        $callback = null;
+
+        if ($command instanceof Closure) {
+            [$command, $callback] = [$this->firstClosureParameterType($command), $command];
+        } elseif (! is_string($command)) {
+            $instance = $command;
+
+            $command = get_class($instance);
+
+            $callback = function ($job) use ($instance) {
+                return serialize($this->resetChainPropertiesToDefaults($job)) === serialize($instance);
+            };
+        }
+
         PHPUnit::assertTrue(
-            $this->dispatchedAfterResponse($command, $callback)->count() === 0,
-            "The unexpected [{$command}] job was dispatched for after sending the response."
+            $this->dispatched($command, $callback)->isNotEmpty(),
+            "The expected [{$command}] job was not dispatched."
+        );
+
+        PHPUnit::assertTrue(
+            collect($expectedChain)->isNotEmpty(),
+            'The expected chain can not be empty.'
+        );
+
+        $this->isChainOfObjects($expectedChain)
+            ? $this->assertDispatchedWithChainOfObjects($command, $expectedChain, $callback)
+            : $this->assertDispatchedWithChainOfClasses($command, $expectedChain, $callback);
+    }
+
+    /**
+     * Reset the chain properties to their default values on the job.
+	 * 在作业中将链属性重置为其默认值
+     *
+     * @param  mixed  $job
+     * @return mixed
+     */
+    protected function resetChainPropertiesToDefaults($job)
+    {
+        return tap(clone $job, function ($job) {
+            $job->chainConnection = null;
+            $job->chainQueue = null;
+            $job->chainCatchCallbacks = null;
+            $job->chained = [];
+        });
+    }
+
+    /**
+     * Assert if a job was dispatched with an empty chain based on a truth-test callback.
+	 * 判断作业是否使用基于真值测试回调的空链进行分派
+     *
+     * @param  string|\Closure  $command
+     * @param  callable|null  $callback
+     * @return void
+     */
+    public function assertDispatchedWithoutChain($command, $callback = null)
+    {
+        if ($command instanceof Closure) {
+            [$command, $callback] = [$this->firstClosureParameterType($command), $command];
+        }
+
+        PHPUnit::assertTrue(
+            $this->dispatched($command, $callback)->isNotEmpty(),
+            "The expected [{$command}] job was not dispatched."
+        );
+
+        $this->assertDispatchedWithChainOfClasses($command, [], $callback);
+    }
+
+    /**
+     * Assert if a job was dispatched with chained jobs based on a truth-test callback.
+	 * 判断一个作业是否基于true -test回调被链式作业分配
+     *
+     * @param  string  $command
+     * @param  array  $expectedChain
+     * @param  callable|null  $callback
+     * @return void
+     */
+    protected function assertDispatchedWithChainOfObjects($command, $expectedChain, $callback)
+    {
+        $chain = collect($expectedChain)->map(function ($job) {
+            return serialize($job);
+        })->all();
+
+        PHPUnit::assertTrue(
+            $this->dispatched($command, $callback)->filter(function ($job) use ($chain) {
+                return $job->chained == $chain;
+            })->isNotEmpty(),
+            'The expected chain was not dispatched.'
+        );
+    }
+
+    /**
+     * Assert if a job was dispatched with chained jobs based on a truth-test callback.
+	 * 判断一个作业是否基于true-test回调被链式作业分配
+     *
+     * @param  string  $command
+     * @param  array  $expectedChain
+     * @param  callable|null  $callback
+     * @return void
+     */
+    protected function assertDispatchedWithChainOfClasses($command, $expectedChain, $callback)
+    {
+        $matching = $this->dispatched($command, $callback)->map->chained->map(function ($chain) {
+            return collect($chain)->map(function ($job) {
+                return get_class(unserialize($job));
+            });
+        })->filter(function ($chain) use ($expectedChain) {
+            return $chain->all() === $expectedChain;
+        });
+
+        PHPUnit::assertTrue(
+            $matching->isNotEmpty(), 'The expected chain was not dispatched.'
+        );
+    }
+
+    /**
+     * Determine if the given chain is entirely composed of objects.
+	 * 确定给定链是否完全由对象组成
+     *
+     * @param  array  $chain
+     * @return bool
+     */
+    protected function isChainOfObjects($chain)
+    {
+        return ! collect($chain)->contains(function ($job) {
+            return ! is_object($job);
+        });
+    }
+
+    /**
+     * Assert if a batch was dispatched based on a truth-test callback.
+	 * 判断批处理是否基于真值测试回调进行分派
+     *
+     * @param  callable  $callback
+     * @return void
+     */
+    public function assertBatched(callable $callback)
+    {
+        PHPUnit::assertTrue(
+            $this->batched($callback)->count() > 0,
+            'The expected batch was not dispatched.'
+        );
+    }
+
+    /**
+     * Assert the number of batches that have been dispatched.
+	 * 断言已分派的批的数量
+     *
+     * @param  int  $count
+     * @return void
+     */
+    public function assertBatchCount($count)
+    {
+        PHPUnit::assertCount(
+            $count, $this->batches,
         );
     }
 
     /**
      * Get all of the jobs matching a truth-test callback.
-	 * 得到所有符合真实测试回调的工作
+	 * 获取所有符合真实测试回调的工作
      *
      * @param  string  $command
      * @param  callable|null  $callback
@@ -192,8 +478,31 @@ class BusFake implements Dispatcher
     }
 
     /**
+     * Get all of the jobs dispatched synchronously matching a truth-test callback.
+	 * 获取与true-test回调相匹配的同步调度的所有作业
+     *
+     * @param  string  $command
+     * @param  callable|null  $callback
+     * @return \Illuminate\Support\Collection
+     */
+    public function dispatchedSync(string $command, $callback = null)
+    {
+        if (! $this->hasDispatchedSync($command)) {
+            return collect();
+        }
+
+        $callback = $callback ?: function () {
+            return true;
+        };
+
+        return collect($this->commandsSync[$command])->filter(function ($command) use ($callback) {
+            return $callback($command);
+        });
+    }
+
+    /**
      * Get all of the jobs dispatched after the response was sent matching a truth-test callback.
-	 * 得到响应发送后与true-test回调相匹配的所有作业。
+	 * 获取响应发送后与true-test回调相匹配的所有作业
      *
      * @param  string  $command
      * @param  callable|null  $callback
@@ -211,6 +520,24 @@ class BusFake implements Dispatcher
 
         return collect($this->commandsAfterResponse[$command])->filter(function ($command) use ($callback) {
             return $callback($command);
+        });
+    }
+
+    /**
+     * Get all of the pending batches matching a truth-test callback.
+	 * 获取与true-test回调匹配的所有待处理批次
+     *
+     * @param  callable  $callback
+     * @return \Illuminate\Support\Collection
+     */
+    public function batched(callable $callback)
+    {
+        if (empty($this->batches)) {
+            return collect();
+        }
+
+        return collect($this->batches)->filter(function ($batch) use ($callback) {
+            return $callback($batch);
         });
     }
 
@@ -233,6 +560,18 @@ class BusFake implements Dispatcher
      * @param  string  $command
      * @return bool
      */
+    public function hasDispatchedSync($command)
+    {
+        return isset($this->commandsSync[$command]) && ! empty($this->commandsSync[$command]);
+    }
+
+    /**
+     * Determine if there are any stored commands for a given class.
+	 * 确定是否有任何针对给定类的存储命令
+     *
+     * @param  string  $command
+     * @return bool
+     */
     public function hasDispatchedAfterResponse($command)
     {
         return isset($this->commandsAfterResponse[$command]) && ! empty($this->commandsAfterResponse[$command]);
@@ -240,7 +579,7 @@ class BusFake implements Dispatcher
 
     /**
      * Dispatch a command to its appropriate handler.
-	 * 分派命令给相应的处理程序
+	 * 将命令分派给相应的处理程序
      *
      * @param  mixed  $command
      * @return mixed
@@ -256,7 +595,26 @@ class BusFake implements Dispatcher
 
     /**
      * Dispatch a command to its appropriate handler in the current process.
-	 * 分派命令给当前进程中相应的处理程序
+	 * 将命令分派给当前进程中相应的处理程序
+     *
+     * Queueable jobs will be dispatched to the "sync" queue.
+     *
+     * @param  mixed  $command
+     * @param  mixed  $handler
+     * @return mixed
+     */
+    public function dispatchSync($command, $handler = null)
+    {
+        if ($this->shouldFakeJob($command)) {
+            $this->commandsSync[get_class($command)][] = $command;
+        } else {
+            return $this->dispatcher->dispatchSync($command, $handler);
+        }
+    }
+
+    /**
+     * Dispatch a command to its appropriate handler in the current process.
+	 * 将命令分派给当前进程中相应的处理程序
      *
      * @param  mixed  $command
      * @param  mixed  $handler
@@ -272,8 +630,24 @@ class BusFake implements Dispatcher
     }
 
     /**
+     * Dispatch a command to its appropriate handler behind a queue.
+	 * 将命令分派到队列后面相应的处理程序
+     *
+     * @param  mixed  $command
+     * @return mixed
+     */
+    public function dispatchToQueue($command)
+    {
+        if ($this->shouldFakeJob($command)) {
+            $this->commands[get_class($command)][] = $command;
+        } else {
+            return $this->dispatcher->dispatchToQueue($command);
+        }
+    }
+
+    /**
      * Dispatch a command to its appropriate handler.
-	 * 分派命令给相应的处理程序
+	 * 将命令分派给相应的处理程序
      *
      * @param  mixed  $command
      * @return mixed
@@ -288,7 +662,59 @@ class BusFake implements Dispatcher
     }
 
     /**
-     * Determine if an command should be faked or actually dispatched.
+     * Create a new chain of queueable jobs.
+	 * 创建一个新的可排队作业链
+     *
+     * @param  \Illuminate\Support\Collection|array  $jobs
+     * @return \Illuminate\Foundation\Bus\PendingChain
+     */
+    public function chain($jobs)
+    {
+        $jobs = Collection::wrap($jobs);
+
+        return new PendingChainFake($this, $jobs->shift(), $jobs->toArray());
+    }
+
+    /**
+     * Attempt to find the batch with the given ID.
+	 * 尝试查找具有给定ID的批处理
+     *
+     * @param  string  $batchId
+     * @return \Illuminate\Bus\Batch|null
+     */
+    public function findBatch(string $batchId)
+    {
+        //
+    }
+
+    /**
+     * Create a new batch of queueable jobs.
+	 * 创建一批新的可排队作业
+     *
+     * @param  \Illuminate\Support\Collection|array  $jobs
+     * @return \Illuminate\Bus\PendingBatch
+     */
+    public function batch($jobs)
+    {
+        return new PendingBatchFake($this, Collection::wrap($jobs));
+    }
+
+    /**
+     * Record the fake pending batch dispatch.
+	 * 记录假的待处理批发货
+     *
+     * @param  \Illuminate\Bus\PendingBatch  $pendingBatch
+     * @return \Illuminate\Bus\Batch
+     */
+    public function recordPendingBatch(PendingBatch $pendingBatch)
+    {
+        $this->batches[] = $pendingBatch;
+
+        return (new BatchRepositoryFake)->store($pendingBatch);
+    }
+
+    /**
+     * Determine if a command should be faked or actually dispatched.
 	 * 确定是伪造命令还是实际分派命令
      *
      * @param  mixed  $command

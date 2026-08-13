@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础，查看Cache命令
+ * Illuminate，基础，控制台，view:cache 视图缓存命令
  */
 
 namespace Illuminate\Foundation\Console;
@@ -14,7 +14,7 @@ class ViewCacheCommand extends Command
 {
     /**
      * The name and signature of the console command.
-	 * 控制台命令的名称和签名
+	 * console命令的名称和签名
      *
      * @var string
      */

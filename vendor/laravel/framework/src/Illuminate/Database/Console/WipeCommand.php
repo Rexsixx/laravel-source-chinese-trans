@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，擦除命令
+ * Illuminate，数据库，控制台，db:wipe 清除命令
  */
 
 namespace Illuminate\Database\Console;
@@ -15,7 +15,7 @@ class WipeCommand extends Command
 
     /**
      * The console command name.
-	 * 控制台命令名
+	 * 控制台命令名称
      *
      * @var string
      */
@@ -33,12 +33,12 @@ class WipeCommand extends Command
      * Execute the console command.
 	 * 执行控制台命令
      *
-     * @return void
+     * @return int
      */
     public function handle()
     {
         if (! $this->confirmToProceed()) {
-            return;
+            return 1;
         }
 
         $database = $this->input->getOption('database');
@@ -58,11 +58,13 @@ class WipeCommand extends Command
 
             $this->info('Dropped all types successfully.');
         }
+
+        return 0;
     }
 
     /**
      * Drop all of the database tables.
-	 * 删除数据库表
+	 * 删除所有数据库表
      *
      * @param  string  $database
      * @return void
@@ -76,7 +78,7 @@ class WipeCommand extends Command
 
     /**
      * Drop all of the database views.
-	 * 删除数据库视图
+	 * 删除所有数据库视图
      *
      * @param  string  $database
      * @return void
@@ -90,7 +92,7 @@ class WipeCommand extends Command
 
     /**
      * Drop all of the database types.
-	 * 删除数据库类型
+	 * 删除所有数据库类型
      *
      * @param  string  $database
      * @return void
@@ -104,7 +106,7 @@ class WipeCommand extends Command
 
     /**
      * Get the console command options.
-	 * 得到控制台命令选项
+	 * 获取控制台命令选项
      *
      * @return array
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * 数据库，Eloquent，高阶生成器代理
+ * Illuminate，数据库，Eloquent，高阶生成器代理
  */
 
 namespace Illuminate\Database\Eloquent;
@@ -12,7 +12,7 @@ class HigherOrderBuilderProxy
 {
     /**
      * The collection being operated on.
-	 * 正在操作集合
+	 * 正在操作的集合
      *
      * @var \Illuminate\Database\Eloquent\Builder
      */
@@ -20,7 +20,7 @@ class HigherOrderBuilderProxy
 
     /**
      * The method being proxied.
-	 * 被代理方法
+	 * 被代理的方法
      *
      * @var string
      */
@@ -32,6 +32,7 @@ class HigherOrderBuilderProxy
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @param  string  $method
+     * @return void
      */
     public function __construct(Builder $builder, $method)
     {

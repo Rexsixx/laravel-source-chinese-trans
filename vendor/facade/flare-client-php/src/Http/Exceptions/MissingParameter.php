@@ -1,6 +1,6 @@
 <?php
 /**
- * Egulias，Flare Client，Http，异常，缺失参数
+ * Facade，FlareClient，Http，异常，缺失参数
  */
 
 namespace Facade\FlareClient\Http\Exceptions;

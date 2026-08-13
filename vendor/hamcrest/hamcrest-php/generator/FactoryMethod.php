@@ -1,6 +1,6 @@
 <?php
 /**
- * 工厂方法
+ * Factory Method
  */
 
 /*
@@ -9,7 +9,7 @@
 
 /**
  * Represents a single static factory method from a {@link Matcher} class.
- * 表示{@link匹配器}类中的单个静态工厂方法。
+ * 代表一个来自{ @link Matcher }类的静态工厂方法。
  *
  * @todo Search method in file contents for func_get_args() to replace factoryVarArgs.
  */

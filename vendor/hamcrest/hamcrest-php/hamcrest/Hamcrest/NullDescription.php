@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，空的描述
+ * Hamcrest，空描述
  */
 
 namespace Hamcrest;

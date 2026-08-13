@@ -1,6 +1,6 @@
 <?php
 /**
- * 契约，认证守卫接口
+ * Illuminate，契约，认证，守卫
  */
 
 namespace Illuminate\Contracts\Auth;
@@ -17,7 +17,7 @@ interface Guard
 
     /**
      * Determine if the current user is a guest.
-	 * 确定当前用户为访客
+	 * 确定当前用户是否是来宾
      *
      * @return bool
      */
@@ -25,7 +25,7 @@ interface Guard
 
     /**
      * Get the currently authenticated user.
-	 * 得到当前经过身份验证的用户
+	 * 获取当前经过身份验证的用户
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
@@ -33,7 +33,7 @@ interface Guard
 
     /**
      * Get the ID for the currently authenticated user.
-	 * 得到当前经过身份验证的用户的ID
+	 * 获取当前经过身份验证的用户的ID
      *
      * @return int|string|null
      */
