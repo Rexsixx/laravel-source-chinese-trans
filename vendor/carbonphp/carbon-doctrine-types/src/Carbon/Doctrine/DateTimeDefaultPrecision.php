@@ -22,7 +22,7 @@ class DateTimeDefaultPrecision
 
     /**
      * Get the default Doctrine datetime and datetime_immutable precision.
-	 * 获取默认Doctrine日期时间和datetime_immutable精度。
+	 * 获取默认Doctrine日期时间和datetime_immutable精度
      *
      * @return int
      */

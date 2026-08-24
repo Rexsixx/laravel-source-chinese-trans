@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，魔术师，代理管理者 Caster
+ */
 
 /*
  * This file is part of the Symfony package.

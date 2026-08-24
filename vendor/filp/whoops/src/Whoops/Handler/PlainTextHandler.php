@@ -63,6 +63,7 @@ class PlainTextHandler extends Handler
 
     /**
      * Constructor.
+	 * 构造函数
      * @throws InvalidArgumentException     If argument is not null or a LoggerInterface
      * @param  \Psr\Log\LoggerInterface|null $logger
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * 公共，index入口
+ * 公共，index 入口
  */
 
 use Illuminate\Contracts\Http\Kernel;

@@ -46,6 +46,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 	 * 创建给定值的bignnumber。
      *
      * The concrete return type is dependent on the given value, with the following rules:
+	 * 具体的返回类型取决于给定的值，遵循以下规则：
      *
      * - BigNumber instances are returned as is
      * - integer numbers are returned as BigInteger
@@ -389,6 +390,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
     /**
      * Checks if this number is strictly lower than the given one.
+	 * 检查这个数字是否严格低于给定的数字
      *
      * @param BigNumber|int|float|string $that
      *

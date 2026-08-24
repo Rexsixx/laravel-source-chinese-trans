@@ -31,6 +31,8 @@ interface DataInterface
      *
      * If the key does not yet exist it will be created.
      * If the key references a non-array it's existing contents will be added into a new array before appending the new value.
+	 * 如果密钥还不存在，将创建它。
+	 * 如果键引用了一个非数组，它的现有内容将在附加新值之前被添加到一个新数组中。
      *
      * @param string $key
      * @param mixed  $value
@@ -44,6 +46,7 @@ interface DataInterface
 	 * 设置键的值
      *
      * If the key does not yet exist it will be created.
+	 * 如果密钥还不存在，将创建它。
      *
      * @param string $key
      * @param mixed  $value
@@ -58,6 +61,7 @@ interface DataInterface
 	 * 移除键
      *
      * No exception will be thrown if the key does not exist
+	 * 如果键不存在，则不会抛出异常。
      *
      * @param string $key
      *
@@ -71,6 +75,7 @@ interface DataInterface
      *
      * If the key does not exist, an optional default value can be returned instead.
      * If no default is provided then an exception will be thrown instead.
+	 * 如果键不存在，则返回一个可选的默认值。如果没有提供默认值，则会抛出异常。
      *
      * @param string $key
      * @param mixed $default

@@ -36,7 +36,8 @@ return [
     | All database work in Laravel is done through the PHP PDO facilities
     | so make sure you have the driver for your particular database of
     | choice installed on your machine before you begin development.
-	| Laravel 中的所有数据库操作都通过 PHP 的 PDO 功能完成，因此在开始开发之前，请确保你的机器上已安装了所选数据库的驱动程序。
+	| Laravel 中的所有数据库操作都通过 PHP 的 PDO 功能完成，
+	| 因此在开始开发之前，请确保你的机器上已安装了所选数据库的驱动程序。
     | 
     */
 

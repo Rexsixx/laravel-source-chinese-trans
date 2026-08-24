@@ -59,6 +59,7 @@ class AmqpCaster
         ];
 
         // Recent version of the extension already expose private properties
+		// 最近版本的扩展已经公开了私有属性
         if (isset($a["\x00AMQPConnection\x00login"])) {
             return $a;
         }

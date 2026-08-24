@@ -14,6 +14,7 @@ namespace Psr\EventDispatcher;
  * A Dispatcher implementation MUST check to determine if an Event
  * is marked as stopped after each listener is called.  If it is then it should
  * return immediately without calling any further Listeners.
+ * Dispatcher实现必须检查,以确定在调用每个侦听器后是否会停止一个事件。
  */
 interface StoppableEventInterface
 {
@@ -23,6 +24,7 @@ interface StoppableEventInterface
      *
      * This will typically only be used by the Dispatcher to determine if the
      * previous listener halted propagation.
+	 * 这通常只由Dispatcher使用,以确定前一个侦听器是否停止传播。
      *
      * @return bool
      *   True if the Event is complete and no further listeners should be called.

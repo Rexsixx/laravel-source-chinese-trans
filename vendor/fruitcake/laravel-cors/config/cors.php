@@ -1,16 +1,17 @@
 <?php
 /**
- * Fruitcake，Cors，配置
+ * Fruitcake，配置，Cors
  */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Laravel CORS Options
+    | Laravel CORS Options	Laravel CORS 选项
     |--------------------------------------------------------------------------
     |
     | The allowed_methods and allowed_headers options are case-insensitive.
+	| allowed_method和allowed_header选项是不区分大小写的。
     |
     | You don't need to provide both allowed_origins and allowed_origins_patterns.
     | If one of the strings passed matches, it is considered a valid origin.

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，魔术师，Xml 阅读器施法者
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts XmlReader class to array representation.
+ * 将XmlReader类转换为数组表示。
  *
  * @author Baptiste Clavié <clavie.b@gmail.com>
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Carbon，Doctrine，内部，计算器，Carbon 不变的类型
+ * Carbon，Doctrine，Carbon 不变的类型
  */
 
 namespace Carbon\Doctrine;

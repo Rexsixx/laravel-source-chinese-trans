@@ -16,6 +16,7 @@ use Brick\Math\RoundingMode;
  *
  * Unless otherwise specified, all parameters must be validated as non-empty strings of digits,
  * without leading zero, and with an optional leading minus sign if the number is not zero.
+ * 除非另有说明，所有参数都必须验证为非空的数字字符串，不得以零开头，且如果数值不为零，则可选择以负号开头。
  *
  * Any other parameter format will lead to undefined behaviour.
  * All methods must return strings respecting this format, unless specified otherwise.
@@ -51,6 +52,7 @@ abstract class Calculator
 	 * 设置使用的计算器实例。
      *
      * An instance is typically set only in unit tests: the autodetect is usually the best option.
+	 * 实例通常只在单元测试中设置:自动检测通常是最好的选择。
      *
      * @param Calculator|null $calculator The calculator instance, or NULL to revert to autodetect.
      *
@@ -66,6 +68,7 @@ abstract class Calculator
 	 * 返回计算器实例使用
      *
      * If none has been explicitly set, the fastest available implementation will be returned.
+	 * 如果没有显式设置，则返回最快的可用实现。
      *
      * @return Calculator
      *
@@ -138,6 +141,7 @@ abstract class Calculator
 
     /**
      * Negates a number.
+	 * 否定一个数字
      *
      * @param string $n The number.
      *
@@ -158,6 +162,7 @@ abstract class Calculator
 
     /**
      * Compares two numbers.
+	 * 比较两个数字
      *
      * @param string $a The first number.
      * @param string $b The second number.
@@ -192,6 +197,7 @@ abstract class Calculator
 
     /**
      * Adds two numbers.
+	 * 两个数相加
      *
      * @param string $a The augend.
      * @param string $b The addend.
@@ -202,6 +208,7 @@ abstract class Calculator
 
     /**
      * Subtracts two numbers.
+	 * 减去两个数
      *
      * @param string $a The minuend.
      * @param string $b The subtrahend.
@@ -212,6 +219,7 @@ abstract class Calculator
 
     /**
      * Multiplies two numbers.
+	 * 两个数相乘
      *
      * @param string $a The multiplicand.
      * @param string $b The multiplier.
@@ -280,6 +288,7 @@ abstract class Calculator
 	 * 返回模块化乘法逆的x $ m。
      *
      * If $x has no multiplicative inverse mod m, this method must return null.
+	 * 如果$x没有对m取模的乘法逆，则此方法必须返回null。
      *
      * This method can be overridden by the concrete implementation if the underlying library has built-in support.
      *
@@ -383,6 +392,7 @@ abstract class Calculator
 
     /**
      * Converts a number from an arbitrary base.
+	 * 从任意进制转换数字。
      *
      * This method can be overridden by the concrete implementation if the underlying library
      * has built-in support for base conversion.

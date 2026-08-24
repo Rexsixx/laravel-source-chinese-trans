@@ -92,6 +92,7 @@ final class ReplacingWriter implements WriterInterface
      *
      * Returns true if it currently exists, or existed at any point in the past
      * that we are aware of.
+	 * 如果当前存在，或在过去我们所知的任何时间点存在过，则返回 true。
      *
      * @param non-empty-string $name
      *

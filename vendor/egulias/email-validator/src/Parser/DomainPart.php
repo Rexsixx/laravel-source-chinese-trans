@@ -134,6 +134,7 @@ class DomainPart extends Parser
 
         if ($colons === false) {
             // We need exactly the right number of groups
+			// 我们需要正确数量的组
             if ($groupCount !== $maxGroups) {
                 $this->warnings[IPV6GroupCount::CODE] = new IPV6GroupCount();
             }

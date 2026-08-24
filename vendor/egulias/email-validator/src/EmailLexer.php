@@ -206,6 +206,7 @@ class EmailLexer extends AbstractLexer
 
     /**
      * Lexical non-catchable patterns.
+	 * 词汇不可捕捉的模式
      *
      * @return string[]
      */

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，魔术师，存根 Caster
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts a caster's Stub.
+ * Casts一个施法者的存根。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *

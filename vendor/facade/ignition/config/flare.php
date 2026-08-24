@@ -1,13 +1,17 @@
 <?php
+/**
+ * Facade，ignition，flare
+ */
 
 return [
     /*
     |
     |--------------------------------------------------------------------------
-    | Flare API key
+    | Flare API key		Flare API密钥
     |--------------------------------------------------------------------------
     |
     | Specify Flare's API key below to enable error reporting to the service.
+	| 在下面指定Flare的API密钥，以启用向服务报告错误。
     |
     | More info: https://flareapp.io/docs/general/projects
     |
@@ -17,10 +21,11 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Reporting Options
+    | Reporting Options		报告选项
     |--------------------------------------------------------------------------
     |
     | These options determine which information will be transmitted to Flare.
+	| 这些选项决定了哪些信息将被传输到Flare
     |
     */
 

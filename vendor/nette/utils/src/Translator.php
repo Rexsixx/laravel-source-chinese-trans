@@ -21,6 +21,7 @@ interface Translator
 {
 	/**
 	 * Translates the given string.
+	 * 翻译给定的字符串
 	 * @param  mixed  $message
 	 * @param  mixed  ...$parameters
 	 */

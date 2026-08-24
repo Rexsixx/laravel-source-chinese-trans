@@ -16,6 +16,7 @@ namespace Nette\Iterators;
 
 /**
  * Applies the callback to the elements of the inner iterator.
+ * 将回调函数应用于内部迭代器的元素。
  */
 class Mapper extends \IteratorIterator
 {
