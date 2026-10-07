@@ -172,6 +172,7 @@ final class ASCII
 
     /**
      * bidirectional text chars
+	 * 双向文本chars
      *
      * url: https://www.w3.org/International/questions/qa-bidi-unicode-controls
      *
@@ -260,6 +261,7 @@ final class ASCII
 
     /**
      * Returns an replacement array for ASCII methods with a mix of multiple languages.
+	 * 以多种语言的混合返回一个替换数组。
      *
      * EXAMPLE: <code>
      * $array = ASCII::charsArrayWithMultiLanguageValues();
@@ -540,6 +542,7 @@ final class ASCII
 
     /**
      * Checks if a string is 7 bit ASCII.
+	 * 检查字符串是否为7位ASCII。
      *
      * EXAMPLE: <code>
      * ASCII::is_ascii('白'); // false

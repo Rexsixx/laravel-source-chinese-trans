@@ -211,6 +211,7 @@ class Cursor
 
     /**
      * Move the cursor forwards
+	 * 移动光标向前移动
      */
     public function advance(): void
     {
@@ -234,6 +235,7 @@ class Cursor
         }
 
         // Optimization to avoid tab handling logic if we have no tabs
+		// 如果我们没有选项卡,最好避免选项卡处理逻辑。
         if ($this->lastTabPosition === false || $this->currentPosition > $this->lastTabPosition) {
             $length                     = \min($characters, $this->length - $this->currentPosition);
             $this->partiallyConsumedTab = false;
@@ -320,6 +322,7 @@ class Cursor
         // We've just advanced to where that non-space is,
         // so any subsequent calls to find the next one will
         // always return the current position.
+		// 我们刚刚进入了非空间的位置,所以任何后续的调用都将返回当前位置。
         $this->nextNonSpaceCache = $this->currentPosition;
         $this->indent            = 0;
 
@@ -331,6 +334,7 @@ class Cursor
 	 * 解析零或更多的空格字符,包括最多一条新线。
      *
      * Tab characters are not parsed with this function.
+	 * 选项卡字符不受此函数的约束。
      *
      * @return int Number of positions moved
      */
@@ -339,6 +343,7 @@ class Cursor
         $currentCharacter = $this->getCurrentCharacter();
 
         // Optimization: Avoid the regex if we know there are no spaces or newlines
+		// 优化:如果我们知道没有空格或新行,请避免regex。
         if ($currentCharacter !== ' ' && $currentCharacter !== "\n") {
             $this->previousPosition = $this->currentPosition;
 
@@ -410,6 +415,7 @@ class Cursor
 	 * 试着与正则表达式相匹配
      *
      * Returns the matching text and advances to the end of that match
+	 * 返回匹配的文本,并在匹配的末尾返回。
      *
      * @psalm-param non-empty-string $regex
      */

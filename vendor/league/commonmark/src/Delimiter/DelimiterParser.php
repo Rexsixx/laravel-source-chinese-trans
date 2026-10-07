@@ -78,6 +78,7 @@ final class DelimiterParser implements InlineParserInterface
         $inlineContext->getContainer()->appendChild($node);
 
         // Add entry to stack to this opener
+		// 添加入口到这个开瓶器
         $delimiter = new Delimiter($character, $numDelims, $node, $canOpen, $canClose, $inlineContext->getCursor()->getPosition());
         $inlineContext->getDelimiterStack()->push($delimiter);
 

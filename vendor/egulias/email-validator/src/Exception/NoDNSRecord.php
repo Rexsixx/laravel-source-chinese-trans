@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，异常，No DNS 记录
+ */
 
 namespace Egulias\EmailValidator\Exception;
 

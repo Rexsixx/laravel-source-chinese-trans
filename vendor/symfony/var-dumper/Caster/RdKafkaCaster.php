@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，魔术师，RdKafka Caster
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -26,6 +29,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts RdKafka related classes to array representation.
+ * 将RdKafka相关类转换为数组表示。
  *
  * @author Romain Neutron <imprec@gmail.com>
  */

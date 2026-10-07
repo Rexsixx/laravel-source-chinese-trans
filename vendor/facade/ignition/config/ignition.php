@@ -1,13 +1,17 @@
 <?php
+/**
+ * Facade，配置，ignition
+ */
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Editor
+    | Editor	编辑器
     |--------------------------------------------------------------------------
     |
     | Choose your preferred editor to use when clicking any edit button.
+	| 单击任何编辑按钮时，选择要使用的首选编辑器。
     |
     | Supported: "phpstorm", "vscode", "vscode-insiders", "vscodium", "textmate", "emacs",
     |            "sublime", "atom", "nova", "macvim", "idea", "netbeans",

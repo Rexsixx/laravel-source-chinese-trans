@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，异常，无本地部分
+ */
 
 namespace Egulias\EmailValidator\Exception;
 

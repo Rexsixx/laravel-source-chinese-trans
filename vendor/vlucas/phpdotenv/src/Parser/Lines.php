@@ -30,6 +30,7 @@ final class Lines
 	 * 处理环境变量行数组。
      *
      * This will produce an array of raw entries, one per variable.
+	 * 这将生成一个原始条目数组，每个变量一个。
      *
      * @param string[] $lines
      *
@@ -67,6 +68,7 @@ final class Lines
         $startsOnCurrentLine = $multiline ? false : self::looksLikeMultilineStart($line);
 
         // check if $line can be multiline variable
+		// 检查$line是否可以是多行变量
         if ($startsOnCurrentLine) {
             $multiline = true;
         }

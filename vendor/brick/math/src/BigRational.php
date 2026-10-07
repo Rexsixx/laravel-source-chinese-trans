@@ -88,6 +88,7 @@ final class BigRational extends BigNumber
      *
      * If the denominator is negative, the signs of both the numerator and the denominator
      * will be inverted to ensure that the denominator is always positive.
+	 * 如果分母为负数，则分子和分母的符号都会取反，以确保分母始终为正。
      *
      * @param BigNumber|int|float|string $numerator   The numerator. Must be convertible to a BigInteger.
      * @param BigNumber|int|float|string $denominator The denominator. Must be convertible to a BigInteger.
@@ -249,6 +250,7 @@ final class BigRational extends BigNumber
 
     /**
      * Returns the difference of this number and the given one.
+	 * 返回此数与给定数之差
      *
      * @param BigNumber|int|float|string $that The number to subtract.
      *

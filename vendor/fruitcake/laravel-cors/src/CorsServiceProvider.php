@@ -81,6 +81,7 @@ class CorsServiceProvider extends BaseServiceProvider
         }
 
         // Convert case to supported options
+		// 将大小写转换为支持的选项
         $options = [
             'supportsCredentials' => $config['supports_credentials'],
             'allowedOrigins' => $config['allowed_origins'],

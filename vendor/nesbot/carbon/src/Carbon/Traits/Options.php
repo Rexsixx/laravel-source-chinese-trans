@@ -23,6 +23,7 @@ use Throwable;
  * 特征选项
  *
  * Embed base methods to change settings of Carbon classes.
+ * 嵌入基本方法来更改碳类的设置。
  *
  * Depends on the following methods:
  *
@@ -136,6 +137,7 @@ trait Options
     /**
      * Indicates if months should be calculated with overflow.
      * Global setting.
+	 * 说明如果几个月应该用溢出来计算。全局环境。
      *
      * @var bool
      */
@@ -144,6 +146,7 @@ trait Options
     /**
      * Indicates if years should be calculated with overflow.
      * Global setting.
+	 * 指示是否要用溢出来计算。全局环境。
      *
      * @var bool
      */

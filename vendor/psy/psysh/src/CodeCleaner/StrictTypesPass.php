@@ -49,6 +49,7 @@ class StrictTypesPass extends CodeCleanerPass
 
     /**
      * If this is a standalone strict types declaration, remember it for later.
+	 * 如果这是一个独立的严格类型声明,请记住它。
      *
      * Otherwise, apply remembered strict types declaration to to the code until
      * a new declaration is encountered.

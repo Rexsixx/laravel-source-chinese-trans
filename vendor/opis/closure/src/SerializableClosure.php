@@ -69,6 +69,7 @@ class SerializableClosure implements Serializable
 
     /**
      * Constructor
+	 * 构造方法
      *
      * @param   Closure $closure Closure you want to serialize
      */

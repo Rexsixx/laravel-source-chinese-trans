@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，编码单元，无效代码单元异常
+ */
+
 /*
  * This file is part of sebastian/code-unit.
  *

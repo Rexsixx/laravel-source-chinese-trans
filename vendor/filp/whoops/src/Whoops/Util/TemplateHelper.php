@@ -24,6 +24,7 @@ class TemplateHelper
 {
     /**
      * An array of variables to be passed to all templates
+	 * 传递给所有模板的变量数组
      * @var array
      */
     private $variables = [];
@@ -85,6 +86,7 @@ class TemplateHelper
     /**
      * Escapes a string for output in an HTML document, but preserves
      * URIs within it, and converts them to clickable anchor elements.
+	 * 将字符串作为 HTML 文档中的输出内容，但会保留其中的 URI，并将其转换为可点击的锚点元素。
      *
      * @param  string $raw
      * @return string

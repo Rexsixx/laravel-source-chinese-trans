@@ -14,6 +14,7 @@ use PhpParser\ErrorHandler;
  * 通过抛出错误来处理所有错误的错误处理程序。
  *
  * This is the default strategy used by all components.
+ * 这是所有组件使用的默认策略。
  */
 class Throwing implements ErrorHandler {
     public function handleError(Error $error): void {

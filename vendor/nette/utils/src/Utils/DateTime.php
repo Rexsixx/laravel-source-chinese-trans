@@ -17,6 +17,7 @@ use Nette;
 
 /**
  * DateTime.
+ * 日期时间
  */
 class DateTime extends \DateTime implements \JsonSerializable
 {
@@ -43,6 +44,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 	/**
 	 * Creates a DateTime object from a string, UNIX timestamp, or other DateTimeInterface object.
+	 * 从字符串、UNIX时间戳或其他DateTimeInterface对象创建DateTime对象。
 	 * @param  string|int|\DateTimeInterface  $time
 	 * @return static
 	 * @throws \Exception if the date and time are not valid.

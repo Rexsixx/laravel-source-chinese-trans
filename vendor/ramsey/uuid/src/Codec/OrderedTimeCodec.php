@@ -30,6 +30,7 @@ use function substr;
 /**
  * OrderedTimeCodec encodes and decodes a UUID, optimizing the byte order for
  * more efficient storage
+ * OrderedTimeCodec编码和解码UUID,优化字节顺序,以获得更高效的存储。
  *
  * For binary representations of version 1 UUID, this codec may be used to
  * reorganize the time fields, making the UUID closer to sequential when storing

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Symfony，Component，VarDumper，魔术师，资源 Caster
+ */
 
 /*
  * This file is part of the Symfony package.
@@ -15,6 +18,7 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 
 /**
  * Casts common resource types to array representation.
+ * 将公共资源类型转换为数组表示。
  *
  * @author Nicolas Grekas <p@tchwork.com>
  *

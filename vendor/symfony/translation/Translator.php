@@ -169,6 +169,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
 
     /**
      * Sets the fallback locales.
+	 * 设置回放地方
      *
      * @param string[] $locales
      *

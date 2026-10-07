@@ -1,4 +1,7 @@
 <?php
+/**
+ * Egulias，EmailValidator，异常，ExpectingDomainLiteralClose
+ */
 
 namespace Egulias\EmailValidator\Exception;
 

@@ -49,6 +49,7 @@ final class RepositoryBuilder
 
     /**
      * Are we immutable?
+	 * 我们是不可变的吗？
      *
      * @var bool
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Symfony，Component，Translation，载入程序，阵列装载机
+ * Symfony，Component，Translation，载入程序，数组装载机
  */
 
 /*

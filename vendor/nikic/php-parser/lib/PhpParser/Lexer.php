@@ -47,6 +47,7 @@ class Lexer {
         $chr = $token->text;
         if ($chr === "\0") {
             // PHP cuts error message after null byte, so need special case
+			// PHP在空字节后减少错误消息,因此需要特殊情况。
             $errorMsg = 'Unexpected null byte';
         } else {
             $errorMsg = sprintf(

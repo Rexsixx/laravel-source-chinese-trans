@@ -29,6 +29,7 @@ use Stringable;
  *
  * It contains a stack of Handlers and a stack of Processors,
  * and uses them to store records that are added to it.
+ * 它包含一组处理器和一组处理程序，并利用它们来存储添加到其中的记录。
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  *

@@ -88,6 +88,7 @@ class HoursField extends AbstractField
         ) {
             // We start a day before current time so we can differentiate between the first transition entry
             // and a change that happens now
+			// 我们从当前时间前一天开始，以便区分首次过渡条目和当前发生的变更。
             $dtLimitStart = clone $date;
             $dtLimitStart = $dtLimitStart->modify("-12 months");
             $dtLimitEnd = clone $date;
@@ -132,6 +133,7 @@ class HoursField extends AbstractField
         // Change timezone to UTC temporarily. This will
         // allow us to go back or forwards and hour even
         // if DST will be changed between the hours.
+		// 暂时将时区更改为UTC。这样即使在该时段之间切换夏令时，我们也能前后调整一小时。
         if (null === $parts || '*' === $parts) {
             if ($invert) {
                 $date = $date->sub(new \DateInterval('PT1H'));

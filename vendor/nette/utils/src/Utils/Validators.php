@@ -17,6 +17,7 @@ use Nette;
 
 /**
  * Validation utilities.
+ * 验证工具。
  */
 class Validators
 {
@@ -96,6 +97,7 @@ class Validators
 
 	/**
 	 * Verifies that the value is of expected types separated by pipe.
+	 * 验证该值是否为按管道分隔的预期类型
 	 * @param  mixed  $value
 	 * @throws AssertionException
 	 */
@@ -118,6 +120,7 @@ class Validators
 
 	/**
 	 * Verifies that element $key in array is of expected types separated by pipe.
+	 * 验证数组中的$key元素是否为预期的类型，由管道分隔。
 	 * @param  mixed[]  $array
 	 * @param  int|string  $key
 	 * @throws AssertionException

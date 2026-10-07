@@ -77,6 +77,7 @@ abstract class AbstractLexer
 
     /**
      * The last matched/seen token.
+	 * 最后匹配/看到的标记
      *
      * @var mixed[]|null
      * @psalm-var Token|null

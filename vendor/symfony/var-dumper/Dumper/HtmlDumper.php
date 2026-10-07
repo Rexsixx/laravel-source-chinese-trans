@@ -152,6 +152,7 @@ class HtmlDumper extends CliDumper
 
     /**
      * Dumps the HTML header.
+	 * 转储HTML头
      */
     protected function getDumpHeader()
     {

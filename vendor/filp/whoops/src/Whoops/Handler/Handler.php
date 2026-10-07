@@ -1,6 +1,6 @@
 <?php
 /**
- * Whoops，处理器，处理器
+ * Whoops，处理器，Handler
  */
 
 /**

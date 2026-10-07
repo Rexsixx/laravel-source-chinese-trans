@@ -48,6 +48,7 @@ class Configuration
     /**
      * Boolean assertion of whether we can mock methods which do not actually
      * exist for the given class or object (ignored for unreal mocks)
+	 * Boolean断言我们是否可以模拟不存在给定类或对象的模拟方法(忽略了不真实的错误)
      *
      * @var bool
      */
@@ -55,6 +56,7 @@ class Configuration
 
     /**
      * Constants map
+	 * 常量地图
      *
      * e.g. ['class' => ['MY_CONST' => 123, 'OTHER_CONST' => 'foo']]
      *

@@ -33,6 +33,7 @@ interface DumperInterface
 
     /**
      * Dumps a string.
+	 * 将字符串转储
      *
      * @param string $str The string being dumped
      * @param bool   $bin Whether $str is UTF-8 or binary encoded
@@ -42,6 +43,7 @@ interface DumperInterface
 
     /**
      * Dumps while entering an hash.
+	 * 在输入散列时转储
      *
      * @param int        $type     A Cursor::HASH_* const for the type of hash
      * @param string|int $class    The object class, resource type or array count
@@ -51,6 +53,7 @@ interface DumperInterface
 
     /**
      * Dumps while leaving an hash.
+	 * 在留下散列的时候倾倒
      *
      * @param int        $type     A Cursor::HASH_* const for the type of hash
      * @param string|int $class    The object class, resource type or array count

@@ -1,6 +1,6 @@
 <?php
 /**
- * Nette，工具包，Nette
+ * Nette，工具包，异常
  */
 
 /**
@@ -16,6 +16,8 @@ namespace Nette;
 /**
  * The exception that is thrown when the value of an argument is
  * outside the allowable range of values as defined by the invoked method.
+ * 当参数的值超出被调用方法所定义的允许范围时，抛出的异常。
+ * 
  */
 class ArgumentOutOfRangeException extends \InvalidArgumentException
 {

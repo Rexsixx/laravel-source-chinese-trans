@@ -27,6 +27,7 @@ class Arrays
 
 	/**
 	 * Returns item from array. If it does not exist, it throws an exception, unless a default value is set.
+	 * 从数组返回项目。如果不存在,则抛出异常,除非设置默认值。
 	 * @template T
 	 * @param  array<T>  $array
 	 * @param  array-key|array-key[]  $key
@@ -54,6 +55,7 @@ class Arrays
 
 	/**
 	 * Returns reference to array item. If the index does not exist, new one is created with value null.
+	 * 返回引用数组项。如果索引不存在,那么新的值将被创建为null。
 	 * @template T
 	 * @param  array<T>  $array
 	 * @param  array-key|array-key[]  $key

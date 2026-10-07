@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，代码清洁，命名空间传递
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -18,6 +21,7 @@ use Psy\CodeCleaner;
 
 /**
  * Provide implicit namespaces for subsequent execution.
+ * 为后续执行提供隐式命名空间。
  *
  * The namespace pass remembers the last standalone namespace line encountered:
  *
@@ -42,6 +46,7 @@ class NamespacePass extends CodeCleanerPass
 
     /**
      * If this is a standalone namespace line, remember it for later.
+	 * 如果这是一个独立的名称空间行,请记住它。
      *
      * Otherwise, apply remembered namespaces to the code until a new namespace
      * is encountered.

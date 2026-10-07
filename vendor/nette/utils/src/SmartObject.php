@@ -21,6 +21,7 @@ use Nette\Utils\ObjectHelpers;
  * - access to undeclared members throws exceptions
  * - support for @property annotations
  * - support for calling event handlers stored in $onEvent via onEvent()
+ * 严格的课程,以获得更好的经验。
  */
 trait SmartObject
 {
