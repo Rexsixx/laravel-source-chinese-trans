@@ -1,6 +1,6 @@
 <?php
 /**
- * 配置，密室
+ * 配置，Sanctum
  */
 
 return [
