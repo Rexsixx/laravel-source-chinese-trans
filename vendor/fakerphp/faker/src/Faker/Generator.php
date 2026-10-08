@@ -660,6 +660,7 @@ class Generator
     /**
      * To make sure the value meet some criteria, pass a callable that verifies the
      * output. If the validator fails, the generator will try again.
+	 * 为了确保值满足某些条件，可传入一个用于验证输出的可调用对象。如果验证失败，生成器将重新尝试。
      *
      * The value validity is determined by a function passed as first argument.
      *

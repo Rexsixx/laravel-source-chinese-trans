@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，节点，Stmt，Block
+ */
+
 namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node\Stmt;

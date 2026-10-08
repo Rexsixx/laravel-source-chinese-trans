@@ -66,6 +66,7 @@ class IntrospectionProcessor implements ProcessorInterface
     public function __invoke(array $record): array
     {
         // return if the level is not high enough
+		// 如果级别不够高，返回。
         if ($record['level'] < $this->level) {
             return $record;
         }

@@ -41,6 +41,7 @@ class Enum_ extends Declaration {
 
     /**
      * Sets the scalar type.
+	 * 设置标量类型
      *
      * @param string|Identifier $scalarType
      *
@@ -96,6 +97,7 @@ class Enum_ extends Declaration {
 
     /**
      * Adds an attribute group.
+	 * 添加一个属性组
      *
      * @param Node\Attribute|Node\AttributeGroup $attribute
      *
@@ -109,6 +111,7 @@ class Enum_ extends Declaration {
 
     /**
      * Returns the built class node.
+	 * 返回构建的类节点
      *
      * @return Stmt\Enum_ The built enum node
      */

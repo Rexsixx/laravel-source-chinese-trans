@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，反射，反射常数
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,8 +16,10 @@ namespace Psy\Reflection;
 
 /**
  * Somehow the standard reflection library doesn't include constants.
+ * 在某种程度上,标准的反射库不包括常量。
  *
  * ReflectionConstant corrects that omission.
+ * 反射常数修正了省略。
  */
 class ReflectionConstant implements \Reflector
 {
@@ -36,6 +41,7 @@ class ReflectionConstant implements \Reflector
 
     /**
      * Construct a ReflectionConstant object.
+	 * 构造一个反射常数对象
      *
      * @param string $name
      */

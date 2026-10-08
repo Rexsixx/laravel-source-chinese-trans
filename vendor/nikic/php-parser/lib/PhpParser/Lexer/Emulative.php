@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+/**
+ * PhpParser，词法分析程序，竞争性的
+ */
+
 namespace PhpParser\Lexer;
 
 use PhpParser\Error;
@@ -51,6 +55,7 @@ class Emulative extends Lexer {
 
         // Collect emulators that are relevant for the PHP version we're running
         // and the PHP version we're targeting for emulation.
+		// 收集与我们正在运行的PHP版本相关的模拟器,以及我们针对仿真的PHP版本。
         foreach ($emulators as $emulator) {
             $emulatorPhpVersion = $emulator->getPhpVersion();
             if ($this->isForwardEmulationNeeded($emulatorPhpVersion)) {
@@ -113,6 +118,7 @@ class Emulative extends Lexer {
     private function sortPatches(): void {
         // Patches may be contributed by different emulators.
         // Make sure they are sorted by increasing patch position.
+		// 补丁可能由不同的模拟器做出贡献。确保他们被增加的补丁位置排序。
         usort($this->patches, function ($p1, $p2) {
             return $p1[0] <=> $p2[0];
         });
@@ -191,6 +197,7 @@ class Emulative extends Lexer {
 
     /**
      * Fixup line and position information in errors.
+	 * 在错误中固定线路和位置信息
      *
      * @param Error[] $errors
      */

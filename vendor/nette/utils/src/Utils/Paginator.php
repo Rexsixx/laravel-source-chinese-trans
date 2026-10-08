@@ -17,6 +17,7 @@ use Nette;
 
 /**
  * Paginating math.
+ * 分页数学。
  *
  * @property   int $page
  * @property-read int $firstPage
@@ -52,6 +53,7 @@ class Paginator
 
 	/**
 	 * Sets current page number.
+	 * 设置当前页码
 	 * @return static
 	 */
 	public function setPage(int $page)
@@ -63,6 +65,7 @@ class Paginator
 
 	/**
 	 * Returns current page number.
+	 * 返回当前页码
 	 */
 	public function getPage(): int
 	{
@@ -72,6 +75,7 @@ class Paginator
 
 	/**
 	 * Returns first page number.
+	 * 返回第一页号
 	 */
 	public function getFirstPage(): int
 	{
@@ -81,6 +85,7 @@ class Paginator
 
 	/**
 	 * Returns last page number.
+	 * 返回最后一个页码
 	 */
 	public function getLastPage(): ?int
 	{

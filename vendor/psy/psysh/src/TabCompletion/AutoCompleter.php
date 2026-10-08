@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，制表，自动络合器
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -15,6 +18,7 @@ use Psy\TabCompletion\Matcher\AbstractMatcher;
 
 /**
  * A readline tab completion service.
+ * 一个readline选项卡完成服务。
  *
  * @author Marc Garcia <markcial@gmail.com>
  */

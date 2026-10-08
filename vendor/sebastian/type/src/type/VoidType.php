@@ -1,4 +1,9 @@
 <?php declare(strict_types=1);
+
+/**
+ * SebastianBergmann，类型，无效的类型
+ */
+
 /*
  * This file is part of sebastian/type.
  *

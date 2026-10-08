@@ -87,6 +87,7 @@ class TokenStream {
 	 * 检查该位置是否直接后跟某种token类型。
      *
      * During this check whitespace and comments are skipped.
+	 * 在此期间,将跳过空白和注释。
      *
      * @param int $pos Position after which the token should occur
      * @param int|string $expectedTokenType Token to check for
@@ -191,6 +192,7 @@ class TokenStream {
 
     /**
      * Whether the given position range contains a certain token type.
+	 * 给定位置范围是否包含特定的令牌类型
      *
      * @param int $startPos Starting position (inclusive)
      * @param int $endPos Ending position (exclusive)

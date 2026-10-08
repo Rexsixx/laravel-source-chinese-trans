@@ -1,4 +1,7 @@
 <?php
+/**
+ * Psy，命令，GNU Readline
+ */
 
 /*
  * This file is part of Psy Shell.
@@ -13,6 +16,7 @@ namespace Psy\Readline;
 
 /**
  * A Readline interface implementation for GNU Readline.
+ * GNU Readline的Readline接口实现。
  *
  * This is by far the coolest way to do it, if you can.
  *

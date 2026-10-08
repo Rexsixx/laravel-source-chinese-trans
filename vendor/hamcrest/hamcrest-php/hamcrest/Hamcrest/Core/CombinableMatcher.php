@@ -1,6 +1,6 @@
 <?php
 /**
- * Hamcrest，核心，可以化合的匹配器
+ * Hamcrest，核心，可组合的匹配器
  */
 
 namespace Hamcrest\Core;

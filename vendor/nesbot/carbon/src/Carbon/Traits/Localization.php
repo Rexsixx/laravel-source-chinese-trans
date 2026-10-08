@@ -118,6 +118,7 @@ trait Localization
 
     /**
      * Get the default translator instance in use.
+	 * 获取使用的默认翻译实例
      *
      * @return \Symfony\Component\Translation\TranslatorInterface
      */

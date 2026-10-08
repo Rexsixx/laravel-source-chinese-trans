@@ -15,6 +15,7 @@ use PhpParser\Node\Scalar;
 use PhpParser\Node\Stmt;
 
 /* This is an automatically GENERATED file, which should not be manually edited.
+ * 这是一个自动生成的文件,不应该手动编辑。
  * Instead edit one of the following:
  *  * the grammar file grammar/php.y
  *  * the skeleton file grammar/parser.template

@@ -56,6 +56,7 @@ class Configuration
 
     /**
      * Constants map
+	 * 常量地图
      *
      * e.g. ['class' => ['MY_CONST' => 123, 'OTHER_CONST' => 'foo']]
      *
